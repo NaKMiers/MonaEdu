@@ -12,7 +12,8 @@ function VerifyPhoneEmail({
     <Tailwind
       config={{
         theme,
-      }}>
+      }}
+    >
       <Body className='text-dark font-sans'>
         <Container className='bg-white p-4 pb-6'>
           <Section className='inline-block mx-auto'>
@@ -31,8 +32,9 @@ function VerifyPhoneEmail({
               <Column>
                 <a
                   href='https://ere-eta.vercel.app'
-                  className='text-2xl font-bold tracking-[0.3px] no-underline text-dark'>
-                  ERE
+                  className='text-2xl font-bold tracking-[0.3px] no-underline text-dark'
+                >
+                  MoonaEdu
                 </a>
               </Column>
             </Row>
@@ -49,7 +51,7 @@ function VerifyPhoneEmail({
             <p>Hi {name},</p>
             <p>
               You have just sent a confirm email requirement at{' '}
-              <span className='font-semibold'>&quot;ERE&quot;</span> lúc{' '}
+              <span className='font-semibold'>&quot;MoonaEdu&quot;</span> lúc{' '}
               {new Intl.DateTimeFormat('en', {
                 dateStyle: 'full',
                 timeStyle: 'medium',
@@ -72,7 +74,8 @@ function VerifyPhoneEmail({
             <div className='text-center p-3'>
               <a
                 href={link}
-                className='inline bg-sky-500 no-underline rounded-lg text-white font-semibold cursor-pointer py-3 px-7 border-0'>
+                className='inline bg-sky-500 no-underline rounded-lg text-white font-semibold cursor-pointer py-3 px-7 border-0'
+              >
                 Verify your phone number
               </a>
             </div>
@@ -87,7 +90,7 @@ function VerifyPhoneEmail({
             <p>
               Thank you very much,
               <br />
-              ERE
+              MoonaEdu
             </p>
           </Section>
 
@@ -101,7 +104,7 @@ function VerifyPhoneEmail({
           </div>
 
           <p className='text-center text-xs text-slate-600'>
-            © 2023 | ERE - Developed by Nguyen Anh Khoa, All rights reserved.
+            © 2023 | MoonaEdu - Developed by Nguyen Anh Khoa, All rights reserved.
           </p>
 
           <div className='text-center'>
@@ -109,7 +112,8 @@ function VerifyPhoneEmail({
               href='https://zalo.me/0899320427'
               target='_blank'
               rel='noreferrer'
-              className='inline-block'>
+              className='inline-block'
+            >
               <Img
                 src={`${'https://ere-eta.vercel.app'}/images/zalo.jpg`}
                 width={35}
@@ -121,7 +125,8 @@ function VerifyPhoneEmail({
               href='https://www.messenger.com/t/170660996137305'
               target='_blank'
               rel='noreferrer'
-              className='inline-block ml-2'>
+              className='inline-block ml-2'
+            >
               <Img
                 src={`${'https://ere-eta.vercel.app'}/images/messenger.jpg`}
                 width={35}

@@ -1,12 +1,12 @@
 'use client'
 
+import { ICategory } from '@/models/CategoryModel'
+import { getCategoriesApi } from '@/requests'
 import Image from 'next/image'
 import Link from 'next/link'
-import Divider from './Divider'
-import { ICategory } from '@/models/CategoryModel'
 import { useEffect, useState } from 'react'
-import { getCategoriesApi } from '@/requests'
 import toast from 'react-hot-toast'
+import Divider from './Divider'
 
 function Footer() {
   // states
@@ -35,20 +35,18 @@ function Footer() {
           <div className='flex items-center gap-2'>
             <Link
               href='/'
-              className='w-[32px] h-[32px] aspect-square rounded-lg shadow-lg overflow-hidden'
+              className='w-[40px] h-[40px] aspect-square rounded-lg shadow-lg overflow-hidden'
             >
               <Image
                 className='w-full h-full object-cover'
                 src='/images/logo.png'
-                width={32}
-                height={32}
+                width={60}
+                height={60}
                 alt='github'
               />
             </Link>
-            <span className='font-body text-sky-700 font-bold text-3xl'>ERE</span>
+            <span className='font-body text-sky-700 font-bold text-3xl'>MoonaEdu</span>
           </div>
-
-          <span className='font-bold text-dark text-lg hidden md:block'>Educational Resources</span>
         </div>
 
         <div className='flex flex-wrap items-center gap-x-4 gap-y-2'>
@@ -75,11 +73,11 @@ function Footer() {
           <h3 className='font-bold text-xl'>ABOUT US</h3>
 
           <p className='font-body tracking-wider mt-2 hover:tracking-widest trans-200'>
-            ERE (Education Resources) brings you online learning solutions, studying online at home at an
-            economical cost. best. This is suitable for those whose finances are still tight and limited
-            (students, real trainees, new graduates,...) but can still participate in top value courses
-            to Develop professional skills and develop your career. If you want to save more on your
-            investment If you are interested in learning, ERE is the ideal destination for you.
+            MoonaEdu brings you online learning solutions, studying online at home at an economical cost.
+            best. This is suitable for those whose finances are still tight and limited (students, real
+            trainees, new graduates,...) but can still participate in top value courses to Develop
+            professional skills and develop your career. If you want to save more on your investment If
+            you are interested in learning, MoonaEdu is the ideal destination for you.
           </p>
         </div>
 

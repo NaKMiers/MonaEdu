@@ -9,7 +9,7 @@ import PageLoading from '@/components/PageLoading'
 import FloatingButton from '@/components/FloatingButton'
 
 export const metadata: Metadata = {
-  title: 'Educational Resources',
+  title: 'MoonaEdu',
   icons: {
     icon: ['/favicon.ico?v=4'],
     apple: ['/apple-touch-icon.png?v=4'],

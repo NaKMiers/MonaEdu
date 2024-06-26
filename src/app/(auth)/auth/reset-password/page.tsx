@@ -150,9 +150,7 @@ function ResetPasswordPage() {
             />
           </div>
 
-          <p className='text-[#4F7575] left-[46px] font-semibold text-3xl top-[20%]'>
-            EDUCATIONAL RESOURCES
-          </p>
+          <p className='text-[#4F7575] left-[46px] font-semibold text-3xl top-[20%]'>MOONAEDU</p>
           <p className='text-[#3D3D3D] font-semibold text-3xl mt-5'>
             Walking with you on the path to success.
           </p>
@@ -170,7 +168,7 @@ function ResetPasswordPage() {
                 alt='logo'
               />
             </div>
-            <span className='font-bold text-3xl text-orange-500'>ERE</span>
+            <span className='font-bold text-3xl text-orange-500'>MoonaEdu</span>
           </div>
 
           <Divider size={4} />

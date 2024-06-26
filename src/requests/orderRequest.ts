@@ -59,7 +59,6 @@ export const generateOrderCodeApi = async () => {
 
 // [POST]
 export const createOrderApi = async ({
-  code,
   email,
   total,
   voucherApplied,
@@ -68,7 +67,6 @@ export const createOrderApi = async ({
   item,
   paymentMethod,
 }: {
-  code: string
   email: string
   total: number
   receivedUser: string | undefined
@@ -80,7 +78,6 @@ export const createOrderApi = async ({
   const res = await fetch('/api/order/create', {
     method: 'POST',
     body: JSON.stringify({
-      code,
       email,
       total,
       receivedUser,

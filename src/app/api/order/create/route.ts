@@ -87,7 +87,7 @@ export async function POST(req: NextRequest) {
     // notify new order to admin
     await notifyNewOrderToAdmin(newOrder)
 
-    return NextResponse.json({ message }, { status: 201 })
+    return NextResponse.json({ code, message }, { status: 201 })
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })
   }

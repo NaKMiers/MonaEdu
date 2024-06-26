@@ -237,7 +237,6 @@ function CheckoutPage({ params: { slug } }: { params: { slug: string } }) {
     try {
       // send request to server to create order
       const { message } = await createOrderApi({
-        code,
         email: curUser.email,
         total,
         receivedUser: foundUser?.email,

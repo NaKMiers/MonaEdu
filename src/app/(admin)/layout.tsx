@@ -8,7 +8,7 @@ import PageLoading from '@/components/PageLoading'
 import Header from '@/components/Header'
 
 export const metadata: Metadata = {
-  title: 'Educational Resources',
+  title: 'MoonaEdu',
   icons: {
     icon: ['/favicon.ico?v=4'],
     apple: ['/apple-touch-icon.png?v=4'],

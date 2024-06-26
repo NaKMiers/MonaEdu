@@ -28,7 +28,7 @@ export function NotifyOrderEmail({ order = orderSample }: { order?: any }) {
                 <a
                   href='https://ere-eta.vercel.app'
                   className='text-2xl font-bold tracking-[0.3px] no-underline text-dark'>
-                  ERE
+                  MoonaEdu
                 </a>
               </Column>
             </Row>
@@ -49,7 +49,7 @@ export function NotifyOrderEmail({ order = orderSample }: { order?: any }) {
             <Row className='p-4'>
               <Column className='font'>
                 <h1 className='text-2xl font-bold text-center'>Hi👋 </h1>
-                <h2 className='text-xl font-semibold text-center'>You have an order from ERE.</h2>
+                <h2 className='text-xl font-semibold text-center'>You have an order from MoonaEdu.</h2>
 
                 <div className='text-sm mt-8'>
                   <p>
@@ -124,7 +124,7 @@ export function NotifyOrderEmail({ order = orderSample }: { order?: any }) {
           </div>
 
           <p className='text-center text-xs text-slate-600'>
-            © 2023 | ERE - Developed by Nguyen Anh Khoa, All rights reserved.
+            © 2023 | MoonaEdu - Developed by Nguyen Anh Khoa, All rights reserved.
           </p>
 
           <div className='text-center'>

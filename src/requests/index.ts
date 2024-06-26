@@ -22,6 +22,9 @@ export * from './orderRequest'
 // User
 export * from './userRequest'
 
+// Cart
+export * from './cartRequest'
+
 // Voucher
 export * from './voucherRequest'
 

@@ -5,7 +5,7 @@ import { Toaster } from 'react-hot-toast'
 import '../globals.scss'
 
 export const metadata: Metadata = {
-  title: 'Educational Resources',
+  title: 'MoonaEdu',
   icons: {
     icon: ['/favicon.ico?v=4'],
     apple: ['/apple-touch-icon.png?v=4'],

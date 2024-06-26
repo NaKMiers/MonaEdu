@@ -27,7 +27,7 @@ export function NotifyCommentEmail({ data = commentData }: { data?: any }) {
                 <a
                   href='https://ere-eta.vercel.app'
                   className='text-2xl font-bold tracking-[0.3px] no-underline text-dark'>
-                  ERE
+                  MoonaEdu
                 </a>
               </Column>
             </Row>
@@ -104,7 +104,7 @@ export function NotifyCommentEmail({ data = commentData }: { data?: any }) {
           </div>
 
           <p className='text-center text-xs text-slate-600'>
-            © 2023 | ERE - Developed by Nguyen Anh Khoa, All rights reserved.
+            © 2023 | MoonaEdu - Developed by Nguyen Anh Khoa, All rights reserved.
           </p>
 
           <div className='text-center'>

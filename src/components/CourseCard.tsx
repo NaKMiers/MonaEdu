@@ -7,11 +7,10 @@ import { applyFlashSalePrice, countPercent } from '@/utils/number'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useState } from 'react'
+import { HiDotsVertical } from 'react-icons/hi'
 import Divider from './Divider'
 import Price from './Price'
-import { useState } from 'react'
-import { IUser } from '@/models/UserModel'
-import { HiDotsVertical } from 'react-icons/hi'
 
 interface CourseCardProps {
   course: ICourse
