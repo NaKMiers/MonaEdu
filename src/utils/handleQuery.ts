@@ -17,7 +17,7 @@ export const handleQuery = (
         'search',
         'sort',
         'userId',
-        'voucherApplied',
+        'voucher',
         'status',
         'paymentMethod',
         'from',

@@ -33,7 +33,7 @@ export function SummaryEmail({ summary = summarySample }: { summary?: any }) {
                   href='https://ere-eta.vercel.app'
                   className='text-2xl font-bold tracking-[0.3px] no-underline text-dark'
                 >
-                  MoonaEdu
+                  MonaEdu
                 </a>
               </Column>
             </Row>
@@ -124,7 +124,7 @@ export function SummaryEmail({ summary = summarySample }: { summary?: any }) {
                 </div>
 
                 <p className='text-center text-sm text-slate-500'>
-                  Xin chân thành cảm ơn bạn đã đồng hành cùng MoonaEdu trong thời gian qua. Chúc bạn một
+                  Xin chân thành cảm ơn bạn đã đồng hành cùng MonaEdu trong thời gian qua. Chúc bạn một
                   ngày tốt lành 😊
                 </p>
               </Column>
@@ -140,7 +140,7 @@ export function SummaryEmail({ summary = summarySample }: { summary?: any }) {
           </div>
 
           <p className='text-center text-xs text-slate-600'>
-            © 2023 | MoonaEdu - Developed by Nguyen Anh Khoa, All rights reserved.
+            © 2023 | MonaEdu - Developed by Nguyen Anh Khoa, All rights reserved.
           </p>
 
           <div className='text-center'>

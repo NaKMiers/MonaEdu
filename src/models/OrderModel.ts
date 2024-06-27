@@ -64,9 +64,9 @@ export interface IOrder {
   email: string
   total: number
   receivedUser?: string
-  voucherApplied: string | IVoucher
+  voucher: string | IVoucher
   discount: number
-  item: any
+  items: any
   status: string
   paymentMethod: string
   createdAt: string

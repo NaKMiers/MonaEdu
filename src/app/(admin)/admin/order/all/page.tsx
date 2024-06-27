@@ -45,7 +45,7 @@ function AllOrdersPage({ searchParams }: { searchParams?: { [key: string]: strin
       search: '',
       sort: 'updatedAt|-1',
       userId: '',
-      voucherApplied: '',
+      voucher: '',
       status: '',
       paymentMethod: '',
       from: '',
@@ -86,7 +86,7 @@ function AllOrdersPage({ searchParams }: { searchParams?: { [key: string]: strin
         setValue('search', searchParams?.search || getValues('search'))
         setValue('sort', searchParams?.sort || getValues('sort'))
         setValue('userId', searchParams?.userId || getValues('userId'))
-        setValue('voucherApplied', searchParams?.voucherApplied || getValues('voucherApplied'))
+        setValue('voucher', searchParams?.voucher || getValues('voucher'))
         setValue('status', searchParams?.status || getValues('status'))
         setValue('paymentMethod', searchParams?.paymentMethod || getValues('paymentMethod'))
 
@@ -362,7 +362,7 @@ function AllOrdersPage({ searchParams }: { searchParams?: { [key: string]: strin
 
           {/* Voucher Applied */}
           <Input
-            id='voucherApplied'
+            id='voucher'
             label='Voucher'
             disabled={false}
             register={register}
@@ -427,7 +427,8 @@ function AllOrdersPage({ searchParams }: { searchParams?: { [key: string]: strin
             className='border border-sky-400 text-sky-400 rounded-lg px-3 py-2 hover:bg-sky-400 hover:text-white trans-200'
             onClick={() =>
               setSelectedOrders(selectedOrders.length > 0 ? [] : orders.map(order => order._id))
-            }>
+            }
+          >
             {selectedOrders.length > 0 ? 'Unselect All' : 'Select All'}
           </button>
 
@@ -436,7 +437,8 @@ function AllOrdersPage({ searchParams }: { searchParams?: { [key: string]: strin
             selectedOrders.every(id => orders.find(order => order._id === id)?.status === 'pending') && (
               <button
                 className='border border-slate-300 rounded-lg px-3 py-2 hover:bg-slate-300 hover:text-white trans-200'
-                onClick={() => handleCancelOrders(selectedOrders)}>
+                onClick={() => handleCancelOrders(selectedOrders)}
+              >
                 Cancel
               </button>
             )}
@@ -445,7 +447,8 @@ function AllOrdersPage({ searchParams }: { searchParams?: { [key: string]: strin
           {!!selectedOrders.length && (
             <button
               className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-white trans-200'
-              onClick={() => setIsOpenConfirmModal(true)}>
+              onClick={() => setIsOpenConfirmModal(true)}
+            >
               Delete
             </button>
           )}

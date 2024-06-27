@@ -13,7 +13,7 @@ import toast from 'react-hot-toast'
 import { FaCircleNotch } from 'react-icons/fa'
 
 function ResetPasswordPage() {
-  document.title = 'Đặt lại mật khẩu - MoonaEdu'
+  document.title = 'Đặt lại mật khẩu - MonaEdu'
 
   // hooks
   const router = useRouter()
@@ -152,7 +152,7 @@ function ResetPasswordPage() {
             />
           </div>
 
-          <p className='text-[#4F7575] left-[46px] font-semibold text-3xl top-[20%]'>MOONAEDU</p>
+          <p className='text-[#4F7575] left-[46px] font-semibold text-3xl top-[20%]'>MONAEDU</p>
           <p className='text-[#3D3D3D] font-semibold text-3xl mt-5'>
             Hành trang trên con đường đến thành công.
           </p>
@@ -170,7 +170,7 @@ function ResetPasswordPage() {
                 alt='logo'
               />
             </div>
-            <span className='font-bold text-3xl text-orange-500'>MoonaEdu</span>
+            <span className='font-bold text-3xl text-orange-500'>MonaEdu</span>
           </div>
 
           <Divider size={4} />

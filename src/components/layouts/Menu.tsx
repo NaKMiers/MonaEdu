@@ -63,14 +63,16 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
             : 'max-h-0 sm:max-h-0 p-0 sm:max-w-0 sm:w-0 opacity-0x'
         } ${
           curUser && !curUser?._id ? 'hidden' : ''
-        } text-dark w-full overflow-hidden trans-300 absolute bottom-[72px] md:bottom-auto md:top-[60px] right-0 sm:right-21 z-30 sm:rounded-medium sm:shadow-sky-400 shadow-md bg-slate-100`}>
+        } text-dark w-full overflow-hidden trans-300 absolute bottom-[72px] md:bottom-auto md:top-[60px] right-0 sm:right-21 z-30 sm:rounded-medium sm:shadow-sky-400 shadow-md bg-slate-100`}
+      >
         {curUser ? (
           // MARK: User Logged In
           curUser?._id && (
             <>
               <Link
                 href={`/user/${curUser?._id}`}
-                className='flex items-center gap-2 py-2 px-3 rounded-lg group hover:bg-white trans-200'>
+                className='flex items-center gap-2 py-2 px-3 rounded-lg group hover:bg-white trans-200'
+              >
                 <Image
                   className='aspect-square rounded-full wiggle-0'
                   src={curUser?.avatar || process.env.NEXT_PUBLIC_DEFAULT_AVATAR!}
@@ -91,7 +93,8 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
               <li className='group' onClick={() => setOpen(false)}>
                 <Link
                   href={`/user/${curUser?._id}`}
-                  className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white trans-200'>
+                  className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white trans-200'
+                >
                   <Image src='/images/info-icon.png' width={32} height={32} alt='icon' />
                   <span className='font-body text-xl font-semibold tracking-wide'>Profile</span>
                 </Link>
@@ -99,7 +102,8 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
               <li className='group' onClick={() => setOpen(false)}>
                 <Link
                   href={`/my-courses`}
-                  className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white trans-200'>
+                  className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white trans-200'
+                >
                   <Image src='/images/my-courses-icon.png' width={32} height={32} alt='icon' />
                   <span className='font-body text-xl font-semibold tracking-wide'>My Courses</span>
                 </Link>
@@ -107,7 +111,8 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
               <li className='group' onClick={() => setOpen(false)}>
                 <Link
                   href='/setting'
-                  className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white trans-200'>
+                  className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white trans-200'
+                >
                   <Image src='/images/setting-icon.png' width={32} height={32} alt='icon' />
                   <span className='font-body text-xl font-semibold tracking-wide'>Setting</span>
                 </Link>
@@ -120,7 +125,8 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
                         ? '/admin/order/all'
                         : '/admin/summary/all'
                     }
-                    className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white trans-200'>
+                    className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white trans-200'
+                  >
                     <Image src='/images/order-icon.png' width={32} height={32} alt='icon' />
                     <span className='font-body text-xl font-semibold tracking-wide'>
                       {['admin', 'editor'].includes(curUser?.role) ? 'Orders' : 'Collaborator'}
@@ -131,7 +137,8 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
               <li className='group' onClick={() => setOpen(false)}>
                 <button
                   className='flex items-center w-full gap-2 py-2 px-3 rounded-lg hover:bg-white trans-200'
-                  onClick={() => signOut()}>
+                  onClick={() => signOut()}
+                >
                   <Image src='/images/logout-icon.png' width={32} height={32} alt='icon' />
                   <span className='font-body text-xl font-semibold tracking-wide'>Logout</span>
                 </button>
@@ -144,7 +151,8 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
             <li className='group' onClick={() => setOpen(false)}>
               <Link
                 href='/auth/login'
-                className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white trans-200'>
+                className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white trans-200'
+              >
                 <Image src='/images/sign-in-icon.png' width={32} height={32} alt='icon' />
                 <span className='font-body text-xl font-semibold tracking-wide'>Sign In</span>
               </Link>
@@ -152,7 +160,8 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
             <li className='group' onClick={() => setOpen(false)}>
               <Link
                 href='/auth/register'
-                className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white trans-200'>
+                className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white trans-200'
+              >
                 <Image src='/images/sign-up-icon.png' width={32} height={32} alt='icon' />
                 <span className='font-body text-xl font-semibold tracking-wide'>Sign Up</span>
               </Link>

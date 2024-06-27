@@ -1,5 +1,5 @@
 import AllLessons from '@/components/AllLessons'
-import Header from '@/components/Header'
+import Header from '@/components/layouts/Header'
 import StoreProvider from '@/libs/StoreProvider'
 import type { Metadata } from 'next'
 import { getServerSession } from 'next-auth'
@@ -8,7 +8,7 @@ import '../globals.scss'
 import PageLoading from '@/components/PageLoading'
 
 export const metadata: Metadata = {
-  title: 'MoonaEdu',
+  title: 'MonaEdu',
   icons: {
     icon: ['/favicon.ico?v=4'],
     apple: ['/apple-touch-icon.png?v=4'],

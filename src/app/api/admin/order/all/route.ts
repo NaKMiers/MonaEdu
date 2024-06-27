@@ -68,7 +68,7 @@ export async function GET(req: NextRequest) {
           continue
         }
 
-        if (['userId', 'voucherApplied'].includes(key)) {
+        if (['userId', 'voucher'].includes(key)) {
           filter[key] =
             params[key][0] === 'true' ? { $exists: true, $ne: null } : { $exists: false, $eq: null }
           continue
@@ -106,7 +106,7 @@ export async function GET(req: NextRequest) {
     // get all order from database
     const orders = await OrderModel.find(filter)
       .populate({
-        path: 'voucherApplied',
+        path: 'voucher',
         select: 'code desc',
       })
       .sort(sort)

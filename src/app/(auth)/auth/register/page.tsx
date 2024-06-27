@@ -13,7 +13,7 @@ import toast from 'react-hot-toast'
 import { FaCircleNotch } from 'react-icons/fa'
 
 function RegisterPage() {
-  document.title = 'Đăng ký - MoonaEdu'
+  document.title = 'Đăng ký - MonaEdu'
 
   // hooks
   const router = useRouter()

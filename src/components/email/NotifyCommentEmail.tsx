@@ -7,7 +7,8 @@ export function NotifyCommentEmail({ data = commentData }: { data?: any }) {
     <Tailwind
       config={{
         theme,
-      }}>
+      }}
+    >
       <Body className='text-dark font-sans'>
         <Container className='bg-white p-4'>
           <Section className='inline-block mx-auto'>
@@ -26,8 +27,9 @@ export function NotifyCommentEmail({ data = commentData }: { data?: any }) {
               <Column>
                 <a
                   href='https://ere-eta.vercel.app'
-                  className='text-2xl font-bold tracking-[0.3px] no-underline text-dark'>
-                  MoonaEdu
+                  className='text-2xl font-bold tracking-[0.3px] no-underline text-dark'
+                >
+                  MonaEdu
                 </a>
               </Column>
             </Row>
@@ -37,7 +39,8 @@ export function NotifyCommentEmail({ data = commentData }: { data?: any }) {
             className='rounded-lg overflow-hidden'
             style={{
               border: '1px solid rgb(0, 0, 0, 0.1)',
-            }}>
+            }}
+          >
             <div>
               <Img
                 src='https://ere-eta.vercel.app/images/brand-banner.jpg'
@@ -89,7 +92,8 @@ export function NotifyCommentEmail({ data = commentData }: { data?: any }) {
                 className='inline no-underline rounded-lg font-semibold cursor-pointer py-3 px-7 text-slate-500'
                 style={{
                   border: '1px solid rgba(0, 0, 0, 0.1)',
-                }}>
+                }}
+              >
                 Phản hồi ngay
               </a>
             </div>
@@ -104,7 +108,7 @@ export function NotifyCommentEmail({ data = commentData }: { data?: any }) {
           </div>
 
           <p className='text-center text-xs text-slate-600'>
-            © 2023 | MoonaEdu - Developed by Nguyen Anh Khoa, All rights reserved.
+            © 2023 | MonaEdu - Developed by Nguyen Anh Khoa, All rights reserved.
           </p>
 
           <div className='text-center'>
@@ -112,7 +116,8 @@ export function NotifyCommentEmail({ data = commentData }: { data?: any }) {
               href='https://zalo.me/0899320427'
               target='_blank'
               rel='noreferrer'
-              className='inline-block'>
+              className='inline-block'
+            >
               <Img
                 src={`${'https://ere-eta.vercel.app'}/images/zalo.jpg`}
                 width={35}
@@ -124,7 +129,8 @@ export function NotifyCommentEmail({ data = commentData }: { data?: any }) {
               href='https://www.messenger.com/t/170660996137305'
               target='_blank'
               rel='noreferrer'
-              className='inline-block ml-2'>
+              className='inline-block ml-2'
+            >
               <Img
                 src={`${'https://ere-eta.vercel.app'}/images/messenger.jpg`}
                 width={35}

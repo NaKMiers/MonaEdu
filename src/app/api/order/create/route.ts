@@ -56,11 +56,13 @@ export async function POST(req: NextRequest) {
     if (isUserJoinedCourse) {
       const joinedCoursesTitles = await CourseModel.find({ _id: { $in: joinedCourses } }).select('title')
       return NextResponse.json(
-        { message: `User has already joined this "${joinedCourses.join(', ')}"` },
+        { message: `User has already joined this "${joinedCoursesTitles.join(', ')}"` },
         { status: 400 }
       )
     }
 
+    const courses = await CourseModel.find({ _id: { $in: itemsIds } }).lean()
+    console.log('courses', courses)
     const code = await generateOrderCode(5)
 
     // create new order
@@ -72,7 +74,7 @@ export async function POST(req: NextRequest) {
       voucher,
       discount,
       total,
-      items,
+      items: courses,
       paymentMethod,
     })
 

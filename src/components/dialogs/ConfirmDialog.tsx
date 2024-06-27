@@ -84,7 +84,7 @@ function ConfirmDialog({
 
   return (
     <div
-      className='fixed z-40 top-0 left-0 h-screen text-dark w-screen hidden items-center justify-center p-21 bg-black bg-opacity-10 opacity-0 trans-300'
+      className='fixed z-50 top-0 left-0 h-screen text-dark w-screen hidden items-center justify-center p-21 bg-black bg-opacity-10 opacity-0 trans-300'
       ref={modalRef}
       onClick={() => setOpen(false)}
     >

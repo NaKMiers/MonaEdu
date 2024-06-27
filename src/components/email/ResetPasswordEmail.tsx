@@ -34,7 +34,7 @@ function ResetPasswordEmail({
                   href='https://ere-eta.vercel.app'
                   className='text-2xl font-bold tracking-[0.3px] no-underline text-dark'
                 >
-                  MoonaEdu
+                  MonaEdu
                 </a>
               </Column>
             </Row>
@@ -51,7 +51,7 @@ function ResetPasswordEmail({
             <p>Hi {name},</p>
             <p>
               You have sent a request to restore password at{' '}
-              <span className='font-semibold'>&quot;MoonaEdu&quot;</span> at{' '}
+              <span className='font-semibold'>&quot;MonaEdu&quot;</span> at{' '}
               {new Intl.DateTimeFormat('en', {
                 dateStyle: 'full',
                 timeStyle: 'medium',
@@ -89,7 +89,7 @@ function ResetPasswordEmail({
             <p>
               Thank you very much,
               <br />
-              MoonaEdu
+              MonaEdu
             </p>
           </Section>
 
@@ -103,7 +103,7 @@ function ResetPasswordEmail({
           </div>
 
           <p className='text-center text-xs text-slate-600'>
-            © 2023 | MoonaEdu - Developed by Nguyen Anh Khoa, Dao Gia Bao, Phuong Anh, Quoc Thang, All
+            © 2023 | MonaEdu - Developed by Nguyen Anh Khoa, Dao Gia Bao, Phuong Anh, Quoc Thang, All
             rights reserved.
           </p>
 

@@ -5,10 +5,10 @@ import { getServerSession } from 'next-auth'
 import { Toaster } from 'react-hot-toast'
 import '../globals.scss'
 import PageLoading from '@/components/PageLoading'
-import Header from '@/components/Header'
+import Header from '@/components/layouts/Header'
 
 export const metadata: Metadata = {
-  title: 'MoonaEdu',
+  title: 'MonaEdu',
   icons: {
     icon: ['/favicon.ico?v=4'],
     apple: ['/apple-touch-icon.png?v=4'],

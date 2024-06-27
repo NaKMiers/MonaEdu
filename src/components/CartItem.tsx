@@ -58,9 +58,11 @@ function CartItem({ cartItem, isCheckout, className = '', isOrderDetailCourse }:
 
   return (
     <div
-      className={`relative flex flex-wrap md:flex-nowrap items-start gap-3 cursor-pointer common-transition ${className} rounded-medium border p-21 ${
-        !!selectedCartItems.find(cI => cI._id === cartItem._id) ? 'border-primary' : 'border-slate-400'
-      }`}
+      className={`relative flex flex-wrap md:flex-nowrap items-start gap-3 cursor-pointer common-transition rounded-medium border p-21 ${
+        !!selectedCartItems.find(cI => cI._id === cartItem._id) && !isCheckout
+          ? 'border-primary'
+          : 'border-slate-400'
+      } ${className} `}
       onClick={() =>
         dispatch(
           setSelectedItems(
@@ -112,6 +114,29 @@ function CartItem({ cartItem, isCheckout, className = '', isOrderDetailCourse }:
         />
       )}
 
+      {!isCheckout && (
+        <div className='flex items-center justify-between size-5 z-10 cursor-pointer absolute top-[55px] right-21 accent-primary'>
+          <FaTrashAlt
+            size={21}
+            className='text-secondary cursor-pointer hover:scale-110 common-transition wiggle'
+            onClick={e => {
+              e.stopPropagation()
+              setIsOpenConfirmModal(true)
+            }}
+          />
+
+          {/* Confirm Dialog */}
+          <ConfirmDialog
+            open={isOpenConfirmModal}
+            setOpen={setIsOpenConfirmModal}
+            title='Xóa sản phẩm khỏi giỏ hàng'
+            content='Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng không?'
+            onAccept={handleDeleteCartItem}
+            isLoading={isDeleting}
+          />
+        </div>
+      )}
+
       {/* MARK: Body */}
       <div className={`relative w-full h-full pr-10`}>
         {/* Title */}
@@ -146,32 +171,6 @@ function CartItem({ cartItem, isCheckout, className = '', isOrderDetailCourse }:
           oldPrice={(cartItem.courseId as ICourse).oldPrice}
           flashSale={(cartItem.courseId as ICourse).flashSale as IFlashSale}
         />
-
-        <Divider size={4} />
-
-        {/* MARK: Quantity */}
-        {!isCheckout && (
-          <div className='flex items-center justify-between'>
-            <FaTrashAlt
-              size={21}
-              className='text-secondary cursor-pointer hover:scale-110 common-transition wiggle'
-              onClick={e => {
-                e.stopPropagation()
-                setIsOpenConfirmModal(true)
-              }}
-            />
-
-            {/* Confirm Dialog */}
-            <ConfirmDialog
-              open={isOpenConfirmModal}
-              setOpen={setIsOpenConfirmModal}
-              title='Xóa sản phẩm khỏi giỏ hàng'
-              content='Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng không?'
-              onAccept={handleDeleteCartItem}
-              isLoading={isDeleting}
-            />
-          </div>
-        )}
       </div>
     </div>
   )

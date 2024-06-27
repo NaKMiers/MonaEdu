@@ -10,7 +10,7 @@ import { getHomeApi } from '@/requests'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Trang Chủ - MoonaEdu',
+  title: 'Trang Chủ - MonaEdu',
 }
 
 async function Home() {

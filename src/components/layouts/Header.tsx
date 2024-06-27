@@ -1,22 +1,21 @@
 'use client'
 
+import { useAppDispatch } from '@/libs/hooks'
+import { setCartItems } from '@/libs/reducers/cartReducer'
 import { INotification } from '@/models/UserModel'
-import { getCartApi, removeNotificationApi, searchCoursesApi } from '@/requests'
+import { getCartApi, removeNotificationApi } from '@/requests'
 import { getSession, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { BiSolidCategory } from 'react-icons/bi'
-import { FaBell, FaChevronUp, FaSearch, FaShoppingCart } from 'react-icons/fa'
-import { FaBars, FaCartShopping } from 'react-icons/fa6'
-import { PiLightningFill } from 'react-icons/pi'
-import { RiDonutChartFill } from 'react-icons/ri'
+import { FaBell, FaChevronUp, FaShoppingCart } from 'react-icons/fa'
+import { FaBars } from 'react-icons/fa6'
+import NotificationMenu from '../NotificationMenu'
+import SearchBar from './SearchBar'
 import Menu from './Menu'
-import NotificationMenu from './NotificationMenu'
-import { useAppDispatch, useAppSelector } from '@/libs/hooks'
-import { setCartItems } from '@/libs/reducers/cartReducer'
 
 interface HeaderProps {
   className?: string
@@ -26,7 +25,6 @@ function Header({ className = '' }: HeaderProps) {
   // hooks
   const dispatch = useAppDispatch()
   const { data: session, update } = useSession()
-  const cartItems = useAppSelector(state => state.cart.items)
   const pathname = usePathname()
 
   // states
@@ -36,14 +34,6 @@ function Header({ className = '' }: HeaderProps) {
   const [isOpenNotificationMenu, setIsOpenNotificationMenu] = useState<boolean>(false)
   const [notifications, setNotifications] = useState<INotification[]>(curUser?.notifications || [])
   const [cartLength, setCartLength] = useState<number>(0)
-
-  // search
-  const [openSearch, setOpenSearch] = useState<boolean>(false)
-  const [searchValue, setSearchValue] = useState<string>('')
-  const [searchLoading, setSearchLoading] = useState<boolean>(false)
-  const [searchResults, setSearchResults] = useState<any[] | null>(null)
-  const searchTimeout = useRef<any>(null)
-  const [openResults, setOpenResults] = useState<boolean>(false)
 
   // MARK: Side Effects
   // update user session
@@ -61,38 +51,6 @@ function Header({ className = '' }: HeaderProps) {
       getUser()
     }
   }, [update, curUser])
-
-  // handle search
-  const handleSearch = useCallback(async () => {
-    // start loading
-    setSearchLoading(true)
-
-    try {
-      // send request to search courses
-      const { courses } = await searchCoursesApi(searchValue)
-
-      // set search results
-      setSearchResults(courses)
-    } catch (err: any) {
-      console.log(err)
-      toast.error(err.message)
-    } finally {
-      // stop loading
-      setSearchLoading(false)
-    }
-  }, [searchValue])
-
-  // auto search after 0.5s when search value changes
-  useEffect(() => {
-    if (searchValue) {
-      clearTimeout(searchTimeout.current)
-      searchTimeout.current = setTimeout(() => {
-        handleSearch()
-      }, 500)
-    } else {
-      setSearchResults(null)
-    }
-  }, [searchValue, handleSearch])
 
   // get user's cart
   useEffect(() => {
@@ -165,18 +123,16 @@ function Header({ className = '' }: HeaderProps) {
       className={`fixed z-50 ${
         isTransparent
           ? 'text-white drop-shadow-lg md:bg-opacity-0'
-          : 'text-dark shadow-lg rounded-b-[40px] bg-white bg-opacity-95'
+          : 'text-dark shadow-lg md:rounded-b-[40px] bg-white bg-opacity-95'
       } w-full trans-300 bottom-0 md:bottom-auto md:top-0 ${className}`}
     >
       {/* Main Header */}
-      <div className='relative flex justify-between items-center max-w-1200 trans-300 w-full h-[72px] m-auto px-21'>
-        {/* MARK: Brand */}
+      <div className='relative flex justify-between gap-3 items-center max-w-1200 trans-300 w-full h-[72px] m-auto px-21'>
+        {/* MARK: Left */}
         <div
-          className={`${
-            openSearch ? 'max-w-0 overflow-hidden' : 'max-w-[200px] w-full'
-          } hidden sm:flex sm:flex-shrink-0 pl-4 -ml-4 items-center h-full overflow-x-scroll no-scrollbar trans-300`}
+          className={`flex items-center gap-3 pl-4 -ml-4 h-full overflow-x-scroll no-scrollbar trans-300`}
         >
-          <Link href='/' prefetch={false} className='shrink-0 trans-200 spin mr-2'>
+          <Link href='/' prefetch={false} className='shrink-0 trans-200 spin'>
             <Image
               className='aspect-square rounded-md'
               src='/images/logo.png'
@@ -185,113 +141,22 @@ function Header({ className = '' }: HeaderProps) {
               alt='logo'
             />
           </Link>
-          <Link href='/' prefetch={false} className='text-2xl font-bold'>
-            MoonaEdu
+          <Link href='/' prefetch={false} className='text-2xl font-bold hidden md:block'>
+            MonaEdu
           </Link>
-        </div>
 
-        {/* Categories */}
-        <div className='relative'>
-          <button className='group bg-primary font-semibold flex items-center justify-center gap-2 text-dark px-3 py-1 rounded-md hover:bg-secondary hover:text-light trans-200'>
-            <BiSolidCategory size={20} />
-            Danh Mục
-            <FaChevronUp size={14} className='group-hover:rotate-180 trans-200' />
-          </button>
+          {/* Categories */}
+          <div className='relative'>
+            <button className='group text-nowrap bg-primary font-semibold flex items-center justify-center gap-2 text-dark px-3 py-1 rounded-md hover:bg-secondary hover:text-light trans-200'>
+              <BiSolidCategory size={20} />
+              Danh Mục
+              <FaChevronUp size={14} className='group-hover:rotate-180 trans-200' />
+            </button>
+          </div>
         </div>
 
         {/* Search */}
-        <div
-          className={`flex items-center ${
-            openSearch ? 'max-w-full' : 'max-w-[500px]'
-          } w-full lg:min-w-[520px] trans-300`}
-        >
-          <div
-            className={`${
-              !searchResults ? 'overflow-hidden' : ''
-            } w-full border border-dark rounded-[24px] relative mr-2.5 h-[36px] flex items-center justify-center text-dark`}
-          >
-            <input
-              type='text'
-              placeholder='Search...'
-              className='appearance-none w-full h-full font-body tracking-wider px-4 py-2 outline-none rounded-0 rounded-l-lg bg-white'
-              value={searchValue}
-              onChange={e => setSearchValue(e.target.value)}
-              onFocus={() => {
-                setOpenResults(true)
-                setOpenSearch(true)
-                // setEnableHideHeader(true)
-              }}
-              onBlur={() => {
-                setOpenResults(false)
-                setOpenSearch(false)
-              }}
-            />
-            <Link
-              href={`/search?search=${searchValue}`}
-              onClick={e => !searchValue && e.preventDefault()}
-              className={`group h-full w-[40px] flex justify-center items-center rounded-r-lg bg-white ${
-                searchLoading ? 'pointer-events-none' : ''
-              }`}
-            >
-              {searchLoading ? (
-                <RiDonutChartFill size={20} className='animate-spin text-slate-300' />
-              ) : (
-                <FaSearch size={16} className='wiggle' />
-              )}
-            </Link>
-
-            {/* Search Results */}
-            <ul
-              className={`${
-                searchResults && openResults ? 'max-h-[500px] p-2' : 'max-h-0 p-0'
-              } absolute z-20 bottom-12 lg:bottom-auto lg:top-12 left-0 w-full rounded-lg shadow-medium bg-slate-200 bg-opacity-75 gap-2 overflow-y-auto transition-all duration-300`}
-            >
-              {searchResults?.length ? (
-                searchResults.map(course => (
-                  <Link
-                    href={`/${course.slug}`}
-                    key={course._id}
-                    className='flex gap-4 py-2 items-start rounded-lg p-2 hover:bg-sky-200 trans-200'
-                  >
-                    <div className='relative aspect-video flex-shrink-0'>
-                      {course.stock <= 0 && (
-                        <div className='absolute top-0 left-0 right-0 flex justify-center items-start aspect-video bg-white rounded-lg bg-opacity-50'>
-                          <Image
-                            className='animate-wiggle -mt-1'
-                            src='/images/sold-out.jpg'
-                            width={28}
-                            height={28}
-                            alt='sold-out'
-                          />
-                        </div>
-                      )}
-                      <Image
-                        className='rounded-md'
-                        src={course.images[0]}
-                        width={70}
-                        height={70}
-                        alt='course'
-                      />
-
-                      {course.flashSale && (
-                        <PiLightningFill
-                          className='absolute -top-1.5 left-1 text-yellow-400 animate-bounce'
-                          size={16}
-                        />
-                      )}
-                    </div>
-
-                    <p className='w-full text-ellipsis line-clamp-2 text-dark font-body text-sm tracking-wide leading-5 -mt-0.5'>
-                      {course.title}
-                    </p>
-                  </Link>
-                ))
-              ) : (
-                <p className='text-sm text-center'>0 kết quả tìm thấy</p>
-              )}
-            </ul>
-          </div>
-        </div>
+        {/* <SearchBar /> */}
 
         {/* MARK: Nav */}
         <div className='flex-shrink-0 hidden md:flex items-center gap-4'>

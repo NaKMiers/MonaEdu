@@ -16,7 +16,7 @@ export default async function handleDeliverOrder(id: string, message: string = '
   // get order from database to deliver
   const order: IOrder | null = await OrderModel.findById(id)
     .populate({
-      path: 'voucherApplied',
+      path: 'voucher',
       select: 'code',
       populate: 'owner',
     })
@@ -68,7 +68,7 @@ export default async function handleDeliverOrder(id: string, message: string = '
   }
 
   // VOUCHER
-  const voucher: IVoucher = order.voucherApplied as IVoucher
+  const voucher: IVoucher = order.voucher as IVoucher
 
   if (voucher) {
     const commission: any = (voucher.owner as IUser).commission

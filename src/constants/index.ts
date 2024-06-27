@@ -161,7 +161,7 @@ export const features = [
     title: 'Giá thành hợp lí ',
     image: '/images/feature-2.png',
     description:
-      'Giá cả hợp lí, tiếp cận nhiều nguồn khách hàng, nâng cao phạm vi trải nghiệm nền giáo dục chỉ có tại MoonaEdu. Giúp các bạn trẻ có thể tiếp cận được MoonaEdu.',
+      'Giá cả hợp lí, tiếp cận nhiều nguồn khách hàng, nâng cao phạm vi trải nghiệm nền giáo dục chỉ có tại MonaEdu. Giúp các bạn trẻ có thể tiếp cận được MonaEdu.',
   },
   {
     title: 'Trao đổi kiến thức',

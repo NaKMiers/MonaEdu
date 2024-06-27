@@ -1,16 +1,16 @@
-import Header from '@/components/Header'
+import Header from '@/components/layouts/Header'
 import StoreProvider from '@/libs/StoreProvider'
 import type { Metadata } from 'next'
 import { getServerSession } from 'next-auth'
 import { Toaster } from 'react-hot-toast'
 import '../globals.scss'
-import Footer from '@/components/Footer'
+import Footer from '@/components/layouts/Footer'
 import PageLoading from '@/components/PageLoading'
 import FloatingButton from '@/components/FloatingButton'
 import Background from '@/components/Background'
 
 export const metadata: Metadata = {
-  title: 'MoonaEdu',
+  title: 'MonaEdu',
   icons: {
     icon: ['/favicon.ico?v=4'],
     apple: ['/apple-touch-icon.png?v=4'],

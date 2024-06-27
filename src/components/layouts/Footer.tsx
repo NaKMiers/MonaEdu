@@ -6,7 +6,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
-import Divider from './Divider'
+import Divider from '../Divider'
 
 function Footer() {
   // states
@@ -45,7 +45,7 @@ function Footer() {
                 alt='github'
               />
             </Link>
-            <span className='font-body text-sky-700 font-bold text-3xl'>MoonaEdu</span>
+            <span className='font-body text-sky-700 font-bold text-3xl'>MonaEdu</span>
           </div>
         </div>
 
@@ -73,11 +73,11 @@ function Footer() {
           <h3 className='font-bold text-xl'>ABOUT US</h3>
 
           <p className='font-body tracking-wider mt-2 hover:tracking-widest trans-200'>
-            MoonaEdu brings you online learning solutions, studying online at home at an economical cost.
+            MonaEdu brings you online learning solutions, studying online at home at an economical cost.
             best. This is suitable for those whose finances are still tight and limited (students, real
             trainees, new graduates,...) but can still participate in top value courses to Develop
             professional skills and develop your career. If you want to save more on your investment If
-            you are interested in learning, MoonaEdu is the ideal destination for you.
+            you are interested in learning, MonaEdu is the ideal destination for you.
           </p>
         </div>
 

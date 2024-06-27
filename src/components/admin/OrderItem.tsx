@@ -141,22 +141,26 @@ function OrderItem({
       >
         <div className='w-[calc(100%_-_44px)]'>
           {/* MARK: Thumbnails */}
-          <div className='w-full h-full flex items-center flex-wrap gap-2 mb-2 max-h-[145px] overflow-y-auto '>
-            <Link
-              href={`/${data.item.slug}`}
-              prefetch={false}
-              className='relative rounded-lg shadow-md overflow-hidden'
-              onClick={e => e.stopPropagation()}
-              key={data.item._id}
-            >
-              <Image
-                className='aspect-video h-auto w-auto'
-                src={data.item.images[0] || '/images/not-found.jpg'}
-                height={120}
-                width={120}
-                alt='thumbnail'
-              />
-            </Link>
+          <div className='w-full h-full flex items-center flex-wrap gap-2 mb-2 max-h-[145px]'>
+            <div className='flex gap-2'>
+              {data.items.map((course: any) => (
+                <Link
+                  href={`/${course.slug}`}
+                  prefetch={false}
+                  className='relative rounded-lg shadow-md overflow-hidden flex-shrink-0'
+                  onClick={e => e.stopPropagation()}
+                  key={course._id}
+                >
+                  <Image
+                    className='aspect-video h-auto w-auto'
+                    src={course.images[0] || '/images/not-found.jpg'}
+                    height={100}
+                    width={100}
+                    alt='thumbnail'
+                  />
+                </Link>
+              ))}
+            </div>
           </div>
 
           {/* MARK: Information */}
@@ -172,7 +176,7 @@ function OrderItem({
             </p>
 
             {/* Code */}
-            <p className='inline font-semibold text-primary' title='code'>
+            <p className='inline font-semibold text-sky-500' title='code'>
               {data.code}
             </p>
 
@@ -228,12 +232,12 @@ function OrderItem({
             {formatPrice(data.total)}{' '}
           </p>
 
-          {data.voucherApplied && data.discount && (
+          {data.voucher && data.discount && (
             <p
               className='font-semibold text-slate-400 text-sm'
-              title={`voucherApplied: ${(data.voucherApplied as IVoucher).desc}`}
+              title={`voucher: ${(data.voucher as IVoucher).desc}`}
             >
-              {(data.voucherApplied as IVoucher).code}{' '}
+              {(data.voucher as IVoucher).code}{' '}
               <span className='text-secondary font-normal'>({formatPrice(data.discount)})</span>
             </p>
           )}

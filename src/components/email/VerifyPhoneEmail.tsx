@@ -34,7 +34,7 @@ function VerifyPhoneEmail({
                   href='https://ere-eta.vercel.app'
                   className='text-2xl font-bold tracking-[0.3px] no-underline text-dark'
                 >
-                  MoonaEdu
+                  MonaEdu
                 </a>
               </Column>
             </Row>
@@ -51,7 +51,7 @@ function VerifyPhoneEmail({
             <p>Hi {name},</p>
             <p>
               You have just sent a confirm email requirement at{' '}
-              <span className='font-semibold'>&quot;MoonaEdu&quot;</span> lúc{' '}
+              <span className='font-semibold'>&quot;MonaEdu&quot;</span> lúc{' '}
               {new Intl.DateTimeFormat('en', {
                 dateStyle: 'full',
                 timeStyle: 'medium',
@@ -90,7 +90,7 @@ function VerifyPhoneEmail({
             <p>
               Thank you very much,
               <br />
-              MoonaEdu
+              MonaEdu
             </p>
           </Section>
 
@@ -104,7 +104,7 @@ function VerifyPhoneEmail({
           </div>
 
           <p className='text-center text-xs text-slate-600'>
-            © 2023 | MoonaEdu - Developed by Nguyen Anh Khoa, All rights reserved.
+            © 2023 | MonaEdu - Developed by Nguyen Anh Khoa, All rights reserved.
           </p>
 
           <div className='text-center'>
