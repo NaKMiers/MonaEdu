@@ -1,4 +1,4 @@
-import CourseModel from '@/models/CourseModel'
+import CourseModel, { ICourse } from '@/models/CourseModel'
 import OrderModel, { IOrder } from '@/models/OrderModel'
 import UserModel, { IUser } from '@/models/UserModel'
 import VoucherModel, { IVoucher } from '@/models/VoucherModel'
@@ -39,8 +39,8 @@ export default async function handleDeliverOrder(id: string, message: string = '
     throw new Error('Order is not ready to deliver')
   }
 
-  // get item and applied voucher
-  const { item, email, total, userId, receivedUser } = order
+  // get items and applied voucher
+  const { items, email, total, userId, receivedUser } = order
 
   const buyer: IUser | null = await UserModel.findById(userId).lean()
 
@@ -49,8 +49,11 @@ export default async function handleDeliverOrder(id: string, message: string = '
     // get user to check if user has already joined course
     const userCourses: any = buyer?.courses
 
-    if (userCourses.map((course: any) => course.course.toString()).includes(item._id.toString())) {
-      throw new Error('User has already joined this course')
+    const userCourseIds = userCourses.map((course: any) => course.course.toString())
+    const itemIds = items.map((item: any) => item._id.toString())
+
+    if (itemIds.some((id: string) => userCourseIds.includes(id))) {
+      throw new Error('Bạn đã tham gia khóa học này')
     }
   }
 
@@ -62,8 +65,11 @@ export default async function handleDeliverOrder(id: string, message: string = '
     }
 
     const userCourses: any = receiver?.courses
-    if (userCourses.map((course: any) => course.course.toString()).includes(item._id.toString())) {
-      throw new Error('Receiver has already joined this course')
+    const userCourseIds = userCourses.map((course: any) => course.course.toString())
+    const itemIds = items.map((item: any) => item._id.toString())
+
+    if (itemIds.some((id: string) => userCourseIds.includes(id))) {
+      throw new Error('Người nhận tham gia khóa học này')
     }
   }
 
@@ -102,10 +108,10 @@ export default async function handleDeliverOrder(id: string, message: string = '
     {
       $inc: { expended: total },
       $addToSet: {
-        courses: {
+        courses: items.map((item: any) => ({
           course: item._id,
-          process: 0,
-        },
+          progress: 0,
+        })),
       },
 
       // notify user
@@ -129,10 +135,8 @@ export default async function handleDeliverOrder(id: string, message: string = '
 
   // COURSE
   const course = await CourseModel.findByIdAndUpdate(
-    order.item._id.toString(),
-    {
-      $inc: { joined: 1 },
-    },
+    { _id: { $in: order.items.map((item: ICourse) => item._id.toString()) } },
+    { $inc: { joined: 1 } },
     { new: true }
   )
 
