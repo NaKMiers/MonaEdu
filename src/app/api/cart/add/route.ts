@@ -52,18 +52,23 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: 'Khóa học đã có trong giỏ hàng' }, { status: 400 })
     }
 
+    // add new cart item
     const newCartItem = await CartItemModel.create({
       userId,
       courseId,
     })
 
-    // calculate total cart length
-    const cartLength = await CartItemModel.countDocuments({ userId })
+    // save new cart item, populate course, and count cart length
+    const [_, cartItem, cartLength] = await Promise.all([
+      newCartItem.save(),
+      CartItemModel.findById(newCartItem._id).populate('courseId').lean(),
+      CartItemModel.countDocuments({ userId }),
+    ])
 
     // Return response with errors, if any
     return NextResponse.json(
       {
-        cartItem: newCartItem,
+        cartItem,
         cartLength,
         message: 'Đã thêm vào giỏ hàng:\n' + course.title,
       },

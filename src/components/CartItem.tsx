@@ -5,15 +5,14 @@ import { ICourse } from '@/models/CourseModel'
 import { IFlashSale } from '@/models/FlashSaleModel'
 import { deleteCartItemApi } from '@/requests'
 import { formatPrice } from '@/utils/number'
-import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
 import { FaHashtag, FaTrashAlt } from 'react-icons/fa'
+import { RiDonutChartFill } from 'react-icons/ri'
 import Price from './Price'
 import ConfirmDialog from './dialogs/ConfirmDialog'
-import Divider from './Divider'
 
 interface CartItemProps {
   cartItem: ICartItem
@@ -25,12 +24,9 @@ interface CartItemProps {
 function CartItem({ cartItem, isCheckout, className = '', isOrderDetailCourse }: CartItemProps) {
   // hooks
   const dispatch = useAppDispatch()
-  const { data: session } = useSession()
   const selectedCartItems = useAppSelector(state => state.cart.selectedItems)
-  const curUser: any = session?.user
 
   // states
-  const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isDeleting, setIsDeleting] = useState<boolean>(false)
   const [isOpenConfirmModal, setIsOpenConfirmModal] = useState<boolean>(false)
 
@@ -82,7 +78,7 @@ function CartItem({ cartItem, isCheckout, className = '', isOrderDetailCourse }:
           onClick={e => e.stopPropagation()}
         >
           <div className='flex w-full overflow-x-scroll snap-x snap-mandatory no-scrollbar'>
-            {(cartItem.courseId as ICourse).images.map(src => (
+            {(cartItem.courseId as ICourse)?.images?.map(src => (
               <Image
                 className='flex-shrink w-full snap-start'
                 src={src}
@@ -116,14 +112,18 @@ function CartItem({ cartItem, isCheckout, className = '', isOrderDetailCourse }:
 
       {!isCheckout && (
         <div className='flex items-center justify-between size-5 z-10 cursor-pointer absolute top-[55px] right-21 accent-primary'>
-          <FaTrashAlt
-            size={21}
-            className='text-secondary cursor-pointer hover:scale-110 common-transition wiggle'
-            onClick={e => {
-              e.stopPropagation()
-              setIsOpenConfirmModal(true)
-            }}
-          />
+          {isDeleting ? (
+            <RiDonutChartFill size={18} className='animate-spin text-slate-400' />
+          ) : (
+            <FaTrashAlt
+              size={21}
+              className='text-secondary cursor-pointer hover:scale-110 common-transition wiggle'
+              onClick={e => {
+                e.stopPropagation()
+                setIsOpenConfirmModal(true)
+              }}
+            />
+          )}
 
           {/* Confirm Dialog */}
           <ConfirmDialog

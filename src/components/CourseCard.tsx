@@ -80,9 +80,13 @@ function CourseCard({ course, hideBadge, className = '' }: CourseCardProps) {
       dispatch(addCartItem(cartItem))
 
       // move to cart page
-      router.push(`/cart?courseId=${course.slug}`)
+      router.push(`/cart?course=${course.slug}`)
     } catch (err: any) {
       console.log(err)
+      toast.error(err.message)
+    } finally {
+      // stop page loading
+      dispatch(setPageLoading(false))
     }
   }, [course._id, dispatch, course.slug, router])
 

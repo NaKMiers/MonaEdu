@@ -1,6 +1,6 @@
 'use client'
 
-import { useAppDispatch } from '@/libs/hooks'
+import { useAppDispatch, useAppSelector } from '@/libs/hooks'
 import { setCartItems } from '@/libs/reducers/cartReducer'
 import { INotification } from '@/models/UserModel'
 import { getCartApi, removeNotificationApi } from '@/requests'
@@ -27,13 +27,15 @@ function Header({ className = '' }: HeaderProps) {
   const { data: session, update } = useSession()
   const pathname = usePathname()
 
+  // reducer
+  const cartLength = useAppSelector(state => state.cart.items.length)
+
   // states
   const [curUser, setCurUser] = useState<any>(session?.user || {})
   const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false)
   const [isTransparent, setIsTransparent] = useState<boolean>(pathname === '/')
   const [isOpenNotificationMenu, setIsOpenNotificationMenu] = useState<boolean>(false)
   const [notifications, setNotifications] = useState<INotification[]>(curUser?.notifications || [])
-  const [cartLength, setCartLength] = useState<number>(0)
 
   // MARK: Side Effects
   // update user session
@@ -62,8 +64,6 @@ function Header({ className = '' }: HeaderProps) {
 
           // set cart to state
           dispatch(setCartItems(cart))
-
-          setCartLength(cart.length)
         } catch (err: any) {
           console.log(err)
           toast.error(err.response.data.message)

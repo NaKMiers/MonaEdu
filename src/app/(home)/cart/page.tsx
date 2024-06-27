@@ -100,6 +100,8 @@ function CartPage() {
     setTotal(finalTotal)
   }, [selectedItems, voucher, cartItems])
 
+  console.log('cartItems', cartItems)
+
   // auto select cart item
   useEffect(() => {
     const selectedItems = cartItems.filter(item =>
