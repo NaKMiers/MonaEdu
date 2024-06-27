@@ -1,14 +1,17 @@
 import { connectDatabase } from '@/config/database'
+import CourseModel from '@/models/CourseModel'
 import OrderModel from '@/models/OrderModel'
 import UserModel from '@/models/UserModel'
+import { generateOrderCode } from '@/utils'
 import handleDeliverOrder from '@/utils/handleDeliverOrder'
+import { notifyNewOrderToAdmin } from '@/utils/sendMail'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Models: User, Order
+// Models: User, Order, Course
+import '@/models/CourseModel'
 import '@/models/OrderModel'
 import '@/models/UserModel'
-import { notifyNewOrderToAdmin } from '@/utils/sendMail'
 
 // [POST]: /order/create
 export async function POST(req: NextRequest) {
@@ -19,12 +22,17 @@ export async function POST(req: NextRequest) {
     await connectDatabase()
 
     // get data to create order
-    const { code, email, total, receivedUser, voucherApplied, discount, item, paymentMethod } =
-      await req.json()
+    const { total, receivedUser, voucher, discount, items, paymentMethod } = await req.json()
 
     // get user id
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
     const userId = token?._id
+    const email = token?.email
+
+    // check if user exists or not
+    if (!userId) {
+      return NextResponse.json({ message: 'Người dùng không hợp lệ' }, { status: 404 })
+    }
 
     // check if user has already joined course
     let userCourses: any = []
@@ -35,11 +43,25 @@ export async function POST(req: NextRequest) {
       userCourses = await UserModel.findById(userId).select('courses').lean()
     }
 
-    if (
-      userCourses?.courses.map((course: any) => course.course.toString()).includes(item._id.toString())
-    ) {
-      return NextResponse.json({ message: 'User has already joined this course' }, { status: 400 })
+    let joinedCourses: any = []
+    const userCoursesIds = userCourses?.courses.map((course: any) => course.course.toString())
+    const itemsIds = items.map((item: any) => item.courseId)
+    const isUserJoinedCourse = itemsIds.some((id: any) => {
+      if (userCoursesIds.includes(id)) {
+        joinedCourses.push(id)
+        return true
+      }
+      return false
+    })
+    if (isUserJoinedCourse) {
+      const joinedCoursesTitles = await CourseModel.find({ _id: { $in: joinedCourses } }).select('title')
+      return NextResponse.json(
+        { message: `User has already joined this "${joinedCourses.join(', ')}"` },
+        { status: 400 }
+      )
     }
+
+    const code = await generateOrderCode(5)
 
     // create new order
     const newOrder = new OrderModel({
@@ -47,10 +69,10 @@ export async function POST(req: NextRequest) {
       userId,
       email,
       receivedUser,
-      voucherApplied,
+      voucher,
       discount,
       total,
-      item,
+      items,
       paymentMethod,
     })
 
@@ -63,7 +85,7 @@ export async function POST(req: NextRequest) {
         $push: {
           notifications: {
             _id: new Date().getTime(),
-            title: 'You have bought a new course, please wait in a few minutes to get access to course',
+            title: 'Cảm ơn bạn đã tham gia khóa học của chúng tôi, chúc bạn học tốt!',
             image: '/images/logo.png',
             link: '/my-courses',
             type: 'create-order',

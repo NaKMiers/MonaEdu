@@ -21,7 +21,7 @@ export async function GET(req: NextRequest, { params: { email } }: { params: { e
     // check if curUserEmail = email
     if (curUserEmail === email) {
       return NextResponse.json(
-        { message: 'You cannot buy course for yourself as a gift' },
+        { message: 'Bạn không thể tặng khóa học cho bản thân mình' },
         { status: 401 }
       )
     }
@@ -31,7 +31,7 @@ export async function GET(req: NextRequest, { params: { email } }: { params: { e
 
     // check if user exists
     if (!user) {
-      return NextResponse.json({ message: 'User not found' }, { status: 404 })
+      return NextResponse.json({ message: 'Không tìm thấy' }, { status: 404 })
     }
 
     // return user

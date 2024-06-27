@@ -1,7 +1,5 @@
 // Cart
 
-import { CartItemToAdd } from '@/app/api/cart/add/route'
-
 // [GET]
 export const getCartApi = async () => {
   // no cache
@@ -16,10 +14,10 @@ export const getCartApi = async () => {
 }
 
 // [POST]
-export const addToCartApi = async (courses: CartItemToAdd[]) => {
+export const addToCartApi = async (courseId: string) => {
   const res = await fetch('/api/cart/add', {
     method: 'POST',
-    body: JSON.stringify({ courses }),
+    body: JSON.stringify({ courseId }),
   })
 
   // check status

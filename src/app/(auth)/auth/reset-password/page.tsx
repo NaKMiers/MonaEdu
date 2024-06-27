@@ -13,6 +13,8 @@ import toast from 'react-hot-toast'
 import { FaCircleNotch } from 'react-icons/fa'
 
 function ResetPasswordPage() {
+  document.title = 'Đặt lại mật khẩu - MoonaEdu'
+
   // hooks
   const router = useRouter()
   const queryParams = useSearchParams()
@@ -152,7 +154,7 @@ function ResetPasswordPage() {
 
           <p className='text-[#4F7575] left-[46px] font-semibold text-3xl top-[20%]'>MOONAEDU</p>
           <p className='text-[#3D3D3D] font-semibold text-3xl mt-5'>
-            Walking with you on the path to success.
+            Hành trang trên con đường đến thành công.
           </p>
         </div>
 
@@ -173,12 +175,12 @@ function ResetPasswordPage() {
 
           <Divider size={4} />
 
-          <h1 className='font-semibold text-3xl text-center'>Reset Password</h1>
+          <h1 className='font-semibold text-3xl text-center'>Khôi phục mật khẩu</h1>
 
           <Divider size={4} />
           <Input
             id='newPassword'
-            label='New Password'
+            label='Mật khẩu mới'
             disabled={isLoading}
             register={register}
             errors={errors}
@@ -190,7 +192,7 @@ function ResetPasswordPage() {
 
           <Input
             id='reNewPassword'
-            label='New Password Again'
+            label='Nhập lại mật khẩu'
             disabled={isLoading}
             register={register}
             errors={errors}
@@ -204,14 +206,14 @@ function ResetPasswordPage() {
             href='/auth/login'
             className='block w-full text-right text-sm underline underline-offset-2 mt-2'
           >
-            Back to login
+            Quay lại đăng nhập
           </Link>
 
           <div className='flex items-center justify-end gap-3'>
             <button
               onClick={handleSubmit(onSubmit)}
               disabled={isLoading}
-              className={`border border-dark bg-secondary text-dark rounded-3xl px-5 py-1.5 mt-5 font-bold text-lg hover:bg-white trans-200 ${
+              className={`border border-dark bg-white text-dark hover:text-light rounded-3xl px-5 py-1.5 mt-5 font-bold text-lg hover:bg-secondary trans-200 ${
                 isLoading ? 'bg-slate-200 pointer-events-none' : ''
               }`}
             >
@@ -221,7 +223,7 @@ function ResetPasswordPage() {
                   className='text-white group-hover:text-dark trans-200 animate-spin'
                 />
               ) : (
-                'Reset'
+                'Đặt lại'
               )}
             </button>
           </div>
@@ -229,9 +231,9 @@ function ResetPasswordPage() {
           <Divider size={10} />
 
           <p className='font-semibold text-center'>
-            Don&apos;t have an lesson yet?{' '}
+            Bạn chưa có tài khoản?{' '}
             <Link href='/auth/register' className='underline underline-offset-2'>
-              Create Now
+              Đăng ký ngay
             </Link>
           </p>
 
@@ -239,7 +241,7 @@ function ResetPasswordPage() {
 
           <div className='relative w-full h-px bg-black mt-2'>
             <span className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-3 py-2 font-semibold'>
-              Or
+              Hoặc
             </span>
           </div>
 
@@ -257,7 +259,7 @@ function ResetPasswordPage() {
                 />
               </div>
               <span className='font-semibold text-sm' onClick={() => signIn('github')}>
-                Login with GitHub
+                Đăng nhập với GitHub
               </span>
             </button>
 
@@ -272,7 +274,7 @@ function ResetPasswordPage() {
                 />
               </div>
               <span className='font-semibold text-sm' onClick={() => signIn('google')}>
-                Login with Google
+                Đăng nhập với Google
               </span>
             </button>
           </div>

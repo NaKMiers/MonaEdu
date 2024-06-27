@@ -14,6 +14,8 @@ import { FaCircleNotch } from 'react-icons/fa'
 const time = 60
 
 function ForgotPasswordPage() {
+  document.title = 'Quên mật khẩu - MoonaEdu'
+
   // states
   const [isSent, setIsSent] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -151,12 +153,12 @@ function ForgotPasswordPage() {
 
           <Divider size={4} />
 
-          <h1 className='font-semibold text-3xl text-center'>Forgot Password</h1>
+          <h1 className='font-semibold text-3xl text-center'>Quên mật khẩu</h1>
 
           <Divider size={4} />
 
           <p className='mb-1.5 font-body tracking-wider text-sm italic text-slate-700'>
-            *Please, enter your email to reset your password
+            *Hãy nhập email của bạn để tiến hành khôi phục lại mật khẩu
           </p>
 
           {isSent && isCounting ? (
@@ -167,7 +169,7 @@ function ForgotPasswordPage() {
               </div>
 
               <p className='text-[14px] italic text-slate-500 leading-5'>
-                You will have received code in a minute, please wait!
+                Bạn sẽ nhận được mã trong vài phút, xin vui lòng chờ!
               </p>
             </div>
           ) : (
@@ -188,21 +190,21 @@ function ForgotPasswordPage() {
             href='/auth/login'
             className='block w-full text-right text-sm underline underline-offset-2 mt-2'
           >
-            Back to login
+            Quay lại đăng nhập
           </Link>
 
           <div className='flex items-center justify-end gap-3'>
             <button
               onClick={handleSubmit(onSubmit)}
               disabled={isSent && isCounting}
-              className={`border border-dark bg-secondary text-dark rounded-3xl px-5 py-1.5 mt-5 font-bold text-lg hover:bg-white trans-200 ${
+              className={`border border-dark bg-white text-dark hover:text-light rounded-3xl px-5 py-1.5 mt-5 font-bold text-lg hover:bg-secondary trans-200 ${
                 isLoading || isCounting ? 'pointer-events-none bg-white' : 'bg-secondary'
               }`}
             >
               {isLoading || isCounting ? (
                 <FaCircleNotch size={18} className='text-dark trans-200 animate-spin' />
               ) : (
-                'Send Code'
+                'Gửi mã'
               )}
             </button>
           </div>
@@ -210,9 +212,9 @@ function ForgotPasswordPage() {
           <Divider size={10} />
 
           <p className='font-semibold text-center'>
-            Don&apos;t have an lesson yet?{' '}
+            Bạn chưa có tài khoản?{' '}
             <Link href='/auth/register' className='underline underline-offset-2'>
-              Create Now
+              Đăng ký ngay
             </Link>
           </p>
 
@@ -220,7 +222,7 @@ function ForgotPasswordPage() {
 
           <div className='relative w-full h-px bg-black mt-2'>
             <span className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-3 py-2 font-semibold'>
-              Or
+              Hoặc
             </span>
           </div>
 
@@ -240,7 +242,7 @@ function ForgotPasswordPage() {
                   alt='github'
                 />
               </div>
-              <span className='font-semibold text-sm'>Login with GitHub</span>
+              <span className='font-semibold text-sm'>Đăng nhập với GitHub</span>
             </button>
 
             <button className='flex items-center gap-2 group rounded-2xl border border-dark px-2.5 py-3'>
@@ -254,7 +256,7 @@ function ForgotPasswordPage() {
                 />
               </div>
               <span className='font-semibold text-sm' onClick={() => signIn('google')}>
-                Login with Google
+                Đăng nhập với Google
               </span>
             </button>
           </div>

@@ -1,6 +1,7 @@
 'use client'
 import Divider from '@/components/Divider'
 import Input from '@/components/Input'
+import { Metadata } from 'next'
 import { signIn } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -11,6 +12,8 @@ import toast from 'react-hot-toast'
 import { FaCircleNotch } from 'react-icons/fa'
 
 function LoginPage() {
+  document.title = 'Đăng nhập - MoonaEdu'
+
   // hooks
   const router = useRouter()
 
@@ -138,13 +141,13 @@ function LoginPage() {
 
           <Divider size={4} />
 
-          <h1 className='font-semibold text-3xl text-center'>Login Account</h1>
+          <h1 className='font-semibold text-3xl text-center'>Đăng nhập</h1>
 
           <Divider size={4} />
 
           <Input
             id='usernameOrEmail'
-            label='Username/Email'
+            label='Tên đăng nhập / Email'
             disabled={isLoading}
             register={register}
             errors={errors}
@@ -157,7 +160,7 @@ function LoginPage() {
 
           <Input
             id='password'
-            label='Password'
+            label='Mật khẩu'
             disabled={isLoading}
             register={register}
             errors={errors}
@@ -172,14 +175,14 @@ function LoginPage() {
             href='/auth/forgot-password'
             className='block w-full text-right text-sm underline underline-offset-2 mt-2'
           >
-            Forgot Password?
+            Quên mật khẩu?
           </Link>
 
           <div className='flex items-center justify-center gap-3'>
             <button
               onClick={handleSubmit(onSubmit)}
               disabled={isLoading}
-              className={`h-[42px] flex items-center justify-center border border-dark bg-secondary text-dark rounded-3xl px-5 mt-5 font-bold text-lg hover:bg-white trans-200 ${
+              className={`h-[42px] flex items-center justify-center border border-dark bg-white text-dark hover:text-light rounded-3xl px-5 mt-5 font-bold text-lg hover:bg-secondary trans-200 ${
                 isLoading ? 'bg-slate-200 pointer-events-none' : ''
               }`}
             >
@@ -189,7 +192,7 @@ function LoginPage() {
                   className='text-slate-700 group-hover:text-dark trans-200 animate-spin'
                 />
               ) : (
-                'Login'
+                'Đăng nhập'
               )}
             </button>
           </div>
@@ -197,9 +200,9 @@ function LoginPage() {
           <Divider size={10} />
 
           <p className='font-semibold text-center'>
-            Don&apos;t have an lesson yet?{' '}
+            Bạn chưa có tài khoản?{' '}
             <Link href='/auth/register' className='underline underline-offset-2'>
-              Create Now
+              Đăng ký ngay
             </Link>
           </p>
 
@@ -207,7 +210,7 @@ function LoginPage() {
 
           <div className='relative w-full h-px bg-black mt-2'>
             <span className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-3 py-2 font-semibold'>
-              Or
+              Hoặc
             </span>
           </div>
 
@@ -225,7 +228,7 @@ function LoginPage() {
                 />
               </div>
               <span className='font-semibold text-sm' onClick={() => signIn('github')}>
-                Login with GitHub
+                Đăng nhập với GitHub
               </span>
             </button>
 
@@ -240,7 +243,7 @@ function LoginPage() {
                 />
               </div>
               <span className='font-semibold text-sm' onClick={() => signIn('google')}>
-                Login with Google
+                Đăng nhập với Google
               </span>
             </button>
           </div>

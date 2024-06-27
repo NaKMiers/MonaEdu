@@ -1,5 +1,3 @@
-// import { FullyProduct } from '@/app/api/course/[slug]/route'
-// import OrderModel from '@/models/OrderModel'
 import OrderModel from '@/models/OrderModel'
 import { IUser } from '@/models/UserModel'
 import crypto from 'crypto'
@@ -57,20 +55,3 @@ export const generateOrderCode = async (length: number) => {
 
   return code
 }
-
-// // make array becomes chaotic
-// export const shuffleArray = (array: any[]): any[] => {
-//   for (let i = array.length - 1; i > 0; i--) {
-//     const j = Math.floor(Math.random() * (i + 1))
-//     ;[array[i], array[j]] = [array[j], array[i]]
-//   }
-//   return array
-// }
-
-// // create a unique random image name
-// export const randomFileName = (bytes = 32) => crypto.randomBytes(bytes).toString('hex')
-
-// // uppercase first letter
-// export const uppercaseFirstLetter = (value: string): string => {
-//   return value.charAt(0).toUpperCase() + value.slice(1)
-// }

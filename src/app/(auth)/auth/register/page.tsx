@@ -13,6 +13,8 @@ import toast from 'react-hot-toast'
 import { FaCircleNotch } from 'react-icons/fa'
 
 function RegisterPage() {
+  document.title = 'Đăng ký - MoonaEdu'
+
   // hooks
   const router = useRouter()
 
@@ -195,7 +197,7 @@ function RegisterPage() {
       </div>
 
       <div className='hidden md:block absolute z-20 top-[15.5%] left-0 pl-[40px] leading-10 text-[28px] max-w-[33%]'>
-        Let&apos;s develop knowledge together anytime, anywhere.
+        Hãy cùng nhau xây dựng kiến thức mọi lúc, mọi nơi nhé.
       </div>
 
       <div className='hidden md:block absolute z-20 left-[3vw] bottom-[10%] w-[38vw] lg:w-[30vw]'>
@@ -221,7 +223,7 @@ function RegisterPage() {
                 alt='logo'
               />
             </div>
-            <h1 className='font-semibold text-3xl'>Create Account</h1>
+            <h1 className='font-semibold text-3xl text-light'>Tạo tài khoản</h1>
           </div>
 
           <Divider size={4} />
@@ -229,7 +231,7 @@ function RegisterPage() {
           <div className='flex flex-wrap justify-between gap-6'>
             <Input
               id='firstName'
-              label='First Name'
+              label='Tên'
               disabled={isLoading}
               register={register}
               errors={errors}
@@ -241,7 +243,7 @@ function RegisterPage() {
 
             <Input
               id='lastName'
-              label='Last Name'
+              label='Họ'
               disabled={isLoading}
               register={register}
               errors={errors}
@@ -254,7 +256,7 @@ function RegisterPage() {
 
           <Input
             id='username'
-            label='Username'
+            label='Tên đăng nhập'
             disabled={isLoading}
             register={register}
             errors={errors}
@@ -278,7 +280,7 @@ function RegisterPage() {
 
           <Input
             id='password'
-            label='Password'
+            label='Mật khẩu'
             disabled={isLoading}
             register={register}
             errors={errors}
@@ -292,7 +294,7 @@ function RegisterPage() {
             <button
               onClick={handleSubmit(onSubmit)}
               disabled={isLoading}
-              className={`h-[50px] flex items-center justify-center border border-dark bg-secondary text-dark rounded-3xl px-5 mt-3 font-bold text-lg hover:bg-white trans-200 ${
+              className={`h-[50px] flex items-center justify-center border border-dark bg-white text-dark hover:text-light rounded-3xl px-5 mt-3 font-bold text-lg hover:bg-secondary trans-200 ${
                 isLoading ? 'bg-slate-200 pointer-events-none' : ''
               }`}
             >
@@ -302,15 +304,15 @@ function RegisterPage() {
                   className='text-slate-700 group-hover:text-dark trans-200 animate-spin'
                 />
               ) : (
-                'Create Account'
+                'Tạo tài khoản'
               )}
             </button>
           </div>
 
           <Divider size={4} />
 
-          <p className='font-semibold text-center'>
-            Already have an lesson?{' '}
+          <p className='font-semibold text-center text-light'>
+            Đã có tài khoản?{' '}
             <Link href='/auth/login' className='underline underline-offset-2'>
               Login
             </Link>
@@ -318,7 +320,7 @@ function RegisterPage() {
 
           <div className='relative w-full border h-2 border-dark my-2'>
             <span className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg px-3 py-2 font-semibold'>
-              Or
+              Hoặc
             </span>
           </div>
 
@@ -334,7 +336,7 @@ function RegisterPage() {
                 />
               </div>
               <span className='font-semibold text-sm' onClick={() => signIn('github')}>
-                Sign up with GitHub
+                Đăng ký với GitHub
               </span>
             </button>
 
@@ -349,7 +351,7 @@ function RegisterPage() {
                 />
               </div>
               <span className='font-semibold text-sm' onClick={() => signIn('google')}>
-                Sign up with Google
+                Đăng ký với Google
               </span>
             </button>
           </div>

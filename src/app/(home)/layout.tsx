@@ -7,6 +7,7 @@ import '../globals.scss'
 import Footer from '@/components/Footer'
 import PageLoading from '@/components/PageLoading'
 import FloatingButton from '@/components/FloatingButton'
+import Background from '@/components/Background'
 
 export const metadata: Metadata = {
   title: 'MoonaEdu',
@@ -50,6 +51,9 @@ export default async function RootLayout({
 
           {/* Main */}
           <main className='mb-[72px] md:mb-auto md:mt-[72px]'>{children}</main>
+
+          {/* Background */}
+          <Background />
 
           {/* Footer */}
           <Footer />

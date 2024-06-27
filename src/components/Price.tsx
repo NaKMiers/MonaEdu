@@ -142,18 +142,21 @@ function Price({ price, oldPrice, flashSale, big, className = '' }: PriceProps) 
       <div
         className={`flex items-center justify-evenly gap-2 px-1.5 py-2 ${
           big ? 'sm:justify-start sm:gap-4 sm:py-4 sm:px-21' : ''
-        } flex-wrap bg-slate-100 font-body`}>
+        } flex-wrap bg-slate-100 font-body`}
+      >
         <div
           className={`text-dark ${
             big ? 'text-[30px] tracking-wide' : 'text-[22px] tracking-wider'
-          }  leading-7`}>
+          }  leading-7`}
+        >
           {formatPrice(newPrice)}
         </div>
         {oldPrice && (
           <div
             className={`text-gray-400 ${
               big ? 'text-[16px] tracking-wider' : 'text-[14px]'
-            } line-through`}>
+            } line-through`}
+          >
             {formatPrice(oldPrice)}
           </div>
         )}
@@ -161,7 +164,8 @@ function Price({ price, oldPrice, flashSale, big, className = '' }: PriceProps) 
           <div
             className={`bg-yellow-400 ${
               big ? 'text-[16px]' : 'text-[13px]'
-            } font-semibold rounded-md px-1 py-[2px] text-white font-sans`}>
+            } font-semibold rounded-md px-1 py-[2px] text-white font-sans`}
+          >
             -{countPercent(newPrice, oldPrice)}
           </div>
         )}

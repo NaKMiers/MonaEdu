@@ -3,9 +3,9 @@ import type { Config } from 'tailwindcss'
 export const theme = {
   extend: {
     colors: {
-      primary: '#AAD7D9',
-      secondary: '#92A5CF',
-      dark: '#000000',
+      primary: '#F7E360',
+      secondary: '#230B5B',
+      dark: '#111',
       light: '#fff',
       loading: '#334155',
     },

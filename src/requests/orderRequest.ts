@@ -59,31 +59,28 @@ export const generateOrderCodeApi = async () => {
 
 // [POST]
 export const createOrderApi = async ({
-  email,
   total,
-  voucherApplied,
+  voucher,
   receivedUser,
   discount,
-  item,
+  items,
   paymentMethod,
 }: {
-  email: string
   total: number
   receivedUser: string | undefined
-  voucherApplied: string | undefined
+  voucher: string | undefined
   discount: number | undefined
-  item: any
+  items: any
   paymentMethod: string
 }) => {
   const res = await fetch('/api/order/create', {
     method: 'POST',
     body: JSON.stringify({
-      email,
       total,
       receivedUser,
-      voucherApplied,
+      voucher,
       discount,
-      item,
+      items,
       paymentMethod,
     }),
   })

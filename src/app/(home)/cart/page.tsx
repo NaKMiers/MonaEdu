@@ -15,31 +15,31 @@ import { applyFlashSalePrice, calcPercentage, formatPrice } from '@/utils/number
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
-import { FaCartShopping } from 'react-icons/fa6'
+import { FaShoppingCart } from 'react-icons/fa'
 import { IoMail } from 'react-icons/io5'
 import { RiCoupon2Fill, RiDonutChartFill } from 'react-icons/ri'
 
 function CartPage() {
   // hooks
+  const router = useRouter()
+  const queryParams = useSearchParams()
+  const { data: session } = useSession()
+  const curUser: any = session?.user
+
+  // reducers
   const dispatch = useAppDispatch()
   const isLoading = useAppSelector(state => state.modal.isLoading)
   let cartItems = useAppSelector(state => state.cart.items)
   const selectedItems = useAppSelector(state => state.cart.selectedItems)
-  const queryParams = useSearchParams()
-  // const router = useRouter()
-  const { data: session } = useSession()
-  const curUser: any = session?.user
 
   // states
   const [subTotal, setSubTotal] = useState<number>(0)
   const [discount, setDiscount] = useState<number>(0)
   const [total, setTotal] = useState<number>(0)
-  const [cartLength, setCartlength] = useState<number>(0)
-  const [items, setItems] = useState<ICartItem[]>([])
 
   // voucher states
   const [isShowVoucher, setIsShowVoucher] = useState<boolean>(false)
@@ -70,27 +70,12 @@ function CartPage() {
     },
   })
 
-  // MARK: Auto functions
-  // auto get cart length
-  useEffect(() => {
-    // stop page loading
-    dispatch(setPageLoading(false))
-
-    if (curUser) {
-      setCartlength(cartItems.reduce((total, item) => total + item.quantity, 0))
-      setItems(cartItems)
-    }
-  }, [cartItems, curUser, dispatch])
-
   // auto calc total, discount, subTotal
   useEffect(() => {
     const subTotal = selectedItems.reduce((total, cartItem) => {
-      const item: any = items.find(cI => cI._id === cartItem._id)
+      const item: any = cartItems.find(cI => cI._id === cartItem._id)
 
-      return (
-        total +
-        (item?.quantity ?? 0) * (applyFlashSalePrice(item?.product.flashsale, item?.product.price) ?? 0)
-      )
+      return total + (applyFlashSalePrice(item?.courseId.flashSale, item?.courseId.price) ?? 0)
     }, 0)
     setSubTotal(subTotal)
 
@@ -113,16 +98,16 @@ function CartPage() {
     }
     setDiscount(discount)
     setTotal(finalTotal)
-  }, [selectedItems, voucher, items])
+  }, [selectedItems, voucher, cartItems])
 
   // auto select cart item
   useEffect(() => {
-    const selectedItems = items.filter(item =>
+    const selectedItems = cartItems.filter(item =>
       queryParams.getAll('course').includes((item.courseId as ICourse).slug)
     )
 
     dispatch(setSelectedItems(selectedItems))
-  }, [queryParams, items, dispatch])
+  }, [queryParams, cartItems, dispatch])
 
   // send request to server to check voucher
   const handleApplyVoucher: SubmitHandler<FieldValues> = useCallback(
@@ -171,11 +156,11 @@ function CartPage() {
       // set found user
       setFoundUser(user)
       setBuyAsGiftMessage(
-        `Gift this course to ${
+        `Gift this course to "${
           user.firstName && user.lastName
             ? `${user.firstName} ${user.lastName}`
             : user?.username || user.email
-        }`
+        }"`
       )
     } catch (err: any) {
       console.log(err)
@@ -218,62 +203,72 @@ function CartPage() {
 
         // send request to server to create order
         const { code } = await createOrderApi({
-          email: curUser?.email || getValues('email'),
           total,
-          voucherApplied: 'aaaaa',
-          receivedUser: 'aaaaa',
+          voucher: voucher?._id,
+          receivedUser: foundUser?.email,
           discount,
-          item: items,
+          items,
           paymentMethod: type,
         })
 
         // create checkout
         const checkout = {
-          items,
           code,
-          email: curUser?.email || getValues('email'),
+          email: curUser?.email,
+          items,
           voucher,
           discount,
+          receivedUser: foundUser,
           total,
         }
         localStorage.setItem('checkout', JSON.stringify(checkout))
 
         // move to checkout page
-        // router.push(`/checkout/${type}`)
+        router.push(`/checkout/${type}`)
       } catch (err: any) {
         console.log(err)
       }
     },
-    [dispatch, getValues, handleValidateBeforeCheckout, selectedItems, voucher, discount, total, curUser]
+    [
+      dispatch,
+      handleValidateBeforeCheckout,
+      router,
+      curUser?.email,
+      discount,
+      foundUser,
+      selectedItems,
+      total,
+      voucher,
+    ]
   )
 
   return (
     <div className='max-w-1200 mx-auto px-21 mb-20 mt-24 min-h-screen grid grid-cols-3 gap-21 bg-white rounded-medium shadow-medium p-8 pb-16 text-dark'>
       <div className='col-span-3 lg:col-span-2'>
         <h1 className='flex items-center gap-2 font-semibold font-body text-3xl'>
-          <FaCartShopping size={30} className='text-dark wiggle' />
+          <FaShoppingCart size={30} className='text-dark wiggle' />
           <span>Giỏ hàng</span>
           <span>
-            (<span className='text-primary font-normal'>{cartLength}</span>)
+            (<span className='text-primary font-normal'>{cartItems.length}</span>)
           </span>
         </h1>
 
         {/* MARK: Cart */}
-        {items.length ? (
+        {cartItems.length ? (
           <div>
             <div className='flex items-center justify-end gap-2 pr-21 select-none'>
               <label htmlFor='selectAll' className='font-semibold cursor-pointer '>
-                {items.length === selectedItems.length ? 'Bỏ chọn tất cả' : 'Chọn tất cả'}
+                {cartItems.length === selectedItems.length ? 'Bỏ chọn tất cả' : 'Chọn tất cả'}
               </label>
               <input
                 name='selectAll'
                 id='selectAll'
                 type='checkbox'
-                checked={items.length === selectedItems.length}
+                checked={cartItems.length === selectedItems.length}
                 onChange={() =>
-                  items.length === selectedItems.length
+                  cartItems.length === selectedItems.length
                     ? dispatch(setSelectedItems([]))
-                    : dispatch(setSelectedItems(items))
+                    : dispatch(setSelectedItems(cartItems))
                 }
                 className='size-5 accent-primary   cursor-pointer'
               />
@@ -281,12 +276,12 @@ function CartPage() {
 
             <div className='pt-4' />
 
-            {items.map((cartItem, index) => (
+            {cartItems.map((cartItem, index) => (
               <CartItem cartItem={cartItem} className={index != 0 ? 'mt-5' : ''} key={index} />
             ))}
           </div>
         ) : (
-          <p className='text-center'>
+          <p className='text-center mt-3'>
             Chưa có sản phẩm nào trong giỏ hàng của hàng. Hãy ấn vào{' '}
             <Link href='/' prefetch={false} className='text-sky-500 underline'>
               đây
@@ -301,17 +296,17 @@ function CartPage() {
 
       {/* MARK: Summary */}
       <div className='col-span-3 lg:col-span-1'>
-        <div className='border-2 border-primary rounded-medium shadow-lg p-4 sticky  lg:mt-[60px] top-[88px] bg-sky-50 overflow-auto'>
+        <div className='border-2 border-primary rounded-medium shadow-lg p-4 sticky lg:mt-[60px] top-[88px] bg-sky-50 overflow-auto'>
           {/* Voucher */}
           <div className='mb-2'>
-            You have a voucher?{' '}
+            Bạn có mã giảm giá?{' '}
             <p className='text-nowrap inline'>
               (
               <button
                 className='text-sky-600 hover:underline z-10'
                 onClick={() => setIsShowVoucher(prev => !prev)}
               >
-                click here
+                ấn vào đây
               </button>
               )
             </p>
@@ -324,7 +319,7 @@ function CartPage() {
           >
             <Input
               id='code'
-              label='Voucher'
+              label='Mã giảm giá'
               disabled={applyingVoucher}
               register={register}
               errors={errors}
@@ -348,7 +343,7 @@ function CartPage() {
               {applyingVoucher ? (
                 <RiDonutChartFill size={26} className='animate-spin text-slate-300' />
               ) : (
-                'Apply'
+                'Áp dụng'
               )}
             </button>
           </div>
@@ -358,14 +353,14 @@ function CartPage() {
 
           {/* Buy as a gift */}
           <div className='mb-2'>
-            You want to gift to someone?{' '}
+            Bạn muốn tặng cho ai đó?{' '}
             <p className='text-nowrap inline'>
               (
               <button
                 className='text-orange-600 hover:underline z-10'
                 onClick={() => setIsShowGift(prev => !prev)}
               >
-                click here
+                ấn vào đây
               </button>
               )
             </p>
@@ -402,7 +397,7 @@ function CartPage() {
               {findingUser ? (
                 <RiDonutChartFill size={26} className='animate-spin text-slate-300' />
               ) : (
-                'Find'
+                'Tìm'
               )}
             </button>
           </div>
@@ -416,26 +411,28 @@ function CartPage() {
 
           {/* Payment Detail */}
           <div className='rounded-lg shaodow-lg bg-dark-100 text-white p-21'>
-            <p>Payment Detail</p>
+            <p>Chi tiết thanh toán</p>
 
             <Divider size={3} border />
 
             <div className='flex flex-col gap-2'>
               <div className='flex justify-between'>
-                <span>Subtotal</span>
+                <span>Tổng</span>
                 <span className='font-semibold text-xl'>{formatPrice(subTotal)}</span>
               </div>
 
-              <div className='flex justify-between'>
-                <span>Discount</span>
-                <span className='font-semibold text-xl'>{formatPrice(discount)}</span>
-              </div>
+              {discount > 0 && (
+                <div className='flex justify-between'>
+                  <span>Giảm giá</span>
+                  <span className='font-semibold text-xl'>{formatPrice(discount)}</span>
+                </div>
+              )}
             </div>
 
             <Divider size={3} border />
 
             <div className='flex items-center justify-between'>
-              <span className='font-semobold'>Total</span>
+              <span className='font-semobold'>Thành tiền</span>
               <span className='font-semibold tracking-wide text-3xl text-green-500 hover:tracking-wider trans-300'>
                 {formatPrice(total)}
               </span>
@@ -447,7 +444,7 @@ function CartPage() {
           {/* MARK: Payment Methods */}
           <div className='flex flex-col gap-3 select-none'>
             <button
-              className={`flex items-center justify-center rounded-xl gap-2 border border-[#a1396c] py-2 px-3 group hover:bg-[#a1396c] common-transition ${
+              className={`flex items-center justify-center rounded-xl gap-2 border border-dark py-2 px-3 group hover:bg-dark-0 trans-200 ${
                 isBuying || isLoading ? 'pointer-events-none' : ''
               }`}
               onClick={() => handleCheckout('momo')}
@@ -460,11 +457,11 @@ function CartPage() {
                 width={32}
                 alt='logo'
               />
-              <span className='font-semibold group-hover:text-white'>Mua nhanh với Momo</span>
+              <span className='font-semibold group-hover:text-white'>Momo</span>
             </button>
 
             <button
-              className={`flex items-center justify-center rounded-xl gap-2 border border-[#62b866] py-2 px-3 group hover:bg-[#62b866] common-transition ${
+              className={`flex items-center justify-center rounded-xl gap-2 border border-dark py-2 px-3 group hover:bg-dark-0 trans-200 ${
                 isBuying || isLoading ? 'pointer-events-none' : ''
               }`}
               onClick={() => handleCheckout('banking')}
@@ -477,7 +474,7 @@ function CartPage() {
                 width={32}
                 alt='logo'
               />
-              <span className='font-semibold group-hover:text-white'>Mua ngay với Banking</span>
+              <span className='font-semibold group-hover:text-white'>Banking</span>
             </button>
           </div>
         </div>

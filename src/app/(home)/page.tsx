@@ -7,6 +7,11 @@ import Heading from '@/components/Heading'
 import { ICourse } from '@/models/CourseModel'
 import { IQuestion } from '@/models/QuestionModel'
 import { getHomeApi } from '@/requests'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Trang Chủ - MoonaEdu',
+}
 
 async function Home() {
   let courses: ICourse[] = []

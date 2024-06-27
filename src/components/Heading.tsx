@@ -10,7 +10,7 @@ interface HeadingProps {
 function Heading({ title, noLine, space, className }: HeadingProps) {
   return (
     <div
-      className={`relative max-w-1200 mx-auto ${noLine ? 'h-0' : 'h-0.5'} bg-dark-0 rounded-lg ${
+      className={`relative max-w-1200 mx-auto ${noLine ? 'h-0' : 'h-0.5'} bg-white rounded-lg ${
         space ? 'w-[calc(100%_-_21_*_2px)]' : 'w-full'
       } ${className}`}
     >

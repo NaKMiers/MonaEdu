@@ -13,22 +13,16 @@ import toast from 'react-hot-toast'
 import { FaHashtag, FaTrashAlt } from 'react-icons/fa'
 import Price from './Price'
 import ConfirmDialog from './dialogs/ConfirmDialog'
+import Divider from './Divider'
 
 interface CartItemProps {
   cartItem: ICartItem
-  localCartItem?: boolean
   className?: string
   isCheckout?: boolean
   isOrderDetailCourse?: boolean
 }
 
-function CartItem({
-  cartItem,
-  localCartItem,
-  isCheckout,
-  className = '',
-  isOrderDetailCourse,
-}: CartItemProps) {
+function CartItem({ cartItem, isCheckout, className = '', isOrderDetailCourse }: CartItemProps) {
   // hooks
   const dispatch = useAppDispatch()
   const { data: session } = useSession()
@@ -39,9 +33,6 @@ function CartItem({
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isDeleting, setIsDeleting] = useState<boolean>(false)
   const [isOpenConfirmModal, setIsOpenConfirmModal] = useState<boolean>(false)
-
-  // values
-  const quantity = cartItem.quantity
 
   // MARK: Delete
   // handle delete cart item
@@ -67,9 +58,7 @@ function CartItem({
 
   return (
     <div
-      className={`relative flex flex-wrap md:flex-nowrap items-start gap-3 cursor-pointer common-transition ${className} ${
-        localCartItem ? '' : 'rounded-medium border p-21'
-      } ${
+      className={`relative flex flex-wrap md:flex-nowrap items-start gap-3 cursor-pointer common-transition ${className} rounded-medium border p-21 ${
         !!selectedCartItems.find(cI => cI._id === cartItem._id) ? 'border-primary' : 'border-slate-400'
       }`}
       onClick={() =>
@@ -106,7 +95,7 @@ function CartItem({
       </div>
 
       {/* MARK: Checkbox */}
-      {!localCartItem && (
+      {!isCheckout && (
         <input
           type='checkbox'
           className='size-5 z-10 cursor-pointer absolute top-21 right-21 accent-primary'
@@ -124,7 +113,7 @@ function CartItem({
       )}
 
       {/* MARK: Body */}
-      <div className={`relative w-full h-full ${localCartItem && !isCheckout ? 'pr-10' : ''}`}>
+      <div className={`relative w-full h-full pr-10`}>
         {/* Title */}
         <h2 className={`text-[20px] tracking-wide mb-2 leading-6 pr-8`}>
           {(cartItem.courseId as ICourse).title}
@@ -151,32 +140,17 @@ function CartItem({
           </div>
         )}
 
-        {/* Quantity - Price - Stock*/}
-        {localCartItem ? (
-          !isOrderDetailCourse && (
-            <div className='flex flex-col gap-3 text-xl font-body tracking-wide'>
-              {/* Quantity */}
-              <div className='flex items-center gap-1 text-[16px]'>
-                <FaHashtag className='text-darker' size={16} />
-                <span className='text-darker font-bold text-nowrap'>Số lượng:</span>
-                <span className='text-green-500'>{cartItem.quantity}</span>
-              </div>
-            </div>
-          )
-        ) : (
-          <>
-            {/* Price & Stock */}
-            <Price
-              price={(cartItem.courseId as ICourse).price}
-              oldPrice={(cartItem.courseId as ICourse).oldPrice}
-              flashSale={(cartItem.courseId as ICourse).flashSale as IFlashSale}
-              big
-            />
-          </>
-        )}
+        {/* Price & Stock */}
+        <Price
+          price={(cartItem.courseId as ICourse).price}
+          oldPrice={(cartItem.courseId as ICourse).oldPrice}
+          flashSale={(cartItem.courseId as ICourse).flashSale as IFlashSale}
+        />
+
+        <Divider size={4} />
 
         {/* MARK: Quantity */}
-        {!localCartItem && (
+        {!isCheckout && (
           <div className='flex items-center justify-between'>
             <FaTrashAlt
               size={21}

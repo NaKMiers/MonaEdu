@@ -1,21 +1,22 @@
 'use client'
 
-import { removeNotificationApi, searchCoursesApi } from '@/requests'
+import { INotification } from '@/models/UserModel'
+import { getCartApi, removeNotificationApi, searchCoursesApi } from '@/requests'
 import { getSession, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
-import { FaBell, FaHome, FaSearch } from 'react-icons/fa'
+import { BiSolidCategory } from 'react-icons/bi'
+import { FaBell, FaChevronUp, FaSearch, FaShoppingCart } from 'react-icons/fa'
 import { FaBars, FaCartShopping } from 'react-icons/fa6'
-import { MdForum } from 'react-icons/md'
 import { PiLightningFill } from 'react-icons/pi'
 import { RiDonutChartFill } from 'react-icons/ri'
-import { SiCoursera } from 'react-icons/si'
 import Menu from './Menu'
 import NotificationMenu from './NotificationMenu'
-import { INotification } from '@/models/UserModel'
-import { usePathname } from 'next/navigation'
+import { useAppDispatch, useAppSelector } from '@/libs/hooks'
+import { setCartItems } from '@/libs/reducers/cartReducer'
 
 interface HeaderProps {
   className?: string
@@ -23,7 +24,9 @@ interface HeaderProps {
 
 function Header({ className = '' }: HeaderProps) {
   // hooks
+  const dispatch = useAppDispatch()
   const { data: session, update } = useSession()
+  const cartItems = useAppSelector(state => state.cart.items)
   const pathname = usePathname()
 
   // states
@@ -32,6 +35,7 @@ function Header({ className = '' }: HeaderProps) {
   const [isTransparent, setIsTransparent] = useState<boolean>(pathname === '/')
   const [isOpenNotificationMenu, setIsOpenNotificationMenu] = useState<boolean>(false)
   const [notifications, setNotifications] = useState<INotification[]>(curUser?.notifications || [])
+  const [cartLength, setCartLength] = useState<number>(0)
 
   // search
   const [openSearch, setOpenSearch] = useState<boolean>(false)
@@ -90,6 +94,27 @@ function Header({ className = '' }: HeaderProps) {
     }
   }, [searchValue, handleSearch])
 
+  // get user's cart
+  useEffect(() => {
+    const getUserCart = async () => {
+      if (curUser?._id) {
+        try {
+          // send request to get user's cart
+          const { cart } = await getCartApi() // cache: no-store
+
+          // set cart to state
+          dispatch(setCartItems(cart))
+
+          setCartLength(cart.length)
+        } catch (err: any) {
+          console.log(err)
+          toast.error(err.response.data.message)
+        }
+      }
+    }
+    getUserCart()
+  }, [dispatch, curUser?._id])
+
   // handle remove notification
   const handleRemoveNotification = useCallback(
     async (id: string) => {
@@ -137,14 +162,14 @@ function Header({ className = '' }: HeaderProps) {
 
   return (
     <header
-      className={`fixed z-50 bg-white ${
+      className={`fixed z-50 ${
         isTransparent
-          ? 'text-dark md:text-white drop-shadow-lg md:bg-opacity-0'
-          : 'text-dark bg-opacity-100'
-      } w-full shadow-lg trans-300 bottom-0 md:bottom-auto md:top-0 ${className}`}
+          ? 'text-white drop-shadow-lg md:bg-opacity-0'
+          : 'text-dark shadow-lg rounded-b-[40px] bg-white bg-opacity-95'
+      } w-full trans-300 bottom-0 md:bottom-auto md:top-0 ${className}`}
     >
       {/* Main Header */}
-      <div className='relative flex justify-between items-center max-w-1200 w-full h-[72px] m-auto px-21'>
+      <div className='relative flex justify-between items-center max-w-1200 trans-300 w-full h-[72px] m-auto px-21'>
         {/* MARK: Brand */}
         <div
           className={`${
@@ -155,8 +180,8 @@ function Header({ className = '' }: HeaderProps) {
             <Image
               className='aspect-square rounded-md'
               src='/images/logo.png'
-              width={40}
-              height={40}
+              width={32}
+              height={32}
               alt='logo'
             />
           </Link>
@@ -165,42 +190,21 @@ function Header({ className = '' }: HeaderProps) {
           </Link>
         </div>
 
+        {/* Categories */}
+        <div className='relative'>
+          <button className='group bg-primary font-semibold flex items-center justify-center gap-2 text-dark px-3 py-1 rounded-md hover:bg-secondary hover:text-light trans-200'>
+            <BiSolidCategory size={20} />
+            Danh Mục
+            <FaChevronUp size={14} className='group-hover:rotate-180 trans-200' />
+          </button>
+        </div>
+
         {/* Search */}
         <div
           className={`flex items-center ${
             openSearch ? 'max-w-full' : 'max-w-[500px]'
           } w-full lg:min-w-[520px] trans-300`}
         >
-          <div
-            className={`${
-              openSearch
-                ? 'max-w-0 w-0 overflow-hidden mr-0'
-                : 'max-w-[114px] md:max-w-[200px] w-full mr-21'
-            } flex items-center gap-21 trans-300`}
-          >
-            <Link
-              href='/'
-              className='font-semibold hover:text-sky-400 underline-offset-2 trans-200 relative after:absolute after:-bottom-0.5 after:left-0 after:w-0 hover:after:w-full after:h-0.5 after:bg-sky-400 after:transition-all after:duration-300'
-            >
-              <span className='hidden md:block'>Home</span>
-              <FaHome size={24} className='md:hidden' />
-            </Link>
-            <Link
-              href='/courses'
-              className='font-semibold hover:text-sky-400 underline-offset-2 trans-200 relative after:absolute after:-bottom-0.5 after:left-0 after:w-0 hover:after:w-full after:h-0.5 after:bg-sky-400 after:transition-all after:duration-300'
-            >
-              <span className='hidden md:block'>Course</span>
-              <SiCoursera size={24} className='md:hidden' />
-            </Link>
-            <Link
-              href='/question'
-              className='font-semibold hover:text-sky-400 underline-offset-2 trans-200 relative after:absolute after:-bottom-0.5 after:left-0 after:w-0 hover:after:w-full after:h-0.5 after:bg-sky-400 after:transition-all after:duration-300'
-            >
-              <span className='hidden md:block'>Forum</span>
-              <MdForum size={24} className='md:hidden' />
-            </Link>
-          </div>
-
           <div
             className={`${
               !searchResults ? 'overflow-hidden' : ''
@@ -295,10 +299,12 @@ function Header({ className = '' }: HeaderProps) {
             !!curUser._id && (
               <>
                 <Link href='/cart' prefetch={false} className='relative wiggle'>
-                  <FaCartShopping size={24} />
-                  <span className='absolute -top-2 right-[-5px] bg-primary rounded-full text-center px-[6px] py-[2px] text-[10px] font-bold'>
-                    2
-                  </span>
+                  <FaShoppingCart size={24} />
+                  {!!cartLength && (
+                    <span className='absolute -top-2 right-[-5px] bg-primary rounded-full text-center px-[6px] py-[2px] text-[10px] font-bold'>
+                      {cartLength}
+                    </span>
+                  )}
                 </Link>
                 <button
                   className='relative group'
@@ -333,13 +339,13 @@ function Header({ className = '' }: HeaderProps) {
             <div className='flex items-center gap-3'>
               <Link
                 href='/auth/login'
-                className='bg-[#019CDE] text-white hover:bg-white hover:text-dark border border-dark text-nowrap trans-200 px-4 py-1.5 rounded-3xl font-body font-semibold tracking-wider cursor-pointer'
+                className='bg-dark-100 text-white hover:bg-primary hover:text-dark border border-dark text-nowrap trans-200 px-4 py-1.5 rounded-3xl font-body font-semibold tracking-wider cursor-pointer'
               >
                 Sign In
               </Link>
               <Link
                 href='/auth/register'
-                className='bg-[#001D4F] text-[#019CDE] hover:bg-white hover:text-dark border border-dark text-nowrap trans-200 px-4 py-1.5 rounded-3xl font-body font-semibold tracking-wider cursor-pointer'
+                className='bg-sky-500 hover:bg-primary hover:text-dark text-white border border-dark text-nowrap trans-200 px-4 py-1.5 rounded-3xl font-body font-semibold tracking-wider cursor-pointer'
               >
                 Sign Up
               </Link>

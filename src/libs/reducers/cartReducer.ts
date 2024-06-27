@@ -8,33 +8,16 @@ export const cart = createSlice({
     selectedItems: [] as ICartItem[],
   },
   reducers: {
-    // MARK: GLOBAL CART
     setCartItems: (state, action: PayloadAction<ICartItem[]>) => {
       return {
         ...state,
         items: action.payload,
       }
     },
-    addCartItem: (state, action: PayloadAction<ICartItem[]>) => {
-      // Initialize an array to store updated items
-      let updatedItems: ICartItem[] = [...state.items]
-
-      // Loop through each item in the payload
-      action.payload.forEach(item => {
-        // Check if the item already exists in the cart
-        const existingCartItemIndex = state.items.findIndex(cartItem => cartItem._id === item._id)
-
-        // If the item exists, update its quantity
-        if (existingCartItemIndex === -1) {
-          // If the item does not exist, add it to the cart
-          updatedItems.unshift(item)
-        }
-      })
-
-      // Return the updated state with the new items
+    addCartItem: (state, action: PayloadAction<ICartItem>) => {
       return {
         ...state,
-        items: updatedItems,
+        items: [...state.items, action.payload],
       }
     },
     deleteCartItem: (state, action: PayloadAction<string>) => {

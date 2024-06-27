@@ -27,7 +27,7 @@ const OrderSchema = new Schema(
     receivedUser: {
       type: String,
     },
-    voucherApplied: {
+    voucher: {
       type: Schema.Types.ObjectId,
       ref: 'voucher',
     },
@@ -35,8 +35,8 @@ const OrderSchema = new Schema(
       type: Number,
       default: 0,
     },
-    item: {
-      type: {},
+    items: {
+      type: Schema.Types.Mixed,
     },
     status: {
       type: String,

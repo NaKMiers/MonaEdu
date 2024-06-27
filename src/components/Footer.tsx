@@ -28,7 +28,7 @@ function Footer() {
   }, [])
 
   return (
-    <footer className='border-t-2 border-slate-300 px-21'>
+    <footer className='bg-white opacity-95 border-t-2 rounded-t-[40px] border-slate-300 px-21'>
       {/* Head */}
       <div className='max-w-1200 mx-auto flex items-center justify-between gap-21'>
         <div className='flex items-center gap-4 py-2'>
