@@ -1,5 +1,6 @@
 'use client'
 
+import { useAppSelector } from '@/libs/hooks'
 import { getSession, signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -14,6 +15,9 @@ interface MenuProps {
 function Menu({ open, setOpen, className = '' }: MenuProps) {
   // hooks
   const { data: session } = useSession()
+
+  // reducer
+  const cartLength = useAppSelector(state => state.cart.items.length)
 
   // states
   const [curUser, setCurUser] = useState<any>(session?.user || {})
@@ -59,7 +63,7 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
       <ul
         className={`${
           open
-            ? 'max-h-[400px] sm:max-w-full sm:w-[300px] sm:max-h-[350px] p-3 opacity-1x'
+            ? 'max-h-[400px] sm:max-w-full sm:w-[300px] sm:max-h-[375px] p-3 opacity-1x'
             : 'max-h-0 sm:max-h-0 p-0 sm:max-w-0 sm:w-0 opacity-0x'
         } ${
           curUser && !curUser?._id ? 'hidden' : ''
@@ -89,6 +93,21 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
                   <p className='text-xs '>{curUser.email}</p>
                 </div>
               </Link>
+
+              <li className='group relative' onClick={() => setOpen(false)}>
+                <Link
+                  href={`/cart`}
+                  className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white trans-200'
+                >
+                  <Image src='/images/cart-icon.png' width={32} height={32} alt='icon' />
+                  <span className='font-body text-xl font-semibold tracking-wide'>Giỏ hàng</span>
+                  {!!cartLength && (
+                    <span className='absolute top-1/2 -translate-y-1/2 right-2 bg-primary text-dark rounded-full text-center px-[7px] py-[2px] text-[10px] font-bold'>
+                      {cartLength}
+                    </span>
+                  )}
+                </Link>
+              </li>
 
               <li className='group' onClick={() => setOpen(false)}>
                 <Link

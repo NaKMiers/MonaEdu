@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react'
 import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form'
 import { FaEye } from 'react-icons/fa'
+import BottomGradient from './gradients/BottomGradient'
 
 interface InputProps {
   label: string
@@ -59,7 +60,8 @@ function Input({
             onClick={type === 'password' ? showPassword : undefined}
             className={`inline-flex items-center px-3 rounded-l-[16px] text-sm text-gray-900 ${
               errors[id] ? 'border-rose-400 bg-rose-100' : 'border-slate-200 bg-slate-100'
-            } ${type === 'password' ? 'cursor-pointer' : ''}`}>
+            } ${type === 'password' ? 'cursor-pointer' : ''}`}
+          >
             {type === 'password' ? (
               isShowPassword ? (
                 <FaEye size={19} className='text-secondary' />
@@ -74,9 +76,10 @@ function Input({
 
         {/* MARK: Text Field */}
         <div
-          className={`relative w-full border-l-0 bg-white ${
+          className={`relative group/btn w-full border-l-0 bg-white ${
             Icon ? 'rounded-r-[16px]' : 'rounded-[16px]'
-          } ${errors[id] ? 'border-rose-400' : 'border-slate-200'}`}>
+          } ${errors[id] ? 'border-rose-400' : 'border-slate-200'}`}
+        >
           {type === 'textarea' ? (
             <textarea
               id={id}
@@ -94,12 +97,14 @@ function Input({
               disabled={disabled}
               {...register(id, { required })}
               onChange={onChange}
-              defaultValue={options?.find(option => option.selected)?.value}>
+              defaultValue={options?.find(option => option.selected)?.value}
+            >
               {options?.map((option, index) => (
                 <option
                   className='bg-dark-100 appearance-none text-white font-body font-semibold tracking-wider p-5'
                   key={index}
-                  value={option.value}>
+                  value={option.value}
+                >
                   {option.label}
                 </option>
               ))}
@@ -116,6 +121,7 @@ function Input({
               {...rest}
             />
           )}
+          <BottomGradient />
 
           {!Icon &&
             type === 'password' &&
@@ -138,7 +144,8 @@ function Input({
             htmlFor={id}
             className={`absolute text-nowrap rounded-md text-sm text-dark trans-300 transform -translate-y-4 scale-75 top-2 left-5 z-10 origin-[0] font-semibold ${labelBg} px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-[48%] peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1 cursor-pointer ${
               errors[id] ? 'text-rose-400' : 'text-dark'
-            }`}>
+            }`}
+          >
             {label}
           </label>
         </div>
@@ -148,6 +155,7 @@ function Input({
       {errors[id]?.message && (
         <span className='text-sm drop-shadow-md text-rose-400'>{errors[id]?.message?.toString()}</span>
       )}
+      <BottomGradient />
     </div>
   )
 }

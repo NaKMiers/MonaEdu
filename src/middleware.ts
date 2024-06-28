@@ -64,11 +64,7 @@ export default async function middleware(req: NextRequest) {
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
 
   // require admin
-  if (
-    req.nextUrl.pathname.startsWith('/admin') ||
-    req.nextUrl.pathname.startsWith('/api/admin')
-    // || req.nextUrl.pathname.startsWith('/email')
-  ) {
+  if (req.nextUrl.pathname.startsWith('/admin') || req.nextUrl.pathname.startsWith('/api/admin')) {
     return requireAdmin(req, token)
   }
 
@@ -76,7 +72,8 @@ export default async function middleware(req: NextRequest) {
   else if (
     req.nextUrl.pathname.startsWith('/user') ||
     req.nextUrl.pathname.startsWith('/setting') ||
-    req.nextUrl.pathname.startsWith('/checkout')
+    req.nextUrl.pathname.startsWith('/checkout') ||
+    req.nextUrl.pathname.startsWith('/cart')
   ) {
     return requireAuth(req, token)
   }
@@ -100,6 +97,6 @@ export const config = {
     '/auth/:path*',
     '/learning/:path*',
     '/checkout/:path*',
-    // '/email/:path*',
+    '/cart',
   ],
 }

@@ -1,6 +1,8 @@
 'use client'
 import Divider from '@/components/Divider'
 import Input from '@/components/Input'
+import BackgroundBeams from '@/components/backgrounds/BeamsBackground'
+import BottomGradient from '@/components/gradients/BottomGradient'
 import { commonEmailMistakes } from '@/constants/mistakes'
 import { registerApi } from '@/requests'
 import { signIn } from 'next-auth/react'
@@ -148,13 +150,9 @@ function RegisterPage() {
 
   return (
     <div className='relative min-h-screen w-full overflow-hidden'>
-      <Image
-        className='hidden md:block w-[44px] absolute z-30 top-21 left-21 rounded-md'
-        src='/images/logo.png'
-        width={70}
-        height={70}
-        alt='logo'
-      />
+      <Link href='/' className='hidden md:block w-[44px] absolute z-30 top-21 left-21 rounded-md'>
+        <Image src='/images/logo.png' width={70} height={70} alt='logo' />
+      </Link>
 
       <div className='hidden md:block absolute top-[0%] left-0 w-[32vw]'>
         <Image
@@ -211,8 +209,10 @@ function RegisterPage() {
       </div>
 
       {/* MARK: Body */}
-      <div className='flex justify-center px-[10%] pt-24 absolute z-10 top-0 right-0 bottom-0 h-screen w-full md:w-2/3 bg-gradient-radial from-primary to-secondary md:rounded-l-[40px] md:shadow-lg md:border-l-2 md:border-gray-500 overflow-y-scroll'>
-        <div className='flex flex-col gap-6 w-full'>
+      <div className='flex justify-center px-[10%] pt-24 absolute z-10 top-0 right-0 bottom-0 h-screen w-full md:w-2/3 bg-neutral-900 md:rounded-l-[40px] md:shadow-lg md:border-l-2 md:border-gray-white overflow-y-scroll'>
+        <BackgroundBeams />
+
+        <div className='relative z-10 flex flex-col gap-6 w-full'>
           <div className='flex items-center gap-3'>
             <div className='md:hidden w-[40px] rounded-md overflow-hidden shadow-lg'>
               <Image
@@ -225,8 +225,6 @@ function RegisterPage() {
             </div>
             <h1 className='font-semibold text-3xl text-light'>Tạo tài khoản</h1>
           </div>
-
-          <Divider size={4} />
 
           <div className='flex flex-wrap justify-between gap-6'>
             <Input
@@ -294,22 +292,22 @@ function RegisterPage() {
             <button
               onClick={handleSubmit(onSubmit)}
               disabled={isLoading}
-              className={`h-[50px] flex items-center justify-center border border-dark bg-white text-dark hover:text-light rounded-3xl px-5 mt-3 font-bold text-lg hover:bg-secondary trans-200 ${
+              className={`group relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50  ${
                 isLoading ? 'bg-slate-200 pointer-events-none' : ''
               }`}
             >
-              {isLoading ? (
-                <FaCircleNotch
-                  size={18}
-                  className='text-slate-700 group-hover:text-dark trans-200 animate-spin'
-                />
-              ) : (
-                'Tạo tài khoản'
-              )}
+              <span className='absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]' />
+              <span className='inline-flex font-semibold h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 trans-300 px-3 py-1 text-sm text-white backdrop-blur-3xl'>
+                {isLoading ? (
+                  <FaCircleNotch size={18} className='text-slate-400 trans-200 animate-spin' />
+                ) : (
+                  'Tạo tài khoản'
+                )}
+              </span>
             </button>
           </div>
 
-          <Divider size={4} />
+          <Divider size={2} />
 
           <p className='font-semibold text-center text-light'>
             Đã có tài khoản?{' '}
@@ -318,17 +316,17 @@ function RegisterPage() {
             </Link>
           </p>
 
-          <div className='relative w-full border h-2 border-dark my-2'>
-            <span className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg px-3 py-2 font-semibold'>
+          <div className='relative w-full border h-2 border-neutral-400 my-2'>
+            <span className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg px-4 py-1 font-semibold'>
               Hoặc
             </span>
           </div>
 
           <div className='flex flex-wrap md:flex-nowrap justify-center gap-x-6 gap-y-4'>
-            <button className='flex items-center gap-2 group rounded-2xl border bg-white border-dark px-2.5 py-3'>
+            <button className='relative group/btn flex items-center gap-2 group rounded-2xl border bg-neutral-800 text-light border-dark px-2.5 py-3'>
               <div className='aspect-square rounded-full wiggle flex-shrink-0'>
                 <Image
-                  className='w-full h-full object-cover'
+                  className='w-full h-full object-cover bg-white rounded-full'
                   src='/images/github-logo.png'
                   width={30}
                   height={30}
@@ -338,9 +336,10 @@ function RegisterPage() {
               <span className='font-semibold text-sm' onClick={() => signIn('github')}>
                 Đăng ký với GitHub
               </span>
+              <BottomGradient />
             </button>
 
-            <button className='flex items-center gap-2 group rounded-2xl border bg-white border-dark px-2.5 py-3'>
+            <button className='relative group/btn flex items-center gap-2 group rounded-2xl border bg-neutral-800 text-light border-dark px-2.5 py-3'>
               <div className='aspect-square rounded-full wiggle flex-shrink-0'>
                 <Image
                   className='w-full h-full object-cover'
@@ -353,6 +352,7 @@ function RegisterPage() {
               <span className='font-semibold text-sm' onClick={() => signIn('google')}>
                 Đăng ký với Google
               </span>
+              <BottomGradient />
             </button>
           </div>
 

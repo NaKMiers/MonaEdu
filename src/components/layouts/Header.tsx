@@ -122,8 +122,8 @@ function Header({ className = '' }: HeaderProps) {
       className={`fixed z-50 ${
         isTransparent
           ? 'drop-shadow-lg md:bg-opacity-0'
-          : 'shadow-medium-light border-b-2 md:rounded-b-[40px] md:rounded-t-0 bg-dark-100 bg-opacity-95'
-      } text-white w-full trans-300 bottom-0 md:bottom-auto md:top-0 ${className}`}
+          : 'shadow-medium-light border-b-2 md:rounded-b-[40px] md:rounded-t-0'
+      }  bg-dark-100 bg-opacity-95 text-white w-full trans-300 bottom-0 md:bottom-auto md:top-0 ${className}`}
     >
       {/* Main Header */}
       <div className='relative flex justify-between gap-3 items-center max-w-1200 trans-300 w-full h-[72px] m-auto px-21'>
@@ -165,7 +165,7 @@ function Header({ className = '' }: HeaderProps) {
                 <Link href='/cart' prefetch={false} className='relative wiggle'>
                   <FaShoppingCart size={24} />
                   {!!cartLength && (
-                    <span className='absolute -top-2 right-[-5px] bg-primary rounded-full text-center px-[6px] py-[2px] text-[10px] font-bold'>
+                    <span className='absolute -top-2 right-[-5px] bg-primary text-dark rounded-full text-center px-[6px] py-[2px] text-[10px] font-bold'>
                       {cartLength}
                     </span>
                   )}
@@ -199,7 +199,7 @@ function Header({ className = '' }: HeaderProps) {
             <div className='flex items-center gap-3'>
               <Link
                 href='/auth/login'
-                className='bg-dark-100 text-white hover:bg-primary hover:text-dark border border-dark text-nowrap trans-200 px-4 py-1.5 rounded-3xl font-body font-semibold tracking-wider cursor-pointer'
+                className='bg-dark text-white hover:bg-primary hover:text-dark border border-white text-nowrap trans-200 px-4 py-1.5 rounded-3xl font-body font-semibold tracking-wider cursor-pointer'
               >
                 Sign In
               </Link>
@@ -213,12 +213,22 @@ function Header({ className = '' }: HeaderProps) {
           )}
         </div>
 
-        {/* Menu Button */}
+        {/* Mobile Buttons */}
         <div className='md:hidden flex items-center gap-0.5'>
+          <Link href='/cart' prefetch={false} className='relative wiggle mr-2'>
+            <FaShoppingCart size={24} />
+            {!!cartLength && (
+              <span className='absolute -top-2 right-[-5px] bg-primary rounded-full text-center px-[6px] py-[2px] text-[10px] font-bold'>
+                {cartLength}
+              </span>
+            )}
+          </Link>
           <button className='relative group' onClick={() => setIsOpenNotificationMenu(prev => !prev)}>
             <FaBell size={22} className='wiggle' />
             {!!notifications.length && (
-              <span className='absolute top-0 right-0 w-1.5 h-1.5 rounded-lg bg-green-400' />
+              <span className='absolute -top-2 right-[-5px] bg-orange-400 rounded-full text-center px-[6px] py-[2px] text-[10px] font-bold'>
+                {notifications.length}
+              </span>
             )}
           </button>
           <button

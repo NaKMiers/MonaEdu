@@ -1,6 +1,9 @@
 'use client'
 import Divider from '@/components/Divider'
 import Input from '@/components/Input'
+import BackgroundBeams from '@/components/backgrounds/BeamsBackground'
+import GradientBackground from '@/components/backgrounds/GradientBackground'
+import BottomGradient from '@/components/gradients/BottomGradient'
 import { forgotPasswordApi } from '@/requests'
 import { signIn } from 'next-auth/react'
 import Image from 'next/image'
@@ -97,9 +100,11 @@ function ForgotPasswordPage() {
   }, [handleSubmit, onSubmit])
 
   return (
-    <div className='h-screen w-full md:px-[46px] md:py-[52px] overflow-hidden'>
-      <div className='relative flex justify-center h-full w-full bg-primary py-9 px-21 md:rounded-[40px] shadow-lg overflow-hidden'>
-        <div className='hidden md:block absolute top-0 left-0 w-[60%]'>
+    <div className='h-screen w-full lg:px-[46px] lg:py-[52px] overflow-hidden'>
+      <GradientBackground className='relative flex justify-center bg-neutral-950 h-full w-full py-9 px-21 rounded-3xl shadow-lg overflow-hidden'>
+        <BackgroundBeams />
+
+        <div className='hidden lg:block absolute top-0 left-0 w-[60%]'>
           <Image
             className='w-full h-full object-contain object-left-top opacity-50'
             src='/images/vector-5.png'
@@ -109,9 +114,9 @@ function ForgotPasswordPage() {
           />
         </div>
 
-        <div className='hidden md:block absolute bottom-0 left-0 w-[60%]'>
+        <div className='hidden lg:block absolute bottom-0 left-0 w-[60%]'>
           <Image
-            className='w-full h-full object-contain object-left-bottom'
+            className='w-full h-full object-contain object-left-bottom opacity-50'
             src='/images/vector-6.png'
             width={1000}
             height={1000}
@@ -119,8 +124,8 @@ function ForgotPasswordPage() {
           />
         </div>
 
-        <div className='hidden md:block absolute z-20 left-[3vw] top-[20%] max-w-[34vw]'>
-          <div className='hidden md:block w-[25vw]'>
+        <div className='hidden lg:block absolute z-20 left-[3vw] top-[20%] max-w-[34vw]'>
+          <div className='hidden lg:block w-[25vw]'>
             <Image
               className='w-full h-full object-contain object-top'
               src='/images/focus_image.png'
@@ -130,14 +135,16 @@ function ForgotPasswordPage() {
             />
           </div>
 
-          <p className='text-[#4F7575] left-[46px] font-semibold text-3xl top-[20%]'>MONAEDU</p>
-          <p className='text-[#3D3D3D] font-semibold text-3xl mt-5'>
-            Walking with you on the path to success.
+          <p className='text-orange-400 drop-shadow-lg left-[46px] font-semibold text-3xl top-[20%]'>
+            MONAEDU
+          </p>
+          <p className='text-white drop-shadow-lg font-semibold text-3xl mt-5'>
+            Hành trang trên con đường thành công.
           </p>
         </div>
 
         {/* MARK: Body */}
-        <div className='md:absolute top-1/2 md:right-[50px] md:-translate-y-1/2 px-[32px] py-2 max-w-[500px] w-full bg-white rounded-[28px] overflow-y-auto'>
+        <div className='lg:absolute z-10 top-1/2 lg:right-[50px] lg:-translate-y-1/2 px-[32px] pt-6 max-w-[550px] w-full bg-white rounded-[28px] overflow-y-auto no-scrollbar'>
           <div className='flex justify-center items-center gap-2.5 mt-2'>
             <div className='w-[32px] rounded-md overflow-hidden shadow-lg'>
               <Image
@@ -193,19 +200,24 @@ function ForgotPasswordPage() {
             Quay lại đăng nhập
           </Link>
 
-          <div className='flex items-center justify-end gap-3'>
+          <Divider size={4} />
+
+          <div className='flex items-center justify-center gap-3'>
             <button
               onClick={handleSubmit(onSubmit)}
               disabled={isSent && isCounting}
-              className={`border border-dark bg-white text-dark hover:text-light rounded-3xl px-5 py-1.5 mt-5 font-bold text-lg hover:bg-secondary trans-200 ${
-                isLoading || isCounting ? 'pointer-events-none bg-white' : 'bg-secondary'
+              className={`group relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50  ${
+                isLoading || isCounting ? 'bg-slate-200 pointer-events-none' : ''
               }`}
             >
-              {isLoading || isCounting ? (
-                <FaCircleNotch size={18} className='text-dark trans-200 animate-spin' />
-              ) : (
-                'Gửi mã'
-              )}
+              <span className='absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]' />
+              <span className='inline-flex font-semibold h-full w-full cursor-pointer items-center justify-center rounded-full bg-neutral-950 text-white trans-300 px-4 py-1 text-sm backdrop-blur-3xl'>
+                {isLoading || isCounting ? (
+                  <FaCircleNotch size={18} className='text-slate-400 trans-200 animate-spin' />
+                ) : (
+                  'Gửi mã'
+                )}
+              </span>
             </button>
           </div>
 
@@ -220,33 +232,33 @@ function ForgotPasswordPage() {
 
           <Divider size={6} />
 
-          <div className='relative w-full h-px bg-black mt-2'>
-            <span className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-3 py-2 font-semibold'>
+          <div className='relative w-full border h-px border-neutral-800 my-2'>
+            <span className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg px-3 py-1 font-semibold'>
               Hoặc
             </span>
           </div>
 
-          <Divider size={6} />
+          <Divider size={3} />
 
           <div className='flex flex-wrap md:flex-nowrap justify-center gap-x-6 gap-y-4'>
-            <button
-              className='flex items-center gap-2 group rounded-2xl border border-dark px-2.5 py-3'
-              onClick={() => signIn('github')}
-            >
-              <div className='aspect-square rounded-full wiggle flex-shrink-0'>
+            <button className='relative group/btn flex items-center gap-2 group rounded-2xl border bg-neutral-800 text-light border-dark px-2.5 py-3'>
+              <div className='aspect-square rounded-full flex-shrink-0'>
                 <Image
-                  className='w-full h-full object-cover'
+                  className='w-full h-full object-cover bg-white rounded-full'
                   src='/images/github-logo.png'
                   width={30}
                   height={30}
                   alt='github'
                 />
               </div>
-              <span className='font-semibold text-sm'>Đăng nhập với GitHub</span>
+              <span className='font-semibold text-sm' onClick={() => signIn('github')}>
+                Đăng ký với GitHub
+              </span>
+              <BottomGradient />
             </button>
 
-            <button className='flex items-center gap-2 group rounded-2xl border border-dark px-2.5 py-3'>
-              <div className='aspect-square rounded-full wiggle flex-shrink-0'>
+            <button className='relative group/btn flex items-center gap-2 group rounded-2xl border bg-neutral-800 text-light border-dark px-2.5 py-3'>
+              <div className='aspect-square rounded-full flex-shrink-0'>
                 <Image
                   className='w-full h-full object-cover'
                   src='/images/google-logo.png'
@@ -256,14 +268,15 @@ function ForgotPasswordPage() {
                 />
               </div>
               <span className='font-semibold text-sm' onClick={() => signIn('google')}>
-                Đăng nhập với Google
+                Đăng ký với Google
               </span>
+              <BottomGradient />
             </button>
           </div>
 
           <Divider size={8} />
         </div>
-      </div>
+      </GradientBackground>
     </div>
   )
 }

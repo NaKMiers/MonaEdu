@@ -40,12 +40,12 @@ async function CoursesPage({ searchParams }: { searchParams?: { [key: string]: s
 
       <div className='flex'>
         {/* Filter & Search */}
-        <div className='flex justify-between -mx-21 max-w-[250px] lg:max-w-[300px] w-full'>
+        <div className='hidden md:flex justify-between -mx-21 max-w-[250px] lg:max-w-[300px] w-full'>
           {/* <Meta searchParams={searchParams} tags={tags} categories={categories} chops={chops} /> */}
         </div>
 
         {/* MAIN List */}
-        <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-21 -mx-3 md:mx-0 flex-1'>
+        <div className='grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-21 -mx-3 md:mx-0 flex-1'>
           {courses.map(course => (
             <CourseCard course={course} key={course._id} />
           ))}
