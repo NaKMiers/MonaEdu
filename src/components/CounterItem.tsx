@@ -9,7 +9,7 @@ interface CounterItem {
   className?: string
 }
 
-function CounterItem({ max, value, size = 25, className }: CounterItem) {
+function CounterItem({ max, value, size = 18, className }: CounterItem) {
   // refs
   const slideTrackRef = useRef<HTMLDivElement>(null)
 
@@ -43,7 +43,7 @@ function CounterItem({ max, value, size = 25, className }: CounterItem) {
     <div className={`overflow-y-hidden ${className}`} style={{ height: size }}>
       <div className={`flex flex-col h-full trans-200`} ref={slideTrackRef}>
         {[...Array.from({ length: max + 1 }, (_, i) => max - i), max].map((n, i) => (
-          <span className='flex-shrink-0 h-full' key={i}>
+          <span className='flex-shrink-0 h-full text-sm' key={i}>
             {n}
           </span>
         ))}

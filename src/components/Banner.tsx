@@ -74,7 +74,7 @@ function Banner({ courses, className = '' }: BannerProps) {
 
   return (
     <div
-      className={`carousel mt-[-72px] relative w-full h-[calc(100vh)] overflow-hidden shadow-lg ${className}`}
+      className={`carousel mt-[-72px] relative w-full h-[calc(100vh)] overflow-hidden shadow-medium-light ${className}`}
       ref={carouselRef}
     >
       {/* List Items */}

@@ -15,7 +15,7 @@ async function CoursesPage({ searchParams }: { searchParams?: { [key: string]: s
   let query: string = ''
   let amount: number = 0
   let chops: { [key: string]: number } | null = null
-  let itemPerPage = 6
+  let itemPerPage = 16
 
   try {
     // get query
@@ -38,23 +38,21 @@ async function CoursesPage({ searchParams }: { searchParams?: { [key: string]: s
     <div className='px-21'>
       <Divider size={6} />
 
-      {/* Heading */}
-      <h1 className='text-4xl font-semibold'>Courses</h1>
+      <div className='flex'>
+        {/* Filter & Search */}
+        <div className='flex justify-between -mx-21 max-w-[250px] lg:max-w-[300px] w-full'>
+          {/* <Meta searchParams={searchParams} tags={tags} categories={categories} chops={chops} /> */}
+        </div>
 
-      {/* Filter & Search Bar */}
-      <div className='flex justify-between -mx-21'>
-        {/* Filter */}
-        <Meta searchParams={searchParams} tags={tags} categories={categories} chops={chops} />
+        {/* MAIN List */}
+        <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-21 -mx-3 md:mx-0 flex-1'>
+          {courses.map(course => (
+            <CourseCard course={course} key={course._id} />
+          ))}
+        </div>
       </div>
 
       <Divider size={5} />
-
-      {/* MAIN List */}
-      <div className='grid grid-cols-1 md:grid-cols-3 gap-21'>
-        {courses.map(course => (
-          <CourseCard course={course} key={course._id} />
-        ))}
-      </div>
 
       <Divider size={8} />
 

@@ -34,8 +34,22 @@ export async function GET(req: NextRequest) {
       .limit(8)
       .lean()
 
-    // best-seller courses
-    const bestSellers = courses.slice(0, 3)
+    // top 10 best-seller categories
+
+    // top 8 best-seller courses
+    const bestSellers = courses.slice(0, 8)
+
+    // top 1 student that spend most time of learning
+
+    // top 1 student that joined most courses
+
+    // top 1 student that completed most questions
+
+    // top 1 student that asked most questions
+
+    // top 1 student that commented most
+
+    // top 1 student that liked most at comment
 
     // best questions
     const questions = await QuestionModel.find({

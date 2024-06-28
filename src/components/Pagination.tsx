@@ -73,7 +73,7 @@ function Pagination({
         {currentPage != 1 && (
           <Link
             href={getPageLink(currentPage <= 1 ? 1 : currentPage - 1)}
-            className='rounded-lg border-2 py-[6px] px-2 bg-white hover:bg-secondary hover:border-secondary text-dark hover:text-white trans-200 border-slate-200'
+            className='rounded-lg border-2 border-transparent py-[6px] px-2 bg-white hover:bg-secondary hover:border-white text-dark hover:text-white trans-200 border-slate-200'
             title={`👈 Trang ${currentPage <= 1 ? 1 : currentPage - 1}`}
           >
             Trước
@@ -85,8 +85,8 @@ function Pagination({
           {Array.from({ length: pageAmount }).map((_, index) => (
             <Link
               href={getPageLink(index + 1)}
-              className={`rounded-lg border-2 py-[6px] px-4 hover:bg-secondary hover:border-secondary hover:text-white trans-200 text-dark ${
-                currentPage === index + 1 ? 'bg-primary border-primary' : 'border-slate-200'
+              className={`rounded-lg border-2 py-[6px] px-4 hover:bg-secondary hover:border-white text-white trans-200 ${
+                currentPage === index + 1 ? 'bg-primary border-white' : 'border-transparent'
               }`}
               key={index}
             >
@@ -99,7 +99,7 @@ function Pagination({
         {currentPage != pageAmount && (
           <Link
             href={getPageLink(currentPage >= pageAmount ? pageAmount : currentPage + 1)}
-            className='rounded-lg border-2 py-[6px] px-2 bg-white hover:bg-secondary hover:border-secondary text-dark hover:text-white trans-200 border-slate-200'
+            className='rounded-lg border-2 border-transparent py-[6px] px-2 bg-white hover:bg-secondary hover:border-white text-dark hover:text-white trans-200 border-slate-200'
             title={`👉 Trang ${currentPage >= pageAmount ? pageAmount : currentPage + 1}`}
           >
             Sau

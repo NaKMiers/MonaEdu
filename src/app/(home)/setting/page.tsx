@@ -66,7 +66,7 @@ function PersonalSetting() {
       <Divider size={8} />
 
       {/* MARK: Account Infomation */}
-      <div className='relative rounded-lg border border-dark shadow-lg p-4 overflow-x-scroll'>
+      <div className='relative rounded-lg border border-dark shadow-lg p-4 overflow-x-scroll bg-white bg-opacity-95'>
         <div className='flex gap-2'>
           <div className='flex-shrink-0 w-[50px] h-[50px] rounded-full overflow-hidden'>
             <Image
@@ -92,17 +92,15 @@ function PersonalSetting() {
       <Divider size={8} />
 
       {/* MARK: Personal Information */}
-      <PersonalInfo />
-
+      <PersonalInfo className='bg-white bg-opacity-95' />
       <Divider size={8} />
 
       {/* MARK: Private Information */}
-      <PrivateInfo />
+      <PrivateInfo className='bg-white bg-opacity-95' />
       <Divider size={8} />
 
       {/* MARK: Notification Setting */}
-      <NotificationSettings />
-
+      <NotificationSettings className='bg-white bg-opacity-95' />
       <Divider size={16} />
 
       {/* Check Authentication */}

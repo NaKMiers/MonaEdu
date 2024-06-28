@@ -10,7 +10,7 @@ async function FlashSalePage({ searchParams }: { searchParams?: { [key: string]:
   let courses: ICourse[] = []
   let query: string = ''
   let amount: number = 0
-  let itemPerPage = 6
+  let itemPerPage = 16
 
   try {
     // get query
@@ -31,13 +31,13 @@ async function FlashSalePage({ searchParams }: { searchParams?: { [key: string]:
       <Divider size={12} />
 
       {/* Heading */}
-      <h1 className='text-4xl font-semibold px-21 text-center'>Flash Sale Now ({amount})</h1>
+      <h1 className='text-4xl font-semibold px-21 text-center text-white'>Flash Sale Now ({amount})</h1>
 
       <Divider size={8} />
 
       {/* MAIN List */}
       {!!courses.length ? (
-        <div className='grid grid-cols-1 md:grid-cols-3 gap-21'>
+        <div className='grid grid-cols-2 md:grid-cols-4 gap-21'>
           {courses.map(course => (
             <CourseCard course={course} key={course._id} />
           ))}

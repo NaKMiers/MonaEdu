@@ -4,6 +4,8 @@ import { IFlashSale } from '@/models/FlashSaleModel'
 import { countPercent, formatPrice } from '@/utils/number'
 import { useEffect, useState } from 'react'
 import CounterItem from './CounterItem'
+import { motion } from 'framer-motion'
+import { FaBoltLightning } from 'react-icons/fa6'
 
 interface PriceProps {
   price: number
@@ -110,11 +112,14 @@ function Price({ price, oldPrice, flashSale, big, className = '' }: PriceProps) 
     <div className={`rounded-md overflow-hidden ${className}`}>
       {/* MARK: Flash Sale */}
       {isValidFS && (
-        <div className='flex items-center justify-between flex-wrap px-3 py-2 bg-dark-0 text-white font-body text-[18px] font-bold tracking-wider'>
-          <span className={`${big ? 'sm:text-[22px]' : ''} text-[18px]`}>Flash sale</span>
+        <div className='flex items-center justify-between gap-2 px-2 py-1.5 bg-dark-0 text-white font-body text-[18px] font-bold tracking-wider'>
+          <span className={`hidden md:block leading-[20px] ${big ? 'sm:text-[22px]' : ''} text-[14px]`}>
+            Flash sale
+          </span>
+          <FaBoltLightning size={16} className='md:hidden' />
 
           {/* Counter */}
-          <div className='flex shrink-0 gap-1'>
+          <div className='flex items-center shrink-0 gap-1 h-[20px]'>
             {/* Hours */}
             <div className='flex items-center bg-dark-100 rounded-sm pl-[2px] pr-[1px]'>
               <CounterItem value={Math.floor(timeLeft[0] / 10)} max={9} />
@@ -140,13 +145,13 @@ function Price({ price, oldPrice, flashSale, big, className = '' }: PriceProps) 
 
       {/* MARK: Price */}
       <div
-        className={`flex items-center justify-evenly gap-2 px-1.5 py-2 ${
-          big ? 'sm:justify-start sm:gap-4 sm:py-4 sm:px-21' : ''
+        className={`flex items-center justify-evenly gap-2 px-1.5 py-1 h-[36px] ${
+          big ? 'sm:justify-start sm:gap-4 sm:px-21' : ''
         } flex-wrap bg-slate-100 font-body`}
       >
         <div
           className={`text-dark ${
-            big ? 'text-[30px] tracking-wide' : 'text-[22px] tracking-wider'
+            big ? 'text-[30px] tracking-wide' : 'text-[21px] tracking-wider'
           }  leading-7`}
         >
           {formatPrice(newPrice)}
@@ -154,7 +159,7 @@ function Price({ price, oldPrice, flashSale, big, className = '' }: PriceProps) 
         {oldPrice && (
           <div
             className={`text-gray-400 ${
-              big ? 'text-[16px] tracking-wider' : 'text-[14px]'
+              big ? 'text-[16px] tracking-wider' : 'text-[12px]'
             } line-through`}
           >
             {formatPrice(oldPrice)}
@@ -163,8 +168,8 @@ function Price({ price, oldPrice, flashSale, big, className = '' }: PriceProps) 
         {oldPrice && (
           <div
             className={`bg-yellow-400 ${
-              big ? 'text-[16px]' : 'text-[13px]'
-            } font-semibold rounded-md px-1 py-[2px] text-white font-sans`}
+              big ? 'text-[16px]' : 'text-[11px]'
+            } flex items-center h-6 font-semibold rounded-md px-1 py-0.5 text-white font-sans`}
           >
             -{countPercent(newPrice, oldPrice)}
           </div>

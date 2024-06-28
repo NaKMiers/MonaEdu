@@ -14,7 +14,6 @@ import { BiSolidCategory } from 'react-icons/bi'
 import { FaBell, FaChevronUp, FaShoppingCart } from 'react-icons/fa'
 import { FaBars } from 'react-icons/fa6'
 import NotificationMenu from '../NotificationMenu'
-import SearchBar from './SearchBar'
 import Menu from './Menu'
 
 interface HeaderProps {
@@ -122,9 +121,9 @@ function Header({ className = '' }: HeaderProps) {
     <header
       className={`fixed z-50 ${
         isTransparent
-          ? 'text-white drop-shadow-lg md:bg-opacity-0'
-          : 'text-dark shadow-lg md:rounded-b-[40px] bg-white bg-opacity-95'
-      } w-full trans-300 bottom-0 md:bottom-auto md:top-0 ${className}`}
+          ? 'drop-shadow-lg md:bg-opacity-0'
+          : 'shadow-medium-light border-b-2 md:rounded-b-[40px] md:rounded-t-0 bg-dark-100 bg-opacity-95'
+      } text-white w-full trans-300 bottom-0 md:bottom-auto md:top-0 ${className}`}
     >
       {/* Main Header */}
       <div className='relative flex justify-between gap-3 items-center max-w-1200 trans-300 w-full h-[72px] m-auto px-21'>
@@ -172,12 +171,14 @@ function Header({ className = '' }: HeaderProps) {
                   )}
                 </Link>
                 <button
-                  className='relative group'
+                  className='relative wiggle'
                   onClick={() => setIsOpenNotificationMenu(prev => !prev)}
                 >
-                  <FaBell size={24} className='wiggle' />
+                  <FaBell size={24} />
                   {!!notifications.length && (
-                    <span className='absolute top-0 right-0 w-1.5 h-1.5 rounded-lg bg-green-400' />
+                    <span className='absolute -top-2 right-[-5px] bg-orange-400 rounded-full text-center px-[6px] py-[2px] text-[10px] font-bold'>
+                      {notifications.length}
+                    </span>
                   )}
                 </button>
                 <div
@@ -191,12 +192,6 @@ function Header({ className = '' }: HeaderProps) {
                     height={40}
                     alt='avatar'
                   />
-
-                  <span className='font-semibold text-lg'>
-                    {curUser?.firstName && curUser?.lastName
-                      ? `${curUser.firstName} ${curUser.lastName}`
-                      : curUser.username}
-                  </span>
                 </div>
               </>
             )

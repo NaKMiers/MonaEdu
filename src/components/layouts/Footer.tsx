@@ -28,10 +28,10 @@ function Footer() {
   }, [])
 
   return (
-    <footer className='bg-white opacity-95 border-t-2 rounded-t-[40px] border-slate-300 px-21'>
+    <footer className='bg-dark-100 text-light opacity-95 border-t-2 rounded-t-[40px] border-slate-300 px-21'>
       {/* Head */}
       <div className='max-w-1200 mx-auto flex items-center justify-between gap-21'>
-        <div className='flex items-center gap-4 py-2'>
+        <div className='flex items-center gap-4 py-3'>
           <div className='flex items-center gap-2'>
             <Link
               href='/'
@@ -45,7 +45,7 @@ function Footer() {
                 alt='github'
               />
             </Link>
-            <span className='font-body text-sky-700 font-bold text-3xl'>MonaEdu</span>
+            <span className='font-body text-primary font-bold text-3xl'>MonaEdu</span>
           </div>
         </div>
 
@@ -53,7 +53,7 @@ function Footer() {
           <Link href='https://github.com/NaKMiers' target='_blank'>
             <Image
               src='/images/github-logo.png'
-              className='wiggle-1'
+              className='wiggle-1 bg-white rounded-full'
               width={32}
               height={32}
               alt='github'
@@ -87,7 +87,7 @@ function Footer() {
           <ul className='flex flex-wrap justify-center md:justify-start gap-2 mt-3'>
             {categories.map(category => (
               <li
-                className='rounded-md px-1.5 py-1 border border-dark text-sm hover:bg-secondary hover:border-secondary hover:text-white trans-200'
+                className='rounded-md px-1.5 py-1 border border-white text-sm hover:bg-primary hover:border-primary hover:text-dark trans-200'
                 key={category._id}
               >
                 <Link href={`/courses/?ctg=${category.slug}`}>{category.title}</Link>
@@ -101,10 +101,22 @@ function Footer() {
 
           <ul className='mt-2'>
             <li className='hover:tracking-wider trans-300 py-1'>
-              <Image src='/images/certificate-1.png' width={130} height={130} alt='certificate' />
+              <Image
+                src='/images/certificate-1.png'
+                width={130}
+                height={130}
+                className='object-contain'
+                alt='certificate'
+              />
             </li>
             <li className='hover:tracking-wider trans-300 py-1'>
-              <Image src='/images/certificate-2.png' width={130} height={130} alt='certificate' />
+              <Image
+                src='/images/certificate-2.png'
+                width={130}
+                height={130}
+                className='object-contain'
+                alt='certificate'
+              />
             </li>
           </ul>
         </div>
