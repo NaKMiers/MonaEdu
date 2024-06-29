@@ -6,6 +6,7 @@ import CourseModel from '@/models/CourseModel'
 // Models: Category, Course
 import '@/models/CategoryModel'
 import '@/models/CourseModel'
+import { deleteFile } from '@/utils/uploadFile'
 
 // [DELETE]: /admin/category/delete
 export async function DELETE(req: NextRequest, { params: { id } }: { params: { id: string } }) {
@@ -37,8 +38,13 @@ export async function DELETE(req: NextRequest, { params: { id } }: { params: { i
       )
     }
 
-    // get delete categories
+    // delete category
     const category = await CategoryModel.findByIdAndDelete(id)
+
+    console.log('Category:', category)
+
+    // delete category image from storage
+    await deleteFile(category.image)
 
     // return response
     return NextResponse.json({ category, message: `Category has been deleted` }, { status: 200 })

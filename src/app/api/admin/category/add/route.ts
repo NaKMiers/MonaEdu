@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 // Models: Category
 import '@/models/CategoryModel'
+import { uploadFile } from '@/utils/uploadFile'
 
 // [POST]: /admin/category/add
 export async function POST(req: NextRequest) {
@@ -13,18 +14,26 @@ export async function POST(req: NextRequest) {
     // connect to database
     await connectDatabase()
 
-    // get data field to add new category
-    const { parentId, title, description } = await req.json()
+    // get data to add category
+    const formData = await req.formData()
+    const data = Object.fromEntries(formData)
+    const { parentId, title, description } = data
+    let image = formData.get('image')
 
-    console.log('parentId', parentId)
-    console.log('title', title)
-    console.log('description', description)
+    // check if image is required
+    if (!image) {
+      return NextResponse.json({ message: 'Image is required' }, { status: 400 })
+    }
+
+    // upload image storage
+    const imageUrl = await uploadFile(image, '1:1')
 
     // create new category
     const category: ICategory = await CategoryModel.create({
       parentId: parentId || null,
-      title: title.trim(),
-      description: description.trim(),
+      title: (title as string).trim(),
+      description: (description as string).trim(),
+      image: imageUrl,
     })
 
     // stay current page

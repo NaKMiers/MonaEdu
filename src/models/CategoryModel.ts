@@ -15,6 +15,9 @@ const CategorySchema = new Schema(
     description: {
       type: String,
     },
+    image: {
+      type: String,
+    },
     slug: {
       type: String,
       unique: true,
@@ -49,6 +52,7 @@ export interface ICategory {
   parentId: string | ICategory
   title: string
   description: string
+  image: string
   slug: string
   courseQuantity: number
   booted: boolean

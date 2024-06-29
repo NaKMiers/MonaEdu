@@ -66,10 +66,10 @@ export const getCategoryApi = async (slug: string) => {
 }
 
 // [POST]
-export const addCategoryApi = async (data: any) => {
+export const addCategoryApi = async (data: FormData) => {
   const res = await fetch('/api/admin/category/add', {
     method: 'POST',
-    body: JSON.stringify(data),
+    body: data,
   })
 
   // check status
@@ -81,10 +81,10 @@ export const addCategoryApi = async (data: any) => {
 }
 
 // [PUT]
-export const updateCategoryApi = async (id: string, data: any) => {
+export const updateCategoryApi = async (id: string, data: FormData) => {
   const res = await fetch(`/api/admin/category/${id}/edit`, {
     method: 'PUT',
-    body: JSON.stringify(data),
+    body: data,
   })
 
   // check status

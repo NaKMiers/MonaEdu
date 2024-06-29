@@ -192,7 +192,7 @@ function ResetPasswordPage() {
             register={register}
             errors={errors}
             required
-            type='text'
+            type='password'
             className='min-w-[40%]'
             onFocus={() => clearErrors('newPassword')}
           />
@@ -204,7 +204,7 @@ function ResetPasswordPage() {
             register={register}
             errors={errors}
             required
-            type='text'
+            type='password'
             className='min-w-[40%] mt-6'
             onFocus={() => clearErrors('password')}
           />

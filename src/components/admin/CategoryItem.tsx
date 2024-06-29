@@ -1,6 +1,6 @@
 import { ICategory } from '@/models/CategoryModel'
 import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
-import { FaChevronUp, FaTrash } from 'react-icons/fa'
+import { FaChevronUp, FaCircleNotch, FaTrash } from 'react-icons/fa'
 import ConfirmDialog from '../dialogs/ConfirmDialog'
 import { bootCategoriesApi, deleteCategoryApi } from '@/requests'
 import toast from 'react-hot-toast'
@@ -34,21 +34,6 @@ function CategoryItem({ data: category, setCategories, className = '' }: Categor
   useEffect(() => {
     setData(category)
   }, [category])
-
-  // useEffect(() => {
-  //   if (open && subCategories.length > 0) {
-  //     if (!subCategories.length || !categoryRef.current) return
-
-  //     const origin = 52
-  //     const length = subCategories.length * 40
-  //     const totalGap = (subCategories.length - 1) * 4
-  //     const totalHeight = origin + length + totalGap
-
-  //     categoryRef.current.style.setProperty('max-height', `${totalHeight}px`)
-  //   } else {
-  //     categoryRef.current?.style.removeProperty('max-height')
-  //   }
-  // }, [open, subCategories])
 
   // feature category
   const handleBootCategory = useCallback(async () => {
@@ -96,7 +81,7 @@ function CategoryItem({ data: category, setCategories, className = '' }: Categor
         className={`h-9 flex-shrink-0 overflow-hidden flex items-center justify-between gap-3 trans-300 bg-white text-dark rounded-lg px-3 py-1.5 hover:bg-secondary hover:text-white cursor-pointer ${className}`}
         onClick={() => setOpen(!open)}
       >
-        <span>{data.title}</span>
+        <span className='text-sm'>{data.title}</span>
         <div className='flex items-center gap-2'>
           <button
             onClick={e => {
@@ -134,9 +119,15 @@ function CategoryItem({ data: category, setCategories, className = '' }: Categor
               e.stopPropagation()
               setIsOpenConfirmModal(true)
             }}
-            className='h-7 flex items-center justify-center rounded-lg text-xs border-2 border-rose-500 px-2 py-1 bg-white text-rose-500 hover:bg-rose-300 trans-200 group'
+            className={`h-7 flex items-center justify-center rounded-lg text-xs border-2 px-2 py-1 bg-white text-rose-500 hover:bg-rose-300 trans-200 group ${
+              deleting ? 'bg-slate-200 border-slate-200 pointer-events-none' : 'border-rose-500'
+            }`}
           >
-            <FaTrash size={12} className='wiggle' />
+            {deleting ? (
+              <FaCircleNotch size={14} className='text-slate-300 trans-200 animate-spin' />
+            ) : (
+              <FaTrash size={12} className='wiggle' />
+            )}
           </button>
           {!!subCategories.length && (
             <FaChevronUp size={16} className={`${open ? 'rotate-180' : ''} trans-300`} />

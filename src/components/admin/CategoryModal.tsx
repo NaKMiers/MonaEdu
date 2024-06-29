@@ -1,7 +1,8 @@
 import { ICategory } from '@/models/CategoryModel'
 import { addCategoryApi, updateCategoryApi } from '@/requests'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Dispatch, SetStateAction, useCallback, useState } from 'react'
+import Image from 'next/image'
+import { Dispatch, SetStateAction, useCallback, useRef, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { FaCircleNotch } from 'react-icons/fa'
@@ -30,6 +31,49 @@ function CategoryModal({
   // states
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
+  // states
+  const [imageUrl, setImageUrl] = useState<string>('')
+  const [file, setFile] = useState<File | null>(null)
+  const [isChangingImage, setIsChangingImage] = useState<boolean>(false)
+
+  // refs
+  const imageInputRef = useRef<HTMLInputElement>(null)
+
+  // handle add files when user select files
+  const handleAddFile = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files) {
+        const file = e.target.files[0]
+
+        // validate file type and size
+        if (!file.type.startsWith('image/')) {
+          return toast.error('Please select an image file')
+        }
+        if (file.size > 3 * 1024 * 1024) {
+          return toast.error('Please select an image file less than 3MB')
+        }
+
+        setFile(file)
+        if (imageUrl) {
+          URL.revokeObjectURL(imageUrl)
+        }
+        setImageUrl(URL.createObjectURL(file))
+
+        e.target.value = ''
+        e.target.files = null
+      }
+    },
+    [imageUrl]
+  )
+
+  // cancel changing avatar
+  const handleCancelAvatar = useCallback(async () => {
+    setFile(null)
+    setImageUrl('')
+
+    URL.revokeObjectURL(imageUrl)
+  }, [imageUrl])
+
   // form
   const {
     register,
@@ -48,12 +92,22 @@ function CategoryModal({
   // add new category
   const onAddSubmit: SubmitHandler<FieldValues> = useCallback(
     async data => {
+      if (!file) {
+        return toast.error('Please select an image file')
+      }
+
       // start loading
       setIsLoading(true)
 
       try {
+        const formData = new FormData()
+        formData.append('parentId', data.parentId)
+        formData.append('title', data.title)
+        formData.append('description', data.description)
+        formData.append('image', file)
+
         // add new category login here
-        const { category, message } = await addCategoryApi(data)
+        const { category, message } = await addCategoryApi(formData)
 
         // show success message
         toast.success(message)
@@ -64,6 +118,10 @@ function CategoryModal({
         // clear form
         reset()
 
+        // clear file
+        setFile(null)
+        URL.revokeObjectURL(imageUrl)
+
         // close modal
         setOpen(false)
       } catch (err: any) {
@@ -74,27 +132,47 @@ function CategoryModal({
         setIsLoading(false)
       }
     },
-    [reset, setCategories, setOpen]
+    [reset, setCategories, setOpen, file, imageUrl]
   )
 
   const onEditSubmit: SubmitHandler<FieldValues> = useCallback(
     async data => {
+      if (!file && !category?.image) {
+        return toast.error('Please select an image file')
+      }
+
       if (!category) return
 
       // start loading
       setIsLoading(true)
 
       try {
-        // send request to server
-        const { category: ctg, message } = await updateCategoryApi(category._id, data)
+        const formData = new FormData()
+        formData.append('parentId', data.parentId)
+        formData.append('title', data.title)
+        formData.append('description', data.description)
+        formData.append('originalImage', category.image)
+        if (file) {
+          formData.append('image', file)
+        }
 
-        console.log('Updated Category: ', ctg)
+        // send request to server
+        const { category: ctg, message } = await updateCategoryApi(category._id, formData)
 
         // update categories from state
-        setCategories(prev => prev.map(category => (category._id === ctg._id ? ctg : category)))
+        setCategories(prev =>
+          prev.map(category =>
+            category._id === ctg._id
+              ? {
+                  ...category,
+                  ...ctg,
+                }
+              : category
+          )
+        )
 
-        toast.success(message)
         // show success message
+        toast.success(message)
 
         // close modal
         setOpen(false)
@@ -106,7 +184,7 @@ function CategoryModal({
         setIsLoading(false)
       }
     },
-    [category, setCategories, setOpen]
+    [setCategories, setOpen, category, file]
   )
 
   return (
@@ -127,6 +205,46 @@ function CategoryModal({
             onClick={e => e.stopPropagation()}
           >
             <h1 className='text-dark text-center font-semibold text-xl'>{title}</h1>
+
+            <Divider size={2} />
+
+            <div
+              className='group relative rounded-xl bg-slate-200 shadow-lg aspect-square mx-auto max-w-[200px] w-full overflow-hidden cursor-pointer'
+              onClick={() => !imageUrl && imageInputRef.current?.click()}
+            >
+              {(imageUrl || category?.image) && (
+                <Image
+                  className='w-full h-full object-cover'
+                  src={imageUrl || category?.image || ''}
+                  width={200}
+                  height={200}
+                  alt='image'
+                />
+              )}
+              <input
+                id='images'
+                hidden
+                placeholder=' '
+                disabled={isChangingImage}
+                type='file'
+                onChange={handleAddFile}
+                ref={imageInputRef}
+              />
+              {!imageUrl && (
+                <span className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 tracking-wider text-slate-300 drop-shadow-sm'>
+                  {category?.image ? 'Change' : 'Upload'}
+                </span>
+              )}
+
+              {imageUrl && (
+                <button
+                  className='absolute top-0 left-0 right-0 bottom-0 tracking-wider drop-shadow-sm bg-slate-200 bg-opacity-50 opacity-0 group-hover:opacity-100 trans-300'
+                  onClick={handleCancelAvatar}
+                >
+                  Remove
+                </button>
+              )}
+            </div>
 
             <Divider size={2} />
 

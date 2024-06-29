@@ -53,10 +53,10 @@ function BestSeller({ courses, className = '' }: BestSellerProps) {
 
               <CardItem
                 translateZ={120}
-                className='relative w-full rounded-lg flex px-21 pt-10 pb-4 gap-21 justify-between bg-white'
+                className='relative w-full rounded-lg px-21 pt-4 pb-4 gap-21 bg-white'
               >
-                <span className='font-semibold text-lg'>Sold</span>
-                <span className='font-semibold text-lg'>{course.joined}</span>
+                <p className='text-sm text-slate-400'>Học viên {course.joined}</p>
+                <p className='font-semibold text-lg text-ellipsis line-clamp-1'>{course.title}</p>
 
                 {index <= 2 && (
                   <CardItem translateZ={50} className='absolute w-[60px] h-[60px] right-8 -top-5'>
