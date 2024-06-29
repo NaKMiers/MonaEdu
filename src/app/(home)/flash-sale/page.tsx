@@ -1,6 +1,6 @@
 import CourseCard from '@/components/CourseCard'
 import Divider from '@/components/Divider'
-import Pagination from '@/components/Pagination'
+import Pagination from '@/components/layouts/Pagination'
 import { ICourse } from '@/models/CourseModel'
 import { getFlashSalePageApi } from '@/requests'
 import { handleQuery } from '@/utils/handleQuery'

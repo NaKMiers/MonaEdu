@@ -1,6 +1,6 @@
 'use client'
 
-import Pagination from '@/components/Pagination'
+import Pagination from '@/components/layouts/Pagination'
 import AdminHeader from '@/components/admin/AdminHeader'
 import AdminMeta from '@/components/admin/AdminMeta'
 import SummaryItem from '@/components/admin/SummaryItem'
@@ -129,7 +129,8 @@ function AllSummariesPage({ searchParams }: { searchParams?: { [key: string]: st
               setSelectedSummaries(
                 selectedSummaries.length > 0 ? [] : summaries.map(summary => summary._id)
               )
-            }>
+            }
+          >
             {selectedSummaries.length > 0 ? 'Unselect All' : 'Select All'}
           </button>
 
@@ -138,7 +139,8 @@ function AllSummariesPage({ searchParams }: { searchParams?: { [key: string]: st
             <button
               className='border border-green-500 text-green-500 rounded-lg px-3 py-2 hover:bg-green-500 hover:text-white trans-200'
               title='Alt + Delete'
-              onClick={() => handleSendSummaries(selectedSummaries)}>
+              onClick={() => handleSendSummaries(selectedSummaries)}
+            >
               Sent
             </button>
           )}

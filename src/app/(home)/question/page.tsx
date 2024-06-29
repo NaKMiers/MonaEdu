@@ -1,6 +1,6 @@
 import AddQuestionForm from '@/components/AddQuestionForm'
 import Divider from '@/components/Divider'
-import Pagination from '@/components/Pagination'
+import Pagination from '@/components/layouts/Pagination'
 import Question from '@/components/QuestionItem'
 import { IQuestion } from '@/models/QuestionModel'
 import { getQuestionPageApi } from '@/requests'

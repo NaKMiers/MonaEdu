@@ -1,7 +1,7 @@
 import CourseCard from '@/components/CourseCard'
 import Divider from '@/components/Divider'
 import Meta from '@/components/Meta'
-import Pagination from '@/components/Pagination'
+import Pagination from '@/components/layouts/Pagination'
 import { ICategory } from '@/models/CategoryModel'
 import { ICourse } from '@/models/CourseModel'
 import { ITag } from '@/models/TagModel'

@@ -5,6 +5,7 @@ import { getSession, signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
+import GradientBackground from '../backgrounds/GradientBackground'
 
 interface MenuProps {
   open: boolean
@@ -60,14 +61,15 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
       />
 
       {/* MARK: Main */}
-      <ul
-        className={`${
+      <GradientBackground
+        containerClassName={`${
           open
-            ? 'max-h-[400px] sm:max-w-full sm:w-[300px] sm:max-h-[375px] p-3 opacity-1x'
+            ? 'max-h-[375px] sm:max-w-full sm:w-[300px] sm:max-h-[378px] h-screen p-0.5 opacity-1x'
             : 'max-h-0 sm:max-h-0 p-0 sm:max-w-0 sm:w-0 opacity-0x'
         } ${
           curUser && !curUser?._id ? 'hidden' : ''
-        } text-dark w-full overflow-hidden trans-300 absolute bottom-[72px] md:bottom-auto md:top-[60px] right-0 sm:right-21 z-30 sm:rounded-medium sm:shadow-sky-400 shadow-md bg-slate-100`}
+        } bg-transparent text-dark w-full overflow-hidden trans-300 absolute bottom-[72px] md:bottom-auto md:top-[60px] right-0 sm:right-21 z-30 sm:rounded-3xl shadow-lg bg-neutral-950`}
+        className='bg-dark-100 h-full rounded-md md:rounded-3xl py-3 px-2 text-white'
       >
         {curUser ? (
           // MARK: User Logged In
@@ -75,7 +77,7 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
             <>
               <Link
                 href={`/user/${curUser?._id}`}
-                className='flex items-center gap-2 py-2 px-3 rounded-lg group hover:bg-white trans-200'
+                className='flex items-center gap-2 py-2 px-3 rounded-lg group hover:bg-white hover:text-dark trans-200'
               >
                 <Image
                   className='aspect-square rounded-full wiggle-0'
@@ -94,10 +96,10 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
                 </div>
               </Link>
 
-              <li className='group relative' onClick={() => setOpen(false)}>
+              <div className='group relative' onClick={() => setOpen(false)}>
                 <Link
                   href={`/cart`}
-                  className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white trans-200'
+                  className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white hover:text-dark trans-200'
                 >
                   <Image src='/images/cart-icon.png' width={32} height={32} alt='icon' />
                   <span className='font-body text-xl font-semibold tracking-wide'>Giỏ hàng</span>
@@ -107,87 +109,87 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
                     </span>
                   )}
                 </Link>
-              </li>
+              </div>
 
-              <li className='group' onClick={() => setOpen(false)}>
+              <div className='group' onClick={() => setOpen(false)}>
                 <Link
                   href={`/user/${curUser?._id}`}
-                  className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white trans-200'
+                  className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white hover:text-dark trans-200'
                 >
                   <Image src='/images/info-icon.png' width={32} height={32} alt='icon' />
                   <span className='font-body text-xl font-semibold tracking-wide'>Profile</span>
                 </Link>
-              </li>
-              <li className='group' onClick={() => setOpen(false)}>
+              </div>
+              <div className='group' onClick={() => setOpen(false)}>
                 <Link
                   href={`/my-courses`}
-                  className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white trans-200'
+                  className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white hover:text-dark trans-200'
                 >
                   <Image src='/images/my-courses-icon.png' width={32} height={32} alt='icon' />
                   <span className='font-body text-xl font-semibold tracking-wide'>My Courses</span>
                 </Link>
-              </li>
-              <li className='group' onClick={() => setOpen(false)}>
+              </div>
+              <div className='group' onClick={() => setOpen(false)}>
                 <Link
                   href='/setting'
-                  className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white trans-200'
+                  className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white hover:text-dark trans-200'
                 >
                   <Image src='/images/setting-icon.png' width={32} height={32} alt='icon' />
                   <span className='font-body text-xl font-semibold tracking-wide'>Setting</span>
                 </Link>
-              </li>
+              </div>
               {curUser?.role !== 'user' && (
-                <li className='group' onClick={() => setOpen(false)}>
+                <div className='group' onClick={() => setOpen(false)}>
                   <Link
                     href={
                       ['admin', 'editor'].includes(curUser?.role)
                         ? '/admin/order/all'
                         : '/admin/summary/all'
                     }
-                    className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white trans-200'
+                    className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white hover:text-dark trans-200'
                   >
                     <Image src='/images/order-icon.png' width={32} height={32} alt='icon' />
                     <span className='font-body text-xl font-semibold tracking-wide'>
                       {['admin', 'editor'].includes(curUser?.role) ? 'Orders' : 'Collaborator'}
                     </span>
                   </Link>
-                </li>
+                </div>
               )}
-              <li className='group' onClick={() => setOpen(false)}>
+              <div className='group' onClick={() => setOpen(false)}>
                 <button
-                  className='flex items-center w-full gap-2 py-2 px-3 rounded-lg hover:bg-white trans-200'
+                  className='flex items-center w-full gap-2 py-2 px-3 rounded-lg hover:bg-white hover:text-dark trans-200'
                   onClick={() => signOut()}
                 >
                   <Image src='/images/logout-icon.png' width={32} height={32} alt='icon' />
                   <span className='font-body text-xl font-semibold tracking-wide'>Logout</span>
                 </button>
-              </li>
+              </div>
             </>
           )
         ) : (
           // MARK: User Not Logged In
           <>
-            <li className='group' onClick={() => setOpen(false)}>
+            <div className='group' onClick={() => setOpen(false)}>
               <Link
                 href='/auth/login'
-                className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white trans-200'
+                className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white hover:text-dark trans-200'
               >
                 <Image src='/images/sign-in-icon.png' width={32} height={32} alt='icon' />
                 <span className='font-body text-xl font-semibold tracking-wide'>Sign In</span>
               </Link>
-            </li>
-            <li className='group' onClick={() => setOpen(false)}>
+            </div>
+            <div className='group' onClick={() => setOpen(false)}>
               <Link
-                href='/auth/register'
-                className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white trans-200'
+                href='/categories'
+                className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white hover:text-dark trans-200'
               >
-                <Image src='/images/sign-up-icon.png' width={32} height={32} alt='icon' />
-                <span className='font-body text-xl font-semibold tracking-wide'>Sign Up</span>
+                <Image src='/images/sign-in-icon.png' width={32} height={32} alt='icon' />
+                <span className='font-body text-xl font-semibold tracking-wide'>Danh Mục</span>
               </Link>
-            </li>
+            </div>
           </>
         )}
-      </ul>
+      </GradientBackground>
     </>
   )
 }

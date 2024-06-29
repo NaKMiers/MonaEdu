@@ -15,6 +15,7 @@ import { FaBell, FaChevronUp, FaShoppingCart } from 'react-icons/fa'
 import { FaBars } from 'react-icons/fa6'
 import NotificationMenu from '../NotificationMenu'
 import Menu from './Menu'
+import CategoryTabs from './CategoryTabs'
 
 interface HeaderProps {
   className?: string
@@ -31,8 +32,11 @@ function Header({ className = '' }: HeaderProps) {
 
   // states
   const [curUser, setCurUser] = useState<any>(session?.user || {})
-  const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false)
   const [isTransparent, setIsTransparent] = useState<boolean>(pathname === '/')
+  const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false)
+  const [openCategoryTabs, setOpenCategoryTabs] = useState<boolean>(false)
+
+  // notification states
   const [isOpenNotificationMenu, setIsOpenNotificationMenu] = useState<boolean>(false)
   const [notifications, setNotifications] = useState<INotification[]>(curUser?.notifications || [])
 
@@ -95,7 +99,7 @@ function Header({ className = '' }: HeaderProps) {
     [setNotifications, setIsOpenNotificationMenu, notifications]
   )
 
-  // handle scroll
+  // handle show/hide on scroll
   useEffect(() => {
     const handleScroll = () => {
       if (pathname === '/') {
@@ -119,7 +123,7 @@ function Header({ className = '' }: HeaderProps) {
 
   return (
     <header
-      className={`fixed z-50 ${
+      className={`fixed z-[60] ${
         isTransparent
           ? 'drop-shadow-lg md:bg-opacity-0'
           : 'shadow-medium-light border-b-2 md:rounded-b-[40px] md:rounded-t-0'
@@ -145,14 +149,20 @@ function Header({ className = '' }: HeaderProps) {
           </Link>
 
           {/* Categories */}
-          <div className='relative'>
-            <button className='group text-nowrap bg-primary font-semibold flex items-center justify-center gap-2 text-dark px-3 py-1 rounded-md hover:bg-secondary hover:text-light trans-200'>
-              <BiSolidCategory size={20} />
+          <div className=''>
+            <Link
+              href='/categories'
+              className='flex items-center justify-center gap-2 group text-nowrap bg-primary font-semibold text-dark px-3 py-1 rounded-md hover:bg-secondary hover:text-light trans-200'
+              onMouseOver={() => setOpenCategoryTabs(true)}
+            >
+              <BiSolidCategory size={20} className='hidden md:block' />
               Danh Mục
-              <FaChevronUp size={14} className='group-hover:rotate-180 trans-200' />
-            </button>
+            </Link>
           </div>
         </div>
+
+        {/* Categories Tabs */}
+        <CategoryTabs open={openCategoryTabs} setOpen={setOpenCategoryTabs} />
 
         {/* Search */}
         {/* <SearchBar /> */}

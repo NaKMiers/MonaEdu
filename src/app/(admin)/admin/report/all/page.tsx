@@ -1,7 +1,7 @@
 'use client'
 
 import Input from '@/components/Input'
-import Pagination from '@/components/Pagination'
+import Pagination from '@/components/layouts/Pagination'
 import AdminHeader from '@/components/admin/AdminHeader'
 import AdminMeta from '@/components/admin/AdminMeta'
 import ReportItem from '@/components/admin/ReportItem'
@@ -272,7 +272,8 @@ function AllReportsPage({ searchParams }: { searchParams?: { [key: string]: stri
             className='border border-sky-400 text-sky-400 rounded-lg px-3 py-2 hover:bg-sky-400 hover:text-white trans-200'
             onClick={() =>
               setSelectedReports(selectedReports.length > 0 ? [] : reports.map(report => report._id))
-            }>
+            }
+          >
             {selectedReports.length > 0 ? 'Unselect All' : 'Select All'}
           </button>
 
@@ -280,7 +281,8 @@ function AllReportsPage({ searchParams }: { searchParams?: { [key: string]: stri
           {!!selectedReports.length && (
             <button
               className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-white trans-200'
-              onClick={() => setIsOpenConfirmModal(true)}>
+              onClick={() => setIsOpenConfirmModal(true)}
+            >
               Delete
             </button>
           )}

@@ -1,7 +1,7 @@
 'use client'
 
 import Input from '@/components/Input'
-import Pagination from '@/components/Pagination'
+import Pagination from '@/components/layouts/Pagination'
 import AdminHeader from '@/components/admin/AdminHeader'
 import AdminMeta from '@/components/admin/AdminMeta'
 import LessonItem from '@/components/admin/LessonItem'

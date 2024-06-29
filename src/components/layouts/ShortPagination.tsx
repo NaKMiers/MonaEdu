@@ -5,19 +5,19 @@ import Link from 'next/link'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useCallback, useEffect } from 'react'
 
-interface PaginationProps {
+interface ShortPaginationProps {
   searchParams: { [key: string]: string[] | string } | undefined
   amount: number
   itemsPerPage: number
   className?: string
 }
 
-function Pagination({
+function ShortPagination({
   searchParams = {},
   amount = 0,
   itemsPerPage = 9, // default item/page
   className = '',
-}: PaginationProps) {
+}: ShortPaginationProps) {
   // hooks
   const pathname = usePathname()
   const router = useRouter()
@@ -66,14 +66,12 @@ function Pagination({
 
   return (
     pageAmount > 1 && (
-      <div
-        className={`flex font-semibold gap-2 justify-center w-full max-w-[491px] mx-auto ${className}`}
-      >
+      <div className={`flex font-semibold gap-4 items-center w-full max-w-[491px] ${className}`}>
         {/* MARK: Prev */}
         {currentPage != 1 && (
           <Link
             href={getPageLink(currentPage <= 1 ? 1 : currentPage - 1)}
-            className='rounded-lg border-2 border-transparent py-[6px] px-2 bg-white hover:bg-secondary hover:border-white text-dark hover:text-white trans-200 border-slate-200'
+            className='min-w-[80px] flex items-center justify-center rounded-full border-2 h-full border-primary px-2 hover:bg-secondary hover:border-secondary shadow-lg drop-shadow-lg text-dark hover:text-white trans-200'
             title={`👈 Trang ${currentPage <= 1 ? 1 : currentPage - 1}`}
           >
             Trước
@@ -81,25 +79,17 @@ function Pagination({
         )}
 
         {/* MARK: 1 ... n */}
-        <div className='flex gap-2 no-scrollbar overflow-x-scroll'>
-          {Array.from({ length: pageAmount }).map((_, index) => (
-            <Link
-              href={getPageLink(index + 1)}
-              className={`rounded-lg border-2 py-[6px] px-4 hover:bg-secondary hover:border-white text-white trans-200 ${
-                currentPage === index + 1 ? 'bg-primary border-white' : 'border-transparent'
-              }`}
-              key={index}
-            >
-              {index + 1}
-            </Link>
-          ))}
+        <div className='flex items-center'>
+          <span className='text-base'>
+            {currentPage}/{pageAmount}
+          </span>
         </div>
 
         {/* MARK: Next */}
         {currentPage != pageAmount && (
           <Link
             href={getPageLink(currentPage >= pageAmount ? pageAmount : currentPage + 1)}
-            className='rounded-lg border-2 border-transparent py-[6px] px-2 bg-white hover:bg-secondary hover:border-white text-dark hover:text-white trans-200 border-slate-200'
+            className='min-w-[80px] flex items-center justify-center rounded-full border-2 h-full border-primary px-2 hover:bg-secondary hover:border-secondary shadow-lg drop-shadow-lg text-dark hover:text-white trans-200'
             title={`👉 Trang ${currentPage >= pageAmount ? pageAmount : currentPage + 1}`}
           >
             Sau
@@ -110,4 +100,4 @@ function Pagination({
   )
 }
 
-export default Pagination
+export default ShortPagination

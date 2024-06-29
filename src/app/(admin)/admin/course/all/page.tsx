@@ -2,7 +2,7 @@
 
 import ConfirmDialog from '@/components/dialogs/ConfirmDialog'
 import Input from '@/components/Input'
-import Pagination from '@/components/Pagination'
+import Pagination from '@/components/layouts/Pagination'
 import AdminHeader from '@/components/admin/AdminHeader'
 import AdminMeta from '@/components/admin/AdminMeta'
 import CourseItem from '@/components/admin/CourseItem'
@@ -376,7 +376,8 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
               setSelectedFilterCates(
                 cates.length === selectedFilterCates.length ? [] : cates.map(category => category._id)
               )
-            }>
+            }
+          >
             All
           </div>
           {cates.map(category => (
@@ -392,7 +393,8 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
                 selectedFilterCates.includes(category._id)
                   ? () => setSelectedFilterCates(prev => prev.filter(id => id !== category._id))
                   : () => setSelectedFilterCates(prev => [...prev, category._id])
-              }>
+              }
+            >
               {category.title}
             </div>
           ))}
@@ -411,7 +413,8 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
               setSelectedFilterTags(
                 tgs.length === selectedFilterTags.length ? [] : tgs.map(tag => tag._id)
               )
-            }>
+            }
+          >
             All
           </div>
           {tgs.map(tag => (
@@ -427,7 +430,8 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
                 selectedFilterTags.includes(tag._id)
                   ? () => setSelectedFilterTags(prev => prev.filter(id => id !== tag._id))
                   : () => setSelectedFilterTags(prev => [...prev, tag._id])
-              }>
+              }
+            >
               {tag.title}
             </div>
           ))}
@@ -530,7 +534,8 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
             className='border border-sky-400 text-sky-400 rounded-lg px-3 py-2 hover:bg-sky-400 hover:text-white trans-200'
             onClick={() =>
               setSelectedCourses(selectedCourses.length > 0 ? [] : courses.map(course => course._id))
-            }>
+            }
+          >
             {selectedCourses.length > 0 ? 'Unselect All' : 'Select All'}
           </button>
 
@@ -540,7 +545,8 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
             selectedCourses.some(id => !courses.find(course => course._id === id)?.active) && (
               <button
                 className='border border-green-400 text-green-400 rounded-lg px-3 py-2 hover:bg-green-400 hover:text-white trans-200'
-                onClick={() => handleActivateCourses(selectedCourses, true)}>
+                onClick={() => handleActivateCourses(selectedCourses, true)}
+              >
                 Activate
               </button>
             )}
@@ -551,7 +557,8 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
             selectedCourses.some(id => courses.find(course => course._id === id)?.active) && (
               <button
                 className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-white trans-200'
-                onClick={() => handleActivateCourses(selectedCourses, false)}>
+                onClick={() => handleActivateCourses(selectedCourses, false)}
+              >
                 Deactivate
               </button>
             )}
@@ -563,7 +570,8 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
                 className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-white trans-200'
                 onClick={() => {
                   hanldeRemoveApplyingFlashsales(selectedCourses)
-                }}>
+                }}
+              >
                 Remove Flash Sale
               </button>
             )}
@@ -572,7 +580,8 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
           {!!selectedCourses.length && (
             <button
               className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-white trans-200'
-              onClick={() => setIsOpenConfirmModal(true)}>
+              onClick={() => setIsOpenConfirmModal(true)}
+            >
               Delete
             </button>
           )}

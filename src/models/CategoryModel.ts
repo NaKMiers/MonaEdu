@@ -4,9 +4,16 @@ const Schema = mongoose.Schema
 
 const CategorySchema = new Schema(
   {
+    parentId: {
+      type: Schema.Types.ObjectId,
+      ref: 'category',
+    },
     title: {
       type: String,
       required: true,
+    },
+    description: {
+      type: String,
     },
     slug: {
       type: String,
@@ -39,10 +46,15 @@ export default CategoryModel
 
 export interface ICategory {
   _id: string
+  parentId: string | ICategory
   title: string
+  description: string
   slug: string
   courseQuantity: number
   booted: boolean
   createdAt: string
   updatedAt: string
+
+  // subs
+  subs: ICategory[]
 }

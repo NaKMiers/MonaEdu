@@ -2,7 +2,7 @@
 
 import ConfirmDialog from '@/components/dialogs/ConfirmDialog'
 import Input from '@/components/Input'
-import Pagination from '@/components/Pagination'
+import Pagination from '@/components/layouts/Pagination'
 import AdminHeader from '@/components/admin/AdminHeader'
 import AdminMeta from '@/components/admin/AdminMeta'
 import TagItem from '@/components/admin/TagItem'
@@ -344,7 +344,8 @@ function AllTagsPage({ searchParams }: { searchParams?: { [key: string]: string[
           {/* Select All Button */}
           <button
             className='border border-sky-400 text-sky-400 rounded-lg px-3 py-2 hover:bg-sky-400 hover:text-white trans-200'
-            onClick={() => setSelectedTags(selectedTags.length > 0 ? [] : tags.map(tag => tag._id))}>
+            onClick={() => setSelectedTags(selectedTags.length > 0 ? [] : tags.map(tag => tag._id))}
+          >
             {selectedTags.length > 0 ? 'Unselect All' : 'Select All'}
           </button>
 
@@ -355,7 +356,8 @@ function AllTagsPage({ searchParams }: { searchParams?: { [key: string]: string[
                 className='border border-green-500 text-green-500 rounded-lg px-3 py-2 hover:bg-green-500 hover:text-white trans-200'
                 onClick={() =>
                   handleSaveEditingTags(editingValues.filter(value => selectedTags.includes(value._id)))
-                }>
+                }
+              >
                 Save All
               </button>
               {/* Cancel Many Button */}
@@ -365,7 +367,8 @@ function AllTagsPage({ searchParams }: { searchParams?: { [key: string]: string[
                   // cancel editing values are selected
                   setEditingTags(editingTags.filter(id => !selectedTags.includes(id)))
                   setEditingValues(editingValues.filter(value => !selectedTags.includes(value._id)))
-                }}>
+                }}
+              >
                 Cancel
               </button>
             </>
@@ -376,7 +379,8 @@ function AllTagsPage({ searchParams }: { searchParams?: { [key: string]: string[
             selectedTags.some(id => !tags.find(tag => tag._id === id)?.booted) && (
               <button
                 className='border border-green-400 text-green-400 rounded-lg px-3 py-2 hover:bg-green-400 hover:text-white trans-200'
-                onClick={() => handleBootTags(selectedTags, true)}>
+                onClick={() => handleBootTags(selectedTags, true)}
+              >
                 Mark
               </button>
             )}
@@ -386,7 +390,8 @@ function AllTagsPage({ searchParams }: { searchParams?: { [key: string]: string[
             selectedTags.some(id => tags.find(tag => tag._id === id)?.booted) && (
               <button
                 className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-white trans-200'
-                onClick={() => handleBootTags(selectedTags, false)}>
+                onClick={() => handleBootTags(selectedTags, false)}
+              >
                 Unmark
               </button>
             )}
@@ -395,7 +400,8 @@ function AllTagsPage({ searchParams }: { searchParams?: { [key: string]: string[
           {!!selectedTags.length && (
             <button
               className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-white trans-200'
-              onClick={() => setIsOpenConfirmModal(true)}>
+              onClick={() => setIsOpenConfirmModal(true)}
+            >
               Delete
             </button>
           )}

@@ -1,188 +1,162 @@
 import { ICategory } from '@/models/CategoryModel'
-import React, { useState } from 'react'
-import { FaCheck, FaSave, FaTrash } from 'react-icons/fa'
-import { MdCancel, MdEdit } from 'react-icons/md'
-import { RiDonutChartFill } from 'react-icons/ri'
+import React, { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react'
+import { FaChevronUp } from 'react-icons/fa'
 import ConfirmDialog from '../dialogs/ConfirmDialog'
+import { bootCategoriesApi, deleteCategoryApi } from '@/requests'
+import toast from 'react-hot-toast'
+import CategoryModal from './CategoryModal'
 
 interface CategoryItemProps {
   data: ICategory
-  loadingCategories: string[]
+  setCategories: Dispatch<SetStateAction<ICategory[]>>
   className?: string
-
-  selectedCategories: string[]
-  setSelectedCategories: React.Dispatch<React.SetStateAction<string[]>>
-
-  editingCategories: string[]
-  setEditingCategories: React.Dispatch<React.SetStateAction<string[]>>
-
-  editingValues: { _id: string; title: string }[]
-  setEditingValues: React.Dispatch<React.SetStateAction<{ _id: string; title: string }[]>>
-
-  handleSaveEditingCategories: (editingValues: { _id: string; value: string }[]) => void
-  handleDeleteCategories: (ids: string[]) => void
-  handleBootCategories: (ids: string[], booted: boolean) => void
 }
 
-function CategoryItem({
-  data,
-  loadingCategories,
-  className = '',
-  // selected
-  selectedCategories,
-  setSelectedCategories,
-  // editing
-  editingCategories,
-  setEditingCategories,
-  // values
-  editingValues,
-  setEditingValues,
-  // functions
-  handleSaveEditingCategories,
-  handleDeleteCategories,
-  handleBootCategories,
-}: CategoryItemProps) {
+function CategoryItem({ data: category, setCategories, className = '' }: CategoryItemProps) {
   // states
+  const [data, setData] = useState<ICategory>(category)
+  const [open, setOpen] = useState<boolean>(true)
+
+  // delete
+  const [deleting, setDeleting] = useState<boolean>(false)
   const [isOpenConfirmModal, setIsOpenConfirmModal] = useState<boolean>(false)
+
+  // add
+  const [openAddCategoryModal, setOpenAddCategoryModal] = useState<boolean>(false)
+
+  // edit
+  const [openEditCategoryModal, setOpenEditCategoryModal] = useState<boolean>(false)
+
+  // update data
+  useEffect(() => {
+    setData(category)
+  }, [category])
+
+  // feature category
+  const handleBootCategory = useCallback(async () => {
+    try {
+      // send request to server
+      const { category, message } = await bootCategoriesApi(data._id, !data.booted)
+
+      // update categories from state
+      setData(category)
+
+      // show success message
+      toast.success(message)
+    } catch (err: any) {
+      console.log(err)
+      toast.error(err.message)
+    }
+  }, [data])
+
+  // delete category
+  const handleDeleteCategory = useCallback(async () => {
+    setDeleting(true)
+
+    try {
+      // send request to server
+      const { category, message } = await deleteCategoryApi(data._id)
+
+      console.log('category', category)
+
+      // remove deleted categories from state
+      setCategories(prev => prev.filter(ctg => ctg._id !== category._id))
+
+      // show success message
+      toast.success(message)
+    } catch (err: any) {
+      console.log(err)
+      toast.error(err.message)
+    } finally {
+      setDeleting(false)
+    }
+  }, [data._id, setCategories])
 
   return (
     <>
       <div
-        className={`flex flex-col p-4 rounded-lg shadow-lg text-dark cursor-pointer trans-200 ${
-          selectedCategories.includes(data._id) ? 'bg-violet-50 -translate-y-1' : 'bg-white'
-        } ${className}`}
-        key={data._id}
-        onClick={() =>
-          setSelectedCategories(prev =>
-            prev.includes(data._id) ? prev.filter(id => id !== data._id) : [...prev, data._id]
-          )
-        }>
-        {/* MARK: Body */}
-        {editingCategories.includes(data._id) ? (
-          // Category Title Input
-          <input
-            className='w-full mb-2 rounded-lg py-2 px-4 text-dark outline-none border border-slate-300'
-            type='text'
-            value={editingValues.find(t => t._id === data._id)?.title}
-            onClick={e => e.stopPropagation()}
-            disabled={loadingCategories.includes(data._id)}
-            onChange={e =>
-              setEditingValues(prev =>
-                prev.map(t => (t._id === data._id ? { _id: data._id, title: e.target.value } : t))
-              )
-            }
-          />
-        ) : (
-          // Category Title
-          <p className='font-semibold' title={data.slug}>
-            {data.title}
-          </p>
-        )}
-
-        {/* Course Quantity */}
-        <p className='font-semibold mb-2' title={`Course Quantity: ${data.courseQuantity}`}>
-          <span>Pr.Q:</span> <span className='text-primary'>{data.courseQuantity}</span>
-        </p>
-
-        {/* MARK: Action Buttons */}
-        <div className='flex self-end border border-dark rounded-lg px-3 py-2 gap-4'>
-          {/* Feature Button */}
-          {!editingCategories.includes(data._id) && (
-            <button
-              className='block group'
-              onClick={e => {
-                e.stopPropagation()
-                handleBootCategories([data._id], !data.booted)
-              }}
-              disabled={loadingCategories.includes(data._id)}
-              title={data.booted ? 'Boot' : 'Unboot'}>
-              <FaCheck
-                size={18}
-                className={`wiggle ${data.booted ? 'text-green-500' : 'text-slate-300'}`}
-              />
-            </button>
-          )}
-
-          {/* Edit Button */}
-          {!editingCategories.includes(data._id) && (
-            <button
-              className='block group'
-              onClick={e => {
-                e.stopPropagation()
-                setEditingCategories(prev => (!prev.includes(data._id) ? [...prev, data._id] : prev))
-                setEditingValues(prev =>
-                  !prev.some(cate => cate._id === data._id)
-                    ? [...prev, { _id: data._id, title: data.title }]
-                    : prev
-                )
-              }}
-              title='Edit'>
-              <MdEdit size={18} className='wiggle' />
-            </button>
-          )}
-
-          {/* Save Button */}
-          {editingCategories.includes(data._id) && (
-            <button
-              className='block group'
-              onClick={e => {
-                e.stopPropagation()
-                handleSaveEditingCategories([editingValues.find(cate => cate._id === data._id)] as any[])
-              }}
-              disabled={loadingCategories.includes(data._id)}
-              title='Save'>
-              {loadingCategories.includes(data._id) ? (
-                <RiDonutChartFill size={18} className='animate-spin text-slate-300' />
-              ) : (
-                <FaSave size={18} className='wiggle text-green-500' />
-              )}
-            </button>
-          )}
-
-          {/* Cancel Button */}
-          {editingCategories.includes(data._id) && !loadingCategories.includes(data._id) && (
-            <button
-              className='block group'
-              onClick={e => {
-                e.stopPropagation()
-                setEditingCategories(prev =>
-                  prev.includes(data._id) ? prev.filter(id => id !== data._id) : prev
-                )
-                setEditingValues(prev => prev.filter(cate => cate._id !== data._id))
-              }}
-              title='Cancel'>
-              <MdCancel size={20} className='wiggle text-slate-300' />
-            </button>
-          )}
-
-          {/* Delete Button */}
-          {!editingCategories.includes(data._id) && (
-            <button
-              className='block group'
-              onClick={e => {
-                e.stopPropagation()
-                setIsOpenConfirmModal(true)
-              }}
-              disabled={loadingCategories.includes(data._id)}
-              title='Delete'>
-              {loadingCategories.includes(data._id) ? (
-                <RiDonutChartFill size={18} className='animate-spin text-slate-300' />
-              ) : (
-                <FaTrash size={18} className='wiggle' />
-              )}
-            </button>
-          )}
+        className={`overflow-hidden flex items-center justify-between gap-3 trans-300 bg-white text-dark rounded-lg px-3 py-1.5 hover:bg-secondary hover:text-white cursor-pointer ${className}`}
+        onClick={() => setOpen(!open)}
+      >
+        <span>{data.title}</span>
+        <div className='flex items-center gap-2'>
+          <button
+            onClick={e => {
+              e.stopPropagation()
+              setOpenAddCategoryModal(true)
+            }}
+            className='rounded-lg text-xs border-2 border-dark px-2 py-1 bg-white text-dark hover:bg-primary trans-200'
+          >
+            Add
+          </button>
+          <button
+            onClick={e => {
+              e.stopPropagation()
+              setOpenEditCategoryModal(true)
+            }}
+            className='rounded-lg text-xs border-2 border-dark px-2 py-1 bg-white text-dark hover:bg-primary trans-200'
+          >
+            Edit
+          </button>
+          <button
+            onClick={e => {
+              e.stopPropagation()
+              handleBootCategory()
+            }}
+            className={`rounded-lg text-xs border-2 border-dark px-2 py-1 text-dark hover:bg-primary trans-200 ${
+              data.booted ? 'bg-primary font-semibold' : 'bg-white'
+            }`}
+          >
+            Boot
+          </button>
+          <button
+            onClick={e => {
+              e.stopPropagation()
+              setIsOpenConfirmModal(true)
+            }}
+            className='rounded-lg text-xs border-2 border-dark px-2 py-1 bg-white text-dark hover:bg-rose-300 trans-200'
+          >
+            Delete
+          </button>
+          <FaChevronUp size={20} className={`${open ? 'rotate-180' : ''} trans-300`} />
         </div>
       </div>
 
-      {/* Confirm Dialog */}
+      {/* Sub Categories */}
+      {/* <div className={`flex flex-col gap-2 ${open ? 'max-h-auto' : 'max-h-0 p-0'}`}>
+        {data.subs?.map(category => (
+          <CategoryItem
+            data={category}
+            key={category._id}
+          />
+        ))}
+      </div> */}
+
+      {/* Add Category Modal */}
+      <CategoryModal
+        title={`Add Category for: ${data.title}`}
+        open={openAddCategoryModal}
+        setOpen={setOpenAddCategoryModal}
+        setCategories={setCategories}
+      />
+
+      {/* Edit Category Modal */}
+      <CategoryModal
+        title={`Edit Category for: ${data.title}`}
+        open={openEditCategoryModal}
+        setOpen={setOpenEditCategoryModal}
+        setCategories={setCategories}
+        category={data}
+      />
+
+      {/* Delete Confirm Dialog */}
       <ConfirmDialog
         open={isOpenConfirmModal}
         setOpen={setIsOpenConfirmModal}
         title='Delete Category'
         content='Are you sure that you want to delete this category?'
-        onAccept={() => handleDeleteCategories([data._id])}
-        isLoading={loadingCategories.includes(data._id)}
+        onAccept={handleDeleteCategory}
+        isLoading={deleting}
       />
     </>
   )

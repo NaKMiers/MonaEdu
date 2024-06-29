@@ -2,7 +2,7 @@
 
 import ConfirmDialog from '@/components/dialogs/ConfirmDialog'
 import Input from '@/components/Input'
-import Pagination from '@/components/Pagination'
+import Pagination from '@/components/layouts/Pagination'
 import AdminHeader from '@/components/admin/AdminHeader'
 import AdminMeta from '@/components/admin/AdminMeta'
 import FlashSaleItem from '@/components/admin/FlashSaleItem'
@@ -378,7 +378,8 @@ function AllFlashSalesPage({ searchParams }: { searchParams?: { [key: string]: s
               setSelectedFlashSales(
                 selectedFlashSales.length > 0 ? [] : flashSales.map(flashSale => flashSale._id)
               )
-            }>
+            }
+          >
             {selectedFlashSales.length > 0 ? 'Unselect All' : 'Select All'}
           </button>
 
@@ -386,7 +387,8 @@ function AllFlashSalesPage({ searchParams }: { searchParams?: { [key: string]: s
           {!!selectedFlashSales.length && (
             <button
               className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-white trans-200'
-              onClick={() => setIsOpenConfirmModal(true)}>
+              onClick={() => setIsOpenConfirmModal(true)}
+            >
               Delete
             </button>
           )}

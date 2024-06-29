@@ -100,7 +100,8 @@ function AddCategoryPage() {
           />
           <label
             className='select-none cursor-pointer border border-green-500 px-4 py-2 rounded-lg trans-200 bg-white text-green-500 peer-checked:bg-green-500 peer-checked:text-white'
-            htmlFor='booted'>
+            htmlFor='booted'
+          >
             Booted
           </label>
         </div>

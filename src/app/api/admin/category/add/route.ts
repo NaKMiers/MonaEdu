@@ -14,20 +14,19 @@ export async function POST(req: NextRequest) {
     await connectDatabase()
 
     // get data field to add new category
-    const { title, booted } = await req.json()
+    const { parentId, title, description, booted } = await req.json()
 
     // create new category
-    const newCategory = new CategoryModel({
+    const category: ICategory = await CategoryModel.create({
+      parentId: parentId || null,
       title: title.trim(),
+      description: description.trim(),
       booted: !!booted,
-    } as ICategory)
-
-    // save new category to database
-    await newCategory.save()
+    })
 
     // stay current page
     return NextResponse.json(
-      { message: `Category "${newCategory.title}" has been created` },
+      { category, message: `Category "${category.title}" has been created` },
       { status: 201 }
     )
   } catch (err: any) {

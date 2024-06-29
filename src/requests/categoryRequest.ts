@@ -71,8 +71,8 @@ export const addCategoryApi = async (data: any) => {
 }
 
 // [PUT]
-export const updateCategoryApi = async (slug: string, data: any) => {
-  const res = await fetch(`/api/admin/category/${slug}/edit`, {
+export const updateCategoryApi = async (id: string, data: any) => {
+  const res = await fetch(`/api/admin/category/${id}/edit`, {
     method: 'PUT',
     body: JSON.stringify(data),
   })
@@ -85,26 +85,11 @@ export const updateCategoryApi = async (slug: string, data: any) => {
   return await res.json()
 }
 
-// [PUT]
-export const updateCategoriesApi = async (editingValues: EditingValues[]) => {
-  const res = await fetch('/api/admin/category/edit', {
-    method: 'PUT',
-    body: JSON.stringify({ editingValues }),
-  })
-
-  // check status
-  if (!res.ok) {
-    throw new Error((await res.json()).message)
-  }
-
-  return await res.json()
-}
-
 // [PATCH]
-export const bootCategoriesApi = async (ids: string[], value: boolean) => {
-  const res = await fetch('/api/admin/category/boot', {
+export const bootCategoriesApi = async (id: string, value: boolean) => {
+  const res = await fetch(`/api/admin/category/${id}/boot`, {
     method: 'PATCH',
-    body: JSON.stringify({ ids, value }),
+    body: JSON.stringify({ value }),
   })
 
   // check status
@@ -116,10 +101,9 @@ export const bootCategoriesApi = async (ids: string[], value: boolean) => {
 }
 
 // [DELETE]
-export const deleteCategoriesApi = async (ids: string[]) => {
-  const res = await fetch('/api/admin/category/delete', {
+export const deleteCategoryApi = async (id: string) => {
+  const res = await fetch(`/api/admin/category/${id}/delete`, {
     method: 'DELETE',
-    body: JSON.stringify({ ids }),
   })
 
   // check status
