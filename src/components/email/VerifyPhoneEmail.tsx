@@ -3,7 +3,7 @@ import { theme } from '../../../tailwind.config'
 
 function VerifyPhoneEmail({
   name = 'Nguyễn Pi Pi',
-  link = 'https://ere-eta.vercel.app?token=1234567890',
+  link = 'https://monaedu.com?token=1234567890',
 }: {
   name?: string
   link?: string
@@ -19,10 +19,10 @@ function VerifyPhoneEmail({
           <Section className='inline-block mx-auto'>
             <Row className='mb-3 w-full'>
               <Column>
-                <a href='https://ere-eta.vercel.app'>
+                <a href='https://monaedu.com'>
                   <Img
                     className='aspect-square rounded-full'
-                    src={`${'https://ere-eta.vercel.app'}/images/logo.jpg`}
+                    src={`${'https://monaedu.com'}/images/logo.jpg`}
                     width={35}
                     height={35}
                     alt='logo'
@@ -31,7 +31,7 @@ function VerifyPhoneEmail({
               </Column>
               <Column>
                 <a
-                  href='https://ere-eta.vercel.app'
+                  href='https://monaedu.com'
                   className='text-2xl font-bold tracking-[0.3px] no-underline text-dark'
                 >
                   MonaEdu
@@ -99,7 +99,7 @@ function VerifyPhoneEmail({
             <Img
               className='max-w-full'
               width={620}
-              src={`${'https://ere-eta.vercel.app'}/images/footer-banner.jpg`}
+              src={`${'https://monaedu.com'}/images/footer-banner.jpg`}
             />
           </div>
 
@@ -114,12 +114,7 @@ function VerifyPhoneEmail({
               rel='noreferrer'
               className='inline-block'
             >
-              <Img
-                src={`${'https://ere-eta.vercel.app'}/images/zalo.jpg`}
-                width={35}
-                height={35}
-                alt='zalo'
-              />
+              <Img src={`${'https://monaedu.com'}/images/zalo.jpg`} width={35} height={35} alt='zalo' />
             </a>
             <a
               href='https://www.messenger.com/t/170660996137305'
@@ -128,7 +123,7 @@ function VerifyPhoneEmail({
               className='inline-block ml-2'
             >
               <Img
-                src={`${'https://ere-eta.vercel.app'}/images/messenger.jpg`}
+                src={`${'https://monaedu.com'}/images/messenger.jpg`}
                 width={35}
                 height={35}
                 alt='messenger'

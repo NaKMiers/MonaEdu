@@ -18,10 +18,10 @@ export function SummaryEmail({ summary = summarySample }: { summary?: any }) {
           <Section className='inline-block mx-auto'>
             <Row className='mb-3 w-full'>
               <Column>
-                <a href='https://ere-eta.vercel.app'>
+                <a href='https://monaedu.com'>
                   <Img
                     className='aspect-square rounded-full'
-                    src={`${'https://ere-eta.vercel.app'}/images/logo.jpg`}
+                    src={`${'https://monaedu.com'}/images/logo.jpg`}
                     width={35}
                     height={35}
                     alt='logo'
@@ -30,7 +30,7 @@ export function SummaryEmail({ summary = summarySample }: { summary?: any }) {
               </Column>
               <Column>
                 <a
-                  href='https://ere-eta.vercel.app'
+                  href='https://monaedu.com'
                   className='text-2xl font-bold tracking-[0.3px] no-underline text-dark'
                 >
                   MonaEdu
@@ -46,10 +46,7 @@ export function SummaryEmail({ summary = summarySample }: { summary?: any }) {
             }}
           >
             <div>
-              <Img
-                src='https://ere-eta.vercel.app/images/brand-banner.jpg'
-                className='w-full object-cover'
-              />
+              <Img src='https://monaedu.com/images/brand-banner.jpg' className='w-full object-cover' />
             </div>
 
             <Row className='p-4'>
@@ -135,7 +132,7 @@ export function SummaryEmail({ summary = summarySample }: { summary?: any }) {
             <Img
               className='max-w-full'
               width={620}
-              src={`${'https://ere-eta.vercel.app'}/images/footer-banner.jpg`}
+              src={`${'https://monaedu.com'}/images/footer-banner.jpg`}
             />
           </div>
 
@@ -150,12 +147,7 @@ export function SummaryEmail({ summary = summarySample }: { summary?: any }) {
               rel='noreferrer'
               className='inline-block'
             >
-              <Img
-                src={`${'https://ere-eta.vercel.app'}/images/zalo.jpg`}
-                width={35}
-                height={35}
-                alt='zalo'
-              />
+              <Img src={`${'https://monaedu.com'}/images/zalo.jpg`} width={35} height={35} alt='zalo' />
             </a>
             <a
               href='https://www.messenger.com/t/170660996137305'
@@ -164,7 +156,7 @@ export function SummaryEmail({ summary = summarySample }: { summary?: any }) {
               className='inline-block ml-2'
             >
               <Img
-                src={`${'https://ere-eta.vercel.app'}/images/messenger.jpg`}
+                src={`${'https://monaedu.com'}/images/messenger.jpg`}
                 width={35}
                 height={35}
                 alt='messenger'

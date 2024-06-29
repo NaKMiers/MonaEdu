@@ -15,10 +15,10 @@ export function OrderEmail({ order = orderSample }: { order?: any }) {
           <Section className='inline-block mx-auto'>
             <Row className='mb-3 w-full'>
               <Column>
-                <a href='https://ere-eta.vercel.app'>
+                <a href='https://monaedu.com'>
                   <Img
                     className='aspect-square rounded-full'
-                    src={`${'https://ere-eta.vercel.app'}/images/logo.png`}
+                    src={`${'https://monaedu.com'}/images/logo.png`}
                     width={35}
                     height={35}
                     alt='logo'
@@ -27,7 +27,7 @@ export function OrderEmail({ order = orderSample }: { order?: any }) {
               </Column>
               <Column>
                 <a
-                  href='https://ere-eta.vercel.app'
+                  href='https://monaedu.com'
                   className='text-2xl font-bold tracking-[0.3px] no-underline text-dark'
                 >
                   MonaEdu
@@ -43,10 +43,7 @@ export function OrderEmail({ order = orderSample }: { order?: any }) {
             }}
           >
             <div>
-              <Img
-                src='https://ere-eta.vercel.app/images/brand-banner.jpg'
-                className='w-full object-cover'
-              />
+              <Img src='https://monaedu.com/images/brand-banner.jpg' className='w-full object-cover' />
             </div>
 
             <Row className='p-4'>
@@ -103,7 +100,7 @@ export function OrderEmail({ order = orderSample }: { order?: any }) {
                   <b className='text-[24px]'>Course: </b>
 
                   <a
-                    href={`https://ere-eta.vercel.app/${order.item.slug}`}
+                    href={`https://monaedu.com/${order.item.slug}`}
                     className='block h-full text-dark tracking-wider no-underline mt-2'
                   >
                     <Section>
@@ -128,7 +125,7 @@ export function OrderEmail({ order = orderSample }: { order?: any }) {
             {order.userId && (
               <div className='text-center p-3 mb-8'>
                 <a
-                  href={`https://ere-eta.vercel.app/learning/${order.item._id}/start`}
+                  href={`https://monaedu.com/learning/${order.item._id}/start`}
                   className='inline bg-sky-500 no-underline rounded-lg text-white font-semibold cursor-pointer py-3 px-7 border-0'
                 >
                   Learn Now
@@ -141,7 +138,7 @@ export function OrderEmail({ order = orderSample }: { order?: any }) {
             <Img
               className='max-w-full'
               width={620}
-              src={`${'https://ere-eta.vercel.app'}/images/footer-banner.jpg`}
+              src={`${'https://monaedu.com'}/images/footer-banner.jpg`}
             />
           </div>
 
@@ -156,12 +153,7 @@ export function OrderEmail({ order = orderSample }: { order?: any }) {
               rel='noreferrer'
               className='inline-block'
             >
-              <Img
-                src={`${'https://ere-eta.vercel.app'}/images/zalo.jpg`}
-                width={35}
-                height={35}
-                alt='zalo'
-              />
+              <Img src={`${'https://monaedu.com'}/images/zalo.jpg`} width={35} height={35} alt='zalo' />
             </a>
             <a
               href='https://www.messenger.com/t/170660996137305'
@@ -170,7 +162,7 @@ export function OrderEmail({ order = orderSample }: { order?: any }) {
               className='inline-block ml-2'
             >
               <Img
-                src={`${'https://ere-eta.vercel.app'}/images/messenger.jpg`}
+                src={`${'https://monaedu.com'}/images/messenger.jpg`}
                 width={35}
                 height={35}
                 alt='messenger'

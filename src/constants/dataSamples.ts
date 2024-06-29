@@ -5,7 +5,7 @@ export const commentData = {
   receiverEmail: 'anphashop.beta@gmail.com',
   content: 'This is a great post! Thanks for sharing.',
   time: '2024-04-12T10:30:00Z',
-  slug: 'https://ere-eta.vercel.app/netflix-premium-1-tuan-sieu-net-sieu-tien-loi',
+  slug: 'https://monaedu.com/netflix-premium-1-tuan-sieu-net-sieu-tien-loi',
 }
 
 export const expiredData = {
