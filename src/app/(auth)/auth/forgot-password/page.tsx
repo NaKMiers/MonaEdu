@@ -102,7 +102,7 @@ function ForgotPasswordPage() {
   return (
     <div className='h-screen w-full lg:px-[46px] lg:py-[52px] overflow-hidden'>
       <GradientBackground className='relative flex justify-center bg-neutral-950 h-full w-full py-9 px-21 rounded-3xl shadow-lg overflow-hidden'>
-        <BackgroundBeams />
+        {/* <BackgroundBeams /> */}
 
         <div className='hidden lg:block absolute top-0 left-0 w-[60%]'>
           <Image
@@ -193,12 +193,14 @@ function ForgotPasswordPage() {
             />
           )}
 
-          <Link
-            href='/auth/login'
-            className='block w-full text-right text-sm underline underline-offset-2 mt-2'
-          >
-            Quay lại đăng nhập
-          </Link>
+          <div className='flex justify-end'>
+            <Link
+              href='/auth/login'
+              className='block text-right text-sm underline underline-offset-2 mt-2'
+            >
+              Quay lại đăng nhập
+            </Link>
+          </div>
 
           <Divider size={4} />
 

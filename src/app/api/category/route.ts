@@ -15,8 +15,10 @@ export async function GET(req: NextRequest) {
     // connect to database
     await connectDatabase()
 
-    // get all categories from database
-    const categories = await CategoryModel.find().lean()
+    // get all parent categories
+    const categories = await CategoryModel.find({
+      parentId: null,
+    }).sort({ createdAt: -1 })
 
     // return categories
     return NextResponse.json({ categories }, { status: 200 })

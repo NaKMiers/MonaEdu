@@ -1,13 +1,21 @@
 import BreadcrumbBanner from '@/components/BreadcrumbBanner'
 import Divider from '@/components/Divider'
-import FilterAndSearch from '@/components/FilterAndSearch'
-import Pagination from '@/components/layouts/Pagination'
-import ShortPagination from '@/components/layouts/ShortPagination'
 import { ICategory } from '@/models/CategoryModel'
+import { getAllParentCategoriesApi } from '@/requests'
+import { redirect } from 'next/navigation'
 
-function CategoriesPage({ searchParams }: { searchParams?: { [key: string]: string[] } }) {
+async function CategoriesPage() {
   // data
-  const category: ICategory | null = null
+  let categories: ICategory[] = []
+
+  try {
+    const data = await getAllParentCategoriesApi(process.env.NEXT_PUBLIC_APP_URL)
+    categories = data.categories
+
+    console.log('categories: ', data.categories)
+  } catch (err: any) {
+    // return redirect('/')
+  }
 
   return (
     <div>
@@ -22,39 +30,12 @@ function CategoriesPage({ searchParams }: { searchParams?: { [key: string]: stri
 
       {/* Body */}
       <div className='px-21'>
-        <div className='grid grid-cols-12 bg-white rounded-lg gap-21 p-21 shadow-lg'>
-          {/* Filter & Search */}
-          <div className='col-span-3'>
-            <FilterAndSearch />
-          </div>
-
-          {/* List */}
-          <div className='col-span-9'>
-            {/* Top */}
-            <div className='flex justify-between'>
-              <div className='flex gap-3 items-center'>
-                {['Liên quan', 'Phổ biến', 'Mới nhất'].map((item, index) => (
-                  <button
-                    className='rounded-3xl text-nowrap shadow-md text-lg px-3 py-1.5 font-semibold font-body tracking-wider border-2 border-secondary hover:border-secondary hover:bg-primary text-secondary drop-shadow-md hover:text-dark hover:shadow-lg trans-300'
-                    key={index}
-                  >
-                    {item}
-                  </button>
-                ))}
-              </div>
-
-              {/* Mini Pagination */}
-              <ShortPagination
-                searchParams={searchParams}
-                amount={175}
-                itemsPerPage={16}
-                className='justify-end'
-              />
+        <div className='grid grid-cols-4 gap-21'>
+          {categories.map(category => (
+            <div key={category._id}>
+              <p className='text-white'>{category.title}</p>
             </div>
-
-            {/* Pagination */}
-            <Pagination dark searchParams={searchParams} amount={175} itemsPerPage={16} />
-          </div>
+          ))}
         </div>
       </div>
 

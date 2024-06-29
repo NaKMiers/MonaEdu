@@ -1,7 +1,5 @@
 // Category -------------------------------------
 
-import { EditingValues } from '@/app/(admin)/admin/category/all/page'
-
 // [GET]
 export const getCategoriesApi = async (query: string = '') => {
   // no cache
@@ -14,6 +12,18 @@ export const getCategoriesApi = async (query: string = '') => {
   }
 
   return data
+}
+
+// [GET]: /category/all
+export const getAllParentCategoriesApi = async (prefix: string = '') => {
+  const res = await fetch(`${prefix}/api/category`, { next: { revalidate: 0 } })
+
+  // check status
+  if (!res.ok) {
+    throw new Error((await res.json()).message)
+  }
+
+  return await res.json()
 }
 
 // [GET]

@@ -89,7 +89,7 @@ function LoginPage() {
   return (
     <div className='h-screen w-full lg:px-[46px] lg:py-[52px] overflow-hidden'>
       <GradientBackground className='relative flex justify-center bg-neutral-950 h-full w-full py-9 px-21 rounded-3xl shadow-lg overflow-hidden'>
-        <BackgroundBeams />
+        {/* <BackgroundBeams /> */}
 
         <div className='hidden lg:block absolute top-0 left-0 w-[60%]'>
           <Image
@@ -177,12 +177,14 @@ function LoginPage() {
             onFocus={() => clearErrors('password')}
           />
 
-          <Link
-            href='/auth/forgot-password'
-            className='block w-full text-right text-sm underline underline-offset-2 mt-2'
-          >
-            Quên mật khẩu?
-          </Link>
+          <div className='flex justify-end'>
+            <Link
+              href='/auth/forgot-password'
+              className='block text-right text-sm underline underline-offset-2 mt-2'
+            >
+              Quên mật khẩu?
+            </Link>
+          </div>
 
           <Divider size={4} />
 
