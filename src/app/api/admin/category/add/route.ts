@@ -14,14 +14,17 @@ export async function POST(req: NextRequest) {
     await connectDatabase()
 
     // get data field to add new category
-    const { parentId, title, description, booted } = await req.json()
+    const { parentId, title, description } = await req.json()
+
+    console.log('parentId', parentId)
+    console.log('title', title)
+    console.log('description', description)
 
     // create new category
     const category: ICategory = await CategoryModel.create({
       parentId: parentId || null,
       title: title.trim(),
       description: description.trim(),
-      booted: !!booted,
     })
 
     // stay current page

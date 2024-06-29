@@ -20,9 +20,14 @@ function BreadcrumbBanner({ className = '' }: BreadcrumbBannerProps) {
   const breadcrumbs = pathname.split('/').filter(path => path)
 
   return (
-    <div className={`h-[300px] mx-auto overflow-hidden ${className}`}>
+    <div className={`mx-auto overflow-hidden ${className}`}>
       <VortexBackground className='flex items-center flex-col justify-center px-2 md:px-10 py-4 w-full h-full'>
         <div className='flex items-center gap-3'>
+          <Link href='/' className='text-light hover:text-primary trans-200 hover:drop-shadow-md'>
+            Trang chủ
+          </Link>
+          <FaAngleRight size={14} className='text-white' />
+
           {breadcrumbs.map((breadcrumb, index) => (
             <>
               <Link href='/' className='text-light hover:text-primary trans-200 hover:drop-shadow-md'>

@@ -51,7 +51,7 @@ function Chapter({ chapter, courseId, lessonId = '', className = '' }: ChapterPr
         </p>
 
         <ul
-          className={`flex flex-col px-2 gap-[4px] ${open ? `` : 'max-h-0'} trans-300 overflow-hidden`}
+          className={`flex flex-col px-2 gap-[4px] ${open ? '' : 'max-h-0'} trans-300 overflow-hidden`}
           ref={chapterRef}
         >
           {chapter.lessons?.map(lesson => (

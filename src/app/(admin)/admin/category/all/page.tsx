@@ -31,15 +31,6 @@ function AllCategoriesPage({ searchParams }: { searchParams?: { [key: string]: s
   // values
   const itemPerPage = 10
 
-  // form
-  const defaultValues = useMemo<FieldValues>(
-    () => ({
-      sort: 'updatedAt|-1',
-      booted: '',
-    }),
-    []
-  )
-
   // MARK: Get Data
   // get all categories
   useEffect(() => {
@@ -52,7 +43,8 @@ function AllCategoriesPage({ searchParams }: { searchParams?: { [key: string]: s
 
       try {
         // sent request to server
-        const { categories, amount, chops } = await getAllCategoriesApi(query) // cache: no-store
+        const { categories, amount } = await getAllCategoriesApi(query) // cache: no-store
+        console.log('categories', categories)
 
         // set to states
         setCategories(categories)
@@ -97,8 +89,7 @@ function AllCategoriesPage({ searchParams }: { searchParams?: { [key: string]: s
 
       {/* MARK: Amount */}
       <div className='p-3 text-sm text-right text-white font-semibold'>
-        {Math.min(itemPerPage * +(searchParams?.page || 1), amount)}/{amount}{' '}
-        {amount > 1 ? 'categories' : 'category'}
+        {categories.length} {categories.length > 1 ? 'categories' : 'category'}
       </div>
 
       {/* MARK: MAIN LIST */}

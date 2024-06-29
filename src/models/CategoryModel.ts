@@ -56,5 +56,5 @@ export interface ICategory {
   updatedAt: string
 
   // subs
-  subs: ICategory[]
+  subs: any
 }

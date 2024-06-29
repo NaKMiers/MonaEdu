@@ -12,6 +12,7 @@ interface CategoryModalProps {
   open: boolean
   setOpen: Dispatch<SetStateAction<boolean>>
   setCategories: Dispatch<SetStateAction<ICategory[]>>
+  parentId?: string
   title: string
   category?: ICategory
   className?: string
@@ -21,6 +22,7 @@ function CategoryModal({
   open,
   setOpen,
   setCategories,
+  parentId,
   title,
   category,
   className = '',
@@ -33,12 +35,11 @@ function CategoryModal({
     register,
     handleSubmit,
     formState: { errors },
-    setError,
     reset,
     clearErrors,
   } = useForm<FieldValues>({
     defaultValues: {
-      parentId: category?._id || '',
+      parentId: category?._id || parentId || '',
       title: category?.title || '',
       description: category?.description || '',
     },
@@ -148,7 +149,6 @@ function CategoryModal({
               disabled={isLoading}
               register={register}
               errors={errors}
-              required
               type='textarea'
               labelBg='bg-white'
               className='min-w-[40%] mt-6'

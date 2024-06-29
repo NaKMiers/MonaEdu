@@ -15,7 +15,7 @@ function CategoriesPage({ searchParams }: { searchParams?: { [key: string]: stri
       <BreadcrumbBanner
         title='English'
         description='Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum, perspiciatis.'
-        className='shadow-medium rounded-b-lg'
+        className='shadow-medium rounded-b-lg h-[calc(300px+72px)] -mt-[72px] pt-[72px]'
       />
 
       <Divider size={10} />

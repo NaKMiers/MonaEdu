@@ -1,5 +1,5 @@
 import { connectDatabase } from '@/config/database'
-import CategoryModel from '@/models/CategoryModel'
+import CategoryModel, { ICategory } from '@/models/CategoryModel'
 import { searchParamsToObject } from '@/utils/handleQuery'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -52,24 +52,30 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    // get amount of lesson
-    const amount = await CategoryModel.countDocuments(filter)
-
     // get all categories from database
-    const categories = await CategoryModel.find(filter).sort(sort).skip(skip).limit(itemPerPage).lean()
+    const categories = await CategoryModel.find(filter).sort(sort).lean()
 
-    // get all order without filter
-    const chops = await CategoryModel.aggregate([
-      {
-        $group: {
-          _id: null,
-          mincourseQuantity: { $min: '$courseQuantity' },
-          maxcourseQuantity: { $max: '$courseQuantity' },
-        },
-      },
-    ])
+    // Function to build the tree
+    const buildTree = (categories: any[], parentId: string | null = null): any[] => {
+      return categories
+        .filter(
+          (category: any) =>
+            (category.parentId ? category.parentId.toString() : null) ===
+            (parentId ? parentId.toString() : null)
+        )
+        .map(category => ({
+          ...category,
+          subs: {
+            ref: category._id,
+            data: buildTree(categories, category._id),
+          },
+        }))
+    }
 
-    return NextResponse.json({ categories, amount, chops: chops[0] }, { status: 200 })
+    // Build and return the tree
+    const tree = buildTree(categories)
+
+    return NextResponse.json({ categories: tree }, { status: 200 })
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })
   }
