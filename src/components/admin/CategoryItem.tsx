@@ -35,20 +35,20 @@ function CategoryItem({ data: category, setCategories, className = '' }: Categor
     setData(category)
   }, [category])
 
-  useEffect(() => {
-    if (open && subCategories.length > 0) {
-      if (!subCategories.length || !categoryRef.current) return
+  // useEffect(() => {
+  //   if (open && subCategories.length > 0) {
+  //     if (!subCategories.length || !categoryRef.current) return
 
-      const origin = 52
-      const length = subCategories.length * 40
-      const totalGap = (subCategories.length - 1) * 4
-      const totalHeight = origin + length + totalGap
+  //     const origin = 52
+  //     const length = subCategories.length * 40
+  //     const totalGap = (subCategories.length - 1) * 4
+  //     const totalHeight = origin + length + totalGap
 
-      categoryRef.current.style.setProperty('max-height', `${totalHeight}px`)
-    } else {
-      categoryRef.current?.style.removeProperty('max-height')
-    }
-  }, [open, subCategories])
+  //     categoryRef.current.style.setProperty('max-height', `${totalHeight}px`)
+  //   } else {
+  //     categoryRef.current?.style.removeProperty('max-height')
+  //   }
+  // }, [open, subCategories])
 
   // feature category
   const handleBootCategory = useCallback(async () => {
@@ -146,7 +146,9 @@ function CategoryItem({ data: category, setCategories, className = '' }: Categor
 
       {/* Sub Categories */}
       <div
-        className={`flex flex-col gap-2 pl-8 overflow-hidden ${!open ? 'max-h-0 py-0' : ''} trans-300`}
+        className={`flex flex-col gap-2 pl-8 overflow-hidden ${
+          open ? 'max-h-auto' : 'max-h-0 py-0'
+        } trans-300`}
         ref={categoryRef}
       >
         {subCategories.map((category, index) => (
