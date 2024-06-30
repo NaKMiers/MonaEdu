@@ -66,7 +66,7 @@ function ShortPagination({
 
   return (
     pageAmount > 1 && (
-      <div className={`flex font-semibold gap-4 items-center w-full ${className}`}>
+      <div className={`flex font-semibold gap-4 items-center w-full min-h-[42px] ${className}`}>
         {/* MARK: Prev */}
         {currentPage != 1 && (
           <Link

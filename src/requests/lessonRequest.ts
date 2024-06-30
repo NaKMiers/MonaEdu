@@ -16,9 +16,9 @@ export const getAllChapterLessonsApi = async (chapterId: string, query: string =
 }
 
 // [GET]
-export const getLessonApi = async (id: string) => {
+export const getLessonApi = async (slug: string) => {
   // no-cache
-  const res = await fetch(`/api/lesson/${id}`, { cache: 'no-store' })
+  const res = await fetch(`/api/lesson/${slug}`, { cache: 'no-store' })
 
   // check status
   if (!res.ok) {

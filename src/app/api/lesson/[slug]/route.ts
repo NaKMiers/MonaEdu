@@ -10,8 +10,8 @@ import CommentModel from '@/models/CommentModel'
 
 export const dynamic = 'force-dynamic'
 
-// [GET]: /admin/lesson/:id
-export async function GET(req: NextRequest, { params: { id } }: { params: { id: string } }) {
+// [GET]: /admin/lesson/:slug
+export async function GET(req: NextRequest, { params: { slug } }: { params: { slug: string } }) {
   console.log('- Get Lesson -')
 
   try {
@@ -19,7 +19,7 @@ export async function GET(req: NextRequest, { params: { id } }: { params: { id: 
     await connectDatabase()
 
     // get lesson from database
-    const lesson: ILesson | null = await LessonModel.findById(id)
+    const lesson: ILesson | null = await LessonModel.findOne({ slug })
       .populate({
         path: 'courseId',
       })

@@ -11,6 +11,7 @@ import { FiFilter } from 'react-icons/fi'
 import { HiOutlineMenuAlt3 } from 'react-icons/hi'
 import Divider from './Divider'
 import SearchBar from './SearchBar'
+import { formatPrice } from '@/utils/number'
 
 interface FilterAndSearchProps {
   searchParams: { [key: string]: string[] | string } | undefined
@@ -26,7 +27,7 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
   // states
   // sidebars
   const [openSubs, setOpenSubs] = useState<boolean>(false)
-  const [openFilter, setOpenFilter] = useState<boolean>(true)
+  const [openFilter, setOpenFilter] = useState<boolean>(false)
   const subSidebarRef = useRef<HTMLDivElement>(null)
   const subSidebarMainRef = useRef<HTMLDivElement>(null)
   const filterSidebarRef = useRef<HTMLDivElement>(null)
@@ -35,7 +36,7 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
   // values
   const [search, setSearch] = useState<string>('')
 
-  const [price, setPrice] = useState<number[]>([50, 400])
+  const [price, setPrice] = useState<number[]>([50000, 400000])
   const [time, setTime] = useState<number[]>([10, 30])
 
   const [showSortPrice, setShowSortPrice] = useState(false)
@@ -224,15 +225,16 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
             <p className='flex justify-between gap-3 font-body tracking-wider text-slate-700 drop-shadow-md'>
               Giá:{' '}
               <span>
-                {time[0]} - {price[1]} đ
+                {formatPrice(price[0])} - {formatPrice(price[1])}
               </span>
             </p>
 
             <Slider
               getAriaLabel={() => 'Temperature range'}
               value={price}
-              min={100}
-              max={500}
+              min={0}
+              max={1000000}
+              step={10000}
               className='w-full -mb-1.5'
               onChange={(_, newValue: number | number[]) => setPrice(newValue as number[])}
               valueLabelDisplay='auto'

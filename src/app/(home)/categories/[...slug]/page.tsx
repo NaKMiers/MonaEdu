@@ -77,7 +77,7 @@ async function CategoriesPage({ searchParams }: { searchParams?: { [key: string]
             <Divider size={8} />
 
             {/* List */}
-            <div className='grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 md:mx-0 flex-1'>
+            <div className='grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 md:mx-0 flex-1'>
               {courses.map(course => (
                 <CourseCard course={course} key={course._id} />
               ))}

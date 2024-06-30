@@ -108,7 +108,7 @@ function CourseCard({ course, hideBadge, className = '' }: CourseCardProps) {
 
         <Divider size={2} />
 
-        <CardItem translateZ='50' className='text-xl font-bold text-neutral-600 dark:text-white'>
+        <CardItem translateZ={50} className='text-xl font-bold text-neutral-600 dark:text-white'>
           <Link
             href={`/${course.slug}`}
             prefetch={false}
@@ -121,14 +121,14 @@ function CourseCard({ course, hideBadge, className = '' }: CourseCardProps) {
 
         <CardItem
           as='p'
-          translateZ='60'
+          translateZ={30}
           className='text-ellipsis line-clamp-2 text-xs md:text-sm mb-2 text-neutral-300'
           title={course.description}
         >
           {course.description}
         </CardItem>
 
-        <CardItem translateZ='100' className='w-full'>
+        <CardItem translateZ={80} className='w-full'>
           <Link
             href={`/${course.slug}`}
             prefetch={false}
@@ -165,7 +165,7 @@ function CourseCard({ course, hideBadge, className = '' }: CourseCardProps) {
 
         <Divider size={2} />
 
-        <CardItem translateZ='40' className='w-full text-xl font-bold text-neutral-600 dark:text-white'>
+        <CardItem translateZ={40} className='w-full text-xl font-bold text-neutral-600 dark:text-white'>
           <Price
             price={course.price}
             oldPrice={course.oldPrice}
@@ -179,40 +179,42 @@ function CourseCard({ course, hideBadge, className = '' }: CourseCardProps) {
         <div className='flex flex-1 items-end justify-between'>
           <CardItem translateZ={80} className='flex items-center gap-1 w-full'>
             <button
-              className='font-semibold h-[42px] flex w-full items-center justify-center rounded-lg shadow-lg bg-dark-100 text-white border-2 border-dark hover:bg-white hover:text-dark trans-300 hover:-translate-y-1'
+              className='font-semibold h-[42px] flex w-full items-center justify-center rounded-lg shadow-lg bg-dark-100 text-white border-2 border-dark hover:bg-white hover:text-dark trans-300 hover:-translate-y-1 px-2'
               onClick={e => {
                 if (curUser?.courses.map((course: any) => course.course).includes(course._id)) {
-                  router.push(`/learning/${course?._id}/continue`)
+                  router.push(`/learning/${course?.slug}/continue`)
                 } else {
                   buyNow()
                 }
               }}
             >
-              <span className='block text-xs sm:text-sm md:text-base text-ellipsis text-nowrap line-clamp-1 max-w-[60px] sm:max-w-max'>
+              <span className='block sm:text-sm md:text-base text-ellipsis text-nowrap line-clamp-1 sm:max-w-max'>
                 {curUser?._id &&
                 curUser?.courses.map((course: any) => course.course).includes(course._id)
-                  ? 'Tiếp tục học'
+                  ? 'Học tiếp'
                   : 'Mua ngay'}
               </span>
             </button>
 
-            <button
-              className={`group font-semibold h-[42px] px-3 flex items-center justify-center rounded-lg shadow-lg bg-dark-100 border-2 border-dark hover:bg-white trans-300 hover:-translate-y-1 ${
-                isLoading ? 'pointer-events-none bg-slate-200' : ''
-              }`}
-              onClick={addCourseToCart}
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <RiDonutChartFill size={18} className='animate-spin text-dark' />
-              ) : (
-                <FaCartPlus className='text-[18px] sm:text-[20px] wiggle text-white group-hover:text-dark' />
-              )}
-            </button>
+            {(!curUser || !curUser.courses.map((course: any) => course.course).includes(course._id)) && (
+              <button
+                className={`group font-semibold h-[42px] px-3 flex items-center justify-center rounded-lg shadow-lg bg-dark-100 border-2 border-dark hover:bg-white trans-300 hover:-translate-y-1 ${
+                  isLoading ? 'pointer-events-none bg-slate-200' : ''
+                }`}
+                onClick={addCourseToCart}
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <RiDonutChartFill size={18} className='animate-spin text-dark' />
+                ) : (
+                  <FaCartPlus className='text-[18px] sm:text-[20px] wiggle text-white group-hover:text-dark' />
+                )}
+              </button>
+            )}
 
             {curUser?._id &&
               curUser.courses.map((course: any) => course.course).includes(course._id) && (
-                <div className='pl-3 text-white relative flex justify-center items-center w-full h-[42px]'>
+                <div className='text-white relative flex justify-end items-center w-[30px] h-[42px]'>
                   <button className='group' onClick={() => setShowActions(prev => !prev)}>
                     <HiDotsVertical size={24} className='wiggle' />
                   </button>
@@ -221,12 +223,12 @@ function CourseCard({ course, hideBadge, className = '' }: CourseCardProps) {
                       showActions ? 'max-w-[100px] max-h-[40px] px-1.5 py-1' : 'max-w-0 max-h-0 p-0'
                     }  overflow-hidden absolute z-20 top-[80%] flex gap-2 rounded-md trans-300`}
                   >
-                    <Link
-                      href={`/checkout/${course.slug}`}
+                    <button
                       className={`font-bold text-nowrap px-1.5 py-1 text-[10px] bg-white hover:bg-dark-0 hover:text-white border border-dark text-dark rounded-md shadow-md trans-200`}
+                      onClick={buyNow}
                     >
-                      Buy as a gift
-                    </Link>
+                      Mua tặng
+                    </button>
                   </div>
                 </div>
               )}

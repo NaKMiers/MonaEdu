@@ -38,14 +38,11 @@ export default async function RootLayout({
             }}
           />
 
-          {/* Heading */}
-          <Header />
-
           {/* Page Loading */}
           <PageLoading />
 
           {/* Main */}
-          <main className='flex mb-[72px] md:mb-auto md:mt-[72px] gap-y-4'>
+          <main className='flex gap-y-4'>
             <AllLessons />
 
             {children}

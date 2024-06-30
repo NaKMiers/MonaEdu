@@ -11,6 +11,7 @@ import { format } from 'timeago.js'
 import LoadingButton from './LoadingButton'
 import ReportDialog from './dialogs/ReportDigalog'
 import { reportContents } from '@/constants'
+import Link from 'next/link'
 
 interface CommentItemProps {
   comment: IComment
@@ -182,13 +183,15 @@ function CommentItem({ comment, setCmts, className = '' }: CommentItemProps) {
   return (
     <div className={`w-full flex items-start gap-3 ${className}`}>
       {/* Avatar */}
-      <Image
-        className='rounded-full shadow-lg'
-        src={user?.avatar || process.env.NEXT_PUBLIC_DEFAULT_AVATAR!}
-        width={40}
-        height={40}
-        alt='avatar'
-      />
+      <Link href={`/user/${user?._id}`}>
+        <Image
+          className='rounded-full shadow-lg'
+          src={user?.avatar || process.env.NEXT_PUBLIC_DEFAULT_AVATAR!}
+          width={40}
+          height={40}
+          alt='avatar'
+        />
+      </Link>
 
       <div className='w-full'>
         {/* MARK: Headline */}
@@ -204,7 +207,8 @@ function CommentItem({ comment, setCmts, className = '' }: CommentItemProps) {
                   ? 'border-rose-500 hover:bg-rose-500 text-rose-500'
                   : 'border-green-500 hover:bg-green-500 text-green-500'
               } hover:text-white trans-200`}
-              onClick={() => hideComment(comment._id, comment.hide ? 'n' : 'y')}>
+              onClick={() => hideComment(comment._id, comment.hide ? 'n' : 'y')}
+            >
               {comment.hide ? <FaEyeSlash size={16} /> : <FaEye size={16} />}
             </button>
           )}
@@ -212,7 +216,8 @@ function CommentItem({ comment, setCmts, className = '' }: CommentItemProps) {
             <button
               className={`font-bold px-1.5 py-0.5 text-[10px] hover:bg-dark-0 hover:border-dark hover:text-rose-500 border border-rose-400 text-rose-400 rounded-[4px] trans-200`}
               title='Report'
-              onClick={() => setIsOpenReportDialog(true)}>
+              onClick={() => setIsOpenReportDialog(true)}
+            >
               Report
             </button>
           )}
@@ -254,7 +259,8 @@ function CommentItem({ comment, setCmts, className = '' }: CommentItemProps) {
           {(comment.questionId || comment.lessonId) && (
             <div
               className='flex font-semibold text-primary gap-1 cursor-pointer select-none'
-              onClick={() => setIsOpenReply(prev => !prev)}>
+              onClick={() => setIsOpenReply(prev => !prev)}
+            >
               <span>{comment.replied.length}</span>
               <span className=''>Response</span>
               <FaSortDown />
@@ -266,7 +272,8 @@ function CommentItem({ comment, setCmts, className = '' }: CommentItemProps) {
         <div
           className={`${
             isOpenReply ? 'max-h-[350px]' : 'max-h-0'
-          } relative h-full overflow-y-scroll trans-200 mt-1 `}>
+          } relative h-full overflow-y-scroll trans-200 mt-1 `}
+        >
           {/* MARK: Input */}
           <div className='sticky z-10 top-0 flex items-start gap-2 bg-white'>
             <Image
@@ -289,7 +296,8 @@ function CommentItem({ comment, setCmts, className = '' }: CommentItemProps) {
               <div className='flex gap-2 mt-2 justify-end'>
                 <button
                   className='h-[30px] text-sm px-3 rounded-lg hover:bg-slate-200 trans-200'
-                  onClick={() => setIsOpenReply(false)}>
+                  onClick={() => setIsOpenReply(false)}
+                >
                   Cancel
                 </button>
                 <LoadingButton

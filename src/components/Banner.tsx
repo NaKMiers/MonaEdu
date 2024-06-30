@@ -1,11 +1,17 @@
 'use client'
 
+import { useAppDispatch } from '@/libs/hooks'
+import { addCartItem } from '@/libs/reducers/cartReducer'
+import { setPageLoading } from '@/libs/reducers/modalReducer'
 import { ICategory } from '@/models/CategoryModel'
 import { ICourse } from '@/models/CourseModel'
+import { addToCartApi } from '@/requests'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useRef } from 'react'
+import toast from 'react-hot-toast'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 
 interface BannerProps {
@@ -15,8 +21,10 @@ interface BannerProps {
 
 function Banner({ courses, className = '' }: BannerProps) {
   // hooks
+  const dispatch = useAppDispatch()
   const { data: session } = useSession()
   const curUser: any = session?.user
+  const router = useRouter()
 
   // states
 
@@ -72,6 +80,36 @@ function Banner({ courses, className = '' }: BannerProps) {
     }, time * 2)
   }, [nextSlide])
 
+  // MARK: Buy
+  // handle buy now (add to cart and move to cart page)
+  const buyNow = useCallback(
+    async (course: ICourse) => {
+      // start page loading
+      dispatch(setPageLoading(true))
+
+      try {
+        // send request to add course to cart
+        const { cartItem, message } = await addToCartApi(course._id)
+
+        // show toast success
+        toast.success(message)
+
+        // add cart items to state
+        dispatch(addCartItem(cartItem))
+
+        // move to cart page
+        router.push(`/cart?course=${course.slug}`)
+      } catch (err: any) {
+        console.log(err)
+        toast.error(err.message)
+      } finally {
+        // stop page loading
+        dispatch(setPageLoading(false))
+      }
+    },
+    [dispatch, router]
+  )
+
   return (
     <div
       className={`carousel mt-[-72px] relative w-full h-[calc(100vh)] overflow-hidden shadow-medium-light ${className}`}
@@ -98,10 +136,10 @@ function Banner({ courses, className = '' }: BannerProps) {
               >
                 {course.title}
               </div>
-              <div className='topic flex flex-wrap gap-x-2 gap-y-1 font-bold my-3'>
+              <div className='topic flex flex-wrap gap-x-2 gap-y-1 font-semibold my-3'>
                 {(course.categories as ICategory[]).map(category => (
                   <Link
-                    href={`/courses?ctg=${category.slug}`}
+                    href={`/categories/${category.slug}`}
                     className={`shadow-md text-xs ${
                       category.title ? 'bg-yellow-300 text-dark' : 'bg-slate-200 text-slate-400'
                     } px-2 py-px select-none rounded-md font-body`}
@@ -119,22 +157,23 @@ function Banner({ courses, className = '' }: BannerProps) {
                   href={`/${course.slug}`}
                   className='h-10 flex items-center justify-center px-2 shadow-md text-dark bg-slate-100 font-semibold font-body tracking-wider rounded-md hover:bg-dark-0 hover:text-white trans-200'
                 >
-                  SEE MORE
+                  CHI TIẾT
                 </Link>
-                <Link
-                  href={
-                    curUser?._id &&
-                    curUser?.courses.map((course: any) => course.course).includes(course._id)
-                      ? `/learning/${course?._id}/continue`
-                      : `/checkout/${course?.slug}`
-                  }
+                <button
+                  onClick={e => {
+                    if (curUser?.courses.map((course: any) => course.course).includes(course._id)) {
+                      router.push(`/learning/${course?.slug}/continue`)
+                    } else {
+                      buyNow(course)
+                    }
+                  }}
                   className='h-10 flex items-center justify-center px-2 shadow-md text-white border-2 border-white font-semibold font-body tracking-wider rounded-md hover:bg-white hover:text-dark trans-200'
                 >
                   {curUser?._id &&
                   curUser?.courses.map((course: any) => course.course).includes(course._id)
-                    ? 'Continue Learning'
-                    : 'Buy Now'}
-                </Link>
+                    ? 'Học tiếp'
+                    : 'Mua ngay'}
+                </button>
               </div>
             </div>
           </div>

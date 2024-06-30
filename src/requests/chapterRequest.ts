@@ -27,9 +27,9 @@ export const getForceAllChaptersApi = async (courseId: string) => {
 }
 
 // [GET]
-export const getLearningChaptersApi = async (courseId: string) => {
+export const getLearningChaptersApi = async (courseSlug: string) => {
   // no-cache
-  const res = await fetch(`/api/chapter/${courseId}`, { cache: 'no-store' })
+  const res = await fetch(`/api/chapter/${courseSlug}`, { cache: 'no-store' })
 
   // check status
   if (!res.ok) {

@@ -9,6 +9,7 @@ import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import CommentItem from './CommentItem'
 import LoadingButton from './LoadingButton'
+import Link from 'next/link'
 
 interface CommentProps {
   comments: IComment[]
@@ -80,17 +81,20 @@ function Comment({ comments, questionId, lessonId, className = '' }: CommentProp
     <div>
       {/* MARK: Input */}
       <div className={`flex items-center justify-between gap-3 ${className}`}>
-        <Image
-          className='rounded-full shadow-lg'
-          src={curUser?.avatar || process.env.NEXT_PUBLIC_DEFAULT_AVATAR}
-          width={40}
-          height={40}
-          alt='avatar'
-        />
+        <Link href={`/user/${curUser._id}`}>
+          <Image
+            className='rounded-full shadow-lg'
+            src={curUser?.avatar || process.env.NEXT_PUBLIC_DEFAULT_AVATAR}
+            width={40}
+            height={40}
+            alt='avatar'
+          />
+        </Link>
         <div
           className={`relative w-full rounded-lg border-[2px] bg-white ${
             errors.comment ? 'border-rose-400' : 'border-slate-200'
-          }`}>
+          }`}
+        >
           <input
             id='comment'
             className='h-[40px] block px-2.5 pb-2.5 pt-4 w-full text-sm text-dark bg-transparent focus:outline-none focus:ring-0 peer number-input'
@@ -106,7 +110,8 @@ function Comment({ comments, questionId, lessonId, className = '' }: CommentProp
             htmlFor='comment'
             className={`absolute text-nowrap rounded-md text-sm text-gray-500 trans-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1 cursor-pointer ${
               errors.comment ? 'text-rose-400' : 'text-dark'
-            }`}>
+            }`}
+          >
             Comment
           </label>
         </div>

@@ -12,6 +12,7 @@ import { ILesson } from '@/models/LessonModel'
 import { addReportApi, getLessonApi, likeLessonApi } from '@/requests'
 import { getSession, useSession } from 'next-auth/react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { BsLayoutSidebarInsetReverse } from 'react-icons/bs'
@@ -19,14 +20,15 @@ import { FaChevronLeft, FaHeart, FaQuestion, FaRegHeart } from 'react-icons/fa'
 import { HiDotsHorizontal } from 'react-icons/hi'
 
 function LessonPage({
-  params: { courseId, lessonId },
+  params: { courseSlug, lessonSlug },
 }: {
-  params: { courseId: string; lessonId: string }
+  params: { courseSlug: string; lessonSlug: string }
 }) {
   // hooks
   const dispatch = useAppDispatch()
   const openSidebar = useAppSelector(state => state.modal.openSidebar)
   const { data: session, update } = useSession()
+  const router = useRouter()
 
   // states
   const [curUser, setCurUser] = useState<any>(session?.user || {})
@@ -56,7 +58,7 @@ function LessonPage({
     const getLesson = async () => {
       // get lesson for learning
       try {
-        const { lesson, comments } = await getLessonApi(lessonId)
+        const { lesson, comments } = await getLessonApi(lessonSlug)
 
         // set states
         setLesson(lesson)
@@ -67,7 +69,7 @@ function LessonPage({
     }
 
     getLesson()
-  }, [lessonId])
+  }, [lessonSlug])
 
   // handle report lesson
   const handleReport = useCallback(async () => {
@@ -122,20 +124,20 @@ function LessonPage({
         <div className='flex items-center gap-3'>
           <button
             className={`${
-              openSidebar ? 'max-w-0 p-0 m-0 -ml-3' : 'max-w-[44px] -mx-3 px-3 py-1.5'
+              openSidebar ? 'max-w-0 p-0 m-0 -ml-3' : 'max-w-[44px] -mx-3 mr-2 px-3 py-1.5'
             } flex-shrink-0 overflow-hidden group rounded-lg trans-300`}
             onClick={() => dispatch(setOpenSidebar(!openSidebar))}
           >
             <BsLayoutSidebarInsetReverse size={20} className='wiggle' />
           </button>
 
-          <Link
-            href='/my-courses'
+          <button
+            onClick={() => router.back()}
             className='flex items-center gap-1 font-bold px-2 py-1.5 text-xs hover:bg-dark-0 hover:border-dark hover:text-white border border-dark text-dark rounded-md shadow-md trans-200 group'
           >
             <FaChevronLeft size={12} className='wiggle' />
             Back
-          </Link>
+          </button>
         </div>
 
         {curUser?._id && (
@@ -225,7 +227,7 @@ function LessonPage({
             </div>
 
             <Link
-              href='/question'
+              href='/forum'
               className='px-2 py-1 bg-slate-200 flex items-center rounded-lg hover:bg-dark-100 hover:text-white trans-200 shadow-lg'
             >
               <span className='font-semibold text-lg'>Ask Question </span>

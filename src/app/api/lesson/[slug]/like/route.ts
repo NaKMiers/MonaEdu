@@ -9,7 +9,7 @@ import '@/models/LessonModel'
 import '@/models/UserModel'
 
 // [PATCH]: /lesson/:id/like
-export async function PATCH(req: NextRequest, { params: { id } }: { params: { id: string } }) {
+export async function PATCH(req: NextRequest, { params: { slug: id } }: { params: { slug: string } }) {
   console.log('- Like Lesson -')
 
   try {
