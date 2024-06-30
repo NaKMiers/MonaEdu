@@ -38,6 +38,7 @@ async function CategoriesPage({ searchParams }: { searchParams?: { [key: string]
     <div>
       {/* Banner */}
       <BreadcrumbBanner
+        background={category?.image}
         title={category?.title || 'Danh Mục'}
         description={category?.description || 'Danh sách các khóa học trong danh mục này'}
         className='md:shadow-medium md:rounded-b-lg rounded-none h-[calc(300px+72px)] -mt-[72px] pt-[72px]'
@@ -47,7 +48,7 @@ async function CategoriesPage({ searchParams }: { searchParams?: { [key: string]
       <div className='md:px-21 md:mt-10'>
         <div className='flex flex-col md:flex-row bg-white rounded-b-lg md:rounded-lg gap-21 p-3 md:p-21 shadow-lg'>
           {/* Filter & Search */}
-          <div className='flex justify-between max-w-[200px] lg:max-w-[250px] w-full flex-shrink-0'>
+          <div className='flex justify-between md:max-w-[200px] lg:max-w-[250px] w-full flex-shrink-0'>
             <FilterAndSearch searchParams={searchParams} subs={subs} />
           </div>
 

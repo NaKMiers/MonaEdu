@@ -5,7 +5,6 @@ import { getSession, signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
-import GradientBackground from '../backgrounds/GradientBackground'
 
 interface MenuProps {
   open: boolean
@@ -61,15 +60,14 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
       />
 
       {/* MARK: Main */}
-      <GradientBackground
-        containerClassName={`${
+      <div
+        className={`${
           open
-            ? 'max-h-[375px] sm:max-w-full sm:w-[300px] sm:max-h-[378px] h-screen p-0.5 opacity-1x'
-            : 'max-h-0 sm:max-h-0 p-0 sm:max-w-0 sm:w-0 opacity-0x'
+            ? 'max-h-[358px] sm:max-w-full sm:w-[300px] sm:max-h-[358px] h-screen p-2 sm:border-2 opacity-1'
+            : 'max-h-0 sm:max-h-0 p-0 border-0 sm:max-w-0 sm:w-0 opacity-0'
         } ${
           curUser && !curUser?._id ? 'hidden' : ''
-        } bg-transparent text-dark w-full overflow-hidden trans-300 absolute bottom-[72px] md:bottom-auto md:top-[60px] right-0 sm:right-21 z-30 sm:rounded-3xl shadow-lg bg-neutral-950`}
-        className='bg-dark-100 h-full rounded-md md:rounded-3xl py-3 px-2 text-white'
+        } rounded-t-xl bg-dark-100 border-white shadow-primary text-white w-full overflow-hidden trans-300 absolute bottom-[72px] md:bottom-auto md:top-[60px] right-0 sm:right-21 z-30 sm:rounded-xl shadow-md`}
       >
         {curUser ? (
           // MARK: User Logged In
@@ -101,7 +99,13 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
                   href={`/cart`}
                   className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white hover:text-dark trans-200'
                 >
-                  <Image src='/images/cart-icon.png' width={32} height={32} alt='icon' />
+                  <Image
+                    src='/images/cart-icon.png'
+                    className='wiggle'
+                    width={30}
+                    height={30}
+                    alt='icon'
+                  />
                   <span className='font-body text-xl font-semibold tracking-wide'>Giỏ hàng</span>
                   {!!cartLength && (
                     <span className='absolute top-1/2 -translate-y-1/2 right-2 bg-primary text-dark rounded-full text-center px-[7px] py-[2px] text-[10px] font-bold'>
@@ -116,8 +120,14 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
                   href={`/user/${curUser?._id}`}
                   className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white hover:text-dark trans-200'
                 >
-                  <Image src='/images/info-icon.png' width={32} height={32} alt='icon' />
-                  <span className='font-body text-xl font-semibold tracking-wide'>Profile</span>
+                  <Image
+                    src='/images/info-icon.png'
+                    className='wiggle'
+                    width={30}
+                    height={30}
+                    alt='icon'
+                  />
+                  <span className='font-body text-xl font-semibold tracking-wide'>Trang cá nhân</span>
                 </Link>
               </div>
               <div className='group' onClick={() => setOpen(false)}>
@@ -125,8 +135,14 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
                   href={`/my-courses`}
                   className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white hover:text-dark trans-200'
                 >
-                  <Image src='/images/my-courses-icon.png' width={32} height={32} alt='icon' />
-                  <span className='font-body text-xl font-semibold tracking-wide'>My Courses</span>
+                  <Image
+                    src='/images/my-courses-icon.png'
+                    className='wiggle'
+                    width={30}
+                    height={30}
+                    alt='icon'
+                  />
+                  <span className='font-body text-xl font-semibold tracking-wide'>Khóa học của tôi</span>
                 </Link>
               </div>
               <div className='group' onClick={() => setOpen(false)}>
@@ -134,8 +150,14 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
                   href='/setting'
                   className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white hover:text-dark trans-200'
                 >
-                  <Image src='/images/setting-icon.png' width={32} height={32} alt='icon' />
-                  <span className='font-body text-xl font-semibold tracking-wide'>Setting</span>
+                  <Image
+                    src='/images/setting-icon.png'
+                    className='wiggle'
+                    width={30}
+                    height={30}
+                    alt='icon'
+                  />
+                  <span className='font-body text-xl font-semibold tracking-wide'>Cài đặt</span>
                 </Link>
               </div>
               {curUser?.role !== 'user' && (
@@ -148,7 +170,13 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
                     }
                     className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white hover:text-dark trans-200'
                   >
-                    <Image src='/images/order-icon.png' width={32} height={32} alt='icon' />
+                    <Image
+                      src='/images/order-icon.png'
+                      className='wiggle'
+                      width={30}
+                      height={30}
+                      alt='icon'
+                    />
                     <span className='font-body text-xl font-semibold tracking-wide'>
                       {['admin', 'editor'].includes(curUser?.role) ? 'Orders' : 'Collaborator'}
                     </span>
@@ -160,8 +188,14 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
                   className='flex items-center w-full gap-2 py-2 px-3 rounded-lg hover:bg-white hover:text-dark trans-200'
                   onClick={() => signOut()}
                 >
-                  <Image src='/images/logout-icon.png' width={32} height={32} alt='icon' />
-                  <span className='font-body text-xl font-semibold tracking-wide'>Logout</span>
+                  <Image
+                    src='/images/logout-icon.png'
+                    className='wiggle'
+                    width={30}
+                    height={30}
+                    alt='icon'
+                  />
+                  <span className='font-body text-xl font-semibold tracking-wide'>Đăng xuất</span>
                 </button>
               </div>
             </>
@@ -174,8 +208,14 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
                 href='/auth/login'
                 className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white hover:text-dark trans-200'
               >
-                <Image src='/images/sign-in-icon.png' width={32} height={32} alt='icon' />
-                <span className='font-body text-xl font-semibold tracking-wide'>Sign In</span>
+                <Image
+                  src='/images/sign-in-icon.png'
+                  className='wiggle'
+                  width={30}
+                  height={30}
+                  alt='icon'
+                />
+                <span className='font-body text-xl font-semibold tracking-wide'>Đăng nhập</span>
               </Link>
             </div>
             <div className='group' onClick={() => setOpen(false)}>
@@ -183,13 +223,19 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
                 href='/categories'
                 className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white hover:text-dark trans-200'
               >
-                <Image src='/images/sign-in-icon.png' width={32} height={32} alt='icon' />
+                <Image
+                  src='/images/sign-in-icon.png'
+                  className='wiggle'
+                  width={30}
+                  height={30}
+                  alt='icon'
+                />
                 <span className='font-body text-xl font-semibold tracking-wide'>Danh Mục</span>
               </Link>
             </div>
           </>
         )}
-      </GradientBackground>
+      </div>
     </>
   )
 }

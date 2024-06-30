@@ -1,7 +1,7 @@
 'use client'
 import Divider from '@/components/Divider'
 import Input from '@/components/Input'
-import BackgroundBeams from '@/components/backgrounds/BeamsBackground'
+import BeamsBackground from '@/components/backgrounds/BeamsBackground'
 import BottomGradient from '@/components/gradients/BottomGradient'
 import { commonEmailMistakes } from '@/constants/mistakes'
 import { registerApi } from '@/requests'
@@ -211,7 +211,7 @@ function RegisterPage() {
 
       {/* MARK: Body */}
       <div className='flex items-start justify-center px-[10%] pt-16 pb-12 absolute z-10 top-0 right-0 bottom-0 h-screen w-full md:w-2/3 bg-neutral-900 md:rounded-l-[40px] md:shadow-lg md:border-l-2 md:border-gray-white overflow-y-auto'>
-        <BackgroundBeams />
+        <BeamsBackground />
 
         <div className='relative z-10 flex flex-col gap-6 w-full'>
           <div className='flex items-center gap-3'>

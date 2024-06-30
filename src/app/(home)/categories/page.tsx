@@ -21,7 +21,7 @@ async function CategoriesPage() {
       {/* Banner */}
       <BreadcrumbBanner
         title='Danh Mục Khóa Học'
-        description='Với hơn 100+ danh mục khóa học, bạn có thể chọn lựa một cách dễ dàng nhất cho bản thân mình.'
+        description='Với hơn 14+ danh mục và 100+ danh mục con, bạn có thể dễ dàng chọn lựa khóa học phù hợp với mình.'
         className='shadow-lg rounded-b-lg h-[200px] md:h-[calc(280px+72px)] md:-mt-[72px] px-21 md:pt-[50px]'
       />
 
@@ -29,7 +29,7 @@ async function CategoriesPage() {
 
       {/* Body */}
       <div className='px-21'>
-        <div className='grid grid-cols-2 md:grid-cols-4 gap-21'>
+        <div className='grid grid-cols-2 md:grid-cols-4 gap-21 sm:gap-8'>
           {categories.map(category => (
             <CategoryCard category={category} key={category._id} />
           ))}

@@ -1,8 +1,7 @@
 'use client'
 import Divider from '@/components/Divider'
 import Input from '@/components/Input'
-import BackgroundBeams from '@/components/backgrounds/BeamsBackground'
-import GradientBackground from '@/components/backgrounds/GradientBackground'
+import BeamsBackground from '@/components/backgrounds/BeamsBackground'
 import BottomGradient from '@/components/gradients/BottomGradient'
 import { signIn } from 'next-auth/react'
 import Image from 'next/image'
@@ -88,7 +87,7 @@ function LoginPage() {
 
   return (
     <div className='relative flex items-center justify-center lg:block bg-neutral-900 h-screen w-full lg:px-[46px] lg:py-[52px] overflow-hidden'>
-      <BackgroundBeams />
+      <BeamsBackground />
 
       <div className='hidden lg:block absolute top-0 left-0 w-[60%]'>
         <Image
