@@ -1,8 +1,7 @@
-import { getAllCategoriesApi } from '@/requests'
-import { Link } from '@react-email/components'
+import { categories } from '@/constants/categories'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react'
-import toast from 'react-hot-toast'
+import Link from 'next/link'
+import { Dispatch, SetStateAction, useCallback, useState } from 'react'
 import { FaChevronRight } from 'react-icons/fa'
 
 interface CategoryTabsProps {
@@ -13,35 +12,35 @@ interface CategoryTabsProps {
 
 function CategoryTabs({ open, setOpen, className = '' }: CategoryTabsProps) {
   // states
-  const [categories, setCategories] = useState<any[]>([])
+  // const [categories, setCategories] = useState<any[]>([])
   const [list, setList] = useState<any[]>([
     {
       ref: 'Category Tabs',
-      data: [],
+      data: categories,
     },
   ])
 
-  // get categories
-  useEffect(() => {
-    const getCategories = async () => {
-      try {
-        // send request to get categories
-        const { categories } = await getAllCategoriesApi()
-        console.log('categories: ', categories)
-        setCategories(categories)
-        setList([
-          {
-            ref: 'Category Tabs',
-            data: categories,
-          },
-        ])
-      } catch (err: any) {
-        console.log(err)
-        toast.error(err.response.data.message)
-      }
-    }
-    getCategories()
-  }, [])
+  // // get categories
+  // useEffect(() => {
+  //   const getCategories = async () => {
+  //     try {
+  //       // send request to get categories
+  //       const { categories } = await getAllCategoriesApi()
+  //       console.log('categories: ', categories)
+  //       setCategories(categories)
+  //       setList([
+  //         {
+  //           ref: 'Category Tabs',
+  //           data: categories,
+  //         },
+  //       ])
+  //     } catch (err: any) {
+  //       console.log(err)
+  //       toast.error(err.response.data.message)
+  //     }
+  //   }
+  //   getCategories()
+  // }, [])
 
   const findDeep = useCallback(
     (item: any) => list.findIndex(tab => tab.data.map((i: any) => i.title).includes(item.title)),

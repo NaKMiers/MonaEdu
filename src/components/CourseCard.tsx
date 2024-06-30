@@ -1,9 +1,9 @@
 'use client'
 
+import { CardBody, CardContainer, CardItem } from '@/components/3dCard'
 import { useAppDispatch } from '@/libs/hooks'
 import { addCartItem } from '@/libs/reducers/cartReducer'
 import { setPageLoading } from '@/libs/reducers/modalReducer'
-import { ICategory } from '@/models/CategoryModel'
 import { ICourse } from '@/models/CourseModel'
 import { IFlashSale } from '@/models/FlashSaleModel'
 import { addToCartApi } from '@/requests'
@@ -16,10 +16,9 @@ import { useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
 import { FaCartPlus } from 'react-icons/fa'
 import { HiDotsVertical } from 'react-icons/hi'
+import { RiDonutChartFill } from 'react-icons/ri'
 import Divider from './Divider'
 import Price from './Price'
-import { RiDonutChartFill } from 'react-icons/ri'
-import { CardBody, CardContainer, CardItem } from '@/components/3dCard'
 
 interface CourseCardProps {
   course: ICourse
@@ -140,8 +139,8 @@ function CourseCard({ course, hideBadge, className = '' }: CourseCardProps) {
                 <Image
                   className='flex-shrink-0 snap-start w-full h-full object-cover'
                   src={src}
-                  width={350}
-                  height={350}
+                  width={250}
+                  height={250}
                   alt='netflix'
                   key={src}
                 />

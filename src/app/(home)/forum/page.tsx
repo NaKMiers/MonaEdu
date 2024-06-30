@@ -3,10 +3,10 @@ import Divider from '@/components/Divider'
 import Pagination from '@/components/layouts/Pagination'
 import Question from '@/components/QuestionItem'
 import { IQuestion } from '@/models/QuestionModel'
-import { getQuestionPageApi } from '@/requests'
+import { getForumPageApi } from '@/requests'
 import { handleQuery } from '@/utils/handleQuery'
 
-async function QuestionPage({ searchParams }: { searchParams?: { [key: string]: string[] } }) {
+async function ForumPage({ searchParams }: { searchParams?: { [key: string]: string[] } }) {
   let questions: IQuestion[] = []
   let amount: number = 0
   let itemsPerPage: number = 8
@@ -15,7 +15,7 @@ async function QuestionPage({ searchParams }: { searchParams?: { [key: string]: 
     // get query
     const query = handleQuery(searchParams)
 
-    const res = await getQuestionPageApi(query)
+    const res = await getForumPageApi(query)
 
     questions = res.questions
     amount = res.amount
@@ -53,4 +53,4 @@ async function QuestionPage({ searchParams }: { searchParams?: { [key: string]: 
   )
 }
 
-export default QuestionPage
+export default ForumPage

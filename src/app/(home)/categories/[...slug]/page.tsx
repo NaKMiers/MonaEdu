@@ -2,7 +2,6 @@ import BreadcrumbBanner from '@/components/BreadcrumbBanner'
 import CourseCard from '@/components/CourseCard'
 import Divider from '@/components/Divider'
 import FilterAndSearch from '@/components/FilterAndSearch'
-import Pagination from '@/components/layouts/Pagination'
 import ShortPagination from '@/components/layouts/ShortPagination'
 import { ICategory } from '@/models/CategoryModel'
 import { ICourse } from '@/models/CourseModel'
@@ -13,7 +12,8 @@ import { redirect } from 'next/navigation'
 async function CategoriesPage({ searchParams }: { searchParams?: { [key: string]: string[] } }) {
   const headerList = headers()
   const pathname = headerList.get('x-current-path')
-  const slug = pathname?.split('/').pop()
+  const slug = pathname?.split('/categories/').pop()
+  console.log(slug)
 
   // data
   let category: ICategory | null = null
@@ -28,6 +28,8 @@ async function CategoriesPage({ searchParams }: { searchParams?: { [key: string]
     category = data.category
     subs = data.subs
     courses = data.courses
+
+    console.log('category', category)
   } catch (err: any) {
     return redirect('/categories')
   }
@@ -46,7 +48,7 @@ async function CategoriesPage({ searchParams }: { searchParams?: { [key: string]
         <div className='flex flex-col md:flex-row bg-white rounded-b-lg md:rounded-lg gap-21 p-3 md:p-21 shadow-lg'>
           {/* Filter & Search */}
           <div className='flex justify-between max-w-[200px] lg:max-w-[250px] w-full flex-shrink-0'>
-            <FilterAndSearch subs={subs} />
+            <FilterAndSearch searchParams={searchParams} subs={subs} />
           </div>
 
           {/* Main */}

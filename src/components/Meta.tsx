@@ -123,6 +123,7 @@ function Meta({
         ...searchParams,
         ...params,
       })
+
       // push to router
       router.push(pathname + query)
     },
@@ -205,7 +206,8 @@ function Meta({
                 : 'border-slate-300 bg-slate-200'
             }`}
             title='Filter'
-            onClick={() => setOpenFilterCategory(true)}>
+            onClick={() => setOpenFilterCategory(true)}
+          >
             Filter Categories
           </div>
           {selectedFilterCategories.length !== categories.length &&
@@ -220,7 +222,8 @@ function Meta({
                   }`}
                   title={item.title}
                   key={item.slug}
-                  onClick={() => handleSelectFilterCategory(item.slug)}>
+                  onClick={() => handleSelectFilterCategory(item.slug)}
+                >
                   {item.title}
                   <IoMdClose size={16} className='wiggle' />
                 </div>
@@ -240,7 +243,8 @@ function Meta({
               openFilterCategory
                 ? 'max-h-[200px] max-w-[500px] w-full p-3 opacity-1 overflow-auto'
                 : 'max-w-0 max-h-0 overflow-hidden p-0 opacity-0'
-            } flex flex-wrap gap-1 trans-300 absolute top-9 left-0 z-30 rounded-lg shadow-md bg-slate-100`}>
+            } flex flex-wrap gap-1 trans-300 absolute top-9 left-0 z-30 rounded-lg shadow-md bg-slate-100`}
+          >
             <li
               className={`overflow-hidden max-w-60 text-ellipsis text-nowrap h-[34px] leading-[34px] px-2 rounded-md border cursor-pointer select-none trans-200 ${
                 categories.length === selectedFilterCategories.length
@@ -263,7 +267,8 @@ function Meta({
                         : categories.map(tag => tag.slug),
                   })
                 )()
-              }}>
+              }}
+            >
               All
             </li>
             {categories.map(item => (
@@ -275,7 +280,8 @@ function Meta({
                 }`}
                 title={item.title}
                 key={item.slug}
-                onClick={() => handleSelectFilterCategory(item.slug)}>
+                onClick={() => handleSelectFilterCategory(item.slug)}
+              >
                 {item.title}
               </li>
             ))}
@@ -289,7 +295,8 @@ function Meta({
               openFilterTag ? 'bg-dark-100 text-white border-dark-100' : 'border-slate-300 bg-slate-200'
             }`}
             title='Filter'
-            onClick={() => setOpenFilterTag(true)}>
+            onClick={() => setOpenFilterTag(true)}
+          >
             Filter Tags
           </div>
           {selectedFilterTags.length !== tags.length &&
@@ -304,7 +311,8 @@ function Meta({
                   }`}
                   title={item.title}
                   key={item.slug}
-                  onClick={() => handleSelectFilterTag(item.slug)}>
+                  onClick={() => handleSelectFilterTag(item.slug)}
+                >
                   {item.title}
                   <IoMdClose size={16} className='wiggle' />
                 </div>
@@ -324,7 +332,8 @@ function Meta({
               openFilterTag
                 ? 'max-h-[200px] max-w-[500px] w-full p-3 opacity-1 overflow-auto'
                 : 'max-w-0 max-h-0 overflow-hidden p-0 opacity-0'
-            } flex flex-wrap gap-1 trans-300 absolute top-9 md:left-1/3 z-30 rounded-lg shadow-md bg-slate-100`}>
+            } flex flex-wrap gap-1 trans-300 absolute top-9 md:left-1/3 z-30 rounded-lg shadow-md bg-slate-100`}
+          >
             <li
               className={`overflow-hidden max-w-60 text-ellipsis text-nowrap h-[34px] leading-[34px] px-2 rounded-md border cursor-pointer select-none trans-200 ${
                 tags.length === selectedFilterTags.length
@@ -343,7 +352,8 @@ function Meta({
                       tags.length === selectedFilterTags.length ? [] : tags.map(tag => tag.slug),
                   })
                 )()
-              }}>
+              }}
+            >
               All
             </li>
             {tags.map(item => (
@@ -355,7 +365,8 @@ function Meta({
                 }`}
                 title={item.title}
                 key={item.slug}
-                onClick={() => handleSelectFilterTag(item.slug)}>
+                onClick={() => handleSelectFilterTag(item.slug)}
+              >
                 {item.title}
               </li>
             ))}
@@ -368,12 +379,14 @@ function Meta({
             <div
               className={`flex border ${
                 errors['search'] ? 'border-rose-500' : 'border-dark'
-              } rounded-[16px]`}>
+              } rounded-[16px]`}
+            >
               {/* MARK: Icon */}
               <span
                 className={`inline-flex items-center px-3 rounded-l-[16px] text-sm text-gray-900 ${
                   errors.search ? 'border-rose-400 bg-rose-100' : 'border-slate-200 bg-slate-100'
-                } cursor-pointer`}>
+                } cursor-pointer`}
+              >
                 <FaSearch size={19} className='text-secondary' />
               </span>
 
@@ -381,7 +394,8 @@ function Meta({
               <div
                 className={`relative w-full border-l-0 rounded-r-[16px]'} ${
                   errors['search'] ? 'border-rose-400' : 'border-slate-200'
-                }`}>
+                }`}
+              >
                 <input
                   id={'search'}
                   className='block h-[42px] px-2.5 pb-2.5 pt-4 w-full text-sm text-dark bg-transparent focus:outline-none focus:ring-0 peer number-input'
@@ -396,7 +410,8 @@ function Meta({
                   htmlFor={'search'}
                   className={`absolute text-nowrap rounded-md text-sm text-dark trans-300 transform -translate-y-4 scale-75 top-2 left-5 z-10 origin-[0] font-semibold bg-white px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-[48%] peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1 cursor-pointer ${
                     errors.search ? 'text-rose-400' : 'text-dark'
-                  }`}>
+                  }`}
+                >
                   Search
                 </label>
               </div>
