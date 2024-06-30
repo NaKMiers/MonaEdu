@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 import { FaAngleRight } from 'react-icons/fa'
 import Divider from './Divider'
 import BoxesBackground from './backgrounds/BoxesBackground'
+import { Fragment } from 'react'
 
 interface BreadcrumbBannerProps {
   title: string
@@ -32,12 +33,12 @@ function BreadcrumbBanner({ className = '' }: BreadcrumbBannerProps) {
         <FaAngleRight size={14} className='text-white' />
 
         {breadcrumbs.map((breadcrumb, index) => (
-          <>
+          <Fragment key={index}>
             <Link href='/' className='text-light hover:text-primary trans-200 hover:drop-shadow-md'>
               {capitalize(breadcrumb)}
             </Link>
             {index !== breadcrumbs.length - 1 && <FaAngleRight size={14} className='text-white' />}
-          </>
+          </Fragment>
         ))}
       </div>
 

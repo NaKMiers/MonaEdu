@@ -87,10 +87,20 @@ export default async function middleware(req: NextRequest) {
   else if (req.nextUrl.pathname.startsWith('/learning')) {
     return requiredJoined(req, token)
   }
+
+  // need pathname
+  else if (req.nextUrl.pathname.startsWith('/categories')) {
+    // Add a new header x-current-path which passes the path to downstream components
+    const headers = new Headers(req.headers)
+    headers.set('x-current-path', req.nextUrl.pathname)
+
+    return NextResponse.next({ headers })
+  }
 }
 
 export const config = {
   matcher: [
+    '/categories/:path*',
     '/admin/:path*',
     '/api/admin/:path*',
     '/setting/:path*',

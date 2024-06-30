@@ -93,7 +93,7 @@ function CourseCard({ course, hideBadge, className = '' }: CourseCardProps) {
 
   return (
     <CardContainer className='inter-var'>
-      <CardBody className='flex flex-col bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] h-full rounded-xl p-4 border'>
+      <CardBody className='flex flex-col bg-neutral-800 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:border-white/[0.2] border-black/[0.1] h-full rounded-xl p-4 border'>
         {course.oldPrice && !hideBadge && (
           <CardItem
             translateZ='35'
@@ -110,13 +110,13 @@ function CourseCard({ course, hideBadge, className = '' }: CourseCardProps) {
         <Divider size={2} />
 
         <CardItem translateZ='50' className='text-xl font-bold text-neutral-600 dark:text-white'>
-          <Link href={`/${course.slug}`} prefetch={false}>
-            <h3
-              className='font-body text-[14px] md:text-[21px] tracking-wider leading-[18px] md:leading-[22px] mb-1 md:mb-2'
-              title={course.title}
-            >
-              {course.title}
-            </h3>
+          <Link
+            href={`/${course.slug}`}
+            prefetch={false}
+            className='font-body text-[14px] md:text-[21px] tracking-wider leading-[18px] md:leading-[24px] mb-1 md:mb-2 text-ellipsis line-clamp-2'
+            title={course.title}
+          >
+            {course.title}
           </Link>
         </CardItem>
 
@@ -124,6 +124,7 @@ function CourseCard({ course, hideBadge, className = '' }: CourseCardProps) {
           as='p'
           translateZ='60'
           className='text-ellipsis line-clamp-2 text-xs md:text-sm mb-2 text-neutral-300'
+          title={course.description}
         >
           {course.description}
         </CardItem>
@@ -156,7 +157,7 @@ function CourseCard({ course, hideBadge, className = '' }: CourseCardProps) {
             <Link
               href={`/courses?ctg=${(cat as ICategory).slug}`}
               key={(cat as ICategory).slug}
-              className='text-[10px] font-semibold font-body tracking-wide text-dark px-1.5 py-0.5 shadow rounded-lg bg-sky-300'
+              className='text-[10px] text-nowrap text-ellipsis max-w-[80px] sm:max-w-max block line-clamp-1 font-semibold font-body tracking-wide text-dark px-1.5 py-0.5 shadow rounded-lg bg-sky-300'
             >
               {(cat as ICategory).title}
             </Link>
@@ -177,17 +178,18 @@ function CourseCard({ course, hideBadge, className = '' }: CourseCardProps) {
         <Divider size={4} />
 
         <div className='flex flex-1 items-end justify-between'>
-          <CardItem translateZ={80} className='flex items-center w-full'>
+          <CardItem translateZ={80} className='flex items-center gap-1 w-full'>
             <button
-              // href={
-              //   curUser?._id && curUser?.courses.map((course: any) => course.course).includes(course._id)
-              //     ? `/learning/${course?._id}/continue`
-              //     : `/checkout/${course?.slug}`
-              // }
               className='font-semibold h-[42px] flex w-full items-center justify-center rounded-lg shadow-lg bg-dark-100 text-white border-2 border-dark hover:bg-white hover:text-dark trans-300 hover:-translate-y-1'
-              onClick={buyNow}
+              onClick={e => {
+                if (curUser?.courses.map((course: any) => course.course).includes(course._id)) {
+                  router.push(`/learning/${course?._id}/continue`)
+                } else {
+                  buyNow()
+                }
+              }}
             >
-              <span className='text-sm md:text-base text-ellipsis text-nowrap line-clamp-1'>
+              <span className='block text-xs sm:text-sm md:text-base text-ellipsis text-nowrap line-clamp-1 max-w-[60px] sm:max-w-max'>
                 {curUser?._id &&
                 curUser?.courses.map((course: any) => course.course).includes(course._id)
                   ? 'Tiếp tục học'
@@ -205,7 +207,7 @@ function CourseCard({ course, hideBadge, className = '' }: CourseCardProps) {
               {isLoading ? (
                 <RiDonutChartFill size={18} className='animate-spin text-dark' />
               ) : (
-                <FaCartPlus size={20} className='wiggle text-white group-hover:text-dark' />
+                <FaCartPlus className='text-[18px] sm:text-[20px] wiggle text-white group-hover:text-dark' />
               )}
             </button>
 

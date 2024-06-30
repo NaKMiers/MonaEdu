@@ -6,7 +6,7 @@ import GroupCourses from '@/components/GroupCourses'
 import Heading from '@/components/Heading'
 import { ICourse } from '@/models/CourseModel'
 import { IQuestion } from '@/models/QuestionModel'
-import { getHomeApi } from '@/requests'
+import { getHomePageApi } from '@/requests'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -19,7 +19,7 @@ async function Home() {
   let questions: IQuestion[] = []
 
   try {
-    const data = await getHomeApi()
+    const data = await getHomePageApi()
 
     courses = data.courses
     bestSellers = data.bestSellers

@@ -1,7 +1,7 @@
 // Page -------------------------------------
 
 // [GET]
-export const getHomeApi = async () => {
+export const getHomePageApi = async () => {
   // revalidate every 0.5 minute
   const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api`, { next: { revalidate: 0 } })
 
@@ -32,6 +32,21 @@ export const getCoursePageApi = async (slug: string) => {
 export const getTagsPageApi = async (query: string = '') => {
   // no cache for filter
   const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/tag${query}`, { cache: 'no-store' })
+
+  // check status
+  if (!res.ok) {
+    throw new Error((await res.json()).message)
+  }
+
+  return await res.json()
+}
+
+// [GET]: /categories/[...slug]
+export const getCategoryPageApi = async (slug: string) => {
+  // no cache for filter
+  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/category/${slug}`, {
+    cache: 'no-store',
+  })
 
   // check status
   if (!res.ok) {

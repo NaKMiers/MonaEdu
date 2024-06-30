@@ -40,7 +40,7 @@ async function CoursesPage({ searchParams }: { searchParams?: { [key: string]: s
 
       <div className='flex'>
         {/* Filter & Search */}
-        <div className='hidden md:flex justify-between -mx-21 max-w-[250px] lg:max-w-[300px] w-full'>
+        <div className='hidden md:flex justify-between max-w-[200px] lg:max-w-[250px] w-full'>
           {/* <Meta searchParams={searchParams} tags={tags} categories={categories} chops={chops} /> */}
         </div>
 

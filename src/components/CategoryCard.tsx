@@ -30,7 +30,7 @@ function CategoryCard({ category, className = '' }: CategoryCardProps) {
             className='absolute z-20 bottom-0 left-0 right-0 w-full border-t-3 p-1.5 rounded-xl border-t-2 border-white bg-neutral-950 bg-opacity-50 text-light'
           >
             <CardItem
-              translateZ={80}
+              translateZ={30}
               as='h2'
               title={category.title}
               className='font-body tracking-wider font-bold text-2xl lg:text-3xl xl:text-4xl drop-shadow-lg text-ellipsis line-clamp-1'
@@ -39,7 +39,7 @@ function CategoryCard({ category, className = '' }: CategoryCardProps) {
             </CardItem>
 
             <CardItem
-              translateZ={50}
+              translateZ={20}
               as='p'
               title={category.description}
               className='font-body tracking-wide text-sm text-ellipsis line-clamp-1 md:line-clamp-2'
