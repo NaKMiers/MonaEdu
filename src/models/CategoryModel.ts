@@ -36,14 +36,6 @@ const CategorySchema = new Schema(
   { timestamps: true }
 )
 
-// pre-save hook to generate slug from title
-CategorySchema.pre('save', function (next) {
-  if (this.isModified('title')) {
-    this.slug = generateSlug(this.title)
-  }
-  next()
-})
-
 const CategoryModel = mongoose.models.category || mongoose.model('category', CategorySchema)
 export default CategoryModel
 

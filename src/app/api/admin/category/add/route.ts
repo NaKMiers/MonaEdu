@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from 'next/server'
 // Models: Category
 import '@/models/CategoryModel'
 import { uploadFile } from '@/utils/uploadFile'
+import { generateSlug } from '@/utils'
 
 // [POST]: /admin/category/add
 export async function POST(req: NextRequest) {
@@ -20,11 +21,26 @@ export async function POST(req: NextRequest) {
     const { parentId, title, description } = data
     let image = formData.get('image')
 
+    // build slug
+    let slug = generateSlug((title as string).trim())
+
+    if (parentId) {
+      const parent: ICategory | null = await CategoryModel.findById(parentId).lean()
+      if (!parent) {
+        return NextResponse.json({ message: 'Parent category not found' }, { status: 404 })
+      }
+
+      slug = `${parent.slug}/${slug}`
+    }
+
     const set: any = {
       parentId: parentId || null,
       title: (title as string).trim(),
       description: (description as string).trim(),
+      slug,
     }
+
+    console.log('set', set)
 
     // check if image is required
     if (image) {

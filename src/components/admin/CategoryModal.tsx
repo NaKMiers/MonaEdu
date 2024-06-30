@@ -280,7 +280,7 @@ function CategoryModal({
             <div className='flex justify-center gap-3'>
               <button
                 className={`font-semibold border-2 border-dark bg-slate-300 shadow-lg text-dark px-3 py-1.5 rounded-lg drop-shadow-md hover:text-white hover:border-slate-300 trans-200`}
-                onAbort={() => setOpen(false)}
+                onClick={() => setOpen(false)}
               >
                 Cancel
               </button>

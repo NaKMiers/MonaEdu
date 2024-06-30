@@ -1,6 +1,6 @@
 import { EditingValues } from '@/app/(admin)/admin/category/all/page'
 import { connectDatabase } from '@/config/database'
-import CategoryModel from '@/models/CategoryModel'
+import CategoryModel, { ICategory } from '@/models/CategoryModel'
 import { generateSlug } from '@/utils'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -24,11 +24,24 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
 
     console.log('image', image)
 
+    // build slug
+    let slug = generateSlug((title as string).trim())
+
+    const category: ICategory | null = await CategoryModel.findById(id).lean()
+    if (!category) {
+      return NextResponse.json({ message: 'Category not found' }, { status: 404 })
+    }
+
+    const parent: ICategory | null = await CategoryModel.findById(category.parentId).lean()
+    if (!parent) {
+      return NextResponse.json({ message: 'Parent category not found' }, { status: 404 })
+    }
+
     // update category
     const set: any = {
       title: (title as string).trim(),
-      slug: generateSlug(title as string),
       description: (description as string).trim(),
+      slug: `${parent.slug}/${slug}`,
     }
 
     // check if new image is uploaded
@@ -43,7 +56,7 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
     console.log('set', set)
 
     // update category
-    const category = await CategoryModel.findByIdAndUpdate(id, { $set: set }, { new: true })
+    const updatedCategory = await CategoryModel.findByIdAndUpdate(id, { $set: set }, { new: true })
 
     // check if category exists
     if (!category) {
@@ -52,7 +65,7 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
 
     // return updated category
     return NextResponse.json({
-      category,
+      category: updatedCategory,
       message: `Edited Category: ${category.title}`,
     })
   } catch (err: any) {
