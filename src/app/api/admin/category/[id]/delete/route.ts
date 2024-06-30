@@ -44,7 +44,9 @@ export async function DELETE(req: NextRequest, { params: { id } }: { params: { i
     console.log('Category:', category)
 
     // delete category image from storage
-    await deleteFile(category.image)
+    if (category.image) {
+      await deleteFile(category.image)
+    }
 
     // return response
     return NextResponse.json({ category, message: `Category has been deleted` }, { status: 200 })

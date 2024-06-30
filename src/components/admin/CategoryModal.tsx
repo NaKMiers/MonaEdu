@@ -92,9 +92,9 @@ function CategoryModal({
   // add new category
   const onAddSubmit: SubmitHandler<FieldValues> = useCallback(
     async data => {
-      if (!file) {
-        return toast.error('Please select an image file')
-      }
+      // if (!file) {
+      //   return toast.error('Please select an image file')
+      // }
 
       // start loading
       setIsLoading(true)
@@ -104,7 +104,9 @@ function CategoryModal({
         formData.append('parentId', data.parentId)
         formData.append('title', data.title)
         formData.append('description', data.description)
-        formData.append('image', file)
+        if (file) {
+          formData.append('image', file)
+        }
 
         // add new category login here
         const { category, message } = await addCategoryApi(formData)
@@ -137,9 +139,9 @@ function CategoryModal({
 
   const onEditSubmit: SubmitHandler<FieldValues> = useCallback(
     async data => {
-      if (!file && !category?.image) {
-        return toast.error('Please select an image file')
-      }
+      // if (!file && !category?.image) {
+      //   return toast.error('Please select an image file')
+      // }
 
       if (!category) return
 

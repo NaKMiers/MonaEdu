@@ -20,21 +20,21 @@ export async function POST(req: NextRequest) {
     const { parentId, title, description } = data
     let image = formData.get('image')
 
-    // check if image is required
-    if (!image) {
-      return NextResponse.json({ message: 'Image is required' }, { status: 400 })
-    }
-
-    // upload image storage
-    const imageUrl = await uploadFile(image, '1:1')
-
-    // create new category
-    const category: ICategory = await CategoryModel.create({
+    const set: any = {
       parentId: parentId || null,
       title: (title as string).trim(),
       description: (description as string).trim(),
-      image: imageUrl,
-    })
+    }
+
+    // check if image is required
+    if (image) {
+      // upload image storage
+      const imageUrl = await uploadFile(image, '1:1')
+      set.image = imageUrl
+    }
+
+    // create new category
+    const category: ICategory = await CategoryModel.create(set)
 
     // stay current page
     return NextResponse.json(
