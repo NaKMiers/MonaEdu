@@ -178,7 +178,7 @@ function PlaceholdersAndVanishInput({
         )}
       />
 
-      <div className='absolute -ml-5 inset-0 flex items-center rounded-full pointer-events-none'>
+      <div className='absolute inset-0 flex items-center rounded-full pointer-events-none'>
         <AnimatePresence mode='wait'>
           {!value && (
             <motion.p

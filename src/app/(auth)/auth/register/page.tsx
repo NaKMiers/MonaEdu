@@ -195,7 +195,8 @@ function RegisterPage() {
       </div>
 
       <div className='hidden md:block absolute z-20 top-[15.5%] left-0 pl-[40px] leading-10 text-[28px] max-w-[33%]'>
-        Hãy cùng nhau xây dựng kiến thức mọi lúc, mọi nơi nhé.
+        <p className='text-orange-400 drop-shadow-sm left-[46px] font-bold text-3xl mb-2'>MONAEDU</p>
+        <p>Hãy cùng nhau xây dựng kiến thức mọi lúc, mọi nơi nhé.</p>
       </div>
 
       <div className='hidden md:block absolute z-20 left-[3vw] bottom-[10%] w-[38vw] lg:w-[30vw]'>
@@ -209,7 +210,7 @@ function RegisterPage() {
       </div>
 
       {/* MARK: Body */}
-      <div className='flex justify-center px-[10%] pt-24 absolute z-10 top-0 right-0 bottom-0 h-screen w-full md:w-2/3 bg-neutral-900 md:rounded-l-[40px] md:shadow-lg md:border-l-2 md:border-gray-white overflow-y-scroll'>
+      <div className='flex items-start justify-center px-[10%] pt-16 pb-12 absolute z-10 top-0 right-0 bottom-0 h-screen w-full md:w-2/3 bg-neutral-900 md:rounded-l-[40px] md:shadow-lg md:border-l-2 md:border-gray-white overflow-y-auto'>
         <BackgroundBeams />
 
         <div className='relative z-10 flex flex-col gap-6 w-full'>
@@ -316,8 +317,8 @@ function RegisterPage() {
             </Link>
           </p>
 
-          <div className='relative w-full border h-2 border-neutral-400 my-2'>
-            <span className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg px-4 py-1 font-semibold'>
+          <div className='relative w-full border h-px border-white my-2'>
+            <span className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg px-3 py-1 font-semibold'>
               Hoặc
             </span>
           </div>
@@ -355,8 +356,6 @@ function RegisterPage() {
               <BottomGradient />
             </button>
           </div>
-
-          <Divider size={20} />
         </div>
       </div>
     </div>

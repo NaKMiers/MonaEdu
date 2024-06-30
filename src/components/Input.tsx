@@ -155,7 +155,6 @@ function Input({
       {errors[id]?.message && (
         <span className='text-sm drop-shadow-md text-rose-400'>{errors[id]?.message?.toString()}</span>
       )}
-      <BottomGradient />
     </div>
   )
 }
