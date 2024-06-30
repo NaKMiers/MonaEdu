@@ -98,7 +98,7 @@ function CategoryTabs({ open, setOpen, className = '' }: CategoryTabsProps) {
               {tab.data.map((item: any, itemIndex: number) => (
                 <li className='p-0.5' onMouseOver={() => handleMouseOver(item)} key={itemIndex}>
                   <Link
-                    href='/'
+                    href={`/categories/${item.slug}`}
                     className={`w-full h-9 flex items-center justify-between gap-3 px-2.5 hover:bg-secondary group trans-300 hover:rounded-xl hover:shadow-md ${
                       list[tabIndex + 1] && list[tabIndex + 1].ref === item._id
                         ? 'bg-secondary rounded-xl shadow-md'

@@ -27,21 +27,23 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
     // build slug
     let slug = generateSlug((title as string).trim())
 
+    // check if category exists
     const category: ICategory | null = await CategoryModel.findById(id).lean()
     if (!category) {
       return NextResponse.json({ message: 'Category not found' }, { status: 404 })
     }
 
+    // check if parent category exists
     const parent: ICategory | null = await CategoryModel.findById(category.parentId).lean()
-    if (!parent) {
-      return NextResponse.json({ message: 'Parent category not found' }, { status: 404 })
+    if (parent) {
+      slug = `${parent.slug}/${slug}`
     }
 
     // update category
     const set: any = {
       title: (title as string).trim(),
       description: (description as string).trim(),
-      slug: `${parent.slug}/${slug}`,
+      slug,
     }
 
     // check if new image is uploaded
