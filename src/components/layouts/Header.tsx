@@ -3,7 +3,7 @@
 import { useAppDispatch, useAppSelector } from '@/libs/hooks'
 import { setCartItems } from '@/libs/reducers/cartReducer'
 import { INotification } from '@/models/UserModel'
-import { getCartApi, removeNotificationApi } from '@/requests'
+import { getAllCategoriesApi, getCartApi, removeNotificationApi } from '@/requests'
 import { getSession, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'

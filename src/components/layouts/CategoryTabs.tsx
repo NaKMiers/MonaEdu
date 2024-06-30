@@ -1,7 +1,8 @@
-import { categories } from '@/constants/categories'
+import { getAllCategoriesApi } from '@/requests'
 import { Link } from '@react-email/components'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Dispatch, SetStateAction, useCallback, useState } from 'react'
+import { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 import { FaChevronRight } from 'react-icons/fa'
 
 interface CategoryTabsProps {
@@ -11,12 +12,36 @@ interface CategoryTabsProps {
 }
 
 function CategoryTabs({ open, setOpen, className = '' }: CategoryTabsProps) {
+  // states
+  const [categories, setCategories] = useState<any[]>([])
   const [list, setList] = useState<any[]>([
     {
       ref: 'Category Tabs',
-      data: categories,
+      data: [],
     },
   ])
+
+  // get categories
+  useEffect(() => {
+    const getCategories = async () => {
+      try {
+        // send request to get categories
+        const { categories } = await getAllCategoriesApi()
+        console.log('categories: ', categories)
+        setCategories(categories)
+        setList([
+          {
+            ref: 'Category Tabs',
+            data: categories,
+          },
+        ])
+      } catch (err: any) {
+        console.log(err)
+        toast.error(err.response.data.message)
+      }
+    }
+    getCategories()
+  }, [])
 
   const findDeep = useCallback(
     (item: any) => list.findIndex(tab => tab.data.map((i: any) => i.title).includes(item.title)),
@@ -75,23 +100,23 @@ function CategoryTabs({ open, setOpen, className = '' }: CategoryTabsProps) {
                   <Link
                     href='/'
                     className={`w-full h-9 flex items-center justify-between gap-3 px-2.5 hover:bg-secondary group trans-300 hover:rounded-xl hover:shadow-md ${
-                      list[tabIndex + 1] && list[tabIndex + 1].ref === item.title
+                      list[tabIndex + 1] && list[tabIndex + 1].ref === item._id
                         ? 'bg-secondary rounded-xl shadow-md'
                         : ''
                     }`}
                   >
                     <span
                       className={`text-dark group-hover:text-light ${
-                        list[tabIndex + 1] && list[tabIndex + 1].ref === item.title ? 'text-white' : ''
+                        list[tabIndex + 1] && list[tabIndex + 1].ref === item._id ? 'text-white' : ''
                       }`}
                     >
                       {item.title}
                     </span>
-                    {item.subs && (
+                    {!!item.subs?.data.length && (
                       <FaChevronRight
                         size={12}
                         className={`wiggle text-dark group-hover:text-light  ${
-                          list[tabIndex + 1] && list[tabIndex + 1].ref === item.title ? 'text-white' : ''
+                          list[tabIndex + 1] && list[tabIndex + 1].ref === item._id ? 'text-white' : ''
                         }`}
                       />
                     )}

@@ -14,7 +14,7 @@ interface BreadcrumbBannerProps {
   className?: string
 }
 
-function BreadcrumbBanner({ className = '' }: BreadcrumbBannerProps) {
+function BreadcrumbBanner({ title, description, className = '' }: BreadcrumbBannerProps) {
   // hooks
   const pathname = usePathname()
   const breadcrumbs = pathname.split('/').filter(path => path)
@@ -44,10 +44,9 @@ function BreadcrumbBanner({ className = '' }: BreadcrumbBannerProps) {
 
       <Divider size={3} />
 
-      <h2 className='text-white text-2xl md:text-6xl font-bold text-center relative z-20'>English</h2>
+      <h2 className='text-white text-2xl md:text-6xl font-bold text-center relative z-20'>{title}</h2>
       <p className='text-white text-sm md:text-2xl max-w-xl mt-6 text-center relative z-20'>
-        This is chemical burn. It&apos;ll hurt more than you&apos;ve ever been burned and you&apos;ll
-        have a scar.
+        {description}
       </p>
     </div>
   )

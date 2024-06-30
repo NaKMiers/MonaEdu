@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
     // get all parent categories
     const categories = await CategoryModel.find({
       parentId: null,
-    }).sort({ createdAt: -1 })
+    }).sort({ courseQuantity: -1 })
 
     // return categories
     return NextResponse.json({ categories }, { status: 200 })

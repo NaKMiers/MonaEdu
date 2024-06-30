@@ -93,7 +93,7 @@ function CourseCard({ course, hideBadge, className = '' }: CourseCardProps) {
 
   return (
     <CardContainer className='inter-var'>
-      <CardBody className='flex flex-col bg-neutral-800 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:border-white/[0.2] border-black/[0.1] h-full rounded-xl p-4 border'>
+      <CardBody className='flex flex-col bg-neutral-800 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:border-white/[0.2] border-black/[0.1] h-full rounded-xl p-2.5 md:p-4 border'>
         {course.oldPrice && !hideBadge && (
           <CardItem
             translateZ='35'
@@ -152,7 +152,7 @@ function CourseCard({ course, hideBadge, className = '' }: CourseCardProps) {
 
         <Divider size={2} />
 
-        <CardItem translateZ={75} className='w-full flex flex-wrap gap-1'>
+        {/* <CardItem translateZ={75} className='w-full flex flex-wrap gap-1'>
           {course.categories.map(cat => (
             <Link
               href={`/courses?ctg=${(cat as ICategory).slug}`}
@@ -162,7 +162,7 @@ function CourseCard({ course, hideBadge, className = '' }: CourseCardProps) {
               {(cat as ICategory).title}
             </Link>
           ))}
-        </CardItem>
+        </CardItem> */}
 
         <Divider size={2} />
 

@@ -26,12 +26,7 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
     // get subs categories & get all courses of current categories
     const [subs, courses] = await Promise.all([
       await CategoryModel.find({ parentId: category._id }).lean(),
-      await CourseModel.find({})
-        .populate({
-          path: 'categories',
-          select: 'title slug',
-        })
-        .lean(),
+      await CourseModel.find({ categories: category._id }).lean(),
     ])
 
     // return response

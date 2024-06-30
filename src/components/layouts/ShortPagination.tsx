@@ -66,12 +66,12 @@ function ShortPagination({
 
   return (
     pageAmount > 1 && (
-      <div className={`flex font-semibold gap-4 items-center w-full max-w-[491px] ${className}`}>
+      <div className={`flex font-semibold gap-4 items-center w-full ${className}`}>
         {/* MARK: Prev */}
         {currentPage != 1 && (
           <Link
             href={getPageLink(currentPage <= 1 ? 1 : currentPage - 1)}
-            className='min-w-[80px] flex items-center justify-center rounded-full border-2 h-full border-primary px-2 hover:bg-secondary hover:border-secondary shadow-lg drop-shadow-lg text-dark hover:text-white trans-200'
+            className='min-w-[70px] flex items-center justify-center rounded-full border-2 h-full border-primary px-2 hover:bg-secondary hover:border-secondary shadow-lg drop-shadow-lg text-dark hover:text-white trans-200'
             title={`👈 Trang ${currentPage <= 1 ? 1 : currentPage - 1}`}
           >
             Trước
@@ -89,7 +89,7 @@ function ShortPagination({
         {currentPage != pageAmount && (
           <Link
             href={getPageLink(currentPage >= pageAmount ? pageAmount : currentPage + 1)}
-            className='min-w-[80px] flex items-center justify-center rounded-full border-2 h-full border-primary px-2 hover:bg-secondary hover:border-secondary shadow-lg drop-shadow-lg text-dark hover:text-white trans-200'
+            className='min-w-[70px] flex items-center justify-center rounded-full border-2 h-full border-primary px-2 hover:bg-secondary hover:border-secondary shadow-lg drop-shadow-lg text-dark hover:text-white trans-200'
             title={`👉 Trang ${currentPage >= pageAmount ? pageAmount : currentPage + 1}`}
           >
             Sau
