@@ -72,7 +72,7 @@ function CartItem({ cartItem, isCheckout, className = '', isOrderDetailCourse }:
       {/* MARK: Thumbnails */}
       <div className='relative'>
         <Link
-          href={`/${(cartItem.courseId as ICourse).slug}`}
+          href={`/${(cartItem.courseId as ICourse)?.slug}`}
           prefetch={false}
           className='aspect-video rounded-lg overflow-hidden shadow-lg block max-w-[150px]'
           onClick={e => e.stopPropagation()}
@@ -84,7 +84,7 @@ function CartItem({ cartItem, isCheckout, className = '', isOrderDetailCourse }:
                 src={src}
                 width={150}
                 height={150}
-                alt={`/${(cartItem.courseId as ICourse).slug}`}
+                alt={`/${(cartItem.courseId as ICourse)?.slug}`}
                 key={src}
               />
             ))}
@@ -124,16 +124,6 @@ function CartItem({ cartItem, isCheckout, className = '', isOrderDetailCourse }:
               }}
             />
           )}
-
-          {/* Confirm Dialog */}
-          <ConfirmDialog
-            open={isOpenConfirmModal}
-            setOpen={setIsOpenConfirmModal}
-            title='Xóa sản phẩm khỏi giỏ hàng'
-            content='Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng không?'
-            onAccept={handleDeleteCartItem}
-            isLoading={isDeleting}
-          />
         </div>
       )}
 
@@ -141,7 +131,7 @@ function CartItem({ cartItem, isCheckout, className = '', isOrderDetailCourse }:
       <div className={`relative w-full h-full pr-10`}>
         {/* Title */}
         <h2 className={`text-[20px] tracking-wide mb-2 leading-6 pr-8`}>
-          {(cartItem.courseId as ICourse).title}
+          {(cartItem.courseId as ICourse)?.title}
         </h2>
 
         {/* Info */}
@@ -159,7 +149,7 @@ function CartItem({ cartItem, isCheckout, className = '', isOrderDetailCourse }:
               <FaHashtag className='text-darker' size={16} />
               <span className='text-darker font-bold text-nowrap'>Giá:</span>
               <span className='text-green-500'>
-                {formatPrice((cartItem.courseId as ICourse).price * cartItem.quantity)}
+                {formatPrice(((cartItem.courseId as ICourse)?.price || 0) * cartItem.quantity)}
               </span>
             </div>
           </div>
@@ -167,11 +157,21 @@ function CartItem({ cartItem, isCheckout, className = '', isOrderDetailCourse }:
 
         {/* Price & Stock */}
         <Price
-          price={(cartItem.courseId as ICourse).price}
-          oldPrice={(cartItem.courseId as ICourse).oldPrice}
-          flashSale={(cartItem.courseId as ICourse).flashSale as IFlashSale}
+          price={(cartItem.courseId as ICourse)?.price}
+          oldPrice={(cartItem.courseId as ICourse)?.oldPrice}
+          flashSale={(cartItem.courseId as ICourse)?.flashSale as IFlashSale}
         />
       </div>
+
+      {/* Confirm Dialog */}
+      <ConfirmDialog
+        open={isOpenConfirmModal}
+        setOpen={setIsOpenConfirmModal}
+        title='Xóa sản phẩm khỏi giỏ hàng'
+        content='Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng không?'
+        onAccept={handleDeleteCartItem}
+        isLoading={isDeleting}
+      />
     </div>
   )
 }

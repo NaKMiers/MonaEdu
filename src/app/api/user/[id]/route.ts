@@ -1,5 +1,4 @@
 import { connectDatabase } from '@/config/database'
-import CategoryModel from '@/models/CategoryModel'
 import UserModel, { IUser } from '@/models/UserModel'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -18,7 +17,9 @@ export async function GET(req: NextRequest, { params: { id } }: { params: { id: 
     await connectDatabase()
 
     // get user by id
-    let user: IUser | null = await UserModel.findById(id)
+    let user: IUser | null = await UserModel.findOne({
+      $or: [{ username: id }, { email: id }],
+    })
       .populate({
         path: 'courses.course',
       })
@@ -29,17 +30,6 @@ export async function GET(req: NextRequest, { params: { id } }: { params: { id: 
     if (!user) {
       return NextResponse.json({ message: 'User not found' }, { status: 404 })
     }
-
-    // get all categories to stick to the user.courses.couse.categories
-    const categories = await CategoryModel.find().lean()
-
-    // loop through user.courses.course and add categories to each course
-    user.courses.forEach(
-      (course: any) =>
-        (course.course.categories = categories.filter((category: any) =>
-          course.course.categories.map((cate: any) => cate.toString()).includes(category._id.toString())
-        ))
-    )
 
     // return user
     return NextResponse.json({ user, message: 'Get user successfully' }, { status: 200 })

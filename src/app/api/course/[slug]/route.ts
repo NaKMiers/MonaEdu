@@ -1,19 +1,16 @@
 import { connectDatabase } from '@/config/database'
 import ChapterModel, { IChapter } from '@/models/ChapterModel'
-import CommentModel from '@/models/CommentModel'
 import CourseModel, { ICourse } from '@/models/CourseModel'
 import LessonModel, { ILesson } from '@/models/LessonModel'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Models: Course, Tag, Category, FlashSale, Comment, User, Chapter, Lesson,
+// Models: Course, Tag, Category, FlashSale, Chapter, Lesson,
 import '@/models/CategoryModel'
 import '@/models/ChapterModel'
-import '@/models/CommentModel'
 import '@/models/CourseModel'
 import '@/models/FlashSaleModel'
 import '@/models/LessonModel'
 import '@/models/TagModel'
-import '@/models/UserModel'
 
 export const dynamic = 'force-dynamic'
 
@@ -30,7 +27,7 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
       slug: encodeURIComponent(slug),
       active: true,
     })
-      .populate('tags categories flashSale')
+      .populate('tags category flashSale')
       .lean()
 
     // check if course is not found
@@ -50,34 +47,8 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
       return { ...chapter, lessons: chapterLessons }
     })
 
-    // get comment of the current course
-    let comments = await CommentModel.find({
-      courseId: course._id,
-    })
-      .populate('userId')
-      .populate({
-        path: 'replied',
-        populate: {
-          path: 'userId',
-        },
-        options: { sort: { likes: -1, createdAt: -1 }, limit: 6 },
-      })
-      .sort({ likes: -1, createdAt: -1 })
-      .limit(12)
-      .lean()
-
-    comments = comments.map(comment => ({
-      ...comment,
-      userId: comment.userId._id,
-      user: comment.userId,
-      replied: comment.replied.map((reply: any) => ({
-        ...reply,
-        userId: reply.userId._id,
-        user: reply.userId,
-      })),
-    }))
-
-    return NextResponse.json({ course, chapters: chaptersWithLessons, comments }, { status: 200 })
+    // return course with chapters and lessons
+    return NextResponse.json({ course, chapters: chaptersWithLessons }, { status: 200 })
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })
   }

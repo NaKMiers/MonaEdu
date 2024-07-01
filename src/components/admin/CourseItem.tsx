@@ -84,24 +84,6 @@ function CourseItem({
             />
           )}
 
-          {/* Categories */}
-          <p
-            className='flex flex-wrap gap-1 font-semibold text-dark text-[18px] leading-4 font-body tracking-wide'
-            title={data.title}
-          >
-            {(data.categories as ICategory[]).map(category => (
-              <Link
-                href={`/courses?ctg=${category.slug}`}
-                className={`shadow-md text-xs ${
-                  category.title ? 'bg-yellow-300 text-dark' : 'bg-slate-200 text-slate-400'
-                } px-2 py-px select-none rounded-md font-body`}
-                key={category._id}
-              >
-                {category.title || 'empty'}
-              </Link>
-            ))}
-          </p>
-
           {/* Title */}
           <p className='text-dark font-semibold tracking-wider mt-1'>{data.title}</p>
 

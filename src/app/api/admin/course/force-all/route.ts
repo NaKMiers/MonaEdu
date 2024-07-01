@@ -2,8 +2,7 @@ import { connectDatabase } from '@/config/database'
 import CourseModel from '@/models/CourseModel'
 import { NextResponse } from 'next/server'
 
-// Models: Course, Tag, Category
-import '@/models/CategoryModel'
+// Models: Course, Tag
 import '@/models/CourseModel'
 import '@/models/TagModel'
 
@@ -22,10 +21,6 @@ export async function GET() {
       .select('title images')
       .populate({
         path: 'tags',
-        select: 'title',
-      })
-      .populate({
-        path: 'categories',
         select: 'title',
       })
       .sort({ sold: -1 })

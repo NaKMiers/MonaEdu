@@ -74,7 +74,7 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
           curUser?._id && (
             <>
               <Link
-                href={`/user/${curUser?._id}`}
+                href={`/user/${curUser?.username || curUser?.email}`}
                 className='flex items-center gap-2 py-2 px-3 rounded-lg group hover:bg-white hover:text-dark trans-200'
               >
                 <Image
@@ -117,7 +117,7 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
 
               <div className='group' onClick={() => setOpen(false)}>
                 <Link
-                  href={`/user/${curUser?._id}`}
+                  href={`/user/${curUser?.username || curUser?.email}`}
                   className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white hover:text-dark trans-200'
                 >
                   <Image

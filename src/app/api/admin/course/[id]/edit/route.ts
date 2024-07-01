@@ -22,9 +22,8 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
     // get data to create course
     const formData = await req.formData()
     const data = Object.fromEntries(formData)
-    const { title, price, oldPrice, author, textHook, description, isActive } = data
+    const { title, price, oldPrice, author, textHook, description, isActive, category } = data
     const tags = JSON.parse(data.tags as string)
-    const categories = JSON.parse(data.categories as string)
     const originalImages = JSON.parse(data.originalImages as string)
     let images = formData.getAll('images')
 
@@ -61,7 +60,7 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
         description,
         active: isActive,
         tags,
-        categories,
+        category,
         images: newImages,
         slug: generateSlug(title as string),
       },
@@ -74,19 +73,12 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
     const tagsToIncrease = newTags.filter((tag: string) => !oldTags.includes(tag))
     const tagsToDecrease = oldTags.filter((tag: string) => !newTags.includes(tag))
 
-    // get categories that need to be increased and decreased
-    const oldCategories: string[] = course.categories as string[]
-    const newCategories: string[] = categories as string[]
-
-    const categoriesToIncrease = newCategories.filter((tag: string) => !oldCategories.includes(tag))
-    const categoriesToDecrease = oldCategories.filter((tag: string) => !newCategories.includes(tag))
-
     // increase related category and tags course quantity
     await Promise.all([
       TagModel.updateMany({ _id: { $in: tagsToIncrease } }, { $inc: { courseQuantity: 1 } }),
       TagModel.updateMany({ _id: { $in: tagsToDecrease } }, { $inc: { courseQuantity: -1 } }),
-      CategoryModel.updateMany({ _id: { $in: categoriesToIncrease } }, { $inc: { courseQuantity: 1 } }),
-      CategoryModel.updateMany({ _id: { $in: categoriesToDecrease } }, { $inc: { courseQuantity: -1 } }),
+      CategoryModel.updateOne({ _id: category }, { $inc: { courseQuantity: 1 } }),
+      CategoryModel.updateOne({ _id: course.category }, { $inc: { courseQuantity: -1 } }),
     ])
 
     // return response

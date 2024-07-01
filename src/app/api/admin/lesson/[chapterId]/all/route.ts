@@ -4,9 +4,8 @@ import LessonModel from '@/models/LessonModel'
 import { searchParamsToObject } from '@/utils/handleQuery'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Models: Lesson, Course, Category
+// Models: Lesson, Course
 import '@/models/CategoryModel'
-import '@/models/ChapterModel'
 import '@/models/CourseModel'
 import '@/models/LessonModel'
 
@@ -82,11 +81,7 @@ export async function GET(
     const lessons = await LessonModel.find(filter)
       .populate({
         path: 'courseId',
-        select: 'title images categories slug',
-        populate: {
-          path: 'categories',
-          select: 'title',
-        },
+        select: 'title images slug',
       })
       .populate({
         path: 'chapterId',
@@ -97,18 +92,8 @@ export async function GET(
       .limit(itemPerPage)
       .lean()
 
-    // get all courses
-    const courses = await CourseModel.find()
-      .select('title categories')
-      .populate({
-        path: 'categories',
-        select: 'title',
-      })
-      .sort({ sold: -1 })
-      .lean()
-
     // return response
-    return NextResponse.json({ lessons, amount, courses }, { status: 200 })
+    return NextResponse.json({ lessons, amount }, { status: 200 })
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })
   }

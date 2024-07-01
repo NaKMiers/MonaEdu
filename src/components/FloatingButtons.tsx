@@ -4,11 +4,11 @@ import { useEffect, useState } from 'react'
 import { FaQuestionCircle } from 'react-icons/fa'
 import { FaBoltLightning } from 'react-icons/fa6'
 
-interface ContactFloatingProps {
+interface FloatingButtonsProps {
   className?: string
 }
 
-function FloatingButton({ className = '' }: ContactFloatingProps) {
+function FloatingButtons({ className = '' }: FloatingButtonsProps) {
   // states
   const [open, setOpen] = useState<boolean>(false)
 
@@ -29,7 +29,7 @@ function FloatingButton({ className = '' }: ContactFloatingProps) {
 
   return (
     <div
-      className={`fixed z-30 right-3 bottom-[80px] flex flex-col gap-2 items-center rounded-xl trans-300 overflow-hidden shadow-medium-light select-none ${className}`}
+      className={`fixed z-30 right-3 bottom-[140px] flex flex-col gap-2 items-center rounded-xl trans-300 overflow-hidden shadow-medium-light select-none ${className}`}
     >
       <Link
         href='/flash-sale'
@@ -50,4 +50,4 @@ function FloatingButton({ className = '' }: ContactFloatingProps) {
   )
 }
 
-export default FloatingButton
+export default FloatingButtons

@@ -34,21 +34,19 @@ function BestSeller({ courses, className = '' }: BestSellerProps) {
         {courses.map((course, index) => (
           <CardContainer className='inter-var' key={course._id}>
             <CardBody className='flex flex-col relative group/card dark:hover:shadow-2xl rounded-xl'>
-              <CardItem
-                translateZ={100}
-                rotateX={20}
-                rotateZ={-10}
-                as='a'
-                href={`/${course.slug}`}
-                className='w-full aspect-video shadow-lg rounded-lg overflow-hidden'
-              >
-                <Image
-                  className='w-full h-full object-cover group-hover:scale-105 trans-500'
-                  src={course.images[0]}
-                  width={300}
-                  height={300}
-                  alt='thumbnail'
-                />
+              <CardItem translateZ={100} rotateX={20} rotateZ={-10}>
+                <Link
+                  href={`/${course.slug}`}
+                  className='block w-full aspect-video shadow-lg rounded-lg overflow-hidden'
+                >
+                  <Image
+                    className='w-full h-full object-cover group-hover:scale-105 trans-500'
+                    src={course.images[0]}
+                    width={300}
+                    height={300}
+                    alt='thumbnail'
+                  />
+                </Link>
               </CardItem>
 
               <CardItem

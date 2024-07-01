@@ -97,23 +97,6 @@ function LessonItem({
             </div>
           </div>
 
-          {/* Course */}
-          <p
-            className='inline-flex mb-2 flex-wrap gap-2 items-center font-semibold text-[18px] mr-2 font-body tracking-wide'
-            title={(data.courseId as ICourse).title}
-          >
-            {(data.courseId as ICourse).categories.map((category: any) => (
-              <span
-                className={`shadow-md text-xs ${
-                  category.title ? 'bg-yellow-300 text-dark' : 'bg-slate-200 text-slate-400'
-                } px-2 py-px select-none rounded-md font-body`}
-                key={category._id}
-              >
-                {category.title || 'empty'}
-              </span>
-            ))}
-          </p>
-
           {/* Title */}
           <p className='mb-1 font-semibold text-[18px] font-body tracking-wide'>
             <span>Title: {data.title}</span>{' '}

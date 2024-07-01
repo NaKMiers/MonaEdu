@@ -183,7 +183,7 @@ function CommentItem({ comment, setCmts, className = '' }: CommentItemProps) {
   return (
     <div className={`w-full flex items-start gap-3 ${className}`}>
       {/* Avatar */}
-      <Link href={`/user/${user?._id}`}>
+      <Link href={`/user/${curUser?.username || curUser?.email}`}>
         <Image
           className='rounded-full shadow-lg'
           src={user?.avatar || process.env.NEXT_PUBLIC_DEFAULT_AVATAR!}

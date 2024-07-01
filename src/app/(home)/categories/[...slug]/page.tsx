@@ -13,12 +13,12 @@ async function CategoriesPage({ searchParams }: { searchParams?: { [key: string]
   const headerList = headers()
   const pathname = headerList.get('x-current-path')
   const slug = pathname?.split('/categories/').pop()
-  console.log(slug)
 
   // data
   let category: ICategory | null = null
   let subs: ICategory[] = []
   let courses: ICourse[] = []
+  let amount: number = 0
 
   // get data
   try {
@@ -28,8 +28,7 @@ async function CategoriesPage({ searchParams }: { searchParams?: { [key: string]
     category = data.category
     subs = data.subs
     courses = data.courses
-
-    console.log('category', category)
+    amount = data.amount
   } catch (err: any) {
     return redirect('/categories')
   }
@@ -68,7 +67,7 @@ async function CategoriesPage({ searchParams }: { searchParams?: { [key: string]
               {/* Mini Pagination */}
               <ShortPagination
                 searchParams={searchParams}
-                amount={175}
+                amount={amount}
                 itemsPerPage={16}
                 className='justify-end hidden md:flex flex-1'
               />

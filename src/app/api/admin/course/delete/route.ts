@@ -45,8 +45,8 @@ export async function DELETE(req: NextRequest) {
     await Promise.all(
       courses.map(async course => {
         // decrease related categories course quantity
-        await CategoryModel.updateMany(
-          { _id: { $in: course.categories } },
+        await CategoryModel.updateOne(
+          { _id: course.category },
           {
             $inc: {
               courseQuantity: -1,

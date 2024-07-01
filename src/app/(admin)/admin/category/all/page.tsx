@@ -44,7 +44,6 @@ function AllCategoriesPage({ searchParams }: { searchParams?: { [key: string]: s
       try {
         // sent request to server
         const { categories, amount } = await getAllCategoriesApi(query) // cache: no-store
-        console.log('categories', categories)
 
         // set to states
         setCategories(categories)

@@ -3,6 +3,7 @@
 import Input from '@/components/Input'
 import LoadingButton from '@/components/LoadingButton'
 import AdminHeader from '@/components/admin/AdminHeader'
+import CategoryItem from '@/components/admin/CategoryItem'
 import { useAppDispatch, useAppSelector } from '@/libs/hooks'
 import { setLoading } from '@/libs/reducers/modalReducer'
 import { ICategory } from '@/models/CategoryModel'
@@ -30,7 +31,7 @@ function AddCoursePage() {
   const [tags, setTags] = useState<ITag[]>([])
   const [selectedTags, setSelectedTags] = useState<string[]>([])
   const [categories, setCategories] = useState<ICategory[]>([])
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
+  const [selectedCategory, setSelectedCategory] = useState<string>('')
 
   const [originalImages, setOriginalImages] = useState<string[]>([])
   const [imageUrls, setImageUrls] = useState<string[]>([])
@@ -75,7 +76,7 @@ function AddCoursePage() {
         setValue('active', course.active)
 
         setSelectedTags(course.tags)
-        setSelectedCategories(course.categories)
+        setSelectedCategory(course.category)
         setOriginalImages(course.images)
       } catch (err: any) {
         console.log(err)
@@ -184,8 +185,8 @@ function AddCoursePage() {
         isValid = false
       }
 
-      if (!selectedCategories) {
-        toast.error('Please select at least 1 category')
+      if (!selectedCategory) {
+        toast.error('Please select category')
         isValid = false
       }
 
@@ -196,7 +197,7 @@ function AddCoursePage() {
 
       return isValid
     },
-    [setError, selectedCategories, selectedTags, files, originalImages]
+    [setError, selectedCategory, selectedTags, files, originalImages]
   )
 
   // MARK: Submit
@@ -218,7 +219,7 @@ function AddCoursePage() {
       formData.append('description', data.description)
       formData.append('active', data.active)
       formData.append('tags', JSON.stringify(selectedTags))
-      formData.append('categories', JSON.stringify(selectedCategories))
+      formData.append('category', selectedCategory)
       formData.append('originalImages', JSON.stringify(originalImages))
       files.forEach(file => formData.append('images', file))
 
@@ -384,33 +385,16 @@ function AddCoursePage() {
         <div className='mb-5'>
           <p className='text-dark font-semibold text-xl mb-1'>Select Categories</p>
 
-          <div className='p-2 rounded-lg flex flex-wrap items-center bg-white gap-2'>
+          <div className='flex flex-col gap-2'>
             {categories.map(category => (
-              <Fragment key={category._id}>
-                <input
-                  onChange={e =>
-                    setSelectedCategories(prev =>
-                      e.target.checked
-                        ? [...prev, category._id]
-                        : prev.filter(cate => cate !== category._id)
-                    )
-                  }
-                  hidden
-                  checked={selectedCategories.some(cate => cate === category._id)}
-                  type='checkbox'
-                  id={category._id}
-                />
-                <label
-                  className={`cursor-pointer select-none rounded-lg border border-green-500 text-green-500 py-[6px] px-3 trans-200 ${
-                    selectedCategories.some(cate => cate === category._id)
-                      ? 'bg-green-500 text-white'
-                      : ''
-                  }`}
-                  htmlFor={category._id}
-                >
-                  {category.title}
-                </label>
-              </Fragment>
+              <CategoryItem
+                data={category}
+                setCategories={setCategories}
+                selectMode
+                selectedCategory={selectedCategory}
+                setSelectedCategory={setSelectedCategory}
+                key={category._id}
+              />
             ))}
           </div>
         </div>

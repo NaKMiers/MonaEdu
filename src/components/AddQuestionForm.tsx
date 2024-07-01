@@ -56,8 +56,9 @@ function AddQuestionForm() {
   return (
     <div className='flex gap-3'>
       <Link
-        href={`/user/${curUser?._id}`}
-        className='flex-shrink-0 w-[40px] h-[40px] rounded-full overflow-hidden shadow-lg border-2 border-white'>
+        href={`/user/${curUser?.username || curUser?.email}`}
+        className='flex-shrink-0 w-[40px] h-[40px] rounded-full overflow-hidden shadow-lg border-2 border-white'
+      >
         <Image
           src={curUser?.avatar || process.env.NEXT_PUBLIC_DEFAULT_AVATAR}
           width={40}

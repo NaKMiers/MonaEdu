@@ -77,7 +77,7 @@ export async function GET(req: NextRequest) {
 
     // get all courses from database
     const courses = await CourseModel.find(filter)
-      .populate('tags categories')
+      .populate('tags category')
       .sort(sort)
       .skip(skip)
       .limit(itemPerPage)

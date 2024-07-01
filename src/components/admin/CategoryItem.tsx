@@ -11,10 +11,20 @@ import { IoRocketSharp } from 'react-icons/io5'
 interface CategoryItemProps {
   data: ICategory
   setCategories: Dispatch<SetStateAction<ICategory[]>>
+  selectMode?: boolean
+  selectedCategory?: string
+  setSelectedCategory?: Dispatch<SetStateAction<string>>
   className?: string
 }
 
-function CategoryItem({ data: category, setCategories, className = '' }: CategoryItemProps) {
+function CategoryItem({
+  data: category,
+  setCategories,
+  selectMode,
+  selectedCategory,
+  setSelectedCategory,
+  className = '',
+}: CategoryItemProps) {
   // states
   const [data, setData] = useState<ICategory>(category)
   const [open, setOpen] = useState<boolean>(false)
@@ -78,61 +88,76 @@ function CategoryItem({ data: category, setCategories, className = '' }: Categor
   return (
     <>
       <div
-        className={`h-9 flex-shrink-0 overflow-hidden flex items-center justify-between gap-3 trans-300 bg-white text-dark rounded-lg px-3 py-1.5 hover:bg-secondary hover:text-white cursor-pointer ${className}`}
-        onClick={() => setOpen(!open)}
+        className={`h-9 flex-shrink-0 overflow-hidden flex items-center justify-between gap-3 trans-300 text-dark rounded-lg px-3 py-1.5 hover:bg-secondary hover:text-white cursor-pointer ${
+          selectMode && selectedCategory === data._id ? 'bg-green-500' : 'bg-white'
+        } ${className}`}
+        onClick={() => {
+          setOpen(!open)
+          if (selectMode && !category.subs.data.length && setSelectedCategory) {
+            setSelectedCategory(selectedCategory === data._id ? '' : data._id)
+          }
+        }}
       >
         <span className='text-sm'>{data.title}</span>
-        <div className='flex items-center gap-2'>
-          <button
-            onClick={e => {
-              e.stopPropagation()
-              setOpenAddCategoryModal(true)
-            }}
-            className='h-7 flex items-center justify-center rounded-lg text-xs border-2 border-yellow-500 px-2 py-1 bg-white text-yellow-500 hover:bg-primary trans-200 group'
-          >
-            <MdOutlineAddCircle size={16} className='wiggle' />
-          </button>
-          <button
-            onClick={e => {
-              e.stopPropagation()
-              setOpenEditCategoryModal(true)
-            }}
-            className='h-7 flex items-center justify-center rounded-lg text-xs border-2 border-sky-500 px-2 py-1 bg-white text-sky-500 hover:bg-primary trans-200 group'
-          >
-            <MdEdit size={15} className='wiggle' />
-          </button>
-          <button
-            onClick={e => {
-              e.stopPropagation()
-              handleBootCategory()
-            }}
-            className={`h-7 flex items-center justify-center rounded-lg text-xs border-2 px-2 py-1 hover:bg-primary trans-200 group ${
-              data.booted
-                ? 'bg-green-500 text-dark border-dark font-semibold'
-                : 'bg-white border-green-500 text-green-500'
-            }`}
-          >
-            <IoRocketSharp size={14} className='wiggle' />
-          </button>
-          <button
-            onClick={e => {
-              e.stopPropagation()
-              setIsOpenConfirmModal(true)
-            }}
-            className={`h-7 flex items-center justify-center rounded-lg text-xs border-2 px-2 py-1 bg-white text-rose-500 hover:bg-rose-300 trans-200 group ${
-              deleting ? 'bg-slate-200 border-slate-200 pointer-events-none' : 'border-rose-500'
-            }`}
-          >
-            {deleting ? (
-              <FaCircleNotch size={14} className='text-slate-300 trans-200 animate-spin' />
-            ) : (
-              <FaTrash size={12} className='wiggle' />
+
+        {/* Action Buttons */}
+        {!selectMode ? (
+          <div className='flex items-center gap-2'>
+            <button
+              onClick={e => {
+                e.stopPropagation()
+                setOpenAddCategoryModal(true)
+              }}
+              className='h-7 flex items-center justify-center rounded-lg text-xs border-2 border-yellow-500 px-2 py-1 bg-white text-yellow-500 hover:bg-primary trans-200 group'
+            >
+              <MdOutlineAddCircle size={16} className='wiggle' />
+            </button>
+            <button
+              onClick={e => {
+                e.stopPropagation()
+                setOpenEditCategoryModal(true)
+              }}
+              className='h-7 flex items-center justify-center rounded-lg text-xs border-2 border-sky-500 px-2 py-1 bg-white text-sky-500 hover:bg-primary trans-200 group'
+            >
+              <MdEdit size={15} className='wiggle' />
+            </button>
+            <button
+              onClick={e => {
+                e.stopPropagation()
+                handleBootCategory()
+              }}
+              className={`h-7 flex items-center justify-center rounded-lg text-xs border-2 px-2 py-1 hover:bg-primary trans-200 group ${
+                data.booted
+                  ? 'bg-green-500 text-dark border-dark font-semibold'
+                  : 'bg-white border-green-500 text-green-500'
+              }`}
+            >
+              <IoRocketSharp size={14} className='wiggle' />
+            </button>
+            <button
+              onClick={e => {
+                e.stopPropagation()
+                setIsOpenConfirmModal(true)
+              }}
+              className={`h-7 flex items-center justify-center rounded-lg text-xs border-2 px-2 py-1 bg-white text-rose-500 hover:bg-rose-300 trans-200 group ${
+                deleting ? 'bg-slate-200 border-slate-200 pointer-events-none' : 'border-rose-500'
+              }`}
+            >
+              {deleting ? (
+                <FaCircleNotch size={14} className='text-slate-300 trans-200 animate-spin' />
+              ) : (
+                <FaTrash size={12} className='wiggle' />
+              )}
+            </button>
+            {!!subCategories.length && (
+              <FaChevronUp size={16} className={`${open ? 'rotate-180' : ''} trans-300`} />
             )}
-          </button>
-          {!!subCategories.length && (
+          </div>
+        ) : (
+          !!subCategories.length && (
             <FaChevronUp size={16} className={`${open ? 'rotate-180' : ''} trans-300`} />
-          )}
-        </div>
+          )
+        )}
       </div>
 
       {/* Sub Categories */}
@@ -146,6 +171,9 @@ function CategoryItem({ data: category, setCategories, className = '' }: Categor
           <CategoryItem
             data={category}
             setCategories={setSubCategories}
+            selectMode
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
             className={index === 0 ? 'mt-1' : ''}
             key={category._id}
           />

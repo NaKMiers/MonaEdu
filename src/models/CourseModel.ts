@@ -39,24 +39,22 @@ const CourseSchema = new Schema(
       type: String,
     },
     flashSale: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: 'flashSale',
     },
     tags: {
       type: [
         {
-          type: mongoose.Schema.Types.ObjectId,
+          type: Schema.Types.ObjectId,
           ref: 'tag',
           minlength: 1,
         },
       ],
     },
-    categories: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'category',
-      },
-    ],
+    category: {
+      type: Schema.Types.ObjectId,
+      ref: 'category',
+    },
     images: {
       type: [
         {
@@ -118,12 +116,13 @@ export interface ICourse {
   description: string
   flashSale: string | undefined | IFlashSale
   tags: string[] | ITag[]
-  categories: string[] | ICategory[]
+  category: string | ICategory
   images: string[]
   joined: number
   slug: string
   active: boolean
   likes: string[] | IUser[]
+  languages: string
   createdAt: string
   updatedAt: string
 

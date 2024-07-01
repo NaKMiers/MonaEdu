@@ -4,6 +4,7 @@ import Divider from '@/components/Divider'
 import Input from '@/components/Input'
 import LoadingButton from '@/components/LoadingButton'
 import AdminHeader from '@/components/admin/AdminHeader'
+import CategoryItem from '@/components/admin/CategoryItem'
 import { useAppDispatch, useAppSelector } from '@/libs/hooks'
 import { setLoading } from '@/libs/reducers/modalReducer'
 import { ICategory } from '@/models/CategoryModel'
@@ -27,7 +28,7 @@ function AddCoursePage() {
   const [tags, setTags] = useState<ITag[]>([])
   const [selectedTags, setSelectedTags] = useState<string[]>([])
   const [categories, setCategories] = useState<ICategory[]>([])
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
+  const [selectedCategory, setSelectedCategory] = useState<string>('')
   const [isChecked, setIsChecked] = useState<boolean>(true)
 
   const [imageUrls, setImageUrls] = useState<string[]>([])
@@ -98,8 +99,8 @@ function AddCoursePage() {
           toast.error(`File ${file.name} is not an image file`)
           return false
         }
-        if (file.size > 3 * 1024 * 1024) {
-          toast.error(`File ${file.name} is too large. Only accept images under 3MB`)
+        if (file.size > 5 * 1024 * 1024) {
+          toast.error(`File ${file.name} is too large. Only accept images under 5MB`)
           return false
         }
         return true
@@ -152,8 +153,8 @@ function AddCoursePage() {
         isValid = false
       }
 
-      if (!selectedCategories.length) {
-        toast.error('Please select at least 1 category')
+      if (!selectedCategory) {
+        toast.error('Please selectcategory')
         isValid = false
       }
 
@@ -164,7 +165,7 @@ function AddCoursePage() {
 
       return isValid
     },
-    [setError, selectedCategories, selectedTags, files]
+    [setError, selectedCategory, selectedTags, files]
   )
 
   // send data to server to create new course
@@ -183,7 +184,7 @@ function AddCoursePage() {
       formData.append('description', data.description)
       formData.append('active', data.active)
       formData.append('tags', JSON.stringify(selectedTags))
-      formData.append('categories', JSON.stringify(selectedCategories))
+      formData.append('category', selectedCategory)
       files.forEach(file => formData.append('images', file))
 
       // send request to server to create new course
@@ -197,7 +198,7 @@ function AddCoursePage() {
       imageUrls.forEach(url => URL.revokeObjectURL(url))
       setImageUrls([])
       setSelectedTags([])
-      setSelectedCategories([])
+      setSelectedCategory('')
       reset()
     } catch (err: any) {
       console.log(err)
@@ -348,30 +349,16 @@ function AddCoursePage() {
         <div className='mb-5'>
           <p className='text-dark font-semibold text-xl mb-1'>Select Categories</p>
 
-          <div className='p-2 rounded-lg flex flex-wrap items-center bg-white gap-2'>
+          <div className='flex flex-col gap-2'>
             {categories.map(category => (
-              <Fragment key={category._id}>
-                <input
-                  onChange={e =>
-                    setSelectedCategories(prev =>
-                      e.target.checked ? [...prev, category._id] : prev.filter(t => t !== category._id)
-                    )
-                  }
-                  hidden
-                  type='checkbox'
-                  id={category._id}
-                />
-                <label
-                  className={`cursor-pointer select-none rounded-lg border border-green-500 text-green-500 py-[6px] px-3 trans-200 ${
-                    selectedCategories.some(cate => cate === category._id)
-                      ? 'bg-green-500 text-white'
-                      : ''
-                  }`}
-                  htmlFor={category._id}
-                >
-                  {category.title}
-                </label>
-              </Fragment>
+              <CategoryItem
+                data={category}
+                setCategories={setCategories}
+                selectMode
+                selectedCategory={selectedCategory}
+                setSelectedCategory={setSelectedCategory}
+                key={category._id}
+              />
             ))}
           </div>
         </div>

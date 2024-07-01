@@ -38,7 +38,7 @@ export async function GET(req: NextRequest) {
 
     // get user's courses
     let courses = await CourseModel.find({ _id: { $in: userCourses } })
-      .populate('tags categories')
+      .populate('tags')
       .sort({ createdAt: -1 })
       .lean()
 

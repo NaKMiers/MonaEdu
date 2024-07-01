@@ -26,7 +26,7 @@ async function QuestionDetailPage({ params: { slug } }: { params: { slug: string
     <div className='max-w-1200 mx-auto px-21'>
       <Divider size={10} />
 
-      <div className='rounded-lg shadow-lg'>
+      <div className='rounded-xl shadow-lg bg-white py-4'>
         {/* Question */}
         <div className='w-full px-21'>
           {/* User Info */}

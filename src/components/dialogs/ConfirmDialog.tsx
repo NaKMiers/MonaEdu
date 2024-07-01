@@ -89,7 +89,7 @@ function ConfirmDialog({
       onClick={() => setOpen(false)}
     >
       <div
-        className={`rounded-medium shadow-medium-light bg-white p-21 max-w-[500px] w-full max-h-[500px] opacity-0 trans-300 translate-y-8 ${className}`}
+        className={`relative z-50 rounded-medium shadow-medium-light bg-white p-21 max-w-[500px] w-full max-h-[500px] opacity-0 trans-300 translate-y-8 ${className}`}
         ref={modalBodyRef}
         onClick={e => e.stopPropagation()}
       >

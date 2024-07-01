@@ -131,13 +131,13 @@ function LessonPage({
             <BsLayoutSidebarInsetReverse size={20} className='wiggle' />
           </button>
 
-          <button
-            onClick={() => router.back()}
+          <Link
+            href='/my-courses'
             className='flex items-center gap-1 font-bold px-2 py-1.5 text-xs hover:bg-dark-0 hover:border-dark hover:text-white border border-dark text-dark rounded-md shadow-md trans-200 group'
           >
             <FaChevronLeft size={12} className='wiggle' />
             Back
-          </button>
+          </Link>
         </div>
 
         {curUser?._id && (
@@ -202,7 +202,13 @@ function LessonPage({
                   referrerPolicy='strict-origin-when-cross-origin'
                   allowFullScreen
                 />
-              ) : null}
+              ) : (
+                <video
+                  className='rounded-lg w-full h-full object-contain'
+                  src={lesson.source}
+                  controls
+                />
+              )}
             </div>
           </div>
 

@@ -91,7 +91,7 @@ function CourseCard({ course, hideBadge, className = '' }: CourseCardProps) {
   }, [course._id, dispatch, course.slug, router])
 
   return (
-    <CardContainer className='inter-var'>
+    <CardContainer className={`inter-var ${className}`}>
       <CardBody className='flex flex-col bg-neutral-800 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:border-white/[0.2] border-black/[0.1] h-full rounded-xl p-2.5 md:p-4 border'>
         {course.oldPrice && !hideBadge && (
           <CardItem
@@ -151,20 +151,6 @@ function CourseCard({ course, hideBadge, className = '' }: CourseCardProps) {
 
         <Divider size={2} />
 
-        {/* <CardItem translateZ={75} className='w-full flex flex-wrap gap-1'>
-          {course.categories.map(cat => (
-            <Link
-              href={`/courses?ctg=${(cat as ICategory).slug}`}
-              key={(cat as ICategory).slug}
-              className='text-[10px] text-nowrap text-ellipsis max-w-[80px] sm:max-w-max block line-clamp-1 font-semibold font-body tracking-wide text-dark px-1.5 py-0.5 shadow rounded-lg bg-sky-300'
-            >
-              {(cat as ICategory).title}
-            </Link>
-          ))}
-        </CardItem> */}
-
-        <Divider size={2} />
-
         <CardItem translateZ={40} className='w-full text-xl font-bold text-neutral-600 dark:text-white'>
           <Price
             price={course.price}
@@ -196,7 +182,8 @@ function CourseCard({ course, hideBadge, className = '' }: CourseCardProps) {
               </span>
             </button>
 
-            {(!curUser || !curUser.courses.map((course: any) => course.course).includes(course._id)) && (
+            {(!curUser ||
+              !curUser.courses?.map((course: any) => course.course).includes(course._id)) && (
               <button
                 className={`group font-semibold h-[42px] px-3 flex items-center justify-center rounded-lg shadow-lg bg-dark-100 border-2 border-dark hover:bg-white trans-300 hover:-translate-y-1 ${
                   isLoading ? 'pointer-events-none bg-slate-200' : ''

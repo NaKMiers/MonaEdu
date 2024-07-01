@@ -1,25 +1,23 @@
 'use client'
 
+import Divider from '@/components/Divider'
 import Input from '@/components/Input'
-import Pagination from '@/components/layouts/Pagination'
 import AdminHeader from '@/components/admin/AdminHeader'
 import AdminMeta from '@/components/admin/AdminMeta'
 import LessonItem from '@/components/admin/LessonItem'
 import ConfirmDialog from '@/components/dialogs/ConfirmDialog'
+import Pagination from '@/components/layouts/Pagination'
 import { useAppDispatch } from '@/libs/hooks'
 import { setPageLoading } from '@/libs/reducers/modalReducer'
-import { ICourse } from '@/models/CourseModel'
+import { IChapter } from '@/models/ChapterModel'
 import { ILesson } from '@/models/LessonModel'
 import { activateLessonsApi, deleteLessonsApi, getAllChapterLessonsApi } from '@/requests'
 import { handleQuery } from '@/utils/handleQuery'
 import { usePathname, useRouter } from 'next/navigation'
-import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { FaSearch, FaSort } from 'react-icons/fa'
-import { GroupCourses } from '../add/page'
-import { IChapter } from '@/models/ChapterModel'
-import Divider from '@/components/Divider'
 
 function AllLessonsPage({
   params: { chapterId },
@@ -38,9 +36,6 @@ function AllLessonsPage({
   const [lessons, setLessons] = useState<ILesson[]>([])
   const [amount, setAmount] = useState<number>(0)
   const [selectedLessons, setSelectedLessons] = useState<string[]>([])
-  const [courses, setCourses] = useState<ICourse[]>([])
-  const [groupCourses, setGroupCourses] = useState<GroupCourses>({})
-  const [selectedCourses, setSelectedCourses] = useState<string[]>([])
 
   // loading & opening
   const [loadingLessons, setLoadingLessons] = useState<string[]>([])
@@ -84,33 +79,13 @@ function AllLessonsPage({
 
       try {
         // sent request to server
-        const { lessons, amount, courses } = await getAllChapterLessonsApi(chapterId, query)
+        const { lessons, amount } = await getAllChapterLessonsApi(chapterId, query)
         setChapter(lessons[0]?.chapterId)
-
-        // group course by category.title
-        const groupCourses: GroupCourses = {}
-        courses.forEach((course: ICourse) => {
-          course.categories.forEach((category: any) => {
-            const categoryTitle = category.title
-            if (!groupCourses[categoryTitle]) {
-              groupCourses[categoryTitle] = []
-            }
-            groupCourses[categoryTitle].push(course)
-          })
-        })
 
         // update lessons from state
         setLessons(lessons)
         setAmount(amount)
-        setGroupCourses(groupCourses)
-        setCourses(courses)
 
-        // sync search params with states
-        setSelectedCourses(
-          []
-            .concat((searchParams?.course || courses.map((type: ICourse) => type._id)) as [])
-            .map(type => type)
-        )
         setValue('search', searchParams?.search || getValues('search'))
         setValue('sort', searchParams?.sort || getValues('sort'))
         setValue('active', searchParams?.active || getValues('active').toString())
@@ -205,10 +180,9 @@ function AllLessonsPage({
       return {
         ...searchParams,
         ...data,
-        courseId: selectedCourses.length === courses.length ? [] : selectedCourses,
       }
     },
-    [selectedCourses, courses, searchParams, defaultValues]
+    [searchParams, defaultValues]
   )
 
   // handle submit filter
@@ -256,14 +230,6 @@ function AllLessonsPage({
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [lessons, selectedLessons, handleDeleteLessons, handleFilter, handleSubmit, handleResetFilter])
 
-  // check all courses of category selected
-  const checkAllCoursesOfCategorySelected = useCallback(
-    (group: any): boolean => {
-      return group.map((type: ICourse) => type._id).every((type: any) => selectedCourses.includes(type))
-    },
-    [selectedCourses]
-  )
-
   return (
     <div className='w-full'>
       {/* MARK: Top & Pagination */}
@@ -285,69 +251,6 @@ function AllLessonsPage({
             icon={FaSearch}
             onFocus={() => clearErrors('info')}
           />
-        </div>
-
-        {/* Type Selection */}
-        <div className='flex justify-end items-end gap-1 flex-wrap max-h-[228px] md:max-h-[152px] lg:max-h-[152px] overflow-auto col-span-12 md:col-span-8'>
-          <div
-            className={`overflow-hidden max-w-60 text-ellipsis text-nowrap h-[34px] leading-[34px] px-2 rounded-md border cursor-pointer select-none trans-200 ${
-              courses.length === selectedCourses.length
-                ? 'bg-dark-100 text-white border-dark-100'
-                : 'border-slate-300'
-            }`}
-            title='All Courses'
-            onClick={() =>
-              setSelectedCourses(
-                courses.length === selectedCourses.length ? [] : courses.map(type => type._id)
-              )
-            }
-          >
-            All
-          </div>
-          {Object.keys(groupCourses).map(key => (
-            <Fragment key={key}>
-              <div
-                className={`ml-2 overflow-hidden max-w-60 text-ellipsis text-nowrap h-[34px] leading-[34px] px-2 rounded-md border cursor-pointer select-none trans-200 ${
-                  checkAllCoursesOfCategorySelected(groupCourses[key])
-                    ? 'bg-dark-100 text-white border-dark-100'
-                    : 'border-slate-300 bg-slate-200'
-                }`}
-                title={key}
-                onClick={() =>
-                  checkAllCoursesOfCategorySelected(groupCourses[key])
-                    ? // remove all courses of category
-                      setSelectedCourses(prev =>
-                        prev.filter(id => !groupCourses[key].map((type: any) => type._id).includes(id))
-                      )
-                    : // add all courses of category
-                      setSelectedCourses(prev => [
-                        ...prev,
-                        ...groupCourses[key].map((type: any) => type._id),
-                      ])
-                }
-              >
-                {key}
-              </div>
-              {groupCourses[key].map((course: any) => (
-                <div
-                  className={`overflow-hidden max-w-60 text-ellipsis text-nowrap h-[34px] leading-[34px] px-2 rounded-md border cursor-pointer select-none trans-200 ${
-                    selectedCourses.includes(course._id)
-                      ? 'bg-secondary text-white border-secondary'
-                      : 'border-slate-300'
-                  }`}
-                  title={course.title}
-                  key={course._id}
-                  onClick={
-                    selectedCourses.includes(course._id)
-                      ? () => setSelectedCourses(prev => prev.filter(id => id !== course._id))
-                      : () => setSelectedCourses(prev => [...prev, course._id])
-                  }
-                >
-                  {course.title}
-                </div>
-              ))}
-            </Fragment>
-          ))}
         </div>
 
         {/* MARK: Select Filter */}

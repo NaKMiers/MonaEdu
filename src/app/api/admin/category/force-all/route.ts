@@ -16,9 +16,29 @@ export async function GET() {
     await connectDatabase()
 
     // get all categories from database
-    const categories = await CategoryModel.find().select('title').sort({ createdAt: -1 }).lean()
+    const categories = await CategoryModel.find().sort({ createdAt: -1 }).lean()
 
-    return NextResponse.json({ categories }, { status: 200 })
+    // Function to build the tree
+    const buildTree = (categories: any[], parentId: string | null = null): any[] => {
+      return categories
+        .filter(
+          (category: any) =>
+            (category.parentId ? category.parentId.toString() : null) ===
+            (parentId ? parentId.toString() : null)
+        )
+        .map(category => ({
+          ...category,
+          subs: {
+            ref: category._id,
+            data: buildTree(categories, category._id),
+          },
+        }))
+    }
+
+    // Build and return the tree
+    const tree = buildTree(categories)
+
+    return NextResponse.json({ categories: tree }, { status: 200 })
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })
   }

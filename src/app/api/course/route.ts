@@ -87,7 +87,7 @@ export async function GET(req: NextRequest) {
             .map(item => cates.find(cate => cate.slug === item)?._id)
             .filter(item => item)
 
-          filter['categories'] = { $in: cateIds }
+          filter['category'] = { $in: cateIds }
           continue
         }
 

@@ -84,11 +84,11 @@ function QuestionItem({ question, className = '' }: QuestionItemProps) {
   }, [selectedContent, question.slug])
 
   return (
-    <div className={`rounded-2xl shadow-lg bg-white bg-opacity-80 ${className}`}>
+    <div className={`rounded-2xl shadow-lg bg-white ${className}`}>
       {/* Top */}
       <div className='relative flex gap-3 p-4 border-b-2 border-slate-300'>
         <Link
-          href={`/user/${user?._id}`}
+          href={`/user/${curUser?.username || curUser?.email}`}
           className='flex-shrink-0 w-[40px] h-[40px] rounded-full aspect-square overflow-hidden shadow-lg'
         >
           <Image
@@ -99,7 +99,7 @@ function QuestionItem({ question, className = '' }: QuestionItemProps) {
             alt='avatar'
           />
         </Link>
-        <Link href={`/user/${user?._id}`}>
+        <Link href={`/user/${curUser?.username || curUser?.email}`}>
           <p className='text-lg font-bold -mt-1.5'>
             {user?.firstName && user?.lastName ? `${user.firstName} ${user.lastName}` : user?.username}
           </p>
@@ -171,7 +171,7 @@ function QuestionItem({ question, className = '' }: QuestionItemProps) {
         </div>
 
         <div className='flex justify-center items-center w-full'>
-          <Link href={`/question/${question.slug}`} className='flex items-center justify-center'>
+          <Link href={`/forum/${question.slug}`} className='flex items-center justify-center'>
             <span className='mr-1.5 font-semibold'>{commentAmount}</span> <FaRegCommentDots size={18} />
           </Link>
         </div>

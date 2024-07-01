@@ -114,7 +114,7 @@ const UserSchema = new Schema(
     courses: [
       {
         course: {
-          type: mongoose.Schema.Types.ObjectId,
+          type: Schema.Types.ObjectId,
           ref: 'course',
         },
         progress: {
@@ -127,7 +127,7 @@ const UserSchema = new Schema(
     ],
     gifts: [
       {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'course',
       },
     ],

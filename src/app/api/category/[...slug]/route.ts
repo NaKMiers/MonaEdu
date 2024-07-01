@@ -87,14 +87,20 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
       return NextResponse.json({ message: 'Không tìm thấy danh mục' }, { status: 404 })
     }
 
+    // get category ids
+    const categoryIds: any = await CategoryModel.find({
+      slug: { $regex: category.slug, $options: 'i' },
+    }).select('_id')
+
     // get subs categories & get all courses of current categories
-    const [subs, courses] = await Promise.all([
+    const [subs, courses, amount] = await Promise.all([
       await CategoryModel.find({ parentId: category._id }).lean(),
-      await CourseModel.find({ categories: category._id, ...filter })
+      await CourseModel.find({ category: { $in: categoryIds }, ...filter })
         .sort(sort)
         .skip(skip)
         .limit(itemPerPage)
         .lean(),
+      await CourseModel.countDocuments({ categories: category._id, ...filter }),
     ])
 
     // get all order without filter
@@ -109,7 +115,7 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
     ])
 
     // return response
-    return NextResponse.json({ category, subs, courses, chops }, { status: 200 })
+    return NextResponse.json({ category, subs, courses, amount, chops }, { status: 200 })
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })
   }

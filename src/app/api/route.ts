@@ -3,12 +3,10 @@ import CourseModel from '@/models/CourseModel'
 import QuestionModel from '@/models/QuestionModel'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Models: Course, Category, Question, User
-import '@/models/CategoryModel'
+// Models: Course, Question, User
 import '@/models/CourseModel'
 import '@/models/QuestionModel'
 import '@/models/UserModel'
-import { getToken } from 'next-auth/jwt'
 
 export const dynamic = 'force-dynamic'
 
@@ -20,14 +18,10 @@ export async function GET(req: NextRequest) {
     // connect to database
     await connectDatabase()
 
-    // get current user id
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
-
     // get courses
     const courses = await CourseModel.find({
       active: true,
     })
-      .populate('categories')
       .sort({
         joined: -1,
       })

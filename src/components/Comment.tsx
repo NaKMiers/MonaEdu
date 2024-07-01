@@ -81,7 +81,7 @@ function Comment({ comments, questionId, lessonId, className = '' }: CommentProp
     <div>
       {/* MARK: Input */}
       <div className={`flex items-center justify-between gap-3 ${className}`}>
-        <Link href={`/user/${curUser._id}`}>
+        <Link href={`/user/${curUser?.username || curUser?.email}`}>
           <Image
             className='rounded-full shadow-lg'
             src={curUser?.avatar || process.env.NEXT_PUBLIC_DEFAULT_AVATAR}
@@ -116,9 +116,9 @@ function Comment({ comments, questionId, lessonId, className = '' }: CommentProp
           </label>
         </div>
         <LoadingButton
-          className='h-[40px] flex items-center px-3 sm:px-6 border border-primary hover:bg-primary text-primary hover:text-white rounded-lg trans-200'
+          className='h-[40px] flex items-center px-3 sm:px-6 border border-dark hover:bg-dark-100 font-semibold text-dark hover:text-white rounded-lg trans-200'
           onClick={handleSubmit(sendComment)}
-          text='Send'
+          text='Gửi'
           isLoading={isLoading}
         />
       </div>

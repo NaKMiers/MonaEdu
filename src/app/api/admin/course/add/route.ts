@@ -22,9 +22,8 @@ export async function POST(req: NextRequest) {
     // get data to create course
     const formData = await req.formData()
     const data = Object.fromEntries(formData)
-    const { title, price, oldPrice, author, textHook, description, active } = data
+    const { title, price, oldPrice, author, textHook, description, active, category } = data
     const tags = JSON.parse(data.tags as string)
-    const categories = JSON.parse(data.categories as string)
     let images = formData.getAll('images')
 
     // check images
@@ -47,7 +46,7 @@ export async function POST(req: NextRequest) {
       description,
       active,
       tags,
-      categories,
+      category,
       oldPrice,
       images: imageUrls,
     })
@@ -57,7 +56,7 @@ export async function POST(req: NextRequest) {
 
     // increase related category and tags course quantity
     await TagModel.updateMany({ _id: { $in: tags } }, { $inc: { courseQuantity: 1 } })
-    await CategoryModel.updateMany({ _id: { $in: categories } }, { $inc: { courseQuantity: 1 } })
+    await CategoryModel.updateOne({ _id: category }, { $inc: { courseQuantity: 1 } })
 
     // return new course
     return NextResponse.json(

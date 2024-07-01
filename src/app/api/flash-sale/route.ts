@@ -3,8 +3,7 @@ import CourseModel, { ICourse } from '@/models/CourseModel'
 import { searchParamsToObject } from '@/utils/handleQuery'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Models: Course, FlashSale, Category
-import '@/models/CategoryModel'
+// Models: Course, FlashSale
 import '@/models/CourseModel'
 import '@/models/FlashSaleModel'
 
@@ -72,7 +71,7 @@ export async function GET(req: NextRequest) {
 
     // get all courses
     courses = await CourseModel.find(filter)
-      .populate('flashSale categories')
+      .populate('flashSale')
       .sort(sort)
       .skip(skip)
       .limit(itemPerPage)

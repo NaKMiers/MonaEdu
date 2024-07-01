@@ -175,7 +175,7 @@ function Header({ className = '' }: HeaderProps) {
                 <Link href='/cart' prefetch={false} className='relative wiggle'>
                   <FaShoppingCart size={24} />
                   {!!cartLength && (
-                    <span className='absolute -top-2 right-[-5px] bg-primary text-dark rounded-full text-center px-[6px] py-[2px] text-[10px] font-bold'>
+                    <span className='absolute -top-2 right-[-5px] bg-primary text-dark rounded-full text-center px-[6px] py-[2px] text-[10px] font-bold flex items-center justify-center min-w-[24px]'>
                       {cartLength}
                     </span>
                   )}
@@ -186,7 +186,7 @@ function Header({ className = '' }: HeaderProps) {
                 >
                   <FaBell size={24} />
                   {!!notifications.length && (
-                    <span className='absolute -top-2 right-[-5px] bg-orange-400 rounded-full text-center px-[6px] py-[2px] text-[10px] font-bold'>
+                    <span className='absolute -top-2 right-[-5px] bg-orange-400 rounded-full text-center px-[6px] py-[2px] text-[10px] font-bold flex items-center justify-center min-w-[24px]'>
                       {notifications.length}
                     </span>
                   )}
@@ -228,7 +228,7 @@ function Header({ className = '' }: HeaderProps) {
           <Link href='/cart' prefetch={false} className='relative wiggle mr-2'>
             <FaShoppingCart size={24} />
             {!!cartLength && (
-              <span className='absolute -top-2 right-[-5px] bg-primary rounded-full text-center px-[6px] py-[2px] text-[10px] font-bold'>
+              <span className='absolute -top-2 right-[-5px] bg-primary text-dark rounded-full text-center px-[6px] py-[2px] text-[10px] font-bold'>
                 {cartLength}
               </span>
             )}

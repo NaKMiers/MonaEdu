@@ -6,7 +6,7 @@ import { Toaster } from 'react-hot-toast'
 import '../globals.scss'
 import Footer from '@/components/layouts/Footer'
 import PageLoading from '@/components/PageLoading'
-import FloatingButton from '@/components/FloatingButton'
+import FloatingButtons from '@/components/FloatingButtons'
 import Background from '@/components/Background'
 
 export const metadata: Metadata = {
@@ -47,7 +47,7 @@ export default async function RootLayout({
           <PageLoading />
 
           {/* Floating Button */}
-          <FloatingButton />
+          <FloatingButtons />
 
           {/* Main */}
           <main className='mb-[72px] md:mb-auto md:mt-[72px]'>{children}</main>

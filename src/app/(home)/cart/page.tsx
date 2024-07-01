@@ -75,7 +75,7 @@ function CartPage() {
     const subTotal = selectedItems.reduce((total, cartItem) => {
       const item: any = cartItems.find(cI => cI._id === cartItem._id)
 
-      return total + (applyFlashSalePrice(item?.courseId.flashSale, item?.courseId.price) ?? 0)
+      return total + (applyFlashSalePrice(item?.courseId?.flashSale, item?.courseId.price) ?? 0)
     }, 0)
     setSubTotal(subTotal)
 
@@ -105,7 +105,7 @@ function CartPage() {
   // auto select cart item
   useEffect(() => {
     const selectedItems = cartItems.filter(item =>
-      queryParams.getAll('course').includes((item.courseId as ICourse).slug)
+      queryParams.getAll('course').includes((item.courseId as ICourse)?.slug)
     )
 
     dispatch(setSelectedItems(selectedItems))
