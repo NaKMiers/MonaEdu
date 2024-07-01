@@ -7,7 +7,7 @@ import { signOut } from 'next-auth/react'
 
 function Footer() {
   return (
-    <footer className='bg-dark-100 text-light opacity-95 border-t-2 rounded-t-[40px] border-slate-300 px-21 pt-3'>
+    <footer className='bg-dark-100 text-light border-t-2 rounded-t-[40px] border-slate-300 px-21 pt-3'>
       <div className='max-w-1200 mx-auto'>
         {/* Head */}
         <div className='flex items-center justify-between gap-21'>

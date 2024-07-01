@@ -52,7 +52,8 @@ function LessonItem({
           setSelectedLessons(prev =>
             prev.includes(data._id) ? prev.filter(id => id !== data._id) : [...prev, data._id]
           )
-        }>
+        }
+      >
         <div className='w-[calc(100%_-_42px)]'>
           {/* MARK: Thumbnails */}
           <div className='flex flex-wrap gap-2'>
@@ -60,7 +61,8 @@ function LessonItem({
               href={`/${(data.courseId as ICourse).slug || ''}`}
               prefetch={false}
               onClick={e => e.stopPropagation()}
-              className='flex items-center max-w-[120px] sm:max-w-[200px] rounded-lg shadow-md overflow-hidden mb-2'>
+              className='flex items-center max-w-[120px] sm:max-w-[200px] rounded-lg shadow-md overflow-hidden mb-2'
+            >
               <div className='flex items-center w-full overflow-x-scroll snap-x snap-mandatory no-scrollbar'>
                 <Image
                   className='aspect-video flex-shrink-0 snap-start object-cover w-full h-full'
@@ -98,13 +100,15 @@ function LessonItem({
           {/* Course */}
           <p
             className='inline-flex mb-2 flex-wrap gap-2 items-center font-semibold text-[18px] mr-2 font-body tracking-wide'
-            title={(data.courseId as ICourse).title}>
+            title={(data.courseId as ICourse).title}
+          >
             {(data.courseId as ICourse).categories.map((category: any) => (
               <span
                 className={`shadow-md text-xs ${
                   category.title ? 'bg-yellow-300 text-dark' : 'bg-slate-200 text-slate-400'
                 } px-2 py-px select-none rounded-md font-body`}
-                key={category._id}>
+                key={category._id}
+              >
                 {category.title || 'empty'}
               </span>
             ))}
@@ -141,7 +145,8 @@ function LessonItem({
               e.stopPropagation()
               handleActivateLessons([data._id], !data.active)
             }}
-            title={data.active ? 'Deactivate' : 'Activate'}>
+            title={data.active ? 'Deactivate' : 'Activate'}
+          >
             <FaCheck
               size={18}
               className={`wiggle ${data.active ? 'text-green-500' : 'text-slate-300'}`}
@@ -150,10 +155,11 @@ function LessonItem({
 
           {/* Edit Button Link */}
           <Link
-            href={`/admin/lesson/${data._id}/edit`}
+            href={`/admin/lesson/${(data.chapterId as IChapter)._id}/${data._id}/edit`}
             className='block group'
             title='Edit'
-            onClick={e => e.stopPropagation()}>
+            onClick={e => e.stopPropagation()}
+          >
             <MdEdit size={18} className='wiggle' />
           </Link>
 
@@ -165,7 +171,8 @@ function LessonItem({
               setIsOpenConfirmModal(true)
             }}
             disabled={loadingLessons.includes(data._id)}
-            title='Delete'>
+            title='Delete'
+          >
             {loadingLessons.includes(data._id) ? (
               <RiDonutChartFill size={18} className='animate-spin text-slate-300' />
             ) : (

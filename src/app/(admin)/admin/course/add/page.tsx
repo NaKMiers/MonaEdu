@@ -47,6 +47,7 @@ function AddCoursePage() {
       price: '',
       oldPrice: '',
       author: '',
+      textHook: '',
       description: '',
       active: true,
     },
@@ -268,6 +269,20 @@ function AddCoursePage() {
             onFocus={() => clearErrors('oldPrice')}
           />
         </div>
+
+        {/* Text Hook */}
+        <Input
+          id='textHook'
+          label='Hook'
+          disabled={isLoading}
+          register={register}
+          errors={errors}
+          type='textarea'
+          rows={3}
+          icon={MdNumbers}
+          className='mb-5'
+          onFocus={() => clearErrors('textHook')}
+        />
 
         {/* Description */}
         <Input

@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
     // get data to create course
     const formData = await req.formData()
     const data = Object.fromEntries(formData)
-    const { title, price, oldPrice, author, description, active } = data
+    const { title, price, oldPrice, author, textHook, description, active } = data
     const tags = JSON.parse(data.tags as string)
     const categories = JSON.parse(data.categories as string)
     let images = formData.getAll('images')
@@ -43,6 +43,7 @@ export async function POST(req: NextRequest) {
       title,
       price,
       author,
+      textHook,
       description,
       active,
       tags,

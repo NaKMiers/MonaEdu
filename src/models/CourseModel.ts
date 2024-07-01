@@ -32,6 +32,9 @@ const CourseSchema = new Schema(
     author: {
       type: String,
     },
+    textHook: {
+      type: String,
+    },
     description: {
       type: String,
     },
@@ -82,6 +85,10 @@ const CourseSchema = new Schema(
         ref: 'user',
       },
     ],
+    languages: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,
@@ -107,6 +114,7 @@ export interface ICourse {
   oldPrice: number
   price: number
   author: string
+  textHook: string
   description: string
   flashSale: string | undefined | IFlashSale
   tags: string[] | ITag[]

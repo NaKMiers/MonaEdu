@@ -15,10 +15,22 @@ export const getAllChapterLessonsApi = async (chapterId: string, query: string =
   return await res.json()
 }
 
-// [GET]
+// [GET]: /api/lesson/:slug
 export const getLessonApi = async (slug: string) => {
   // no-cache
   const res = await fetch(`/api/lesson/${slug}`, { cache: 'no-store' })
+
+  // check status
+  if (!res.ok) {
+    throw new Error((await res.json()).message)
+  }
+
+  return await res.json()
+}
+
+// [GET]: /api/admin/lesson/:chapterId/:id
+export const getLessonByIdApi = async (chapterId: string, lessonId: string) => {
+  const res = await fetch(`/api/admin/lesson/${chapterId}/${lessonId}`)
 
   // check status
   if (!res.ok) {
@@ -44,8 +56,8 @@ export const addLessonApi = async (chapterId: string, data: FormData) => {
 }
 
 // [PUT]
-export const updateLessonApi = async (id: string, data: FormData) => {
-  const res = await fetch(`/api/admin/lesson/${id}/edit`, {
+export const updateLessonApi = async (chapterId: string, lessonId: string, data: FormData) => {
+  const res = await fetch(`/api/admin/lesson/${chapterId}/${lessonId}/edit`, {
     method: 'PUT',
     body: data,
   })

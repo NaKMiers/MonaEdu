@@ -1,14 +1,14 @@
 import { connectDatabase } from '@/config/database'
 import LessonModel, { ILesson } from '@/models/LessonModel'
+import { generateSlug } from '@/utils'
+import { deleteFile, uploadFile } from '@/utils/uploadFile'
 import { NextRequest, NextResponse } from 'next/server'
 
 // Models: Lesson, Order
 import '@/models/LessonModel'
 import '@/models/OrderModel'
-import { generateSlug } from '@/utils'
-import { deleteFile, uploadFile } from '@/utils/uploadFile'
 
-// [PUT]: /lesson/:id/edit
+// [PUT]: /lesson/:chapterId/:id/edit
 export async function PUT(req: NextRequest, { params: { id } }: { params: { id: string } }) {
   console.log('- Edit Lesson -')
 

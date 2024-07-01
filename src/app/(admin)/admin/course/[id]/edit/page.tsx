@@ -51,6 +51,7 @@ function AddCoursePage() {
       price: '',
       oldPrice: '',
       author: '',
+      textHook: '',
       description: '',
       active: true,
     },
@@ -69,6 +70,7 @@ function AddCoursePage() {
         setValue('price', course.price)
         setValue('oldPrice', course.oldPrice)
         setValue('author', course.author)
+        setValue('textHook', course.textHook)
         setValue('description', course.description)
         setValue('active', course.active)
 
@@ -212,6 +214,7 @@ function AddCoursePage() {
       formData.append('price', data.price)
       formData.append('oldPrice', data.oldPrice)
       formData.append('author', data.author)
+      formData.append('textHook', data.textHook)
       formData.append('description', data.description)
       formData.append('active', data.active)
       formData.append('tags', JSON.stringify(selectedTags))
@@ -297,6 +300,20 @@ function AddCoursePage() {
           />
         </div>
 
+        {/* Text Hook */}
+        <Input
+          id='textHook'
+          label='Hook'
+          disabled={isLoading}
+          register={register}
+          errors={errors}
+          type='textarea'
+          rows={3}
+          icon={MdNumbers}
+          className='mb-5'
+          onFocus={() => clearErrors('textHook')}
+        />
+
         {/* Description */}
         <Input
           id='description'
@@ -326,7 +343,8 @@ function AddCoursePage() {
           />
           <label
             className={`select-none cursor-pointer border border-green-500 px-4 py-2 rounded-lg trans-200 bg-white text-green-500 peer-checked:bg-green-500 peer-checked:text-white`}
-            htmlFor='active'>
+            htmlFor='active'
+          >
             Active
           </label>
         </div>
@@ -353,7 +371,8 @@ function AddCoursePage() {
                   className={`cursor-pointer select-none rounded-lg border border-green-500 text-green-500 py-[6px] px-3 trans-200 ${
                     selectedTags.some(t => t === tag._id) ? 'bg-green-500 text-white' : ''
                   }`}
-                  htmlFor={tag._id}>
+                  htmlFor={tag._id}
+                >
                   {tag.title}
                 </label>
               </Fragment>
@@ -387,7 +406,8 @@ function AddCoursePage() {
                       ? 'bg-green-500 text-white'
                       : ''
                   }`}
-                  htmlFor={category._id}>
+                  htmlFor={category._id}
+                >
                   {category.title}
                 </label>
               </Fragment>
@@ -415,7 +435,8 @@ function AddCoursePage() {
               {/* label */}
               <label
                 htmlFor={'images'}
-                className='absolute rounded-md text-sm trans-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1 cursor-pointer text-dark'>
+                className='absolute rounded-md text-sm trans-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1 cursor-pointer text-dark'
+              >
                 Images
               </label>
             </div>
@@ -431,7 +452,8 @@ function AddCoursePage() {
 
                 <button
                   onClick={() => setOriginalImages(prev => prev.filter(i => i !== url))}
-                  className='absolute top-2 bg-slate-300 p-2 right-2 group hover:bg-dark-100 rounded-lg'>
+                  className='absolute top-2 bg-slate-300 p-2 right-2 group hover:bg-dark-100 rounded-lg'
+                >
                   <FaX size={16} className='text-dark group-hover:text-white trans-200' />
                 </button>
               </div>
@@ -442,7 +464,8 @@ function AddCoursePage() {
 
                 <button
                   onClick={() => handleRemoveImage(url)}
-                  className='absolute top-2 bg-slate-300 p-2 right-2 group hover:bg-dark-100 rounded-lg'>
+                  className='absolute top-2 bg-slate-300 p-2 right-2 group hover:bg-dark-100 rounded-lg'
+                >
                   <FaX size={16} className='text-dark group-hover:text-white trans-200' />
                 </button>
               </div>

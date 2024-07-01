@@ -3,9 +3,10 @@ import CartItemModel, { ICartItem } from '@/models/CartItemModel'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Models: CartItem, Course
+// Models: CartItem, Course, FlashSale
 import '@/models/CartItemModel'
 import '@/models/CourseModel'
+import '@/models/FlashSaleModel'
 
 export const dynamic = 'force-dynamic'
 

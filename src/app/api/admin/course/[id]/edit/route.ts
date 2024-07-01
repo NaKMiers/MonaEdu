@@ -22,7 +22,7 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
     // get data to create course
     const formData = await req.formData()
     const data = Object.fromEntries(formData)
-    const { title, price, oldPrice, author, description, isActive } = data
+    const { title, price, oldPrice, author, textHook, description, isActive } = data
     const tags = JSON.parse(data.tags as string)
     const categories = JSON.parse(data.categories as string)
     const originalImages = JSON.parse(data.originalImages as string)
@@ -57,6 +57,7 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
         price,
         oldPrice: oldPrice === 'null' ? null : oldPrice,
         author,
+        textHook,
         description,
         active: isActive,
         tags,

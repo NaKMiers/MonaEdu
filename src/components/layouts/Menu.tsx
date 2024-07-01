@@ -63,7 +63,7 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
       <div
         className={`${
           open
-            ? 'max-h-[358px] sm:max-w-full sm:w-[300px] sm:max-h-[358px] h-screen p-2 sm:border-2 opacity-1'
+            ? 'max-h-[358px] sm:max-w-full sm:w-[300px] sm:max-h-[358px] p-2 sm:border-2 opacity-1'
             : 'max-h-0 sm:max-h-0 p-0 border-0 sm:max-w-0 sm:w-0 opacity-0'
         } ${
           curUser && !curUser?._id ? 'hidden' : ''
@@ -223,13 +223,7 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
                 href='/categories'
                 className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white hover:text-dark trans-200'
               >
-                <Image
-                  src='/images/sign-in-icon.png'
-                  className='wiggle'
-                  width={30}
-                  height={30}
-                  alt='icon'
-                />
+                <Image src='/images/category.png' className='wiggle' width={30} height={30} alt='icon' />
                 <span className='font-body text-xl font-semibold tracking-wide'>Danh Mục</span>
               </Link>
             </div>

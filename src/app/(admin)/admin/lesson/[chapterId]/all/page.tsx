@@ -18,6 +18,8 @@ import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { FaSearch, FaSort } from 'react-icons/fa'
 import { GroupCourses } from '../add/page'
+import { IChapter } from '@/models/ChapterModel'
+import Divider from '@/components/Divider'
 
 function AllLessonsPage({
   params: { chapterId },
@@ -32,6 +34,7 @@ function AllLessonsPage({
   const router = useRouter()
 
   // states
+  const [chapter, setChapter] = useState<IChapter | null>(null)
   const [lessons, setLessons] = useState<ILesson[]>([])
   const [amount, setAmount] = useState<number>(0)
   const [selectedLessons, setSelectedLessons] = useState<string[]>([])
@@ -82,6 +85,7 @@ function AllLessonsPage({
       try {
         // sent request to server
         const { lessons, amount, courses } = await getAllChapterLessonsApi(chapterId, query)
+        setChapter(lessons[0]?.chapterId)
 
         // group course by category.title
         const groupCourses: GroupCourses = {}
@@ -179,7 +183,7 @@ function AllLessonsPage({
     [router]
   )
 
-  // handle opimize filter
+  // handle optimize filter
   const handleOptimizeFilter: SubmitHandler<FieldValues> = useCallback(
     data => {
       // reset page
@@ -462,6 +466,11 @@ function AllLessonsPage({
         onAccept={() => handleDeleteLessons(selectedLessons)}
         isLoading={loadingLessons.length > 0}
       />
+
+      <Divider size={8} />
+
+      {/* Chapter */}
+      <p className='font-semibold text-center text-3xl'>Chapter: {chapter?.title}</p>
 
       {/* MARK: Amount */}
       <div className='p-3 text-sm text-right text-white font-semibold'>

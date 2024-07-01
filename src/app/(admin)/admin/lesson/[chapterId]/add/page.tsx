@@ -118,6 +118,7 @@ function AddLessonPage({ params: { chapterId } }: { params: { chapterId: string 
       formData.append('courseId', data.courseId)
       formData.append('chapterId', data.chapterId)
       formData.append('title', data.title)
+      formData.append('textHook', data.textHook)
       formData.append('description', data.title)
       formData.append('duration', data.hours * 3600 + data.minutes * 60 + data.seconds)
       formData.append('active', data.active)

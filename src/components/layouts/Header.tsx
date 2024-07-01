@@ -69,7 +69,7 @@ function Header({ className = '' }: HeaderProps) {
           dispatch(setCartItems(cart))
         } catch (err: any) {
           console.log(err)
-          toast.error(err.response.data.message)
+          toast.error(err.message)
         }
       }
     }
@@ -127,7 +127,7 @@ function Header({ className = '' }: HeaderProps) {
         isTransparent
           ? 'drop-shadow-lg md:bg-opacity-0'
           : 'shadow-medium-light border-b-2 md:rounded-b-[40px] md:rounded-t-0'
-      }  bg-dark-100 bg-opacity-95 text-white w-full trans-300 bottom-0 md:bottom-auto md:top-0 ${className}`}
+      }  bg-dark-100 text-white w-full trans-300 bottom-0 md:bottom-auto md:top-0 ${className}`}
     >
       {/* Main Header */}
       <div className='relative flex justify-between gap-3 items-center max-w-1200 trans-300 w-full h-[72px] m-auto px-21'>
