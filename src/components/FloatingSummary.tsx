@@ -5,7 +5,7 @@ import { addCartItem } from '@/libs/reducers/cartReducer'
 import { setPageLoading } from '@/libs/reducers/modalReducer'
 import { ICourse } from '@/models/CourseModel'
 import { IFlashSale } from '@/models/FlashSaleModel'
-import { addToCartApi } from '@/requests'
+import { addToCartApi, likeCourseApi } from '@/requests'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
@@ -25,7 +25,7 @@ interface FloatingSummaryProps {
   className?: string
 }
 
-function FloatingSummary({ course, className = '' }: FloatingSummaryProps) {
+function FloatingSummary({ course: data, className = '' }: FloatingSummaryProps) {
   // hooks
   const dispatch = useAppDispatch()
   const { data: session } = useSession()
@@ -33,6 +33,7 @@ function FloatingSummary({ course, className = '' }: FloatingSummaryProps) {
   const router = useRouter()
 
   // states
+  const [course, setCourse] = useState<ICourse>(data)
   const [showActions, setShowActions] = useState<boolean>(false)
 
   // states
@@ -90,9 +91,23 @@ function FloatingSummary({ course, className = '' }: FloatingSummaryProps) {
   }, [course._id, dispatch, course.slug, router])
 
   // like course
-  const handleLike = useCallback(() => {
-    console.log('Liked')
-  }, [])
+  const handleLike = useCallback(async () => {
+    if (!curUser?._id) return
+    const value = !course.likes.includes(curUser?._id) ? 'y' : 'n'
+
+    try {
+      // send request to like / dislike comment
+      await likeCourseApi(course._id, value)
+    } catch (err: any) {
+      toast.error(err.message)
+      console.log(err)
+    }
+
+    setCourse(prev => ({
+      ...prev,
+      likes: value === 'y' ? [...prev.likes, curUser._id] : prev.likes.filter(id => id !== curUser._id),
+    }))
+  }, [course._id, curUser?._id, course.likes])
 
   return (
     <div className={`px-4 max-h-[calc(100vh-200px)] overflow-y-auto ${className}`}>

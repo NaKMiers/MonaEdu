@@ -40,7 +40,10 @@ function BreadcrumbBanner({ title, description, background, className = '' }: Br
         {breadcrumbs.map((breadcrumb, index) => (
           <Fragment key={index}>
             {index === 0 && <FaAngleRight size={14} />}
-            <Link href='/' className='hover:text-primary trans-200 hover:drop-shadow-md'>
+            <Link
+              href={`/categories/${breadcrumbs.slice(0, index + 1).join('/')}`}
+              className='hover:text-primary trans-200 hover:drop-shadow-md'
+            >
               {breadcrumb}
             </Link>
             {index !== breadcrumbs.length - 1 && <FaAngleRight size={14} />}

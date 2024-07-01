@@ -2,7 +2,7 @@
 
 import { IChapter } from '@/models/ChapterModel'
 import Link from 'next/link'
-import { memo, useEffect, useRef, useState } from 'react'
+import { memo, use, useEffect, useRef, useState } from 'react'
 import { FaAngleDown } from 'react-icons/fa'
 import Divider from './Divider'
 import { duration } from '@/utils/time'
@@ -27,7 +27,11 @@ function Chapter({ chapter, courseSlug, lessonSlug = '', collapseAll, className 
   const chapterRef = useRef<HTMLUListElement>(null)
 
   useEffect(() => {
-    if (open || collapseAll) {
+    setOpen(!!collapseAll)
+  }, [collapseAll])
+
+  useEffect(() => {
+    if (open) {
       if (!chapter.lessons || !chapterRef.current) return
 
       const origin = 54
@@ -39,7 +43,7 @@ function Chapter({ chapter, courseSlug, lessonSlug = '', collapseAll, className 
     } else {
       chapterRef.current?.style.removeProperty('max-height')
     }
-  }, [open, chapter.lessons, collapseAll])
+  }, [open, chapter.lessons])
 
   return (
     <ul
