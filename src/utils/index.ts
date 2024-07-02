@@ -1,5 +1,4 @@
 import OrderModel from '@/models/OrderModel'
-import { IUser } from '@/models/UserModel'
 import crypto from 'crypto'
 import slugify from 'slugify'
 import unidecode from 'unidecode'
@@ -15,18 +14,6 @@ export const generateSlug = (value: string): string => {
   const cleanSlug: string = baseSlug.replace(/[^a-zA-Z0-9]/g, '-')
 
   return encodeURIComponent(cleanSlug)
-}
-
-// capitalize first letter
-export const capitalize = (value: string): string => {
-  return value.charAt(0).toUpperCase() + value.slice(1)
-}
-
-// get name from user
-export const getName = (user: IUser): string => {
-  return user?.firstName && user?.lastName
-    ? `${user.firstName} ${user.lastName}`
-    : user?.username || user.email
 }
 
 // generate random code

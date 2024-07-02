@@ -36,7 +36,8 @@ async function CategoriesPage({ searchParams }: { searchParams?: { [key: string]
     courses = data.courses
     amount = data.amount
   } catch (err: any) {
-    return redirect('/categories')
+    console.log('err', err)
+    // return redirect('/categories')
   }
 
   return (
@@ -63,7 +64,7 @@ async function CategoriesPage({ searchParams }: { searchParams?: { [key: string]
             <div className='flex flex-wrap gap-2 w-full'>
               {['Liên quan', 'Phổ biến', 'Mới nhất', 'Cũ nhất', 'Yêu thích nhất'].map((item, index) => (
                 <button
-                  className='rounded-3xl text-nowrap shadow-md px-2 md:px-3 py-1 md:py-1.5 text-sm md:text-lg font-semibold font-body tracking-wider border-2 border-secondary hover:border-secondary hover:bg-primary text-secondary hover:drop-shadow-lg hover:text-dark hover:shadow-lg trans-300'
+                  className='rounded-3xl text-nowrap shadow-md px-2 md:px-3 py-1 flex items-center justify-center h-[42px] text-sm md:text-lg font-semibold font-body tracking-wider border-2 border-secondary hover:border-secondary hover:bg-primary text-secondary hover:drop-shadow-lg hover:text-dark hover:shadow-lg trans-300'
                   key={index}
                 >
                   {item}

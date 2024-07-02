@@ -7,6 +7,7 @@ import { NextRequest, NextResponse } from 'next/server'
 // Models: Lesson, Order
 import '@/models/LessonModel'
 import '@/models/OrderModel'
+import CourseModel from '@/models/CourseModel'
 
 // [PUT]: /lesson/:chapterId/:id/edit
 export async function PUT(req: NextRequest, { params: { id } }: { params: { id: string } }) {
@@ -59,6 +60,12 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
       },
     })
 
+    // update total duration of course
+    await CourseModel.findByIdAndUpdate(courseId, {
+      $inc: { duration: +duration - lesson.duration },
+    })
+
+    // return response
     return NextResponse.json({ message: 'Edit lesson successfully' }, { status: 200 })
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })

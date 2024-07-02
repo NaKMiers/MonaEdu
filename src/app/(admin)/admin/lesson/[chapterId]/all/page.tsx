@@ -106,7 +106,7 @@ function AllLessonsPage({
   // activate lesson
   const handleActivateLessons = useCallback(async (ids: string[], value: boolean) => {
     try {
-      // senred request to server
+      // send request to server
       const { updatedLessons, message } = await activateLessonsApi(ids, value)
 
       // update lessons from state
@@ -132,7 +132,7 @@ function AllLessonsPage({
       setLoadingLessons(ids)
 
       try {
-        // senred request to server
+        // send request to server
         const { deletedLessons, message } = await deleteLessonsApi(ids)
 
         // remove deleted tags from state

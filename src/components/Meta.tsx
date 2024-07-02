@@ -81,7 +81,7 @@ function Meta({
   }, [getValues, searchParams, setValue])
 
   // MARK: Handlers
-  // handle opimize filter
+  // handle optimize filter
   const handleOptimizeFilter: SubmitHandler<FieldValues> = useCallback(
     ({ data, newSelectedCates, newSelectedTgs }) => {
       newSelectedCates = newSelectedCates || []

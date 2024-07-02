@@ -16,6 +16,19 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
     // connect database
     await connectDatabase()
 
+    // get category by slug
+    const category: ICategory | null = await CategoryModel.findOne({ slug: slug.join('/') }).lean()
+
+    // check if category not found
+    if (!category) {
+      return NextResponse.json({ message: 'Không tìm thấy danh mục' }, { status: 404 })
+    }
+
+    // get category ids
+    const categoryIds: any = await CategoryModel.find({
+      slug: { $regex: category.slug, $options: 'i' },
+    }).select('_id')
+
     // get query params
     const params: { [key: string]: string[] } = searchParamsToObject(req.nextUrl.searchParams)
 
@@ -24,7 +37,7 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
     // options
     let skip = 0
     let itemPerPage = 16
-    const filter: { [key: string]: any } = {}
+    const filter: { [key: string]: any } = { category: { $in: categoryIds }, active: true }
     let sort: { [key: string]: any } = { createdAt: -1 } // default sort
 
     // build filter
@@ -56,23 +69,28 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
           continue
         }
 
-        if (key === 'price' || key === 'duration') {
-          const from = [params[key][0].split('-')[0]]
-          const to = [params[key][0].split('-')[1]]
-          if (from && to) {
+        if (key === 'price') {
+          const from = +params[key][0].split('-')[0]
+          const to = +params[key][0].split('-')[1]
+          if (from >= 0 && to >= 0) {
             filter[key] = {
               $gte: from,
               $lte: to,
             }
-          } else if (from) {
+          } else if (from >= 0) {
             filter[key] = {
               $gte: from,
             }
-          } else if (to) {
+          } else if (to >= 0) {
             filter[key] = {
               $lte: to,
             }
           }
+          continue
+        }
+
+        // ❌
+        if (key === 'duration') {
           continue
         }
 
@@ -81,33 +99,18 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
       }
     }
 
-    // get category by slug
-    const category: ICategory | null = await CategoryModel.findOne({ slug: slug.join('/') }).lean()
-
-    // check if category not found
-    if (!category) {
-      return NextResponse.json({ message: 'Không tìm thấy danh mục' }, { status: 404 })
-    }
-
-    // get category ids
-    const categoryIds: any = await CategoryModel.find({
-      slug: { $regex: category.slug, $options: 'i' },
-    }).select('_id')
+    console.log('Filter: ', filter)
 
     // get subs categories & get all courses of current categories
     const [subs, courses, amount] = await Promise.all([
       await CategoryModel.find({ parentId: category._id }).lean(),
-      await CourseModel.find({ category: { $in: categoryIds }, ...filter })
-        .sort(sort)
-        .skip(skip)
-        .limit(itemPerPage)
-        .lean(),
-      await CourseModel.countDocuments({ categories: category._id, ...filter }),
+      await CourseModel.find(filter).sort(sort).skip(skip).limit(itemPerPage).lean(),
+      await CourseModel.countDocuments(filter),
     ])
 
-    console.log('subs', subs)
-    console.log('courses', courses)
-    console.log('amount', amount)
+    // console.log('subs', subs)
+    // console.log('courses', courses)
+    // console.log('amount', amount)
 
     // get all order without filter
     const chops = await CourseModel.aggregate([

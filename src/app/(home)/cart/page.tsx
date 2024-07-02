@@ -12,6 +12,7 @@ import { IUser } from '@/models/UserModel'
 import { IVoucher } from '@/models/VoucherModel'
 import { applyVoucherApi, createOrderApi, findUserApi } from '@/requests'
 import { applyFlashSalePrice, calcPercentage, formatPrice } from '@/utils/number'
+import { getUserName } from '@/utils/string'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -157,13 +158,7 @@ function CartPage() {
 
       // set found user
       setFoundUser(user)
-      setBuyAsGiftMessage(
-        `Gift this course to "${
-          user.firstName && user.lastName
-            ? `${user.firstName} ${user.lastName}`
-            : user?.username || user.email
-        }"`
-      )
+      setBuyAsGiftMessage(`Gift this course to "${getUserName(user)}"`)
     } catch (err: any) {
       console.log(err)
       const { message } = err

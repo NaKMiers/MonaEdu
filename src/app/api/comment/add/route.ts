@@ -9,6 +9,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import '@/models/CommentModel'
 import '@/models/QuestionModel'
 import '@/models/UserModel'
+import { getUserName } from '@/utils/string'
 
 // [POST]: /comment/add
 export async function POST(req: NextRequest) {
@@ -72,9 +73,7 @@ export async function POST(req: NextRequest) {
         $push: {
           notifications: {
             _id: new Date().getTime(),
-            title:
-              (user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : user.username) +
-              ' replied on your comment',
+            title: getUserName(user) + ' replied on your comment',
             image: user.avatar,
             link: `/question/${question.slug}`,
             type: 'comment-question',

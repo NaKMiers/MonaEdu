@@ -78,10 +78,14 @@ const UserSchema = new Schema(
       default: 'user',
     },
 
-    // Infomation
+    // Information
     avatar: {
       type: String,
       default: process.env.NEXT_PUBLIC_DEFAULT_AVATAR,
+    },
+    banner: {
+      type: String,
+      default: process.env.NEXT_PUBLIC_DEFAULT_BANNER,
     },
     firstName: {
       type: String,
@@ -92,6 +96,10 @@ const UserSchema = new Schema(
       default: '',
     },
     birthday: Date,
+    gender: {
+      type: String,
+      enum: ['male', 'female', 'other'],
+    },
     address: String,
     job: String,
     expended: {
@@ -242,10 +250,12 @@ export interface IUser {
   authType: string
   role: string
   avatar: string
+  banner: string
   firstName: string
   lastName: string
   birthday: string
   address: string
+  gender: string
   job: string
   expended: number
   commission: { type: string; value: string }
@@ -265,9 +275,9 @@ export interface IUser {
   }
   createdAt: string
   updatedAt: string
+
   // Subs
   vouchers?: IVoucher[]
-  questions?: IQuestion[]
 }
 
 export interface INotification {

@@ -6,6 +6,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import '@/models/UserModel'
 import UserModel, { IUser } from '@/models/UserModel'
 import { sendVerifyEmail } from '@/utils/sendMail'
+import { getUserName } from '@/utils/string'
 
 // [POST]: /auth/verify-email
 export async function POST(req: NextRequest) {
@@ -41,9 +42,7 @@ export async function POST(req: NextRequest) {
       const sendToken = jwt.sign({ email }, process.env.JWT_SECRET!, { expiresIn: '2h' })
       const link = `${process.env.NEXT_PUBLIC_APP_URL}/user?token=${sendToken}`
 
-      const name =
-        (user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : user.username) ||
-        user.email
+      const name = getUserName(user) || user.email
 
       // send email
       await sendVerifyEmail(email, name, link)

@@ -7,6 +7,7 @@ import UserModel, { IUser } from '@/models/UserModel'
 // Models: Question, User
 import '@/models/QuestionModel'
 import '@/models/UserModel'
+import { getUserName } from '@/utils/string'
 
 // [PATCH]: /Question/:id/like
 export async function PATCH(req: NextRequest, { params: { id } }: { params: { id: string } }) {
@@ -60,9 +61,7 @@ export async function PATCH(req: NextRequest, { params: { id } }: { params: { id
         $push: {
           notifications: {
             _id: new Date().getTime(),
-            title:
-              (user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : user.username) +
-              ' liked on your question',
+            title: getUserName(user) + ' liked on your question',
             image: user.avatar,
             type: 'emotion-question',
           },

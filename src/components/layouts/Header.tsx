@@ -196,7 +196,7 @@ function Header({ className = '' }: HeaderProps) {
                   onClick={() => setIsOpenMenu(prev => !prev)}
                 >
                   <Image
-                    className='aspect-square rounded-full wiggle-0'
+                    className='aspect-square rounded-full wiggle-0 shadow-lg'
                     src={curUser?.avatar || process.env.NEXT_PUBLIC_DEFAULT_AVATAR!}
                     width={40}
                     height={40}

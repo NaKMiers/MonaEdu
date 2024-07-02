@@ -4,8 +4,7 @@ import { formatPrice } from '@/utils/number'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useState } from 'react'
-import { FaCheck, FaEye, FaEyeSlash, FaTrash } from 'react-icons/fa'
-import { IoBalloonSharp } from 'react-icons/io5'
+import { FaCheck, FaEye, FaTrash } from 'react-icons/fa'
 import { MdEdit } from 'react-icons/md'
 import { PiLightningFill, PiLightningSlashFill } from 'react-icons/pi'
 import { RiDonutChartFill } from 'react-icons/ri'
@@ -22,7 +21,7 @@ interface CourseItemProps {
 
   // functions
   handleActivateCourses: (ids: string[], active: boolean) => void
-  hanldeRemoveApplyingFlashsales: (ids: string[]) => void
+  handleRemoveApplyingFlashSales: (ids: string[]) => void
   handleDeleteCourses: (ids: string[]) => void
 }
 
@@ -35,7 +34,7 @@ function CourseItem({
   setSelectedCourses,
   // functions
   handleActivateCourses,
-  hanldeRemoveApplyingFlashsales,
+  handleRemoveApplyingFlashSales,
   handleDeleteCourses,
 }: CourseItemProps) {
   // states
@@ -61,6 +60,7 @@ function CourseItem({
             prefetch={false}
             className='relative flex items-center max-w-[160px] rounded-lg shadow-md overflow-hidden mb-2'
             onClick={e => e.stopPropagation()}
+            title={data._id}
           >
             <div className='flex items-center w-full overflow-x-scroll snap-x snap-mandatory no-scrollbar'>
               {data.images.map((src, index) => (
@@ -85,10 +85,33 @@ function CourseItem({
           )}
 
           {/* Title */}
-          <p className='text-dark font-semibold tracking-wider mt-1'>{data.title}</p>
+          <p className='text-dark font-semibold tracking-wider mt-1' title={data.title}>
+            {data.title}
+          </p>
+
+          {/* Category */}
+          <p className='text-slate-500 text-sm font-semibold tracking-wider mb-1'>
+            Category:{' '}
+            <Link
+              href={`/categories/${(data.category as ICategory)?.slug}`}
+              className='text-sky-500 underline italic font-normal'
+            >
+              {(data.category as ICategory)?.slug}
+            </Link>
+          </p>
+
+          {/* Text Hook */}
+          {data.textHook && (
+            <p
+              className='text-sm text-dark border px-2 py-0.5 rounded-md font-body tracking-wider text-ellipsis line-clamp-2'
+              title={data.textHook}
+            >
+              Hook: {data.textHook}
+            </p>
+          )}
 
           {/* Author */}
-          <p className='text-slate-500 font-semibold tracking-wider mb-1'>
+          <p className='text-slate-500 text-sm font-semibold tracking-wider'>
             Author: <span className='font-normal'>{data.author}</span>
           </p>
 
@@ -101,8 +124,8 @@ function CourseItem({
           </div>
 
           {/* Tags */}
-          <p className='text-slate-500'>
-            <span className='text-dark font-semibold'>Tags: </span>
+          <p className='text-slate-500 text-sm'>
+            <span className='font-semibold'>Tags: </span>
             {data.tags.map((tag: any, index) => (
               <span key={tag.slug} className='text-slate-400'>
                 {tag.title}
@@ -111,11 +134,22 @@ function CourseItem({
             ))}
           </p>
 
-          {/* Joined */}
-          <p className='text-slate-500'>
-            <span className='text-dark font-semibold'>Joined: </span>
-            {data.joined} students
+          <p className='text-slate-500 text-sm'>
+            <span className='font-semibold'>Languages: </span>
+            {data.languages}
           </p>
+
+          {/* Joined */}
+          <div className='flex flex-wrap gap-3 text-slate-500 text-sm'>
+            <p>
+              <span className='font-semibold'>Joined: </span>
+              <span className='text-green-500'>{data.joined}</span>
+            </p>
+            <p>
+              <span className='font-semibold'>Likes: </span>
+              <span className='text-rose-500'>{data.likes.length}</span>
+            </p>
+          </div>
         </div>
 
         {/* MARK: Action Buttons */}
@@ -207,7 +241,7 @@ function CourseItem({
           confirmType === 'deactivate'
             ? handleActivateCourses([data._id], false)
             : confirmType === 'Remove Flash Sale'
-            ? hanldeRemoveApplyingFlashsales([data._id])
+            ? handleRemoveApplyingFlashSales([data._id])
             : handleDeleteCourses([data._id])
         }
         isLoading={loadingCourses.includes(data._id)}

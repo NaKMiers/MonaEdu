@@ -109,7 +109,7 @@ function AllOrdersPage({ searchParams }: { searchParams?: { [key: string]: strin
   // cancel orders
   const handleCancelOrders = useCallback(async (ids: string[]) => {
     try {
-      // senred request to server
+      // send request to server
       const { canceledOrders, message } = await cancelOrdersApi(ids)
 
       // update orders from state
@@ -134,7 +134,7 @@ function AllOrdersPage({ searchParams }: { searchParams?: { [key: string]: strin
     setLoadingOrders(ids)
 
     try {
-      // senred request to server
+      // send request to server
       const { deletedOrders, message } = await deletedOrdersApi(ids)
 
       // remove deleted tags from state

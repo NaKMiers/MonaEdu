@@ -1,111 +1,168 @@
 import Avatar from '@/components/Avatar'
+import CourseCard from '@/components/CourseCard'
 import Divider from '@/components/Divider'
-import GroupCourses from '@/components/GroupCourses'
+import QuestionItem from '@/components/QuestionItem'
+import UserBanner from '@/components/UserBanner'
+import { ICourse } from '@/models/CourseModel'
+import { IQuestion } from '@/models/QuestionModel'
 import { IUser } from '@/models/UserModel'
 import { getUsersApi } from '@/requests'
+import { getUserName } from '@/utils/string'
+import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { FaDiscourse } from 'react-icons/fa'
 
 async function ProfilePage({ params: { id } }: { params: { id: string } }) {
-  let user: IUser
+  let user: IUser | null = null
+  let courses: ICourse[] = []
+  let questions: IQuestion[] = []
 
   try {
     // get user profile
-    const res = await getUsersApi(id)
+    const data = await getUsersApi(id)
 
-    user = res.user
+    user = data.user
+    courses = data.user.courses.map((course: any) => course.course)
+    questions = data.questions.map((question: any) => ({ ...question, userId: user }))
   } catch (err: any) {
     console.error(err)
     return notFound()
   }
 
   return (
-    <div className='bg-opacity-75'>
-      {/* Top */}
-      <div className='flex flex-col sm:flex-row items-center justify-between gap-21 px-21 md:px-20 py-10 border-b-2 border-dark'>
-        {/* Info */}
-        <div className='font-body tracking-wider order-2 sm:order-1'>
-          <h1 className='text-4xl font-bold'>
-            {user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : user?.username}
-          </h1>
-          <p className='text-lg text-slate-500 font-semibold mt-1 break-words'>{user?.email}</p>
-
-          <p className='flex items-center gap-1.5 group font-semibold mt-3'>
-            <FaDiscourse size={18} className='text-slate-700 wiggle' />
-            <span className='text-slate-600'>5 Course</span>
-          </p>
-          <p className='flex items-center gap-1.5 group font-semibold mt-1'>
-            <FaDiscourse size={18} className='text-slate-700 wiggle' />
-            <span className='text-slate-600'>162 Online Hours</span>
-          </p>
-          <p className='flex items-center gap-1.5 group font-semibold mt-1'>
-            <FaDiscourse size={18} className='text-slate-700 wiggle' />
-            <span className='text-slate-600'>49 Questions</span>
-          </p>
-          <p className='flex items-center gap-1.5 group font-semibold mt-1'>
-            <FaDiscourse size={18} className='text-slate-700 wiggle' />
-            <span className='text-slate-600'>99 Likes</span>
-          </p>
-        </div>
-
-        {/* Avatar */}
-        <div className='max-w-[200px] max-h-[200[px] w-full h-full flex-shrink-0 order-1 sm:order-2 '>
-          <Avatar />
+    <div>
+      {/* Head */}
+      <div className='bg-neutral-800 md:-mt-[72px] md:pt-[72px]'>
+        {/* Container */}
+        <div className='max-w-1200 mx-auto md:pt-21'>
+          {/* Banner */}
+          {user && (
+            <UserBanner
+              user={user}
+              className='w-full aspect-[7/3] md:aspect-[3/1] lg:aspect-[9/2] overflow-hidden rounded-b-3xl md:rounded-t-3xl border-b-2 border-primary shadow-lg'
+            />
+          )}
+          {user && (
+            <div className='relative h-[104px]'>
+              <div className='absolute right-6 sm:right-12 top-0 z-10 flex justify-end gap-4 -translate-y-1/2'>
+                <div className='hidden sm:flex flex-col justify-end text-light pb-4'>
+                  <h1 className='font-bold text-3xl'>{getUserName(user, 'nickname')}</h1>
+                  {!user.nickname && (
+                    <p className='font-semibold font-body tracking-wider'>
+                      {user.nickname || 'nakmiers'}
+                    </p>
+                  )}
+                </div>
+                <Avatar
+                  user={user}
+                  className='flex-shrink-0 max-w-[168px] border-[4px] border-neutral-800 shadow-lg '
+                />
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Center */}
-      <div className='relative grid grid-cols-12 md:px-10 border-b-2 border-dark'>
-        <div className='col-span-12 lg:col-span-8 px-8 py-21 order-2 lg:order-1'>
-          <h2 className='font-bold text-2xl text-center text-slate-600'>
-            Joined Courses ({user.courses.length || ''})
+      {/* Body */}
+      <div className='bg-white -mb-36 pb-48'>
+        <div className='max-w-1200 mx-auto grid grid-cols-12 gap-21 px-21 pt-12'>
+          {/* Courses */}
+          <div className='col-span-12 md:col-span-8 order-2 md:order-1'>
+            <h2 className='font-semibold font-body text-3xl'>Các khóa học đã tham gia</h2>
+
+            <Divider size={8} />
+
+            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-21'>
+              {courses.map(course => (
+                <CourseCard course={course} key={course._id} />
+              ))}
+            </div>
+          </div>
+
+          {/* Personal Info */}
+          <div className='relative col-span-12 md:col-span-4 order-1 md:order-2 font-body tracking-wider'>
+            <div className='sticky top-[93px] left-0 right-0 w-full rounded-medium shadow-lg p-4'>
+              {/* Achievements */}
+              <div>
+                <h4 className='font-semibold text-slate-700 font-body tracking-wider drop-shadow-md text-center mb-3'>
+                  Các danh hiệu đạt được (3)
+                </h4>
+                <div className='flex snap-mandatory snap-x overflow-x-auto -mx-2'>
+                  {Array.from({ length: 10 }).map((_, index) => (
+                    <div
+                      className='flex flex-col items-center w-1/5 flex-shrink-0 snap-start px-2'
+                      key={index}
+                    >
+                      <div className='rounded-lg aspect-square w-full overflow-hidden'>
+                        <Image
+                          className='w-full h-full object-cover shadow-md'
+                          src='/images/logo.png'
+                          width={80}
+                          height={80}
+                          alt='achievement'
+                        />
+                      </div>
+                      <p className='text-xs mt-1 text-ellipsis line-clamp-1' title={`Title ${index}`}>
+                        Title {index}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Email */}
+              <p className='flex gap-2 text-slate-500 text-sm'>
+                Email:{' '}
+                <Link
+                  href={`mailto:${user?.email}`}
+                  className='underline underline-offset-1 text-sky-800'
+                >
+                  {user?.email}
+                </Link>
+              </p>
+
+              {/* Gender */}
+              <p className='flex gap-2 text-slate-500 text-sm'>
+                Giới tính: <span className='text-dark'>{user?.gender}</span>
+              </p>
+
+              {/* Job */}
+              <p className='flex gap-2 text-slate-500 text-sm'>
+                Công việc: <span className='text-dark'>{user?.job}</span>
+              </p>
+
+              {/* Bio */}
+              <div className='text-slate-500 text-sm'>
+                <span>Bio</span>
+
+                <p className='text-dark'>
+                  {/* {user?.bio} */}
+                  Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quis dicta, assumenda
+                  ducimus, amet sed vel nesciunt consequatur et ad sunt quibusdam culpa cumque aut
+                  veritatis impedit provident, mollitia non adipisci autem in nemo. Magni dolor eos
+                  voluptatibus, earum quod ad!
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <Divider size={12} />
+
+        {/* Questions */}
+        <div className='max-w-1200 mx-auto px-21'>
+          <h2 className='font-semibold font-body text-3xl'>
+            Các câu hỏi của {user && getUserName(user)}
           </h2>
 
-          {!!user.courses.length ? (
-            <GroupCourses child='course-card' courses={user.courses} />
-          ) : (
-            <p className='text-center font-body tracking-wider italic mt-4'>
-              You haven&apos;t joined any courses yet.{' '}
-              <Link href='/courses' className='text-sky-500 underline underline-offset-2'>
-                Explore new courses now.
-              </Link>
-            </p>
-          )}
+          <Divider size={8} />
 
-          <Divider size={16} />
+          <ul className='grid grid-cols-1 md:grid-cols-3 gap-21'>
+            {questions.map(question => (
+              <QuestionItem question={question} key={question._id} />
+            ))}
+          </ul>
         </div>
-
-        <div className='col-span-12 lg:col-span-4 order-1 lg:order-2 lg:border-l-2 border-dark p-21'>
-          <p className='sticky top-[80px] left-0 bg-slate-200 bg-opacity-80 font-semibold font-body tracking-wider p-4 rounded-lg shadow-lg'>
-            {user?.bio}
-          </p>
-        </div>
-      </div>
-
-      {/* Bottom */}
-      <div className='relative px-8 md:px-12 py-21'>
-        <h2 className='font-bold text-2xl text-center text-slate-600'>Questions</h2>
-
-        <Divider size={4} />
-
-        {!!user?.questions?.length ? (
-          <GroupCourses
-            className='md:px-20'
-            child='question'
-            childClassName='w-full sm:w-1/2 md:w-1/3 px-21/2'
-            questions={user.questions}
-          />
-        ) : (
-          <p className='text-center font-body tracking-wider italic'>
-            You haven&apos;t asked any questions yet.{' '}
-            <Link href='/question' className='text-sky-500 underline underline-offset-2'>
-              Write down your mind now.
-            </Link>
-          </p>
-        )}
-
-        <Divider size={20} />
       </div>
     </div>
   )

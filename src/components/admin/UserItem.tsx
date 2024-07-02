@@ -9,6 +9,7 @@ import { formatPrice } from '@/utils/number'
 import { formatDate, formatTime } from '@/utils/time'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
+import Link from 'next/link'
 import React, { useCallback, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
@@ -17,9 +18,9 @@ import { GrUpgrade } from 'react-icons/gr'
 import { HiLightningBolt } from 'react-icons/hi'
 import { ImBlocked } from 'react-icons/im'
 import { RiCheckboxMultipleBlankLine, RiDonutChartFill } from 'react-icons/ri'
-import ConfirmDialog from '../dialogs/ConfirmDialog'
 import Input from '../Input'
 import LoadingButton from '../LoadingButton'
+import ConfirmDialog from '../dialogs/ConfirmDialog'
 
 interface UserItemProps {
   data: IUser
@@ -229,85 +230,123 @@ function UserItem({
               ? prev.filter(id => id !== userData._id)
               : [...prev, userData._id]
           )
-        }>
+        }
+      >
         {/* MARK: Body */}
-        <div>
+        <div className='w-full'>
           {/* Avatar */}
-          <Image
-            className='aspect-square float-start mr-3 rounded-md'
-            src={userData.avatar}
-            height={65}
-            width={65}
-            alt='thumbnail'
-            title={userData._id}
-          />
+          <Link
+            href={`/user/${userData.username || userData.email}`}
+            className='block float-start mr-3 rounded-md overflow-hidden'
+            onClick={e => e.stopPropagation()}
+          >
+            <Image
+              className='aspect-square'
+              src={userData.avatar}
+              height={65}
+              width={65}
+              alt='thumbnail'
+              title={userData._id}
+            />
+          </Link>
 
-          {/* Infomation */}
+          {/* Role */}
           <div className='absolute z-30 -top-2 -left-2 shadow-md text-xs text-yellow-300 bg-secondary px-2 py-[2px] select-none rounded-lg font-body'>
             {userData.role}
           </div>
+
+          {/* Email */}
           <p
             className='block font-semibold text-[18px] font-body tracking-wide text-secondary text-ellipsis line-clamp-1'
-            title={userData.email}>
+            title={userData.email}
+          >
             {userData.email}
           </p>
+
+          {/* Expended */}
           <div className='flex items-center gap-2 text-sm'>
             <p>
               <span className='font-semibold'>Expended: </span>
               <span className='text-green-500'>{formatPrice(userData.expended)}</span>
             </p>
           </div>
+
+          {/* Username */}
           {userData.username && (
             <p className='text-sm'>
               <span className='font-semibold'>Username: </span>
               <span>{userData.username}</span>
             </p>
           )}
+
+          {/* Nickname */}
+          {userData.nickname && (
+            <p className='text-sm'>
+              <span className='font-semibold'>Nickname: </span>
+              <span>{userData.nickname}</span>
+            </p>
+          )}
+
+          {/* First Name + Last Name: Full Name */}
           {(userData.firstName || userData.lastName) && (
             <p className='text-sm'>
               <span className='font-semibold'>Fullname: </span>
               <span>{userData.firstName + ' ' + userData.lastName}</span>
             </p>
           )}
+
+          {/* Birthday */}
           {userData.birthday && (
             <p className='text-sm'>
               <span className='font-semibold'>Birthday: </span>
               <span>{formatDate(userData.birthday)}</span>
             </p>
           )}
+
+          {/* Phone */}
           {userData.phone && (
             <p className='text-sm'>
               <span className='font-semibold'>Phone: </span>
               <span>{userData.phone}</span>
             </p>
           )}
+
+          {/* Address */}
           {userData.address && (
             <p className='text-sm'>
               <span className='font-semibold'>Address: </span>
               <span>{userData.address}</span>
             </p>
           )}
+
+          {/* Job */}
           {userData.job && (
             <p className='text-sm'>
               <span className='font-semibold'>Job: </span>
               <span>{userData.job}</span>
             </p>
           )}
+
+          {/* Created At */}
           <p className='text-sm'>
             <span className='font-semibold'>Created At: </span>
             <span
               className={`${
                 +new Date() - +new Date(data.createdAt) <= 60 * 60 * 1000 ? 'text-yellow-500' : ''
-              }`}>
+              }`}
+            >
               {formatTime(userData.createdAt)}
             </span>
           </p>
+
+          {/* Updated At */}
           <p className='text-sm'>
             <span className='font-semibold'>Updated At: </span>
             <span
               className={`${
                 +new Date() - +new Date(data.updatedAt) <= 60 * 60 * 1000 ? 'text-yellow-500' : ''
-              }`}>
+              }`}
+            >
               {formatTime(userData.updatedAt)}
             </span>
           </p>
@@ -320,7 +359,8 @@ function UserItem({
             onClick={e => {
               e.stopPropagation()
               setIsOpenSetCollaborator(false)
-            }}>
+            }}
+          >
             {/* Type */}
             <Input
               id='type'
@@ -384,7 +424,8 @@ function UserItem({
                   : setIsOpenSetCollaborator(true)
               }}
               disabled={loadingUsers.includes(userData._id) || isDemoting}
-              title={userData.role === 'collaborator' ? 'Demote' : 'Promote'}>
+              title={userData.role === 'collaborator' ? 'Demote' : 'Promote'}
+            >
               {loadingUsers.includes(userData._id) ? (
                 <RiDonutChartFill size={18} className='animate-spin text-slate-300' />
               ) : (
@@ -410,7 +451,8 @@ function UserItem({
                 isBlockingAddQuestion ||
                 isDemoting
               }
-              title='Block COmment'>
+              title='Block Comment'
+            >
               {isBlockingComment ? (
                 <RiDonutChartFill size={18} className='animate-spin text-slate-300' />
               ) : (
@@ -436,7 +478,8 @@ function UserItem({
                 isBlockingAddQuestion ||
                 isDemoting
               }
-              title='Block Add Question'>
+              title='Block Add Question'
+            >
               {isBlockingAddQuestion ? (
                 <RiDonutChartFill size={18} className='animate-spin text-slate-300' />
               ) : (
@@ -462,7 +505,8 @@ function UserItem({
                 isBlockingAddQuestion ||
                 isDemoting
               }
-              title='Delete'>
+              title='Delete'
+            >
               {loadingUsers.includes(userData._id) ? (
                 <RiDonutChartFill size={18} className='animate-spin text-slate-300' />
               ) : (

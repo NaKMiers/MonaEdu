@@ -1,6 +1,7 @@
 'use client'
 
 import { useAppSelector } from '@/libs/hooks'
+import { getUserName } from '@/utils/string'
 import { getSession, signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -78,17 +79,15 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
                 className='flex items-center gap-2 py-2 px-3 rounded-lg group hover:bg-white hover:text-dark trans-200'
               >
                 <Image
-                  className='aspect-square rounded-full wiggle-0'
+                  className='aspect-square rounded-full wiggle-0 shadow-lg'
                   src={curUser?.avatar || process.env.NEXT_PUBLIC_DEFAULT_AVATAR!}
                   height={40}
                   width={40}
                   alt='avatar'
                 />
                 <div className='flex flex-col'>
-                  <p className='font-semibold text-2xl leading-6 mb-1'>
-                    {curUser?.firstName && curUser?.lastName
-                      ? `${curUser.firstName} ${curUser.lastName}`
-                      : curUser.username}
+                  <p className='font-semibold text-xl leading-6 mb-1 text-ellipsis line-clamp-1'>
+                    {getUserName(curUser)}
                   </p>
                   <p className='text-xs '>{curUser.email}</p>
                 </div>
@@ -108,7 +107,7 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
                   />
                   <span className='font-body text-xl font-semibold tracking-wide'>Giỏ hàng</span>
                   {!!cartLength && (
-                    <span className='absolute top-1/2 -translate-y-1/2 right-2 bg-primary text-dark rounded-full text-center px-[7px] py-[2px] text-[10px] font-bold'>
+                    <span className='absolute top-1/2 -translate-y-1/2 right-2 bg-primary text-dark rounded-full flex items-center justify-center px-[7px] h-[20px] text-[10px] font-bold'>
                       {cartLength}
                     </span>
                   )}

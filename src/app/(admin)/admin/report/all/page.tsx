@@ -94,7 +94,7 @@ function AllReportsPage({ searchParams }: { searchParams?: { [key: string]: stri
     setLoadingReports(ids)
 
     try {
-      // senred request to server
+      // send request to server
       const { deletedReports, message } = await deleteReportsApi(ids)
 
       // remove deleted reports from state
@@ -113,7 +113,7 @@ function AllReportsPage({ searchParams }: { searchParams?: { [key: string]: stri
     }
   }, [])
 
-  // handle opimize filter
+  // handle optimize filter
   const handleOptimizeFilter: SubmitHandler<FieldValues> = useCallback(
     data => {
       // reset page

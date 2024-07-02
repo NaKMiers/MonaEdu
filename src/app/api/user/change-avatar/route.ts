@@ -7,8 +7,8 @@ import { NextRequest, NextResponse } from 'next/server'
 // Models: User
 import '@/models/UserModel'
 
-// [PUT]: /user/change-avatar
-export async function PUT(req: NextRequest) {
+// [PATCH]: /user/change-avatar
+export async function PATCH(req: NextRequest) {
   console.log('- Change Avatar -')
 
   try {

@@ -65,7 +65,7 @@ function PersonalSetting() {
     <div className='max-w-1200 mx-auto px-21'>
       <Divider size={8} />
 
-      {/* MARK: Account Infomation */}
+      {/* MARK: Account Information */}
       <div className='relative rounded-lg border border-dark shadow-lg p-4 overflow-x-scroll bg-white bg-opacity-95'>
         <div className='flex gap-2'>
           <div className='flex-shrink-0 w-[50px] h-[50px] rounded-full overflow-hidden'>

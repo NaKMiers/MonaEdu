@@ -122,7 +122,7 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
   // activate voucher
   const handleActivateVouchers = useCallback(async (ids: string[], value: boolean) => {
     try {
-      // senred request to server
+      // send request to server
       const { updatedVouchers, message } = await activateVouchersApi(ids, value)
 
       // update vouchers from state
@@ -147,7 +147,7 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
     setLoadingVouchers(ids)
 
     try {
-      // senred request to server
+      // send request to server
       const { deletedVouchers, message } = await deleteVouchersApi(ids)
 
       // remove deleted vouchers from state
@@ -168,7 +168,7 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
     }
   }, [])
 
-  // handle opimize filter
+  // handle optimize filter
   const handleOptimizeFilter: SubmitHandler<FieldValues> = useCallback(
     data => {
       // reset page

@@ -1,11 +1,11 @@
 'use client'
 
-import ConfirmDialog from '@/components/dialogs/ConfirmDialog'
 import Input from '@/components/Input'
-import Pagination from '@/components/layouts/Pagination'
 import AdminHeader from '@/components/admin/AdminHeader'
 import AdminMeta from '@/components/admin/AdminMeta'
 import UserItem from '@/components/admin/UserItem'
+import ConfirmDialog from '@/components/dialogs/ConfirmDialog'
+import Pagination from '@/components/layouts/Pagination'
 import { useAppDispatch } from '@/libs/hooks'
 import { setPageLoading } from '@/libs/reducers/modalReducer'
 import { IUser } from '@/models/UserModel'
@@ -45,6 +45,7 @@ function AllUsersPage({ searchParams }: { searchParams?: { [key: string]: string
       search: '',
       sort: 'updatedAt|-1',
       role: '',
+      authType: '',
     }),
     []
   )
@@ -82,6 +83,7 @@ function AllUsersPage({ searchParams }: { searchParams?: { [key: string]: string
         setValue('search', searchParams?.search || getValues('search'))
         setValue('sort', searchParams?.sort || getValues('sort'))
         setValue('role', searchParams?.role || getValues('role'))
+        setValue('authType', searchParams?.authType || getValues('authType'))
 
         // set expended
         setMinExpended(chops.minExpended)
@@ -103,7 +105,7 @@ function AllUsersPage({ searchParams }: { searchParams?: { [key: string]: string
     setLoadingUsers(ids)
 
     try {
-      // senred request to server
+      // send request to server
       const { deletedUsers, message } = await deleteUsersApi(ids)
 
       // remove deleted users from state
@@ -129,7 +131,7 @@ function AllUsersPage({ searchParams }: { searchParams?: { [key: string]: string
     )
   }, [users, selectedUsers.length])
 
-  // handle opimize filter
+  // handle optimize filter
   const handleOptimizeFilter: SubmitHandler<FieldValues> = useCallback(
     data => {
       // reset page
@@ -279,7 +281,7 @@ function AllUsersPage({ searchParams }: { searchParams?: { [key: string]: string
             ]}
           />
 
-          {/* role */}
+          {/* Role */}
           <Input
             id='role'
             label='Role'
@@ -306,6 +308,37 @@ function AllUsersPage({ searchParams }: { searchParams?: { [key: string]: string
               {
                 value: 'user',
                 label: 'User',
+              },
+            ]}
+          />
+
+          {/* Auth Type */}
+          <Input
+            id='authType'
+            label='Auth Type'
+            disabled={false}
+            register={register}
+            errors={errors}
+            icon={FaSort}
+            type='select'
+            onFocus={() => clearErrors('authType')}
+            options={[
+              {
+                value: '',
+                label: 'All',
+                selected: true,
+              },
+              {
+                value: 'local',
+                label: 'Credentials',
+              },
+              {
+                value: 'google',
+                label: 'Google',
+              },
+              {
+                value: 'github',
+                label: 'GitHub',
               },
             ]}
           />

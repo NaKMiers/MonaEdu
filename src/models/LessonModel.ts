@@ -27,7 +27,7 @@ const LessonSchema = new Schema(
       index: true,
     },
     duration: {
-      type: Number,
+      type: Number, // in seconds
       required: true,
       min: 0,
     },

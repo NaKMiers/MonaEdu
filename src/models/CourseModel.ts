@@ -87,6 +87,9 @@ const CourseSchema = new Schema(
       type: String,
       required: true,
     },
+    duration: {
+      type: Number,
+    },
   },
   {
     timestamps: true,
@@ -123,6 +126,7 @@ export interface ICourse {
   active: boolean
   likes: string[] | IUser[]
   languages: string
+  duration: number
   createdAt: string
   updatedAt: string
 

@@ -1,11 +1,11 @@
 'use client'
 
-import ConfirmDialog from '@/components/dialogs/ConfirmDialog'
 import Input from '@/components/Input'
-import Pagination from '@/components/layouts/Pagination'
 import AdminHeader from '@/components/admin/AdminHeader'
 import AdminMeta from '@/components/admin/AdminMeta'
 import CourseItem from '@/components/admin/CourseItem'
+import ConfirmDialog from '@/components/dialogs/ConfirmDialog'
+import Pagination from '@/components/layouts/Pagination'
 import { useAppDispatch } from '@/libs/hooks'
 import { setPageLoading } from '@/libs/reducers/modalReducer'
 import { ICategory } from '@/models/CategoryModel'
@@ -37,8 +37,6 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
   const [selectedCourses, setSelectedCourses] = useState<string[]>([])
   const [tgs, setTgs] = useState<ITag[]>([])
   const [selectedFilterTags, setSelectedFilterTags] = useState<string[]>([])
-  const [cates, setCates] = useState<ICategory[]>([])
-  const [selectedFilterCates, setSelectedFilterCates] = useState<string[]>([])
 
   // loading and confirming
   const [loadingCourses, setLoadingCourses] = useState<string[]>([])
@@ -90,19 +88,12 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
 
       try {
         // send request to server to get all courses
-        const { courses, amount, cates, tgs, chops } = await getAllCoursesApi(query)
+        const { courses, amount, tgs, chops } = await getAllCoursesApi(query)
 
         // set courses to state
         setCourses(courses)
         setAmount(amount)
-        setCates(cates)
         setTgs(tgs)
-
-        setSelectedFilterCates(
-          []
-            .concat((searchParams?.category || cates.map((cate: ICategory) => cate._id)) as [])
-            .map(type => type)
-        )
 
         setSelectedFilterTags(
           [].concat((searchParams?.tags || tgs.map((tag: ITag) => tag._id)) as []).map(type => type)
@@ -139,7 +130,7 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
   // activate course
   const handleActivateCourses = useCallback(async (ids: string[], value: boolean) => {
     try {
-      // senred request to server
+      // send request to server
       const { updatedCourses, message } = await activateCoursesApi(ids, value)
 
       // update courses from state
@@ -160,7 +151,7 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
   }, [])
 
   // remove applying flashSales
-  const hanldeRemoveApplyingFlashsales = useCallback(async (ids: string[]) => {
+  const handleRemoveApplyingFlashSales = useCallback(async (ids: string[]) => {
     try {
       // send request to server
       const { updatedCourses, message } = await removeApplyingFlashSalesApi(ids)
@@ -187,7 +178,7 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
     setLoadingCourses(ids)
 
     try {
-      // senred request to server
+      // send request to server
       const { deletedCourses, message } = await deleteCoursesApi(ids)
 
       // remove deleted courses from state
@@ -206,7 +197,7 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
     }
   }, [])
 
-  // handle opimize filter
+  // handle optimize filter
   const handleOptimizeFilter: SubmitHandler<FieldValues> = useCallback(
     data => {
       // reset page
@@ -230,17 +221,14 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
         price: price === maxPrice ? [] : [price.toString()],
         sold: sold === maxSold ? [] : [sold.toString()],
         stock: stock === maxStock ? [] : [stock.toString()],
-        category: selectedFilterCates.length === cates.length ? [] : selectedFilterCates,
         tags: selectedFilterTags.length === tgs.length ? [] : selectedFilterTags,
       }
     },
     [
-      cates,
       maxPrice,
       maxSold,
       maxStock,
       price,
-      selectedFilterCates,
       selectedFilterTags,
       sold,
       stock,
@@ -361,43 +349,6 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
             value={stock}
             onChange={e => setStock(+e.target.value)}
           />
-        </div>
-
-        {/* Cate Selection */}
-        <div className='flex justify-end items-end gap-1 flex-wrap max-h-[228px] md:max-h-[152px] lg:max-h-[152px] overflow-auto col-span-12'>
-          <div
-            className={`overflow-hidden max-w-60 text-ellipsis text-nowrap h-[34px] leading-[34px] px-2 rounded-md border cursor-pointer select-none trans-200 ${
-              cates.length === selectedFilterCates.length
-                ? 'bg-dark-100 text-white border-dark-100'
-                : 'border-slate-300'
-            }`}
-            title='All Types'
-            onClick={() =>
-              setSelectedFilterCates(
-                cates.length === selectedFilterCates.length ? [] : cates.map(category => category._id)
-              )
-            }
-          >
-            All
-          </div>
-          {cates.map(category => (
-            <div
-              className={`overflow-hidden max-w-60 text-ellipsis text-nowrap h-[34px] leading-[34px] px-2 rounded-md border cursor-pointer select-none trans-200 ${
-                selectedFilterCates.includes(category._id)
-                  ? 'bg-primary text-white border-primary'
-                  : 'border-slate-300'
-              }`}
-              title={category.title}
-              key={category._id}
-              onClick={
-                selectedFilterCates.includes(category._id)
-                  ? () => setSelectedFilterCates(prev => prev.filter(id => id !== category._id))
-                  : () => setSelectedFilterCates(prev => [...prev, category._id])
-              }
-            >
-              {category.title}
-            </div>
-          ))}
         </div>
 
         {/* Tag Selection */}
@@ -569,7 +520,7 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
               <button
                 className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-white trans-200'
                 onClick={() => {
-                  hanldeRemoveApplyingFlashsales(selectedCourses)
+                  handleRemoveApplyingFlashSales(selectedCourses)
                 }}
               >
                 Remove Flash Sale
@@ -615,7 +566,7 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
             setSelectedCourses={setSelectedCourses}
             // functions
             handleActivateCourses={handleActivateCourses}
-            hanldeRemoveApplyingFlashsales={hanldeRemoveApplyingFlashsales}
+            handleRemoveApplyingFlashSales={handleRemoveApplyingFlashSales}
             handleDeleteCourses={handleDeleteCourses}
             key={course._id}
           />

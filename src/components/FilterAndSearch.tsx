@@ -2,6 +2,7 @@
 
 import { ICategory } from '@/models/CategoryModel'
 import { handleQuery } from '@/utils/handleQuery'
+import { formatPrice } from '@/utils/number'
 import Slider from '@mui/material/Slider'
 import { AnimatePresence, motion } from 'framer-motion'
 import Link from 'next/link'
@@ -10,8 +11,8 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { FiFilter } from 'react-icons/fi'
 import { HiOutlineMenuAlt3 } from 'react-icons/hi'
 import Divider from './Divider'
-import SearchBar from './SearchBar'
-import { formatPrice } from '@/utils/number'
+import BottomGradient from './gradients/BottomGradient'
+import { FaDeleteLeft, FaX, FaXmark } from 'react-icons/fa6'
 
 interface FilterAndSearchProps {
   searchParams: { [key: string]: string[] | string } | undefined
@@ -37,14 +38,16 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
   const preventFilter = useRef<boolean>(true)
   const [search, setSearch] = useState<string>('')
 
+  console.log('search', search)
+
   const [price, setPrice] = useState<number[]>([0, 1000000])
-  const [time, setTime] = useState<number[]>([0, 100])
+  const [duration, setDuration] = useState<number[]>([0, 100])
 
   const [showSortPrice, setShowSortPrice] = useState(false)
   const [sortPrice, setSortPrice] = useState<'asc' | 'desc' | 'none'>('none')
 
-  const [showSortTime, setShowSortTime] = useState(false)
-  const [sortTime, setSortTime] = useState<'asc' | 'desc' | 'none'>('none')
+  const [showSortDuration, setShowSortDuration] = useState(false)
+  const [sortDuration, setSortDuration] = useState<'asc' | 'desc' | 'none'>('none')
 
   // refs
   const timeoutCtg = useRef<any>(null)
@@ -53,8 +56,9 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
   // handle submit filter
   const handleFilter = useCallback(async () => {
     const params: any = {
+      search: search.trim(),
       price: price.join('-'),
-      time: time.join('-'),
+      duration: duration.join('-'),
     }
 
     if (sortPrice !== 'none') {
@@ -62,10 +66,10 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
     } else {
       delete params.sortPrice
     }
-    if (sortTime !== 'none') {
-      params.sortTime = sortTime
+    if (sortDuration !== 'none') {
+      params.sortDuration = sortDuration
     } else {
-      delete params.sortTime
+      delete params.sortDuration
     }
 
     // handle query
@@ -78,7 +82,7 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
 
     // push to router
     router.push(pathname + query)
-  }, [pathname, router, searchParams, price, sortPrice, sortTime, time])
+  }, [pathname, router, searchParams, search, price, sortPrice, sortDuration, duration])
 
   // sync search params with states
   useEffect(() => {
@@ -95,20 +99,26 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
 
       if (searchParams.time) {
         const [from, to] = (searchParams.time as string).split('-')
-        setTime([+from, +to])
+        setDuration([+from, +to])
       }
 
       if (searchParams.sortPrice) {
         setSortPrice(searchParams.sortPrice as 'asc' | 'desc')
       }
 
-      if (searchParams.sortTime) {
-        setSortTime(searchParams.sortTime as 'asc' | 'desc')
+      if (searchParams.sortDuration) {
+        setSortDuration(searchParams.sortDuration as 'asc' | 'desc')
       }
     }
   }, [searchParams])
 
-  // auto search after timeout
+  // auto filter after timeout (part-1): prevent filter when pathname change
+  useEffect(() => {
+    preventFilter.current = true
+    console.log('true true true')
+  }, [pathname])
+
+  // auto filter after timeout (part-2): filter after timeout
   useEffect(() => {
     if (preventFilter.current) {
       preventFilter.current = false
@@ -121,7 +131,7 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
     timeoutCtg.current = setTimeout(() => {
       handleFilter()
     }, 500)
-  }, [handleFilter, search, price, time, sortPrice, sortTime])
+  }, [handleFilter, search, price, duration, sortPrice, sortDuration])
 
   // handle open sub categories
   useEffect(() => {
@@ -188,9 +198,26 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
   return (
     <>
       {/* Desktop */}
-      <div className={`hidden md:flex flex-col gap-3 ${className}`}>
+      <div className={`hidden w-full md:flex flex-col gap-3 ${className}`}>
         {/* Search */}
-        <SearchBar />
+        <div className='relative group/btn w-full h-[42px] rounded-3xl bg-neutral-800 shadow-lg overflow-hidden'>
+          <input
+            id='search'
+            className='h-full w-full text-sm bg-transparent text-slate-300 outline-none pl-4 pr-[42px] py-2'
+            disabled={false}
+            type='text'
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            placeholder='Bạn muốn học gì...'
+          />
+          <BottomGradient />
+          <button
+            className='absolute top-1/2 right-2 -translate-y-1/2 group text-slate-400 p-1.5'
+            onClick={() => setSearch('')}
+          >
+            <FaDeleteLeft size={18} className='wiggle' />
+          </button>
+        </div>
 
         <Divider size={2} />
 
@@ -228,8 +255,8 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
           <Divider size={4} />
 
           {/* Price Range */}
-          <div className='rounded-medium shadow-lg border-2 border-dark px-3 py-2'>
-            <p className='flex justify-between gap-3 font-body tracking-wider text-slate-700 drop-shadow-md'>
+          <div className='rounded-medium shadow-lg border-2 border-dark px-5 py-2'>
+            <p className='flex justify-between -mx-2 gap-3 font-body tracking-wider text-slate-700 drop-shadow-md'>
               Giá:{' '}
               <span>
                 {formatPrice(price[0])} - {formatPrice(price[1])}
@@ -252,21 +279,21 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
           <Divider size={4} />
 
           {/* Time Range */}
-          <div className='rounded-medium shadow-lg border-2 border-dark px-3 py-2'>
-            <p className='flex justify-between gap-3 font-body tracking-wider text-slate-700 drop-shadow-md'>
+          <div className='rounded-medium shadow-lg border-2 border-dark px-5 py-2'>
+            <p className='flex justify-between -mx-2 gap-3 font-body tracking-wider text-slate-700 drop-shadow-md'>
               Thời lượng:{' '}
               <span>
-                {time[0]} - {time[1]} giờ
+                {duration[0]} - {duration[1]} giờ
               </span>
             </p>
 
             <Slider
               getAriaLabel={() => 'Temperature range'}
-              value={time}
+              value={duration}
               min={0}
               max={100}
               className='w-full -mb-1.5'
-              onChange={(_, newValue: number | number[]) => setTime(newValue as number[])}
+              onChange={(_, newValue: number | number[]) => setDuration(newValue as number[])}
               valueLabelDisplay='auto'
               style={{ color: '#333' }}
             />
@@ -338,12 +365,12 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
             Thời lượng:{' '}
             <div
               className='relative rounded-lg border-2 border-dark px-2 py-1 text-sm cursor-pointer'
-              onClick={() => setShowSortTime(prev => !prev)}
+              onClick={() => setShowSortDuration(prev => !prev)}
             >
-              {sortTime === 'asc' ? 'Tăng dần' : sortTime === 'desc' ? 'Giảm dần' : 'Không'}
+              {sortDuration === 'asc' ? 'Tăng dần' : sortDuration === 'desc' ? 'Giảm dần' : 'Không'}
 
               <AnimatePresence>
-                {showSortTime && (
+                {showSortDuration && (
                   <motion.ul
                     initial={{ translateY: 10, opacity: 0 }}
                     animate={{ translateY: 0, opacity: 1 }}
@@ -353,25 +380,25 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
                   >
                     <li
                       className={`hover:bg-slate-200 px-1 py-1 trans-200 cursor-pointer ${
-                        sortTime === 'none' ? 'bg-slate-200' : ''
+                        sortDuration === 'none' ? 'bg-slate-200' : ''
                       }`}
-                      onClick={() => setSortTime('none')}
+                      onClick={() => setSortDuration('none')}
                     >
                       Không
                     </li>
                     <li
                       className={`hover:bg-slate-200 px-1 py-1 trans-200 cursor-pointer ${
-                        sortTime === 'asc' ? 'bg-slate-200' : ''
+                        sortDuration === 'asc' ? 'bg-slate-200' : ''
                       }`}
-                      onClick={() => setSortTime('asc')}
+                      onClick={() => setSortDuration('asc')}
                     >
                       Tăng dần
                     </li>
                     <li
                       className={`hover:bg-slate-200 px-1 py-1 trans-200 cursor-pointer ${
-                        sortTime === 'desc' ? 'bg-slate-200' : ''
+                        sortDuration === 'desc' ? 'bg-slate-200' : ''
                       }`}
-                      onClick={() => setSortTime('desc')}
+                      onClick={() => setSortDuration('desc')}
                     >
                       Giảm dần
                     </li>
@@ -452,7 +479,7 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
               <p className='flex justify-between gap-3 font-body tracking-wider text-slate-700 drop-shadow-md'>
                 Giá:{' '}
                 <span>
-                  {time[0]} - {price[1]} đ
+                  {duration[0]} - {price[1]} đ
                 </span>
               </p>
 
@@ -475,17 +502,17 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
               <p className='flex justify-between gap-3 font-body tracking-wider text-slate-700 drop-shadow-md'>
                 Thời lượng:{' '}
                 <span>
-                  {time[0]} - {time[1]} giờ
+                  {duration[0]} - {duration[1]} giờ
                 </span>
               </p>
 
               <Slider
                 getAriaLabel={() => 'Temperature range'}
-                value={time}
+                value={duration}
                 min={0}
                 max={40}
                 className='w-full -mb-1.5'
-                onChange={(_, newValue: number | number[]) => setTime(newValue as number[])}
+                onChange={(_, newValue: number | number[]) => setDuration(newValue as number[])}
                 valueLabelDisplay='auto'
                 style={{ color: '#333' }}
               />
@@ -553,12 +580,12 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
               Thời lượng:{' '}
               <div
                 className='relative rounded-lg border-2 border-dark px-2 py-1 text-sm cursor-pointer'
-                onClick={() => setShowSortTime(prev => !prev)}
+                onClick={() => setShowSortDuration(prev => !prev)}
               >
-                {sortTime === 'asc' ? 'Tăng dần' : sortTime === 'desc' ? 'Giảm dần' : 'Không'}
+                {sortDuration === 'asc' ? 'Tăng dần' : sortDuration === 'desc' ? 'Giảm dần' : 'Không'}
 
                 <AnimatePresence>
-                  {showSortTime && (
+                  {showSortDuration && (
                     <motion.ul
                       initial={{ translateY: 10, opacity: 0 }}
                       animate={{ translateY: 0, opacity: 1 }}
@@ -568,25 +595,25 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
                     >
                       <li
                         className={`hover:bg-slate-200 px-1 py-1 trans-200 cursor-pointer ${
-                          sortTime === 'none' ? 'bg-slate-200' : ''
+                          sortDuration === 'none' ? 'bg-slate-200' : ''
                         }`}
-                        onClick={() => setSortTime('none')}
+                        onClick={() => setSortDuration('none')}
                       >
                         Không
                       </li>
                       <li
                         className={`hover:bg-slate-200 px-1 py-1 trans-200 cursor-pointer ${
-                          sortTime === 'asc' ? 'bg-slate-200' : ''
+                          sortDuration === 'asc' ? 'bg-slate-200' : ''
                         }`}
-                        onClick={() => setSortTime('asc')}
+                        onClick={() => setSortDuration('asc')}
                       >
                         Tăng dần
                       </li>
                       <li
                         className={`hover:bg-slate-200 px-1 py-1 trans-200 cursor-pointer ${
-                          sortTime === 'desc' ? 'bg-slate-200' : ''
+                          sortDuration === 'desc' ? 'bg-slate-200' : ''
                         }`}
-                        onClick={() => setSortTime('desc')}
+                        onClick={() => setSortDuration('desc')}
                       >
                         Giảm dần
                       </li>

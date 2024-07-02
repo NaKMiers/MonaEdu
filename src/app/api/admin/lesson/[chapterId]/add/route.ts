@@ -4,6 +4,7 @@ import LessonModel from '@/models/LessonModel'
 import UserModel from '@/models/UserModel'
 import { uploadFile } from '@/utils/uploadFile'
 import { NextRequest, NextResponse } from 'next/server'
+import CourseModel from '@/models/CourseModel'
 
 // Models: Lesson, Course, Chapter, User
 import '@/models/ChapterModel'
@@ -41,7 +42,7 @@ export async function POST(
     }
 
     // create new lesson
-    const newLesson = new LessonModel({
+    const newLesson = await LessonModel.create({
       courseId,
       chapterId,
       title,
@@ -51,9 +52,6 @@ export async function POST(
       description,
       active,
     })
-
-    // save new lesson to database
-    await newLesson.save()
 
     // notify to all users who joined course
     await UserModel.updateMany(
@@ -70,6 +68,9 @@ export async function POST(
         },
       }
     )
+
+    // update total duration of course
+    await CourseModel.findByIdAndUpdate(courseId, { $inc: { duration } })
 
     // increase lesson quantity in chapter
     await ChapterModel.findByIdAndUpdate(chapterId, { $inc: { lessonQuantity: 1 } })

@@ -1,15 +1,13 @@
 import { connectDatabase } from '@/config/database'
-import CategoryModel from '@/models/CategoryModel'
 import CourseModel from '@/models/CourseModel'
 import TagModel from '@/models/TagModel'
 import { searchParamsToObject } from '@/utils/handleQuery'
 import { NextRequest, NextResponse } from 'next/server'
-
 // Models: Category, Tag, Course
+import '@/models/CategoryModel'
 import '@/models/CategoryModel'
 import '@/models/CourseModel'
 import '@/models/TagModel'
-
 export const dynamic = 'force-dynamic'
 
 // [GET]: /admin/course/all
@@ -85,7 +83,6 @@ export async function GET(req: NextRequest) {
 
     // get tags and categories
     const tgs = await TagModel.find().select('title').lean()
-    const cates = await CategoryModel.find().select('title').lean()
 
     // get all order without filter
     const chops = await CourseModel.aggregate([
@@ -101,7 +98,7 @@ export async function GET(req: NextRequest) {
     ])
 
     // return all courses
-    return NextResponse.json({ courses, amount, tgs, cates, chops: chops[0] }, { status: 200 })
+    return NextResponse.json({ courses, amount, tgs, chops: chops[0] }, { status: 200 })
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })
   }

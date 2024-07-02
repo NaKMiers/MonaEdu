@@ -7,6 +7,7 @@ import UserModel, { IUser } from '@/models/UserModel'
 // Models: Comment, User
 import '@/models/CommentModel'
 import '@/models/UserModel'
+import { getUserName } from '@/utils/string'
 
 // [PATCH]: /comment/:id/like
 export async function PATCH(req: NextRequest, { params: { id } }: { params: { id: string } }) {
@@ -89,9 +90,7 @@ export async function PATCH(req: NextRequest, { params: { id } }: { params: { id
         $push: {
           notifications: {
             _id: new Date().getTime(),
-            title:
-              (user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : user.username) +
-              ' liked on your comment',
+            title: getUserName(user) + ' liked on your comment',
             image: user.avatar,
             type: 'emotion-comment',
           },

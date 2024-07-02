@@ -98,10 +98,25 @@ export const updatePrivateInfoApi = async (data: any) => {
   return await res.json()
 }
 
-// [PUT]
+// [PATCH]: /api/user/change-avatar
 export const changeAvatarApi = async (data: FormData) => {
   const res = await fetch('/api/user/change-avatar', {
-    method: 'PUT',
+    method: 'PATCH',
+    body: data,
+  })
+
+  // check status
+  if (!res.ok) {
+    throw new Error((await res.json()).message)
+  }
+
+  return await res.json()
+}
+
+// [PATCH]: /api/user/change-banner
+export const changeBannerApi = async (data: FormData) => {
+  const res = await fetch('/api/user/change-banner', {
+    method: 'PATCH',
     body: data,
   })
 

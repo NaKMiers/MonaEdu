@@ -232,6 +232,7 @@ function OrderItem({
             {formatPrice(data.total)}{' '}
           </p>
 
+          {/* Voucher */}
           {data.voucher && data.discount && (
             <p
               className='font-semibold text-slate-400 text-sm'

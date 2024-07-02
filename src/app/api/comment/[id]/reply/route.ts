@@ -7,6 +7,7 @@ import { NextRequest, NextResponse } from 'next/server'
 // Models: Comment, User
 import '@/models/CommentModel'
 import '@/models/UserModel'
+import { getUserName } from '@/utils/string'
 
 // [POST]: /comment/add
 export async function POST(req: NextRequest, { params: { id } }: { params: { id: string } }) {
@@ -73,9 +74,7 @@ export async function POST(req: NextRequest, { params: { id } }: { params: { id:
       $push: {
         notifications: {
           _id: new Date().getTime(),
-          title:
-            (user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : user.username) +
-            ' replied on your comment',
+          title: getUserName(user) + ' replied on your comment',
           image: user.avatar,
           type: 'replied-comment',
         },

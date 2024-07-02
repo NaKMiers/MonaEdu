@@ -111,7 +111,7 @@ function AllCourseChaptersPage({
     setLoadingChapters(ids)
 
     try {
-      // senred request to server
+      // send request to server
       const { deletedChapters, message } = await deleteChaptersApi(ids)
       // remove deleted chapters from state
       setChapters(prev =>
@@ -130,7 +130,7 @@ function AllCourseChaptersPage({
     }
   }, [])
 
-  // handle opimize filter
+  // handle optimize filter
   const handleOptimizeFilter: SubmitHandler<FieldValues> = useCallback(
     data => {
       // reset page

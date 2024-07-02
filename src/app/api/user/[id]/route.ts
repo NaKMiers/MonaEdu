@@ -1,9 +1,9 @@
 import { connectDatabase } from '@/config/database'
+import QuestionModel from '@/models/QuestionModel'
 import UserModel, { IUser } from '@/models/UserModel'
 import { NextRequest, NextResponse } from 'next/server'
 
 // Models: User, Course, Question
-import '@/models/CategoryModel'
 import '@/models/CourseModel'
 import '@/models/QuestionModel'
 import '@/models/UserModel'
@@ -31,8 +31,11 @@ export async function GET(req: NextRequest, { params: { id } }: { params: { id: 
       return NextResponse.json({ message: 'User not found' }, { status: 404 })
     }
 
+    // get user questions
+    const questions = await QuestionModel.find({ userId: user._id, status: 'open' }).lean()
+
     // return user
-    return NextResponse.json({ user, message: 'Get user successfully' }, { status: 200 })
+    return NextResponse.json({ user, questions, message: 'Get user successfully' }, { status: 200 })
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })
   }
