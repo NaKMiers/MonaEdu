@@ -6,8 +6,8 @@ import { Toaster } from 'react-hot-toast'
 import '../globals.scss'
 import Footer from '@/components/layouts/Footer'
 import PageLoading from '@/components/PageLoading'
-import FloatingButtons from '@/components/FloatingButtons'
-import Background from '@/components/Background'
+import FloatingButtons from '@/components/floatings/FloatingButtons'
+import Background from '@/components/backgrounds/Background'
 
 export const metadata: Metadata = {
   title: 'MonaEdu',

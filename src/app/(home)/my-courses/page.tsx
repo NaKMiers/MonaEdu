@@ -2,7 +2,6 @@
 
 import CourseCard from '@/components/CourseCard'
 import Divider from '@/components/Divider'
-import Pagination from '@/components/layouts/Pagination'
 import { useAppDispatch } from '@/libs/hooks'
 import { setPageLoading } from '@/libs/reducers/modalReducer'
 import { ICourse } from '@/models/CourseModel'

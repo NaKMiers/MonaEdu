@@ -70,7 +70,6 @@ export default async function middleware(req: NextRequest) {
 
   // require auth
   else if (
-    req.nextUrl.pathname.startsWith('/user') ||
     req.nextUrl.pathname.startsWith('/setting') ||
     req.nextUrl.pathname.startsWith('/checkout') ||
     req.nextUrl.pathname.startsWith('/cart')

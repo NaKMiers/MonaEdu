@@ -35,10 +35,10 @@ function UserBanner({ user, className = '' }: UserBannerProps) {
 
         // validate file type and size
         if (!file.type.startsWith('image/')) {
-          return toast.error('Please select an image file')
+          return toast.error('Hãy chọn 1 tệp ảnh')
         }
-        if (file.size > 3 * 1024 * 1024) {
-          return toast.error('Please select an image file less than 3MB')
+        if (file.size > 5 * 1024 * 1024) {
+          return toast.error('Kích thước tệp quá lớn, hãy chọn tệp dưới 5Mb')
         }
 
         setFile(file)
@@ -101,16 +101,15 @@ function UserBanner({ user, className = '' }: UserBannerProps) {
 
   return (
     <div className={`relative w-full group ${className}`}>
-      {/* {(imageUrl || user.banner) && ( */}
-      <Image
-        className='w-full h-full object-cover'
-        // src={imageUrl || user.banner || process.env.NEXT_PUBLIC_DEFAULT_BANNER!}
-        src='/images/default-banner.jpg'
-        width={1500}
-        height={300}
-        alt='banner'
-      />
-      {/* )} */}
+      {(imageUrl || user.banner) && (
+        <Image
+          className='w-full h-full object-cover'
+          src={imageUrl || user.banner || process.env.NEXT_PUBLIC_DEFAULT_BANNER!}
+          width={1500}
+          height={300}
+          alt='banner'
+        />
+      )}
 
       <input
         id='images'
@@ -121,7 +120,7 @@ function UserBanner({ user, className = '' }: UserBannerProps) {
         onChange={handleAddFile}
         ref={bannerInputRef}
       />
-      {!isChangingBanner && user.authType === 'local' && (
+      {!isChangingBanner && curUser?._id === user?._id && (
         <div
           className='absolute top-0 left-0 flex opacity-0 group-hover:opacity-100 items-center justify-center bg-dark-0 w-full h-full bg-opacity-20 trans-200 cursor-pointer drop-shadow-lg'
           onClick={() => !imageUrl && bannerInputRef.current?.click()}
@@ -141,12 +140,12 @@ function UserBanner({ user, className = '' }: UserBannerProps) {
         </div>
       )}
       {isChangingBanner && (
-        <div className='absolute top-0 left-0 w-full h-full bg-white bg-opacity-20'>
+        <div className='absolute top-0 left-0 w-full h-full bg-white bg-opacity-20 pt-2 pl-2'>
           <Image
             className='animate-spin'
             src='/images/loading.png'
-            width={200}
-            height={200}
+            width={50}
+            height={50}
             alt='loading'
           />
         </div>

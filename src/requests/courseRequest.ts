@@ -68,7 +68,7 @@ export const getSingleCourseApi = async (slug: string) => {
   return await res.json()
 }
 
-// [GET]
+// [GET]: /api/course/my-courses
 export const getMyCoursesApi = async () => {
   // no-cache
   const res = await fetch(`/api/course/my-courses`, { cache: 'no-store' })

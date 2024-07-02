@@ -64,6 +64,7 @@ export async function POST(
             image: '/images/logo.png',
             link: `/learning/${courseId}/${newLesson._id}`,
             type: 'new-lesson',
+            status: 'unread',
           },
         },
       }

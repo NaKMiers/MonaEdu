@@ -1,5 +1,18 @@
 // Question -------------------------------------
 
+// [GET]: /api/question/my-questions
+export const getMyQuestionsApi = async () => {
+  // no-cache
+  const res = await fetch(`/api/question/my-questions`, { cache: 'no-store' })
+
+  // check status
+  if (!res.ok) {
+    throw new Error((await res.json()).message)
+  }
+
+  return await res.json()
+}
+
 // [POST]
 export const addQuestionApi = async (data: any) => {
   const res = await fetch('/api/question/add', {

@@ -31,7 +31,7 @@ async function FlashSalePage({ searchParams }: { searchParams?: { [key: string]:
       <Divider size={12} />
 
       {/* Heading */}
-      <h1 className='text-4xl font-semibold px-21 text-center text-white'>Flash Sale Now ({amount})</h1>
+      <h1 className='text-4xl font-semibold px-21 text-white'>Đang Giảm Giá ({amount})</h1>
 
       <Divider size={8} />
 
@@ -43,15 +43,13 @@ async function FlashSalePage({ searchParams }: { searchParams?: { [key: string]:
           ))}
         </div>
       ) : (
-        <div className='font-body tracking-wider text-center'>
-          <p className='italic'>
-            There are not any courses on flash sale at the moment. Please come back later.
-          </p>
+        <div className='font-body tracking-wider text-center text-light'>
+          <p className='italic'>Hiện không có khóa học nào đang giảm giá, vui lòng quay lại sau.</p>
           <Link
             href='/'
             className='text-sky-500 underline underline-offset-2 hover:text-sky-700 trans-200'
           >
-            Return Home
+            Về trang chủ
           </Link>
         </div>
       )}

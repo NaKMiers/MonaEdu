@@ -26,8 +26,6 @@ function Banner({ courses, className = '' }: BannerProps) {
   const curUser: any = session?.user
   const router = useRouter()
 
-  // states
-
   // ref
   const carouselRef = useRef<HTMLDivElement>(null)
   const listRef = useRef<HTMLDivElement>(null)

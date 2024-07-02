@@ -91,6 +91,7 @@ export async function POST(req: NextRequest) {
             image: '/images/logo.png',
             link: '/my-courses',
             type: 'create-order',
+            status: 'unread',
           },
         },
       }),

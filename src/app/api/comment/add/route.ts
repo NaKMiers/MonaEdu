@@ -77,6 +77,7 @@ export async function POST(req: NextRequest) {
             image: user.avatar,
             link: `/question/${question.slug}`,
             type: 'comment-question',
+            status: 'unread',
           },
         },
       })

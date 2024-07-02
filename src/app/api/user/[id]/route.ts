@@ -32,7 +32,7 @@ export async function GET(req: NextRequest, { params: { id } }: { params: { id: 
     }
 
     // get user questions
-    const questions = await QuestionModel.find({ userId: user._id, status: 'open' }).lean()
+    const questions = await QuestionModel.find({ userId: user._id, status: 'open' }).limit(6).lean()
 
     // return user
     return NextResponse.json({ user, questions, message: 'Get user successfully' }, { status: 200 })

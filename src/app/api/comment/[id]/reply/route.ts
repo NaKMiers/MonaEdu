@@ -77,6 +77,7 @@ export async function POST(req: NextRequest, { params: { id } }: { params: { id:
           title: getUserName(user) + ' replied on your comment',
           image: user.avatar,
           type: 'replied-comment',
+          status: 'unread',
         },
       },
     })

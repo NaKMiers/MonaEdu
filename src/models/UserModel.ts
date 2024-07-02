@@ -1,7 +1,6 @@
 import bcrypt from 'bcrypt'
 import mongoose from 'mongoose'
 import { ICourse } from './CourseModel'
-import { IQuestion } from './QuestionModel'
 import { IVoucher } from './VoucherModel'
 const Schema = mongoose.Schema
 
@@ -170,6 +169,11 @@ const UserSchema = new Schema(
           ],
           default: 'unset',
         },
+        status: {
+          type: String,
+          enum: ['read', 'unread'],
+          default: 'unread',
+        },
         createdAt: {
           type: Date,
           default: Date.now,
@@ -287,5 +291,6 @@ export interface INotification {
   content?: string
   link?: string
   type: string
+  status: 'read' | 'unread'
   createdAt: string
 }

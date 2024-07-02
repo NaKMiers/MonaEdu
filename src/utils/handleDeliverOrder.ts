@@ -131,6 +131,7 @@ export default async function handleDeliverOrder(id: string, message: string = '
           image: '/images/logo.png',
           link: '/my-courses',
           type: 'delivered-order',
+          status: 'unread',
         },
       },
     }

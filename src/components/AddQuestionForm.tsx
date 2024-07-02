@@ -68,10 +68,10 @@ function AddQuestionForm() {
       </Link>
 
       <textarea
-        className='w-full px-3 rounded-lg shadow-lg outline-none font-semibold font-body tracking-wider placeholder:font-body placeholder:tracking-wider'
+        className='w-full px-3 py-1 rounded-lg shadow-lg outline-none text-slate-700 font-body tracking-wider placeholder:font-body placeholder:tracking-wider'
         value={value}
         onChange={e => setValue(e.target.value)}
-        rows={3}
+        rows={1}
         placeholder={`What's on your mind${curUser?.lastName ? `, ${curUser?.lastName}` : ''}?`}
       />
 

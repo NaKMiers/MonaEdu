@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
 
     // check if user is already exist in database
     if (existingUser) {
-      return NextResponse.json({ message: 'Email or username is already taken' }, { status: 401 })
+      return NextResponse.json({ message: 'Tên người dùng hoặc email không tồn tại' }, { status: 401 })
     }
 
     // create new user
@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
     const { password: _, ...user } = registeredUser
 
     // return home page
-    return NextResponse.json({ user, message: 'Registered Successfully' }, { status: 200 })
+    return NextResponse.json({ user, message: 'Đăng nhập thành công' }, { status: 200 })
   } catch (err) {
     return NextResponse.json(err, { status: 500 })
   }

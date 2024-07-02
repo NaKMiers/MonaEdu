@@ -9,16 +9,18 @@ import { addToCartApi, likeCourseApi } from '@/requests'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { useCallback, useState } from 'react'
+import { Fragment, useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
 import { FaCartPlus, FaRegThumbsUp, FaShareAlt } from 'react-icons/fa'
 import { HiDotsVertical } from 'react-icons/hi'
 import { RiDonutChartFill } from 'react-icons/ri'
-import Divider from './Divider'
-import Price from './Price'
+import Divider from '../Divider'
+import Price from '../Price'
 import { MdVideoLibrary } from 'react-icons/md'
 import { IoIosPhonePortrait } from 'react-icons/io'
 import { IoTimer } from 'react-icons/io5'
+import Link from 'next/link'
+import { ITag } from '@/models/TagModel'
 
 interface FloatingSummaryProps {
   course: ICourse
@@ -110,7 +112,7 @@ function FloatingSummary({ course: data, className = '' }: FloatingSummaryProps)
   }, [course._id, curUser?._id, course.likes])
 
   return (
-    <div className={`px-4 max-h-[calc(100vh-200px)] overflow-y-auto ${className}`}>
+    <div className={`px-4 max-h-[calc(100vh-100px)] overflow-y-auto ${className}`}>
       {/* Thumbnails */}
       <div className='relative -mx-4 aspect-video rounded-lg overflow-hidden shadow-lg block group'>
         <div className='flex w-full overflow-x-scroll snap-x snap-mandatory hover:scale-105 trans-500'>
@@ -178,7 +180,7 @@ function FloatingSummary({ course: data, className = '' }: FloatingSummaryProps)
           {curUser?._id && curUser.courses.map((course: any) => course.course).includes(course._id) && (
             <div className='text-white relative flex justify-end items-center w-[30px] h-[42px]'>
               <button className='group' onClick={() => setShowActions(prev => !prev)}>
-                <HiDotsVertical size={24} className='wiggle' />
+                <HiDotsVertical size={24} className='text-dark' />
               </button>
               <div
                 className={`${
@@ -219,6 +221,25 @@ function FloatingSummary({ course: data, className = '' }: FloatingSummaryProps)
             <FaShareAlt size={16} />
           </div>
         </div>
+
+        <Divider size={5} border />
+
+        {/* Tags */}
+        <p className='font-body'>
+          Thẻ:{' '}
+          {(course.tags as ITag[]).map((tag, index) => (
+            <Fragment key={tag._id}>
+              <Link
+                href={`/tags?tag=${tag.slug}`}
+                key={tag._id}
+                className='text-sky-500 hover:underline underline-offset-1'
+              >
+                {tag.title}
+              </Link>
+              <span className='text-sky-500'>{index !== course.tags.length - 1 ? ', ' : ''}</span>
+            </Fragment>
+          ))}
+        </p>
 
         <Divider size={5} border />
 

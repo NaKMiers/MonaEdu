@@ -1,12 +1,13 @@
 import CourseContent from '@/components/CourseContent'
 import Divider from '@/components/Divider'
-import FloatingActionButtons from '@/components/FloatingActionButtons'
-import FloatingSummary from '@/components/FloatingSummary'
+import FloatingActionButtons from '@/components/floatings/FloatingActionButtons'
+import FloatingSummary from '@/components/floatings/FloatingSummary'
 import Price from '@/components/Price'
 import { ICategory } from '@/models/CategoryModel'
 import { IChapter } from '@/models/ChapterModel'
 import { ICourse } from '@/models/CourseModel'
 import { IFlashSale } from '@/models/FlashSaleModel'
+import { ITag } from '@/models/TagModel'
 import { getCoursePageApi } from '@/requests'
 import moment from 'moment-timezone'
 import { Metadata } from 'next'
@@ -138,6 +139,25 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
               <MdLanguage size={16} />
               Ngôn ngữ: <span>{course?.languages}</span>
             </p>
+
+            {/* Tags */}
+            {course && (
+              <p className='font-body'>
+                Thẻ:{' '}
+                {(course.tags as ITag[]).map((tag, index) => (
+                  <Fragment key={tag._id}>
+                    <Link
+                      href={`/tags?tag=${tag.slug}`}
+                      key={tag._id}
+                      className='text-sky-300 hover:underline underline-offset-1'
+                    >
+                      {tag.title}
+                    </Link>
+                    <span className='text-sky-300'>{index !== course.tags.length - 1 ? ', ' : ''}</span>
+                  </Fragment>
+                ))}
+              </p>
+            )}
 
             {/* Price */}
             {course && (

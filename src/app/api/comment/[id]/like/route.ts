@@ -93,6 +93,7 @@ export async function PATCH(req: NextRequest, { params: { id } }: { params: { id
             title: getUserName(user) + ' liked on your comment',
             image: user.avatar,
             type: 'emotion-comment',
+            status: 'unread',
           },
         },
       })

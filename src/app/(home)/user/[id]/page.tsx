@@ -1,6 +1,7 @@
 import Avatar from '@/components/Avatar'
 import CourseCard from '@/components/CourseCard'
 import Divider from '@/components/Divider'
+import MyLink from '@/components/MyLink'
 import QuestionItem from '@/components/QuestionItem'
 import UserBanner from '@/components/UserBanner'
 import { ICourse } from '@/models/CourseModel'
@@ -43,16 +44,19 @@ async function ProfilePage({ params: { id } }: { params: { id: string } }) {
             />
           )}
           {user && (
-            <div className='relative h-[104px]'>
-              <div className='absolute right-6 sm:right-12 top-0 z-10 flex justify-end gap-4 -translate-y-1/2'>
-                <div className='hidden sm:flex flex-col justify-end text-light pb-4'>
-                  <h1 className='font-bold text-3xl'>{getUserName(user, 'nickname')}</h1>
+            <div className='relative -mt-[84px] md:mt-0 md:h-[104px]'>
+              <div className='md:absolute sm:right-6 md:right-12 md:top-0 z-10 flex flex-col-reverse md:flex-row justify-center items-center md:items-end md:justify-end gap-3 md:-translate-y-1/2'>
+                <div className='flex flex-col justify-end text-light pb-4'>
+                  <h1 className='font-bold text-nowrap text-ellipsis line-clamp-1 text-3xl text-center'>
+                    {getUserName(user, 'nickname')}
+                  </h1>
                   {!user.nickname && (
-                    <p className='font-semibold font-body tracking-wider'>
+                    <p className='font-semibold font-body tracking-wider text-center md:text-right'>
                       {user.nickname || 'nakmiers'}
                     </p>
                   )}
                 </div>
+
                 <Avatar
                   user={user}
                   className='flex-shrink-0 max-w-[168px] border-[4px] border-neutral-800 shadow-lg '
@@ -65,10 +69,12 @@ async function ProfilePage({ params: { id } }: { params: { id: string } }) {
 
       {/* Body */}
       <div className='bg-white -mb-36 pb-48'>
-        <div className='max-w-1200 mx-auto grid grid-cols-12 gap-21 px-21 pt-12'>
+        <div className='max-w-1200 mx-auto grid grid-cols-12 gap-x-21 gap-y-12 px-21 pt-12'>
           {/* Courses */}
           <div className='col-span-12 md:col-span-8 order-2 md:order-1'>
-            <h2 className='font-semibold font-body text-3xl'>Các khóa học đã tham gia</h2>
+            <h2 className='font-semibold text-3xl flex gap-3 justify-between items-end'>
+              Các khóa học đã tham gia
+            </h2>
 
             <Divider size={8} />
 
@@ -147,12 +153,20 @@ async function ProfilePage({ params: { id } }: { params: { id: string } }) {
           </div>
         </div>
 
-        <Divider size={12} />
+        <Divider size={18} />
 
         {/* Questions */}
         <div className='max-w-1200 mx-auto px-21'>
-          <h2 className='font-semibold font-body text-3xl'>
-            Các câu hỏi của {user && getUserName(user)}
+          <h2 className='font-semibold text-3xl flex gap-3 justify-between items-end'>
+            Các câu hỏi gần đây của {user && getUserName(user)}
+            <MyLink user={user}>
+              <Link
+                href='/my-questions'
+                className='font-normal underline underline-offset-1 text-sky-500 text-base'
+              >
+                (Tất cả câu hỏi của tôi)
+              </Link>
+            </MyLink>
           </h2>
 
           <Divider size={8} />
@@ -163,6 +177,8 @@ async function ProfilePage({ params: { id } }: { params: { id: string } }) {
             ))}
           </ul>
         </div>
+
+        <Divider size={28} />
       </div>
     </div>
   )

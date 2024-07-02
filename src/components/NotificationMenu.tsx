@@ -1,45 +1,88 @@
 'use client'
 
 import { INotification } from '@/models/UserModel'
+import { readNotificationsApi, removeNotificationsApi } from '@/requests'
 import { getSession, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import { IoCloseCircleOutline } from 'react-icons/io5'
+import { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
+import { IoCloseCircleOutline, IoMail, IoMailOpen } from 'react-icons/io5'
 import { format } from 'timeago.js'
 
 interface NotificationMenuProps {
   open: boolean
   setOpen: Dispatch<SetStateAction<boolean>>
-  notifications: INotification[]
-  handleRemoveNotification: (id: string) => void
   className?: string
 }
 
-function NotificationMenu({
-  open,
-  setOpen,
-  notifications,
-  handleRemoveNotification,
-  className = '',
-}: NotificationMenuProps) {
+function NotificationMenu({ open, setOpen, className = '' }: NotificationMenuProps) {
   // hooks
   const { data: session } = useSession()
   const router = useRouter()
 
   // states
   const [curUser, setCurUser] = useState<any>(session?.user || {})
+  const [notifications, setNotifications] = useState<INotification[]>(curUser?.notifications || [])
+
   // update user session
   useEffect(() => {
     const getUser = async () => {
-      const session = await getSession()
+      const session: any = await getSession()
       setCurUser(session?.user)
+      setNotifications(session?.user?.notifications || [])
     }
 
     if (!curUser?._id) {
       getUser()
     }
   }, [curUser])
+
+  // handle remove notifications
+  const handleRemoveNotifications = useCallback(
+    async (ids: string[]) => {
+      try {
+        const { message } = await removeNotificationsApi(ids)
+
+        // remove notifications
+        const newNotifications = notifications.filter(noti => !ids.includes(noti._id))
+        setNotifications(newNotifications)
+        if (newNotifications.length === 0) {
+          setOpen(false)
+        }
+
+        // show success
+        toast.success(message)
+      } catch (err: any) {
+        console.log(err)
+        toast.error(err.message)
+      }
+    },
+    [setOpen, notifications]
+  )
+
+  console.log('notifications', notifications)
+
+  // handle read notifications
+  const handleReadNotifications = useCallback(async (ids: string[], value: boolean) => {
+    try {
+      const { message } = await readNotificationsApi(ids, value)
+
+      // read / unread notifications
+
+      setNotifications(prev =>
+        prev.map(noti =>
+          ids.includes(noti._id) ? { ...noti, status: value ? 'read' : 'unread' } : noti
+        )
+      )
+
+      // show success
+      toast.success(message)
+    } catch (err: any) {
+      console.log(err)
+      toast.error(err.message)
+    }
+  }, [])
 
   // key board event
   useEffect(() => {
@@ -74,14 +117,21 @@ function NotificationMenu({
             : 'max-h-0 sm:max-h-0 p-0 sm:max-w-0 sm:w-0 opacity-0x'
         } ${
           curUser && !curUser?._id ? 'hidden' : ''
-        } text-dark flex flex-col gap-2 overflow-y-auto w-full overflow-hidden trans-300 absolute bottom-[72px] md:bottom-auto md:top-[60px] right-0 sm:right-21 z-30 sm:rounded-medium sm:shadow-sky-400 shadow-md bg-slate-100`}>
+        } text-dark flex flex-col gap-2 overflow-y-auto w-full overflow-hidden trans-300 absolute bottom-[72px] md:bottom-auto md:top-[60px] right-0 sm:right-21 z-30 sm:rounded-medium sm:shadow-sky-400 shadow-md bg-slate-100`}
+      >
         {notifications
           .sort((a, b) => +new Date(b.createdAt) - +new Date(a.createdAt))
           .map((noti: INotification) => (
-            <li className='relative bg-red-100 rounded-lg hover:bg-white trans-300 p-2' key={noti._id}>
+            <li
+              className={`relative ${
+                noti.status === 'unread' ? 'bg-red-100' : ''
+              } rounded-lg hover:bg-white trans-300 p-2`}
+              key={noti._id}
+            >
               <div
                 className={`flex gap-2 ${noti.link ? 'cursor-pointer' : ''}`}
-                onClick={() => noti.link && router.push(noti.link)}>
+                onClick={() => noti.link && router.push(noti.link)}
+              >
                 <div className='max-w-[28px] max-h-[28px] w-full h-full rounded-md shadow-lg overflow-hidden'>
                   <Image
                     className='w-full h-full object-cover'
@@ -91,19 +141,40 @@ function NotificationMenu({
                     alt='avatar'
                   />
                 </div>
-                <div className='font-body tracking-wider -mt-1 w-full'>
-                  <p className='flex justify-between gap-2 font-semibold text-xs'>
-                    {noti.title}
+                <div className='flex gap-1 font-body tracking-wider -mt-1 w-full'>
+                  <div className='font-semibold text-xs flex-1'>
+                    <span>{noti.title}</span>
+                    <p className='text-xs text-slate-500 font-normal'>{format(noti.createdAt)}</p>
+                  </div>
+                  <div className='flex flex-col gap-0.5 items-center'>
                     <IoCloseCircleOutline
-                      size={20}
-                      className='wiggle-1 flex-shrink-0'
+                      size={18}
+                      className='wiggle-1 flex-shrink-0 cursor-pointer'
                       onClick={e => {
                         e.stopPropagation()
-                        handleRemoveNotification(noti._id)
+                        handleRemoveNotifications([noti._id])
                       }}
                     />
-                  </p>
-                  <p className='text-xs'>{format(noti.createdAt)}</p>
+                    {noti.status === 'unread' ? (
+                      <IoMail
+                        size={16}
+                        className='wiggle-1 flex-shrink-0 cursor-pointer'
+                        onClick={e => {
+                          e.stopPropagation()
+                          handleReadNotifications([noti._id], true)
+                        }}
+                      />
+                    ) : (
+                      <IoMailOpen
+                        size={16}
+                        className='wiggle-1 flex-shrink-0 cursor-pointer'
+                        onClick={e => {
+                          e.stopPropagation()
+                          handleReadNotifications([noti._id], false)
+                        }}
+                      />
+                    )}
+                  </div>
                 </div>
               </div>
               {noti.content && <p className='font-body text-xs tracking-wider mt-2'>{noti.content}</p>}

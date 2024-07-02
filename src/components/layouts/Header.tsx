@@ -2,20 +2,19 @@
 
 import { useAppDispatch, useAppSelector } from '@/libs/hooks'
 import { setCartItems } from '@/libs/reducers/cartReducer'
-import { INotification } from '@/models/UserModel'
-import { getAllCategoriesApi, getCartApi, removeNotificationApi } from '@/requests'
+import { getCartApi } from '@/requests'
 import { getSession, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { BiSolidCategory } from 'react-icons/bi'
-import { FaBell, FaChevronUp, FaShoppingCart } from 'react-icons/fa'
+import { FaBell, FaShoppingCart } from 'react-icons/fa'
 import { FaBars } from 'react-icons/fa6'
 import NotificationMenu from '../NotificationMenu'
-import Menu from './Menu'
 import CategoryTabs from './CategoryTabs'
+import Menu from './Menu'
 
 interface HeaderProps {
   className?: string
@@ -38,7 +37,6 @@ function Header({ className = '' }: HeaderProps) {
 
   // notification states
   const [isOpenNotificationMenu, setIsOpenNotificationMenu] = useState<boolean>(false)
-  const [notifications, setNotifications] = useState<INotification[]>(curUser?.notifications || [])
 
   // MARK: Side Effects
   // update user session
@@ -47,7 +45,6 @@ function Header({ className = '' }: HeaderProps) {
       const session = await getSession()
       const user: any = session?.user
       setCurUser(user)
-      setNotifications(user.notifications || [])
 
       await update()
     }
@@ -75,29 +72,6 @@ function Header({ className = '' }: HeaderProps) {
     }
     getUserCart()
   }, [dispatch, curUser?._id])
-
-  // handle remove notification
-  const handleRemoveNotification = useCallback(
-    async (id: string) => {
-      try {
-        const { message } = await removeNotificationApi(id)
-
-        // remove notification
-        const newNotifications = notifications.filter(noti => noti._id !== id)
-        setNotifications(newNotifications)
-        if (newNotifications.length === 0) {
-          setIsOpenNotificationMenu(false)
-        }
-
-        // show success
-        toast.success(message)
-      } catch (err: any) {
-        console.log(err)
-        toast.error(err.message)
-      }
-    },
-    [setNotifications, setIsOpenNotificationMenu, notifications]
-  )
 
   // handle show/hide on scroll
   useEffect(() => {
@@ -185,9 +159,9 @@ function Header({ className = '' }: HeaderProps) {
                   onClick={() => setIsOpenNotificationMenu(prev => !prev)}
                 >
                   <FaBell size={24} />
-                  {!!notifications.length && (
+                  {!!curUser?.notifications.length && (
                     <span className='absolute -top-2 right-[-5px] bg-orange-400 rounded-full text-center px-[6px] py-[2px] text-[10px] font-bold flex items-center justify-center min-w-[24px]'>
-                      {notifications.length}
+                      {curUser?.notifications.length}
                     </span>
                   )}
                 </button>
@@ -235,9 +209,9 @@ function Header({ className = '' }: HeaderProps) {
           </Link>
           <button className='relative group' onClick={() => setIsOpenNotificationMenu(prev => !prev)}>
             <FaBell size={22} className='wiggle' />
-            {!!notifications.length && (
+            {!!curUser?.notifications?.length && (
               <span className='absolute -top-2 right-[-5px] bg-orange-400 rounded-full text-center px-[6px] py-[2px] text-[10px] font-bold'>
-                {notifications.length}
+                {curUser?.notifications.length}
               </span>
             )}
           </button>
@@ -253,12 +227,7 @@ function Header({ className = '' }: HeaderProps) {
         <Menu open={isOpenMenu} setOpen={setIsOpenMenu} />
 
         {/* MARK: Notification Menu */}
-        <NotificationMenu
-          open={isOpenNotificationMenu}
-          setOpen={setIsOpenNotificationMenu}
-          notifications={notifications}
-          handleRemoveNotification={handleRemoveNotification}
-        />
+        <NotificationMenu open={isOpenNotificationMenu} setOpen={setIsOpenNotificationMenu} />
       </div>
     </header>
   )

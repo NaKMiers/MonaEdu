@@ -6,25 +6,36 @@ import { NextRequest, NextResponse } from 'next/server'
 // Models: User
 import '@/models/UserModel'
 
-// [DELETE]: /user/remove-notification/:id
-export async function DELETE(req: NextRequest, { params: { id } }: { params: { id: string } }) {
-  console.log('- Remove Notification -')
+// [PATCH]: /user/read-notification
+export async function PATCH(req: NextRequest) {
+  console.log('- Read Notifications -')
 
   try {
     // connect to database
     await connectDatabase()
+
+    // get notification ids to remove
+
+    const { ids, value } = await req.json()
+
+    console.log('ids', ids, 'value', value)
 
     // get user id to remove notification
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
     const userId = token?._id
 
     // remove notification
-    await UserModel.findByIdAndUpdate(userId, {
-      $pull: { notifications: { _id: id } },
-    })
+    await UserModel.updateOne(
+      { _id: userId },
+      { $set: { 'notifications.$[elem].status': value ? 'read' : 'unread' } },
+      { arrayFilters: [{ 'elem._id': { $in: ids } }] }
+    )
 
     // return response
-    return NextResponse.json({ message: 'Notification has been removed' }, { status: 200 })
+    return NextResponse.json(
+      { message: `Thông báo đã được ${value ? 'đọc' : 'đánh dấu chưa đọc'}` },
+      { status: 200 }
+    )
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 400 })
   }
