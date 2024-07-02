@@ -25,7 +25,7 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
   const router = useRouter()
 
   // states
-  // sidebars
+  // sidebars on mobile
   const [openSubs, setOpenSubs] = useState<boolean>(false)
   const [openFilter, setOpenFilter] = useState<boolean>(false)
   const subSidebarRef = useRef<HTMLDivElement>(null)
@@ -33,11 +33,12 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
   const filterSidebarRef = useRef<HTMLDivElement>(null)
   const filterSidebarMainRef = useRef<HTMLDivElement>(null)
 
-  // values
+  // search & filter & sort
+  const preventFilter = useRef<boolean>(true)
   const [search, setSearch] = useState<string>('')
 
-  const [price, setPrice] = useState<number[]>([50000, 400000])
-  const [time, setTime] = useState<number[]>([10, 30])
+  const [price, setPrice] = useState<number[]>([0, 1000000])
+  const [time, setTime] = useState<number[]>([0, 100])
 
   const [showSortPrice, setShowSortPrice] = useState(false)
   const [sortPrice, setSortPrice] = useState<'asc' | 'desc' | 'none'>('none')
@@ -108,13 +109,19 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
   }, [searchParams])
 
   // auto search after timeout
-  // useEffect(() => {
-  //   clearTimeout(timeoutCtg.current)
+  useEffect(() => {
+    if (preventFilter.current) {
+      preventFilter.current = false
+      return
+    }
+    console.log('1')
 
-  //   timeoutCtg.current = setTimeout(() => {
-  //     handleFilter()
-  //   }, 500)
-  // }, [handleFilter, search, price, time, sortPrice, sortTime])
+    clearTimeout(timeoutCtg.current)
+
+    timeoutCtg.current = setTimeout(() => {
+      handleFilter()
+    }, 500)
+  }, [handleFilter, search, price, time, sortPrice, sortTime])
 
   // handle open sub categories
   useEffect(() => {
@@ -257,7 +264,7 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
               getAriaLabel={() => 'Temperature range'}
               value={time}
               min={0}
-              max={40}
+              max={100}
               className='w-full -mb-1.5'
               onChange={(_, newValue: number | number[]) => setTime(newValue as number[])}
               valueLabelDisplay='auto'

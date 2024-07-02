@@ -1,7 +1,7 @@
 import { connectDatabase } from '@/config/database'
 import CategoryModel, { ICategory } from '@/models/CategoryModel'
+import CourseModel from '@/models/CourseModel'
 import { NextRequest, NextResponse } from 'next/server'
-import CourseModel, { ICourse } from '@/models/CourseModel'
 
 // Models: Category, Course
 import '@/models/CategoryModel'
@@ -18,6 +18,8 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
 
     // get query params
     const params: { [key: string]: string[] } = searchParamsToObject(req.nextUrl.searchParams)
+
+    console.log('params', params)
 
     // options
     let skip = 0
@@ -54,20 +56,20 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
           continue
         }
 
-        if (key === 'price') {
+        if (key === 'price' || key === 'duration') {
           const from = [params[key][0].split('-')[0]]
           const to = [params[key][0].split('-')[1]]
           if (from && to) {
-            filter.price = {
+            filter[key] = {
               $gte: from,
               $lte: to,
             }
           } else if (from) {
-            filter.price = {
+            filter[key] = {
               $gte: from,
             }
           } else if (to) {
-            filter.price = {
+            filter[key] = {
               $lte: to,
             }
           }
@@ -102,6 +104,10 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
         .lean(),
       await CourseModel.countDocuments({ categories: category._id, ...filter }),
     ])
+
+    console.log('subs', subs)
+    console.log('courses', courses)
+    console.log('amount', amount)
 
     // get all order without filter
     const chops = await CourseModel.aggregate([

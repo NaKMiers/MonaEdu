@@ -171,7 +171,7 @@ function CategoryItem({
           <CategoryItem
             data={category}
             setCategories={setSubCategories}
-            selectMode
+            selectMode={selectMode}
             selectedCategory={selectedCategory}
             setSelectedCategory={setSelectedCategory}
             className={index === 0 ? 'mt-1' : ''}

@@ -42,9 +42,9 @@ export const getTagsPageApi = async (query: string = '') => {
 }
 
 // [GET]: /categories/[...slug]
-export const getCategoryPageApi = async (slug: string) => {
+export const getCategoryPageApi = async (slug: string, query: string = '') => {
   // no cache for filter
-  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/category/${slug}`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/category/${slug}${query}`, {
     cache: 'no-store',
   })
 

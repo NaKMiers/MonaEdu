@@ -2,10 +2,12 @@ import BreadcrumbBanner from '@/components/BreadcrumbBanner'
 import CourseCard from '@/components/CourseCard'
 import Divider from '@/components/Divider'
 import FilterAndSearch from '@/components/FilterAndSearch'
+import Pagination from '@/components/layouts/Pagination'
 import ShortPagination from '@/components/layouts/ShortPagination'
 import { ICategory } from '@/models/CategoryModel'
 import { ICourse } from '@/models/CourseModel'
 import { getCategoryPageApi } from '@/requests'
+import { handleQuery } from '@/utils/handleQuery'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 
@@ -24,7 +26,11 @@ async function CategoriesPage({ searchParams }: { searchParams?: { [key: string]
   try {
     if (!slug) throw new Error('Không tìm thấy danh mục')
 
-    const data = await getCategoryPageApi(slug)
+    const query = handleQuery(searchParams)
+    console.log('query', query)
+
+    // get data
+    const data = await getCategoryPageApi(slug, query)
     category = data.category
     subs = data.subs
     courses = data.courses
@@ -76,16 +82,14 @@ async function CategoriesPage({ searchParams }: { searchParams?: { [key: string]
             <Divider size={8} />
 
             {/* List */}
-            <div className='grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 md:mx-0 flex-1'>
+            <div className='grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 md:mx-0 flex-1 mb-8'>
               {courses.map(course => (
                 <CourseCard course={course} key={course._id} />
               ))}
             </div>
 
-            <Divider size={8} />
-
             {/* Pagination */}
-            {/* <Pagination dark searchParams={searchParams} amount={175} itemsPerPage={16} /> */}
+            <Pagination dark searchParams={searchParams} amount={amount} itemsPerPage={16} />
 
             <Divider size={8} />
           </div>
