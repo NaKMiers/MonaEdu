@@ -60,7 +60,7 @@ async function ForumPage({ searchParams }: { searchParams?: { [key: string]: str
           <Divider size={12} />
 
           {/* Pagination */}
-          <Pagination searchParams={searchParams} amount={500} itemsPerPage={itemsPerPage} />
+          <Pagination searchParams={searchParams} amount={amount} itemsPerPage={itemsPerPage} />
 
           <Divider size={25} />
         </div>

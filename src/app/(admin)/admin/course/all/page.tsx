@@ -19,6 +19,7 @@ import {
 } from '@/requests'
 import { handleQuery } from '@/utils/handleQuery'
 import { formatPrice } from '@/utils/number'
+import { Slider } from '@mui/material'
 import { usePathname, useRouter } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
@@ -46,15 +47,11 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
   const itemPerPage = 9
   const [minPrice, setMinPrice] = useState<number>(0)
   const [maxPrice, setMaxPrice] = useState<number>(0)
-  const [price, setPrice] = useState<number>(0)
+  const [price, setPrice] = useState<number[]>([0, 0])
 
   const [minSold, setMinSold] = useState<number>(0)
   const [maxSold, setMaxSold] = useState<number>(0)
-  const [sold, setSold] = useState<number>(0)
-
-  const [minStock, setMinStock] = useState<number>(0)
-  const [maxStock, setMaxStock] = useState<number>(0)
-  const [stock, setStock] = useState<number>(0)
+  const [sold, setSold] = useState<number[]>([0, 0])
 
   // Form
   const defaultValues = useMemo<FieldValues>(
@@ -107,15 +104,25 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
         // get min - max
         setMinPrice(chops?.minPrice || 0)
         setMaxPrice(chops?.maxPrice || 0)
-        setPrice(searchParams?.price ? +searchParams.price : chops?.maxPrice || 0)
-
-        setMinStock(chops?.minStock || 0)
-        setMaxStock(chops?.maxStock || 0)
-        setStock(searchParams?.stock ? +searchParams.stock : chops?.maxStock || 0)
+        if (searchParams?.price) {
+          const [from, to] = Array.isArray(searchParams.price)
+            ? searchParams.price[0].split('-')
+            : searchParams.price.split('-')
+          setPrice([+from, +to])
+        } else {
+          setPrice([chops?.minPrice || 0, chops?.maxPrice || 0])
+        }
 
         setMinSold(chops?.minSold || 0)
         setMaxSold(chops?.maxSold || 0)
-        setSold(searchParams?.sold ? +searchParams.sold : chops?.maxSold || 0)
+        if (searchParams?.sold) {
+          const [from, to] = Array.isArray(searchParams.sold)
+            ? searchParams.sold[0].split('-')
+            : searchParams.sold.split('-')
+          setSold([+from, +to])
+        } else {
+          setSold([chops?.minSold || 0, chops?.maxSold || 0])
+        }
       } catch (err: any) {
         console.log(err)
         toast.error(err.message)
@@ -218,23 +225,22 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
 
       return {
         ...data,
-        price: price === maxPrice ? [] : [price.toString()],
-        sold: sold === maxSold ? [] : [sold.toString()],
-        stock: stock === maxStock ? [] : [stock.toString()],
+        price: price[0] === minPrice && price[1] === maxPrice ? '' : price.join('-'),
+        sold: sold[0] === minSold && sold[1] === maxSold ? '' : sold.join('-'),
         tags: selectedFilterTags.length === tgs.length ? [] : selectedFilterTags,
       }
     },
     [
+      searchParams,
+      defaultValues,
+      minPrice,
       maxPrice,
+      minSold,
       maxSold,
-      maxStock,
       price,
       selectedFilterTags,
       sold,
-      stock,
       tgs,
-      searchParams,
-      defaultValues,
     ]
   )
 
@@ -298,18 +304,17 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
         <div className='flex flex-col col-span-12 md:col-span-4'>
           <label htmlFor='price'>
             <span className='font-bold'>Price: </span>
-            <span>{formatPrice(price)}</span> - <span>{formatPrice(maxPrice)}</span>
+            <span>{formatPrice(price[0])}</span> - <span>{formatPrice(price[1])}</span>
           </label>
-          <input
-            id='price'
-            className='input-range h-2 bg-slate-200 rounded-lg my-2'
-            placeholder=' '
-            disabled={false}
-            type='range'
-            min={minPrice || 0}
-            max={maxPrice || 0}
+          <Slider
             value={price}
-            onChange={e => setPrice(+e.target.value)}
+            min={minPrice}
+            max={maxPrice}
+            step={1}
+            className='w-full -mb-1.5'
+            onChange={(_, newValue: number | number[]) => setPrice(newValue as number[])}
+            valueLabelDisplay='auto'
+            style={{ color: '#333' }}
           />
         </div>
 
@@ -317,37 +322,17 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
         <div className='flex flex-col col-span-12 md:col-span-4'>
           <label htmlFor='sold'>
             <span className='font-bold'>Sold: </span>
-            <span>{sold}</span> - <span>{maxSold}</span>
+            <span>{sold[0]}</span> - <span>{sold[1]}</span>
           </label>
-          <input
-            id='sold'
-            className='input-range h-2 bg-slate-200 rounded-lg my-2'
-            placeholder=' '
-            disabled={false}
-            type='range'
-            min={minSold || 0}
-            max={maxSold || 0}
+          <Slider
             value={sold}
-            onChange={e => setSold(+e.target.value)}
-          />
-        </div>
-
-        {/* Stock */}
-        <div className='flex flex-col col-span-12 md:col-span-4'>
-          <label htmlFor='stock'>
-            <span className='font-bold'>Stock: </span>
-            <span>{stock}</span> - <span>{maxStock}</span>
-          </label>
-          <input
-            id='stock'
-            className='input-range h-2 bg-slate-200 rounded-lg my-2'
-            placeholder=' '
-            disabled={false}
-            type='range'
-            min={minStock || 0}
-            max={maxStock || 0}
-            value={stock}
-            onChange={e => setStock(+e.target.value)}
+            min={minSold}
+            max={maxSold}
+            step={1}
+            className='w-full -mb-1.5'
+            onChange={(_, newValue: number | number[]) => setSold(newValue as number[])}
+            valueLabelDisplay='auto'
+            style={{ color: '#333' }}
           />
         </div>
 

@@ -25,7 +25,7 @@ export async function GET(req: NextRequest, { params: { courseId } }: { params: 
     let skip = 0
     let itemPerPage = 9
     const filter: { [key: string]: any } = { courseId }
-    let sort: { [key: string]: any } = { updatedAt: -1 } // default sort
+    let sort: { [key: string]: any } = { order: -1 } // default sort
 
     // get course
     const course = await CourseModel.findById(courseId).select('title slug').lean()

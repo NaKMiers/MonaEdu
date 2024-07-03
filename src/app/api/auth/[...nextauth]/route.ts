@@ -140,11 +140,7 @@ const handler = NextAuth({
           }
 
           // get user from database to check exist
-          const existingUser: any = await UserModel.findOneAndUpdate(
-            { email },
-            { $set: { avatar, authType: account.provider || 'local' } },
-            { new: true }
-          ).lean()
+          const existingUser: any = await UserModel.findOne({ email }).lean()
 
           // check whether user exists
           if (existingUser) {

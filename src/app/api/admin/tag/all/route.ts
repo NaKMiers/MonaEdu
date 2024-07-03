@@ -42,8 +42,24 @@ export async function GET(req: NextRequest) {
           continue
         }
 
+        // range fields
         if (key === 'courseQuantity') {
-          filter[key] = { $lte: +params[key][0] }
+          const from = +params[key][0].split('-')[0]
+          const to = +params[key][0].split('-')[1]
+          if (from >= 0 && to >= 0) {
+            filter[key] = {
+              $gte: from,
+              $lte: to,
+            }
+          } else if (from >= 0) {
+            filter[key] = {
+              $gte: from,
+            }
+          } else if (to >= 0) {
+            filter[key] = {
+              $lte: to,
+            }
+          }
           continue
         }
 
@@ -63,8 +79,8 @@ export async function GET(req: NextRequest) {
       {
         $group: {
           _id: null,
-          mincourseQuantity: { $min: '$courseQuantity' },
-          maxcourseQuantity: { $max: '$courseQuantity' },
+          minCourseQuantity: { $min: '$courseQuantity' },
+          maxCourseQuantity: { $max: '$courseQuantity' },
         },
       },
     ])

@@ -1,16 +1,17 @@
 'use client'
 
-import ConfirmDialog from '@/components/dialogs/ConfirmDialog'
 import Input from '@/components/Input'
-import Pagination from '@/components/layouts/Pagination'
 import AdminHeader from '@/components/admin/AdminHeader'
 import AdminMeta from '@/components/admin/AdminMeta'
 import TagItem from '@/components/admin/TagItem'
+import ConfirmDialog from '@/components/dialogs/ConfirmDialog'
+import Pagination from '@/components/layouts/Pagination'
 import { useAppDispatch } from '@/libs/hooks'
 import { setPageLoading } from '@/libs/reducers/modalReducer'
 import { ITag } from '@/models/TagModel'
-import { deleteTagsApi, bootTagsApi, getAllTagsApi, updateTagsApi } from '@/requests'
+import { bootTagsApi, deleteTagsApi, getAllTagsApi, updateTagsApi } from '@/requests'
 import { handleQuery } from '@/utils/handleQuery'
+import { Slider } from '@mui/material'
 import { usePathname, useRouter } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
@@ -41,9 +42,9 @@ function AllTagsPage({ searchParams }: { searchParams?: { [key: string]: string[
 
   // values
   const itemPerPage = 10
-  const [minPQ, setMinPQ] = useState<number>(0)
-  const [maxPQ, setMaxPQ] = useState<number>(0)
-  const [courseQuantity, setcourseQuantity] = useState<number>(0)
+  const [minCQ, setMinPQ] = useState<number>(0)
+  const [maxCQ, setMaxPQ] = useState<number>(0)
+  const [courseQuantity, setCourseQuantity] = useState<number[]>([0, 0])
 
   // form
   const defaultValues = useMemo<FieldValues>(
@@ -88,12 +89,17 @@ function AllTagsPage({ searchParams }: { searchParams?: { [key: string]: string[
         setValue('sort', searchParams?.sort || getValues('sort'))
         setValue('booted', searchParams?.booted || getValues('booted'))
 
-        // set min and max
-        setMinPQ(chops?.mincourseQuantity || 0)
-        setMaxPQ(chops?.maxcourseQuantity || 0)
-        setcourseQuantity(
-          searchParams?.courseQuantity ? +searchParams.courseQuantity : chops?.maxcourseQuantity || 0
-        )
+        // set min - max - courseQuantity
+        setMinPQ(chops?.minCourseQuantity || 0)
+        setMaxPQ(chops?.maxCourseQuantity || 0)
+        if (searchParams?.courseQuantity) {
+          const [from, to] = Array.isArray(searchParams.courseQuantity)
+            ? searchParams.courseQuantity[0].split('-')
+            : (searchParams.courseQuantity as string).split('-')
+          setCourseQuantity([+from, +to])
+        } else {
+          setCourseQuantity([chops?.minCourseQuantity || 0, chops?.maxCourseQuantity || 0])
+        }
       } catch (err: any) {
         console.log(err)
         toast.error(err.message)
@@ -198,10 +204,11 @@ function AllTagsPage({ searchParams }: { searchParams?: { [key: string]: string[
 
       return {
         ...data,
-        courseQuantity: courseQuantity === maxPQ ? [] : [courseQuantity.toString()],
+        courseQuantity:
+          courseQuantity[0] === minCQ && courseQuantity[1] === maxCQ ? '' : courseQuantity.join('-'),
       }
     },
-    [courseQuantity, maxPQ, searchParams, defaultValues]
+    [courseQuantity, minCQ, maxCQ, searchParams, defaultValues]
   )
 
   // handle submit filter
@@ -262,18 +269,17 @@ function AllTagsPage({ searchParams }: { searchParams?: { [key: string]: string[
         <div className='flex flex-col col-span-12 md:col-span-4'>
           <label htmlFor='courseQuantity'>
             <span className='font-bold'>Course Quantity: </span>
-            <span>{courseQuantity}</span> - <span>{maxPQ}</span>
+            <span>{courseQuantity[0]}</span> - <span>{courseQuantity[1]}</span>
           </label>
-          <input
-            id='courseQuantity'
-            className='input-range h-2 bg-slate-200 rounded-lg my-2'
-            placeholder=' '
-            disabled={false}
-            type='range'
-            min={minPQ || 0}
-            max={maxPQ || 0}
+          <Slider
             value={courseQuantity}
-            onChange={e => setcourseQuantity(+e.target.value)}
+            min={minCQ}
+            max={maxCQ}
+            step={1}
+            className='w-full -mb-1.5'
+            onChange={(_, newValue: number | number[]) => setCourseQuantity(newValue as number[])}
+            valueLabelDisplay='auto'
+            style={{ color: '#333' }}
           />
         </div>
 

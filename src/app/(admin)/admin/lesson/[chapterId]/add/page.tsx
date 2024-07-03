@@ -16,7 +16,7 @@ import { addLessonApi } from '@/requests'
 import { getChapterApi } from '@/requests/chapterRequest'
 import toast from 'react-hot-toast'
 import { FaX } from 'react-icons/fa6'
-import { MdCategory } from 'react-icons/md'
+import { MdCategory, MdOutlinePublic } from 'react-icons/md'
 import { RiCharacterRecognitionLine } from 'react-icons/ri'
 import { SiFramer } from 'react-icons/si'
 
@@ -55,6 +55,7 @@ function AddLessonPage({ params: { chapterId } }: { params: { chapterId: string 
       minutes: 1,
       seconds: 0,
       active: true,
+      status: 'private',
     },
   })
 
@@ -122,6 +123,7 @@ function AddLessonPage({ params: { chapterId } }: { params: { chapterId: string 
       formData.append('description', data.title)
       formData.append('duration', data.hours * 3600 + data.minutes * 60 + data.seconds)
       formData.append('active', data.active)
+      formData.append('status', data.status)
       if (sourceType === 'file' && file) {
         formData.append('file', file)
       } else if (sourceType === 'embed' && embedSrc) {
@@ -435,6 +437,24 @@ function AddLessonPage({ params: { chapterId } }: { params: { chapterId: string 
             Active
           </label>
         </div>
+
+        {/* Status */}
+        <Input
+          id='status'
+          label='Status'
+          disabled={isLoading}
+          register={register}
+          errors={errors}
+          required
+          type='select'
+          onFocus={() => clearErrors('status')}
+          options={[
+            { label: 'Public', value: 'public' },
+            { label: 'Private', value: 'private' },
+          ]}
+          icon={MdOutlinePublic}
+          className='mb-5'
+        />
 
         {/* MARK: Add Button */}
         <LoadingButton

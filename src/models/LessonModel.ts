@@ -47,6 +47,11 @@ const LessonSchema = new Schema(
       type: Boolean,
       default: true,
     },
+    status: {
+      type: String,
+      enum: ['public', 'private'],
+      default: 'private',
+    },
     likes: [
       {
         type: Schema.Types.ObjectId,
@@ -81,6 +86,7 @@ export interface ILesson {
   source: string
   description: string
   active: boolean
+  status: string
   likes: string[] | IUser[]
   createdAt: string
   updatedAt: string

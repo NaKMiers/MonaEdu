@@ -1,17 +1,18 @@
 'use client'
 
-import ConfirmDialog from '@/components/dialogs/ConfirmDialog'
 import Input from '@/components/Input'
-import Pagination from '@/components/layouts/Pagination'
 import AdminHeader from '@/components/admin/AdminHeader'
 import AdminMeta from '@/components/admin/AdminMeta'
 import VoucherItem from '@/components/admin/VoucherItem'
+import ConfirmDialog from '@/components/dialogs/ConfirmDialog'
+import Pagination from '@/components/layouts/Pagination'
 import { useAppDispatch } from '@/libs/hooks'
 import { setPageLoading } from '@/libs/reducers/modalReducer'
 import { IVoucher } from '@/models/VoucherModel'
 import { activateVouchersApi, deleteVouchersApi, getAllVouchersApi } from '@/requests'
 import { handleQuery } from '@/utils/handleQuery'
 import { formatPrice } from '@/utils/number'
+import { Slider } from '@mui/material'
 import { usePathname, useRouter } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
@@ -39,11 +40,11 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
   const itemPerPage = 9
   const [minMinTotal, setMinMinTotal] = useState<number>(0)
   const [maxMinTotal, setMaxMinTotal] = useState<number>(0)
-  const [minTotal, setMinTotal] = useState<number>(0)
+  const [minTotal, setMinTotal] = useState<number[]>([0, 0])
 
   const [minMaxReduce, setMinMaxReduce] = useState<number>(0)
   const [maxMaxReduce, setMaxMaxReduce] = useState<number>(0)
-  const [maxReduce, setMaxReduce] = useState<number>(0)
+  const [maxReduce, setMaxReduce] = useState<number[]>([0, 0])
 
   // form
   const defaultValues = useMemo<FieldValues>(
@@ -103,11 +104,25 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
         // get min - max
         setMinMinTotal(chops.minMinTotal)
         setMaxMinTotal(chops.maxMinTotal)
-        setMinTotal(searchParams?.minTotal ? +searchParams.minTotal : chops.maxMinTotal)
+        if (searchParams?.minTotal) {
+          const [from, to] = Array.isArray(searchParams.minTotal)
+            ? searchParams.minTotal[0].split('-')
+            : (searchParams.minTotal as string).split('-')
+          setMinTotal([+from, +to])
+        } else {
+          setMinTotal([chops?.minTotal || 0, chops?.maxTotal || 0])
+        }
 
         setMinMaxReduce(chops.minMaxReduce)
         setMaxMaxReduce(chops.maxMaxReduce)
-        setMaxReduce(searchParams?.maxReduce ? +searchParams.maxReduce : chops.maxMaxReduce)
+        if (searchParams?.maxReduce) {
+          const [from, to] = Array.isArray(searchParams.maxReduce)
+            ? searchParams.maxReduce[0].split('-')
+            : (searchParams.maxReduce as string).split('-')
+          setMaxReduce([+from, +to])
+        } else {
+          setMaxReduce([chops?.maxReduce || 0, chops?.maxTotal || 0])
+        }
       } catch (err: any) {
         console.log(err)
       } finally {
@@ -198,11 +213,21 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
 
       return {
         ...rest,
-        minTotal: minTotal === maxMinTotal ? [] : [minTotal.toString()],
-        maxReduce: maxReduce === maxMaxReduce ? [] : [maxReduce.toString()],
+        minTotal: minTotal[0] === minMinTotal && minTotal[1] === maxMinTotal ? '' : minTotal.join('-'),
+        maxReduce:
+          maxReduce[0] === minMaxReduce && maxReduce[1] === maxMaxReduce ? '' : maxReduce.join('-'),
       }
     },
-    [minTotal, maxMinTotal, maxReduce, maxMaxReduce, searchParams, defaultValues]
+    [
+      searchParams,
+      defaultValues,
+      minTotal,
+      minMinTotal,
+      maxMinTotal,
+      maxReduce,
+      minMaxReduce,
+      maxMaxReduce,
+    ]
   )
 
   // handle submit filter
@@ -280,18 +305,17 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
         <div className='flex flex-col col-span-12 md:col-span-6'>
           <label htmlFor='minTotal'>
             <span className='font-bold'>Min Total: </span>
-            <span>{formatPrice(minTotal || maxMinTotal)}</span> - <span>{formatPrice(maxMinTotal)}</span>
+            <span>{formatPrice(minTotal[0])}</span> - <span>{formatPrice(minTotal[1])}</span>
           </label>
-          <input
-            id='minTotal'
-            className='input-range h-2 bg-slate-200 rounded-lg my-2'
-            placeholder=' '
-            disabled={false}
-            type='range'
-            min={minMinTotal || 0}
-            max={maxMinTotal || 0}
+          <Slider
             value={minTotal}
-            onChange={e => setMinTotal(+e.target.value)}
+            min={minMinTotal}
+            max={maxMaxReduce}
+            step={1}
+            className='w-full -mb-1.5'
+            onChange={(_, newValue: number | number[]) => setMinTotal(newValue as number[])}
+            valueLabelDisplay='auto'
+            style={{ color: '#333' }}
           />
         </div>
 
@@ -299,19 +323,17 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
         <div className='flex flex-col col-span-12 md:col-span-6'>
           <label htmlFor='maxReduce'>
             <span className='font-bold'>Max Reduce: </span>
-            <span>{formatPrice(maxReduce || maxMaxReduce)}</span> -{' '}
-            <span>{formatPrice(maxMaxReduce)}</span>
+            <span>{formatPrice(maxReduce[0])}</span> - <span>{formatPrice(maxReduce[1])}</span>
           </label>
-          <input
-            id='maxReduce'
-            className='input-range h-2 bg-slate-200 rounded-lg my-2'
-            placeholder=' '
-            disabled={false}
-            type='range'
-            min={minMaxReduce || 0}
-            max={maxMaxReduce || 0}
+          <Slider
             value={maxReduce}
-            onChange={e => setMaxReduce(+e.target.value)}
+            min={minMaxReduce}
+            max={maxMaxReduce}
+            step={1}
+            className='w-full -mb-1.5'
+            onChange={(_, newValue: number | number[]) => setMaxReduce(newValue as number[])}
+            valueLabelDisplay='auto'
+            style={{ color: '#333' }}
           />
         </div>
 

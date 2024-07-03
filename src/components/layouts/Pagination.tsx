@@ -54,7 +54,6 @@ function Pagination({
     }
 
     if (currentPage <= 3) {
-      console.log('123123')
       setPageList([1, 2, 3, 4, null, pageAmount])
       return
     }
@@ -66,8 +65,6 @@ function Pagination({
 
     setPageList([1, null, currentPage - 1, currentPage, currentPage + 1, null, pageAmount])
   }, [pageAmount, currentPage])
-
-  console.log(pageList)
 
   // keyboard event
   useEffect(() => {

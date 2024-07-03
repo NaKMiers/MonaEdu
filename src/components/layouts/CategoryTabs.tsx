@@ -36,7 +36,7 @@ function CategoryTabs({ open, setOpen, className = '' }: CategoryTabsProps) {
   //       ])
   //     } catch (err: any) {
   //       console.log(err)
-  //       toast.error(err.response.data.message)
+  //       toast.error(err.message)
   //     }
   //   }
   //   getCategories()
@@ -63,8 +63,6 @@ function CategoryTabs({ open, setOpen, className = '' }: CategoryTabsProps) {
 
   const handleMouseLeave = useCallback(
     (index: number) => {
-      console.log('index: ', index, list)
-
       if (index + 1 === list.length) {
         const newList = list.slice(0, index)
         setList(newList)

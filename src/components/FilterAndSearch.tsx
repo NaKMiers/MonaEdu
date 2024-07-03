@@ -38,8 +38,6 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
   const preventFilter = useRef<boolean>(true)
   const [search, setSearch] = useState<string>('')
 
-  console.log('search', search)
-
   const [price, setPrice] = useState<number[]>([0, 1000000])
   const [duration, setDuration] = useState<number[]>([0, 100])
 
@@ -78,8 +76,6 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
       ...params,
     })
 
-    console.log('query', query)
-
     // push to router
     router.push(pathname + query)
   }, [pathname, router, searchParams, search, price, sortPrice, sortDuration, duration])
@@ -115,7 +111,6 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
   // auto filter after timeout (part-1): prevent filter when pathname change
   useEffect(() => {
     preventFilter.current = true
-    console.log('true true true')
   }, [pathname])
 
   // auto filter after timeout (part-2): filter after timeout
@@ -124,7 +119,6 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
       preventFilter.current = false
       return
     }
-    console.log('1')
 
     clearTimeout(timeoutCtg.current)
 
@@ -264,7 +258,6 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
             </p>
 
             <Slider
-              getAriaLabel={() => 'Temperature range'}
               value={price}
               min={0}
               max={1000000}
@@ -288,7 +281,6 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
             </p>
 
             <Slider
-              getAriaLabel={() => 'Temperature range'}
               value={duration}
               min={0}
               max={100}
@@ -484,7 +476,6 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
               </p>
 
               <Slider
-                getAriaLabel={() => 'Temperature range'}
                 value={price}
                 min={100}
                 max={500}
@@ -507,7 +498,6 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
               </p>
 
               <Slider
-                getAriaLabel={() => 'Temperature range'}
                 value={duration}
                 min={0}
                 max={40}

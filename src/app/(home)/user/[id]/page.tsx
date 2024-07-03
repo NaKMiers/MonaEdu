@@ -68,7 +68,7 @@ async function ProfilePage({ params: { id } }: { params: { id: string } }) {
       </div>
 
       {/* Body */}
-      <div className='bg-white -mb-36 pb-48'>
+      <div className='bg-neutral-700 text-white -mb-36 pb-48'>
         <div className='max-w-1200 mx-auto grid grid-cols-12 gap-x-21 gap-y-12 px-21 pt-12'>
           {/* Courses */}
           <div className='col-span-12 md:col-span-8 order-2 md:order-1'>
@@ -87,7 +87,7 @@ async function ProfilePage({ params: { id } }: { params: { id: string } }) {
 
           {/* Personal Info */}
           <div className='relative col-span-12 md:col-span-4 order-1 md:order-2 font-body tracking-wider'>
-            <div className='sticky top-[93px] left-0 right-0 w-full rounded-medium shadow-lg p-4'>
+            <div className='sticky top-[93px] left-0 right-0 w-full rounded-medium shadow-lg p-4 bg-white'>
               {/* Achievements */}
               <div>
                 <h4 className='font-semibold text-slate-700 font-body tracking-wider drop-shadow-md text-center mb-3'>
@@ -171,7 +171,7 @@ async function ProfilePage({ params: { id } }: { params: { id: string } }) {
 
           <Divider size={8} />
 
-          <ul className='grid grid-cols-1 md:grid-cols-3 gap-21'>
+          <ul className='grid grid-cols-1 md:grid-cols-3 gap-21 text-dark'>
             {questions.map(question => (
               <QuestionItem question={question} key={question._id} />
             ))}

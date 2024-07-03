@@ -40,8 +40,6 @@ export async function POST(req: NextRequest) {
       slug,
     }
 
-    console.log('set', set)
-
     // check if image is required
     if (image) {
       // upload image storage

@@ -98,8 +98,6 @@ function CommentItem({ comment, setCmts, className = '' }: CommentItemProps) {
     }
 
     try {
-      console.log('report')
-
       const { message } = await addReportApi({
         type: 'comment',
         content: selectedContent,

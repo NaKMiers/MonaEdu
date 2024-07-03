@@ -61,8 +61,6 @@ function NotificationMenu({ open, setOpen, className = '' }: NotificationMenuPro
     [setOpen, notifications]
   )
 
-  console.log('notifications', notifications)
-
   // handle read notifications
   const handleReadNotifications = useCallback(async (ids: string[], value: boolean) => {
     try {

@@ -41,8 +41,6 @@ export async function DELETE(req: NextRequest, { params: { id } }: { params: { i
     // delete category
     const category = await CategoryModel.findByIdAndDelete(id)
 
-    console.log('Category:', category)
-
     // delete category image from storage
     if (category.image) {
       await deleteFile(category.image)

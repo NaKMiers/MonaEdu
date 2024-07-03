@@ -62,7 +62,6 @@ export async function POST(req: NextRequest) {
     }
 
     const courses = await CourseModel.find({ _id: { $in: itemsIds } }).lean()
-    console.log('courses', courses)
     const code = await generateOrderCode(5)
 
     // create new order

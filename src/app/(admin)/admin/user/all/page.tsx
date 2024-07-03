@@ -12,6 +12,7 @@ import { IUser } from '@/models/UserModel'
 import { deleteUsersApi, getAllUsersApi } from '@/requests'
 import { handleQuery } from '@/utils/handleQuery'
 import { formatPrice } from '@/utils/number'
+import { Slider } from '@mui/material'
 import { usePathname, useRouter } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
@@ -37,7 +38,7 @@ function AllUsersPage({ searchParams }: { searchParams?: { [key: string]: string
   const itemPerPage = 9
   const [minExpended, setMinExpended] = useState<number>(0)
   const [maxExpended, setMaxExpended] = useState<number>(0)
-  const [expended, setExpended] = useState<number>(0)
+  const [expended, setExpended] = useState<number[]>([0, 0])
 
   // form
   const defaultValues = useMemo<FieldValues>(
@@ -88,7 +89,15 @@ function AllUsersPage({ searchParams }: { searchParams?: { [key: string]: string
         // set expended
         setMinExpended(chops.minExpended)
         setMaxExpended(chops.maxExpended)
-        setExpended(searchParams?.expended ? +searchParams.expended : chops.maxExpended)
+        if (searchParams?.expended) {
+          const [from, to] = Array.isArray(searchParams.expended)
+            ? searchParams.expended[0].split('-')
+            : (searchParams.expended as string).split('-')
+
+          setExpended([+from, +to])
+        } else {
+          setExpended([chops?.minExpended || 0, chops?.maxExpended || 0])
+        }
       } catch (err: any) {
         console.log(err)
       } finally {
@@ -152,10 +161,10 @@ function AllUsersPage({ searchParams }: { searchParams?: { [key: string]: string
 
       return {
         ...data,
-        expended: expended === maxExpended ? [] : [expended.toString()],
+        expended: expended[0] === minExpended && expended[1] === maxExpended ? '' : expended.join('-'),
       }
     },
-    [expended, maxExpended, searchParams, defaultValues]
+    [expended, minExpended, maxExpended, searchParams, defaultValues]
   )
 
   // handle submit filter
@@ -231,18 +240,17 @@ function AllUsersPage({ searchParams }: { searchParams?: { [key: string]: string
         <div className='flex flex-col col-span-12 md:col-span-4'>
           <label htmlFor='expended'>
             <span className='font-bold'>Expended: </span>
-            <span>{formatPrice(expended || maxExpended)}</span> - <span>{formatPrice(maxExpended)}</span>
+            <span>{formatPrice(expended[0])}</span> - <span>{formatPrice(expended[1])}</span>
           </label>
-          <input
-            id='expended'
-            className='input-range h-2 bg-slate-200 rounded-lg my-2'
-            placeholder=' '
-            disabled={false}
-            type='range'
-            min={minExpended || 0}
-            max={maxExpended || 0}
+          <Slider
             value={expended}
-            onChange={e => setExpended(+e.target.value)}
+            min={minExpended}
+            max={maxExpended}
+            step={1}
+            className='w-full -mb-1.5'
+            onChange={(_, newValue: number | number[]) => setExpended(newValue as number[])}
+            valueLabelDisplay='auto'
+            style={{ color: '#333' }}
           />
         </div>
 

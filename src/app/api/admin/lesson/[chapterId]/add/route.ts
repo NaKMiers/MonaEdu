@@ -26,7 +26,7 @@ export async function POST(
     // get data to create lesson
     const formData = await req.formData()
     const data = Object.fromEntries(formData)
-    const { courseId, title, description, duration, active, embedUrl } = data
+    const { courseId, title, description, duration, active, status, embedUrl } = data
     let file = formData.get('file')
 
     if (!file && !embedUrl) {
@@ -51,6 +51,7 @@ export async function POST(
       source,
       description,
       active,
+      status,
     })
 
     // notify to all users who joined course

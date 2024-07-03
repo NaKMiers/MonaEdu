@@ -12,13 +12,14 @@ import { IOrder } from '@/models/OrderModel'
 import { cancelOrdersApi, deletedOrdersApi, getAllOrdersApi } from '@/requests'
 import { handleQuery } from '@/utils/handleQuery'
 import { formatPrice } from '@/utils/number'
+import { Slider } from '@mui/material'
 import { usePathname, useRouter } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { FaCalendar, FaSearch, FaSort } from 'react-icons/fa'
 
-function AllOrdersPage({ searchParams }: { searchParams?: { [key: string]: string[] } }) {
+function AllOrdersPage({ searchParams }: { searchParams?: { [key: string]: string | string[] } }) {
   // store
   const dispatch = useAppDispatch()
   const pathname = usePathname()
@@ -37,7 +38,7 @@ function AllOrdersPage({ searchParams }: { searchParams?: { [key: string]: strin
   const itemPerPage = 9
   const [minTotal, setMinTotal] = useState<number>(0)
   const [maxTotal, setMaxTotal] = useState<number>(0)
-  const [total, setTotal] = useState<number>(0)
+  const [total, setTotal] = useState<number[]>([0, 0])
 
   // Form
   const defaultValues: FieldValues = useMemo<FieldValues>(
@@ -90,10 +91,18 @@ function AllOrdersPage({ searchParams }: { searchParams?: { [key: string]: strin
         setValue('status', searchParams?.status || getValues('status'))
         setValue('paymentMethod', searchParams?.paymentMethod || getValues('paymentMethod'))
 
+        // sync search params to states
         // set min - max - total
         setMinTotal(chops?.minTotal || 0)
         setMaxTotal(chops?.maxTotal || 0)
-        setTotal(searchParams?.total ? +searchParams.total : chops?.maxTotal || 0)
+        if (searchParams?.total) {
+          const [from, to] = Array.isArray(searchParams.total)
+            ? searchParams.total[0].split('-')
+            : searchParams.total.split('-')
+          setTotal([+from, +to])
+        } else {
+          setTotal([chops?.minTotal || 0, chops?.maxTotal || 0])
+        }
       } catch (err: any) {
         console.log(err)
         toast.error(err.message)
@@ -179,9 +188,9 @@ function AllOrdersPage({ searchParams }: { searchParams?: { [key: string]: strin
         rest['from-to'] = fromTo
       }
 
-      return { ...rest, total: total === maxTotal ? [] : [total.toString()] }
+      return { ...rest, total: total[0] === minTotal && total[1] === maxTotal ? '' : total.join('-') }
     },
-    [maxTotal, total, searchParams, defaultValues]
+    [minTotal, maxTotal, total, searchParams, defaultValues]
   )
 
   // handle submit filter
@@ -257,18 +266,17 @@ function AllOrdersPage({ searchParams }: { searchParams?: { [key: string]: strin
         <div className='flex flex-col col-span-12 md:col-span-6'>
           <label htmlFor='total'>
             <span className='font-bold'>Total: </span>
-            <span>{formatPrice(total)}</span> - <span>{formatPrice(maxTotal)}</span>
+            <span>{formatPrice(total[0])}</span> - <span>{formatPrice(total[1])}</span>
           </label>
-          <input
-            id='total'
-            className='input-range h-2 bg-slate-200 rounded-lg my-2'
-            placeholder=' '
-            disabled={false}
-            type='range'
-            min={minTotal || 0}
-            max={maxTotal || 0}
+          <Slider
             value={total}
-            onChange={e => setTotal(+e.target.value)}
+            min={minTotal}
+            max={maxTotal}
+            step={1}
+            className='w-full -mb-1.5'
+            onChange={(_, newValue: number | number[]) => setTotal(newValue as number[])}
+            valueLabelDisplay='auto'
+            style={{ color: '#333' }}
           />
         </div>
 

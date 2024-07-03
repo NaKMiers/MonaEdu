@@ -18,8 +18,6 @@ export async function PATCH(req: NextRequest) {
 
     const { ids, value } = await req.json()
 
-    console.log('ids', ids, 'value', value)
-
     // get user id to remove notification
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
     const userId = token?._id

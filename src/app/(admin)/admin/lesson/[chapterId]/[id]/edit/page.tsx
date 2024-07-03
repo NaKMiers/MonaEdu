@@ -17,7 +17,7 @@ import { getLessonByIdApi, updateLessonApi } from '@/requests'
 import { useParams, useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 import { FaX } from 'react-icons/fa6'
-import { MdCategory } from 'react-icons/md'
+import { MdCategory, MdOutlinePublic } from 'react-icons/md'
 import { RiCharacterRecognitionLine } from 'react-icons/ri'
 import { SiFramer } from 'react-icons/si'
 
@@ -35,7 +35,6 @@ function EditLessonPage() {
   // states
   const [course, setCourse] = useState<ICourse | null>(null)
   const [chapter, setChapter] = useState<IChapter | null>(null)
-  const [lesson, setLesson] = useState<ILesson | null>(null)
   const [sourceType, setSourceType] = useState<'file' | 'embed'>('embed')
   const [fileUrl, setFileUrl] = useState<string>('')
   const [embedSrc, setEmbedSrc] = useState<string>('')
@@ -60,6 +59,7 @@ function EditLessonPage() {
       minutes: 1,
       seconds: 0,
       active: true,
+      status: 'private',
     },
   })
 
@@ -69,7 +69,6 @@ function EditLessonPage() {
       try {
         // send request to server to get course
         const { lesson } = await getLessonByIdApi(chapterId, id) // cache: no-store
-        setLesson(lesson)
         setCourse(lesson.courseId)
         setChapter(lesson.chapterId)
 
@@ -81,6 +80,7 @@ function EditLessonPage() {
         setValue('oldPrice', lesson.oldPrice)
         setValue('description', lesson.description)
         setValue('active', lesson.active)
+        setValue('status', lesson.status)
         setValue('hours', Math.floor(lesson.duration / 3600))
         setValue('minutes', Math.floor((lesson.duration % 3600) / 60))
         setValue('seconds', Math.floor(((lesson.duration % 3600) % 60) / 60))
@@ -134,8 +134,6 @@ function EditLessonPage() {
   const onSubmit: SubmitHandler<FieldValues> = async data => {
     if (!handleValidate(data)) return
 
-    console.log('data', data)
-
     if (!file && !fileUrl && !embedSrc) {
       return toast.error('Please embed an url or upload a video')
     }
@@ -150,6 +148,7 @@ function EditLessonPage() {
       formData.append('description', data.title)
       formData.append('duration', data.hours * 3600 + data.minutes * 60 + data.seconds)
       formData.append('active', data.active)
+      formData.append('status', data.status)
       if (sourceType === 'file' && file) {
         formData.append('file', file)
       } else if (sourceType === 'embed' && embedSrc) {
@@ -459,6 +458,24 @@ function EditLessonPage() {
             Active
           </label>
         </div>
+
+        {/* Status */}
+        <Input
+          id='status'
+          label='Status'
+          disabled={isLoading}
+          register={register}
+          errors={errors}
+          required
+          type='select'
+          onFocus={() => clearErrors('status')}
+          options={[
+            { label: 'Public', value: 'public' },
+            { label: 'Private', value: 'private' },
+          ]}
+          icon={MdOutlinePublic}
+          className='mb-5'
+        />
 
         {/* MARK: Add Button */}
         <LoadingButton

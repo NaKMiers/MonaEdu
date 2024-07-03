@@ -22,8 +22,6 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
     const { title, description, originalImage } = data
     let image = formData.get('image')
 
-    console.log('image', image)
-
     // build slug
     let slug = generateSlug((title as string).trim())
 
@@ -54,8 +52,6 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
       // delete old image
       await deleteFile(originalImage as string)
     }
-
-    console.log('set', set)
 
     // update category
     const updatedCategory = await CategoryModel.findByIdAndUpdate(id, { $set: set }, { new: true })

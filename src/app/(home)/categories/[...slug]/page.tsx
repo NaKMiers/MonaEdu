@@ -27,7 +27,6 @@ async function CategoriesPage({ searchParams }: { searchParams?: { [key: string]
     if (!slug) throw new Error('Không tìm thấy danh mục')
 
     const query = handleQuery(searchParams)
-    console.log('query', query)
 
     // get data
     const data = await getCategoryPageApi(slug, query)
@@ -36,8 +35,7 @@ async function CategoriesPage({ searchParams }: { searchParams?: { [key: string]
     courses = data.courses
     amount = data.amount
   } catch (err: any) {
-    console.log('err', err)
-    // return redirect('/categories')
+    return redirect('/categories')
   }
 
   return (

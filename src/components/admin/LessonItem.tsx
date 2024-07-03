@@ -99,7 +99,12 @@ function LessonItem({
 
           {/* Title */}
           <p className='mb-1 font-semibold text-[18px] font-body tracking-wide'>
-            <span>Title: {data.title}</span>{' '}
+            {data.title}{' '}
+            <span
+              className={`text-sm ${data.status === 'public' ? 'text-yellow-500' : 'text-slate-400'}`}
+            >
+              ({data.status || 'private'})
+            </span>
           </p>
 
           {/* Chapter */}

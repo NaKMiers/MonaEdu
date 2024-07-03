@@ -52,9 +52,6 @@ export default async function handleDeliverOrder(id: string, message: string = '
     const userCourseIds = userCourses.map((course: any) => course.course.toString())
     const itemIds = items.map((item: any) => item._id.toString())
 
-    console.log('userCourseIds', userCourseIds)
-    console.log('itemIds', itemIds)
-
     if (itemIds.some((id: string) => userCourseIds.includes(id))) {
       throw new Error('Người mua đã tham gia khóa học này')
     }

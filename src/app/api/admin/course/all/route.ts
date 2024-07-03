@@ -54,8 +54,23 @@ export async function GET(req: NextRequest) {
           continue
         }
 
-        if (['price', 'sold'].includes(key)) {
-          filter[key] = { $lte: +params[key][0] }
+        if (key === 'price' || key === 'sold') {
+          const from = +params[key][0].split('-')[0]
+          const to = +params[key][0].split('-')[1]
+          if (from >= 0 && to >= 0) {
+            filter[key] = {
+              $gte: from,
+              $lte: to,
+            }
+          } else if (from >= 0) {
+            filter[key] = {
+              $gte: from,
+            }
+          } else if (to >= 0) {
+            filter[key] = {
+              $lte: to,
+            }
+          }
           continue
         }
 

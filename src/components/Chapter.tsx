@@ -21,8 +21,6 @@ function Chapter({ chapter, courseSlug, lessonSlug = '', collapseAll, className 
     collapseAll || chapter.lessons?.map(lesson => lesson.slug).includes(lessonSlug) || false
   )
 
-  console.log('collapseAll', collapseAll)
-
   // refs
   const chapterRef = useRef<HTMLUListElement>(null)
 

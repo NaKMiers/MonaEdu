@@ -142,7 +142,7 @@ function OrderItem({
         <div className='w-[calc(100%_-_44px)]'>
           {/* MARK: Thumbnails */}
           <div className='w-full h-full flex items-center flex-wrap gap-2 mb-2 max-h-[145px]'>
-            <div className='flex gap-2'>
+            <div className='flex gap-2 flex-wrap'>
               {data.items.map((course: any) => (
                 <Link
                   href={`/${course.slug}`}

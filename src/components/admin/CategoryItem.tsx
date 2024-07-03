@@ -70,8 +70,6 @@ function CategoryItem({
       // send request to server
       const { category, message } = await deleteCategoryApi(data._id)
 
-      console.log('category', category)
-
       // remove deleted categories from state
       setCategories(prev => prev.filter(ctg => ctg._id !== category._id))
 

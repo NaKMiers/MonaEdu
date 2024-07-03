@@ -32,8 +32,6 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
     // get query params
     const params: { [key: string]: string[] } = searchParamsToObject(req.nextUrl.searchParams)
 
-    console.log('params', params)
-
     // options
     let skip = 0
     let itemPerPage = 16
@@ -99,18 +97,12 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
       }
     }
 
-    console.log('Filter: ', filter)
-
     // get subs categories & get all courses of current categories
     const [subs, courses, amount] = await Promise.all([
       await CategoryModel.find({ parentId: category._id }).lean(),
       await CourseModel.find(filter).sort(sort).skip(skip).limit(itemPerPage).lean(),
       await CourseModel.countDocuments(filter),
     ])
-
-    // console.log('subs', subs)
-    // console.log('courses', courses)
-    // console.log('amount', amount)
 
     // get all order without filter
     const chops = await CourseModel.aggregate([

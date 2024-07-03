@@ -20,7 +20,7 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
     // get data to create lesson
     const formData = await req.formData()
     const data = Object.fromEntries(formData)
-    const { courseId, chapterId, title, description, duration, active, embedUrl } = data
+    const { courseId, chapterId, title, description, duration, active, status, embedUrl } = data
     let file = formData.get('file')
 
     // get course from database to edit
@@ -56,6 +56,7 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
         source: newSource,
         description,
         active,
+        status,
         slug: generateSlug(title as string),
       },
     })

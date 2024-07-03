@@ -19,8 +19,6 @@ export async function GET(req: NextRequest) {
     // get all categories from database
     const categories = await CategoryModel.find({}).sort({ courseQuantity: -1 }).lean()
 
-    console.log('categories: ', categories.length)
-
     // Function to build the tree
     const buildTree = (categories: any[], parentId: string | null = null): any[] => {
       return categories

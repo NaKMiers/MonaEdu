@@ -53,8 +53,24 @@ export async function GET(req: NextRequest) {
           continue
         }
 
-        if (['minTotal', 'maxReduce'].includes(key)) {
-          filter[key] = { $lte: +params[key][0] }
+        // range fields
+        if (key === 'minTotal' || key === 'maxReduce') {
+          const from = +params[key][0].split('-')[0]
+          const to = +params[key][0].split('-')[1]
+          if (from >= 0 && to >= 0) {
+            filter[key] = {
+              $gte: from,
+              $lte: to,
+            }
+          } else if (from >= 0) {
+            filter[key] = {
+              $gte: from,
+            }
+          } else if (to >= 0) {
+            filter[key] = {
+              $lte: to,
+            }
+          }
           continue
         }
 
