@@ -3,37 +3,20 @@
 import { ICategory } from '@/models/CategoryModel'
 import { ICourse } from '@/models/CourseModel'
 import { IQuestion } from '@/models/QuestionModel'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { Children, MouseEvent, ReactNode, useCallback, useEffect, useRef, useState } from 'react'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 import CourseCard from './CourseCard'
 import QuestionItem from './QuestionItem'
 
 interface GroupCoursesProps {
-  category?: ICategory
-  courses?: {
-    course: ICourse
-    progress: number
-  }[]
-  questions?: IQuestion[]
-  hideTop?: boolean
   className?: string
-  childClassName?: string
-  bestSeller?: boolean
-  child: 'course-card' | 'question'
+  classChild?: string
+  children: ReactNode
 }
 
-function GroupCourses({
-  category,
-  courses = [],
-  questions = [],
-  child,
-  hideTop,
-  bestSeller,
-  className = '',
-  childClassName = 'w-full sm:w-1/2 px-21/2',
-}: GroupCoursesProps) {
+function GroupCourses({ className = '', classChild = '', children }: GroupCoursesProps) {
   // states
-  const [isExpaned, setIsExpaned] = useState<boolean>(false)
+  const [isExpanded, setIsExpanded] = useState<boolean>(false)
   const [isMedium, setIsMedium] = useState<boolean>(false)
   const [isDragging, setIsDragging] = useState<boolean>(false)
 
@@ -41,13 +24,13 @@ function GroupCourses({
   const slideTrackRef = useRef<HTMLDivElement>(null)
 
   // MARK: Handlers
-  const handleDraging = useCallback(
-    (e: React.MouseEvent) => {
-      if (isDragging && !isExpaned && slideTrackRef.current) {
+  const handleDragging = useCallback(
+    (e: MouseEvent) => {
+      if (isDragging && !isExpanded && slideTrackRef.current) {
         slideTrackRef.current.scrollLeft -= e.movementX
       }
     },
-    [isDragging, isExpaned]
+    [isDragging, isExpanded]
   )
 
   // prev slide
@@ -70,7 +53,7 @@ function GroupCourses({
     }
   }, [])
 
-  // expaned group
+  // expanded group
   useEffect(() => {
     const handleResize = () => {
       setIsMedium(window.innerWidth >= 768)
@@ -85,21 +68,21 @@ function GroupCourses({
   }, [])
 
   return (
-    <div className={`relative ${className}`} id={bestSeller ? 'best-seller' : category?.slug}>
+    <div className={`relative ${className}`}>
       {/* MARK: Next - Previous */}
-      {!isExpaned && (
+      {!isExpanded && (
         <>
           <button
-            className='group flex items-center justify-center absolute -left-21 top-1/2 -translate-y-1/2 bg-secondary bg-opacity-80 w-11 h-11 z-10 rounded-full shadow-md trans-200 hover:bg-opacity-100 group'
+            className='group flex items-center justify-center absolute -left-21 top-1/2 -translate-y-1/2 bg-primary bg-opacity-80 w-11 h-11 z-10 rounded-full shadow-md trans-200 hover:bg-opacity-100 group'
             onClick={prevSlide}
           >
-            <FaChevronLeft size={18} className='wiggle text-white' />
+            <FaChevronLeft size={18} className='wiggle text-dark' />
           </button>
           <button
-            className='group flex items-center justify-center absolute -right-21 top-1/2 -translate-y-1/2 bg-secondary bg-opacity-80 w-11 h-11 z-10 rounded-full shadow-md trans-200 hover:bg-opacity-100 group'
+            className='group flex items-center justify-center absolute -right-21 top-1/2 -translate-y-1/2 bg-primary bg-opacity-80 w-11 h-11 z-10 rounded-full shadow-md trans-200 hover:bg-opacity-100 group'
             onClick={nextSlide}
           >
-            <FaChevronRight size={18} className='wiggle text-white' />
+            <FaChevronRight size={18} className='wiggle text-dark' />
           </button>
         </>
       )}
@@ -107,26 +90,22 @@ function GroupCourses({
       {/* MARK: Slider */}
       <div className='flex flex-wrap'>
         <div
-          className={`flex items-start ${
-            isExpaned ? 'flex-wrap gap-y-21' : ''
-          } w-full py-21 overflow-x-auto ${!isDragging ? 'snap-x snap-mandatory' : ''}`}
+          className={`flex ${isExpanded ? 'flex-wrap gap-y-21' : ''} w-full py-21 overflow-x-auto ${
+            !isDragging ? 'snap-x snap-mandatory' : ''
+          }`}
           ref={slideTrackRef}
           onMouseDown={() => setIsDragging(true)}
-          onMouseMove={handleDraging}
+          onMouseMove={handleDragging}
           onMouseUp={() => setIsDragging(false)}
         >
-          {(child === 'course-card' ? courses : questions).map((item: any, index) => (
+          {Children.toArray(children).map((child, index) => (
             <div
               key={index}
-              className={`relative h-full flex-shrink-0 ${
+              className={`relative h-full px-21/2 flex-shrink-0 ${
                 !isDragging ? 'snap-start' : ''
-              } ${childClassName}`}
+              } ${classChild}`}
             >
-              {child === 'course-card' ? (
-                <CourseCard course={item.course} className='' />
-              ) : (
-                <QuestionItem question={item} />
-              )}
+              {child}
             </div>
           ))}
         </div>

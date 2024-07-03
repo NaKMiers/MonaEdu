@@ -51,12 +51,12 @@ async function Home() {
       </div>
       <Divider size={8} />
       <div className='relative px-8 md:px-12 py-21'>
-        <GroupCourses
+        {/* <GroupCourses
           className='md:px-20'
           child='question'
           childClassName='w-full sm:w-1/2 lg:w-1/3 px-21/2'
           questions={questions}
-        />
+        /> */}
 
         <Divider size={20} />
       </div>

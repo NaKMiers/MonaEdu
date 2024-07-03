@@ -117,7 +117,7 @@ function CartItem({ cartItem, isCheckout, className = '', isOrderDetailCourse }:
           ) : (
             <FaTrashAlt
               size={21}
-              className='text-secondary cursor-pointer hover:scale-110 common-transition wiggle'
+              className='cursor-pointer hover:scale-110 common-transition wiggle'
               onClick={e => {
                 e.stopPropagation()
                 setIsOpenConfirmModal(true)
@@ -133,27 +133,6 @@ function CartItem({ cartItem, isCheckout, className = '', isOrderDetailCourse }:
         <h2 className={`text-[20px] tracking-wide mb-2 leading-6 pr-8`}>
           {(cartItem.courseId as ICourse)?.title}
         </h2>
-
-        {/* Info */}
-        {isOrderDetailCourse && (
-          <div className='flex justify-between'>
-            {/* (Order Detail) Quantity */}
-            <div className='flex items-center gap-1 text-[16px]'>
-              <FaHashtag className='text-darker' size={16} />
-              <span className='text-darker font-bold text-nowrap'>Số lượng:</span>
-              <span className='text-green-500'>{cartItem.quantity}</span>
-            </div>
-
-            {/* (Order Detail) Price */}
-            <div className='flex items-center gap-1 text-[16px]'>
-              <FaHashtag className='text-darker' size={16} />
-              <span className='text-darker font-bold text-nowrap'>Giá:</span>
-              <span className='text-green-500'>
-                {formatPrice(((cartItem.courseId as ICourse)?.price || 0) * cartItem.quantity)}
-              </span>
-            </div>
-          </div>
-        )}
 
         {/* Price & Stock */}
         <Price

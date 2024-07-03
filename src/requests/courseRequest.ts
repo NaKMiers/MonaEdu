@@ -81,7 +81,7 @@ export const getMyCoursesApi = async () => {
   return await res.json()
 }
 
-// [GET]
+// [GET]: /course/my-courses
 export const getBestSellerCoursesApi = async () => {
   // revalidate every 1 hour
   const res = await fetch('/api/course/best-seller', { next: { revalidate: 0 } })
@@ -98,6 +98,18 @@ export const getBestSellerCoursesApi = async () => {
 export const searchCoursesApi = async (search: string) => {
   // no-cache
   const res = await fetch(`/api/course/search?search=${search}`, { cache: 'no-store' })
+
+  // check status
+  if (!res.ok) {
+    throw new Error((await res.json()).message)
+  }
+
+  return await res.json()
+}
+
+// [GET]: /course/suggested-courses
+export const getSuggestedCoursesApi = async (query: string = '') => {
+  const res = await fetch(`/api/course/suggested${query}`, { next: { revalidate: 0 } })
 
   // check status
   if (!res.ok) {
