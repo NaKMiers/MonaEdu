@@ -88,7 +88,7 @@ function QuestionItem({ question, className = '' }: QuestionItemProps) {
       {/* Top */}
       <div className='relative flex gap-3 p-4 border-b-2 border-slate-300'>
         <Link
-          href={`/user/${curUser?.username || curUser?.email}`}
+          href={`/user/${user?.username || user?.email}`}
           className='flex-shrink-0 w-[40px] h-[40px] rounded-full aspect-square overflow-hidden shadow-lg'
         >
           <Image
@@ -99,7 +99,7 @@ function QuestionItem({ question, className = '' }: QuestionItemProps) {
             alt='avatar'
           />
         </Link>
-        <Link href={`/user/${curUser?.username || curUser?.email}`}>
+        <Link href={`/user/${user?.username || user?.email}`}>
           <p className='text-lg font-bold -mt-1.5'>
             {user?.firstName && user?.lastName ? `${user.firstName} ${user.lastName}` : user?.username}
           </p>
@@ -119,12 +119,12 @@ function QuestionItem({ question, className = '' }: QuestionItemProps) {
             />
             <div
               className={`${
-                showActions ? 'max-w-[120px] max-h-[40px] px-1.5 py-1' : 'max-w-0 max-h-0 p-0'
-              }  overflow-hidden absolute z-20 bottom-full right-0 flex gap-2 shadow-lg rounded-md bg-white trans-300`}
+                showActions ? 'max-w-[120px] max-h-[80px]' : 'max-w-0 max-h-0 p-0'
+              }  overflow-hidden absolute z-20 bottom-full right-0 flex flex-col shadow-lg rounded-md bg-white trans-300`}
             >
               {(user?._id === curUser._id || user?.role === 'admin') && (
                 <button
-                  className={`font-bold px-1.5 py-1 text-[10px] bg-slate-200 hover:text-white border rounded-md shadow-md trans-200 ${
+                  className={`font-bold px-1.5 py-1 text-[10px] bg-slate-200 hover:text-white trans-200 ${
                     status === 'open'
                       ? 'border-dark hover:bg-black'
                       : 'border-green-500 text-green-500 hover:bg-green-500'
@@ -137,7 +137,7 @@ function QuestionItem({ question, className = '' }: QuestionItemProps) {
               )}
 
               <button
-                className={`font-bold px-1.5 py-1 text-[10px] hover:bg-dark-0 hover:border-dark hover:text-rose-500 border border-rose-400 text-rose-400 rounded-md shadow-md trans-200`}
+                className={`font-bold px-1.5 py-1 text-[10px] hover:bg-dark-0 hover:border-dark hover:text-rose-500 border-rose-400 text-rose-400 trans-200`}
                 title='Report'
                 onClick={() => setIsOpenReportDialog(true)}
               >
