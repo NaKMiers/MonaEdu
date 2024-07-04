@@ -134,8 +134,13 @@ const UserSchema = new Schema(
     ],
     gifts: [
       {
-        type: Schema.Types.ObjectId,
-        ref: 'course',
+        course: {
+          type: Schema.Types.ObjectId,
+          ref: 'course',
+        },
+        giver: {
+          type: String,
+        },
       },
     ],
     notifications: [

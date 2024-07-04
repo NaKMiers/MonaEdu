@@ -17,7 +17,7 @@ export function OrderEmail({ order = orderSample }: { order?: any }) {
               <Column>
                 <a href='https://monaedu.com'>
                   <Img
-                    className='aspect-square rounded-full'
+                    className='aspect-square rounded-md'
                     src={`${'https://monaedu.com'}/images/logo.png`}
                     width={35}
                     height={35}
@@ -28,7 +28,7 @@ export function OrderEmail({ order = orderSample }: { order?: any }) {
               <Column>
                 <a
                   href='https://monaedu.com'
-                  className='text-2xl font-bold tracking-[0.3px] no-underline text-dark'
+                  className='text-2xl font-bold tracking-[0.3px] no-underline text-dark pl-2'
                 >
                   MonaEdu
                 </a>
@@ -50,16 +50,16 @@ export function OrderEmail({ order = orderSample }: { order?: any }) {
               <Column className='font'>
                 <h1 className='text-2xl font-bold text-center'>Hi👋 </h1>
                 <h2 className='text-xl font-semibold text-center'>
-                  Thank you for joining MonaEdu and purchasing our course. We hope you enjoy it!
+                  Cảm ơn bạn đã tham gia khóa học của Mona Edu, chúc bạn học tốt!
                 </h2>
 
                 <div className='text-sm mt-8'>
                   <p>
-                    <b>Code: </b>
+                    <b>Mã đơn hàng: </b>
                     <span className='text-secondary tracking-wider font-semibold'>{order.code}</span>
                   </p>
                   <p>
-                    <b>Bought Date: </b>
+                    <b>Ngày tham gia: </b>
                     {new Intl.DateTimeFormat('en', {
                       dateStyle: 'full',
                       timeStyle: 'medium',
@@ -67,11 +67,11 @@ export function OrderEmail({ order = orderSample }: { order?: any }) {
                     }).format(new Date(order.createdAt))}
                   </p>
                   <p>
-                    <b>Status: </b>
-                    <span className='text-[#50C878]'>Done</span>
+                    <b>Trạng thái: </b>
+                    <span className='text-[#50C878]'>Hoàn tất</span>
                   </p>
                   <p>
-                    <b>Total Amount: </b>
+                    <b>Tổng: </b>
                     <b>{formatPrice(order.total)}</b>
                   </p>
                   <p>
@@ -89,7 +89,7 @@ export function OrderEmail({ order = orderSample }: { order?: any }) {
                     }}
                   >
                     <p className='font-semibold underline tracking-wider text-sm text-slate-400 text-center m-0 mb-3'>
-                      Message from admin
+                      Lời nhắn từ quản trị viên
                     </p>
                     <p className='text-sm m-0'>{order.message}</p>
                   </div>
@@ -97,41 +97,49 @@ export function OrderEmail({ order = orderSample }: { order?: any }) {
 
                 {/* Course */}
                 <div className='mt-8'>
-                  <b className='text-[24px]'>Course: </b>
+                  <b className='text-[24px]'>Khóa học: </b>
 
-                  <a
-                    href={`https://monaedu.com/${order.item.slug}`}
-                    className='block h-full text-dark tracking-wider no-underline mt-2'
-                  >
-                    <Section>
-                      <Row>
-                        <Column className='w-[130px]'>
-                          <Img
-                            src={order.item.images[0]}
-                            width={120}
-                            className='inline aspect-video rounded-lg object-cover'
-                          />
-                        </Column>
-                        <Column>
-                          <p className='font-semibold text-slate-600'>{order.item.title}</p>
-                        </Column>
-                      </Row>
-                    </Section>
-                  </a>
+                  <ul className='list-none p-0'>
+                    {order.items.map((course: any) => (
+                      <li className='mb-2' key={course._id}>
+                        <a
+                          href={`https://monaedu.vercel.app/${course.slug}`}
+                          className='block h-full text-dark tracking-wider no-underline'
+                        >
+                          <Section>
+                            <Row>
+                              <Column className='w-[130px]'>
+                                <Img
+                                  src={course.images[0]}
+                                  width={120}
+                                  className='inline aspect-video rounded-lg object-cover'
+                                />
+                              </Column>
+                              <Column>
+                                <p className='font-semibold text-slate-600'>{course.title}</p>
+                              </Column>
+                            </Row>
+                          </Section>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </Column>
             </Row>
 
-            {order.userId && (
-              <div className='text-center p-3 mb-8'>
-                <a
-                  href={`https://monaedu.com/learning/${order.item._id}/start`}
-                  className='inline bg-sky-500 no-underline rounded-lg text-white font-semibold cursor-pointer py-3 px-7 border-0'
-                >
-                  Learn Now
-                </a>
-              </div>
-            )}
+            <div className='text-center p-3 mb-8'>
+              <a
+                href={
+                  order.items.length > 1
+                    ? 'https://monaedu.com/my-courses'
+                    : `https://monaedu.com/learning/${order.items[0]._id}/start`
+                }
+                className='inline bg-sky-500 no-underline rounded-lg text-white font-semibold cursor-pointer py-3 px-7 border-0'
+              >
+                Học ngay
+              </a>
+            </div>
           </Section>
 
           <div className='flex justify-center pt-[45px]'>

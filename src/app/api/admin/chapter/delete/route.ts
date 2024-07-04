@@ -21,10 +21,8 @@ export async function DELETE(req: NextRequest) {
     // get delete categories
     const deletedChapters = await ChapterModel.find({ _id: { $in: ids } }).lean()
 
-    // count number of lessons in chapters
+    // only delete chapter if it has no lessons
     const lessonQuantity = await LessonModel.countDocuments({ chapterId: { $in: ids } })
-
-    // prevent deleting chapters with lessons
     if (lessonQuantity > 0) {
       return NextResponse.json(
         { message: `Cannot delete chapters with lessons. Please delete the lessons first` },

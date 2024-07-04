@@ -250,7 +250,7 @@ function CheckoutPage({ params }: { params: { type: string } }) {
               {!!checkout?.discount && <Divider size={3} border />}
 
               <div className='flex items-center justify-between'>
-                <span className='font-semobold'>Thành tiền</span>
+                <span className='font-semobold text-xl'>Thành tiền</span>
                 <span className='font-semibold tracking-wide text-3xl text-green-500 hover:tracking-wider trans-300'>
                   {formatPrice(checkout?.total || 0)}
                 </span>

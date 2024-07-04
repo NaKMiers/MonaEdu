@@ -36,6 +36,12 @@ function FloatingActionButtons({ course: data, className = '' }: FloatingActionB
   // MARK: Add
   // add course to cart - DATABASE
   const addCourseToCart = useCallback(async () => {
+    // check if user is logged in
+    if (!curUser?._id) {
+      toast.error('Vui lòng đăng nhập để thêm khóa học vào giỏ hàng')
+      return
+    }
+
     // start loading
     setIsLoading(true)
 
@@ -55,11 +61,17 @@ function FloatingActionButtons({ course: data, className = '' }: FloatingActionB
       // stop loading
       setIsLoading(false)
     }
-  }, [dispatch, course._id])
+  }, [dispatch, course._id, curUser?._id])
 
   // MARK: Buy
   // handle buy now (add to cart and move to cart page)
   const buyNow = useCallback(async () => {
+    // check if user is logged in
+    if (!curUser?._id) {
+      toast.error('Vui lòng đăng nhập để thêm khóa học vào giỏ hàng')
+      return
+    }
+
     // start page loading
     dispatch(setPageLoading(true))
 
@@ -82,7 +94,7 @@ function FloatingActionButtons({ course: data, className = '' }: FloatingActionB
       // stop page loading
       dispatch(setPageLoading(false))
     }
-  }, [course._id, dispatch, course.slug, router])
+  }, [course._id, dispatch, course.slug, router, curUser?._id])
 
   // like course
   const handleLike = useCallback(async () => {

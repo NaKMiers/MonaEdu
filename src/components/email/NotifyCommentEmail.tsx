@@ -14,9 +14,9 @@ export function NotifyCommentEmail({ data = commentData }: { data?: any }) {
           <Section className='inline-block mx-auto'>
             <Row className='mb-3 w-full'>
               <Column>
-                <a href='https://monaedu.com'>
+                <a href='https://monaedu.com' className=''>
                   <Img
-                    className='aspect-square rounded-full'
+                    className='aspect-square rounded-md'
                     src={`${'https://monaedu.com'}/images/logo.jpg`}
                     width={35}
                     height={35}
@@ -27,7 +27,7 @@ export function NotifyCommentEmail({ data = commentData }: { data?: any }) {
               <Column>
                 <a
                   href='https://monaedu.com'
-                  className='text-2xl font-bold tracking-[0.3px] no-underline text-dark'
+                  className='text-2xl font-bold tracking-[0.3px] no-underline text-dark pl-2'
                 >
                   MonaEdu
                 </a>

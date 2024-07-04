@@ -20,7 +20,7 @@ export function SummaryEmail({ summary = summarySample }: { summary?: any }) {
               <Column>
                 <a href='https://monaedu.com'>
                   <Img
-                    className='aspect-square rounded-full'
+                    className='aspect-square rounded-md'
                     src={`${'https://monaedu.com'}/images/logo.jpg`}
                     width={35}
                     height={35}
@@ -31,7 +31,7 @@ export function SummaryEmail({ summary = summarySample }: { summary?: any }) {
               <Column>
                 <a
                   href='https://monaedu.com'
-                  className='text-2xl font-bold tracking-[0.3px] no-underline text-dark'
+                  className='text-2xl font-bold tracking-[0.3px] no-underline text-dark pl-2'
                 >
                   MonaEdu
                 </a>

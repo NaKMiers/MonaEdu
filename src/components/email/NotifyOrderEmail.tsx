@@ -17,7 +17,7 @@ export function NotifyOrderEmail({ order = orderSample }: { order?: any }) {
               <Column>
                 <a href='https://monaedu.vercel.app'>
                   <Img
-                    className='aspect-square rounded-full'
+                    className='aspect-square rounded-md'
                     src={`${'https://monaedu.com'}/images/logo.png`}
                     width={35}
                     height={35}
@@ -28,7 +28,7 @@ export function NotifyOrderEmail({ order = orderSample }: { order?: any }) {
               <Column>
                 <a
                   href='https://monaedu.vercel.app'
-                  className='text-2xl font-bold tracking-[0.3px] no-underline text-dark'
+                  className='text-2xl font-bold tracking-[0.3px] no-underline text-dark pl-2'
                 >
                   MonaEdu
                 </a>

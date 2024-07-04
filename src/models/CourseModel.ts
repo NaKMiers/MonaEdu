@@ -34,6 +34,7 @@ const CourseSchema = new Schema(
     },
     textHook: {
       type: String,
+      required: true,
     },
     description: {
       type: String,

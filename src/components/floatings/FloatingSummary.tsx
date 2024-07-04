@@ -44,6 +44,12 @@ function FloatingSummary({ course: data, className = '' }: FloatingSummaryProps)
   // MARK: Add
   // add course to cart - DATABASE
   const addCourseToCart = useCallback(async () => {
+    // check if user is logged in
+    if (!curUser?._id) {
+      toast.error('Vui lòng đăng nhập để thêm khóa học vào giỏ hàng')
+      return
+    }
+
     // start loading
     setIsLoading(true)
 
@@ -63,11 +69,17 @@ function FloatingSummary({ course: data, className = '' }: FloatingSummaryProps)
       // stop loading
       setIsLoading(false)
     }
-  }, [dispatch, course._id])
+  }, [dispatch, course._id, curUser?._id])
 
   // MARK: Buy
   // handle buy now (add to cart and move to cart page)
   const buyNow = useCallback(async () => {
+    // check if user is logged in
+    if (!curUser?._id) {
+      toast.error('Vui lòng đăng nhập để thêm khóa học vào giỏ hàng')
+      return
+    }
+
     // start page loading
     dispatch(setPageLoading(true))
 
@@ -90,7 +102,7 @@ function FloatingSummary({ course: data, className = '' }: FloatingSummaryProps)
       // stop page loading
       dispatch(setPageLoading(false))
     }
-  }, [course._id, dispatch, course.slug, router])
+  }, [course._id, dispatch, course.slug, router, curUser?._id])
 
   // like course
   const handleLike = useCallback(async () => {
@@ -252,7 +264,7 @@ function FloatingSummary({ course: data, className = '' }: FloatingSummaryProps)
           </p>
           <p className='flex items-center flex-wrap'>
             <IoTimer size={16} className='mr-3' />
-            <span>Thời lượng: </span>
+            <span className='mr-1'>Thời lượng: </span>
             <span>12 giờ 48 phút</span>
           </p>
           <p className='flex items-center flex-wrap'>

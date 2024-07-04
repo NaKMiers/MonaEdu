@@ -56,7 +56,7 @@ export async function notifyDeliveryOrder(email: string, orderData: any) {
 
   try {
     const html = render(OrderEmail({ order: orderData }))
-    await sendMail(email, 'You have an order from MonaEdu', html)
+    await sendMail(email, 'Bạn có đơn hàng từ Mona Edu', html)
   } catch (err: any) {
     console.log(err)
   }
@@ -68,7 +68,7 @@ export async function notifyGivenCourse(receiveEmail: string, sender: string, or
 
   try {
     const html = render(GivenGift({ order: { ...orderData, sender } }))
-    await sendMail(receiveEmail, `You have been given a course from ${sender}`, html)
+    await sendMail(receiveEmail, `Bạn được tặng khóa học trên Mona Edu từ ${sender}`, html)
   } catch (err: any) {
     console.log(err)
   }

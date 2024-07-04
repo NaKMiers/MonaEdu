@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
       { status: 201 }
     )
 
-    // rceturn NextResponse.json({ message: 'Course has been created' }, { status: 201 })
+    // return NextResponse.json({ message: 'Course has been created' }, { status: 201 })
   } catch (err: any) {
     // Disconnect from MongoDB in case of error
     await mongoose.disconnect()

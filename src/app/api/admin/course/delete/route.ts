@@ -1,17 +1,20 @@
 import { connectDatabase } from '@/config/database'
 import CategoryModel from '@/models/CategoryModel'
+import ChapterModel from '@/models/ChapterModel'
 import CourseModel, { ICourse } from '@/models/CourseModel'
 import FlashSaleModel from '@/models/FlashSaleModel'
 import LessonModel from '@/models/LessonModel'
 import TagModel from '@/models/TagModel'
+import UserModel from '@/models/UserModel'
 import { deleteFile } from '@/utils/uploadFile'
 import { NextRequest, NextResponse } from 'next/server'
-import UserModel from '@/models/UserModel'
 
-// Models: Course, Category, Tag, FlashSale, User
+// Models: Course, Category, Tag, FlashSale, User, Chapter, Lesson
 import '@/models/CategoryModel'
+import '@/models/ChapterModel'
 import '@/models/CourseModel'
 import '@/models/FlashSaleModel'
+import '@/models/LessonModel'
 import '@/models/TagModel'
 import '@/models/UserModel'
 
@@ -26,15 +29,49 @@ export async function DELETE(req: NextRequest) {
   const { ids } = await req.json()
 
   try {
-    // Find courses by their IDs before deletion
+    // find courses by their IDs before deletion
     const courses: ICourse[] = await CourseModel.find({
       _id: { $in: ids },
     }).lean()
 
-    const lessons = await LessonModel.find({
-      courseId: { $in: ids },
-      sourceType: 'file',
-    }).lean()
+    // only allow to delete course if it has no users joined
+    const userAmount = await UserModel.countDocuments({
+      'courses.course': { $in: ids },
+    })
+    if (userAmount > 0) {
+      return NextResponse.json(
+        {
+          message: 'Cannot delete courses that have users joined',
+        },
+        { status: 400 }
+      )
+    }
+
+    // only allow to delete course if it has no chapters
+    const chapterAmount = await ChapterModel.countDocuments({
+      course: { $in: ids },
+    })
+    if (chapterAmount > 0) {
+      return NextResponse.json(
+        {
+          message: 'Cannot delete courses, please delete all chapters first',
+        },
+        { status: 400 }
+      )
+    }
+
+    // only allow to delete course if it has no lessons
+    const lessonAmount = await LessonModel.countDocuments({
+      course: { $in: ids },
+    })
+    if (lessonAmount > 0) {
+      return NextResponse.json(
+        {
+          message: 'Cannot delete courses, please delete all lessons first',
+        },
+        { status: 400 }
+      )
+    }
 
     // delete course by ids
     await CourseModel.deleteMany({
@@ -76,24 +113,8 @@ export async function DELETE(req: NextRequest) {
           )
         }
 
-        // remove all courses from the user's joining this course
-        await UserModel.updateMany(
-          { 'courses.course': course._id },
-          {
-            $pull: { courses: course._id },
-          }
-        )
-
         // delete the images associated with each course
         await Promise.all(course.images.map(image => deleteFile(image)))
-
-        // delete all lessons'source associated with each course
-        await Promise.all(lessons.map(lesson => deleteFile(lesson.source, 'video')))
-
-        // delete all lessons which associalted with each course and has empty using user
-        await LessonModel.deleteMany({
-          courseId: course._id,
-        })
       })
     )
 

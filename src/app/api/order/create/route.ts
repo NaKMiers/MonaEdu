@@ -56,7 +56,7 @@ export async function POST(req: NextRequest) {
     if (isUserJoinedCourse) {
       const joinedCoursesTitles = await CourseModel.find({ _id: { $in: joinedCourses } }).select('title')
       return NextResponse.json(
-        { message: `User has already joined this "${joinedCoursesTitles.join(', ')}"` },
+        { message: `Học viên đã tham gia khóa học "${joinedCoursesTitles.join(', ')}"` },
         { status: 400 }
       )
     }

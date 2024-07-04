@@ -42,10 +42,13 @@ export default async function handleDeliverOrder(id: string, message: string = '
   // get items and applied voucher
   const { items, email, total, userId, receivedUser } = order
 
+  console.log('order: ', order)
+
   const buyer: IUser | null = await UserModel.findById(userId).lean()
 
   // buy for themselves
   if (!receivedUser) {
+    console.log('- Buy For Themselves -')
     // get user to check if user has already joined course
     const userCourses: any = buyer?.courses
 
@@ -53,12 +56,14 @@ export default async function handleDeliverOrder(id: string, message: string = '
     const itemIds = items.map((item: any) => item._id.toString())
 
     if (itemIds.some((id: string) => userCourseIds.includes(id))) {
-      throw new Error('Người mua đã tham gia khóa học này')
+      throw new Error('Học viên đã tham gia khóa học này')
     }
   }
 
   // buy as a gift
   else {
+    console.log('- Buy As A Gift -')
+
     const receiver: IUser | null = await UserModel.findOne({ email: receivedUser }).lean()
     if (!receiver) {
       throw new Error('Receiver not found')
@@ -69,12 +74,16 @@ export default async function handleDeliverOrder(id: string, message: string = '
     const itemIds = items.map((item: any) => item._id.toString())
 
     if (itemIds.some((id: string) => userCourseIds.includes(id))) {
-      throw new Error('Người nhận tham gia khóa học này')
+      throw new Error('Học viên đã tham gia khóa học này')
     }
   }
 
+  console.log('awww')
+
   // VOUCHER
   const voucher: IVoucher = order.voucher as IVoucher
+
+  console.log('voucher: ', voucher)
 
   if (voucher) {
     const commission: any = (voucher.owner as IUser).commission
@@ -102,50 +111,87 @@ export default async function handleDeliverOrder(id: string, message: string = '
   }
 
   // USER
-  const emailUser = receivedUser || email
-  await UserModel.findOneAndUpdate(
-    { email: emailUser },
-    {
-      $inc: { expended: total },
-      $addToSet: {
-        courses: items.map((item: any) => ({
-          course: item._id,
-          progress: 0,
-        })),
-      },
-
-      // notify user
-      $push: {
-        notifications: {
-          _id: new Date().getTime(),
-          title: receivedUser
-            ? `You have been given a course by ${
-                buyer?.firstName && buyer?.lastName
-                  ? `${buyer.firstName} ${buyer.lastName}`
-                  : buyer?.username
-              }`
-            : 'You new course has been delivered',
-          image: '/images/logo.png',
-          link: '/my-courses',
-          type: 'delivered-order',
-          status: 'unread',
+  if (receivedUser) {
+    await UserModel.findOneAndUpdate(
+      { email: receivedUser },
+      {
+        $inc: { expended: total },
+        $addToSet: {
+          courses: items.map((item: any) => ({
+            course: item._id,
+            progress: 0,
+          })),
+          gifts: items.map((item: any) => ({
+            course: item._id,
+            giver: email,
+          })),
         },
-      },
-    }
-  )
+
+        // notify user
+        $push: {
+          notifications: {
+            _id: new Date().getTime(),
+            title: receivedUser
+              ? `You have been given a course by ${
+                  buyer?.firstName && buyer?.lastName
+                    ? `${buyer.firstName} ${buyer.lastName}`
+                    : buyer?.username
+                }`
+              : 'You new course has been delivered',
+            image: '/images/logo.png',
+            link: '/my-courses',
+            type: 'delivered-order',
+            status: 'unread',
+          },
+        },
+      }
+    )
+  } else {
+    await UserModel.findOneAndUpdate(
+      { email },
+      {
+        $inc: { expended: total },
+        $addToSet: {
+          courses: items.map((item: any) => ({
+            course: item._id,
+            progress: 0,
+          })),
+        },
+
+        // notify user
+        $push: {
+          notifications: {
+            _id: new Date().getTime(),
+            title: receivedUser
+              ? `You have been given a course by ${
+                  buyer?.firstName && buyer?.lastName
+                    ? `${buyer.firstName} ${buyer.lastName}`
+                    : buyer?.username
+                }`
+              : 'You new course has been delivered',
+            image: '/images/logo.png',
+            link: '/my-courses',
+            type: 'delivered-order',
+            status: 'unread',
+          },
+        },
+      }
+    )
+  }
 
   // COURSE
-  const course = await CourseModel.findByIdAndUpdate(
-    { _id: { $in: order.items.map((item: ICourse) => item._id.toString()) } },
-    { $inc: { joined: 1 } },
-    { new: true }
+  await CourseModel.updateMany(
+    { _id: { $in: order.items.map((item: ICourse) => item._id) } },
+    { $inc: { joined: 1 } }
   )
+
+  console.log('hello')
 
   // ORDER
   const updatedOrder: IOrder | null = await OrderModel.findByIdAndUpdate(
     order._id.toString(),
     {
-      $set: { status: 'done', item: course },
+      $set: { status: 'done' },
     },
     { new: true }
   ).lean()
@@ -156,6 +202,8 @@ export default async function handleDeliverOrder(id: string, message: string = '
     discount: updatedOrder?.discount || 0,
     message,
   }
+
+  console.log('orderData: ', orderData)
 
   // EMAIL
   await notifyDeliveryOrder(email, orderData)

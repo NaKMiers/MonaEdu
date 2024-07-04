@@ -239,7 +239,7 @@ function CartPage() {
   )
 
   return (
-    <div className='md:-mt-[72px] md:pt-[72px] -mb-20 pb-20 px-21 bg-neutral-800 bg-opacity-80 text-light'>
+    <div className='md:-mt-[72px] md:pt-[72px] -mb-20 pb-20 px-21 bg-neutral-800 bg-opacity-75 text-light'>
       <Divider size={8} />
 
       <div className='max-w-1200 mx-auto min-h-screen grid grid-cols-3 gap-21 pb-16'>
@@ -422,7 +422,7 @@ function CartPage() {
             {/* MARK: Payment Methods */}
             <div className='flex justify-center gap-3 select-none'>
               <button
-                className={`flex items-center justify-center rounded-xl gap-2 border border-dark py-2 px-3 group hover:bg-dark-0 trans-200 ${
+                className={`w-full flex items-center justify-center rounded-xl gap-2 border border-dark py-2 px-3 group hover:bg-dark-0 trans-200 ${
                   isBuying || isLoading ? 'pointer-events-none' : ''
                 }`}
                 onClick={() => handleCheckout('momo')}
@@ -439,7 +439,7 @@ function CartPage() {
               </button>
 
               <button
-                className={`flex items-center justify-center rounded-xl gap-2 border border-dark py-2 px-3 group hover:bg-dark-0 trans-200 ${
+                className={`w-full flex items-center justify-center rounded-xl gap-2 border border-dark py-2 px-3 group hover:bg-dark-0 trans-200 ${
                   isBuying || isLoading ? 'pointer-events-none' : ''
                 }`}
                 onClick={() => handleCheckout('banking')}
