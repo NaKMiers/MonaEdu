@@ -39,7 +39,7 @@ function Footer() {
                 alt='github'
               />
             </Link>
-            <Link href='mailto:cosanpha.omega@gmail.com' target='_blank'>
+            <Link href='mailto:contact.monaedu@gmail.com' target='_blank'>
               <Image src='/images/gmail.png' className='wiggle-1' width={32} height={32} alt='gmail' />
             </Link>
           </div>

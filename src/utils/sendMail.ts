@@ -25,7 +25,7 @@ export async function sendMail(to: string | string[], subject: string, html: str
   console.log('- Send Mail -')
 
   await transporter.sendMail({
-    from: 'MonaEdu <no-reply@anpha.shop>',
+    from: 'MonaEdu <no-reply@monaedu.com>',
     to: to,
     subject: subject,
     html: html,
