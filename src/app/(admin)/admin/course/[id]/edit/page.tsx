@@ -4,6 +4,7 @@ import Input from '@/components/Input'
 import LoadingButton from '@/components/LoadingButton'
 import AdminHeader from '@/components/admin/AdminHeader'
 import CategoryItem from '@/components/admin/CategoryItem'
+import { languages } from '@/constants/languages'
 import { useAppDispatch, useAppSelector } from '@/libs/hooks'
 import { setLoading } from '@/libs/reducers/modalReducer'
 import { ICategory } from '@/models/CategoryModel'
@@ -55,6 +56,7 @@ function AddCoursePage() {
       textHook: '',
       description: '',
       active: true,
+      languages: [],
     },
   })
 
@@ -74,6 +76,7 @@ function AddCoursePage() {
         setValue('textHook', course.textHook)
         setValue('description', course.description)
         setValue('active', course.active)
+        setValue('languages', course.languages)
 
         setSelectedTags(course.tags)
         setSelectedCategory(course.category)
@@ -327,6 +330,21 @@ function AddCoursePage() {
           icon={MdNumbers}
           className='mb-5'
           onFocus={() => clearErrors('description')}
+        />
+
+        {/* Languages */}
+        <Input
+          id='languages'
+          label='Languages'
+          disabled={isLoading}
+          register={register}
+          errors={errors}
+          type='select'
+          options={languages}
+          multiple
+          icon={MdNumbers}
+          className='mb-5 text-light'
+          onFocus={() => clearErrors('languages')}
         />
 
         {/* Active */}

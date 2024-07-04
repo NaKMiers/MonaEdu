@@ -1,12 +1,12 @@
 import { connectDatabase } from '@/config/database'
 import CategoryModel from '@/models/CategoryModel'
-import { NextRequest, NextResponse } from 'next/server'
 import CourseModel from '@/models/CourseModel'
+import { deleteFile } from '@/utils/uploadFile'
+import { NextRequest, NextResponse } from 'next/server'
 
 // Models: Category, Course
 import '@/models/CategoryModel'
 import '@/models/CourseModel'
-import { deleteFile } from '@/utils/uploadFile'
 
 // [DELETE]: /admin/category/delete
 export async function DELETE(req: NextRequest, { params: { id } }: { params: { id: string } }) {
@@ -21,19 +21,19 @@ export async function DELETE(req: NextRequest, { params: { id } }: { params: { i
     // - no courses
 
     // check if category is a parent of any category
-    const isParent = await CategoryModel.exists({ parentId: id })
-    if (isParent) {
+    const childExists = await CategoryModel.exists({ parentId: id })
+    if (childExists) {
       return NextResponse.json(
-        { message: `Cannot delete this category, please delete category children first!` },
+        { message: `Cannot delete this category, please delete all related categories first!` },
         { status: 400 }
       )
     }
 
     // check if category is a parent of any course
-    const isParentCourse = await CourseModel.exists({ categoryId: id })
-    if (isParentCourse) {
+    const courseExists = await CourseModel.exists({ categoryId: id })
+    if (courseExists) {
       return NextResponse.json(
-        { message: `Cannot delete this category, please delete courses first!` },
+        { message: `Cannot delete this category, please delete all related courses first!` },
         { status: 400 }
       )
     }

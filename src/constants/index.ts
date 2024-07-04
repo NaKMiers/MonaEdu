@@ -1,6 +1,6 @@
 import { FaTicketAlt } from 'react-icons/fa'
 import { FaBoltLightning, FaListCheck, FaTags, FaUser } from 'react-icons/fa6'
-import { MdCategory, MdPlayLesson, MdReportOff, MdSpaceDashboard } from 'react-icons/md'
+import { MdCategory, MdReportOff, MdSpaceDashboard } from 'react-icons/md'
 import { RiBillFill } from 'react-icons/ri'
 import { SiCoursera } from 'react-icons/si'
 

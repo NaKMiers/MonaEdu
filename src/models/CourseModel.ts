@@ -57,11 +57,7 @@ const CourseSchema = new Schema(
       ref: 'category',
     },
     images: {
-      type: [
-        {
-          type: String,
-        },
-      ],
+      type: [{ type: String }],
       minlength: 1,
     },
     joined: {
@@ -85,8 +81,7 @@ const CourseSchema = new Schema(
       },
     ],
     languages: {
-      type: String,
-      required: true,
+      type: [{ type: String }],
     },
     duration: {
       type: Number,
@@ -126,7 +121,7 @@ export interface ICourse {
   slug: string
   active: boolean
   likes: string[] | IUser[]
-  languages: string
+  languages: string[]
   duration: number
   createdAt: string
   updatedAt: string

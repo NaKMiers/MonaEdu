@@ -137,7 +137,12 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
             {/* Language */}
             <p className='flex flex-wrap items-center gap-2 font-body tracking-wider'>
               <MdLanguage size={16} />
-              Ngôn ngữ: <span>{course?.languages}</span>
+              Ngôn ngữ: {course?.languages.map((language, index) => (
+              <span className='text-slate-600' key={index}>
+                {language}
+                {index < course?.languages.length - 1 ? ', ' : ''}
+              </span>
+            ))}
             </p>
 
             {/* Tags */}

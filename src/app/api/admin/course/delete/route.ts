@@ -35,10 +35,10 @@ export async function DELETE(req: NextRequest) {
     }).lean()
 
     // only allow to delete course if it has no users joined
-    const userAmount = await UserModel.countDocuments({
+    const userExists = await UserModel.exists({
       'courses.course': { $in: ids },
     })
-    if (userAmount > 0) {
+    if (userExists) {
       return NextResponse.json(
         {
           message: 'Cannot delete courses that have users joined',
@@ -48,26 +48,26 @@ export async function DELETE(req: NextRequest) {
     }
 
     // only allow to delete course if it has no chapters
-    const chapterAmount = await ChapterModel.countDocuments({
-      course: { $in: ids },
+    const chapterExists = await ChapterModel.exists({
+      courseId: { $in: ids },
     })
-    if (chapterAmount > 0) {
+    if (chapterExists) {
       return NextResponse.json(
         {
-          message: 'Cannot delete courses, please delete all chapters first',
+          message: 'Cannot delete courses, please delete all related chapters first',
         },
         { status: 400 }
       )
     }
 
     // only allow to delete course if it has no lessons
-    const lessonAmount = await LessonModel.countDocuments({
-      course: { $in: ids },
+    const lessonExists = await LessonModel.exists({
+      courseId: { $in: ids },
     })
-    if (lessonAmount > 0) {
+    if (lessonExists) {
       return NextResponse.json(
         {
-          message: 'Cannot delete courses, please delete all lessons first',
+          message: 'Cannot delete courses, please delete all related lessons first',
         },
         { status: 400 }
       )

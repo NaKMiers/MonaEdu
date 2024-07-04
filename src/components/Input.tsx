@@ -88,6 +88,7 @@ function Input({
               disabled={disabled}
               rows={rows || 4}
               {...register(id, { required })}
+              {...rest}
             />
           ) : type === 'select' ? (
             <select
@@ -98,10 +99,11 @@ function Input({
               {...register(id, { required })}
               onChange={onChange}
               defaultValue={options?.find(option => option.selected)?.value}
+              {...rest}
             >
               {options?.map((option, index) => (
                 <option
-                  className='bg-dark-100 appearance-none text-white font-body font-semibold tracking-wider p-5'
+                  className='bg-dark-100 appearance-none text-white font-body font-semibold hover:bg-primary hover:text-dark checked:bg-indigo-500 trans-200 py-0.5 px-1.5'
                   key={index}
                   value={option.value}
                 >

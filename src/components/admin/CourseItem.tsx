@@ -136,7 +136,12 @@ function CourseItem({
 
           <p className='text-slate-500 text-sm'>
             <span className='font-semibold'>Languages: </span>
-            {data.languages}
+            {data?.languages?.map((language, index) => (
+              <span className='text-slate-600' key={index}>
+                {language}
+                {index < data.languages.length - 1 ? ', ' : ''}
+              </span>
+            ))}
           </p>
 
           {/* Joined */}

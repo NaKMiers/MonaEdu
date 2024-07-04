@@ -22,8 +22,8 @@ export async function DELETE(req: NextRequest) {
     const deletedChapters = await ChapterModel.find({ _id: { $in: ids } }).lean()
 
     // only delete chapter if it has no lessons
-    const lessonQuantity = await LessonModel.countDocuments({ chapterId: { $in: ids } })
-    if (lessonQuantity > 0) {
+    const lessonExists = await LessonModel.exists({ chapterId: { $in: ids } })
+    if (lessonExists) {
       return NextResponse.json(
         { message: `Cannot delete chapters with lessons. Please delete the lessons first` },
         { status: 400 }

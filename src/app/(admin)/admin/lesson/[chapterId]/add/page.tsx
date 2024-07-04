@@ -215,7 +215,7 @@ function AddLessonPage({ params: { chapterId } }: { params: { chapterId: string 
   return (
     <div className='max-w-1200 mx-auto'>
       {/* MARK: Admin Header */}
-      <AdminHeader title='Add Lesson' backLink='/admin/lesson/all' />
+      <AdminHeader title='Add Lesson' backLink={`/admin/lesson/${chapter?._id}/all`} />
 
       <div className='mt-5 bg-slate-200 p-21 rounded-lg shadow-lg'>
         {/* Course */}

@@ -5,6 +5,7 @@ import Input from '@/components/Input'
 import LoadingButton from '@/components/LoadingButton'
 import AdminHeader from '@/components/admin/AdminHeader'
 import CategoryItem from '@/components/admin/CategoryItem'
+import { languages } from '@/constants/languages'
 import { useAppDispatch, useAppSelector } from '@/libs/hooks'
 import { setLoading } from '@/libs/reducers/modalReducer'
 import { ICategory } from '@/models/CategoryModel'
@@ -51,6 +52,7 @@ function AddCoursePage() {
       textHook: '',
       description: '',
       active: true,
+      languages: ['en'],
     },
   })
 
@@ -183,6 +185,8 @@ function AddCoursePage() {
       formData.append('author', data.author)
       formData.append('description', data.description)
       formData.append('active', data.active)
+      formData.append('textHook', data.textHook)
+      formData.append('languages', JSON.stringify(data.languages))
       formData.append('tags', JSON.stringify(selectedTags))
       formData.append('category', selectedCategory)
       files.forEach(file => formData.append('images', file))
@@ -299,6 +303,22 @@ function AddCoursePage() {
           onFocus={() => clearErrors('description')}
         />
 
+        {/* Languages */}
+        <Input
+          id='languages'
+          label='Languages'
+          disabled={isLoading}
+          register={register}
+          errors={errors}
+          type='select'
+          options={languages}
+          multiple
+          icon={MdNumbers}
+          className='mb-5 text-light'
+          onFocus={() => clearErrors('languages')}
+        />
+
+        {/* Active */}
         <div className='flex mb-4'>
           <div className='bg-white rounded-lg px-3 flex items-center'>
             <FaPlay size={16} className='text-secondary' />

@@ -305,7 +305,7 @@ function AllCourseChaptersPage({
 
       {/* MARK: Course */}
       <h2 className='text-center font-semibold text-2xl text-slate-200' title='course'>
-        {course?.title}
+        Course: {course?.title}
       </h2>
 
       {/* MARK: Amount */}

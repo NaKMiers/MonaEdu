@@ -24,7 +24,10 @@ export async function POST(req: NextRequest) {
     const data = Object.fromEntries(formData)
     const { title, price, oldPrice, author, textHook, description, active, category } = data
     const tags = JSON.parse(data.tags as string)
+    const languages: string[] = JSON.parse(data.languages as string)
     let images = formData.getAll('images')
+
+    console.log('languages:', languages)
 
     // check images
     if (!images.length) {
@@ -38,7 +41,7 @@ export async function POST(req: NextRequest) {
     const imageUrls = await Promise.all(images.map(file => uploadFile(file)))
 
     // create new course
-    const newCourse = new CourseModel({
+    const newCourse = await CourseModel.create({
       title,
       price,
       author,
@@ -48,11 +51,9 @@ export async function POST(req: NextRequest) {
       tags,
       category,
       oldPrice,
+      languages,
       images: imageUrls,
     })
-
-    // save new course to database
-    await newCourse.save()
 
     // increase related category and tags course quantity
     await TagModel.updateMany({ _id: { $in: tags } }, { $inc: { courseQuantity: 1 } })
@@ -66,9 +67,6 @@ export async function POST(req: NextRequest) {
 
     // return NextResponse.json({ message: 'Course has been created' }, { status: 201 })
   } catch (err: any) {
-    // Disconnect from MongoDB in case of error
-    await mongoose.disconnect()
-
     return NextResponse.json({ message: err.message }, { status: 500 })
   }
 }
