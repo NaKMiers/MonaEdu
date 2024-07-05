@@ -21,6 +21,7 @@ import { IoIosPhonePortrait } from 'react-icons/io'
 import { IoTimer } from 'react-icons/io5'
 import Link from 'next/link'
 import { ITag } from '@/models/TagModel'
+import { FacebookShareButton, FacebookShareCount, FacebookIcon } from 'react-share'
 
 interface FloatingSummaryProps {
   course: ICourse
@@ -132,8 +133,8 @@ function FloatingSummary({ course: data, className = '' }: FloatingSummaryProps)
             <Image
               className='flex-shrink-0 snap-start w-full h-full object-cover'
               src={src}
-              width={250}
-              height={250}
+              width={320}
+              height={320}
               alt='netflix'
               key={src}
             />
@@ -230,7 +231,9 @@ function FloatingSummary({ course: data, className = '' }: FloatingSummaryProps)
           </div>
 
           <div className='flex justify-center items-center w-full'>
-            <FaShareAlt size={16} />
+            <FacebookShareButton url={`https://monaedu.com/${course.slug}`} hashtag='#mona'>
+              <FaShareAlt size={16} />
+            </FacebookShareButton>
           </div>
         </div>
 

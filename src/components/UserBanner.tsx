@@ -143,7 +143,7 @@ function UserBanner({ user, className = '' }: UserBannerProps) {
         <div className='absolute top-0 left-0 w-full h-full bg-white bg-opacity-20 pt-2 pl-2'>
           <Image
             className='animate-spin'
-            src='/images/loading.png'
+            src='/icons/loading.png'
             width={50}
             height={50}
             alt='loading'

@@ -46,7 +46,10 @@ export function SummaryEmail({ summary = summarySample }: { summary?: any }) {
             }}
           >
             <div>
-              <Img src='https://monaedu.com/images/brand-banner.jpg' className='w-full object-cover' />
+              <Img
+                src='https://monaedu.com/backgrounds/brand-banner.jpg'
+                className='w-full object-cover'
+              />
             </div>
 
             <Row className='p-4'>
@@ -132,7 +135,7 @@ export function SummaryEmail({ summary = summarySample }: { summary?: any }) {
             <Img
               className='max-w-full'
               width={620}
-              src={`${'https://monaedu.com'}/images/footer-banner.jpg`}
+              src={`${'https://monaedu.com'}/backgrounds/footer-banner.jpg`}
             />
           </div>
 
@@ -147,7 +150,7 @@ export function SummaryEmail({ summary = summarySample }: { summary?: any }) {
               rel='noreferrer'
               className='inline-block'
             >
-              <Img src={`${'https://monaedu.com'}/images/zalo.jpg`} width={35} height={35} alt='zalo' />
+              <Img src={`${'https://monaedu.com'}/icons/zalo.jpg`} width={35} height={35} alt='zalo' />
             </a>
             <a
               href='https://www.messenger.com/t/170660996137305'
@@ -156,7 +159,7 @@ export function SummaryEmail({ summary = summarySample }: { summary?: any }) {
               className='inline-block ml-2'
             >
               <Img
-                src={`${'https://monaedu.com'}/images/messenger.jpg`}
+                src={`${'https://monaedu.com'}/icons/messenger.jpg`}
                 width={35}
                 height={35}
                 alt='messenger'

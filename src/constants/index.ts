@@ -153,19 +153,19 @@ export const admins = {
 export const features = [
   {
     title: 'Video bài giảng chất lượng cao',
-    image: '/images/feature-1.png',
+    image: '/icons/feature-1.png',
     description:
       'Với những bài giảng từ các thầy cô uy tín và các nguồn đáng tin cậy trong chuyên ngành chuyên môn, đảm bảo nắm bắt đúng trọng tâm nâng cao kiến thức.',
   },
   {
     title: 'Giá thành hợp lí ',
-    image: '/images/feature-2.png',
+    image: '/icons/feature-2.png',
     description:
       'Giá cả hợp lí, tiếp cận nhiều nguồn khách hàng, nâng cao phạm vi trải nghiệm nền giáo dục chỉ có tại MonaEdu. Giúp các bạn trẻ có thể tiếp cận được MonaEdu.',
   },
   {
     title: 'Trao đổi kiến thức',
-    image: '/images/feature-3.png',
+    image: '/icons/feature-3.png',
     description:
       'Với chức năng đăng câu hỏi, các học viên có thể trực tiếp trao đổi bài giảng của nhau, giúp đỡ nhau giải bày các thắc mắc.',
   },

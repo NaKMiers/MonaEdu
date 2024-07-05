@@ -157,7 +157,7 @@ function RegisterPage() {
       <div className='hidden md:block absolute top-[0%] left-0 w-[32vw]'>
         <Image
           className='w-full h-full object-contain object-left'
-          src='/images/vector-1.png'
+          src='/backgrounds/vector-1.png'
           width={600}
           height={600}
           alt='shape-1'
@@ -167,7 +167,7 @@ function RegisterPage() {
       <div className='hidden md:block absolute bottom-[0%] left-[10%] w-[35vw]'>
         <Image
           className='w-full h-full object-contain object-bottom'
-          src='/images/vector-2.png'
+          src='/backgrounds/vector-2.png'
           width={600}
           height={600}
           alt='shape-2'
@@ -177,7 +177,7 @@ function RegisterPage() {
       <div className='hidden md:block absolute top-[0%] left-[0%] w-[54vw]'>
         <Image
           className='w-full h-full object-contain object-top'
-          src='/images/vector-3.png'
+          src='/backgrounds/vector-3.png'
           width={625}
           height={680}
           alt='shape-3'
@@ -187,7 +187,7 @@ function RegisterPage() {
       <div className='hidden md:block absolute bottom-[0%] left-[0%] w-[54vw]'>
         <Image
           className='w-full h-full object-contain object-left'
-          src='/images/vector-4.png'
+          src='/backgrounds/vector-4.png'
           width={600}
           height={600}
           alt='shape-3'
@@ -202,7 +202,7 @@ function RegisterPage() {
       <div className='hidden md:block absolute z-20 left-[3vw] bottom-[10%] w-[38vw] lg:w-[30vw]'>
         <Image
           className='w-full h-full object-contain object-top'
-          src='/images/focus_image.png'
+          src='/backgrounds/focus_image.png'
           width={625}
           height={680}
           alt='vector-5'
@@ -211,7 +211,7 @@ function RegisterPage() {
 
       {/* MARK: Body */}
       <div className='flex items-start justify-center px-[10%] pt-16 pb-12 absolute z-10 top-0 right-0 bottom-0 h-screen w-full md:w-2/3 bg-neutral-900 md:rounded-l-[40px] md:shadow-lg md:border-l-2 md:border-gray-white overflow-y-auto'>
-        <BeamsBackground />
+        {/* <BeamsBackground /> */}
 
         <div className='relative z-10 flex flex-col gap-6 w-full'>
           <div className='flex items-center gap-3'>
@@ -328,7 +328,7 @@ function RegisterPage() {
               <div className='aspect-square rounded-full wiggle flex-shrink-0'>
                 <Image
                   className='w-full h-full object-cover bg-white rounded-full'
-                  src='/images/github-logo.png'
+                  src='/icons/github-logo.png'
                   width={30}
                   height={30}
                   alt='github'
@@ -344,7 +344,7 @@ function RegisterPage() {
               <div className='aspect-square rounded-full wiggle flex-shrink-0'>
                 <Image
                   className='w-full h-full object-cover'
-                  src='/images/google-logo.png'
+                  src='/icons/google-logo.png'
                   width={30}
                   height={30}
                   alt='github'

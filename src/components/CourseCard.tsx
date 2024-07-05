@@ -50,6 +50,7 @@ function CourseCard({ course, hideBadge, className = '' }: CourseCardProps) {
 
   // states
   const [showActions, setShowActions] = useState<boolean>(false)
+  const [showActions2, setShowActions2] = useState<boolean>(false)
 
   // states
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -145,48 +146,36 @@ function CourseCard({ course, hideBadge, className = '' }: CourseCardProps) {
           <div className='flex items-center gap-1 w-full'>
             <button
               className='font-semibold h-[42px] flex w-full items-center justify-center rounded-lg shadow-lg bg-dark-100 text-white border-2 border-dark hover:bg-white hover:text-dark trans-300 hover:-translate-y-1 px-2'
-              onClick={e => {
-                if (curUser?.courses.map((course: any) => course.course).includes(course._id)) {
-                  router.push(`/learning/${course?.slug}/continue`)
-                } else {
-                  buyNow()
-                }
-              }}
+              onClick={buyNow}
             >
               <span className='block sm:text-sm md:text-base text-ellipsis text-nowrap line-clamp-1 sm:max-w-max'>
-                {curUser?._id &&
-                curUser?.courses.map((course: any) => course.course).includes(course._id)
-                  ? 'Học tiếp'
-                  : 'Mua ngay'}
+                Mua ngay
               </span>
             </button>
 
-            {(!curUser ||
-              !curUser.courses?.map((course: any) => course.course).includes(course._id)) && (
-              <button
-                className={`group font-semibold h-[42px] px-3 flex items-center justify-center rounded-lg shadow-lg bg-dark-100 border-2 border-dark hover:bg-white trans-300 hover:-translate-y-1 ${
-                  isLoading ? 'pointer-events-none bg-slate-200' : ''
-                }`}
-                onClick={addCourseToCart}
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <RiDonutChartFill size={18} className='animate-spin text-dark' />
-                ) : (
-                  <FaCartPlus className='text-[18px] sm:text-[20px] wiggle text-white group-hover:text-dark' />
-                )}
-              </button>
-            )}
+            <button
+              className={`group font-semibold h-[42px] px-3 flex items-center justify-center rounded-lg shadow-lg bg-dark-100 border-2 border-dark hover:bg-white trans-300 hover:-translate-y-1 ${
+                isLoading ? 'pointer-events-none bg-slate-200' : ''
+              }`}
+              onClick={addCourseToCart}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <RiDonutChartFill size={18} className='animate-spin text-dark' />
+              ) : (
+                <FaCartPlus className='text-[18px] sm:text-[20px] wiggle text-white group-hover:text-dark' />
+              )}
+            </button>
 
             {curUser?._id &&
               curUser.courses.map((course: any) => course.course).includes(course._id) && (
                 <div className='text-white relative flex justify-end items-center w-[30px] h-[42px]'>
-                  <button className='group' onClick={() => setShowActions(prev => !prev)}>
-                    <HiDotsVertical size={24} className='wiggle' />
+                  <button className='group' onClick={() => setShowActions2(prev => !prev)}>
+                    <HiDotsVertical size={24} className='wiggle text-dark' />
                   </button>
                   <div
                     className={`${
-                      showActions ? 'max-w-[100px] max-h-[40px] px-1.5 py-1' : 'max-w-0 max-h-0 p-0'
+                      showActions2 ? 'max-w-[100px] max-h-[40px] px-1.5 py-1' : 'max-w-0 max-h-0 p-0'
                     }  overflow-hidden absolute z-20 top-[80%] flex gap-2 rounded-md trans-300`}
                   >
                     <button
@@ -251,8 +240,8 @@ function CourseCard({ course, hideBadge, className = '' }: CourseCardProps) {
                     <Image
                       className='flex-shrink-0 snap-start w-full h-full object-cover'
                       src={src}
-                      width={250}
-                      height={250}
+                      width={320}
+                      height={320}
                       alt='netflix'
                       key={src}
                     />

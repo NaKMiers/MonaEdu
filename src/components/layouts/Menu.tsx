@@ -99,7 +99,7 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
                   className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white hover:text-dark trans-200'
                 >
                   <Image
-                    src='/images/cart-icon.png'
+                    src='/icons/cart-icon.png'
                     className='wiggle'
                     width={30}
                     height={30}
@@ -120,7 +120,7 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
                   className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white hover:text-dark trans-200'
                 >
                   <Image
-                    src='/images/info-icon.png'
+                    src='/icons/info-icon.png'
                     className='wiggle'
                     width={30}
                     height={30}
@@ -135,7 +135,7 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
                   className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white hover:text-dark trans-200'
                 >
                   <Image
-                    src='/images/my-courses-icon.png'
+                    src='/icons/my-courses-icon.png'
                     className='wiggle'
                     width={30}
                     height={30}
@@ -150,7 +150,7 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
                   className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white hover:text-dark trans-200'
                 >
                   <Image
-                    src='/images/setting-icon.png'
+                    src='/icons/setting-icon.png'
                     className='wiggle'
                     width={30}
                     height={30}
@@ -170,7 +170,7 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
                     className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white hover:text-dark trans-200'
                   >
                     <Image
-                      src='/images/order-icon.png'
+                      src='/icons/order-icon.png'
                       className='wiggle'
                       width={30}
                       height={30}
@@ -188,7 +188,7 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
                   onClick={() => signOut()}
                 >
                   <Image
-                    src='/images/logout-icon.png'
+                    src='/icons/logout-icon.png'
                     className='wiggle'
                     width={30}
                     height={30}
@@ -208,7 +208,7 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
                 className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white hover:text-dark trans-200'
               >
                 <Image
-                  src='/images/sign-in-icon.png'
+                  src='/icons/sign-in-icon.png'
                   className='wiggle'
                   width={30}
                   height={30}
@@ -222,7 +222,7 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
                 href='/categories'
                 className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white hover:text-dark trans-200'
               >
-                <Image src='/images/category.png' className='wiggle' width={30} height={30} alt='icon' />
+                <Image src='/icons/category.png' className='wiggle' width={30} height={30} alt='icon' />
                 <span className='font-body text-xl font-semibold tracking-wide'>Danh Mục</span>
               </Link>
             </div>

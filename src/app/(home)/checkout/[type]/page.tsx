@@ -165,7 +165,7 @@ function CheckoutPage({ params }: { params: { type: string } }) {
                 />
                 <Image
                   className='bg-[#333] absolute top-[56%] left-1/2 -translate-x-1/2 -translate-y-[50%] rounded-md p-1 w-[12%]'
-                  src='/images/momo-icon.jpg'
+                  src='/icons/momo-icon.jpg'
                   height={42}
                   width={42}
                   alt='momo-qr'

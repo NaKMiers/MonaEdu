@@ -143,7 +143,7 @@ function Avatar({ user, className = '' }: AvatarProps) {
         <div className='absolute top-0 left-0 w-full h-full bg-white bg-opacity-20'>
           <Image
             className='animate-spin'
-            src='/images/loading.png'
+            src='/icons/loading.png'
             width={200}
             height={200}
             alt='loading'

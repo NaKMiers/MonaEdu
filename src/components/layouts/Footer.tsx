@@ -7,7 +7,7 @@ import { signOut } from 'next-auth/react'
 
 function Footer() {
   return (
-    <footer className='bg-dark-100 text-light border-t-2 rounded-t-[40px] border-slate-300 px-21 pt-3'>
+    <footer className='mb-[72px] md:mb-0 bg-dark-100 text-light border-t-2 rounded-t-[40px] border-slate-300 px-21 pt-3'>
       <div className='max-w-1200 mx-auto'>
         {/* Head */}
         <div className='flex items-center justify-between gap-21'>
@@ -32,7 +32,7 @@ function Footer() {
           <div className='flex flex-wrap items-center gap-x-4 gap-y-2'>
             <Link href='https://github.com/NaKMiers' target='_blank'>
               <Image
-                src='/images/github-logo.png'
+                src='/icons/github-logo.png'
                 className='wiggle-1 bg-white rounded-full'
                 width={32}
                 height={32}
@@ -40,7 +40,7 @@ function Footer() {
               />
             </Link>
             <Link href='mailto:contact.monaedu@gmail.com' target='_blank'>
-              <Image src='/images/gmail.png' className='wiggle-1' width={32} height={32} alt='gmail' />
+              <Image src='/icons/gmail.png' className='wiggle-1' width={32} height={32} alt='gmail' />
             </Link>
           </div>
         </div>
@@ -48,8 +48,8 @@ function Footer() {
         <Divider size={2} border />
 
         {/* Body */}
-        <div className='grid grid-cols-1 md:grid-cols-12 py-3 gap-7 text-center md:text-left'>
-          <div className='flex flex-col col-span-7'>
+        <div className='grid grid-cols-12 py-3 gap-7 text-center md:text-left'>
+          <div className='flex flex-col col-span-12 md:col-span-10'>
             <h3 className='font-bold text-xl'>VỀ CHÚNG TÔI</h3>
 
             <p className='font-body tracking-wider mt-2'>
@@ -61,10 +61,10 @@ function Footer() {
             </p>
           </div>
 
-          <div className='flex flex-col col-span-3'>
+          <div className='flex flex-col col-span-12 md:col-span-2'>
             <h3 className='font-bold text-xl'>LIÊN KẾT</h3>
 
-            <div className='flex flex-col gap-2 text-left'>
+            <div className='flex flex-col gap-2 text-center md:text-left'>
               <Link
                 href='/categories'
                 className='hover:tracking-wider trans-200 underline underline-offset-2 font-body tracking-wide'
@@ -96,7 +96,7 @@ function Footer() {
                 Cài Đặt
               </Link>
               <button
-                className='text-left text-yellow-400 hover:tracking-wider trans-200 font-body tracking-wide'
+                className='text-center md:text-left text-yellow-400 hover:tracking-wider trans-200 font-body tracking-wide'
                 onClick={() => signOut()}
               >
                 Đăng xuất
@@ -104,7 +104,7 @@ function Footer() {
             </div>
           </div>
 
-          <div className='flex flex-col col-span-2 items-center md:items-start'>
+          {/* <div className='flex flex-col col-span-2 items-center md:items-start'>
             <h3 className='font-bold text-xl'>CHỨNG NHẬN</h3>
 
             <ul className='mt-2'>
@@ -127,7 +127,7 @@ function Footer() {
                 />
               </li>
             </ul>
-          </div>
+          </div> */}
         </div>
 
         <Divider size={2} border />

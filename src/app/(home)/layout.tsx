@@ -50,7 +50,7 @@ export default async function RootLayout({
           <FloatingButtons />
 
           {/* Main */}
-          <main className='mb-[72px] md:mb-auto md:mt-[72px]'>{children}</main>
+          <main className='md:mb-auto md:mt-[72px]'>{children}</main>
 
           {/* Background */}
           <Background />

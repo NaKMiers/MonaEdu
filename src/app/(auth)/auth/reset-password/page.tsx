@@ -119,13 +119,13 @@ function ResetPasswordPage() {
   }, [handleSubmit, onSubmit])
 
   return (
-    <div className='relative flex items-center justify-center lg:block bg-neutral-900 h-screen w-full lg:px-[46px] lg:py-[52px] overflow-hidden'>
+    <div className='relative flex items-center justify-center px-2 lg:block bg-neutral-800 h-screen w-full lg:px-[46px] lg:py-[52px] overflow-hidden'>
       {/* <BackgroundBeams /> */}
 
       <div className='hidden lg:block absolute top-0 left-0 w-[60%]'>
         <Image
           className='w-full h-full object-contain object-left-top opacity-50'
-          src='/images/vector-5.png'
+          src='/backgrounds/vector-5.png'
           width={1000}
           height={1000}
           alt='shape-5'
@@ -146,7 +146,7 @@ function ResetPasswordPage() {
         <div className='hidden lg:block w-[25vw]'>
           <Image
             className='w-full h-full object-contain object-top'
-            src='/images/focus_image.png'
+            src='/backgrounds/focus_image.png'
             width={625}
             height={680}
             alt='vector-5'
@@ -259,7 +259,7 @@ function ResetPasswordPage() {
             <div className='aspect-square rounded-full flex-shrink-0'>
               <Image
                 className='w-full h-full object-cover bg-white rounded-full'
-                src='/images/github-logo.png'
+                src='/icons/github-logo.png'
                 width={30}
                 height={30}
                 alt='github'
@@ -275,7 +275,7 @@ function ResetPasswordPage() {
             <div className='aspect-square rounded-full flex-shrink-0'>
               <Image
                 className='w-full h-full object-cover'
-                src='/images/google-logo.png'
+                src='/icons/google-logo.png'
                 width={30}
                 height={30}
                 alt='github'

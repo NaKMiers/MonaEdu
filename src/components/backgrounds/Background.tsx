@@ -4,7 +4,7 @@ function Background() {
       <div
         className='w-full h-full bg-center bg-no-repeat bg-cover blur-md opacity-80'
         style={{
-          backgroundImage: `url(${'/images/wave.png'})`,
+          backgroundImage: `url(${'/backgrounds/wave.png'})`,
         }}
       />
     </div>

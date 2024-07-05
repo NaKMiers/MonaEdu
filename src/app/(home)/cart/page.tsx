@@ -157,7 +157,7 @@ function CartPage() {
 
       // set found user
       setFoundUser(user)
-      setBuyAsGiftMessage(`Gift this course to "${getUserName(user)}"`)
+      setBuyAsGiftMessage(`Khóa học sẽ được tặng cho "${getUserName(user)}"`)
     } catch (err: any) {
       console.log(err)
       const { message } = err
@@ -243,7 +243,7 @@ function CartPage() {
       <Divider size={8} />
 
       <div className='max-w-1200 mx-auto min-h-screen grid grid-cols-3 gap-21 pb-16'>
-        <div className='col-span-3 md:col-span-2'>
+        <div className='col-span-3 lg:col-span-2'>
           <h1 className='flex items-center gap-2 font-semibold font-body text-3xl mb-2'>
             <FaShoppingCart size={30} className='wiggle' />
             <span>Giỏ hàng</span>
@@ -294,7 +294,7 @@ function CartPage() {
         </div>
 
         {/* MARK: Summary */}
-        <div className='col-span-3 md:col-span-1 text-dark'>
+        <div className='col-span-3 lg:col-span-1 text-dark'>
           <div className='border-2 border-primary rounded-medium shadow-lg p-4 sticky lg:mt-[60px] top-[93px] bg-white overflow-auto'>
             {/* Voucher */}
             <div className='flex items-center gap-2 mb-2 overflow-hidden trans-200'>
@@ -430,7 +430,7 @@ function CartPage() {
               >
                 <Image
                   className='group-hover:border-white rounded-md border-2 wiggle-0'
-                  src='/images/momo-icon.jpg'
+                  src='/icons/momo-icon.jpg'
                   height={32}
                   width={32}
                   alt='logo'
@@ -447,7 +447,7 @@ function CartPage() {
               >
                 <Image
                   className='wiggle-0'
-                  src='/images/banking-icon.jpg'
+                  src='/icons/banking-icon.jpg'
                   height={32}
                   width={32}
                   alt='logo'

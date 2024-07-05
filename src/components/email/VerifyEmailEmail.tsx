@@ -99,7 +99,7 @@ function VerifyEmailEmail({
             <Img
               className='max-w-full'
               width={620}
-              src={`${'https://monaedu.com'}/images/footer-banner.jpg`}
+              src={`${'https://monaedu.com'}/backgrounds/footer-banner.jpg`}
             />
           </div>
 
@@ -114,7 +114,7 @@ function VerifyEmailEmail({
               rel='noreferrer'
               className='inline-block'
             >
-              <Img src={`${'https://monaedu.com'}/images/zalo.jpg`} width={35} height={35} alt='zalo' />
+              <Img src={`${'https://monaedu.com'}/icons/zalo.jpg`} width={35} height={35} alt='zalo' />
             </a>
             <a
               href='https://www.messenger.com/t/170660996137305'
@@ -123,7 +123,7 @@ function VerifyEmailEmail({
               className='inline-block ml-2'
             >
               <Img
-                src={`${'https://monaedu.com'}/images/messenger.jpg`}
+                src={`${'https://monaedu.com'}/icons/messenger.jpg`}
                 width={35}
                 height={35}
                 alt='messenger'

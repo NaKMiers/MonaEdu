@@ -13,6 +13,7 @@ import toast from 'react-hot-toast'
 import { FaCartPlus, FaRegThumbsUp, FaShareAlt } from 'react-icons/fa'
 import { HiDotsVertical } from 'react-icons/hi'
 import { RiDonutChartFill } from 'react-icons/ri'
+import { FacebookShareButton } from 'react-share'
 
 interface FloatingActionButtonsProps {
   course: ICourse
@@ -132,10 +133,12 @@ function FloatingActionButtons({ course: data, className = '' }: FloatingActionB
           />
         </button>
 
-        <button className='flex justify-center items-center w-full'>
-          <FaShareAlt size={16} />
-          <span className='hidden sm:block font-semibold ml-1.5 text-nowrap'>Chia sẻ</span>
-        </button>
+        <FacebookShareButton url={`https://monaedu.com/${course.slug}`} hashtag='#monaedu'>
+          <button className='flex justify-center items-center w-full'>
+            <FaShareAlt size={16} />
+            <span className='hidden sm:block font-semibold ml-1.5 text-nowrap'>Chia sẻ</span>
+          </button>
+        </FacebookShareButton>
       </div>
 
       {/* Price */}
