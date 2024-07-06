@@ -108,6 +108,7 @@ function BestSellerCard({ course, index, className = '' }: BestSellerCardProps) 
     } catch (err: any) {
       console.log(err)
       toast.error(err.message)
+      router.push(`/cart?course=${course.slug}`)
     } finally {
       // stop page loading
       dispatch(setPageLoading(false))

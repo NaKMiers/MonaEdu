@@ -60,6 +60,19 @@ function LessonPage({
       try {
         const { lesson, comments } = await getLessonApi(lessonSlug)
 
+        console.log(curUser.courses.map((course: any) => course.course))
+        console.log('lesson.courseId._id', lesson.courseId._id)
+        console.log('lesson.status', lesson.status)
+
+        if (
+          !curUser.courses.map((course: any) => course.course).includes(lesson.courseId._id) &&
+          lesson.status !== 'public'
+        ) {
+          // user is not enrolled in this course and lesson is not public
+          // redirect to previous page
+          router.back()
+        }
+
         // set states
         setLesson(lesson)
         setComments(comments)
@@ -69,7 +82,7 @@ function LessonPage({
     }
 
     getLesson()
-  }, [lessonSlug])
+  }, [lessonSlug, curUser?.courses, router])
 
   // handle report lesson
   const handleReport = useCallback(async () => {

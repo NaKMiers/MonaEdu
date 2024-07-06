@@ -2,54 +2,42 @@
 
 import { IChapter } from '@/models/ChapterModel'
 import { duration } from '@/utils/time'
-import { Tooltip } from '@mui/material'
+import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { memo, useEffect, useRef, useState } from 'react'
 import { FaAngleDown } from 'react-icons/fa'
 import { TiLockClosed, TiLockOpen } from 'react-icons/ti'
 import Divider from './Divider'
-import { useSession } from 'next-auth/react'
-import toast from 'react-hot-toast'
-import { useRouter } from 'next/navigation'
 
-interface ChapterProps {
+interface LearningChapterProps {
   courseId: string
   chapter: IChapter
   courseSlug: string
   lessonSlug?: string
-  collapseAll: boolean
   className?: string
 }
 
-function Chapter({
+function LearningChapter({
   courseId,
   chapter,
   courseSlug,
   lessonSlug = '',
-  collapseAll,
   className = '',
-}: ChapterProps) {
+}: LearningChapterProps) {
   // hook
   const { data: session } = useSession()
   const curUser: any = session?.user
-  const router = useRouter()
 
   // check if user is enrolled in this course
   const isEnrolled = curUser?.courses?.map((course: any) => course.course).includes(courseId)
 
   // states
   const [open, setOpen] = useState<boolean>(
-    collapseAll ||
-      ((chapter.lessons?.some(lesson => lesson.status === 'public') || false) && !isEnrolled)
+    chapter.lessons?.map(lesson => lesson.slug).includes(lessonSlug) || false
   )
 
   // refs
   const chapterRef = useRef<HTMLUListElement>(null)
-
-  useEffect(() => {
-    if ((chapter.lessons?.some(lesson => lesson.status === 'public') || false) && !isEnrolled) return
-    setOpen(!!collapseAll)
-  }, [collapseAll, chapter.lessons, isEnrolled])
 
   useEffect(() => {
     if (open) {
@@ -84,29 +72,20 @@ function Chapter({
         ref={chapterRef}
       >
         {chapter.lessons?.map(lesson =>
-          lesson.status === 'public' || isEnrolled ? (
-            <Tooltip title={`Học thử ngay`} placement='top' arrow key={lesson._id}>
-              <Link
-                href={`/learning/${courseSlug}/${lesson.slug}`}
-                className={`bg-white rounded-md py-2 px-3 gap-4 hover:bg-primary trans-200 flex items-center ${
-                  lesson.slug === lessonSlug ? 'font-semibold text-orange-500' : ''
-                }`}
-                onClick={e => {
-                  e.preventDefault()
-                  if (!curUser?._id) {
-                    toast.error('Bạn cần phải đăng nhập để học thử')
-                  } else {
-                    router.push(`/learning/${courseSlug}/${lesson.slug}`)
-                  }
-                }}
-              >
-                {!isEnrolled && <TiLockOpen size={16} className='flex-shrink-0' />}
-                <span className='text-ellipsis line-clamp-1'>{lesson.title}</span>
-                <span className='text-xs font-semibold text-nowrap text-slate-500 ml-auto'>
-                  {duration(lesson.duration)}
-                </span>
-              </Link>
-            </Tooltip>
+          lesson.status === 'public' ? (
+            <Link
+              href={`/learning/${courseSlug}/${lesson.slug}`}
+              className={`bg-white rounded-md py-2 px-3 gap-4 hover:bg-primary trans-200 flex items-center ${
+                lesson.slug === lessonSlug ? 'font-semibold text-orange-500' : ''
+              }`}
+              key={lesson._id}
+            >
+              {!isEnrolled && <TiLockOpen size={16} className='flex-shrink-0' />}
+              <span className='text-ellipsis line-clamp-1'>{lesson.title}</span>
+              <span className='text-xs font-semibold text-nowrap text-slate-500 ml-auto'>
+                {duration(lesson.duration)}
+              </span>
+            </Link>
           ) : (
             <div
               className={`bg-white rounded-md py-2 px-3 gap-4 flex items-center ${
@@ -129,4 +108,4 @@ function Chapter({
   )
 }
 
-export default memo(Chapter)
+export default memo(LearningChapter)

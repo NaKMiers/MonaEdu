@@ -47,6 +47,7 @@ function CourseContent({ course, chapters, className = '' }: CourseContentProps)
       <ul className='flex flex-col gap-2'>
         {chapters.map(chapter => (
           <Chapter
+            courseId={course._id}
             collapseAll={collapseAll}
             chapter={chapter}
             courseSlug={course.slug}

@@ -12,9 +12,9 @@ import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { BsLayoutSidebarInset } from 'react-icons/bs'
 import { FaChevronCircleLeft, FaChevronCircleRight } from 'react-icons/fa'
-import Chapter from './Chapter'
-import Divider from './Divider'
 import BeamsBackground from './backgrounds/BeamsBackground'
+import Divider from './Divider'
+import LearningChapter from './LearningChapter'
 
 function AllLessons() {
   // hooks
@@ -25,6 +25,7 @@ function AllLessons() {
   const lessonSlug = params.lessonSlug as string
 
   // states
+  const [courseId, setCourseId] = useState<string>('')
   const [chapters, setChapters] = useState<IChapter[]>([])
   const [nextLesson, setNextLesson] = useState<string>('')
   const [prevLesson, setPrevLesson] = useState<string>('')
@@ -37,10 +38,11 @@ function AllLessons() {
 
       try {
         // send request to get all chapters with lessons
-        const { chapters } = await getLearningChaptersApi(courseSlug)
+        const { chapters, courseId } = await getLearningChaptersApi(courseSlug)
 
-        // set chapters
+        // set states
         setChapters(chapters)
+        setCourseId(courseId)
       } catch (err: any) {
         console.log(err)
         toast.error(err.message)
@@ -112,7 +114,8 @@ function AllLessons() {
 
           <ul className='flex flex-col gap-2 overflow-y-auto no-scrollbar'>
             {chapters.map(chapter => (
-              <Chapter
+              <LearningChapter
+                courseId={courseId}
                 chapter={chapter}
                 lessonSlug={lessonSlug}
                 courseSlug={courseSlug}

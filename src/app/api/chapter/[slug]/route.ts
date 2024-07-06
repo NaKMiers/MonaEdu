@@ -42,7 +42,7 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
     })
 
     // return course
-    return NextResponse.json({ chapters: chaptersWithLessons }, { status: 200 })
+    return NextResponse.json({ chapters: chaptersWithLessons, courseId: course._id }, { status: 200 })
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 })
   }

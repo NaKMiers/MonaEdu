@@ -55,7 +55,7 @@ function MyCoursesPage({ searchParams }: { searchParams?: { [key: string]: strin
 
       {/* MAIN List */}
       {!!courses.length ? (
-        <div className='grid grid-cols-1 md:grid-cols-3 gap-21'>
+        <div className='grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-21'>
           {courses.map(course => (
             <CourseCard course={course} key={course._id} hideBadge />
           ))}
@@ -63,13 +63,13 @@ function MyCoursesPage({ searchParams }: { searchParams?: { [key: string]: strin
       ) : (
         <div className='font-body tracking-wider text-center'>
           <p className='italic'>
-            You haven&apos;t enrolled in any courses yet. <br />
+            Bạn chưa đăng ký khóa học nào cả. <br />
           </p>
           <Link
-            href='/courses'
+            href='/'
             className='text-sky-500 underline underline-offset-2 hover:text-sky-700 hover:tracking trans-200'
           >
-            Explore our courses and start learning today!
+            Khám phá các khóa học bổ ích ngay hôm nay!
           </Link>
         </div>
       )}

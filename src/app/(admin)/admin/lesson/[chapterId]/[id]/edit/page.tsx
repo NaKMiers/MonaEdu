@@ -72,6 +72,8 @@ function EditLessonPage() {
         setCourse(lesson.courseId)
         setChapter(lesson.chapterId)
 
+        console.log('status', lesson.status)
+
         // set value to form
         setValue('courseId', lesson.courseId._id)
         setValue('chapterId', lesson.chapterId._id)

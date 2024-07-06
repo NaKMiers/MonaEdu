@@ -91,6 +91,7 @@ function FloatingActionButtons({ course: data, className = '' }: FloatingActionB
     } catch (err: any) {
       console.log(err)
       toast.error(err.message)
+      router.push(`/cart?course=${course.slug}`)
     } finally {
       // stop page loading
       dispatch(setPageLoading(false))

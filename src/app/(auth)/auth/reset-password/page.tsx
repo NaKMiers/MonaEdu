@@ -135,7 +135,7 @@ function ResetPasswordPage() {
       <div className='hidden lg:block absolute bottom-0 left-0 w-[60%]'>
         <Image
           className='w-full h-full object-contain object-left-bottom opacity-50'
-          src='/images/vector-6.png'
+          src='/backgrounds/vector-6.png'
           width={1000}
           height={1000}
           alt='shape-6'
