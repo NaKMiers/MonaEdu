@@ -184,8 +184,8 @@ function EditLessonPage() {
         if (!file.type.startsWith('video/')) {
           return toast.error('Please select a video')
         }
-        if (file.size > 25 * 1024 * 1024) {
-          return toast.error('Please select an video less than 25Mb or select an url fileUrl instead')
+        if (file.size > 200 * 1024 * 1024) {
+          return toast.error('Please select an video less than 200Mb or select an url fileUrl instead')
         }
 
         setFile(file)
@@ -238,7 +238,7 @@ function EditLessonPage() {
   return (
     <div className='max-w-1200 mx-auto'>
       {/* MARK: Admin Header */}
-      <AdminHeader title='Edit Lesson' backLink='/admin/lesson/all' />
+      <AdminHeader title='Edit Lesson' backLink={`/admin/lesson/${chapter?._id}/all`} />
 
       <div className='mt-5 bg-slate-200 p-21 rounded-lg shadow-lg'>
         {/* Course */}
@@ -373,6 +373,7 @@ function EditLessonPage() {
                   placeholder=' '
                   disabled={isLoading}
                   type='file'
+                  accept='video/*'
                   onChange={handleAddFile}
                 />
 

@@ -117,6 +117,7 @@ function Avatar({ user, className = '' }: AvatarProps) {
         placeholder=' '
         disabled={isChangingAvatar}
         type='file'
+        accept='image/*'
         onChange={handleAddFile}
         ref={avatarInputRef}
       />

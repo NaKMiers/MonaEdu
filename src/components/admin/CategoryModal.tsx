@@ -229,6 +229,7 @@ function CategoryModal({
                 placeholder=' '
                 disabled={isChangingImage}
                 type='file'
+                accept='image/*'
                 onChange={handleAddFile}
                 ref={imageInputRef}
               />

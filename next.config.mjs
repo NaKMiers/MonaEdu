@@ -7,6 +7,8 @@ const nextConfig = {
       'avatars.githubusercontent.com',
       'img.vietqr.io',
       'api.qrserver.com',
+      'monaedu.s3.ap-southeast-1.amazonaws.com',
+      "d141vgbk8gzs0o.cloudfront.net"
     ],
   },
 }

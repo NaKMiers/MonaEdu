@@ -161,8 +161,8 @@ function AddLessonPage({ params: { chapterId } }: { params: { chapterId: string 
         if (!file.type.startsWith('video/')) {
           return toast.error('Please select a video')
         }
-        if (file.size > 100 * 1024 * 1024) {
-          return toast.error('Please select an video less than 100Mb or select an url fileUrl instead')
+        if (file.size > 200 * 1024 * 1024) {
+          return toast.error('Please select an video less than 200Mb or select an url fileUrl instead')
         }
 
         setFile(file)
@@ -350,6 +350,7 @@ function AddLessonPage({ params: { chapterId } }: { params: { chapterId: string 
                   placeholder=' '
                   disabled={isLoading}
                   type='file'
+                  accept='video/*'
                   onChange={handleAddFile}
                 />
 

@@ -117,6 +117,7 @@ function UserBanner({ user, className = '' }: UserBannerProps) {
         placeholder=' '
         disabled={isChangingBanner}
         type='file'
+        accept='image/*'
         onChange={handleAddFile}
         ref={bannerInputRef}
       />

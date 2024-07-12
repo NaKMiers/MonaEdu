@@ -121,7 +121,7 @@ function BestSellerCard({ course, index, className = '' }: BestSellerCardProps) 
       placement='right-start'
       arrow
       title={
-        <div className='min-w-[250px] p-21/2 border border-slate-600 rounded-xl bg-white text-dark'>
+        <div className='w-full min-w-[250px] p-21/2 border border-slate-600 rounded-xl bg-white text-dark'>
           <h1 className='font-semibold text-xl leading-6'>{course?.title}</h1>
 
           <Divider size={2} />
@@ -201,10 +201,10 @@ function BestSellerCard({ course, index, className = '' }: BestSellerCardProps) 
         </div>
       }
     >
-      <div>
-        <CardContainer className='inter-var' key={course._id}>
-          <CardBody className='flex flex-col relative group/card dark:hover:shadow-2xl rounded-xl'>
-            <CardItem translateZ={100} rotateX={20} rotateZ={-10}>
+      <div className='w-full'>
+        <CardContainer className='inter-var w-full' key={course._id}>
+          <CardBody className='w-full flex flex-col relative group/card dark:hover:shadow-2xl rounded-xl'>
+            <CardItem className='w-full' translateZ={100} rotateX={20} rotateZ={-10}>
               <Link
                 href={`/${course.slug}`}
                 className='block w-full aspect-video shadow-lg rounded-lg overflow-hidden'

@@ -430,6 +430,7 @@ function AddCoursePage() {
                 placeholder=' '
                 disabled={isLoading}
                 type='file'
+                accept='image/*'
                 multiple
                 onChange={handleAddFiles}
               />
