@@ -2,6 +2,7 @@
 
 import { useAppDispatch, useAppSelector } from "@/libs/hooks";
 import { setCartItems } from "@/libs/reducers/cartReducer";
+import { setOpenSearchBar } from "@/libs/reducers/modalReducer";
 import { getCartApi } from "@/requests";
 import { getSession, useSession } from "next-auth/react";
 import Image from "next/image";
@@ -10,11 +11,12 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { BiSolidCategory } from "react-icons/bi";
-import { FaBell, FaShoppingCart } from "react-icons/fa";
+import { FaBell, FaSearch, FaShoppingCart } from "react-icons/fa";
 import { FaBars } from "react-icons/fa6";
 import NotificationMenu from "../NotificationMenu";
 import CategoryTabs from "./CategoryTabs";
 import Menu from "./Menu";
+import SearchBar from "./SearchBar";
 
 interface HeaderProps {
   className?: string;
@@ -36,8 +38,7 @@ function Header({ className = "" }: HeaderProps) {
   const [openCategoryTabs, setOpenCategoryTabs] = useState<boolean>(false);
 
   // notification states
-  const [isOpenNotificationMenu, setIsOpenNotificationMenu] =
-    useState<boolean>(false);
+  const [isOpenNotificationMenu, setIsOpenNotificationMenu] = useState<boolean>(false);
 
   // MARK: Side Effects
   // update user session
@@ -105,36 +106,32 @@ function Header({ className = "" }: HeaderProps) {
       }  bg-dark-100 text-white w-full trans-300 bottom-0 md:bottom-auto md:top-0 ${className}`}
     >
       {/* Main Header */}
-      <div className="relative flex justify-between gap-3 items-center max-w-1200 trans-300 w-full h-[72px] m-auto px-21">
+      <div className='relative flex justify-between gap-3 items-center max-w-1200 trans-300 w-full h-[72px] m-auto px-21'>
         {/* MARK: Left */}
         <div
           className={`flex items-center gap-3 pl-4 -ml-4 h-full overflow-x-scroll no-scrollbar trans-300`}
         >
-          <Link href="/" prefetch={false} className="shrink-0 trans-200 spin">
+          <Link href='/' prefetch={false} className='shrink-0 trans-200 spin'>
             <Image
-              className="aspect-square rounded-md"
-              src="/images/logo.png"
+              className='aspect-square rounded-md'
+              src='/images/logo.png'
               width={32}
               height={32}
-              alt="logo"
+              alt='logo'
             />
           </Link>
-          <Link
-            href="/"
-            prefetch={false}
-            className="text-2xl font-bold hidden md:block"
-          >
+          <Link href='/' prefetch={false} className='text-2xl font-bold hidden md:block'>
             MonaEdu
           </Link>
 
           {/* Categories */}
-          <div className="">
+          <div className=''>
             <Link
-              href="/categories"
-              className="flex items-center justify-center gap-2 group text-nowrap bg-primary font-semibold text-dark px-3 py-1 rounded-md hover:bg-secondary hover:text-light trans-200"
+              href='/categories'
+              className='flex items-center justify-center gap-2 group text-nowrap bg-primary font-semibold text-dark px-3 py-1 rounded-md hover:bg-secondary hover:text-light trans-200'
               onMouseOver={() => setOpenCategoryTabs(true)}
             >
-              <BiSolidCategory size={20} className="hidden md:block" />
+              <BiSolidCategory size={20} className='hidden md:block' />
               Danh Mục
             </Link>
           </div>
@@ -144,59 +141,60 @@ function Header({ className = "" }: HeaderProps) {
         <CategoryTabs open={openCategoryTabs} setOpen={setOpenCategoryTabs} />
 
         {/* Search */}
-        {/* <SearchBar /> */}
+        <SearchBar />
 
         {/* MARK: Nav */}
-        <div className="flex-shrink-0 hidden md:flex items-center gap-4">
+        <div className='flex-shrink-0 hidden md:flex items-center gap-4'>
+          <button className='lg:hidden' onClick={() => dispatch(setOpenSearchBar(true))}>
+            <FaSearch size={20} className='text-slate-300' />
+          </button>
           {curUser ? (
             !!curUser._id && (
               <>
-                <Link href="/cart" prefetch={false} className="relative wiggle">
+                <Link href='/cart' prefetch={false} className='relative wiggle'>
                   <FaShoppingCart size={24} />
                   {!!cartLength && (
-                    <span className="absolute -top-2 right-[-5px] bg-primary text-dark rounded-full text-center px-[6px] py-[2px] text-[10px] font-bold flex items-center justify-center min-w-[24px]">
+                    <span className='absolute -top-2 right-[-5px] bg-primary text-dark rounded-full text-center px-[6px] py-[2px] text-[10px] font-bold flex items-center justify-center min-w-[24px]'>
                       {cartLength}
                     </span>
                   )}
                 </Link>
                 <button
-                  className="relative wiggle"
+                  className='relative wiggle'
                   onClick={() => setIsOpenNotificationMenu((prev) => !prev)}
                 >
                   <FaBell size={24} />
                   {!!curUser?.notifications.length && (
-                    <span className="absolute -top-2 right-[-5px] bg-orange-400 rounded-full text-center px-[6px] py-[2px] text-[10px] font-bold flex items-center justify-center min-w-[24px]">
+                    <span className='absolute -top-2 right-[-5px] bg-orange-400 rounded-full text-center px-[6px] py-[2px] text-[10px] font-bold flex items-center justify-center min-w-[24px]'>
                       {curUser?.notifications.length}
                     </span>
                   )}
                 </button>
                 <div
-                  className="flex items-center gap-2 cursor-pointer"
+                  className='flex items-center gap-2 cursor-pointer'
                   onClick={() => setIsOpenMenu((prev) => !prev)}
                 >
                   <Image
-                    className="aspect-square rounded-full wiggle-0 shadow-lg"
-                    src={
-                      curUser?.avatar || process.env.NEXT_PUBLIC_DEFAULT_AVATAR!
-                    }
+                    className='aspect-square rounded-full wiggle-0 shadow-lg'
+                    src={curUser?.avatar || process.env.NEXT_PUBLIC_DEFAULT_AVATAR!}
                     width={40}
                     height={40}
-                    alt="avatar"
+                    alt='avatar'
                   />
                 </div>
               </>
             )
           ) : (
-            <div className="flex items-center gap-3">
+            <div className='flex items-center gap-3'>
               <Link
-                href="/auth/login"
-                className="bg-dark text-white hover:bg-primary hover:text-dark border border-white text-nowrap trans-200 px-4 py-1.5 rounded-3xl font-body font-semibold tracking-wider cursor-pointer"
+                href='/auth/login'
+                className='bg-dark text-white hover:bg-primary hover:text-dark border border-white text-nowrap trans-200 px-4 py-1.5 rounded-3xl font-body font-semibold tracking-wider cursor-pointer'
               >
                 Sign In
               </Link>
               <Link
-                href="/auth/register"
-                className="bg-sky-500 hover:bg-primary hover:text-dark text-white border border-dark text-nowrap trans-200 px-4 py-1.5 rounded-3xl font-body font-semibold tracking-wider cursor-pointer"
+                href='/auth/register'
+                className='bg-sky-500 hover:bg-primary hover:text-dark text-white border border-dark text-nowrap trans-200 px-4 py-1.5 rounded-3xl font-body font-semibold tracking-wider cursor-pointer'
               >
                 Sign Up
               </Link>
@@ -205,31 +203,32 @@ function Header({ className = "" }: HeaderProps) {
         </div>
 
         {/* Mobile Buttons */}
-        <div className="md:hidden flex items-center gap-0.5">
-          <Link href="/cart" prefetch={false} className="relative wiggle mr-2">
+        <div className='md:hidden flex items-center gap-1'>
+          <button className='lg:hidden' onClick={() => dispatch(setOpenSearchBar(true))}>
+            <FaSearch size={20} className='w-8' />
+          </button>
+
+          <Link href='/cart' prefetch={false} className='relative wiggle mr-2'>
             <FaShoppingCart size={24} />
             {!!cartLength && (
-              <span className="absolute -top-2 right-[-5px] bg-primary text-dark rounded-full text-center px-[6px] py-[2px] text-[10px] font-bold">
+              <span className='absolute -top-2 right-[-5px] bg-primary text-dark rounded-full text-center px-[6px] py-[2px] text-[10px] font-bold'>
                 {cartLength}
               </span>
             )}
           </Link>
-          <button
-            className="relative group"
-            onClick={() => setIsOpenNotificationMenu((prev) => !prev)}
-          >
-            <FaBell size={22} className="wiggle" />
+          <button className='relative group' onClick={() => setIsOpenNotificationMenu((prev) => !prev)}>
+            <FaBell size={22} className='wiggle' />
             {!!curUser?.notifications?.length && (
-              <span className="absolute -top-2 right-[-5px] bg-orange-400 rounded-full text-center px-[6px] py-[2px] text-[10px] font-bold">
+              <span className='absolute -top-2 right-[-5px] bg-orange-400 rounded-full text-center px-[6px] py-[2px] text-[10px] font-bold'>
                 {curUser?.notifications.length}
               </span>
             )}
           </button>
           <button
-            className="flex justify-center items-center w-[40px] h-[40px]"
+            className='flex justify-center items-center w-[40px] h-[40px]'
             onClick={() => setIsOpenMenu((prev) => !prev)}
           >
-            <FaBars size={22} className="trans-200 wiggle" />
+            <FaBars size={22} className='trans-200 wiggle' />
           </button>
         </div>
 
@@ -237,10 +236,7 @@ function Header({ className = "" }: HeaderProps) {
         <Menu open={isOpenMenu} setOpen={setIsOpenMenu} />
 
         {/* MARK: Notification Menu */}
-        <NotificationMenu
-          open={isOpenNotificationMenu}
-          setOpen={setIsOpenNotificationMenu}
-        />
+        <NotificationMenu open={isOpenNotificationMenu} setOpen={setIsOpenNotificationMenu} />
       </div>
     </header>
   );

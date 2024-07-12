@@ -22,9 +22,7 @@ export async function GET(req: NextRequest) {
     await connectDatabase();
 
     // get query params
-    const params: { [key: string]: string[] } = searchParamsToObject(
-      req.nextUrl.searchParams
-    );
+    const params: { [key: string]: string[] } = searchParamsToObject(req.nextUrl.searchParams);
 
     // // options
     let skip = 0;
@@ -79,9 +77,7 @@ export async function GET(req: NextRequest) {
 
         if (key === "flashSale") {
           filter[key] =
-            params[key][0] === "true"
-              ? { $exists: true, $ne: null }
-              : { $exists: false, $eq: null };
+            params[key][0] === "true" ? { $exists: true, $ne: null } : { $exists: false, $eq: null };
           continue;
         }
 
@@ -106,8 +102,7 @@ export async function GET(req: NextRequest) {
         }
 
         // Normal Cases ---------------------
-        filter[key] =
-          params[key].length === 1 ? params[key][0] : { $in: params[key] };
+        filter[key] = params[key].length === 1 ? params[key][0] : { $in: params[key] };
       }
     }
 
@@ -116,7 +111,7 @@ export async function GET(req: NextRequest) {
 
     // get all courses from database
     let courses = await CourseModel.find(filter)
-      .populate("tags categories flashSale")
+      .populate("tags category flashSale")
       .sort(sort)
       .skip(skip)
       .limit(itemPerPage)
@@ -136,10 +131,7 @@ export async function GET(req: NextRequest) {
     ]);
 
     // return all courses
-    return NextResponse.json(
-      { courses, amount, tgs, cates, chops: chops[0] },
-      { status: 200 }
-    );
+    return NextResponse.json({ courses, amount, tgs, cates, chops: chops[0] }, { status: 200 });
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 });
   }

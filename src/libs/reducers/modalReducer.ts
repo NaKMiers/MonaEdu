@@ -1,13 +1,14 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export const loading = createSlice({
-  name: 'loading',
+  name: "loading",
   initialState: {
     isPageLoading: false,
     isLoading: false,
     openAuthentication: false,
     authenticated: false,
     openSidebar: true,
+    openSearchBar: false,
   },
   reducers: {
     setPageLoading: (state, action: PayloadAction<boolean>) => ({
@@ -30,9 +31,21 @@ export const loading = createSlice({
       ...state,
       openSidebar: action.payload,
     }),
+    setOpenSearchBar: (state, action: PayloadAction<boolean>) => {
+      return {
+        ...state,
+        openSearchBar: action.payload,
+      };
+    },
   },
-})
+});
 
-export const { setPageLoading, setLoading, setOpenAuthentication, setAuthenticated, setOpenSidebar } =
-  loading.actions
-export default loading.reducer
+export const {
+  setPageLoading,
+  setLoading,
+  setOpenAuthentication,
+  setAuthenticated,
+  setOpenSidebar,
+  setOpenSearchBar,
+} = loading.actions;
+export default loading.reducer;

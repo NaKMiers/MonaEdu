@@ -1,12 +1,12 @@
-import { generateSlug } from '@/utils'
-import mongoose from 'mongoose'
-import { ICategory } from './CategoryModel'
-import { IChapter } from './ChapterModel'
-import { IFlashSale } from './FlashSaleModel'
-import { ILesson } from './LessonModel'
-import { ITag } from './TagModel'
-import { IUser } from './UserModel'
-const Schema = mongoose.Schema
+import { generateSlug } from "@/utils";
+import mongoose from "mongoose";
+import { ICategory } from "./CategoryModel";
+import { IChapter } from "./ChapterModel";
+import { IFlashSale } from "./FlashSaleModel";
+import { ILesson } from "./LessonModel";
+import { ITag } from "./TagModel";
+import { IUser } from "./UserModel";
+const Schema = mongoose.Schema;
 
 const CourseSchema = new Schema(
   {
@@ -23,9 +23,9 @@ const CourseSchema = new Schema(
       required: true,
       validate: {
         validator: function (value: number) {
-          return value >= 0
+          return value >= 0;
         },
-        message: 'Invalid price',
+        message: "Invalid price",
       },
       min: 0,
     },
@@ -41,20 +41,20 @@ const CourseSchema = new Schema(
     },
     flashSale: {
       type: Schema.Types.ObjectId,
-      ref: 'flashSale',
+      ref: "flashSale",
     },
     tags: {
       type: [
         {
           type: Schema.Types.ObjectId,
-          ref: 'tag',
+          ref: "tag",
           minlength: 1,
         },
       ],
     },
     category: {
       type: Schema.Types.ObjectId,
-      ref: 'category',
+      ref: "category",
     },
     images: {
       type: [{ type: String }],
@@ -77,7 +77,7 @@ const CourseSchema = new Schema(
     likes: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'user',
+        ref: "user",
       },
     ],
     languages: {
@@ -90,43 +90,43 @@ const CourseSchema = new Schema(
   {
     timestamps: true,
   }
-)
+);
 
 // pre-save hook to generate slug from title
-CourseSchema.pre('save', function (next) {
-  if (this.isModified('title')) {
-    this.slug = generateSlug(this.title)
+CourseSchema.pre("save", function (next) {
+  if (this.isModified("title")) {
+    this.slug = generateSlug(this.title);
   }
 
-  next()
-})
+  next();
+});
 
 // create model from schema
-const CourseModel = mongoose.models.course || mongoose.model('course', CourseSchema)
-export default CourseModel
+const CourseModel = mongoose.models.course || mongoose.model("course", CourseSchema);
+export default CourseModel;
 
 export interface ICourse {
-  _id: string
-  title: string
-  oldPrice: number
-  price: number
-  author: string
-  textHook: string
-  description: string
-  flashSale: string | undefined | IFlashSale
-  tags: string[] | ITag[]
-  category: string | ICategory
-  images: string[]
-  joined: number
-  slug: string
-  active: boolean
-  likes: string[] | IUser[]
-  languages: string[]
-  duration: number
-  createdAt: string
-  updatedAt: string
+  _id: string;
+  title: string;
+  oldPrice: number;
+  price: number;
+  author: string;
+  textHook: string;
+  description: string;
+  flashSale: string | undefined | IFlashSale;
+  tags: string[] | ITag[];
+  category: string | ICategory;
+  images: string[];
+  joined: number;
+  slug: string;
+  active: boolean;
+  likes: string[] | IUser[];
+  languages: string[];
+  duration: number;
+  createdAt: string;
+  updatedAt: string;
 
   // sub
-  chapters?: IChapter[]
-  lessons: ILesson[]
+  chapters?: IChapter[];
+  lessons: ILesson[];
 }
