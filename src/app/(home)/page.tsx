@@ -1,35 +1,35 @@
-import Banner from '@/components/Banner'
-import BestSeller from '@/components/BestSeller'
-import Divider from '@/components/Divider'
-import Features from '@/components/Features'
-import GroupCourses from '@/components/GroupCourses'
-import Heading from '@/components/Heading'
-import { ICourse } from '@/models/CourseModel'
-import { IQuestion } from '@/models/QuestionModel'
-import { getHomePageApi } from '@/requests'
-import { Metadata } from 'next'
+import Banner from "@/components/Banner";
+import BestSeller from "@/components/BestSeller";
+import Divider from "@/components/Divider";
+import Features from "@/components/Features";
+import GroupCourses from "@/components/GroupCourses";
+import Heading from "@/components/Heading";
+import { ICourse } from "@/models/CourseModel";
+import { IQuestion } from "@/models/QuestionModel";
+import { getHomePageApi } from "@/requests";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: 'Trang Chủ - MonaEdu',
-}
+  title: "Trang Chủ - MonaEdu",
+};
 
 async function Home() {
-  let courses: ICourse[] = []
-  let bestSellers: ICourse[] = []
-  let questions: IQuestion[] = []
+  let courses: ICourse[] = [];
+  let bestSellers: ICourse[] = [];
+  let questions: IQuestion[] = [];
 
   try {
-    const data = await getHomePageApi()
+    const data = await getHomePageApi();
 
-    courses = data.courses
-    bestSellers = data.bestSellers
-    questions = data.questions
+    courses = data.courses;
+    bestSellers = data.bestSellers;
+    questions = data.questions;
   } catch (err: any) {
-    console.log(err)
+    console.log(err);
   }
 
   return (
-    <div className='min-h-screen'>
+    <div className="min-h-screen">
       {/* Banner */}
       <Banner courses={courses} />
 
@@ -46,17 +46,17 @@ async function Home() {
       <Divider size={32} />
 
       {/* Questions */}
-      <div className='max-w-1200 mx-auto'>
-        <Heading title='Questions' space />
+      <div className="max-w-1200 mx-auto">
+        <Heading title="Questions" space />
       </div>
       <Divider size={8} />
-      <div className='relative px-8 md:px-12 py-21'>
+      <div className="relative px-8 md:px-12 py-21">
         <Divider size={20} />
       </div>
 
       <Divider size={32} />
     </div>
-  )
+  );
 }
 
-export default Home
+export default Home;

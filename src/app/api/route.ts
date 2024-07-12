@@ -1,22 +1,22 @@
-import { connectDatabase } from '@/config/database'
-import CourseModel from '@/models/CourseModel'
-import QuestionModel from '@/models/QuestionModel'
-import { NextRequest, NextResponse } from 'next/server'
+import { connectDatabase } from "@/config/database";
+import CourseModel from "@/models/CourseModel";
+import QuestionModel from "@/models/QuestionModel";
+import { NextRequest, NextResponse } from "next/server";
 
 // Models: Course, Question, User
-import '@/models/CourseModel'
-import '@/models/QuestionModel'
-import '@/models/UserModel'
+import "@/models/CourseModel";
+import "@/models/QuestionModel";
+import "@/models/UserModel";
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
 // [GET]: /
 export async function GET(req: NextRequest) {
-  console.log(' - Get Home Page - ')
+  console.log(" - Get Home Page - ");
 
   try {
     // connect to database
-    await connectDatabase()
+    await connectDatabase();
 
     // get courses
     const courses = await CourseModel.find({
@@ -26,12 +26,12 @@ export async function GET(req: NextRequest) {
         joined: -1,
       })
       .limit(8)
-      .lean()
+      .lean();
 
     // top 10 best-seller categories
 
     // top 8 best-seller courses
-    const bestSellers = courses.slice(0, 8)
+    const bestSellers = courses.slice(0, 8);
 
     // top 1 student that spend most time of learning
 
@@ -47,14 +47,17 @@ export async function GET(req: NextRequest) {
 
     // best questions
     const questions = await QuestionModel.find({
-      status: 'open',
+      status: "open",
     })
-      .populate('userId')
+      .populate("userId")
       .sort({ createdAt: -1 })
-      .lean()
+      .lean();
 
-    return NextResponse.json({ courses, bestSellers, questions }, { status: 200 })
+    return NextResponse.json(
+      { courses, bestSellers, questions },
+      { status: 200 }
+    );
   } catch (err: any) {
-    return NextResponse.json({ message: err.message }, { status: 500 })
+    return NextResponse.json({ message: err.message }, { status: 500 });
   }
 }

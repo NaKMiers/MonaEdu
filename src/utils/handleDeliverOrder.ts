@@ -1,102 +1,105 @@
-import CourseModel, { ICourse } from '@/models/CourseModel'
-import OrderModel, { IOrder } from '@/models/OrderModel'
-import UserModel, { IUser } from '@/models/UserModel'
-import VoucherModel, { IVoucher } from '@/models/VoucherModel'
+import CourseModel, { ICourse } from "@/models/CourseModel";
+import OrderModel, { IOrder } from "@/models/OrderModel";
+import UserModel, { IUser } from "@/models/UserModel";
+import VoucherModel, { IVoucher } from "@/models/VoucherModel";
 
 // Models: Order, Voucher, User, Course
-import '@/models/CourseModel'
-import '@/models/OrderModel'
-import '@/models/UserModel'
-import '@/models/VoucherModel'
-import { notifyDeliveryOrder, notifyGivenCourse } from './sendMail'
+import "@/models/CourseModel";
+import "@/models/OrderModel";
+import "@/models/UserModel";
+import "@/models/VoucherModel";
+import { notifyDeliveryOrder, notifyGivenCourse } from "./sendMail";
 
-export default async function handleDeliverOrder(id: string, message: string = '') {
-  console.log('- Handle Deliver Order -')
+export default async function handleDeliverOrder(
+  id: string,
+  message: string = ""
+) {
+  console.log("- Handle Deliver Order -");
 
   // get order from database to deliver
   const order: IOrder | null = await OrderModel.findById(id)
     .populate({
-      path: 'voucher',
-      select: 'code',
-      populate: 'owner',
+      path: "voucher",
+      select: "code",
+      populate: "owner",
     })
-    .lean()
+    .lean();
 
   // error state
   let orderError = {
     error: false,
-    message: '',
+    message: "",
     status: 200,
-  }
+  };
 
   // check order exist
   if (!order) {
-    throw new Error('Order not found')
+    throw new Error("Order not found");
   }
 
   // only deliver order with status is 'pending' | 'cancel'
-  if (order.status === 'done') {
-    throw new Error('Order is not ready to deliver')
+  if (order.status === "done") {
+    throw new Error("Order is not ready to deliver");
   }
 
   // get items and applied voucher
-  const { items, email, total, userId, receivedUser } = order
+  const { items, email, total, userId, receivedUser } = order;
 
-  console.log('order: ', order)
-
-  const buyer: IUser | null = await UserModel.findById(userId).lean()
+  const buyer: IUser | null = await UserModel.findById(userId).lean();
 
   // buy for themselves
   if (!receivedUser) {
-    console.log('- Buy For Themselves -')
+    console.log("- Buy For Themselves -");
     // get user to check if user has already joined course
-    const userCourses: any = buyer?.courses
+    const userCourses: any = buyer?.courses;
 
-    const userCourseIds = userCourses.map((course: any) => course.course.toString())
-    const itemIds = items.map((item: any) => item._id.toString())
+    const userCourseIds = userCourses.map((course: any) =>
+      course.course.toString()
+    );
+    const itemIds = items.map((item: any) => item._id.toString());
 
     if (itemIds.some((id: string) => userCourseIds.includes(id))) {
-      throw new Error('Học viên đã tham gia khóa học này')
+      throw new Error("Học viên đã tham gia khóa học này");
     }
   }
 
   // buy as a gift
   else {
-    console.log('- Buy As A Gift -')
+    console.log("- Buy As A Gift -");
 
-    const receiver: IUser | null = await UserModel.findOne({ email: receivedUser }).lean()
+    const receiver: IUser | null = await UserModel.findOne({
+      email: receivedUser,
+    }).lean();
     if (!receiver) {
-      throw new Error('Receiver not found')
+      throw new Error("Receiver not found");
     }
 
-    const userCourses: any = receiver?.courses
-    const userCourseIds = userCourses.map((course: any) => course.course.toString())
-    const itemIds = items.map((item: any) => item._id.toString())
+    const userCourses: any = receiver?.courses;
+    const userCourseIds = userCourses.map((course: any) =>
+      course.course.toString()
+    );
+    const itemIds = items.map((item: any) => item._id.toString());
 
     if (itemIds.some((id: string) => userCourseIds.includes(id))) {
-      throw new Error('Học viên đã tham gia khóa học này')
+      throw new Error("Học viên đã tham gia khóa học này");
     }
   }
 
-  console.log('awww')
-
   // VOUCHER
-  const voucher: IVoucher = order.voucher as IVoucher
-
-  console.log('voucher: ', voucher)
+  const voucher: IVoucher = order.voucher as IVoucher;
 
   if (voucher) {
-    const commission: any = (voucher.owner as IUser).commission
-    let extraAccumulated = 0
+    const commission: any = (voucher.owner as IUser).commission;
+    let extraAccumulated = 0;
 
     switch (commission.type) {
-      case 'fixed': {
-        extraAccumulated = commission.value
-        break
+      case "fixed": {
+        extraAccumulated = commission.value;
+        break;
       }
-      case 'percentage': {
-        extraAccumulated = (order.total * parseFloat(commission.value)) / 100
-        break
+      case "percentage": {
+        extraAccumulated = (order.total * parseFloat(commission.value)) / 100;
+        break;
       }
     }
 
@@ -107,7 +110,7 @@ export default async function handleDeliverOrder(id: string, message: string = '
         accumulated: extraAccumulated,
         timesLeft: -1,
       },
-    })
+    });
   }
 
   // USER
@@ -137,15 +140,15 @@ export default async function handleDeliverOrder(id: string, message: string = '
                     ? `${buyer.firstName} ${buyer.lastName}`
                     : buyer?.username
                 }`
-              : 'You new course has been delivered',
-            image: '/images/logo.png',
-            link: '/my-courses',
-            type: 'delivered-order',
-            status: 'unread',
+              : "You new course has been delivered",
+            image: "/images/logo.png",
+            link: "/my-courses",
+            type: "delivered-order",
+            status: "unread",
           },
         },
       }
-    )
+    );
   } else {
     await UserModel.findOneAndUpdate(
       { email },
@@ -168,55 +171,53 @@ export default async function handleDeliverOrder(id: string, message: string = '
                     ? `${buyer.firstName} ${buyer.lastName}`
                     : buyer?.username
                 }`
-              : 'You new course has been delivered',
-            image: '/images/logo.png',
-            link: '/my-courses',
-            type: 'delivered-order',
-            status: 'unread',
+              : "You new course has been delivered",
+            image: "/images/logo.png",
+            link: "/my-courses",
+            type: "delivered-order",
+            status: "unread",
           },
         },
       }
-    )
+    );
   }
 
   // COURSE
   await CourseModel.updateMany(
     { _id: { $in: order.items.map((item: ICourse) => item._id) } },
     { $inc: { joined: 1 } }
-  )
-
-  console.log('hello')
+  );
 
   // ORDER
   const updatedOrder: IOrder | null = await OrderModel.findByIdAndUpdate(
     order._id.toString(),
     {
-      $set: { status: 'done' },
+      $set: { status: "done" },
     },
     { new: true }
-  ).lean()
+  ).lean();
 
   // data transferring to email
   const orderData = {
     ...updatedOrder,
     discount: updatedOrder?.discount || 0,
     message,
-  }
-
-  console.log('orderData: ', orderData)
+  };
 
   // EMAIL
-  await notifyDeliveryOrder(email, orderData)
+  await notifyDeliveryOrder(email, orderData);
 
   // notify given course
   if (receivedUser) {
     await notifyGivenCourse(
       receivedUser,
       `${
-        buyer?.firstName && buyer?.lastName ? `${buyer.firstName} ${buyer.lastName}` : buyer?.username
+        buyer?.firstName && buyer?.lastName
+          ? `${buyer.firstName} ${buyer.lastName}`
+          : buyer?.username
       }`,
       orderData
-    )
+    );
   }
 
   return {
@@ -224,5 +225,5 @@ export default async function handleDeliverOrder(id: string, message: string = '
     isError: orderError.error,
     message: `Deliver Order Successfully`,
     status: 200,
-  }
+  };
 }

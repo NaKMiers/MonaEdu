@@ -1,75 +1,55 @@
-import { categories } from '@/constants/categories'
-import { AnimatePresence, motion } from 'framer-motion'
-import Link from 'next/link'
-import { Dispatch, SetStateAction, useCallback, useState } from 'react'
-import { FaChevronRight } from 'react-icons/fa'
+import { categories } from "@/constants/categories";
+import { AnimatePresence, motion } from "framer-motion";
+import Link from "next/link";
+import { Dispatch, SetStateAction, useCallback, useState } from "react";
+import { FaChevronRight } from "react-icons/fa";
 
 interface CategoryTabsProps {
-  open: boolean
-  setOpen: Dispatch<SetStateAction<boolean>>
-  className?: string
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  className?: string;
 }
 
-function CategoryTabs({ open, setOpen, className = '' }: CategoryTabsProps) {
+function CategoryTabs({ open, setOpen, className = "" }: CategoryTabsProps) {
   // states
-  // const [categories, setCategories] = useState<any[]>([])
   const [list, setList] = useState<any[]>([
     {
-      ref: 'Category Tabs',
+      ref: "Category Tabs",
       data: categories,
     },
-  ])
-
-  // // get categories
-  // useEffect(() => {
-  //   const getCategories = async () => {
-  //     try {
-  //       // send request to get categories
-  //       const { categories } = await getAllCategoriesApi()
-  //       console.log('categories: ', categories)
-  //       setCategories(categories)
-  //       setList([
-  //         {
-  //           ref: 'Category Tabs',
-  //           data: categories,
-  //         },
-  //       ])
-  //     } catch (err: any) {
-  //       console.log(err)
-  //       toast.error(err.message)
-  //     }
-  //   }
-  //   getCategories()
-  // }, [])
+  ]);
 
   const findDeep = useCallback(
-    (item: any) => list.findIndex(tab => tab.data.map((i: any) => i.title).includes(item.title)),
+    (item: any) =>
+      list.findIndex((tab) =>
+        tab.data.map((i: any) => i.title).includes(item.title)
+      ),
     [list]
-  )
+  );
 
   const handleMouseOver = useCallback(
     (item: any) => {
-      if (!item.subs) return
+      if (!item.subs) return;
 
-      const deep = findDeep(item)
-      const subs = item.subs
-      let newList = [...list]
-      newList = newList.slice(0, deep + 1)
-      newList[deep + 1] = subs
-      setList(newList)
+      const deep = findDeep(item);
+      const subs = item.subs;
+      let newList = [...list];
+      newList = newList.slice(0, deep + 1);
+      newList[deep + 1] = subs;
+      setList(newList);
     },
     [findDeep, list]
-  )
+  );
 
   const handleMouseLeave = useCallback(
     (index: number) => {
       if (index + 1 === list.length) {
-        const newList = list.slice(0, index)
-        setList(newList)
+        const newList = list.slice(0, index);
+        setList(newList);
       }
     },
     [list]
-  )
+  );
 
   return (
     <AnimatePresence>
@@ -83,28 +63,39 @@ function CategoryTabs({ open, setOpen, className = '' }: CategoryTabsProps) {
           onMouseLeave={() => {
             setList([
               {
-                title: 'Category Tabs',
+                title: "Category Tabs",
                 data: categories,
               },
-            ])
-            setOpen(false)
+            ]);
+            setOpen(false);
           }}
         >
           {list.map((tab, tabIndex) => (
-            <ul className='flex flex-col' onMouseLeave={() => handleMouseLeave(tabIndex)} key={tabIndex}>
+            <ul
+              className="flex flex-col"
+              onMouseLeave={() => handleMouseLeave(tabIndex)}
+              key={tabIndex}
+            >
               {tab.data.map((item: any, itemIndex: number) => (
-                <li className='p-0.5' onMouseOver={() => handleMouseOver(item)} key={itemIndex}>
+                <li
+                  className="p-0.5"
+                  onMouseOver={() => handleMouseOver(item)}
+                  key={itemIndex}
+                >
                   <Link
                     href={`/categories/${item.slug}`}
                     className={`w-full h-9 flex items-center justify-between gap-3 px-2.5 hover:bg-secondary group trans-300 hover:rounded-xl hover:shadow-md ${
                       list[tabIndex + 1] && list[tabIndex + 1].ref === item._id
-                        ? 'bg-secondary rounded-xl shadow-md'
-                        : ''
+                        ? "bg-secondary rounded-xl shadow-md"
+                        : ""
                     }`}
                   >
                     <span
                       className={`text-dark group-hover:text-light ${
-                        list[tabIndex + 1] && list[tabIndex + 1].ref === item._id ? 'text-white' : ''
+                        list[tabIndex + 1] &&
+                        list[tabIndex + 1].ref === item._id
+                          ? "text-white"
+                          : ""
                       }`}
                     >
                       {item.title}
@@ -113,7 +104,10 @@ function CategoryTabs({ open, setOpen, className = '' }: CategoryTabsProps) {
                       <FaChevronRight
                         size={12}
                         className={`wiggle text-dark group-hover:text-light  ${
-                          list[tabIndex + 1] && list[tabIndex + 1].ref === item._id ? 'text-white' : ''
+                          list[tabIndex + 1] &&
+                          list[tabIndex + 1].ref === item._id
+                            ? "text-white"
+                            : ""
                         }`}
                       />
                     )}
@@ -125,7 +119,7 @@ function CategoryTabs({ open, setOpen, className = '' }: CategoryTabsProps) {
         </motion.div>
       )}
     </AnimatePresence>
-  )
+  );
 }
 
-export default CategoryTabs
+export default CategoryTabs;

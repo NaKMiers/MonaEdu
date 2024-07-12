@@ -1,68 +1,82 @@
-import { connectDatabase } from '@/config/database'
-import CourseModel from '@/models/CourseModel'
-import OrderModel from '@/models/OrderModel'
-import UserModel from '@/models/UserModel'
-import { generateOrderCode } from '@/utils'
-import handleDeliverOrder from '@/utils/handleDeliverOrder'
-import { notifyNewOrderToAdmin } from '@/utils/sendMail'
-import { getToken } from 'next-auth/jwt'
-import { NextRequest, NextResponse } from 'next/server'
+import { connectDatabase } from "@/config/database";
+import CourseModel from "@/models/CourseModel";
+import OrderModel from "@/models/OrderModel";
+import UserModel from "@/models/UserModel";
+import { generateOrderCode } from "@/utils";
+import handleDeliverOrder from "@/utils/handleDeliverOrder";
+import { notifyNewOrderToAdmin } from "@/utils/sendMail";
+import { getToken } from "next-auth/jwt";
+import { NextRequest, NextResponse } from "next/server";
 
 // Models: User, Order, Course
-import '@/models/CourseModel'
-import '@/models/OrderModel'
-import '@/models/UserModel'
+import "@/models/CourseModel";
+import "@/models/OrderModel";
+import "@/models/UserModel";
 
 // [POST]: /order/create
 export async function POST(req: NextRequest) {
-  console.log('- Create Order -')
+  console.log("- Create Order -");
 
   try {
     // connect to database
-    await connectDatabase()
+    await connectDatabase();
 
     // get data to create order
-    const { total, receivedUser, voucher, discount, items, paymentMethod } = await req.json()
+    const { total, receivedUser, voucher, discount, items, paymentMethod } =
+      await req.json();
 
     // get user id
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
-    const userId = token?._id
-    const email = token?.email
+    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+    const userId = token?._id;
+    const email = token?.email;
 
     // check if user exists or not
     if (!userId) {
-      return NextResponse.json({ message: 'Người dùng không hợp lệ' }, { status: 404 })
+      return NextResponse.json(
+        { message: "Người dùng không hợp lệ" },
+        { status: 404 }
+      );
     }
 
     // check if user has already joined course
-    let userCourses: any = []
+    let userCourses: any = [];
 
     if (receivedUser) {
-      userCourses = await UserModel.findOne({ email: receivedUser }).select('courses').lean()
+      userCourses = await UserModel.findOne({ email: receivedUser })
+        .select("courses")
+        .lean();
     } else {
-      userCourses = await UserModel.findById(userId).select('courses').lean()
+      userCourses = await UserModel.findById(userId).select("courses").lean();
     }
 
-    let joinedCourses: any = []
-    const userCoursesIds = userCourses?.courses.map((course: any) => course.course.toString())
-    const itemsIds = items.map((item: any) => item.courseId)
+    let joinedCourses: any = [];
+    const userCoursesIds = userCourses?.courses.map((course: any) =>
+      course.course.toString()
+    );
+    const itemsIds = items.map((item: any) => item.courseId);
     const isUserJoinedCourse = itemsIds.some((id: any) => {
       if (userCoursesIds.includes(id)) {
-        joinedCourses.push(id)
-        return true
+        joinedCourses.push(id);
+        return true;
       }
-      return false
-    })
+      return false;
+    });
     if (isUserJoinedCourse) {
-      const joinedCoursesTitles = await CourseModel.find({ _id: { $in: joinedCourses } }).select('title')
+      const joinedCoursesTitles = await CourseModel.find({
+        _id: { $in: joinedCourses },
+      }).select("title");
       return NextResponse.json(
-        { message: `Học viên đã tham gia khóa học "${joinedCoursesTitles.join(', ')}"` },
+        {
+          message: `Học viên đã tham gia khóa học "${joinedCoursesTitles.join(
+            ", "
+          )}"`,
+        },
         { status: 400 }
-      )
+      );
     }
 
-    const courses = await CourseModel.find({ _id: { $in: itemsIds } }).lean()
-    const code = await generateOrderCode(5)
+    const courses = await CourseModel.find({ _id: { $in: itemsIds } }).lean();
+    const code = await generateOrderCode(5);
 
     // create new order
     const newOrder = new OrderModel({
@@ -75,7 +89,7 @@ export async function POST(req: NextRequest) {
       total,
       items: courses,
       paymentMethod,
-    })
+    });
 
     await Promise.all([
       // save new order
@@ -86,33 +100,34 @@ export async function POST(req: NextRequest) {
         $push: {
           notifications: {
             _id: new Date().getTime(),
-            title: 'Cảm ơn bạn đã tham gia khóa học của chúng tôi, chúc bạn học tốt!',
-            image: '/images/logo.png',
-            link: '/my-courses',
-            type: 'create-order',
-            status: 'unread',
+            title:
+              "Cảm ơn bạn đã tham gia khóa học của chúng tôi, chúc bạn học tốt!",
+            image: "/images/logo.png",
+            link: "/my-courses",
+            type: "create-order",
+            status: "unread",
           },
         },
       }),
-    ])
+    ]);
 
     // auto deliver order
-    let response: any = null
-    if (process.env.IS_AUTO_DELIVER === 'YES') {
-      handleDeliverOrder(newOrder._id)
+    let response: any = null;
+    if (process.env.IS_AUTO_DELIVER === "YES") {
+      handleDeliverOrder(newOrder._id);
     }
 
     // return new order
     const message =
       response && response.isError
-        ? 'Your order is being processed, please wait'
-        : 'Your order has been sent to email ' + email
+        ? "Đơn hàng của bạn đang được sử lý, xin vui lòng đợi"
+        : "Đơn hàng của bạn đã được gửi đến email " + email;
 
     // notify new order to admin
-    await notifyNewOrderToAdmin(newOrder)
+    await notifyNewOrderToAdmin(newOrder);
 
-    return NextResponse.json({ code, message }, { status: 201 })
+    return NextResponse.json({ code, message }, { status: 201 });
   } catch (err: any) {
-    return NextResponse.json({ message: err.message }, { status: 500 })
+    return NextResponse.json({ message: err.message }, { status: 500 });
   }
 }

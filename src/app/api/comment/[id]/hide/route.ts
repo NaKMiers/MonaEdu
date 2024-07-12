@@ -1,50 +1,59 @@
-import { connectDatabase } from '@/config/database'
-import CommentModel, { IComment } from '@/models/CommentModel'
-import { getToken } from 'next-auth/jwt'
-import { NextRequest, NextResponse } from 'next/server'
+import { connectDatabase } from "@/config/database";
+import CommentModel, { IComment } from "@/models/CommentModel";
+import { getToken } from "next-auth/jwt";
+import { NextRequest, NextResponse } from "next/server";
 
 // Models: Comment, User
-import '@/models/CommentModel'
-import '@/models/UserModel'
+import "@/models/CommentModel";
+import "@/models/UserModel";
 
 // [PATCH]: /comment/:id/like
-export async function PATCH(req: NextRequest, { params: { id } }: { params: { id: string } }) {
-  console.log('- Hide Comment -')
+export async function PATCH(
+  req: NextRequest,
+  { params: { id } }: { params: { id: string } }
+) {
+  console.log("- Hide Comment -");
 
   try {
     // connect to database
-    await connectDatabase()
+    await connectDatabase();
 
     // get current user id
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
-    const userId = token?._id
+    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+    const userId = token?._id;
 
     // get id and value to like to dislike
-    const { value } = await req.json()
+    const { value } = await req.json();
 
     // user does not exist
     if (!userId) {
-      return NextResponse.json({ message: 'User not found' }, { status: 401 })
+      return NextResponse.json(
+        { message: "Không tìm thấy người dùng" },
+        { status: 401 }
+      );
     }
 
     // hide comment in database
     const updatedComment: any = await CommentModel.findByIdAndUpdate(
       id,
-      { $set: { hide: value === 'y' } },
+      { $set: { hide: value === "y" } },
       { new: true }
     )
-      .populate('userId')
+      .populate("userId")
       .populate({
-        path: 'replied',
+        path: "replied",
         populate: {
-          path: 'userId',
+          path: "userId",
         },
         options: { sort: { likes: -1, createdAt: -1 }, limit: 6 },
       })
-      .lean()
+      .lean();
 
     if (!updatedComment) {
-      return NextResponse.json({ message: 'Comment not found' }, { status: 404 })
+      return NextResponse.json(
+        { message: "Không tìm thấy bình luận" },
+        { status: 404 }
+      );
     }
 
     const comment: IComment = {
@@ -56,14 +65,14 @@ export async function PATCH(req: NextRequest, { params: { id } }: { params: { id
         userId: c.userId._id,
         user: c.userId,
       })),
-    }
+    };
 
     // return response
     return NextResponse.json(
-      { comment, message: `${value === 'y' ? 'Hide' : 'Show'} successfully` },
+      { comment, message: `${value === "y" ? "Ẩn" : "Hiện"} thành công` },
       { status: 200 }
-    )
+    );
   } catch (err: any) {
-    return NextResponse.json({ message: err.message }, { status: 500 })
+    return NextResponse.json({ message: err.message }, { status: 500 });
   }
 }

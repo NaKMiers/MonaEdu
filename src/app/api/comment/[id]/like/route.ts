@@ -1,75 +1,84 @@
-import { connectDatabase } from '@/config/database'
-import CommentModel, { IComment } from '@/models/CommentModel'
-import { getToken } from 'next-auth/jwt'
-import { NextRequest, NextResponse } from 'next/server'
-import UserModel, { IUser } from '@/models/UserModel'
+import { connectDatabase } from "@/config/database";
+import CommentModel, { IComment } from "@/models/CommentModel";
+import { getToken } from "next-auth/jwt";
+import { NextRequest, NextResponse } from "next/server";
+import UserModel, { IUser } from "@/models/UserModel";
 
 // Models: Comment, User
-import '@/models/CommentModel'
-import '@/models/UserModel'
-import { getUserName } from '@/utils/string'
+import "@/models/CommentModel";
+import "@/models/UserModel";
+import { getUserName } from "@/utils/string";
 
 // [PATCH]: /comment/:id/like
-export async function PATCH(req: NextRequest, { params: { id } }: { params: { id: string } }) {
-  console.log('- Like Comment -')
+export async function PATCH(
+  req: NextRequest,
+  { params: { id } }: { params: { id: string } }
+) {
+  console.log("- Like Comment -");
 
   try {
     // connect to database
-    await connectDatabase()
+    await connectDatabase();
 
     // get current user id
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
-    const userId = token?._id
+    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+    const userId = token?._id;
 
     // get id and value to like to dislike
-    const { value } = await req.json()
+    const { value } = await req.json();
 
     // get user liked / disliked
     const user: IUser | null = await UserModel.findById(userId)
-      .select('username avatar firstName lastName')
-      .lean()
+      .select("username avatar firstName lastName")
+      .lean();
 
     // user does not exist
     if (!user) {
-      return NextResponse.json({ message: 'User not found' }, { status: 401 })
+      return NextResponse.json(
+        { message: "Không tìm thấy người dùng" },
+        { status: 401 }
+      );
     }
 
-    let updatedComment: any = null
-    if (value === 'y') {
+    let updatedComment: any = null;
+    if (value === "y") {
       // like
       updatedComment = await CommentModel.findByIdAndUpdate(
         id,
         { $addToSet: { likes: userId } },
         { new: true }
       )
-        .populate('userId')
+        .populate("userId")
         .populate({
-          path: 'replied',
+          path: "replied",
           populate: {
-            path: 'userId',
+            path: "userId",
           },
         })
-        .lean()
-    } else if (value === 'n') {
+        .lean();
+    } else if (value === "n") {
       // dislike
       updatedComment = await CommentModel.findByIdAndUpdate(
         id,
         { $pull: { likes: userId } },
         { new: true }
       )
-        .populate('userId')
+        .populate("userId")
         .populate({
-          path: 'replied',
+          path: "replied",
           populate: {
-            path: 'userId',
+            path: "userId",
           },
           options: { sort: { likes: -1, createdAt: -1 }, limit: 6 },
         })
-        .lean()
+        .lean();
     }
 
     if (!updatedComment) {
-      return NextResponse.json({ message: 'Comment not found' }, { status: 404 })
+      return NextResponse.json(
+        { message: "Không tìm thấy bình luận" },
+        { status: 404 }
+      );
     }
 
     // format comment
@@ -82,29 +91,32 @@ export async function PATCH(req: NextRequest, { params: { id } }: { params: { id
         userId: c.userId._id,
         user: c.userId,
       })),
-    }
+    };
 
     // notify user only if like
-    if (value === 'y' && updatedComment.userId._id !== userId) {
+    if (value === "y" && updatedComment.userId._id !== userId) {
       await UserModel.findByIdAndUpdate(updatedComment.userId._id, {
         $push: {
           notifications: {
             _id: new Date().getTime(),
-            title: getUserName(user) + ' liked on your comment',
+            title: getUserName(user) + " đã thích bình luận của bạn",
             image: user.avatar,
-            type: 'emotion-comment',
-            status: 'unread',
+            type: "emotion-comment",
+            status: "unread",
           },
         },
-      })
+      });
     }
 
     // return response
     return NextResponse.json(
-      { comment, message: `${value === 'y' ? 'Like' : 'Dislike'} successfully` },
+      {
+        comment,
+        message: `${value === "y" ? "Thích" : "Bỏ thích"} thành công`,
+      },
       { status: 200 }
-    )
+    );
   } catch (err: any) {
-    return NextResponse.json({ message: err.message }, { status: 500 })
+    return NextResponse.json({ message: err.message }, { status: 500 });
   }
 }

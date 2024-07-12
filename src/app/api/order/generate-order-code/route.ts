@@ -1,25 +1,25 @@
-import { generateOrderCode } from './../../../../utils/index'
-import { connectDatabase } from '@/config/database'
-import { NextResponse } from 'next/server'
+import { generateOrderCode } from "./../../../../utils/index";
+import { connectDatabase } from "@/config/database";
+import { NextResponse } from "next/server";
 
 // Models:
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
 // [GET]: /order/generate-order-code
 export async function GET() {
-  console.log('- Generate Order Code - ')
+  console.log("- Generate Order Code - ");
 
   try {
     // connect to database
-    await connectDatabase()
+    await connectDatabase();
 
     // generate order code
-    const orderCode = await generateOrderCode(5)
+    const orderCode = await generateOrderCode(5);
 
     // return code
-    return NextResponse.json({ code: orderCode }, { status: 200 })
+    return NextResponse.json({ code: orderCode }, { status: 200 });
   } catch (err: any) {
-    return NextResponse.json({ message: err.message }, { status: 500 })
+    return NextResponse.json({ message: err.message }, { status: 500 });
   }
 }

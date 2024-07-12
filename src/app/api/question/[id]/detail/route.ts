@@ -1,52 +1,58 @@
-import { connectDatabase } from '@/config/database'
-import QuestionModel, { IQuestion } from '@/models/QuestionModel'
-import { NextRequest, NextResponse } from 'next/server'
-import CommentModel from '@/models/CommentModel'
+import { connectDatabase } from "@/config/database";
+import QuestionModel, { IQuestion } from "@/models/QuestionModel";
+import { NextRequest, NextResponse } from "next/server";
+import CommentModel from "@/models/CommentModel";
 
 // Models: Question, User, Comment
-import '@/models/QuestionModel'
-import '@/models/UserModel'
-import '@/models/CommentModel'
+import "@/models/QuestionModel";
+import "@/models/UserModel";
+import "@/models/CommentModel";
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
 // [GET]: /question/:slug/detail
-export async function GET(req: NextRequest, { params: { id } }: { params: { id: string } }) {
-  console.log('- Get Question Detail Page - ')
+export async function GET(
+  req: NextRequest,
+  { params: { id } }: { params: { id: string } }
+) {
+  console.log("- Get Question Detail Page - ");
 
   try {
     // connect to database
-    await connectDatabase()
+    await connectDatabase();
 
     // get question
     const question: IQuestion | null = await QuestionModel.findOne({ slug: id })
       .populate({
-        path: 'userId',
+        path: "userId",
       })
-      .lean()
+      .lean();
 
     // check if question exists or not
     if (!question) {
-      return NextResponse.json({ message: 'Question not found' }, { status: 404 })
+      return NextResponse.json(
+        { message: "Không tìm thấy câu hỏi" },
+        { status: 404 }
+      );
     }
 
     // get comment of the current question
     let comments = await CommentModel.find({
       questionId: question._id,
     })
-      .populate('userId')
+      .populate("userId")
       .populate({
-        path: 'replied',
+        path: "replied",
         populate: {
-          path: 'userId',
+          path: "userId",
         },
         options: { sort: { likes: -1, createdAt: -1 }, limit: 6 },
       })
       .sort({ likes: -1, createdAt: -1 })
       .limit(8)
-      .lean()
+      .lean();
 
-    comments = comments.map(comment => ({
+    comments = comments.map((comment) => ({
       ...comment,
       userId: comment.userId._id,
       user: comment.userId,
@@ -55,11 +61,11 @@ export async function GET(req: NextRequest, { params: { id } }: { params: { id: 
         userId: reply.userId._id,
         user: reply.userId,
       })),
-    }))
+    }));
 
     // return question
-    return NextResponse.json({ question, comments }, { status: 200 })
+    return NextResponse.json({ question, comments }, { status: 200 });
   } catch (err: any) {
-    return NextResponse.json({ message: err.message }, { status: 500 })
+    return NextResponse.json({ message: err.message }, { status: 500 });
   }
 }
