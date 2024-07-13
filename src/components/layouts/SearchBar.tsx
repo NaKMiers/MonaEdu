@@ -3,6 +3,7 @@ import { setOpenSearchBar } from "@/libs/reducers/modalReducer";
 import { getCoursesApi, searchCoursesApi } from "@/requests";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { FaSearch } from "react-icons/fa";
@@ -15,6 +16,7 @@ function SearchBar() {
   // hook
   const dispatch = useAppDispatch();
   const open = useAppSelector((state) => state.modal.openSearchBar);
+  const pathname = usePathname();
 
   // search
   const [searchValue, setSearchValue] = useState<string>("");
@@ -78,8 +80,10 @@ function SearchBar() {
   return (
     <div
       className={`${
-        open ? "opacity-100" : "translate-y-full md:-translate-y-full opacity-0"
-      } absolute z-20 h-[72px] px-4 md:px-8 bg-dark-100 rounded-b-[40px] top-0 lg:static left-0 right-0 lg:opacity-100 lg:translate-y-0 flex items-center lg:max-w-[400px] xl:max-w-[500px] w-full trans-300`}
+        open
+          ? "opacity-100 bg-dark-100 lg:bg-transparent"
+          : "translate-y-full md:-translate-y-full opacity-0"
+      } absolute z-20 h-[72px] px-4 md:px-8 rounded-b-[40px] top-0 lg:static left-0 right-0 lg:opacity-100 lg:translate-y-0 flex items-center lg:max-w-[400px] xl:max-w-[500px] w-full trans-300`}
     >
       {/* Hide Button */}
       <button

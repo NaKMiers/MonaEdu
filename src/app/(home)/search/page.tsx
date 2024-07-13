@@ -2,11 +2,11 @@ import CourseCard from "@/components/CourseCard";
 import Divider from "@/components/Divider";
 import Pagination from "@/components/layouts/Pagination";
 import { ICourse } from "@/models/CourseModel";
-import { getFlashSalePageApi } from "@/requests";
+import { getSearchPageApi } from "@/requests";
 import { handleQuery } from "@/utils/handleQuery";
 import Link from "next/link";
 
-async function FlashSalePage({ searchParams }: { searchParams?: { [key: string]: string[] } }) {
+async function SearchPage({ searchParams }: { searchParams?: { [key: string]: string[] } }) {
   let courses: ICourse[] = [];
   let query: string = "";
   let amount: number = 0;
@@ -17,7 +17,7 @@ async function FlashSalePage({ searchParams }: { searchParams?: { [key: string]:
     query = handleQuery(searchParams);
 
     // cache: no-store for filter
-    const data = await getFlashSalePageApi(query);
+    const data = await getSearchPageApi(query);
 
     // destructure
     courses = data.courses;
@@ -31,7 +31,9 @@ async function FlashSalePage({ searchParams }: { searchParams?: { [key: string]:
       <Divider size={12} />
 
       {/* Heading */}
-      <h1 className='text-4xl font-semibold px-21 text-white text-center'>Đang Giảm Giá ({amount})</h1>
+      <h1 className='text-4xl font-semibold px-21 text-white text-center'>
+        Kết quả tìm kiếm {amount > 0 && <span>({amount})</span>}
+      </h1>
 
       <Divider size={18} />
 
@@ -44,12 +46,12 @@ async function FlashSalePage({ searchParams }: { searchParams?: { [key: string]:
         </div>
       ) : (
         <div className='font-body tracking-wider text-center text-light'>
-          <p className='italic'>Hiện không có khóa học nào đang giảm giá, vui lòng quay lại sau.</p>
+          <p className='italic'>Không có kết quả tìm kiếm nào, hãy thử lại với từ khóa khác hoặc </p>
           <Link
             href='/'
             className='text-sky-500 underline underline-offset-2 hover:text-sky-700 trans-200'
           >
-            Về trang chủ
+            về trang chủ
           </Link>
         </div>
       )}
@@ -64,4 +66,4 @@ async function FlashSalePage({ searchParams }: { searchParams?: { [key: string]:
   );
 }
 
-export default FlashSalePage;
+export default SearchPage;

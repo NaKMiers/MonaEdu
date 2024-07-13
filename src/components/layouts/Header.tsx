@@ -146,8 +146,9 @@ function Header({ className = "" }: HeaderProps) {
         {/* MARK: Nav */}
         <div className='flex-shrink-0 hidden md:flex items-center gap-4'>
           <button className='lg:hidden' onClick={() => dispatch(setOpenSearchBar(true))}>
-            <FaSearch size={20} className='text-slate-300' />
+            <FaSearch size={20} className='wiggle' />
           </button>
+
           {curUser ? (
             !!curUser._id && (
               <>

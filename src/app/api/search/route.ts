@@ -5,9 +5,9 @@ import { NextRequest, NextResponse } from "next/server";
 // Models: Course
 import "@/models/CourseModel";
 
-// [GET]: /course/search?search=...
+// [GET]: /search?key=value&...
 export async function GET(req: NextRequest) {
-  console.log("- Search -");
+  console.log("- Get Search Page -");
 
   try {
     // connect to database
@@ -51,8 +51,11 @@ export async function GET(req: NextRequest) {
     // find courses by category base on search params
     let courses: ICourse[] = await CourseModel.find(filter).sort(sort).lean();
 
+    // get amount of courses
+    const amount = await CourseModel.countDocuments(filter);
+
     // return response
-    return NextResponse.json({ courses }, { status: 200 });
+    return NextResponse.json({ courses, amount }, { status: 200 });
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 });
   }
