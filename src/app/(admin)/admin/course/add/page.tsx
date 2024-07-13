@@ -1,39 +1,40 @@
-'use client'
+'use client';
 
-import Divider from '@/components/Divider'
-import Input from '@/components/Input'
-import LoadingButton from '@/components/LoadingButton'
-import AdminHeader from '@/components/admin/AdminHeader'
-import CategoryItem from '@/components/admin/CategoryItem'
-import { languages } from '@/constants/languages'
-import { useAppDispatch, useAppSelector } from '@/libs/hooks'
-import { setLoading } from '@/libs/reducers/modalReducer'
-import { ICategory } from '@/models/CategoryModel'
-import { ITag } from '@/models/TagModel'
-import { addCourseApi, getForceAllCategoriesApi, getForceAllTagsApi } from '@/requests'
-import Image from 'next/image'
-import { Fragment, useCallback, useEffect, useState } from 'react'
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
-import toast from 'react-hot-toast'
-import { FaFile, FaMoneyBillAlt, FaUser } from 'react-icons/fa'
-import { FaPlay, FaX } from 'react-icons/fa6'
-import { MdNumbers } from 'react-icons/md'
-import { RiCharacterRecognitionLine } from 'react-icons/ri'
+import Divider from '@/components/Divider';
+import Input from '@/components/Input';
+import LoadingButton from '@/components/LoadingButton';
+import AdminHeader from '@/components/admin/AdminHeader';
+import CategoryItem from '@/components/admin/CategoryItem';
+import { languages } from '@/constants/languages';
+import { useAppDispatch, useAppSelector } from '@/libs/hooks';
+import { setLoading } from '@/libs/reducers/modalReducer';
+import { ICategory } from '@/models/CategoryModel';
+import { ITag } from '@/models/TagModel';
+import { addCourseApi, getForceAllCategoriesApi, getForceAllTagsApi } from '@/requests';
+import Image from 'next/image';
+import { Fragment, useCallback, useEffect, useState } from 'react';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import { FaFile, FaMoneyBillAlt, FaUser } from 'react-icons/fa';
+import { FaPlay, FaX } from 'react-icons/fa6';
+import { MdNumbers } from 'react-icons/md';
+import { RiCharacterRecognitionLine } from 'react-icons/ri';
 
 function AddCoursePage() {
   // hooks
-  const dispatch = useAppDispatch()
-  const isLoading = useAppSelector(state => state.modal.isLoading)
+  const dispatch = useAppDispatch();
+  const isLoading = useAppSelector((state) => state.modal.isLoading);
 
   // states
-  const [tags, setTags] = useState<ITag[]>([])
-  const [selectedTags, setSelectedTags] = useState<string[]>([])
-  const [categories, setCategories] = useState<ICategory[]>([])
-  const [selectedCategory, setSelectedCategory] = useState<string>('')
-  const [isChecked, setIsChecked] = useState<boolean>(true)
+  const [tags, setTags] = useState<ITag[]>([]);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [categories, setCategories] = useState<ICategory[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [isActiveChecked, setIsActiveChecked] = useState<boolean>(true);
+  const [isBootedChecked, setIsBootedChecked] = useState<boolean>(false);
 
-  const [imageUrls, setImageUrls] = useState<string[]>([])
-  const [files, setFiles] = useState<File[]>([])
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
+  const [files, setFiles] = useState<File[]>([]);
 
   // Form
   const {
@@ -52,165 +53,167 @@ function AddCoursePage() {
       textHook: '',
       description: '',
       active: true,
+      booted: false,
       languages: ['en'],
     },
-  })
+  });
 
   // get tags and categories
   useEffect(() => {
     const getTags = async () => {
       try {
         // send request to server to get all tags
-        const { tags } = await getForceAllTagsApi() // cache: no-store
-        setTags(tags)
+        const { tags } = await getForceAllTagsApi(); // cache: no-store
+        setTags(tags);
       } catch (err: any) {
-        console.log(err)
-        toast.error(err.message)
+        console.log(err);
+        toast.error(err.message);
       }
-    }
+    };
 
     const getCategories = async () => {
       try {
         // send request to server to get all categories
-        const { categories } = await getForceAllCategoriesApi() // cache: no-store
-        setCategories(categories)
+        const { categories } = await getForceAllCategoriesApi(); // cache: no-store
+        setCategories(categories);
       } catch (err: any) {
-        console.log(err)
-        toast.error(err.message)
+        console.log(err);
+        toast.error(err.message);
       }
-    }
-    getTags()
-    getCategories()
-  }, [])
+    };
+    getTags();
+    getCategories();
+  }, []);
 
   // revoke blob url when component unmount
   useEffect(() => {
     return () => {
-      imageUrls.forEach(url => URL.revokeObjectURL(url))
-    }
-  }, [imageUrls])
+      imageUrls.forEach((url) => URL.revokeObjectURL(url));
+    };
+  }, [imageUrls]);
 
   // handle add files when user select files
   const handleAddFiles = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      let newFiles = Array.from(e.target.files)
+      let newFiles = Array.from(e.target.files);
 
       // validate files's type and size
-      newFiles = newFiles.filter(file => {
+      newFiles = newFiles.filter((file) => {
         if (!file.type.startsWith('image/')) {
-          toast.error(`File ${file.name} is not an image file`)
-          return false
+          toast.error(`File ${file.name} is not an image file`);
+          return false;
         }
         if (file.size > 5 * 1024 * 1024) {
-          toast.error(`File ${file.name} is too large. Only accept images under 5MB`)
-          return false
+          toast.error(`File ${file.name} is too large. Only accept images under 5MB`);
+          return false;
         }
-        return true
-      })
+        return true;
+      });
 
-      setFiles(prev => [...prev, ...newFiles])
+      setFiles((prev) => [...prev, ...newFiles]);
 
-      const urls = newFiles.map(file => URL.createObjectURL(file))
-      setImageUrls(prev => [...prev, ...urls])
+      const urls = newFiles.map((file) => URL.createObjectURL(file));
+      setImageUrls((prev) => [...prev, ...urls]);
 
-      e.target.value = ''
-      e.target.files = null
+      e.target.value = '';
+      e.target.files = null;
     }
-  }, [])
+  }, []);
 
   // handle remove image
   const handleRemoveImage = useCallback(
     (url: string) => {
-      const index = imageUrls.indexOf(url)
+      const index = imageUrls.indexOf(url);
 
       // remove file from files
-      const newFiles = files.filter((_, i) => i !== index)
-      setFiles(newFiles)
+      const newFiles = files.filter((_, i) => i !== index);
+      setFiles(newFiles);
 
-      setImageUrls(prev => prev.filter(u => u !== url))
-      URL.revokeObjectURL(url)
+      setImageUrls((prev) => prev.filter((u) => u !== url));
+      URL.revokeObjectURL(url);
     },
     [files, imageUrls]
-  )
+  );
 
   // validate form
   const handleValidate: SubmitHandler<FieldValues> = useCallback(
-    data => {
-      let isValid = true
+    (data) => {
+      let isValid = true;
 
       // price >= 0
       if (data.price < 0) {
-        setError('price', { type: 'manual', message: 'Price must be >= 0' })
+        setError('price', { type: 'manual', message: 'Price must be >= 0' });
 
-        isValid = false
+        isValid = false;
       }
 
       if (data.oldPrice && data.oldPrice < 0) {
-        setError('oldPrice', { type: 'manual', message: 'Old price must be >= 0' })
-        isValid = false
+        setError('oldPrice', { type: 'manual', message: 'Old price must be >= 0' });
+        isValid = false;
       }
 
       if (!selectedTags.length) {
-        toast.error('Please select at least 1 tag')
-        isValid = false
+        toast.error('Please select at least 1 tag');
+        isValid = false;
       }
 
       if (!selectedCategory) {
-        toast.error('Please selectcategory')
-        isValid = false
+        toast.error('Please selectcategory');
+        isValid = false;
       }
 
       if (!files.length) {
-        toast.error('Please select at least 1 image')
-        isValid = false
+        toast.error('Please select at least 1 image');
+        isValid = false;
       }
 
-      return isValid
+      return isValid;
     },
     [setError, selectedCategory, selectedTags, files]
-  )
+  );
 
   // send data to server to create new course
-  const onSubmit: SubmitHandler<FieldValues> = async data => {
-    if (!handleValidate(data)) return
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    if (!handleValidate(data)) return;
 
-    dispatch(setLoading(true))
+    dispatch(setLoading(true));
 
     try {
-      const formData = new FormData()
+      const formData = new FormData();
 
-      formData.append('title', data.title)
-      formData.append('price', data.price)
-      formData.append('oldPrice', data.oldPrice)
-      formData.append('author', data.author)
-      formData.append('description', data.description)
-      formData.append('active', data.active)
-      formData.append('textHook', data.textHook)
-      formData.append('languages', JSON.stringify(data.languages))
-      formData.append('tags', JSON.stringify(selectedTags))
-      formData.append('category', selectedCategory)
-      files.forEach(file => formData.append('images', file))
+      formData.append('title', data.title);
+      formData.append('price', data.price);
+      formData.append('oldPrice', data.oldPrice);
+      formData.append('author', data.author);
+      formData.append('description', data.description);
+      formData.append('active', data.active);
+      formData.append('booted', data.booted);
+      formData.append('textHook', data.textHook);
+      formData.append('languages', JSON.stringify(data.languages));
+      formData.append('tags', JSON.stringify(selectedTags));
+      formData.append('category', selectedCategory);
+      files.forEach((file) => formData.append('images', file));
 
       // send request to server to create new course
-      const { message } = await addCourseApi(formData)
+      const { message } = await addCourseApi(formData);
 
       // show success message
-      toast.success(message)
+      toast.success(message);
 
       // reset form
-      setFiles([])
-      imageUrls.forEach(url => URL.revokeObjectURL(url))
-      setImageUrls([])
-      setSelectedTags([])
-      setSelectedCategory('')
-      reset()
+      setFiles([]);
+      imageUrls.forEach((url) => URL.revokeObjectURL(url));
+      setImageUrls([]);
+      setSelectedTags([]);
+      setSelectedCategory('');
+      reset();
     } catch (err: any) {
-      console.log(err)
-      toast.error(err.message)
+      console.log(err);
+      toast.error(err.message);
     } finally {
-      dispatch(setLoading(false))
+      dispatch(setLoading(false));
     }
-  }
+  };
 
   return (
     <div className='max-w-1200 mx-auto'>
@@ -325,14 +328,30 @@ function AddCoursePage() {
           </div>
           <label
             className={`select-none cursor-pointer border border-green-500 px-4 py-2 rounded-lg trans-200  ${
-              isChecked ? 'bg-green-500 text-white' : 'bg-white text-green-500'
+              isActiveChecked ? 'bg-green-500 text-white' : 'bg-white text-green-500'
             }`}
             htmlFor='active'
-            onClick={() => setIsChecked(!isChecked)}
+            onClick={() => setIsActiveChecked(!isActiveChecked)}
           >
             Active
           </label>
           <input type='checkbox' id='active' hidden {...register('active', { required: false })} />
+        </div>
+
+        <div className='flex mb-4'>
+          <div className='bg-white rounded-lg px-3 flex items-center'>
+            <FaPlay size={16} className='text-secondary' />
+          </div>
+          <label
+            className={`select-none cursor-pointer border border-green-500 px-4 py-2 rounded-lg trans-200  ${
+              isBootedChecked ? 'bg-green-500 text-white' : 'bg-white text-green-500'
+            }`}
+            htmlFor='booted'
+            onClick={() => setIsBootedChecked(!isBootedChecked)}
+          >
+            Boot
+          </label>
+          <input type='checkbox' id='booted' hidden {...register('booted', { required: false })} />
         </div>
 
         {/* Tags */}
@@ -340,12 +359,12 @@ function AddCoursePage() {
           <p className='text-dark font-semibold text-xl mb-1'>Select Tags</p>
 
           <div className='p-2 rounded-lg flex flex-wrap items-center bg-white gap-2'>
-            {tags.map(tag => (
+            {tags.map((tag) => (
               <Fragment key={tag._id}>
                 <input
-                  onChange={e =>
-                    setSelectedTags(prev =>
-                      e.target.checked ? [...prev, tag._id] : prev.filter(t => t !== tag._id)
+                  onChange={(e) =>
+                    setSelectedTags((prev) =>
+                      e.target.checked ? [...prev, tag._id] : prev.filter((t) => t !== tag._id)
                     )
                   }
                   hidden
@@ -354,7 +373,7 @@ function AddCoursePage() {
                 />
                 <label
                   className={`cursor-pointer select-none rounded-lg border border-green-500 text-green-500 py-[6px] px-3 trans-200 ${
-                    selectedTags.some(t => t === tag._id) ? 'bg-green-500 text-white' : ''
+                    selectedTags.some((t) => t === tag._id) ? 'bg-green-500 text-white' : ''
                   }`}
                   htmlFor={tag._id}
                 >
@@ -370,7 +389,7 @@ function AddCoursePage() {
           <p className='text-dark font-semibold text-xl mb-1'>Select Categories</p>
 
           <div className='flex flex-col gap-2'>
-            {categories.map(category => (
+            {categories.map((category) => (
               <CategoryItem
                 data={category}
                 setCategories={setCategories}
@@ -414,7 +433,7 @@ function AddCoursePage() {
 
         {!!imageUrls.length && (
           <div className='flex flex-wrap gap-3 rounded-lg bg-white p-3 mb-5'>
-            {imageUrls.map(url => (
+            {imageUrls.map((url) => (
               <div className='relative aspect-video max-w-[250px]' key={url}>
                 <Image
                   className='rounded-lg w-full h-full object-cover'
@@ -443,7 +462,7 @@ function AddCoursePage() {
         />
       </div>
     </div>
-  )
+  );
 }
 
-export default AddCoursePage
+export default AddCoursePage;

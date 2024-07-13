@@ -1,26 +1,26 @@
-'use client'
-import Divider from '@/components/Divider'
-import Input from '@/components/Input'
-import BottomGradient from '@/components/gradients/BottomGradient'
-import { resetPassword } from '@/requests'
-import { signIn } from 'next-auth/react'
-import Image from 'next/image'
-import Link from 'next/link'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { useCallback, useEffect, useState } from 'react'
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
-import toast from 'react-hot-toast'
-import { FaCircleNotch } from 'react-icons/fa'
+"use client";
+import Divider from "@/components/Divider";
+import Input from "@/components/Input";
+import BottomGradient from "@/components/gradients/BottomGradient";
+import { resetPassword } from "@/requests";
+import { signIn } from "next-auth/react";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { FaCircleNotch } from "react-icons/fa";
 
 function ResetPasswordPage() {
-  document.title = 'Đặt lại mật khẩu - MonaEdu'
+  document.title = "Đặt lại mật khẩu - MonaEdu";
 
   // hooks
-  const router = useRouter()
-  const queryParams = useSearchParams()
+  const router = useRouter();
+  const queryParams = useSearchParams();
 
   // states
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // form
   const {
@@ -31,92 +31,95 @@ function ResetPasswordPage() {
     clearErrors,
   } = useForm<FieldValues>({
     defaultValues: {
-      newPassword: '',
-      reNewPassword: '',
+      newPassword: "",
+      reNewPassword: "",
     },
-  })
+  });
 
   useEffect(() => {
     // MARK: Check if token is not provided
-    if (!queryParams.get('token')) {
-      toast.error('Không có token')
-      router.push('/auth/login')
+    if (!queryParams.get("token")) {
+      toast.error("Không có token");
+      router.push("/auth/login");
     }
-  }, [queryParams, router])
+  }, [queryParams, router]);
 
   // validate form
   const handleValidate: SubmitHandler<FieldValues> = useCallback(
-    data => {
-      let isValid = true
+    (data) => {
+      let isValid = true;
 
       // password must be at least 6 characters and contain at least 1 lowercase, 1 uppercase, 1 number
       if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/.test(data.newPassword)) {
-        setError('newPassword', {
-          type: 'manual',
+        setError("newPassword", {
+          type: "manual",
           message:
-            'Mật khẩu mới phải có ít nhất 6 kí tự và bao gồm ít nhất 1 chữ hoa, 1 chữ thường, 1 chữ số',
-        })
-        isValid = false
+            "Mật khẩu mới phải có ít nhất 6 kí tự và bao gồm ít nhất 1 chữ hoa, 1 chữ thường, 1 chữ số",
+        });
+        isValid = false;
       }
 
       // check if new password and re-new password are match
       if (data.newPassword !== data.reNewPassword) {
-        setError('reNewPassword', { type: 'manual', message: 'Mật khẩu không khớp' }) // add this line
-        isValid = false
+        setError("reNewPassword", { type: "manual", message: "Mật khẩu không khớp" }); // add this line
+        isValid = false;
       }
 
-      return isValid
+      return isValid;
     },
     [setError]
-  )
+  );
 
   // MARK: Reset Password Submition
   const onSubmit: SubmitHandler<FieldValues> = useCallback(
-    async data => {
+    async (data) => {
       // validate form
-      if (!handleValidate(data)) return
+      if (!handleValidate(data)) return;
 
       // start loading
-      setIsLoading(true)
+      setIsLoading(true);
 
       try {
         // get email and token from query
-        const token = queryParams.get('token')
+        const token = queryParams.get("token");
 
         // send request to server
-        const { message } = await resetPassword(token!, data.newPassword)
+        const { message } = await resetPassword(token!, data.newPassword);
 
         // show success message
-        toast.success(message)
+        toast.success(message);
 
         // redirect to login page
-        router.push('/auth/login')
+        router.push("/auth/login");
       } catch (err: any) {
         // show error message
-        toast.error(err.message)
-        console.log(err)
+        toast.error(err.message);
+        console.log(err);
       } finally {
         // reset loading state
-        setIsLoading(false)
+        setIsLoading(false);
       }
     },
     [handleValidate, router, queryParams]
-  )
+  );
 
   // keyboard event
   useEffect(() => {
-    const handleKeydown = (e: KeyboardEvent) => {
-      if (e.key === 'Enter') {
-        handleSubmit(onSubmit)()
-      }
-    }
+    // set page title
+    document.title = "Khôi phục mật khẩu - Mona Edu";
 
-    window.addEventListener('keydown', handleKeydown)
+    const handleKeydown = (e: KeyboardEvent) => {
+      if (e.key === "Enter") {
+        handleSubmit(onSubmit)();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeydown);
 
     return () => {
-      window.removeEventListener('keydown', handleKeydown)
-    }
-  }, [handleSubmit, onSubmit])
+      window.removeEventListener("keydown", handleKeydown);
+    };
+  }, [handleSubmit, onSubmit]);
 
   return (
     <div className='relative flex items-center justify-center px-2 lg:block bg-neutral-800 h-screen w-full lg:px-[46px] lg:py-[52px] overflow-hidden'>
@@ -190,7 +193,7 @@ function ResetPasswordPage() {
           required
           type='password'
           className='min-w-[40%]'
-          onFocus={() => clearErrors('newPassword')}
+          onFocus={() => clearErrors("newPassword")}
         />
 
         <Input
@@ -202,7 +205,7 @@ function ResetPasswordPage() {
           required
           type='password'
           className='min-w-[40%] mt-6'
-          onFocus={() => clearErrors('password')}
+          onFocus={() => clearErrors("password")}
         />
 
         <div className='flex justify-end'>
@@ -221,7 +224,7 @@ function ResetPasswordPage() {
             onClick={handleSubmit(onSubmit)}
             disabled={isLoading}
             className={`group relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50  ${
-              isLoading ? 'bg-slate-200 pointer-events-none' : ''
+              isLoading ? "bg-slate-200 pointer-events-none" : ""
             }`}
           >
             <span className='absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]' />
@@ -229,7 +232,7 @@ function ResetPasswordPage() {
               {isLoading ? (
                 <FaCircleNotch size={18} className='text-slate-400 trans-200 animate-spin' />
               ) : (
-                'Đặt lại'
+                "Đặt lại"
               )}
             </span>
           </button>
@@ -238,7 +241,7 @@ function ResetPasswordPage() {
         <Divider size={10} />
 
         <p className='font-semibold text-center'>
-          Bạn chưa có tài khoản?{' '}
+          Bạn chưa có tài khoản?{" "}
           <Link href='/auth/register' className='underline underline-offset-2'>
             Đăng ký ngay
           </Link>
@@ -265,7 +268,7 @@ function ResetPasswordPage() {
                 alt='github'
               />
             </div>
-            <span className='font-semibold text-sm' onClick={() => signIn('github')}>
+            <span className='font-semibold text-sm' onClick={() => signIn("github")}>
               Đăng ký với GitHub
             </span>
             <BottomGradient />
@@ -281,7 +284,7 @@ function ResetPasswordPage() {
                 alt='github'
               />
             </div>
-            <span className='font-semibold text-sm' onClick={() => signIn('google')}>
+            <span className='font-semibold text-sm' onClick={() => signIn("google")}>
               Đăng ký với Google
             </span>
             <BottomGradient />
@@ -291,6 +294,6 @@ function ResetPasswordPage() {
         <Divider size={8} />
       </div>
     </div>
-  )
+  );
 }
-export default ResetPasswordPage
+export default ResetPasswordPage;

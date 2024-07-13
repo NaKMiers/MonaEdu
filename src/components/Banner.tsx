@@ -1,113 +1,113 @@
-'use client'
+'use client';
 
-import { useAppDispatch } from '@/libs/hooks'
-import { addCartItem } from '@/libs/reducers/cartReducer'
-import { setPageLoading } from '@/libs/reducers/modalReducer'
-import { ICategory } from '@/models/CategoryModel'
-import { ICourse } from '@/models/CourseModel'
-import { addToCartApi } from '@/requests'
-import { useSession } from 'next-auth/react'
-import Image from 'next/image'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { useCallback, useEffect, useRef } from 'react'
-import toast from 'react-hot-toast'
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
+import { useAppDispatch } from '@/libs/hooks';
+import { addCartItem } from '@/libs/reducers/cartReducer';
+import { setPageLoading } from '@/libs/reducers/modalReducer';
+import { ICategory } from '@/models/CategoryModel';
+import { ICourse } from '@/models/CourseModel';
+import { addToCartApi } from '@/requests';
+import { useSession } from 'next-auth/react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useCallback, useEffect, useRef } from 'react';
+import toast from 'react-hot-toast';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 interface BannerProps {
-  courses: ICourse[]
-  className?: string
+  courses: ICourse[];
+  className?: string;
 }
 
 function Banner({ courses, className = '' }: BannerProps) {
   // hooks
-  const dispatch = useAppDispatch()
-  const { data: session } = useSession()
-  const curUser: any = session?.user
-  const router = useRouter()
+  const dispatch = useAppDispatch();
+  const { data: session } = useSession();
+  const curUser: any = session?.user;
+  const router = useRouter();
 
   // ref
-  const carouselRef = useRef<HTMLDivElement>(null)
-  const listRef = useRef<HTMLDivElement>(null)
-  const thumbnailsRef = useRef<HTMLDivElement>(null)
-  const timeout = useRef<any>(null)
-  const interval = useRef<any>(null)
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
+  const thumbnailsRef = useRef<HTMLDivElement>(null);
+  const timeout = useRef<any>(null);
+  const interval = useRef<any>(null);
 
   // values
-  const time = 2000
+  const time = 2000;
 
   // methods
   const handleSlide = useCallback((type: 'prev' | 'next') => {
-    if (!carouselRef.current || !listRef.current || !thumbnailsRef.current) return
-    clearInterval(interval.current)
-    const slideItems = listRef.current.children
-    const thumbItems = thumbnailsRef.current.children
+    if (!carouselRef.current || !listRef.current || !thumbnailsRef.current) return;
+    clearInterval(interval.current);
+    const slideItems = listRef.current.children;
+    const thumbItems = thumbnailsRef.current.children;
 
     if (type === 'next') {
-      listRef.current?.appendChild(slideItems[0])
-      thumbnailsRef.current?.appendChild(thumbItems[0])
-      carouselRef.current?.classList.add('next')
+      listRef.current?.appendChild(slideItems[0]);
+      thumbnailsRef.current?.appendChild(thumbItems[0]);
+      carouselRef.current?.classList.add('next');
     } else {
-      listRef.current?.prepend(slideItems[slideItems.length - 1])
-      thumbnailsRef.current?.prepend(thumbItems[thumbItems.length - 1])
-      carouselRef.current?.classList.add('prev')
+      listRef.current?.prepend(slideItems[slideItems.length - 1]);
+      thumbnailsRef.current?.prepend(thumbItems[thumbItems.length - 1]);
+      carouselRef.current?.classList.add('prev');
     }
 
     // timeout
-    clearTimeout(timeout.current)
+    clearTimeout(timeout.current);
     setTimeout(() => {
-      carouselRef.current?.classList.remove('prev')
-      carouselRef.current?.classList.remove('next')
-    }, time)
-  }, [])
+      carouselRef.current?.classList.remove('prev');
+      carouselRef.current?.classList.remove('next');
+    }, time);
+  }, []);
 
   const prevSlide = useCallback(() => {
-    handleSlide('prev')
-  }, [handleSlide])
+    handleSlide('prev');
+  }, [handleSlide]);
 
   const nextSlide = useCallback(() => {
-    handleSlide('next')
-  }, [handleSlide])
+    handleSlide('next');
+  }, [handleSlide]);
 
   // auto slide
   useEffect(() => {
     setTimeout(() => {
       interval.current = setInterval(() => {
-        nextSlide()
-      }, time * 5)
-    }, time * 2)
-  }, [nextSlide])
+        nextSlide();
+      }, time * 5);
+    }, time * 2);
+  }, [nextSlide]);
 
   // MARK: Buy
   // handle buy now (add to cart and move to cart page)
   const buyNow = useCallback(
     async (course: ICourse) => {
       // start page loading
-      dispatch(setPageLoading(true))
+      dispatch(setPageLoading(true));
 
       try {
         // send request to add course to cart
-        const { cartItem, message } = await addToCartApi(course._id)
+        const { cartItem, message } = await addToCartApi(course._id);
 
         // show toast success
-        toast.success(message)
+        toast.success(message);
 
         // add cart items to state
-        dispatch(addCartItem(cartItem))
+        dispatch(addCartItem(cartItem));
 
         // move to cart page
-        router.push(`/cart?course=${course.slug}`)
+        router.push(`/cart?course=${course.slug}`);
       } catch (err: any) {
-        console.log(err)
-        toast.error(err.message)
-        router.push(`/cart?course=${course.slug}`)
+        console.log(err);
+        toast.error(err.message);
+        router.push(`/cart?course=${course.slug}`);
       } finally {
         // stop page loading
-        dispatch(setPageLoading(false))
+        dispatch(setPageLoading(false));
       }
     },
     [dispatch, router]
-  )
+  );
 
   return (
     <div
@@ -116,9 +116,9 @@ function Banner({ courses, className = '' }: BannerProps) {
     >
       {/* List Items */}
       <div className='list' ref={listRef}>
-        {courses.map(course => (
+        {courses.map((course) => (
           <div className='item absolute inset-0 ' key={course._id}>
-            <div className='w-full h-full bg-white'>
+            <div className='w-full h-full'>
               <Image
                 className='img w-full h-full object-cover brightness-[0.8]'
                 src={course.images[0]}
@@ -149,11 +149,11 @@ function Banner({ courses, className = '' }: BannerProps) {
                   CHI TIẾT
                 </Link>
                 <button
-                  onClick={e => {
+                  onClick={(e) => {
                     if (curUser?.courses.map((course: any) => course.course).includes(course._id)) {
-                      router.push(`/learning/${course?.slug}/continue`)
+                      router.push(`/learning/${course?.slug}/continue`);
                     } else {
-                      buyNow(course)
+                      buyNow(course);
                     }
                   }}
                   className='h-10 flex items-center justify-center px-2 shadow-md text-white border-2 border-white font-semibold font-body tracking-wider rounded-md hover:bg-white hover:text-dark trans-200'
@@ -175,7 +175,7 @@ function Banner({ courses, className = '' }: BannerProps) {
           className='thumbnails absolute bottom-[50px] left-1/2 z-10 flex gap-21 text-white'
           ref={thumbnailsRef}
         >
-          {[...courses.slice(1), courses[0]].map(course => (
+          {[...courses.slice(1), courses[0]].map((course) => (
             <div
               className='item relative w-[150px] h-[220px] flex-shrink-0 overflow-hidden rounded-medium'
               key={course._id}
@@ -214,7 +214,7 @@ function Banner({ courses, className = '' }: BannerProps) {
       {/* Duration */}
       <div className='time w-0 h-1 bg-sky-500 absolute top-0 left-0 z-10' />
     </div>
-  )
+  );
 }
 
-export default Banner
+export default Banner;

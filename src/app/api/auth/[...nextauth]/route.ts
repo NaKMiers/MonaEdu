@@ -153,8 +153,8 @@ const handler = NextAuth({
             return true;
           }
 
-          // create new user with google information (auto verified email)
-          const newUser = new UserModel({
+          // create new user with social information (auto verified email)
+          await UserModel.create({
             email,
             avatar,
             firstName,
@@ -162,8 +162,6 @@ const handler = NextAuth({
             authType: account.provider,
             verifiedEmail: true,
           });
-
-          await newUser.save();
         }
 
         return true;

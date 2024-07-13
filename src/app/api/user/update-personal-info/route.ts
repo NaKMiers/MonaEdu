@@ -1,14 +1,14 @@
-import { connectDatabase } from "@/config/database";
-import UserModel from "@/models/UserModel";
-import { getToken } from "next-auth/jwt";
-import { NextRequest, NextResponse } from "next/server";
+import { connectDatabase } from '@/config/database';
+import UserModel from '@/models/UserModel';
+import { getToken } from 'next-auth/jwt';
+import { NextRequest, NextResponse } from 'next/server';
 
 // Models: User
-import "@/models/UserModel";
+import '@/models/UserModel';
 
 // [PUT]: /user/update-personal-info
 export async function PUT(req: NextRequest) {
-  console.log("- Update Personal Information -");
+  console.log('- Update Personal Information -');
 
   try {
     // connect to database
@@ -20,10 +20,7 @@ export async function PUT(req: NextRequest) {
 
     // check userId
     if (!userId) {
-      return NextResponse.json(
-        { message: "Xác thực thất bại" },
-        { status: 401 }
-      );
+      return NextResponse.json({ message: 'Xác thực thất bại' }, { status: 401 });
     }
 
     // get data to update personal info
@@ -41,10 +38,7 @@ export async function PUT(req: NextRequest) {
     });
 
     // return response
-    return NextResponse.json(
-      { message: "Đã cập nhật thông thành công" },
-      { status: 200 }
-    );
+    return NextResponse.json({ message: 'Đã cập nhật thông thành công' }, { status: 200 });
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 });
   }

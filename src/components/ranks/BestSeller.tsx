@@ -1,15 +1,15 @@
-import { ICourse } from '@/models/CourseModel'
-import Image from 'next/image'
-import BestSellerCard from './BestSellerCard'
-import Divider from './Divider'
-import Heading from './Heading'
+import { ICourse } from "@/models/CourseModel";
+import Image from "next/image";
+import BestSellerCard from "../BestSellerCard";
+import Divider from "../Divider";
+import Heading from "../Heading";
 
 interface BestSellerProps {
-  courses: ICourse[]
-  className?: string
+  courses: ICourse[];
+  className?: string;
 }
 
-function BestSeller({ courses, className = '' }: BestSellerProps) {
+function BestSeller({ courses, className = "" }: BestSellerProps) {
   return (
     <div className={`max-w-1200 mx-auto px-21 ${className}`}>
       <div className='flex items-center justify-center'>
@@ -24,17 +24,17 @@ function BestSeller({ courses, className = '' }: BestSellerProps) {
 
       <Divider size={12} />
 
-      <Heading title='Best Seller' />
+      <Heading title='Khóa học bán chạy' />
 
-      <Divider size={12} />
+      <Divider size={16} />
 
-      <div className='grid grid-cols-2 md:grid-cols-4 gap-21'>
+      <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-21'>
         {courses.map((course, index) => (
           <BestSellerCard course={course} index={index} key={course._id} />
         ))}
       </div>
     </div>
-  )
+  );
 }
 
-export default BestSeller
+export default BestSeller;

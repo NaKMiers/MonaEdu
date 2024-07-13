@@ -1,57 +1,57 @@
-'use client'
+'use client';
 
-import Input from '@/components/Input'
-import AdminHeader from '@/components/admin/AdminHeader'
-import AdminMeta from '@/components/admin/AdminMeta'
-import CourseItem from '@/components/admin/CourseItem'
-import ConfirmDialog from '@/components/dialogs/ConfirmDialog'
-import Pagination from '@/components/layouts/Pagination'
-import { useAppDispatch } from '@/libs/hooks'
-import { setPageLoading } from '@/libs/reducers/modalReducer'
-import { ICategory } from '@/models/CategoryModel'
-import { ICourse } from '@/models/CourseModel'
-import { ITag } from '@/models/TagModel'
+import Input from '@/components/Input';
+import AdminHeader from '@/components/admin/AdminHeader';
+import AdminMeta from '@/components/admin/AdminMeta';
+import CourseItem from '@/components/admin/CourseItem';
+import ConfirmDialog from '@/components/dialogs/ConfirmDialog';
+import Pagination from '@/components/layouts/Pagination';
+import { useAppDispatch } from '@/libs/hooks';
+import { setPageLoading } from '@/libs/reducers/modalReducer';
+import { ICourse } from '@/models/CourseModel';
+import { ITag } from '@/models/TagModel';
 import {
   activateCoursesApi,
+  bootCoursesApi,
   deleteCoursesApi,
   getAllCoursesApi,
   removeApplyingFlashSalesApi,
-} from '@/requests'
-import { handleQuery } from '@/utils/handleQuery'
-import { formatPrice } from '@/utils/number'
-import { Slider } from '@mui/material'
-import { usePathname, useRouter } from 'next/navigation'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
-import toast from 'react-hot-toast'
-import { FaSort } from 'react-icons/fa'
+} from '@/requests';
+import { handleQuery } from '@/utils/handleQuery';
+import { formatPrice } from '@/utils/number';
+import { Slider } from '@mui/material';
+import { usePathname, useRouter } from 'next/navigation';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import { FaSort } from 'react-icons/fa';
 
 function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: string[] | string } }) {
   // store
-  const dispatch = useAppDispatch()
-  const pathname = usePathname()
-  const router = useRouter()
+  const dispatch = useAppDispatch();
+  const pathname = usePathname();
+  const router = useRouter();
 
   // states
-  const [courses, setCourses] = useState<ICourse[]>([])
-  const [amount, setAmount] = useState<number>(0)
-  const [selectedCourses, setSelectedCourses] = useState<string[]>([])
-  const [tgs, setTgs] = useState<ITag[]>([])
-  const [selectedFilterTags, setSelectedFilterTags] = useState<string[]>([])
+  const [courses, setCourses] = useState<ICourse[]>([]);
+  const [amount, setAmount] = useState<number>(0);
+  const [selectedCourses, setSelectedCourses] = useState<string[]>([]);
+  const [tgs, setTgs] = useState<ITag[]>([]);
+  const [selectedFilterTags, setSelectedFilterTags] = useState<string[]>([]);
 
   // loading and confirming
-  const [loadingCourses, setLoadingCourses] = useState<string[]>([])
-  const [isOpenConfirmModal, setIsOpenConfirmModal] = useState<boolean>(false)
+  const [loadingCourses, setLoadingCourses] = useState<string[]>([]);
+  const [isOpenConfirmModal, setIsOpenConfirmModal] = useState<boolean>(false);
 
   // values
-  const itemPerPage = 9
-  const [minPrice, setMinPrice] = useState<number>(0)
-  const [maxPrice, setMaxPrice] = useState<number>(0)
-  const [price, setPrice] = useState<number[]>([0, 0])
+  const itemPerPage = 9;
+  const [minPrice, setMinPrice] = useState<number>(0);
+  const [maxPrice, setMaxPrice] = useState<number>(0);
+  const [price, setPrice] = useState<number[]>([0, 0]);
 
-  const [minSold, setMinSold] = useState<number>(0)
-  const [maxSold, setMaxSold] = useState<number>(0)
-  const [sold, setSold] = useState<number[]>([0, 0])
+  const [minSold, setMinSold] = useState<number>(0);
+  const [maxSold, setMaxSold] = useState<number>(0);
+  const [sold, setSold] = useState<number[]>([0, 0]);
 
   // Form
   const defaultValues = useMemo<FieldValues>(
@@ -61,7 +61,7 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
       flashSale: '',
     }),
     []
-  )
+  );
   const {
     register,
     handleSubmit,
@@ -72,153 +72,178 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
     clearErrors,
   } = useForm<FieldValues>({
     defaultValues,
-  })
+  });
 
   // get all courses
   useEffect(() => {
     // get all courses
     const getAllCourses = async () => {
-      const query = handleQuery(searchParams)
+      const query = handleQuery(searchParams);
 
       // start page loading
-      dispatch(setPageLoading(true))
+      dispatch(setPageLoading(true));
 
       try {
         // send request to server to get all courses
-        const { courses, amount, tgs, chops } = await getAllCoursesApi(query)
+        const { courses, amount, tgs, chops } = await getAllCoursesApi(query);
 
         // set courses to state
-        setCourses(courses)
-        setAmount(amount)
-        setTgs(tgs)
+        setCourses(courses);
+        setAmount(amount);
+        setTgs(tgs);
 
         setSelectedFilterTags(
-          [].concat((searchParams?.tags || tgs.map((tag: ITag) => tag._id)) as []).map(type => type)
-        )
+          [].concat((searchParams?.tags || tgs.map((tag: ITag) => tag._id)) as []).map((type) => type)
+        );
 
         // sync search params with states
-        setValue('sort', searchParams?.sort || getValues('sort'))
-        setValue('active', searchParams?.active || getValues('active'))
-        setValue('flashSale', searchParams?.flashSale || getValues('flashSale'))
+        setValue('sort', searchParams?.sort || getValues('sort'));
+        setValue('active', searchParams?.active || getValues('active'));
+        setValue('flashSale', searchParams?.flashSale || getValues('flashSale'));
 
         // get min - max
-        setMinPrice(chops?.minPrice || 0)
-        setMaxPrice(chops?.maxPrice || 0)
+        setMinPrice(chops?.minPrice || 0);
+        setMaxPrice(chops?.maxPrice || 0);
         if (searchParams?.price) {
           const [from, to] = Array.isArray(searchParams.price)
             ? searchParams.price[0].split('-')
-            : searchParams.price.split('-')
-          setPrice([+from, +to])
+            : searchParams.price.split('-');
+          setPrice([+from, +to]);
         } else {
-          setPrice([chops?.minPrice || 0, chops?.maxPrice || 0])
+          setPrice([chops?.minPrice || 0, chops?.maxPrice || 0]);
         }
 
-        setMinSold(chops?.minSold || 0)
-        setMaxSold(chops?.maxSold || 0)
+        setMinSold(chops?.minSold || 0);
+        setMaxSold(chops?.maxSold || 0);
         if (searchParams?.sold) {
           const [from, to] = Array.isArray(searchParams.sold)
             ? searchParams.sold[0].split('-')
-            : searchParams.sold.split('-')
-          setSold([+from, +to])
+            : searchParams.sold.split('-');
+          setSold([+from, +to]);
         } else {
-          setSold([chops?.minSold || 0, chops?.maxSold || 0])
+          setSold([chops?.minSold || 0, chops?.maxSold || 0]);
         }
       } catch (err: any) {
-        console.log(err)
-        toast.error(err.message)
+        console.log(err);
+        toast.error(err.message);
       } finally {
         // stop page loading
-        dispatch(setPageLoading(false))
+        dispatch(setPageLoading(false));
       }
+    };
+    getAllCourses();
+  }, [dispatch, searchParams, setValue, getValues]);
+
+  // boot course
+  const handleBootCourses = useCallback(async (ids: string[], value: boolean) => {
+    try {
+      // send request to server
+      const { updatedCourses, message } = await bootCoursesApi(ids, value);
+
+      // update courses from state
+      setCourses((prev) =>
+        prev.map((course) =>
+          updatedCourses.map((course: ICourse) => course._id).includes(course._id)
+            ? { ...course, booted: value }
+            : course
+        )
+      );
+
+      // show success message
+      toast.success(message);
+    } catch (err: any) {
+      console.log(err);
+      toast.error(err.message);
     }
-    getAllCourses()
-  }, [dispatch, searchParams, setValue, getValues])
+  }, []);
 
   // activate course
   const handleActivateCourses = useCallback(async (ids: string[], value: boolean) => {
     try {
       // send request to server
-      const { updatedCourses, message } = await activateCoursesApi(ids, value)
+      const { updatedCourses, message } = await activateCoursesApi(ids, value);
 
       // update courses from state
-      setCourses(prev =>
-        prev.map(course =>
+      setCourses((prev) =>
+        prev.map((course) =>
           updatedCourses.map((course: ICourse) => course._id).includes(course._id)
             ? { ...course, active: value }
             : course
         )
-      )
+      );
 
       // show success message
-      toast.success(message)
+      toast.success(message);
     } catch (err: any) {
-      console.log(err)
-      toast.error(err.message)
+      console.log(err);
+      toast.error(err.message);
     }
-  }, [])
+  }, []);
 
   // remove applying flashSales
   const handleRemoveApplyingFlashSales = useCallback(async (ids: string[]) => {
     try {
       // send request to server
-      const { updatedCourses, message } = await removeApplyingFlashSalesApi(ids)
+      const { updatedCourses, message } = await removeApplyingFlashSalesApi(ids);
 
       // update courses from state
-      setCourses(prev =>
-        prev.map(course =>
+      setCourses((prev) =>
+        prev.map((course) =>
           updatedCourses.map((course: ICourse) => course._id).includes(course._id)
             ? { ...course, flashSale: undefined }
             : course
         )
-      )
+      );
 
       // show success message
-      toast.success(message)
+      toast.success(message);
     } catch (err: any) {
-      console.log(err)
-      toast.error(err.message)
+      console.log(err);
+      toast.error(err.message);
     }
-  }, [])
+  }, []);
 
   // delete course
   const handleDeleteCourses = useCallback(async (ids: string[]) => {
-    setLoadingCourses(ids)
+    setLoadingCourses(ids);
 
     try {
       // send request to server
-      const { deletedCourses, message } = await deleteCoursesApi(ids)
+      const { deletedCourses, message } = await deleteCoursesApi(ids);
 
       // remove deleted courses from state
-      setCourses(prev =>
-        prev.filter(course => !deletedCourses.map((course: ICourse) => course._id).includes(course._id))
-      )
+      setCourses((prev) =>
+        prev.filter(
+          (course) => !deletedCourses.map((course: ICourse) => course._id).includes(course._id)
+        )
+      );
 
       // show success message
-      toast.success(message)
+      toast.success(message);
     } catch (err: any) {
-      console.log(err)
-      toast.error(err.message)
+      console.log(err);
+      toast.error(err.message);
     } finally {
-      setLoadingCourses([])
-      setSelectedCourses([])
+      setLoadingCourses([]);
+      setSelectedCourses([]);
     }
-  }, [])
+  }, []);
 
   // handle optimize filter
   const handleOptimizeFilter: SubmitHandler<FieldValues> = useCallback(
-    data => {
+    (data) => {
       // reset page
       if (searchParams?.page) {
-        delete searchParams.page
+        delete searchParams.page;
       }
 
       // loop through data to prevent filter default
       for (let key in data) {
         if (data[key] === defaultValues[key]) {
           if (!searchParams?.[key]) {
-            delete data[key]
+            delete data[key];
           } else {
-            data[key] = ''
+            data[key] = '';
           }
         }
       }
@@ -228,7 +253,7 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
         price: price[0] === minPrice && price[1] === maxPrice ? '' : price.join('-'),
         sold: sold[0] === minSold && sold[1] === maxSold ? '' : sold.join('-'),
         tags: selectedFilterTags.length === tgs.length ? [] : selectedFilterTags,
-      }
+      };
     },
     [
       searchParams,
@@ -242,55 +267,55 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
       sold,
       tgs,
     ]
-  )
+  );
 
   // handle submit filter
   const handleFilter: SubmitHandler<FieldValues> = useCallback(
-    async data => {
-      const params: any = handleOptimizeFilter(data)
+    async (data) => {
+      const params: any = handleOptimizeFilter(data);
 
       // handle query
       const query = handleQuery({
         ...searchParams,
         ...params,
-      })
+      });
 
       // push to router
-      router.push(pathname + query)
+      router.push(pathname + query);
     },
     [handleOptimizeFilter, router, searchParams, pathname]
-  )
+  );
 
   // handle reset filter
   const handleResetFilter = useCallback(() => {
-    reset()
-    router.push(pathname)
-  }, [reset, router, pathname])
+    reset();
+    router.push(pathname);
+  }, [reset, router, pathname]);
 
   // keyboard event
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Alt + A (Select All)
       if (e.altKey && e.key === 'a') {
-        e.preventDefault()
-        setSelectedCourses(prev =>
-          prev.length === courses.length ? [] : courses.map(course => course._id)
-        )
+        e.preventDefault();
+        setSelectedCourses((prev) =>
+          prev.length === courses.length ? [] : courses.map((course) => course._id)
+        );
       }
 
       // Alt + Delete (Delete)
       if (e.altKey && e.key === 'Delete') {
-        e.preventDefault()
-        setIsOpenConfirmModal(true)
+        e.preventDefault();
+        setIsOpenConfirmModal(true);
       }
-    }
+    };
 
     // Add the event listener
-    window.addEventListener('keydown', handleKeyDown)
+    window.addEventListener('keydown', handleKeyDown);
 
     // Remove the event listener on cleanup
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [handleFilter, handleResetFilter, courses, handleSubmit])
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleFilter, handleResetFilter, courses, handleSubmit]);
 
   return (
     <div className='w-full'>
@@ -347,13 +372,13 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
             title='All Types'
             onClick={() =>
               setSelectedFilterTags(
-                tgs.length === selectedFilterTags.length ? [] : tgs.map(tag => tag._id)
+                tgs.length === selectedFilterTags.length ? [] : tgs.map((tag) => tag._id)
               )
             }
           >
             All
           </div>
-          {tgs.map(tag => (
+          {tgs.map((tag) => (
             <div
               className={`overflow-hidden max-w-60 text-ellipsis text-nowrap h-[34px] leading-[34px] px-2 rounded-md border cursor-pointer select-none trans-200 ${
                 selectedFilterTags.includes(tag._id)
@@ -364,8 +389,8 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
               key={tag._id}
               onClick={
                 selectedFilterTags.includes(tag._id)
-                  ? () => setSelectedFilterTags(prev => prev.filter(id => id !== tag._id))
-                  : () => setSelectedFilterTags(prev => [...prev, tag._id])
+                  ? () => setSelectedFilterTags((prev) => prev.filter((id) => id !== tag._id))
+                  : () => setSelectedFilterTags((prev) => [...prev, tag._id])
               }
             >
               {tag.title}
@@ -469,7 +494,7 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
           <button
             className='border border-sky-400 text-sky-400 rounded-lg px-3 py-2 hover:bg-sky-400 hover:text-white trans-200'
             onClick={() =>
-              setSelectedCourses(selectedCourses.length > 0 ? [] : courses.map(course => course._id))
+              setSelectedCourses(selectedCourses.length > 0 ? [] : courses.map((course) => course._id))
             }
           >
             {selectedCourses.length > 0 ? 'Unselect All' : 'Select All'}
@@ -478,7 +503,7 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
           {/* Activate Many Button */}
           {/* Only show activate button if at least 1 course is selected and at least 1 selected course is deactive */}
           {!!selectedCourses.length &&
-            selectedCourses.some(id => !courses.find(course => course._id === id)?.active) && (
+            selectedCourses.some((id) => !courses.find((course) => course._id === id)?.active) && (
               <button
                 className='border border-green-400 text-green-400 rounded-lg px-3 py-2 hover:bg-green-400 hover:text-white trans-200'
                 onClick={() => handleActivateCourses(selectedCourses, true)}
@@ -490,7 +515,7 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
           {/* Deactivate Many Button */}
           {/* Only show deactivate button if at least 1 course is selected and at least 1 selected course is acitve */}
           {!!selectedCourses.length &&
-            selectedCourses.some(id => courses.find(course => course._id === id)?.active) && (
+            selectedCourses.some((id) => courses.find((course) => course._id === id)?.active) && (
               <button
                 className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-white trans-200'
                 onClick={() => handleActivateCourses(selectedCourses, false)}
@@ -501,11 +526,11 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
 
           {/* Remove Flash Sale Many Button */}
           {!!selectedCourses.length &&
-            selectedCourses.some(id => courses.find(course => course._id === id)?.flashSale) && (
+            selectedCourses.some((id) => courses.find((course) => course._id === id)?.flashSale) && (
               <button
                 className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-white trans-200'
                 onClick={() => {
-                  handleRemoveApplyingFlashSales(selectedCourses)
+                  handleRemoveApplyingFlashSales(selectedCourses);
                 }}
               >
                 Remove Flash Sale
@@ -542,7 +567,7 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
 
       {/* MAIN LIST */}
       <div className='grid grid-cols-1 md:grid-cols-2 gap-21 lg:grid-cols-3'>
-        {courses.map(course => (
+        {courses.map((course) => (
           <CourseItem
             data={course}
             loadingCourses={loadingCourses}
@@ -551,6 +576,7 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
             setSelectedCourses={setSelectedCourses}
             // functions
             handleActivateCourses={handleActivateCourses}
+            handleBootCourses={handleBootCourses}
             handleRemoveApplyingFlashSales={handleRemoveApplyingFlashSales}
             handleDeleteCourses={handleDeleteCourses}
             key={course._id}
@@ -558,7 +584,7 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
         ))}
       </div>
     </div>
-  )
+  );
 }
 
-export default AllCoursesPage
+export default AllCoursesPage;

@@ -1,14 +1,14 @@
-import { connectDatabase } from "@/config/database";
-import UserModel from "@/models/UserModel";
-import { getToken } from "next-auth/jwt";
-import { NextRequest, NextResponse } from "next/server";
+import { connectDatabase } from '@/config/database';
+import UserModel from '@/models/UserModel';
+import { getToken } from 'next-auth/jwt';
+import { NextRequest, NextResponse } from 'next/server';
 
 // Models: User
-import "@/models/UserModel";
+import '@/models/UserModel';
 
 // [PATCH]: /user/:id/change-notification-setting
 export async function PATCH(req: NextRequest) {
-  console.log("- Change Notification Setting -");
+  console.log('- Change Notification Setting -');
 
   try {
     // connect to database
@@ -20,10 +20,7 @@ export async function PATCH(req: NextRequest) {
 
     // check userId
     if (!userId) {
-      return NextResponse.json(
-        { message: "Xác thực thất bại" },
-        { status: 401 }
-      );
+      return NextResponse.json({ message: 'Xác thực thất bại' }, { status: 401 });
     }
 
     // get data to change notification setting
@@ -38,10 +35,7 @@ export async function PATCH(req: NextRequest) {
       },
     });
 
-    return NextResponse.json(
-      { value, message: "Đã thay đổi cài đặt thông báo" },
-      { status: 200 }
-    );
+    return NextResponse.json({ value, message: 'Đã thay đổi cài đặt thông báo' }, { status: 200 });
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 });
   }

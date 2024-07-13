@@ -1,28 +1,30 @@
-import { ICategory } from '@/models/CategoryModel'
-import { ICourse } from '@/models/CourseModel'
-import { formatPrice } from '@/utils/number'
-import Image from 'next/image'
-import Link from 'next/link'
-import React, { useState } from 'react'
-import { FaCheck, FaEye, FaTrash } from 'react-icons/fa'
-import { MdEdit } from 'react-icons/md'
-import { PiLightningFill, PiLightningSlashFill } from 'react-icons/pi'
-import { RiDonutChartFill } from 'react-icons/ri'
-import ConfirmDialog from '../dialogs/ConfirmDialog'
+import { ICategory } from '@/models/CategoryModel';
+import { ICourse } from '@/models/CourseModel';
+import { formatPrice } from '@/utils/number';
+import Image from 'next/image';
+import Link from 'next/link';
+import React, { useState } from 'react';
+import { FaCheck, FaEye, FaTrash } from 'react-icons/fa';
+import { MdEdit } from 'react-icons/md';
+import { PiLightningFill, PiLightningSlashFill } from 'react-icons/pi';
+import { RiDonutChartFill } from 'react-icons/ri';
+import ConfirmDialog from '../dialogs/ConfirmDialog';
+import { IoRocketSharp } from 'react-icons/io5';
 
 interface CourseItemProps {
-  data: ICourse
-  loadingCourses: string[]
-  className?: string
+  data: ICourse;
+  loadingCourses: string[];
+  className?: string;
 
   // selected
-  selectedCourses: string[]
-  setSelectedCourses: React.Dispatch<React.SetStateAction<string[]>>
+  selectedCourses: string[];
+  setSelectedCourses: React.Dispatch<React.SetStateAction<string[]>>;
 
   // functions
-  handleActivateCourses: (ids: string[], active: boolean) => void
-  handleRemoveApplyingFlashSales: (ids: string[]) => void
-  handleDeleteCourses: (ids: string[]) => void
+  handleActivateCourses: (ids: string[], active: boolean) => void;
+  handleBootCourses: (ids: string[], active: boolean) => void;
+  handleRemoveApplyingFlashSales: (ids: string[]) => void;
+  handleDeleteCourses: (ids: string[]) => void;
 }
 
 function CourseItem({
@@ -34,12 +36,15 @@ function CourseItem({
   setSelectedCourses,
   // functions
   handleActivateCourses,
+  handleBootCourses,
   handleRemoveApplyingFlashSales,
   handleDeleteCourses,
 }: CourseItemProps) {
   // states
-  const [isOpenConfirmModal, setIsOpenConfirmModal] = useState<boolean>(false)
-  const [confirmType, setConfirmType] = useState<'deactivate' | 'Remove Flash Sale' | 'delete'>('delete')
+  const [isOpenConfirmModal, setIsOpenConfirmModal] = useState<boolean>(false);
+  const [confirmType, setConfirmType] = useState<
+    'deactivate' | 'unbooted' | 'Remove Flash Sale' | 'delete'
+  >('delete');
 
   return (
     <>
@@ -48,8 +53,8 @@ function CourseItem({
           selectedCourses.includes(data._id) ? 'bg-violet-50 -translate-y-1' : 'bg-white'
         }  ${className}`}
         onClick={() =>
-          setSelectedCourses(prev =>
-            prev.includes(data._id) ? prev.filter(id => id !== data._id) : [...prev, data._id]
+          setSelectedCourses((prev) =>
+            prev.includes(data._id) ? prev.filter((id) => id !== data._id) : [...prev, data._id]
           )
         }
       >
@@ -59,7 +64,7 @@ function CourseItem({
             href={`/${data.slug}`}
             prefetch={false}
             className='relative flex items-center max-w-[160px] rounded-lg shadow-md overflow-hidden mb-2'
-            onClick={e => e.stopPropagation()}
+            onClick={(e) => e.stopPropagation()}
             title={data._id}
           >
             <div className='flex items-center w-full overflow-x-scroll snap-x snap-mandatory no-scrollbar'>
@@ -162,14 +167,14 @@ function CourseItem({
           {/* Active Button */}
           <button
             className='block group'
-            onClick={e => {
-              e.stopPropagation()
+            onClick={(e) => {
+              e.stopPropagation();
               // is being active
               if (data.active) {
-                setIsOpenConfirmModal(true)
-                setConfirmType('deactivate')
+                setIsOpenConfirmModal(true);
+                setConfirmType('deactivate');
               } else {
-                handleActivateCourses([data._id], true)
+                handleActivateCourses([data._id], true);
               }
             }}
             disabled={loadingCourses.includes(data._id)}
@@ -181,14 +186,36 @@ function CourseItem({
             />
           </button>
 
+          {/* Boot Button */}
+          <button
+            className='block group'
+            onClick={(e) => {
+              e.stopPropagation();
+              // is being booted
+              if (data.booted) {
+                setIsOpenConfirmModal(true);
+                setConfirmType('unbooted');
+              } else {
+                handleBootCourses([data._id], !data.booted);
+              }
+            }}
+            disabled={loadingCourses.includes(data._id)}
+            title={data.booted ? 'Boot' : 'Unboot'}
+          >
+            <IoRocketSharp
+              size={18}
+              className={`wiggle ${data.booted ? 'text-green-500' : 'text-slate-300'}`}
+            />
+          </button>
+
           {/* Remove Flashsale Button */}
           {data.flashSale && (
             <button
               className='block group'
-              onClick={e => {
-                e.stopPropagation()
-                setIsOpenConfirmModal(true)
-                setConfirmType('Remove Flash Sale')
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsOpenConfirmModal(true);
+                setConfirmType('Remove Flash Sale');
               }}
               disabled={loadingCourses.includes(data._id)}
               title='Remove Flash Sale'
@@ -201,7 +228,7 @@ function CourseItem({
           <Link
             href={`/admin/course/${data._id}/edit`}
             className='block group'
-            onClick={e => e.stopPropagation()}
+            onClick={(e) => e.stopPropagation()}
             title='Edit'
           >
             <MdEdit size={18} className='wiggle' />
@@ -211,7 +238,7 @@ function CourseItem({
           <Link
             href={`/admin/chapter/${data._id}/all`}
             className='block group'
-            onClick={e => e.stopPropagation()}
+            onClick={(e) => e.stopPropagation()}
             title='View Chapters'
           >
             <FaEye size={18} className='wiggle' />
@@ -220,9 +247,9 @@ function CourseItem({
           {/* Delete Button */}
           <button
             className='block group'
-            onClick={e => {
-              e.stopPropagation()
-              setIsOpenConfirmModal(true)
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsOpenConfirmModal(true);
             }}
             disabled={loadingCourses.includes(data._id)}
             title='Delete'
@@ -245,6 +272,8 @@ function CourseItem({
         onAccept={() =>
           confirmType === 'deactivate'
             ? handleActivateCourses([data._id], false)
+            : confirmType === 'unbooted'
+            ? handleBootCourses([data._id], false)
             : confirmType === 'Remove Flash Sale'
             ? handleRemoveApplyingFlashSales([data._id])
             : handleDeleteCourses([data._id])
@@ -252,7 +281,7 @@ function CourseItem({
         isLoading={loadingCourses.includes(data._id)}
       />
     </>
-  )
+  );
 }
 
-export default CourseItem
+export default CourseItem;

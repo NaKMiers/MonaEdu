@@ -1,27 +1,27 @@
-import { ITag } from '@/models/TagModel'
-import React, { useState } from 'react'
-import { FaCheck, FaSave, FaTrash } from 'react-icons/fa'
-import { MdCancel, MdEdit } from 'react-icons/md'
-import { RiDonutChartFill } from 'react-icons/ri'
-import ConfirmDialog from '../dialogs/ConfirmDialog'
+import { ITag } from '@/models/TagModel';
+import React, { useState } from 'react';
+import { FaCheck, FaSave, FaTrash } from 'react-icons/fa';
+import { MdCancel, MdEdit } from 'react-icons/md';
+import { RiDonutChartFill } from 'react-icons/ri';
+import ConfirmDialog from '../dialogs/ConfirmDialog';
 
 interface TagItemProps {
-  data: ITag
-  loadingTags: string[]
-  className?: string
+  data: ITag;
+  loadingTags: string[];
+  className?: string;
 
-  selectedTags: string[]
-  setSelectedTags: React.Dispatch<React.SetStateAction<string[]>>
+  selectedTags: string[];
+  setSelectedTags: React.Dispatch<React.SetStateAction<string[]>>;
 
-  editingTags: string[]
-  setEditingTags: React.Dispatch<React.SetStateAction<string[]>>
+  editingTags: string[];
+  setEditingTags: React.Dispatch<React.SetStateAction<string[]>>;
 
-  editingValues: { _id: string; title: string }[]
-  setEditingValues: React.Dispatch<React.SetStateAction<{ _id: string; title: string }[]>>
+  editingValues: { _id: string; title: string }[];
+  setEditingValues: React.Dispatch<React.SetStateAction<{ _id: string; title: string }[]>>;
 
-  handleSaveEditingTags: (editingValues: { _id: string; value: string }[]) => void
-  handleDeleteTags: (ids: string[]) => void
-  handleBootTags: (ids: string[], booted: boolean) => void
+  handleSaveEditingTags: (editingValues: { _id: string; value: string }[]) => void;
+  handleDeleteTags: (ids: string[]) => void;
+  handleBootTags: (ids: string[], booted: boolean) => void;
 }
 
 function TagItem({
@@ -43,7 +43,7 @@ function TagItem({
   handleBootTags,
 }: TagItemProps) {
   // states
-  const [isOpenConfirmModal, setIsOpenConfirmModal] = useState<boolean>(false)
+  const [isOpenConfirmModal, setIsOpenConfirmModal] = useState<boolean>(false);
 
   return (
     <>
@@ -53,22 +53,23 @@ function TagItem({
         } ${className}`}
         key={data._id}
         onClick={() =>
-          setSelectedTags(prev =>
-            prev.includes(data._id) ? prev.filter(id => id !== data._id) : [...prev, data._id]
+          setSelectedTags((prev) =>
+            prev.includes(data._id) ? prev.filter((id) => id !== data._id) : [...prev, data._id]
           )
-        }>
+        }
+      >
         {/* MARK: Body */}
         {editingTags.includes(data._id) ? (
           // Tag Title Input
           <input
             className='w-full mb-2 rounded-lg py-2 px-4 text-dark outline-none border border-slate-300'
             type='text'
-            value={editingValues.find(t => t._id === data._id)?.title}
-            onClick={e => e.stopPropagation()}
+            value={editingValues.find((t) => t._id === data._id)?.title}
+            onClick={(e) => e.stopPropagation()}
             disabled={loadingTags.includes(data._id)}
-            onChange={e =>
-              setEditingValues(prev =>
-                prev.map(t => (t._id === data._id ? { _id: data._id, title: e.target.value } : t))
+            onChange={(e) =>
+              setEditingValues((prev) =>
+                prev.map((t) => (t._id === data._id ? { _id: data._id, title: e.target.value } : t))
               )
             }
           />
@@ -86,16 +87,17 @@ function TagItem({
 
         {/* MARK: Action Buttons */}
         <div className='flex self-end border border-dark rounded-lg px-3 py-2 gap-4'>
-          {/* Feature Button */}
+          {/* Boot Button */}
           {!editingTags.includes(data._id) && (
             <button
               className='block group'
-              onClick={e => {
-                e.stopPropagation()
-                handleBootTags([data._id], !data.booted)
+              onClick={(e) => {
+                e.stopPropagation();
+                handleBootTags([data._id], !data.booted);
               }}
               disabled={loadingTags.includes(data._id)}
-              title={data.booted ? 'Boot' : 'Unboot'}>
+              title={data.booted ? 'Boot' : 'Unboot'}
+            >
               <FaCheck
                 size={18}
                 className={`wiggle ${data.booted ? 'text-green-500' : 'text-slate-300'}`}
@@ -107,16 +109,17 @@ function TagItem({
           {!editingTags.includes(data._id) && (
             <button
               className='block group'
-              onClick={e => {
-                e.stopPropagation()
-                setEditingTags(prev => (!prev.includes(data._id) ? [...prev, data._id] : prev))
-                setEditingValues(prev =>
-                  !prev.some(cate => cate._id === data._id)
+              onClick={(e) => {
+                e.stopPropagation();
+                setEditingTags((prev) => (!prev.includes(data._id) ? [...prev, data._id] : prev));
+                setEditingValues((prev) =>
+                  !prev.some((cate) => cate._id === data._id)
                     ? [...prev, { _id: data._id, title: data.title }]
                     : prev
-                )
+                );
               }}
-              title='Edit'>
+              title='Edit'
+            >
               <MdEdit size={18} className='wiggle' />
             </button>
           )}
@@ -125,12 +128,13 @@ function TagItem({
           {editingTags.includes(data._id) && (
             <button
               className='block group'
-              onClick={e => {
-                e.stopPropagation()
-                handleSaveEditingTags([editingValues.find(cate => cate._id === data._id)] as any[])
+              onClick={(e) => {
+                e.stopPropagation();
+                handleSaveEditingTags([editingValues.find((cate) => cate._id === data._id)] as any[]);
               }}
               disabled={loadingTags.includes(data._id)}
-              title='Save'>
+              title='Save'
+            >
               {loadingTags.includes(data._id) ? (
                 <RiDonutChartFill size={18} className='animate-spin text-slate-300' />
               ) : (
@@ -143,14 +147,15 @@ function TagItem({
           {editingTags.includes(data._id) && !loadingTags.includes(data._id) && (
             <button
               className='block group'
-              onClick={e => {
-                e.stopPropagation()
-                setEditingTags(prev =>
-                  prev.includes(data._id) ? prev.filter(id => id !== data._id) : prev
-                )
-                setEditingValues(prev => prev.filter(cate => cate._id !== data._id))
+              onClick={(e) => {
+                e.stopPropagation();
+                setEditingTags((prev) =>
+                  prev.includes(data._id) ? prev.filter((id) => id !== data._id) : prev
+                );
+                setEditingValues((prev) => prev.filter((cate) => cate._id !== data._id));
               }}
-              title='Cancel'>
+              title='Cancel'
+            >
               <MdCancel size={20} className='wiggle text-slate-300' />
             </button>
           )}
@@ -159,12 +164,13 @@ function TagItem({
           {!editingTags.includes(data._id) && (
             <button
               className='block group'
-              onClick={e => {
-                e.stopPropagation()
-                setIsOpenConfirmModal(true)
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsOpenConfirmModal(true);
               }}
               disabled={loadingTags.includes(data._id)}
-              title='Delete'>
+              title='Delete'
+            >
               {loadingTags.includes(data._id) ? (
                 <RiDonutChartFill size={18} className='animate-spin text-slate-300' />
               ) : (
@@ -185,7 +191,7 @@ function TagItem({
         isLoading={loadingTags.includes(data._id)}
       />
     </>
-  )
+  );
 }
 
-export default TagItem
+export default TagItem;

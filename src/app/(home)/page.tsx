@@ -1,60 +1,70 @@
-import Banner from "@/components/Banner";
-import BestSeller from "@/components/BestSeller";
-import Divider from "@/components/Divider";
-import Features from "@/components/Features";
-import GroupCourses from "@/components/GroupCourses";
-import Heading from "@/components/Heading";
-import { ICourse } from "@/models/CourseModel";
-import { IQuestion } from "@/models/QuestionModel";
-import { getHomePageApi } from "@/requests";
-import { Metadata } from "next";
+import Banner from '@/components/Banner';
+import Divider from '@/components/Divider';
+import BestSeller from '@/components/ranks/BestSeller';
+import FeatureCourses from '@/components/ranks/FeatureCourses';
+import TopCategories from '@/components/ranks/TopCategories';
+import TopNewCourses from '@/components/ranks/TopNewCourses';
+import TopKeywords from '@/components/ranks/TopTags';
+import { ICategory } from '@/models/CategoryModel';
+import { ICourse } from '@/models/CourseModel';
+import { getHomePageApi } from '@/requests';
+import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Trang Chủ - MonaEdu",
+  title: 'Trang Chủ - MonaEdu',
 };
 
 async function Home() {
   let courses: ICourse[] = [];
   let bestSellers: ICourse[] = [];
-  let questions: IQuestion[] = [];
+  let newCourses: ICourse[] = [];
+  let bootedCourses: {
+    category: ICategory;
+    courses: ICourse[];
+  }[] = [];
 
   try {
     const data = await getHomePageApi();
 
     courses = data.courses;
     bestSellers = data.bestSellers;
-    questions = data.questions;
+    newCourses = data.newCourses;
+    bootedCourses = data.groupedBootedCourses;
   } catch (err: any) {
     console.log(err);
   }
 
   return (
-    <div className="min-h-screen">
+    <div className='min-h-screen'>
       {/* Banner */}
       <Banner courses={courses} />
 
       <Divider size={32} />
 
-      {/* Best Seller */}
+      {/* Top 8 Courses */}
       <BestSeller courses={bestSellers} />
 
-      <Divider size={32} />
+      <Divider size={24} />
 
-      {/* Features */}
-      <Features />
+      {/* Top 8 Features Keywords */}
+      <TopKeywords />
 
-      <Divider size={32} />
+      <Divider size={24} />
 
-      {/* Questions */}
-      <div className="max-w-1200 mx-auto">
-        <Heading title="Questions" space />
-      </div>
-      <Divider size={8} />
-      <div className="relative px-8 md:px-12 py-21">
-        <Divider size={20} />
-      </div>
+      {/* Feature Courses */}
+      <FeatureCourses courses={bootedCourses} />
 
       <Divider size={32} />
+
+      {/* Top 8 Categories */}
+      <TopCategories />
+
+      <Divider size={32} />
+
+      {/* Top 8 (max) New Courses */}
+      <TopNewCourses courses={newCourses} />
+
+      <Divider size={54} />
     </div>
   );
 }

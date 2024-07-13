@@ -1,15 +1,15 @@
-import { connectDatabase } from "@/config/database";
-import UserModel from "@/models/UserModel";
-import { deleteFile, uploadFile } from "@/utils/uploadFile";
-import { getToken } from "next-auth/jwt";
-import { NextRequest, NextResponse } from "next/server";
+import { connectDatabase } from '@/config/database';
+import UserModel from '@/models/UserModel';
+import { deleteFile, uploadFile } from '@/utils/uploadFile';
+import { getToken } from 'next-auth/jwt';
+import { NextRequest, NextResponse } from 'next/server';
 
 // Models: User
-import "@/models/UserModel";
+import '@/models/UserModel';
 
 // [PATCH]: /user/change-avatar
 export async function PATCH(req: NextRequest) {
-  console.log("- Change Avatar -");
+  console.log('- Change Avatar -');
 
   try {
     // connect to database
@@ -22,29 +22,23 @@ export async function PATCH(req: NextRequest) {
 
     // get data to create product
     const formData = await req.formData();
-    let avatar = formData.get("avatar");
+    let avatar = formData.get('avatar');
 
     // check userId
     if (!userId) {
-      return NextResponse.json(
-        { message: "Không tìm thấy người dùng" },
-        { status: 401 }
-      );
+      return NextResponse.json({ message: 'Không tìm thấy người dùng' }, { status: 401 });
     }
 
     // check avatar
     if (!avatar) {
-      return NextResponse.json(
-        { message: "Vui lòng tải ảnh lên" },
-        { status: 400 }
-      );
+      return NextResponse.json({ message: 'Vui lòng tải ảnh lên' }, { status: 400 });
     }
 
     // remove old avatar
     await deleteFile(oldAvatar);
 
     // upload avatar and get imageUrl from AWS S3 Bucket
-    const avatarUrl = await uploadFile(avatar, "1:1");
+    const avatarUrl = await uploadFile(avatar, '1:1');
 
     // update user
     const updatedUser = await UserModel.findByIdAndUpdate(
@@ -57,8 +51,7 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json(
       {
         updatedUser,
-        message:
-          "Đổi ảnh đại diện thành công, vui lòng tải lại trang để xem thay đổi",
+        message: 'Đổi ảnh đại diện thành công, vui lòng tải lại trang để xem thay đổi',
       },
       { status: 200 }
     );

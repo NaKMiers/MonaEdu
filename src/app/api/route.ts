@@ -1,60 +1,68 @@
-import { connectDatabase } from "@/config/database";
-import CourseModel from "@/models/CourseModel";
-import QuestionModel from "@/models/QuestionModel";
-import { NextRequest, NextResponse } from "next/server";
+import { connectDatabase } from '@/config/database';
+import CategoryModel from '@/models/CategoryModel';
+import CourseModel from '@/models/CourseModel';
+import { NextRequest, NextResponse } from 'next/server';
 
-// Models: Course, Question, User
-import "@/models/CourseModel";
-import "@/models/QuestionModel";
-import "@/models/UserModel";
+// Models: Course, Category
+import '@/models/CategoryModel';
+import '@/models/CourseModel';
 
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-dynamic';
 
 // [GET]: /
 export async function GET(req: NextRequest) {
-  console.log(" - Get Home Page - ");
+  console.log(' - Get Home Page - ');
 
   try {
     // connect to database
     await connectDatabase();
 
-    // get courses
-    const courses = await CourseModel.find({
-      active: true,
-    })
-      .sort({
-        joined: -1,
+    const [courses, bestSellers, newCourses, bootedCourses] = await Promise.all([
+      // get courses
+      CourseModel.find({
+        active: true,
       })
-      .limit(8)
-      .lean();
+        .sort({
+          joined: -1,
+        })
+        .limit(8)
+        .lean(),
+      // get best sellers
+      CourseModel.find().sort({ joined: -1 }).limit(8).lean(),
+      // get new courses
+      CourseModel.find().sort({ createdAt: -1 }).limit(8).lean(),
+      // get booted courses
+      CourseModel.find({}).populate({
+        path: 'category',
+        select: 'title slug',
+      }),
+    ]);
 
-    // top 10 best-seller categories
+    // categories's slugs from booted courses
+    const categoriesFromBootedCourses = bootedCourses.map(
+      (course) => course.category.slug.split('/')[0]
+    );
 
-    // top 8 best-seller courses
-    const bestSellers = courses.slice(0, 8);
-
-    // top 1 student that spend most time of learning
-
-    // top 1 student that joined most courses
-
-    // top 1 student that completed most questions
-
-    // top 1 student that asked most questions
-
-    // top 1 student that commented most
-
-    // top 1 student that liked most at comment
-
-    // best questions
-    const questions = await QuestionModel.find({
-      status: "open",
+    // get categories from booted courses
+    const categories = await CategoryModel.find({
+      slug: { $in: categoriesFromBootedCourses },
+      parentId: null,
     })
-      .populate("userId")
-      .sort({ createdAt: -1 })
+      .select('title slug')
       .lean();
+
+    // group booted courses by category
+    const groupedBootedCourses = categories.map((category) => {
+      const courses = bootedCourses.filter((course) => course.category.slug.includes(category.slug));
+
+      return {
+        category,
+        courses,
+      };
+    });
 
     return NextResponse.json(
-      { courses, bestSellers, questions },
+      { courses, bestSellers, newCourses, groupedBootedCourses },
       { status: 200 }
     );
   } catch (err: any) {

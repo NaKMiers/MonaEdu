@@ -1,15 +1,15 @@
-import { connectDatabase } from "@/config/database";
-import UserModel from "@/models/UserModel";
-import { deleteFile, uploadFile } from "@/utils/uploadFile";
-import { getToken } from "next-auth/jwt";
-import { NextRequest, NextResponse } from "next/server";
+import { connectDatabase } from '@/config/database';
+import UserModel from '@/models/UserModel';
+import { deleteFile, uploadFile } from '@/utils/uploadFile';
+import { getToken } from 'next-auth/jwt';
+import { NextRequest, NextResponse } from 'next/server';
 
 // Models: User
-import "@/models/UserModel";
+import '@/models/UserModel';
 
 // [PATCH]: /user/change-banner
 export async function PATCH(req: NextRequest) {
-  console.log("- Change Banner -");
+  console.log('- Change Banner -');
 
   try {
     // connect to database
@@ -22,26 +22,22 @@ export async function PATCH(req: NextRequest) {
 
     // get data to create product
     const formData = await req.formData();
-    let banner = formData.get("banner");
+    let banner = formData.get('banner');
 
     // check userId
     if (!userId) {
-      return NextResponse.json(
-        { message: "Người không tồn tại" },
-        { status: 401 }
-      );
+      return NextResponse.json({ message: 'Người không tồn tại' }, { status: 401 });
     }
 
     // check banner
     if (!banner) {
-      return NextResponse.json(
-        { message: "Không có hình ảnh tải lên" },
-        { status: 400 }
-      );
+      return NextResponse.json({ message: 'Không có hình ảnh tải lên' }, { status: 400 });
     }
 
     // remove old banner
-    await deleteFile(oldBanner);
+    if (oldBanner) {
+      await deleteFile(oldBanner);
+    }
 
     // upload banner and get imageUrl from AWS S3 Bucket
     const bannerUrl = await uploadFile(banner);
@@ -57,8 +53,7 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json(
       {
         updatedUser,
-        message:
-          "Cập nhật ảnh bìa thành công, vui lòng tải lại trang để xem thay đổi",
+        message: 'Cập nhật ảnh bìa thành công, vui lòng tải lại trang để xem thay đổi',
       },
       { status: 200 }
     );

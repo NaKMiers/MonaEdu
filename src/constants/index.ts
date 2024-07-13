@@ -1,8 +1,8 @@
-import { FaTicketAlt } from 'react-icons/fa'
-import { FaBoltLightning, FaListCheck, FaTags, FaUser } from 'react-icons/fa6'
-import { MdCategory, MdReportOff, MdSpaceDashboard } from 'react-icons/md'
-import { RiBillFill } from 'react-icons/ri'
-import { SiCoursera } from 'react-icons/si'
+import { FaTicketAlt } from 'react-icons/fa';
+import { FaBoltLightning, FaListCheck, FaTags, FaUser } from 'react-icons/fa6';
+import { MdCategory, MdReportOff, MdSpaceDashboard } from 'react-icons/md';
+import { RiBillFill } from 'react-icons/ri';
+import { SiCoursera } from 'react-icons/si';
 
 // MARK: Admin Links
 export const adminLinks = [
@@ -127,7 +127,7 @@ export const adminLinks = [
       },
     ],
   },
-]
+];
 
 // MARK: Admin List
 export const admins = {
@@ -147,29 +147,7 @@ export const admins = {
     zalo: 'https://zalo.me/0899320427',
     messenger: 'https://www.messenger.com/t/170660996137305',
   },
-}
-
-// MARK: Choose Me
-export const features = [
-  {
-    title: 'Video bài giảng chất lượng cao',
-    image: '/icons/feature-1.png',
-    description:
-      'Với những bài giảng từ các thầy cô uy tín và các nguồn đáng tin cậy trong chuyên ngành chuyên môn, đảm bảo nắm bắt đúng trọng tâm nâng cao kiến thức.',
-  },
-  {
-    title: 'Giá thành hợp lí ',
-    image: '/icons/feature-2.png',
-    description:
-      'Giá cả hợp lí, tiếp cận nhiều nguồn khách hàng, nâng cao phạm vi trải nghiệm nền giáo dục chỉ có tại MonaEdu. Giúp các bạn trẻ có thể tiếp cận được MonaEdu.',
-  },
-  {
-    title: 'Trao đổi kiến thức',
-    image: '/icons/feature-3.png',
-    description:
-      'Với chức năng đăng câu hỏi, các học viên có thể trực tiếp trao đổi bài giảng của nhau, giúp đỡ nhau giải bày các thắc mắc.',
-  },
-]
+};
 
 // MARK: Report Contents
 export const reportContents = {
@@ -197,4 +175,4 @@ export const reportContents = {
     'Hate Speech',
     'Wrong Information',
   ],
-}
+};

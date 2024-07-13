@@ -1,23 +1,23 @@
-'use client'
+"use client";
 
-import { CardBody, CardContainer, CardItem } from '@/components/3dCard'
-import { ICategory } from '@/models/CategoryModel'
-import Image from 'next/image'
-import Link from 'next/link'
+import { CardBody, CardContainer, CardItem } from "@/components/3dCard";
+import { ICategory } from "@/models/CategoryModel";
+import Image from "next/image";
+import Link from "next/link";
 
 interface CategoryCardProps {
-  category: ICategory
-  className?: string
+  category: ICategory;
+  className?: string;
 }
 
-function CategoryCard({ category, className = '' }: CategoryCardProps) {
+function CategoryCard({ category, className = "" }: CategoryCardProps) {
   return (
     <Link
       href={`/categories/${category.slug}`}
       className={`hover:-translate-y-2 trans-300 shadow-medium-light rounded-xl overflow-hidden relative w-full ${className}`}
     >
       <Image
-        src={category.image || '/images/default-category.jpg'}
+        src={category.image || "/images/default-category.jpg"}
         height='1000'
         width='1000'
         className='h-full bg-white w-full object-cover rounded-xl'
@@ -44,7 +44,7 @@ function CategoryCard({ category, className = '' }: CategoryCardProps) {
         </p>
       </div>
     </Link>
-  )
+  );
 }
 
-export default CategoryCard
+export default CategoryCard;
