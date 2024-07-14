@@ -88,36 +88,43 @@ const authOptions = {
     async jwt({ token, user, trigger, session }: any) {
       console.log('- JWT -')
 
-      if (trigger === 'update' && token) {
-        console.log('- Update userDB -')
-
+      if (trigger === 'update' && token._id) {
+        console.log('- Update Token -')
         const userDB: IUser | null = await UserModel.findById(token._id).lean()
         if (userDB) {
           return { ...token, ...userDB }
         }
-
-        return token
       }
 
-      // update user every mount
-      const userDB: IUser | null = await UserModel.findOne({
-        email: user?.email || token?.email,
-      }).lean()
+      if (user) {
+        const userDB: IUser | null = await UserModel.findOne({
+          email: user.email,
+        }).lean()
 
-      if (userDB) {
-        const { _id, password, courses, ...simpleUserDB } = userDB
-
-        token = {
-          ...token,
-          ...simpleUserDB,
-          _id: _id.toString(),
-          courses: courses.map((course: any) => ({
-            ...course,
-            course: course.course.toString(),
-            _id: (course as any)._id.toString(),
-          })),
+        if (userDB) {
+          token = { ...token, ...userDB }
         }
       }
+
+      // // update user every mount
+      // const userDB: IUser | null = await UserModel.findOne({
+      //   email: user?.email || token?.email,
+      // }).lean()
+
+      // if (userDB) {
+      //   const { _id, password, courses, ...simpleUserDB } = userDB
+
+      //   token = {
+      //     ...token,
+      //     ...simpleUserDB,
+      //     _id: _id.toString(),
+      //     courses: courses.map((course: any) => ({
+      //       ...course,
+      //       course: course.course.toString(),
+      //       _id: (course as any)._id.toString(),
+      //     })),
+      //   }
+      // }
 
       return token
     },
