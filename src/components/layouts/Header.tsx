@@ -3,8 +3,9 @@
 import { useAppDispatch, useAppSelector } from '@/libs/hooks'
 import { setCartItems } from '@/libs/reducers/cartReducer'
 import { setOpenSearchBar } from '@/libs/reducers/modalReducer'
+import { setCurUser } from '@/libs/reducers/userReducer'
 import { getCartApi } from '@/requests'
-import { useSession } from 'next-auth/react'
+import { getSession, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -25,9 +26,11 @@ interface HeaderProps {
 function Header({ className = '' }: HeaderProps) {
   // hooks
   const dispatch = useAppDispatch()
-  const { data: session, update } = useSession()
-  const pathname = usePathname()
+  // const curUser: any = useAppSelector((state) => state.user.curUser)
+  // console.log('curUser', curUser)
+  const { data: session } = useSession()
   const curUser: any = session?.user
+  const pathname = usePathname()
 
   // reducer
   const cartLength = useAppSelector((state) => state.cart.items.length)
@@ -42,56 +45,60 @@ function Header({ className = '' }: HeaderProps) {
 
   // MARK: Side Effects
   // update user session
-  useEffect(() => {
-    const updateUser = async () => {
-      console.log('update user')
-      await update()
-    }
-    if (!curUser?._id) {
-      updateUser()
-    }
-  }, [update, curUser?._id])
+  // useEffect(() => {
+  //   const updateUser = async () => {
+  //     console.log('update user')
+  //     // await update()
+  //     const session = await getSession()
+  //     const user: any = session?.user
 
-  // get user's cart
-  useEffect(() => {
-    const getUserCart = async () => {
-      if (curUser?._id) {
-        try {
-          // send request to get user's cart
-          const { cart } = await getCartApi() // cache: no-store
+  //     dispatch(setCurUser(user))
+  //   }
+  //   if (!curUser?._id) {
+  //     updateUser()
+  //   }
+  // }, [dispatch, curUser?._id])
 
-          // set cart to state
-          dispatch(setCartItems(cart))
-        } catch (err: any) {
-          console.log(err)
-          toast.error(err.message)
-        }
-      }
-    }
-    getUserCart()
-  }, [dispatch, curUser?._id])
+  // // get user's cart
+  // useEffect(() => {
+  //   const getUserCart = async () => {
+  //     if (curUser?._id) {
+  //       try {
+  //         // send request to get user's cart
+  //         const { cart } = await getCartApi() // cache: no-store
 
-  // handle show/hide on scroll
-  useEffect(() => {
-    const handleScroll = () => {
-      if (pathname === '/') {
-        // set dark if scroll height > 100vh
-        if (window.scrollY > window.innerHeight) {
-          setIsTransparent(false)
-        } else {
-          setIsTransparent(true)
-        }
-      } else {
-        setIsTransparent(false)
-      }
-    }
+  //         // set cart to state
+  //         dispatch(setCartItems(cart))
+  //       } catch (err: any) {
+  //         console.log(err)
+  //         toast.error(err.message)
+  //       }
+  //     }
+  //   }
+  //   getUserCart()
+  // }, [dispatch, curUser?._id])
 
-    // initial
-    handleScroll()
+  // // handle show/hide on scroll
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     if (pathname === '/') {
+  //       // set dark if scroll height > 100vh
+  //       if (window.scrollY > window.innerHeight) {
+  //         setIsTransparent(false)
+  //       } else {
+  //         setIsTransparent(true)
+  //       }
+  //     } else {
+  //       setIsTransparent(false)
+  //     }
+  //   }
 
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [pathname])
+  //   // initial
+  //   handleScroll()
+
+  //   window.addEventListener('scroll', handleScroll)
+  //   return () => window.removeEventListener('scroll', handleScroll)
+  // }, [pathname])
 
   return (
     <header
@@ -134,10 +141,10 @@ function Header({ className = '' }: HeaderProps) {
         </div>
 
         {/* Categories Tabs */}
-        <CategoryTabs open={openCategoryTabs} setOpen={setOpenCategoryTabs} />
+        {/* <CategoryTabs open={openCategoryTabs} setOpen={setOpenCategoryTabs} /> */}
 
         {/* Search */}
-        <SearchBar />
+        {/* <SearchBar /> */}
 
         {/* MARK: Nav */}
         <div className='flex-shrink-0 hidden md:flex items-center gap-4'>
@@ -230,10 +237,10 @@ function Header({ className = '' }: HeaderProps) {
         </div>
 
         {/* MARK: Menu */}
-        <Menu open={isOpenMenu} setOpen={setIsOpenMenu} />
+        {/* <Menu open={isOpenMenu} setOpen={setIsOpenMenu} /> */}
 
         {/* MARK: Notification Menu */}
-        <NotificationMenu open={isOpenNotificationMenu} setOpen={setIsOpenNotificationMenu} />
+        {/* <NotificationMenu open={isOpenNotificationMenu} setOpen={setIsOpenNotificationMenu} /> */}
       </div>
     </header>
   )

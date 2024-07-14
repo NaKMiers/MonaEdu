@@ -1,15 +1,15 @@
-import { connectDatabase } from '@/config/database';
-import UserModel, { IUser } from '@/models/UserModel';
-import bcrypt from 'bcrypt';
-import NextAuth from 'next-auth';
+import { connectDatabase } from '@/config/database'
+import UserModel, { IUser } from '@/models/UserModel'
+import bcrypt from 'bcrypt'
+import NextAuth from 'next-auth'
 
 // Providers
-import CredentialsProvider from 'next-auth/providers/credentials';
-import GitHubProvider from 'next-auth/providers/github';
-import GoogleProvider from 'next-auth/providers/google';
+import CredentialsProvider from 'next-auth/providers/credentials'
+import GitHubProvider from 'next-auth/providers/github'
+import GoogleProvider from 'next-auth/providers/google'
 
 // Models: User
-import '@/models/UserModel';
+import '@/models/UserModel'
 
 const handler = NextAuth({
   secret: process.env.NEXTAUTH_SECRET!,
@@ -40,49 +40,49 @@ const handler = NextAuth({
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials: any) {
-        console.log('- Credentials -');
+        console.log('- Credentials -')
 
         // connect to database
-        await connectDatabase();
+        await connectDatabase()
 
         // check if credentials is empty
         if (!credentials?.usernameOrEmail || !credentials?.password) {
-          return null;
+          return null
         }
 
         // get data from credentials
-        const { usernameOrEmail, password } = credentials;
+        const { usernameOrEmail, password } = credentials
 
         // find user from database
         const user: any = await UserModel.findOne({
           $or: [{ email: usernameOrEmail }, { username: usernameOrEmail }],
-        }).lean();
+        }).lean()
 
         // check user exists or not in database
         if (!user) {
-          throw new Error('Email hoặc mật khẩu không chính xác!');
+          throw new Error('Email hoặc mật khẩu không chính xác!')
         }
 
         // check if user is not local
         if (user.authType !== 'local') {
-          throw new Error('Tài khoản này được xác thực bởi ' + user.authType);
+          throw new Error('Tài khoản này được xác thực bởi ' + user.authType)
         }
 
         // check password
-        const isValidPassword = await bcrypt.compare(password, user.password);
+        const isValidPassword = await bcrypt.compare(password, user.password)
         if (!isValidPassword) {
           // push error to call back
-          throw new Error('Email hoặc mật khẩu không chính xác!');
+          throw new Error('Email hoặc mật khẩu không chính xác!')
         }
 
-        const { avatar: image, ...otherDetails } = user;
+        const { avatar: image, ...otherDetails } = user
 
         // return to session callback
         return {
           ...otherDetails,
           image,
           name: user.firstName + ' ' + user.lastName,
-        };
+        }
       },
     }),
 
@@ -90,67 +90,68 @@ const handler = NextAuth({
   ],
   callbacks: {
     async jwt({ token, user, trigger, session }) {
-      console.log('- JWT -');
+      console.log('- JWT -')
 
       if (trigger === 'update' && token._id) {
-        console.log('- Update Token -');
-        const userDB: IUser | null = await UserModel.findById(token._id).lean();
+        console.log('- Update Token -')
+
+        const userDB: IUser | null = await UserModel.findById(token._id).lean()
         if (userDB) {
-          return { ...token, ...userDB };
+          return { ...token, ...userDB }
         }
       }
 
       if (user) {
         const userDB: IUser | null = await UserModel.findOne({
           email: user.email,
-        }).lean();
+        }).lean()
         if (userDB) {
-          token = { ...token, ...userDB };
+          token = { ...token, ...userDB }
         }
       }
 
-      return token;
+      return token
     },
 
     async session({ session, token }) {
-      console.log('- Session -');
+      console.log('- Session -')
 
-      session.user = token;
-      return session;
+      session.user = token
+      return session
     },
 
     async signIn({ user, account, profile }: any) {
-      console.log('- Sign In -');
+      console.log('- Sign In -')
 
       try {
         // connect to database
-        await connectDatabase();
+        await connectDatabase()
 
         if (account && account.provider != 'credentials') {
           if (!user || !profile) {
-            return false;
+            return false
           }
 
           // get data for authentication
-          const email = user.email;
-          const avatar = user.image;
-          let firstName: string = '';
-          let lastName: string = '';
+          const email = user.email
+          const avatar = user.image
+          let firstName: string = ''
+          let lastName: string = ''
 
           if (account.provider === 'google') {
-            firstName = profile.given_name;
-            lastName = profile.family_name;
+            firstName = profile.given_name
+            lastName = profile.family_name
           } else if (account.provider === 'github') {
-            firstName = profile.name;
-            lastName = '';
+            firstName = profile.name
+            lastName = ''
           }
 
           // get user from database to check exist
-          const existingUser: any = await UserModel.findOne({ email }).lean();
+          const existingUser: any = await UserModel.findOne({ email }).lean()
 
           // check whether user exists
           if (existingUser) {
-            return true;
+            return true
           }
 
           // create new user with social information (auto verified email)
@@ -161,16 +162,16 @@ const handler = NextAuth({
             lastName,
             authType: account.provider,
             verifiedEmail: true,
-          });
+          })
         }
 
-        return true;
+        return true
       } catch (err: any) {
-        console.log(err);
-        return false;
+        console.log(err)
+        return false
       }
     },
   },
-});
+})
 
-export { handler as GET, handler as POST };
+export { handler as GET, handler as POST }
