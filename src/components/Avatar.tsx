@@ -76,15 +76,13 @@ function Avatar({ user, className = '' }: AvatarProps) {
 
       // reset form
       setFile(null)
-      setImageUrl('')
-      URL.revokeObjectURL(imageUrl)
     } catch (err: any) {
       toast.error(err.message)
     } finally {
       // stop changing avatar
       setIsChangingAvatar(false)
     }
-  }, [update, file, imageUrl])
+  }, [update, file])
 
   // cancel changing avatar
   const handleCancelAvatar = useCallback(async () => {
@@ -124,9 +122,9 @@ function Avatar({ user, className = '' }: AvatarProps) {
       {!isChangingAvatar && curUser?._id === user?._id && (
         <div
           className='absolute top-0 left-0 flex opacity-0 group-hover:opacity-100 items-center justify-center bg-dark-0 w-full h-full bg-opacity-20 trans-200 cursor-pointer drop-shadow-lg'
-          onClick={() => !imageUrl && avatarInputRef.current?.click()}
+          onClick={() => !file && avatarInputRef.current?.click()}
         >
-          {imageUrl ? (
+          {file ? (
             <div className='flex items-center justify-center gap-21'>
               <FaSave size={40} className='text-green-400 wiggle-1' onClick={handleSaveAvatar} />
               <ImCancelCircle

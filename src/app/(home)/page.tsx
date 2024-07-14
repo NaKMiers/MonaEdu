@@ -11,7 +11,7 @@ import { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Trang chủ - Mona Edu',
-  description: 'Mona Edu - Nền tảng học trực tuyến hàng đầu Việt Nam',
+  description: 'Mona Edu - Học trực tuyến mọi lúc, mọi nơi',
 }
 
 async function Home() {
@@ -23,16 +23,16 @@ async function Home() {
     courses: ICourse[]
   }[] = []
 
-  // try {
-  //   const data = await getHomePageApi();
+  try {
+    const data = await getHomePageApi()
 
-  //   courses = data.courses;
-  //   bestSellers = data.bestSellers;
-  //   newCourses = data.newCourses;
-  //   bootedCourses = data.groupedBootedCourses;
-  // } catch (err: any) {
-  //   console.log(err);
-  // }
+    courses = data.courses
+    bestSellers = data.bestSellers
+    newCourses = data.newCourses
+    bootedCourses = data.groupedBootedCourses
+  } catch (err: any) {
+    console.log(err)
+  }
 
   // jsonLD
   const jsonLd = {
@@ -65,27 +65,27 @@ async function Home() {
       <script type='application/ld+json' dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       {/* Banner */}
-      {/* <Banner courses={courses} /> */}
+      <Banner courses={courses} />
 
       <Divider size={36} />
 
       {/* Top 8 Courses */}
-      {/* <BestSeller courses={bestSellers} /> */}
+      <BestSeller courses={bestSellers} />
 
       <Divider size={36} />
 
       {/* Top 8 (max) New Courses */}
-      {/* <TopNewCourses courses={newCourses} /> */}
+      <TopNewCourses courses={newCourses} />
 
       <Divider size={24} />
 
       {/* Feature Courses */}
-      {/* <FeatureCourses courses={bootedCourses} /> */}
+      <FeatureCourses courses={bootedCourses} />
 
       <Divider size={36} />
 
       {/* Top 8 Categories */}
-      {/* <TopCategories /> */}
+      <TopCategories />
 
       <Divider size={54} />
     </div>

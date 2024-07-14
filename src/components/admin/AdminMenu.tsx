@@ -11,22 +11,10 @@ import { FaBarsStaggered } from 'react-icons/fa6'
 function AdminMenu() {
   // hooks
   const { data: session } = useSession()
+  const curUser: any = session?.user
 
   // states
-  const [curUser, setCurUser] = useState<any>(session?.user || {})
   const [open, setOpen] = useState<boolean>(false)
-
-  // update user session
-  useEffect(() => {
-    const getUser = async () => {
-      const session = await getSession()
-      setCurUser(session?.user)
-    }
-
-    if (!curUser?._id) {
-      getUser()
-    }
-  }, [curUser])
 
   // key board event
   useEffect(() => {

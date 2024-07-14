@@ -39,6 +39,12 @@ function LearningChapter({
   // refs
   const chapterRef = useRef<HTMLUListElement>(null)
 
+  // change lesson event
+  useEffect(() => {
+    setOpen(chapter.lessons?.map((lesson) => lesson.slug).includes(lessonSlug) || false)
+  }, [chapter.lessons, lessonSlug])
+
+  // open chapter event
   useEffect(() => {
     if (open) {
       if (!chapter.lessons || !chapterRef.current) return

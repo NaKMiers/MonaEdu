@@ -1,11 +1,12 @@
-import AdminMenu from '@/components/admin/AdminMenu';
-import StoreProvider from '@/libs/StoreProvider';
-import type { Metadata } from 'next';
-import { getServerSession } from 'next-auth';
-import { Toaster } from 'react-hot-toast';
-import '../globals.scss';
-import PageLoading from '@/components/PageLoading';
-import Header from '@/components/layouts/Header';
+import PageLoading from '@/components/PageLoading'
+import AdminMenu from '@/components/admin/AdminMenu'
+import Header from '@/components/layouts/Header'
+import StoreProvider from '@/libs/StoreProvider'
+import type { Metadata } from 'next'
+import { getServerSession } from 'next-auth'
+import { Toaster } from 'react-hot-toast'
+import authOptions from '../api/auth/[...nextauth]/authOptions'
+import '../globals.scss'
 
 export const metadata: Metadata = {
   title: 'Mona Edu',
@@ -16,14 +17,14 @@ export const metadata: Metadata = {
     shortcut: ['/apple-touch-icon.png'],
   },
   manifest: '/site.webmanifest',
-};
+}
 
 export default async function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions)
 
   return (
     <html lang='vi'>
@@ -52,5 +53,5 @@ export default async function RootLayout({
         </StoreProvider>
       </body>
     </html>
-  );
+  )
 }

@@ -3,13 +3,12 @@
 import { useAppDispatch, useAppSelector } from '@/libs/hooks'
 import { setCartItems } from '@/libs/reducers/cartReducer'
 import { setOpenSearchBar } from '@/libs/reducers/modalReducer'
-import { setCurUser } from '@/libs/reducers/userReducer'
 import { getCartApi } from '@/requests'
-import { getSession, useSession } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { memo, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { BiSolidCategory } from 'react-icons/bi'
 import { FaBell, FaSearch, FaShoppingCart } from 'react-icons/fa'
@@ -26,10 +25,9 @@ interface HeaderProps {
 function Header({ className = '' }: HeaderProps) {
   // hooks
   const dispatch = useAppDispatch()
-  // const curUser: any = useAppSelector((state) => state.user.curUser)
-  // console.log('curUser', curUser)
-  const { data: session } = useSession()
+  const { data: session, update } = useSession()
   const curUser: any = session?.user
+
   const pathname = usePathname()
 
   // reducer
@@ -42,22 +40,6 @@ function Header({ className = '' }: HeaderProps) {
 
   // notification states
   const [isOpenNotificationMenu, setIsOpenNotificationMenu] = useState<boolean>(false)
-
-  // MARK: Side Effects
-  // update user session
-  // useEffect(() => {
-  //   const updateUser = async () => {
-  //     console.log('update user')
-  //     // await update()
-  //     const session = await getSession()
-  //     const user: any = session?.user
-
-  //     dispatch(setCurUser(user))
-  //   }
-  //   if (!curUser?._id) {
-  //     updateUser()
-  //   }
-  // }, [dispatch, curUser?._id])
 
   // // get user's cart
   // useEffect(() => {
@@ -141,10 +123,10 @@ function Header({ className = '' }: HeaderProps) {
         </div>
 
         {/* Categories Tabs */}
-        {/* <CategoryTabs open={openCategoryTabs} setOpen={setOpenCategoryTabs} /> */}
+        <CategoryTabs open={openCategoryTabs} setOpen={setOpenCategoryTabs} />
 
         {/* Search */}
-        {/* <SearchBar /> */}
+        <SearchBar />
 
         {/* MARK: Nav */}
         <div className='flex-shrink-0 hidden md:flex items-center gap-4'>
@@ -153,41 +135,39 @@ function Header({ className = '' }: HeaderProps) {
           </button>
 
           {curUser ? (
-            !!curUser._id && (
-              <>
-                <Link href='/cart' prefetch={false} className='relative wiggle'>
-                  <FaShoppingCart size={24} />
-                  {!!cartLength && (
-                    <span className='absolute -top-2 right-[-5px] bg-primary text-dark rounded-full text-center px-[6px] py-[2px] text-[10px] font-bold flex items-center justify-center min-w-[24px]'>
-                      {cartLength}
-                    </span>
-                  )}
-                </Link>
-                <button
-                  className='relative wiggle'
-                  onClick={() => setIsOpenNotificationMenu((prev) => !prev)}
-                >
-                  <FaBell size={24} />
-                  {!!curUser?.notifications.length && (
-                    <span className='absolute -top-2 right-[-5px] bg-orange-400 rounded-full text-center px-[6px] py-[2px] text-[10px] font-bold flex items-center justify-center min-w-[24px]'>
-                      {curUser?.notifications.length}
-                    </span>
-                  )}
-                </button>
-                <div
-                  className='flex items-center gap-2 cursor-pointer'
-                  onClick={() => setIsOpenMenu((prev) => !prev)}
-                >
-                  <Image
-                    className='aspect-square rounded-full wiggle-0 shadow-lg'
-                    src={curUser?.avatar || process.env.NEXT_PUBLIC_DEFAULT_AVATAR!}
-                    width={40}
-                    height={40}
-                    alt='avatar'
-                  />
-                </div>
-              </>
-            )
+            <>
+              <Link href='/cart' prefetch={false} className='relative wiggle'>
+                <FaShoppingCart size={24} />
+                {!!cartLength && (
+                  <span className='absolute -top-2 right-[-5px] bg-primary text-dark rounded-full text-center px-[6px] py-[2px] text-[10px] font-bold flex items-center justify-center min-w-[24px]'>
+                    {cartLength}
+                  </span>
+                )}
+              </Link>
+              <button
+                className='relative wiggle'
+                onClick={() => setIsOpenNotificationMenu((prev) => !prev)}
+              >
+                <FaBell size={24} />
+                {!!curUser?.notifications.length && (
+                  <span className='absolute -top-2 right-[-5px] bg-orange-400 rounded-full text-center px-[6px] py-[2px] text-[10px] font-bold flex items-center justify-center min-w-[24px]'>
+                    {curUser?.notifications.length}
+                  </span>
+                )}
+              </button>
+              <div
+                className='flex items-center gap-2 cursor-pointer'
+                onClick={() => setIsOpenMenu((prev) => !prev)}
+              >
+                <Image
+                  className='aspect-square rounded-full wiggle-0 shadow-lg'
+                  src={curUser?.avatar || process.env.NEXT_PUBLIC_DEFAULT_AVATAR!}
+                  width={40}
+                  height={40}
+                  alt='avatar'
+                />
+              </div>
+            </>
           ) : (
             <div className='flex items-center gap-3'>
               <Link
@@ -237,13 +217,13 @@ function Header({ className = '' }: HeaderProps) {
         </div>
 
         {/* MARK: Menu */}
-        {/* <Menu open={isOpenMenu} setOpen={setIsOpenMenu} /> */}
+        <Menu open={isOpenMenu} setOpen={setIsOpenMenu} />
 
         {/* MARK: Notification Menu */}
-        {/* <NotificationMenu open={isOpenNotificationMenu} setOpen={setIsOpenNotificationMenu} /> */}
+        <NotificationMenu open={isOpenNotificationMenu} setOpen={setIsOpenNotificationMenu} />
       </div>
     </header>
   )
 }
 
-export default memo(Header)
+export default Header

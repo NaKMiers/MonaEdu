@@ -1,91 +1,70 @@
-'use client';
+'use client'
 
-import Comment from '@/components/Comment';
-import Divider from '@/components/Divider';
-import ReportDialog from '@/components/dialogs/ReportDigalog';
-import { reportContents } from '@/constants';
-import { useAppDispatch, useAppSelector } from '@/libs/hooks';
-import { setOpenSidebar } from '@/libs/reducers/modalReducer';
-import { IComment } from '@/models/CommentModel';
-import { ICourse } from '@/models/CourseModel';
-import { ILesson } from '@/models/LessonModel';
-import { addReportApi, getLessonApi, likeLessonApi } from '@/requests';
-import { getSession, useSession } from 'next-auth/react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
-import { BsLayoutSidebarInsetReverse } from 'react-icons/bs';
-import { FaChevronLeft, FaHeart, FaQuestion, FaRegHeart } from 'react-icons/fa';
-import { HiDotsHorizontal } from 'react-icons/hi';
+import Comment from '@/components/Comment'
+import Divider from '@/components/Divider'
+import ReportDialog from '@/components/dialogs/ReportDigalog'
+import { reportContents } from '@/constants'
+import { useAppDispatch, useAppSelector } from '@/libs/hooks'
+import { setOpenSidebar } from '@/libs/reducers/modalReducer'
+import { IComment } from '@/models/CommentModel'
+import { ICourse } from '@/models/CourseModel'
+import { ILesson } from '@/models/LessonModel'
+import { addReportApi, getLessonApi, likeLessonApi } from '@/requests'
+import { useSession } from 'next-auth/react'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useCallback, useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
+import { BsLayoutSidebarInsetReverse } from 'react-icons/bs'
+import { FaChevronLeft, FaHeart, FaQuestion, FaRegHeart } from 'react-icons/fa'
+import { HiDotsHorizontal } from 'react-icons/hi'
 
 function LessonPage({
   params: { courseSlug, lessonSlug },
 }: {
-  params: { courseSlug: string; lessonSlug: string };
+  params: { courseSlug: string; lessonSlug: string }
 }) {
   // hooks
-  const dispatch = useAppDispatch();
-  const openSidebar = useAppSelector((state) => state.modal.openSidebar);
-  const { data: session, update } = useSession();
-  const router = useRouter();
+  const dispatch = useAppDispatch()
+  const openSidebar = useAppSelector((state) => state.modal.openSidebar)
+  const { data: session } = useSession()
+  const curUser: any = session?.user
+  const router = useRouter()
 
   // states
-  const [curUser, setCurUser] = useState<any>(session?.user || {});
-  const [lesson, setLesson] = useState<ILesson | null>(null);
-  const [comments, setComments] = useState<IComment[]>([]);
-  const [showActions, setShowActions] = useState<boolean>(false);
+  const [lesson, setLesson] = useState<ILesson | null>(null)
+  const [comments, setComments] = useState<IComment[]>([])
+  const [showActions, setShowActions] = useState<boolean>(false)
 
   // report states
-  const [isOpenReportDialog, setIsOpenReportDialog] = useState<boolean>(false);
-  const [selectedContent, setSelectedContent] = useState<string>('');
-
-  // update user session
-  useEffect(() => {
-    const getUser = async () => {
-      const session = await getSession();
-      const user: any = session?.user;
-      setCurUser(user);
-    };
-
-    if (!curUser?._id) {
-      getUser();
-    }
-  }, [update, curUser]);
+  const [isOpenReportDialog, setIsOpenReportDialog] = useState<boolean>(false)
+  const [selectedContent, setSelectedContent] = useState<string>('')
 
   // get lesson
   useEffect(() => {
     const getLesson = async () => {
       // get lesson for learning
       try {
-        const { lesson, comments } = await getLessonApi(lessonSlug);
-
-        if (
-          !curUser.courses.map((course: any) => course.course).includes(lesson.courseId._id) &&
-          lesson.status !== 'public'
-        ) {
-          // user is not enrolled in this course and lesson is not public
-          // redirect to previous page
-          router.back();
-        }
+        const { lesson, comments } = await getLessonApi(lessonSlug)
 
         // set states
-        setLesson(lesson);
-        setComments(comments);
+        setLesson(lesson)
+        setComments(comments)
       } catch (err: any) {
-        console.log(err);
+        console.log(err)
+        // router.back()
       }
-    };
+    }
 
-    getLesson();
-  }, [lessonSlug, curUser?.courses, router]);
+    getLesson()
+  }, [lessonSlug, curUser?.courses, router])
 
   // handle report lesson
   const handleReport = useCallback(async () => {
     // check if content is selected or not
     if (!selectedContent) {
-      toast.error('Hãy chọn nội dung cần báo cáo');
-      return;
+      toast.error('Hãy chọn nội dung cần báo cáo')
+      return
     }
 
     try {
@@ -93,15 +72,15 @@ function LessonPage({
         type: 'lesson',
         content: selectedContent,
         link: `/admin/lesson/all?_id=${lesson?._id}`,
-      });
+      })
 
       // show success
-      toast.success(message);
+      toast.success(message)
     } catch (err: any) {
-      console.log(err);
-      toast.error(err.message);
+      console.log(err)
+      toast.error(err.message)
     }
-  }, [lesson?._id, selectedContent]);
+  }, [lesson?._id, selectedContent])
 
   // like / unlike lesson
   const likeLesson = useCallback(
@@ -109,20 +88,20 @@ function LessonPage({
       if (lesson?._id) {
         try {
           // send request to like / dislike lesson
-          const { updatedLesson } = await likeLessonApi(lesson._id, value);
+          const { updatedLesson } = await likeLessonApi(lesson._id, value)
 
           // like / dislike lesson
-          setLesson(updatedLesson);
+          setLesson(updatedLesson)
         } catch (err: any) {
-          toast.error(err.message);
-          console.log(err);
+          toast.error(err.message)
+          console.log(err)
         }
       } else {
-        toast.error('Không tìm thấy khóa học');
+        toast.error('Không tìm thấy khóa học')
       }
     },
     [lesson?._id]
-  );
+  )
 
   return (
     <div className='w-full'>
@@ -277,11 +256,11 @@ function LessonPage({
         </>
       ) : (
         <p className='font-body tracking-wider font-semibold text-2xl px-3 italic text-slate-400 text-center mt-4'>
-          Không tìm thấy bài giảng. Xin vui lòng quay lại sau.
+          Không tìm thấy bài giảng. Vui lòng kiểm tra lại đường dẫn.
         </p>
       )}
     </div>
-  );
+  )
 }
 
-export default LessonPage;
+export default LessonPage

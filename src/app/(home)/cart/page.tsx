@@ -1,62 +1,62 @@
-'use client';
+'use client'
 
-import CartItem from '@/components/CartItem';
-import Divider from '@/components/Divider';
-import Input from '@/components/Input';
-import SuggestedList from '@/components/SuggestedList';
-import { useAppDispatch, useAppSelector } from '@/libs/hooks';
-import { setSelectedItems } from '@/libs/reducers/cartReducer';
-import { setPageLoading } from '@/libs/reducers/modalReducer';
-import { ICartItem } from '@/models/CartItemModel';
-import { ICourse } from '@/models/CourseModel';
-import { IUser } from '@/models/UserModel';
-import { IVoucher } from '@/models/VoucherModel';
-import { applyVoucherApi, createOrderApi, findUserApi } from '@/requests';
-import { applyFlashSalePrice, calcPercentage, formatPrice } from '@/utils/number';
-import { getUserName } from '@/utils/string';
-import { useSession } from 'next-auth/react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { use, useCallback, useEffect, useState } from 'react';
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
-import { FaShoppingCart } from 'react-icons/fa';
-import { IoMail } from 'react-icons/io5';
-import { RiCoupon2Fill, RiDonutChartFill } from 'react-icons/ri';
+import CartItem from '@/components/CartItem'
+import Divider from '@/components/Divider'
+import Input from '@/components/Input'
+import SuggestedList from '@/components/SuggestedList'
+import { useAppDispatch, useAppSelector } from '@/libs/hooks'
+import { setSelectedItems } from '@/libs/reducers/cartReducer'
+import { setPageLoading } from '@/libs/reducers/modalReducer'
+import { ICartItem } from '@/models/CartItemModel'
+import { ICourse } from '@/models/CourseModel'
+import { IUser } from '@/models/UserModel'
+import { IVoucher } from '@/models/VoucherModel'
+import { applyVoucherApi, createOrderApi, findUserApi } from '@/requests'
+import { applyFlashSalePrice, calcPercentage, formatPrice } from '@/utils/number'
+import { getUserName } from '@/utils/string'
+import { useSession } from 'next-auth/react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { use, useCallback, useEffect, useState } from 'react'
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
+import { FaShoppingCart } from 'react-icons/fa'
+import { IoMail } from 'react-icons/io5'
+import { RiCoupon2Fill, RiDonutChartFill } from 'react-icons/ri'
 
 function CartPage() {
   // hooks
-  const router = useRouter();
-  const queryParams = useSearchParams();
-  const { data: session } = useSession();
-  const curUser: any = session?.user;
+  const router = useRouter()
+  const queryParams = useSearchParams()
+  const { data: session } = useSession()
+  const curUser: any = session?.user
 
   // reducers
-  const dispatch = useAppDispatch();
-  const isLoading = useAppSelector((state) => state.modal.isLoading);
-  let cartItems = useAppSelector((state) => state.cart.items);
-  const selectedItems = useAppSelector((state) => state.cart.selectedItems);
+  const dispatch = useAppDispatch()
+  const isLoading = useAppSelector((state) => state.modal.isLoading)
+  let cartItems = useAppSelector((state) => state.cart.items)
+  const selectedItems = useAppSelector((state) => state.cart.selectedItems)
 
   // states
-  const [subTotal, setSubTotal] = useState<number>(0);
-  const [discount, setDiscount] = useState<number>(0);
-  const [total, setTotal] = useState<number>(0);
+  const [subTotal, setSubTotal] = useState<number>(0)
+  const [discount, setDiscount] = useState<number>(0)
+  const [total, setTotal] = useState<number>(0)
 
   // voucher states
-  const [isShowVoucher, setIsShowVoucher] = useState<boolean>(false);
-  const [voucher, setVoucher] = useState<IVoucher | null>(null);
-  const [voucherMessage, setVoucherMessage] = useState<string>('');
-  const [applyingVoucher, setApplyingVoucher] = useState<boolean>(false);
+  const [isShowVoucher, setIsShowVoucher] = useState<boolean>(false)
+  const [voucher, setVoucher] = useState<IVoucher | null>(null)
+  const [voucherMessage, setVoucherMessage] = useState<string>('')
+  const [applyingVoucher, setApplyingVoucher] = useState<boolean>(false)
 
   // gift states
-  const [isShowGift, setIsShowGift] = useState<boolean>(false);
-  const [findingUser, setFindingUser] = useState<boolean>(false);
-  const [buyAsGiftMessage, setBuyAsGiftMessage] = useState<string>('');
-  const [foundUser, setFoundUser] = useState<IUser | null>(null);
+  const [isShowGift, setIsShowGift] = useState<boolean>(false)
+  const [findingUser, setFindingUser] = useState<boolean>(false)
+  const [buyAsGiftMessage, setBuyAsGiftMessage] = useState<string>('')
+  const [foundUser, setFoundUser] = useState<IUser | null>(null)
 
   // loading and showing
-  const [isBuying, setIsBuying] = useState<boolean>(false);
+  const [isBuying, setIsBuying] = useState<boolean>(false)
 
   // form
   const {
@@ -68,132 +68,132 @@ function CartPage() {
     defaultValues: {
       code: '',
     },
-  });
+  })
 
   // auto calc total, discount, subTotal
   useEffect(() => {
     const subTotal = selectedItems.reduce((total, cartItem) => {
-      const item: any = cartItems.find((cI) => cI._id === cartItem._id);
+      const item: any = cartItems.find((cI) => cI._id === cartItem._id)
 
-      return total + (applyFlashSalePrice(item?.courseId?.flashSale, item?.courseId.price) ?? 0);
-    }, 0);
-    setSubTotal(subTotal);
+      return total + (applyFlashSalePrice(item?.courseId?.flashSale, item?.courseId.price) ?? 0)
+    }, 0)
+    setSubTotal(subTotal)
 
-    let finalTotal = subTotal;
-    let discount = 0;
+    let finalTotal = subTotal
+    let discount = 0
     if (voucher) {
       if (voucher.type === 'fixed-reduce') {
-        discount = +voucher.value;
-        finalTotal = subTotal + discount < 0 ? 0 : subTotal + discount;
+        discount = +voucher.value
+        finalTotal = subTotal + discount < 0 ? 0 : subTotal + discount
       } else if (voucher.type === 'fixed') {
-        discount = +voucher.value;
-        finalTotal = discount;
+        discount = +voucher.value
+        finalTotal = discount
       } else if (voucher.type === 'percentage') {
-        discount = +calcPercentage(voucher.value, subTotal);
+        discount = +calcPercentage(voucher.value, subTotal)
         if (Math.abs(discount) > voucher.maxReduce) {
-          discount = -voucher.maxReduce;
+          discount = -voucher.maxReduce
         }
-        finalTotal = subTotal + discount < 0 ? 0 : subTotal + discount;
+        finalTotal = subTotal + discount < 0 ? 0 : subTotal + discount
       }
     }
-    setDiscount(discount);
-    setTotal(finalTotal);
-  }, [selectedItems, voucher, cartItems]);
+    setDiscount(discount)
+    setTotal(finalTotal)
+  }, [selectedItems, voucher, cartItems])
 
   // auto select cart item
   useEffect(() => {
     const selectedItems = cartItems.filter((item) =>
       queryParams.getAll('course').includes((item.courseId as ICourse)?.slug)
-    );
+    )
 
-    dispatch(setSelectedItems(selectedItems));
-  }, [queryParams, cartItems, dispatch]);
+    dispatch(setSelectedItems(selectedItems))
+  }, [queryParams, cartItems, dispatch])
 
   // send request to server to check voucher
   const handleApplyVoucher: SubmitHandler<FieldValues> = useCallback(
     async (data) => {
       // check user
       if (!curUser?._id) {
-        toast.error('User not found!');
-        return;
+        toast.error('User not found!')
+        return
       }
 
       // start applying
-      setApplyingVoucher(true);
+      setApplyingVoucher(true)
 
       try {
         // send request to server
-        const { voucher, message } = await applyVoucherApi(data.code, curUser?.email, subTotal);
+        const { voucher, message } = await applyVoucherApi(data.code, curUser?.email, subTotal)
 
         // set voucher to state
-        setVoucher(voucher);
-        setVoucherMessage(message);
+        setVoucher(voucher)
+        setVoucherMessage(message)
 
         // show success message
-        toast.success(message);
+        toast.success(message)
       } catch (err: any) {
-        console.log(err);
-        const { message } = err;
-        toast.error(message);
-        setVoucherMessage(message);
+        console.log(err)
+        const { message } = err
+        toast.error(message)
+        setVoucherMessage(message)
       } finally {
         // stop applying
-        setApplyingVoucher(false);
+        setApplyingVoucher(false)
       }
     },
     [subTotal, curUser]
-  );
+  )
 
   // send request to server to check voucher
   const handleFindUser: SubmitHandler<FieldValues> = useCallback(async (data) => {
     // start finding user
-    setFindingUser(true);
+    setFindingUser(true)
 
     try {
       // send request to server
-      const { user } = await findUserApi(data.receivedEmail);
+      const { user } = await findUserApi(data.receivedEmail)
 
       // set found user
-      setFoundUser(user);
-      setBuyAsGiftMessage(`Khóa học sẽ được tặng cho "${getUserName(user)}"`);
+      setFoundUser(user)
+      setBuyAsGiftMessage(`Khóa học sẽ được tặng cho "${getUserName(user)}"`)
     } catch (err: any) {
-      console.log(err);
-      const { message } = err;
-      toast.error(message);
-      setBuyAsGiftMessage(message);
+      console.log(err)
+      const { message } = err
+      toast.error(message)
+      setBuyAsGiftMessage(message)
     } finally {
       // stop finding user
-      setFindingUser(false);
+      setFindingUser(false)
     }
-  }, []);
+  }, [])
 
   // validate before checkout
   const handleValidateBeforeCheckout = useCallback(() => {
-    let isValid = true;
+    let isValid = true
     if (!selectedItems.length || !total) {
-      toast.error('Hãy chọn sản phẩm để tiến hành thanh toán');
-      isValid = false;
+      toast.error('Hãy chọn sản phẩm để tiến hành thanh toán')
+      isValid = false
     }
 
-    return isValid;
-  }, [selectedItems.length, total]);
+    return isValid
+  }, [selectedItems.length, total])
 
   // MARK: Checkout
   // handle checkout
   const handleCheckout = useCallback(
     async (type: string) => {
       // validate before checkout
-      if (!handleValidateBeforeCheckout()) return;
+      if (!handleValidateBeforeCheckout()) return
 
       // start page loading
-      dispatch(setPageLoading(true));
+      dispatch(setPageLoading(true))
 
       try {
         // handle confirm payment
         const items = (selectedItems as any).map((cartItem: ICartItem) => ({
           _id: cartItem._id,
           courseId: cartItem.courseId,
-        }));
+        }))
 
         // send request to server to create order
         const { code } = await createOrderApi({
@@ -203,7 +203,7 @@ function CartPage() {
           discount,
           items,
           paymentMethod: type,
-        });
+        })
 
         // create checkout
         const checkout = {
@@ -214,13 +214,13 @@ function CartPage() {
           discount,
           receivedUser: foundUser,
           total,
-        };
-        localStorage.setItem('checkout', JSON.stringify(checkout));
+        }
+        localStorage.setItem('checkout', JSON.stringify(checkout))
 
         // move to checkout page
-        router.push(`/checkout/${type}`);
+        router.push(`/checkout/${type}`)
       } catch (err: any) {
-        console.log(err);
+        console.log(err)
       }
     },
     [
@@ -234,12 +234,12 @@ function CartPage() {
       total,
       voucher,
     ]
-  );
+  )
 
   // set page title
   useEffect(() => {
-    document.title = 'Giỏ hàng - Mona Edu';
-  }, []);
+    document.title = 'Giỏ hàng - Mona Edu'
+  }, [])
 
   return (
     <div className='md:-mt-[72px] md:pt-[72px] -mb-20 pb-20 px-21 bg-neutral-800 bg-opacity-75 text-light'>
@@ -310,8 +310,8 @@ function CartPage() {
                 type='text'
                 icon={RiCoupon2Fill}
                 onFocus={() => {
-                  clearErrors('code');
-                  setVoucherMessage('');
+                  clearErrors('code')
+                  setVoucherMessage('')
                 }}
                 className='w-full'
               />
@@ -361,8 +361,8 @@ function CartPage() {
                 type='text'
                 icon={IoMail}
                 onFocus={() => {
-                  clearErrors('receivedEmail');
-                  setBuyAsGiftMessage('');
+                  clearErrors('receivedEmail')
+                  setBuyAsGiftMessage('')
                 }}
                 className='w-full'
               />
@@ -467,7 +467,7 @@ function CartPage() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default CartPage;
+export default CartPage

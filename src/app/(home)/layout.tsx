@@ -1,12 +1,11 @@
 import Background from '@/components/backgrounds/Background'
-import FloatingButtons from '@/components/floatings/FloatingButtons'
-import Footer from '@/components/layouts/Footer'
 import Header from '@/components/layouts/Header'
-import PageLoading from '@/components/PageLoading'
 import StoreProvider from '@/libs/StoreProvider'
 import type { Metadata } from 'next'
 import { getServerSession } from 'next-auth'
+import { ReactNode } from 'react'
 import { Toaster } from 'react-hot-toast'
+import authOptions from '../api/auth/[...nextauth]/authOptions'
 import '../globals.scss'
 
 export const metadata: Metadata = {
@@ -23,9 +22,9 @@ export const metadata: Metadata = {
 export default async function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: ReactNode
 }>) {
-  const session = await getServerSession()
+  const session = await getServerSession(authOptions)
 
   return (
     <html lang='vi'>

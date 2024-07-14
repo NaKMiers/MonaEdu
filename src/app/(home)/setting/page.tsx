@@ -1,70 +1,70 @@
-'use client';
+'use client'
 
-import Divider from '@/components/Divider';
-import NotificationSettings from '@/components/setting/NotificationSettings';
-import PersonalInfo from '@/components/setting/PersonalInfo';
-import PrivateInfo from '@/components/setting/PrivateInfo';
-import { useAppDispatch, useAppSelector } from '@/libs/hooks';
-import { setAuthenticated, setOpenAuthentication } from '@/libs/reducers/modalReducer';
-import { checkAuthenticationApi } from '@/requests';
-import { useSession } from 'next-auth/react';
-import Image from 'next/image';
-import { useCallback, useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
-import { FaCircleNotch } from 'react-icons/fa';
-import { IoMdCloseCircleOutline } from 'react-icons/io';
-import { IoWarningOutline } from 'react-icons/io5';
+import Divider from '@/components/Divider'
+import NotificationSettings from '@/components/setting/NotificationSettings'
+import PersonalInfo from '@/components/setting/PersonalInfo'
+import PrivateInfo from '@/components/setting/PrivateInfo'
+import { useAppDispatch, useAppSelector } from '@/libs/hooks'
+import { setAuthenticated, setOpenAuthentication } from '@/libs/reducers/modalReducer'
+import { checkAuthenticationApi } from '@/requests'
+import { useSession } from 'next-auth/react'
+import Image from 'next/image'
+import { useCallback, useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
+import { FaCircleNotch } from 'react-icons/fa'
+import { IoMdCloseCircleOutline } from 'react-icons/io'
+import { IoWarningOutline } from 'react-icons/io5'
 
 function PersonalSetting() {
   // hook
-  const { data: session } = useSession();
-  const curUser: any = session?.user;
-  const dispatch = useAppDispatch();
-  const openAuthentication = useAppSelector((state) => state.modal.openAuthentication);
+  const dispatch = useAppDispatch()
+  const openAuthentication = useAppSelector((state) => state.modal.openAuthentication)
+  const { data: session } = useSession()
+  const curUser: any = session?.user
 
   // states
   // authentication
-  const [isCheckingAuthentication, setIsCheckingAuthentication] = useState<boolean>(false);
-  const [password, setPassword] = useState<string>('');
+  const [isCheckingAuthentication, setIsCheckingAuthentication] = useState<boolean>(false)
+  const [password, setPassword] = useState<string>('')
 
   // handle check authentication
   const handleCheckAuthentication = useCallback(async () => {
     if (!password.trim()) {
-      toast.error('Mật khẩu bắt buộc!');
-      return;
+      toast.error('Mật khẩu bắt buộc!')
+      return
     }
 
     // start loading
-    setIsCheckingAuthentication(true);
+    setIsCheckingAuthentication(true)
 
     try {
       // send request to server to check authentication
-      const { message } = await checkAuthenticationApi(password);
+      const { message } = await checkAuthenticationApi(password)
 
       // set authenticated
-      dispatch(setAuthenticated(true));
+      dispatch(setAuthenticated(true))
 
       // reset password
-      setPassword('');
+      setPassword('')
 
       // close modal
-      dispatch(setOpenAuthentication(false));
+      dispatch(setOpenAuthentication(false))
 
       // notify success
-      toast.success(message);
+      toast.success(message)
     } catch (err: any) {
-      console.log(err);
-      toast.error(err.message);
+      console.log(err)
+      toast.error(err.message)
     } finally {
       // stop loading
-      setIsCheckingAuthentication(false);
+      setIsCheckingAuthentication(false)
     }
-  }, [dispatch, password]);
+  }, [dispatch, password])
 
   // set page title
   useEffect(() => {
-    document.title = 'Cài đặt - Mona Edu';
-  }, []);
+    document.title = 'Cài đặt - Mona Edu'
+  }, [])
 
   return (
     <div className='max-w-1200 mx-auto px-21'>
@@ -164,7 +164,7 @@ function PersonalSetting() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default PersonalSetting;
+export default PersonalSetting

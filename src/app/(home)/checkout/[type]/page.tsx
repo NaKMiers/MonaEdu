@@ -1,63 +1,63 @@
-'use client';
+'use client'
 
-import CartItem from '@/components/CartItem';
-import Divider from '@/components/Divider';
-import { admins } from '@/constants';
-import { useAppDispatch } from '@/libs/hooks';
-import { setPageLoading } from '@/libs/reducers/modalReducer';
-import { ICartItem } from '@/models/CartItemModel';
-import { formatPrice } from '@/utils/number';
-import { useSession } from 'next-auth/react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
-import { FaBookOpen } from 'react-icons/fa';
-import { IoIosHelpCircle, IoMdArrowRoundBack } from 'react-icons/io';
+import CartItem from '@/components/CartItem'
+import Divider from '@/components/Divider'
+import { admins } from '@/constants'
+import { useAppDispatch } from '@/libs/hooks'
+import { setPageLoading } from '@/libs/reducers/modalReducer'
+import { ICartItem } from '@/models/CartItemModel'
+import { formatPrice } from '@/utils/number'
+import { useSession } from 'next-auth/react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useCallback, useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
+import { FaBookOpen } from 'react-icons/fa'
+import { IoIosHelpCircle, IoMdArrowRoundBack } from 'react-icons/io'
 
 function CheckoutPage({ params }: { params: { type: string } }) {
   // hooks
-  const dispatch = useAppDispatch();
-  const router = useRouter();
-  const { data: session } = useSession();
-  const curUser: any = session?.user;
+  const dispatch = useAppDispatch()
+  const router = useRouter()
+  const { data: session } = useSession()
+  const curUser: any = session?.user
 
   // states
-  const [checkout, setCheckout] = useState<any>(null);
+  const [checkout, setCheckout] = useState<any>(null)
 
   // values
-  const admin = admins[(process.env.NEXT_PUBLIC_ADMIN! as keyof typeof admins) || 'KHOA'];
-  const type: string = params.type;
+  const admin = admins[(process.env.NEXT_PUBLIC_ADMIN! as keyof typeof admins) || 'KHOA']
+  const type: string = params.type
 
   // MARK: Get Data
   // get checkout from local storage
   useEffect(() => {
     // stop page loading initially
-    dispatch(setPageLoading(false));
+    dispatch(setPageLoading(false))
 
-    const checkout = JSON.parse(localStorage.getItem('checkout') ?? 'null');
+    const checkout = JSON.parse(localStorage.getItem('checkout') ?? 'null')
 
     if (!checkout) {
       // start page loading for redirecting
-      dispatch(setPageLoading(true));
-      toast.error('Đang quay lại giỏ hàng...');
-      router.push('/cart');
+      dispatch(setPageLoading(true))
+      toast.error('Đang quay lại giỏ hàng...')
+      router.push('/cart')
     } else {
-      setCheckout(checkout);
+      setCheckout(checkout)
     }
-  }, [router, dispatch]);
+  }, [router, dispatch])
 
   // handle copy
   const handleCopy = useCallback((text: string) => {
-    navigator.clipboard.writeText(text);
-    toast.success('Đã sao chép: ' + text);
-  }, []);
+    navigator.clipboard.writeText(text)
+    toast.success('Đã sao chép: ' + text)
+  }, [])
 
   // set page title
   useEffect(() => {
-    document.title = 'Thanh toán - Mona Edu';
-  }, []);
+    document.title = 'Thanh toán - Mona Edu'
+  }, [])
 
   return (
     <div className='mt-24 grid grid-cols-1 lg:grid-cols-12 gap-21 text-dark px-21 mb-32'>
@@ -200,10 +200,10 @@ function CheckoutPage({ params }: { params: { type: string } }) {
             className='flex items-center justify-center gap-2 group rounded-lg px-21 py-3 bg-primary hover:bg-secondary hover:text-white common-transition'
             onClick={(e) => {
               if (!curUser?._id) {
-                e.preventDefault();
-                toast.error('Bạn cần có tài khoản để có thể xem thông tin đơn hàng ngay khi mua');
+                e.preventDefault()
+                toast.error('Bạn cần có tài khoản để có thể xem thông tin đơn hàng ngay khi mua')
               } else {
-                localStorage.removeItem('checkout');
+                localStorage.removeItem('checkout')
               }
             }}
             title='Xem đơn hàng ngay'
@@ -269,10 +269,10 @@ function CheckoutPage({ params }: { params: { type: string } }) {
                 className='flex items-center justify-center gap-2 group rounded-lg px-21 py-3 bg-primary hover:bg-secondary hover:text-white common-transition'
                 onClick={(e) => {
                   if (!curUser?._id) {
-                    e.preventDefault();
-                    toast.error('Bạn cần có tài khoản để có thể xem thông tin đơn hàng ngay khi mua');
+                    e.preventDefault()
+                    toast.error('Bạn cần có tài khoản để có thể xem thông tin đơn hàng ngay khi mua')
                   } else {
-                    localStorage.removeItem('checkout');
+                    localStorage.removeItem('checkout')
                   }
                 }}
                 title='Xem đơn hàng ngay'
@@ -294,7 +294,7 @@ function CheckoutPage({ params }: { params: { type: string } }) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default CheckoutPage;
+export default CheckoutPage

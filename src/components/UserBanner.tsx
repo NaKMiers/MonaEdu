@@ -4,7 +4,7 @@ import { IUser } from '@/models/UserModel'
 import { changeBannerApi } from '@/requests'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
-import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
+import React, { ChangeEvent, memo, useCallback, useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import { FaCamera, FaSave } from 'react-icons/fa'
 import { ImCancelCircle } from 'react-icons/im'
@@ -29,7 +29,7 @@ function UserBanner({ user, className = '' }: UserBannerProps) {
 
   // handle add file when user select files
   const handleAddFile = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
+    (e: ChangeEvent<HTMLInputElement>) => {
       if (e.target.files) {
         const file = e.target.files[0]
 
@@ -76,15 +76,13 @@ function UserBanner({ user, className = '' }: UserBannerProps) {
 
       // reset form
       setFile(null)
-      setImageUrl('')
-      URL.revokeObjectURL(imageUrl)
     } catch (err: any) {
       toast.error(err.message)
     } finally {
       // stop changing banner
       setIsChangingBanner(false)
     }
-  }, [update, file, imageUrl])
+  }, [update, file])
 
   // cancel changing banner
   const handleCancelBanner = useCallback(async () => {
@@ -124,9 +122,9 @@ function UserBanner({ user, className = '' }: UserBannerProps) {
       {!isChangingBanner && curUser?._id === user?._id && (
         <div
           className='absolute top-0 left-0 flex opacity-0 group-hover:opacity-100 items-center justify-center bg-dark-0 w-full h-full bg-opacity-20 trans-200 cursor-pointer drop-shadow-lg'
-          onClick={() => !imageUrl && bannerInputRef.current?.click()}
+          onClick={() => !file && bannerInputRef.current?.click()}
         >
-          {imageUrl ? (
+          {file ? (
             <div className='flex items-center justify-center gap-21'>
               <FaSave size={40} className='text-green-400 wiggle-1' onClick={handleSaveBanner} />
               <ImCancelCircle

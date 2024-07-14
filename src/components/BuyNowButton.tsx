@@ -3,8 +3,8 @@
 import { ICourse } from '@/models/CourseModel'
 import { likeCourseApi } from '@/requests'
 import { Link } from '@react-email/components'
-import { getSession, useSession } from 'next-auth/react'
-import { memo, useCallback, useEffect, useState } from 'react'
+import { useSession } from 'next-auth/react'
+import { memo, useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
 import { FaRegThumbsUp, FaThumbsUp } from 'react-icons/fa'
 import { HiDotsVertical } from 'react-icons/hi'
@@ -17,24 +17,11 @@ interface BuyNowButtonProps {
 function BuyNowButton({ course, className = '' }: BuyNowButtonProps) {
   // hooks
   const { data: session } = useSession()
+  const curUser: any = session?.user
 
   // states
-  const [curUser, setCurUser] = useState<any>(session?.user || null)
   const [data, setData] = useState<ICourse>(course)
   const [showActions, setShowActions] = useState<boolean>(false)
-
-  // MARK: Side Effects
-  // update user session
-  useEffect(() => {
-    const getUser = async () => {
-      const session = await getSession()
-      setCurUser(session?.user)
-    }
-
-    if (!curUser?._id) {
-      getUser()
-    }
-  }, [curUser])
 
   // handel like / dislike course
   const likeCourse = useCallback(

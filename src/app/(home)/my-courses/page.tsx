@@ -1,53 +1,53 @@
-'use client';
+'use client'
 
-import CourseCard from '@/components/CourseCard';
-import Divider from '@/components/Divider';
-import { useAppDispatch } from '@/libs/hooks';
-import { setPageLoading } from '@/libs/reducers/modalReducer';
-import { ICourse } from '@/models/CourseModel';
-import { getMyCoursesApi } from '@/requests';
-import { Link } from '@react-email/components';
-import { useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
+import CourseCard from '@/components/CourseCard'
+import Divider from '@/components/Divider'
+import { useAppDispatch } from '@/libs/hooks'
+import { setPageLoading } from '@/libs/reducers/modalReducer'
+import { ICourse } from '@/models/CourseModel'
+import { getMyCoursesApi } from '@/requests'
+import { Link } from '@react-email/components'
+import { useSession } from 'next-auth/react'
+import { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 
 function MyCoursesPage({ searchParams }: { searchParams?: { [key: string]: string[] } }) {
   // hooks
-  const dispatch = useAppDispatch();
-  const { data: session } = useSession();
-  const curUser: any = session?.user;
+  const dispatch = useAppDispatch()
+  const { data: session } = useSession()
+  const curUser: any = session?.user
 
   // states
-  const [courses, setCourses] = useState<ICourse[]>([]);
+  const [courses, setCourses] = useState<ICourse[]>([])
 
   // get my courses
   useEffect(() => {
     const getMyCourses = async () => {
       // start page loading
-      dispatch(setPageLoading(true));
+      dispatch(setPageLoading(true))
 
       try {
         // send request to get my courses
-        const { courses } = await getMyCoursesApi();
-        setCourses(courses);
+        const { courses } = await getMyCoursesApi()
+        setCourses(courses)
       } catch (err: any) {
-        console.log(err);
-        toast.error(err.message);
+        console.log(err)
+        toast.error(err.message)
       } finally {
         // stop page loading
-        dispatch(setPageLoading(false));
+        dispatch(setPageLoading(false))
       }
-    };
+    }
 
     if (curUser?._id) {
-      getMyCourses();
+      getMyCourses()
     }
-  }, [dispatch, curUser?._id]);
+  }, [dispatch, curUser?._id])
 
   // set page title
   useEffect(() => {
-    document.title = 'Khóa học của tôi - Mona Edu';
-  }, []);
+    document.title = 'Khóa học của tôi - Mona Edu'
+  }, [])
 
   return (
     <div className='px-21'>
@@ -83,7 +83,7 @@ function MyCoursesPage({ searchParams }: { searchParams?: { [key: string]: strin
 
       <Divider size={28} />
     </div>
-  );
+  )
 }
 
-export default MyCoursesPage;
+export default MyCoursesPage
