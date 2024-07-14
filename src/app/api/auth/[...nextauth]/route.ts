@@ -1,15 +1,15 @@
-import { connectDatabase } from "@/config/database";
-import UserModel, { IUser } from "@/models/UserModel";
-import bcrypt from "bcrypt";
-import NextAuth from "next-auth";
+import { connectDatabase } from '@/config/database';
+import UserModel, { IUser } from '@/models/UserModel';
+import bcrypt from 'bcrypt';
+import NextAuth from 'next-auth';
 
 // Providers
-import CredentialsProvider from "next-auth/providers/credentials";
-import GitHubProvider from "next-auth/providers/github";
-import GoogleProvider from "next-auth/providers/google";
+import CredentialsProvider from 'next-auth/providers/credentials';
+import GitHubProvider from 'next-auth/providers/github';
+import GoogleProvider from 'next-auth/providers/google';
 
 // Models: User
-import "@/models/UserModel";
+import '@/models/UserModel';
 
 const handler = NextAuth({
   secret: process.env.NEXTAUTH_SECRET!,
@@ -34,13 +34,13 @@ const handler = NextAuth({
 
     // CREDENTIALS
     CredentialsProvider({
-      name: "Credentials",
+      name: 'Credentials',
       credentials: {
-        usernameOrEmail: { label: "Tên người dùng hoặc Email", type: "text" },
-        password: { label: "Password", type: "password" },
+        usernameOrEmail: { label: 'Tên người dùng hoặc Email', type: 'text' },
+        password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials: any) {
-        console.log("- Credentials -");
+        console.log('- Credentials -');
 
         // connect to database
         await connectDatabase();
@@ -60,19 +60,19 @@ const handler = NextAuth({
 
         // check user exists or not in database
         if (!user) {
-          throw new Error("Email hoặc mật khẩu không chính xác!");
+          throw new Error('Email hoặc mật khẩu không chính xác!');
         }
 
         // check if user is not local
-        if (user.authType !== "local") {
-          throw new Error("Tài khoản này được xác thực bởi " + user.authType);
+        if (user.authType !== 'local') {
+          throw new Error('Tài khoản này được xác thực bởi ' + user.authType);
         }
 
         // check password
         const isValidPassword = await bcrypt.compare(password, user.password);
         if (!isValidPassword) {
           // push error to call back
-          throw new Error("Email hoặc mật khẩu không chính xác!");
+          throw new Error('Email hoặc mật khẩu không chính xác!');
         }
 
         const { avatar: image, ...otherDetails } = user;
@@ -81,7 +81,7 @@ const handler = NextAuth({
         return {
           ...otherDetails,
           image,
-          name: user.firstName + " " + user.lastName,
+          name: user.firstName + ' ' + user.lastName,
         };
       },
     }),
@@ -90,10 +90,10 @@ const handler = NextAuth({
   ],
   callbacks: {
     async jwt({ token, user, trigger, session }) {
-      console.log("- JWT -");
+      console.log('- JWT -');
 
-      if (trigger === "update" && token._id) {
-        console.log("- Update Token -");
+      if (trigger === 'update' && token._id) {
+        console.log('- Update Token -');
         const userDB: IUser | null = await UserModel.findById(token._id).lean();
         if (userDB) {
           return { ...token, ...userDB };
@@ -113,20 +113,20 @@ const handler = NextAuth({
     },
 
     async session({ session, token }) {
-      console.log("- Session -");
+      console.log('- Session -');
 
       session.user = token;
       return session;
     },
 
     async signIn({ user, account, profile }: any) {
-      console.log("- Sign In -");
+      console.log('- Sign In -');
 
       try {
         // connect to database
         await connectDatabase();
 
-        if (account && account.provider != "credentials") {
+        if (account && account.provider != 'credentials') {
           if (!user || !profile) {
             return false;
           }
@@ -134,15 +134,15 @@ const handler = NextAuth({
           // get data for authentication
           const email = user.email;
           const avatar = user.image;
-          let firstName: string = "";
-          let lastName: string = "";
+          let firstName: string = '';
+          let lastName: string = '';
 
-          if (account.provider === "google") {
+          if (account.provider === 'google') {
             firstName = profile.given_name;
             lastName = profile.family_name;
-          } else if (account.provider === "github") {
+          } else if (account.provider === 'github') {
             firstName = profile.name;
-            lastName = "";
+            lastName = '';
           }
 
           // get user from database to check exist

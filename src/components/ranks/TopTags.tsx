@@ -1,7 +1,8 @@
-import Link from 'next/link';
+import Link from 'next/link'
+import { memo } from 'react'
 
 interface TopKeywordsProps {
-  className?: string;
+  className?: string
 }
 
 function TopKeywords({ className }: TopKeywordsProps) {
@@ -12,7 +13,7 @@ function TopKeywords({ className }: TopKeywordsProps) {
     'tiktok',
     'học dropshipping',
     'SEO',
-  ];
+  ]
 
   return (
     <div className={`max-w-1200 mx-auto ${className}`}>
@@ -28,7 +29,7 @@ function TopKeywords({ className }: TopKeywordsProps) {
         ))}
       </div>
     </div>
-  );
+  )
 }
 
-export default TopKeywords;
+export default memo(TopKeywords)

@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import { FaQuestionCircle } from 'react-icons/fa'
 import { FaBoltLightning } from 'react-icons/fa6'
 
@@ -50,4 +50,4 @@ function FloatingButtons({ className = '' }: FloatingButtonsProps) {
   )
 }
 
-export default FloatingButtons
+export default memo(FloatingButtons)

@@ -1,57 +1,57 @@
-'use client';
+'use client'
 
-import { addQuestionApi } from '@/requests/questionRequest';
-import { useSession } from 'next-auth/react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useCallback, useState } from 'react';
-import toast from 'react-hot-toast';
-import LoadingButton from './LoadingButton';
+import { addQuestionApi } from '@/requests/questionRequest'
+import { useSession } from 'next-auth/react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { memo, useCallback, useState } from 'react'
+import toast from 'react-hot-toast'
+import LoadingButton from './LoadingButton'
 
 function AddQuestionForm() {
   // hooks
-  const { data: session } = useSession();
-  const curUser: any = session?.user;
-  const router = useRouter();
+  const { data: session } = useSession()
+  const curUser: any = session?.user
+  const router = useRouter()
 
   // states
-  const [value, setValue] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(false);
+  const [value, setValue] = useState<string>('')
+  const [loading, setLoading] = useState<boolean>(false)
 
   // handle add question
   const handleAddQuestion = useCallback(async () => {
     // check user
     if (!curUser) {
-      toast.error('Hãy đăng nhập để đặt câu hỏi!');
-      return;
+      toast.error('Hãy đăng nhập để đặt câu hỏi!')
+      return
     }
 
     // check value
     if (!value.trim()) {
-      toast.error('Hãy nhập câu hỏi của bạn!');
-      return;
+      toast.error('Hãy nhập câu hỏi của bạn!')
+      return
     }
 
     // start loading
-    setLoading(true);
+    setLoading(true)
 
     try {
-      await addQuestionApi({ content: value });
+      await addQuestionApi({ content: value })
 
       // reset
-      setValue('');
+      setValue('')
 
       // reload page
-      router.refresh();
+      router.refresh()
     } catch (err: any) {
-      console.log(err);
-      toast.error(err.message);
+      console.log(err)
+      toast.error(err.message)
     } finally {
       // stop loading
-      setLoading(false);
+      setLoading(false)
     }
-  }, [router, curUser, value]);
+  }, [router, curUser, value])
 
   return (
     <div className='flex gap-3'>
@@ -82,7 +82,7 @@ function AddQuestionForm() {
         onClick={handleAddQuestion}
       />
     </div>
-  );
+  )
 }
 
-export default AddQuestionForm;
+export default memo(AddQuestionForm)

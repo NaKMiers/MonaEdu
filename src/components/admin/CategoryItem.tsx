@@ -1,12 +1,12 @@
 import { ICategory } from '@/models/CategoryModel'
-import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
-import { FaChevronUp, FaCircleNotch, FaTrash } from 'react-icons/fa'
-import ConfirmDialog from '../dialogs/ConfirmDialog'
 import { bootCategoriesApi, deleteCategoryApi } from '@/requests'
+import { Dispatch, memo, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
-import CategoryModal from './CategoryModal'
-import { MdEdit, MdOutlineAddCircle } from 'react-icons/md'
+import { FaChevronUp, FaCircleNotch, FaTrash } from 'react-icons/fa'
 import { IoRocketSharp } from 'react-icons/io5'
+import { MdEdit, MdOutlineAddCircle } from 'react-icons/md'
+import ConfirmDialog from '../dialogs/ConfirmDialog'
+import CategoryModal from './CategoryModal'
 
 interface CategoryItemProps {
   data: ICategory
@@ -71,7 +71,7 @@ function CategoryItem({
       const { category, message } = await deleteCategoryApi(data._id)
 
       // remove deleted categories from state
-      setCategories(prev => prev.filter(ctg => ctg._id !== category._id))
+      setCategories((prev) => prev.filter((ctg) => ctg._id !== category._id))
 
       // show success message
       toast.success(message)
@@ -102,7 +102,7 @@ function CategoryItem({
         {!selectMode ? (
           <div className='flex items-center gap-2'>
             <button
-              onClick={e => {
+              onClick={(e) => {
                 e.stopPropagation()
                 setOpenAddCategoryModal(true)
               }}
@@ -111,7 +111,7 @@ function CategoryItem({
               <MdOutlineAddCircle size={16} className='wiggle' />
             </button>
             <button
-              onClick={e => {
+              onClick={(e) => {
                 e.stopPropagation()
                 setOpenEditCategoryModal(true)
               }}
@@ -120,7 +120,7 @@ function CategoryItem({
               <MdEdit size={15} className='wiggle' />
             </button>
             <button
-              onClick={e => {
+              onClick={(e) => {
                 e.stopPropagation()
                 handleBootCategory()
               }}
@@ -133,7 +133,7 @@ function CategoryItem({
               <IoRocketSharp size={14} className='wiggle' />
             </button>
             <button
-              onClick={e => {
+              onClick={(e) => {
                 e.stopPropagation()
                 setIsOpenConfirmModal(true)
               }}
@@ -209,4 +209,4 @@ function CategoryItem({
   )
 }
 
-export default CategoryItem
+export default memo(CategoryItem)

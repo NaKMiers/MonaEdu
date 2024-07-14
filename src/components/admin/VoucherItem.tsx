@@ -1,13 +1,13 @@
+import { IUser } from '@/models/UserModel'
+import { IVoucher } from '@/models/VoucherModel'
 import { formatPrice } from '@/utils/number'
 import { formatTime } from '@/utils/time'
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React, { memo, useState } from 'react'
 import { FaCheck, FaTrash } from 'react-icons/fa'
 import { MdEdit } from 'react-icons/md'
 import { RiDonutChartFill } from 'react-icons/ri'
 import ConfirmDialog from '../dialogs/ConfirmDialog'
-import { IVoucher } from '@/models/VoucherModel'
-import { IUser } from '@/models/UserModel'
 
 interface VoucherItemProps {
   data: IVoucher
@@ -42,10 +42,11 @@ function VoucherItem({
           selectedVouchers.includes(data._id) ? 'bg-violet-50 -translate-y-1' : 'bg-white'
         }  ${className}`}
         onClick={() =>
-          setSelectedVouchers(prev =>
-            prev.includes(data._id) ? prev.filter(id => id !== data._id) : [...prev, data._id]
+          setSelectedVouchers((prev) =>
+            prev.includes(data._id) ? prev.filter((id) => id !== data._id) : [...prev, data._id]
           )
-        }>
+        }
+      >
         {/* MARK: Body */}
         <div>
           <div className='flex items-center gap-3'>
@@ -135,11 +136,12 @@ function VoucherItem({
           {/* Active Button */}
           <button
             className='block group'
-            onClick={e => {
+            onClick={(e) => {
               e.stopPropagation()
               handleActivateVouchers([data._id], !data.active)
             }}
-            title={data.active ? 'Deactivate' : 'Activate'}>
+            title={data.active ? 'Deactivate' : 'Activate'}
+          >
             <FaCheck
               size={18}
               className={`wiggle ${data.active ? 'text-green-500' : 'text-slate-300'}`}
@@ -150,20 +152,22 @@ function VoucherItem({
           <Link
             href={`/admin/voucher/${data.code}/edit`}
             className='block group'
-            onClick={e => e.stopPropagation()}
-            title='Edit'>
+            onClick={(e) => e.stopPropagation()}
+            title='Edit'
+          >
             <MdEdit size={18} className='wiggle' />
           </Link>
 
           {/* Delete Button */}
           <button
             className='block group'
-            onClick={e => {
+            onClick={(e) => {
               e.stopPropagation()
               setIsOpenConfirmModal(true)
             }}
             disabled={loadingVouchers.includes(data._id)}
-            title='Delete'>
+            title='Delete'
+          >
             {loadingVouchers.includes(data._id) ? (
               <RiDonutChartFill size={18} className='animate-spin text-slate-300' />
             ) : (
@@ -186,4 +190,4 @@ function VoucherItem({
   )
 }
 
-export default VoucherItem
+export default memo(VoucherItem)

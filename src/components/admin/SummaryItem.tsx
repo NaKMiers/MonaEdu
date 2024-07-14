@@ -1,7 +1,7 @@
 import { IUser } from '@/models/UserModel'
 import { formatPrice } from '@/utils/number'
 import { formatDate } from '@/utils/time'
-import React from 'react'
+import React, { memo } from 'react'
 import { IoIosSend } from 'react-icons/io'
 import { RiDonutChartFill } from 'react-icons/ri'
 
@@ -32,10 +32,11 @@ function SummaryItem({
         selectedSummaries.includes(data._id) ? 'bg-violet-50 -translate-y-1' : 'bg-white'
       }  ${className}`}
       onClick={() =>
-        setSelectedSummaries(prev =>
-          prev.includes(data._id) ? prev.filter(id => id !== data._id) : [...prev, data._id]
+        setSelectedSummaries((prev) =>
+          prev.includes(data._id) ? prev.filter((id) => id !== data._id) : [...prev, data._id]
         )
-      }>
+      }
+    >
       {/* MARK: Body */}
       <div className='w-full'>
         <p className='text-sm'>
@@ -79,7 +80,8 @@ function SummaryItem({
               } | ${voucher.timesLeft} | ${
                 voucher.expire ? formatDate(voucher.expire) : 'no-expire'
               } | ${formatPrice(voucher.minTotal)} | ${formatPrice(voucher.maxReduce)}`}
-              key={voucher.code}>
+              key={voucher.code}
+            >
               {voucher.code}
               {index === (data.vouchers?.length || 0) - 1 ? '' : ', '}
             </span>
@@ -92,12 +94,13 @@ function SummaryItem({
         {/* Send Summary Button */}
         <button
           className='block group'
-          onClick={e => {
+          onClick={(e) => {
             e.stopPropagation()
             handleSendSummaries([data._id])
           }}
           disabled={loadingSummaries.includes(data._id)}
-          title='Send'>
+          title='Send'
+        >
           {loadingSummaries.includes(data._id) ? (
             <RiDonutChartFill size={18} className='animate-spin text-slate-300' />
           ) : (
@@ -109,4 +112,4 @@ function SummaryItem({
   )
 }
 
-export default SummaryItem
+export default memo(SummaryItem)

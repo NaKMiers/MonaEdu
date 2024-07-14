@@ -1,10 +1,10 @@
-import React from 'react';
+import { memo } from 'react'
 
 interface HeadingProps {
-  title: string;
-  noLine?: boolean;
-  space?: boolean;
-  className?: string;
+  title: string
+  noLine?: boolean
+  space?: boolean
+  className?: string
 }
 
 function Heading({ title, noLine, space, className }: HeadingProps) {
@@ -18,7 +18,7 @@ function Heading({ title, noLine, space, className }: HeadingProps) {
         {title}
       </span>
     </div>
-  );
+  )
 }
 
-export default Heading;
+export default memo(Heading)

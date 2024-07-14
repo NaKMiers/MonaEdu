@@ -1,39 +1,39 @@
-import { IComment } from '@/models/CommentModel';
-import { addReportApi } from '@/requests';
-import { hideCommentApi, likeCommentApi, replyCommentApi } from '@/requests/commentRequest';
-import { useSession } from 'next-auth/react';
-import Image from 'next/image';
-import React, { useCallback, useState } from 'react';
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
-import { FaEye, FaEyeSlash, FaHeart, FaRegHeart, FaSortDown } from 'react-icons/fa';
-import { format } from 'timeago.js';
-import LoadingButton from './LoadingButton';
-import ReportDialog from './dialogs/ReportDigalog';
-import { reportContents } from '@/constants';
-import Link from 'next/link';
+import { reportContents } from '@/constants'
+import { IComment } from '@/models/CommentModel'
+import { addReportApi } from '@/requests'
+import { hideCommentApi, likeCommentApi, replyCommentApi } from '@/requests/commentRequest'
+import { useSession } from 'next-auth/react'
+import Image from 'next/image'
+import Link from 'next/link'
+import React, { memo, useCallback, useState } from 'react'
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
+import { FaEye, FaEyeSlash, FaHeart, FaRegHeart, FaSortDown } from 'react-icons/fa'
+import { format } from 'timeago.js'
+import LoadingButton from './LoadingButton'
+import ReportDialog from './dialogs/ReportDigalog'
 
 interface CommentItemProps {
-  comment: IComment;
-  setCmts: React.Dispatch<React.SetStateAction<IComment[]>>;
-  className?: string;
+  comment: IComment
+  setCmts: React.Dispatch<React.SetStateAction<IComment[]>>
+  className?: string
 }
 
 function CommentItem({ comment, setCmts, className = '' }: CommentItemProps) {
   // hooks
-  const { data: session } = useSession();
-  const curUser: any = session?.user;
+  const { data: session } = useSession()
+  const curUser: any = session?.user
 
   // states
-  const [isOpenReply, setIsOpenReply] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isOpenReply, setIsOpenReply] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   // report states
-  const [isOpenReportDialog, setIsOpenReportDialog] = useState<boolean>(false);
-  const [selectedContent, setSelectedContent] = useState<string>('');
+  const [isOpenReportDialog, setIsOpenReportDialog] = useState<boolean>(false)
+  const [selectedContent, setSelectedContent] = useState<string>('')
 
   // values
-  const user = comment.user;
+  const user = comment.user
 
   // form
   const {
@@ -45,23 +45,23 @@ function CommentItem({ comment, setCmts, className = '' }: CommentItemProps) {
     defaultValues: {
       comment: '',
     },
-  });
+  })
 
   // MARK: Handlers
   // reply comment
   const replyComment: SubmitHandler<FieldValues> = useCallback(
     async (data) => {
       // check login
-      if (!curUser) return toast.error('Bạn cần đăng nhập để thực hiện chức năng này');
+      if (!curUser) return toast.error('Bạn cần đăng nhập để thực hiện chức năng này')
 
       // check if comment is valid
       if (comment._id && curUser?._id) {
-        setIsLoading(true);
+        setIsLoading(true)
 
         try {
           // send request to add comment
-          const { newComment, parentComment } = await replyCommentApi(comment._id, data.comment);
-          newComment.user = curUser;
+          const { newComment, parentComment } = await replyCommentApi(comment._id, data.comment)
+          newComment.user = curUser
 
           // add new comment to list
           setCmts((prev) =>
@@ -73,28 +73,28 @@ function CommentItem({ comment, setCmts, className = '' }: CommentItemProps) {
                   }
                 : comment
             )
-          );
+          )
 
           // reset form
-          reset();
+          reset()
         } catch (err: any) {
-          toast.error(err.message);
-          console.log(err);
+          toast.error(err.message)
+          console.log(err)
         } finally {
           // reset loading state
-          setIsLoading(false);
+          setIsLoading(false)
         }
       }
     },
     [comment._id, setCmts, curUser, reset]
-  );
+  )
 
   // handle report comment
   const handleReport = useCallback(async () => {
     // check if content is selected or not
     if (!selectedContent) {
-      toast.error('Please select a content to report');
-      return;
+      toast.error('Please select a content to report')
+      return
     }
 
     try {
@@ -102,22 +102,22 @@ function CommentItem({ comment, setCmts, className = '' }: CommentItemProps) {
         type: 'comment',
         content: selectedContent,
         link: `/comment/${comment._id}`,
-      });
+      })
 
       // show success
-      toast.success(message);
+      toast.success(message)
     } catch (err: any) {
-      console.log(err);
-      toast.error(err.message);
+      console.log(err)
+      toast.error(err.message)
     }
-  }, [comment._id, selectedContent]);
+  }, [comment._id, selectedContent])
 
   // like / unlike comment
   const likeComment = useCallback(
     async (value: 'y' | 'n') => {
       try {
         // send request to like / dislike comment
-        const { comment: cmt } = await likeCommentApi(comment._id, value);
+        const { comment: cmt } = await likeCommentApi(comment._id, value)
 
         // like / dislike comment / replied comment
         if (!cmt.lessonId && !cmt.questionId) {
@@ -132,25 +132,25 @@ function CommentItem({ comment, setCmts, className = '' }: CommentItemProps) {
                   }
                 : c
             )
-          );
+          )
         } else {
           // normal comment
-          setCmts((prev) => prev.map((comment) => (comment._id === cmt._id ? cmt : comment)));
+          setCmts((prev) => prev.map((comment) => (comment._id === cmt._id ? cmt : comment)))
         }
       } catch (err: any) {
-        toast.error(err.message);
-        console.log(err);
+        toast.error(err.message)
+        console.log(err)
       }
     },
     [comment._id, setCmts]
-  );
+  )
 
   // hide / show comment
   const hideComment = useCallback(
     async (id: string, value: 'y' | 'n') => {
       try {
         // send request to hide / show comment
-        const { comment: cmt } = await hideCommentApi(id, value);
+        const { comment: cmt } = await hideCommentApi(id, value)
 
         // hide / show comment / replied comment
         if (!cmt.lessonId && !cmt.questionId) {
@@ -163,20 +163,20 @@ function CommentItem({ comment, setCmts, className = '' }: CommentItemProps) {
                     ...c,
                     replied: c.replied.map((reply: any) => (reply._id === cmt._id ? cmt : reply)),
                   }
-                : c;
+                : c
             })
-          );
+          )
         } else {
           // normal comment
-          setCmts((prev) => prev.map((comment) => (comment._id === cmt._id ? cmt : comment)));
+          setCmts((prev) => prev.map((comment) => (comment._id === cmt._id ? cmt : comment)))
         }
       } catch (err: any) {
-        console.log(err);
-        toast.error(err.message);
+        console.log(err)
+        toast.error(err.message)
       }
     },
     [setCmts]
-  );
+  )
 
   return (
     <div className={`w-full flex items-start gap-3 ${className}`}>
@@ -317,7 +317,7 @@ function CommentItem({ comment, setCmts, className = '' }: CommentItemProps) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default CommentItem;
+export default memo(CommentItem)

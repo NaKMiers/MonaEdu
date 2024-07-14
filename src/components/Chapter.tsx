@@ -3,14 +3,14 @@
 import { IChapter } from '@/models/ChapterModel'
 import { duration } from '@/utils/time'
 import { Tooltip } from '@mui/material'
+import { useSession } from 'next-auth/react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { memo, useEffect, useRef, useState } from 'react'
+import toast from 'react-hot-toast'
 import { FaAngleDown } from 'react-icons/fa'
 import { TiLockClosed, TiLockOpen } from 'react-icons/ti'
 import Divider from './Divider'
-import { useSession } from 'next-auth/react'
-import toast from 'react-hot-toast'
-import { useRouter } from 'next/navigation'
 
 interface ChapterProps {
   courseId: string
@@ -40,14 +40,14 @@ function Chapter({
   // states
   const [open, setOpen] = useState<boolean>(
     collapseAll ||
-      ((chapter.lessons?.some(lesson => lesson.status === 'public') || false) && !isEnrolled)
+      ((chapter.lessons?.some((lesson) => lesson.status === 'public') || false) && !isEnrolled)
   )
 
   // refs
   const chapterRef = useRef<HTMLUListElement>(null)
 
   useEffect(() => {
-    if ((chapter.lessons?.some(lesson => lesson.status === 'public') || false) && !isEnrolled) return
+    if ((chapter.lessons?.some((lesson) => lesson.status === 'public') || false) && !isEnrolled) return
     setOpen(!!collapseAll)
   }, [collapseAll, chapter.lessons, isEnrolled])
 
@@ -72,7 +72,9 @@ function Chapter({
     >
       <p
         className={`${
-          chapter.lessons?.some(lesson => lesson.slug === lessonSlug) ? 'text-orange-500' : 'text-white'
+          chapter.lessons?.some((lesson) => lesson.slug === lessonSlug)
+            ? 'text-orange-500'
+            : 'text-white'
         } font-semibold flex justify-between items-center py-2 px-3 cursor-pointer`}
         onClick={() => setOpen(!open)}
       >
@@ -83,7 +85,7 @@ function Chapter({
         className={`flex flex-col px-2 gap-[4px] ${open ? '' : 'max-h-0'} trans-300 overflow-hidden`}
         ref={chapterRef}
       >
-        {chapter.lessons?.map(lesson =>
+        {chapter.lessons?.map((lesson) =>
           lesson.status === 'public' || isEnrolled ? (
             <Tooltip title={`Học thử ngay`} placement='top' arrow key={lesson._id}>
               <Link
@@ -91,7 +93,7 @@ function Chapter({
                 className={`bg-white rounded-md py-2 px-3 gap-4 hover:bg-primary trans-200 flex items-center ${
                   lesson.slug === lessonSlug ? 'font-semibold text-orange-500' : ''
                 }`}
-                onClick={e => {
+                onClick={(e) => {
                   e.preventDefault()
                   if (!curUser?._id) {
                     toast.error('Bạn cần phải đăng nhập để học thử')

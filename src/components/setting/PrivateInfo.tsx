@@ -1,32 +1,32 @@
-'use client';
+'use client'
 
-import { useAppDispatch, useAppSelector } from '@/libs/hooks';
-import { setOpenAuthentication } from '@/libs/reducers/modalReducer';
-import { updatePrivateInfoApi } from '@/requests';
-import { useSession } from 'next-auth/react';
-import { useCallback, useEffect, useState } from 'react';
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
-import { FaEyeSlash, FaSave } from 'react-icons/fa';
-import { MdCancel, MdEdit } from 'react-icons/md';
-import { RiDonutChartFill } from 'react-icons/ri';
-import Divider from '../Divider';
-import Input from '../Input';
+import { useAppDispatch, useAppSelector } from '@/libs/hooks'
+import { setOpenAuthentication } from '@/libs/reducers/modalReducer'
+import { updatePrivateInfoApi } from '@/requests'
+import { useSession } from 'next-auth/react'
+import { memo, useCallback, useEffect, useState } from 'react'
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
+import { FaEyeSlash, FaSave } from 'react-icons/fa'
+import { MdCancel, MdEdit } from 'react-icons/md'
+import { RiDonutChartFill } from 'react-icons/ri'
+import Divider from '../Divider'
+import Input from '../Input'
 
 interface PrivateInfoProps {
-  className?: string;
+  className?: string
 }
 
 function PrivateInfo({ className = '' }: PrivateInfoProps) {
   // hook
-  const dispatch = useAppDispatch();
-  const { data: session, update } = useSession();
-  const authenticated = useAppSelector((state) => state.modal.authenticated);
-  const curUser: any = session?.user;
+  const dispatch = useAppDispatch()
+  const { data: session, update } = useSession()
+  const authenticated = useAppSelector((state) => state.modal.authenticated)
+  const curUser: any = session?.user
 
   // states
-  const [editMode, setEditMode] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [editMode, setEditMode] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
 
   // form
   const {
@@ -44,7 +44,7 @@ function PrivateInfo({ className = '' }: PrivateInfoProps) {
       phone: '',
       newPassword: '',
     },
-  });
+  })
 
   // auto fill data
   useEffect(() => {
@@ -53,14 +53,14 @@ function PrivateInfo({ className = '' }: PrivateInfoProps) {
         username: curUser.username,
         email: curUser.email,
         phone: curUser.phone,
-      });
+      })
     }
-  }, [reset, curUser]);
+  }, [reset, curUser])
 
   // validate form
   const handleValidate: SubmitHandler<FieldValues> = useCallback(
     (data) => {
-      let isValid = true;
+      let isValid = true
 
       // new password must be at least 6 characters and contain at least 1 lowercase, 1 uppercase, 1 number
       if (
@@ -71,45 +71,45 @@ function PrivateInfo({ className = '' }: PrivateInfoProps) {
         setError('newPassword', {
           type: 'manual',
           message: 'Mật khẩu mới phải chứa ít nhất 6 kí tự, 1 chữ thường, 1 chữ hoa và 1 chữ số',
-        });
-        isValid = false;
+        })
+        isValid = false
       }
 
-      return isValid;
+      return isValid
     },
     [setError, curUser?.role]
-  );
+  )
 
   // update personal info
   const onSubmit: SubmitHandler<FieldValues> = useCallback(
     async (data) => {
       // validate form
-      if (!handleValidate(data)) return;
+      if (!handleValidate(data)) return
 
       // start loading
-      setLoading(true);
+      setLoading(true)
 
       try {
-        const { message } = await updatePrivateInfoApi(data);
+        const { message } = await updatePrivateInfoApi(data)
 
         // notify success
-        toast.success(message);
+        toast.success(message)
 
         // hide edit mode
-        setEditMode(false);
+        setEditMode(false)
 
         // update user session
-        await update();
+        await update()
       } catch (err: any) {
-        toast.error(err.message);
-        console.log(err);
+        toast.error(err.message)
+        console.log(err)
       } finally {
         // stop loading
-        setLoading(false);
+        setLoading(false)
       }
     },
     [update, handleValidate, setLoading]
-  );
+  )
 
   return (
     <div
@@ -257,7 +257,7 @@ function PrivateInfo({ className = '' }: PrivateInfoProps) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default PrivateInfo;
+export default memo(PrivateInfo)

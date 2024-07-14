@@ -1,32 +1,32 @@
-'use client';
+'use client'
 
-import { CardBody, CardContainer, CardItem } from '@/components/3dCard';
-import { useAppDispatch } from '@/libs/hooks';
-import { addCartItem } from '@/libs/reducers/cartReducer';
-import { setPageLoading } from '@/libs/reducers/modalReducer';
-import { ICourse } from '@/models/CourseModel';
-import { IFlashSale } from '@/models/FlashSaleModel';
-import { addToCartApi } from '@/requests';
-import { applyFlashSalePrice, countPercent } from '@/utils/number';
-import { styled, Tooltip, tooltipClasses, TooltipProps } from '@mui/material';
-import { useSession } from 'next-auth/react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useCallback, useState } from 'react';
-import toast from 'react-hot-toast';
-import { FaCartPlus } from 'react-icons/fa';
-import { HiDotsVertical } from 'react-icons/hi';
-import { IoTimer } from 'react-icons/io5';
-import { MdVideoLibrary } from 'react-icons/md';
-import { RiDonutChartFill } from 'react-icons/ri';
-import Divider from './Divider';
-import Price from './Price';
+import { CardBody, CardContainer, CardItem } from '@/components/3dCard'
+import { useAppDispatch } from '@/libs/hooks'
+import { addCartItem } from '@/libs/reducers/cartReducer'
+import { setPageLoading } from '@/libs/reducers/modalReducer'
+import { ICourse } from '@/models/CourseModel'
+import { IFlashSale } from '@/models/FlashSaleModel'
+import { addToCartApi } from '@/requests'
+import { applyFlashSalePrice, countPercent } from '@/utils/number'
+import { styled, Tooltip, tooltipClasses, TooltipProps } from '@mui/material'
+import { useSession } from 'next-auth/react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { memo, useCallback, useState } from 'react'
+import toast from 'react-hot-toast'
+import { FaCartPlus } from 'react-icons/fa'
+import { HiDotsVertical } from 'react-icons/hi'
+import { IoTimer } from 'react-icons/io5'
+import { MdVideoLibrary } from 'react-icons/md'
+import { RiDonutChartFill } from 'react-icons/ri'
+import Divider from './Divider'
+import Price from './Price'
 
 interface CourseCardProps {
-  course: ICourse;
-  hideBadge?: boolean;
-  className?: string;
+  course: ICourse
+  hideBadge?: boolean
+  className?: string
 }
 
 const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
@@ -39,85 +39,85 @@ const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
     // fontSize: theme.typography.pxToRem(12),
     // border: '1px solid #dadde9',
   },
-}));
+}))
 
 function CourseCard({ course, hideBadge, className = '' }: CourseCardProps) {
   // hooks
-  const dispatch = useAppDispatch();
-  const { data: session } = useSession();
-  const curUser: any = session?.user;
-  const router = useRouter();
+  const dispatch = useAppDispatch()
+  const { data: session } = useSession()
+  const curUser: any = session?.user
+  const router = useRouter()
 
   // states
-  const [showActions, setShowActions] = useState<boolean>(false);
-  const [showActions2, setShowActions2] = useState<boolean>(false);
+  const [showActions, setShowActions] = useState<boolean>(false)
+  const [showActions2, setShowActions2] = useState<boolean>(false)
 
   // states
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   // MARK: Add
   // add course to cart - DATABASE
   const addCourseToCart = useCallback(async () => {
     // check if user is logged in
     if (!curUser?._id) {
-      toast.error('Vui lòng đăng nhập để thêm khóa học vào giỏ hàng');
-      return;
+      toast.error('Vui lòng đăng nhập để thêm khóa học vào giỏ hàng')
+      return
     }
 
     // start loading
-    setIsLoading(true);
+    setIsLoading(true)
 
     try {
       // send request to add course to cart
-      const { cartItem, message } = await addToCartApi(course._id);
+      const { cartItem, message } = await addToCartApi(course._id)
 
       // show toast success
-      toast.success(message);
+      toast.success(message)
 
       // add cart items to state
-      dispatch(addCartItem(cartItem));
+      dispatch(addCartItem(cartItem))
     } catch (err: any) {
-      console.log(err);
-      toast.error(err.message);
+      console.log(err)
+      toast.error(err.message)
     } finally {
       // stop loading
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  }, [dispatch, curUser?._id, course._id]);
+  }, [dispatch, curUser?._id, course._id])
 
   // MARK: Buy
   // handle buy now (add to cart and move to cart page)
   const buyNow = useCallback(async () => {
     // check if user is logged in
     if (!curUser?._id) {
-      toast.error('Vui lòng đăng nhập để thêm khóa học vào giỏ hàng');
-      return;
+      toast.error('Vui lòng đăng nhập để thêm khóa học vào giỏ hàng')
+      return
     }
 
     // start page loading
-    dispatch(setPageLoading(true));
+    dispatch(setPageLoading(true))
 
     try {
       // send request to add course to cart
-      const { cartItem, message } = await addToCartApi(course._id);
+      const { cartItem, message } = await addToCartApi(course._id)
 
       // show toast success
-      toast.success(message);
+      toast.success(message)
 
       // add cart items to state
-      dispatch(addCartItem(cartItem));
+      dispatch(addCartItem(cartItem))
 
       // move to cart page
-      router.push(`/cart?course=${course.slug}`);
+      router.push(`/cart?course=${course.slug}`)
     } catch (err: any) {
-      console.log(err);
-      toast.error(err.message);
-      router.push(`/cart?course=${course.slug}`);
+      console.log(err)
+      toast.error(err.message)
+      router.push(`/cart?course=${course.slug}`)
     } finally {
       // stop page loading
-      dispatch(setPageLoading(false));
+      dispatch(setPageLoading(false))
     }
-  }, [course._id, dispatch, course.slug, router, curUser?._id]);
+  }, [course._id, dispatch, course.slug, router, curUser?._id])
 
   return (
     <HtmlTooltip
@@ -273,9 +273,9 @@ function CourseCard({ course, hideBadge, className = '' }: CourseCardProps) {
                   className='font-semibold h-[42px] flex w-full items-center justify-center rounded-lg shadow-lg bg-dark-100 text-white border-2 border-dark hover:bg-white hover:text-dark trans-300 hover:-translate-y-1 px-2'
                   onClick={(e) => {
                     if (curUser?.courses.map((course: any) => course.course).includes(course._id)) {
-                      router.push(`/learning/${course?.slug}/continue`);
+                      router.push(`/learning/${course?.slug}/continue`)
                     } else {
-                      buyNow();
+                      buyNow()
                     }
                   }}
                 >
@@ -330,7 +330,7 @@ function CourseCard({ course, hideBadge, className = '' }: CourseCardProps) {
         </CardContainer>
       </div>
     </HtmlTooltip>
-  );
+  )
 }
 
-export default CourseCard;
+export default memo(CourseCard)

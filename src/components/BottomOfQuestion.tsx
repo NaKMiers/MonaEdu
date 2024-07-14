@@ -5,7 +5,7 @@ import { IUser } from '@/models/UserModel'
 import { likeQuestionsApi } from '@/requests/questionRequest'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
-import { useCallback, useState } from 'react'
+import { memo, useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
 import { FaRegCommentDots, FaRegThumbsUp } from 'react-icons/fa'
 
@@ -31,7 +31,7 @@ function BottomOfQuestion({ question, commentAmount, className = '' }: BottomOfQ
       const { updatedQuestion } = await likeQuestionsApi(data._id, likes.includes(curUser?._id))
 
       // update state
-      setData(prev => ({ ...prev, likes: updatedQuestion.likes }))
+      setData((prev) => ({ ...prev, likes: updatedQuestion.likes }))
     } catch (err: any) {
       console.log(err)
       toast.error(err.message)
@@ -60,4 +60,4 @@ function BottomOfQuestion({ question, commentAmount, className = '' }: BottomOfQ
   )
 }
 
-export default BottomOfQuestion
+export default memo(BottomOfQuestion)

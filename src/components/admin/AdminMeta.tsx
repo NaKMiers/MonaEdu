@@ -1,4 +1,4 @@
-import React, { Children, useEffect } from 'react'
+import React, { Children, memo, useEffect } from 'react'
 import { BiReset } from 'react-icons/bi'
 import { FaFilter } from 'react-icons/fa'
 
@@ -71,4 +71,4 @@ function AdminMeta({ handleFilter, handleResetFilter, className = '', children }
   )
 }
 
-export default AdminMeta
+export default memo(AdminMeta)

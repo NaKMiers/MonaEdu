@@ -1,14 +1,14 @@
+import { IChapter } from '@/models/ChapterModel'
 import { ICourse } from '@/models/CourseModel'
 import { ILesson } from '@/models/LessonModel'
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { useCallback, useState } from 'react'
+import React, { memo, useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
 import { FaCheck, FaTrash } from 'react-icons/fa'
 import { MdEdit } from 'react-icons/md'
 import { RiDonutChartFill } from 'react-icons/ri'
 import ConfirmDialog from '../dialogs/ConfirmDialog'
-import { IChapter } from '@/models/ChapterModel'
 
 interface LessonItemProps {
   data: ILesson
@@ -49,8 +49,8 @@ function LessonItem({
           selectedLessons.includes(data._id) ? 'bg-violet-50 -translate-y-1' : 'bg-white'
         }  ${className}`}
         onClick={() =>
-          setSelectedLessons(prev =>
-            prev.includes(data._id) ? prev.filter(id => id !== data._id) : [...prev, data._id]
+          setSelectedLessons((prev) =>
+            prev.includes(data._id) ? prev.filter((id) => id !== data._id) : [...prev, data._id]
           )
         }
       >
@@ -60,7 +60,7 @@ function LessonItem({
             <Link
               href={`/${(data.courseId as ICourse).slug || ''}`}
               prefetch={false}
-              onClick={e => e.stopPropagation()}
+              onClick={(e) => e.stopPropagation()}
               className='flex items-center max-w-[120px] sm:max-w-[200px] rounded-lg shadow-md overflow-hidden mb-2'
             >
               <div className='flex items-center w-full overflow-x-scroll snap-x snap-mandatory no-scrollbar'>
@@ -129,7 +129,7 @@ function LessonItem({
           {/* Active Button */}
           <button
             className='block group'
-            onClick={e => {
+            onClick={(e) => {
               e.stopPropagation()
               handleActivateLessons([data._id], !data.active)
             }}
@@ -146,7 +146,7 @@ function LessonItem({
             href={`/admin/lesson/${(data.chapterId as IChapter)._id}/${data._id}/edit`}
             className='block group'
             title='Edit'
-            onClick={e => e.stopPropagation()}
+            onClick={(e) => e.stopPropagation()}
           >
             <MdEdit size={18} className='wiggle' />
           </Link>
@@ -154,7 +154,7 @@ function LessonItem({
           {/* Delete Button */}
           <button
             className='block group'
-            onClick={e => {
+            onClick={(e) => {
               e.stopPropagation()
               setIsOpenConfirmModal(true)
             }}
@@ -183,4 +183,4 @@ function LessonItem({
   )
 }
 
-export default LessonItem
+export default memo(LessonItem)

@@ -1,60 +1,56 @@
-"use client";
+'use client'
 
-import { useAppDispatch, useAppSelector } from "@/libs/hooks";
-import { setCartItems } from "@/libs/reducers/cartReducer";
-import { setOpenSearchBar } from "@/libs/reducers/modalReducer";
-import { getCartApi } from "@/requests";
-import { getSession, useSession } from "next-auth/react";
-import Image from "next/image";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
-import { BiSolidCategory } from "react-icons/bi";
-import { FaBell, FaSearch, FaShoppingCart } from "react-icons/fa";
-import { FaBars } from "react-icons/fa6";
-import NotificationMenu from "../NotificationMenu";
-import CategoryTabs from "./CategoryTabs";
-import Menu from "./Menu";
-import SearchBar from "./SearchBar";
+import { useAppDispatch, useAppSelector } from '@/libs/hooks'
+import { setCartItems } from '@/libs/reducers/cartReducer'
+import { setOpenSearchBar } from '@/libs/reducers/modalReducer'
+import { getCartApi } from '@/requests'
+import { useSession } from 'next-auth/react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { memo, useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
+import { BiSolidCategory } from 'react-icons/bi'
+import { FaBell, FaSearch, FaShoppingCart } from 'react-icons/fa'
+import { FaBars } from 'react-icons/fa6'
+import NotificationMenu from '../NotificationMenu'
+import CategoryTabs from './CategoryTabs'
+import Menu from './Menu'
+import SearchBar from './SearchBar'
 
 interface HeaderProps {
-  className?: string;
+  className?: string
 }
 
-function Header({ className = "" }: HeaderProps) {
+function Header({ className = '' }: HeaderProps) {
   // hooks
-  const dispatch = useAppDispatch();
-  const { data: session, update } = useSession();
-  const pathname = usePathname();
+  const dispatch = useAppDispatch()
+  const { data: session, update } = useSession()
+  const pathname = usePathname()
+  const curUser: any = session?.user
 
   // reducer
-  const cartLength = useAppSelector((state) => state.cart.items.length);
+  const cartLength = useAppSelector((state) => state.cart.items.length)
 
   // states
-  const [curUser, setCurUser] = useState<any>(session?.user || {});
-  const [isTransparent, setIsTransparent] = useState<boolean>(pathname === "/");
-  const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false);
-  const [openCategoryTabs, setOpenCategoryTabs] = useState<boolean>(false);
+  const [isTransparent, setIsTransparent] = useState<boolean>(pathname === '/')
+  const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false)
+  const [openCategoryTabs, setOpenCategoryTabs] = useState<boolean>(false)
 
   // notification states
-  const [isOpenNotificationMenu, setIsOpenNotificationMenu] = useState<boolean>(false);
+  const [isOpenNotificationMenu, setIsOpenNotificationMenu] = useState<boolean>(false)
 
   // MARK: Side Effects
   // update user session
   useEffect(() => {
-    const getUser = async () => {
-      const session = await getSession();
-      const user: any = session?.user;
-      setCurUser(user);
-
-      await update();
-    };
-
-    if (!curUser?._id) {
-      getUser();
+    const updateUser = async () => {
+      console.log('update user')
+      await update()
     }
-  }, [update, curUser]);
+    if (!curUser?._id) {
+      updateUser()
+    }
+  }, [update, curUser?._id])
 
   // get user's cart
   useEffect(() => {
@@ -62,47 +58,47 @@ function Header({ className = "" }: HeaderProps) {
       if (curUser?._id) {
         try {
           // send request to get user's cart
-          const { cart } = await getCartApi(); // cache: no-store
+          const { cart } = await getCartApi() // cache: no-store
 
           // set cart to state
-          dispatch(setCartItems(cart));
+          dispatch(setCartItems(cart))
         } catch (err: any) {
-          console.log(err);
-          toast.error(err.message);
+          console.log(err)
+          toast.error(err.message)
         }
       }
-    };
-    getUserCart();
-  }, [dispatch, curUser?._id]);
+    }
+    getUserCart()
+  }, [dispatch, curUser?._id])
 
   // handle show/hide on scroll
   useEffect(() => {
     const handleScroll = () => {
-      if (pathname === "/") {
+      if (pathname === '/') {
         // set dark if scroll height > 100vh
         if (window.scrollY > window.innerHeight) {
-          setIsTransparent(false);
+          setIsTransparent(false)
         } else {
-          setIsTransparent(true);
+          setIsTransparent(true)
         }
       } else {
-        setIsTransparent(false);
+        setIsTransparent(false)
       }
-    };
+    }
 
     // initial
-    handleScroll();
+    handleScroll()
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [pathname]);
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [pathname])
 
   return (
     <header
       className={`fixed z-[60] ${
         isTransparent
-          ? "drop-shadow-lg md:bg-opacity-0"
-          : "shadow-medium-light border-b-2 md:rounded-b-[40px] md:rounded-t-0"
+          ? 'drop-shadow-lg md:bg-opacity-0'
+          : 'shadow-medium-light border-b-2 md:rounded-b-[40px] md:rounded-t-0'
       }  bg-dark-100 text-white w-full trans-300 bottom-0 md:bottom-auto md:top-0 ${className}`}
     >
       {/* Main Header */}
@@ -240,7 +236,7 @@ function Header({ className = "" }: HeaderProps) {
         <NotificationMenu open={isOpenNotificationMenu} setOpen={setIsOpenNotificationMenu} />
       </div>
     </header>
-  );
+  )
 }
 
-export default Header;
+export default memo(Header)

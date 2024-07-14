@@ -1,12 +1,12 @@
-import { ICourse } from '@/models/CourseModel';
-import React from 'react';
-import CourseCard from '../CourseCard';
-import Heading from '../Heading';
-import Divider from '../Divider';
+import { ICourse } from '@/models/CourseModel'
+import { memo } from 'react'
+import CourseCard from '../CourseCard'
+import Divider from '../Divider'
+import Heading from '../Heading'
 
 interface TopNewCoursesProps {
-  courses: ICourse[];
-  className?: string;
+  courses: ICourse[]
+  className?: string
 }
 
 function TopNewCourses({ courses, className = '' }: TopNewCoursesProps) {
@@ -24,7 +24,7 @@ function TopNewCourses({ courses, className = '' }: TopNewCoursesProps) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default TopNewCourses;
+export default memo(TopNewCourses)

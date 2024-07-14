@@ -3,7 +3,7 @@
 import { handleQuery } from '@/utils/handleQuery'
 import Link from 'next/link'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { useCallback, useEffect, useState } from 'react'
+import { memo, useCallback, useEffect, useState } from 'react'
 
 interface PaginationProps {
   searchParams: { [key: string]: string[] | string } | undefined
@@ -103,10 +103,10 @@ function Pagination({
 
         {/* MARK: 1 ... n */}
         <div className='flex gap-2'>
-          {pageList.map(page => (
+          {pageList.map((page) => (
             <Link
               href={getPageLink(page || 0)}
-              onClick={e => page || e.preventDefault()}
+              onClick={(e) => page || e.preventDefault()}
               className={`rounded-lg border-2 py-[6px] px-4 hover:bg-secondary hover:text-white hover:border-white ${
                 dark ? 'text-dark' : 'text-white'
               } ${!page ? 'pointer-events-none' : ''} trans-200 ${
@@ -134,4 +134,4 @@ function Pagination({
   )
 }
 
-export default Pagination
+export default memo(Pagination)

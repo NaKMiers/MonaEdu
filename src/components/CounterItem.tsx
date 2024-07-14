@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { memo, useEffect, useRef } from 'react'
 
 interface CounterItem {
   max: number
@@ -52,4 +52,4 @@ function CounterItem({ max, value, size = 18, className }: CounterItem) {
   )
 }
 
-export default CounterItem
+export default memo(CounterItem)

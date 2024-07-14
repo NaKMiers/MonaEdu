@@ -1,13 +1,13 @@
-import { categories } from '@/constants/categories';
-import { AnimatePresence, motion } from 'framer-motion';
-import Link from 'next/link';
-import { Dispatch, SetStateAction, useCallback, useState } from 'react';
-import { FaChevronRight } from 'react-icons/fa';
+import { categories } from '@/constants/categories'
+import { AnimatePresence, motion } from 'framer-motion'
+import Link from 'next/link'
+import { Dispatch, memo, SetStateAction, useCallback, useState } from 'react'
+import { FaChevronRight } from 'react-icons/fa'
 
 interface CategoryTabsProps {
-  open: boolean;
-  setOpen: Dispatch<SetStateAction<boolean>>;
-  className?: string;
+  open: boolean
+  setOpen: Dispatch<SetStateAction<boolean>>
+  className?: string
 }
 
 function CategoryTabs({ open, setOpen, className = '' }: CategoryTabsProps) {
@@ -17,36 +17,36 @@ function CategoryTabs({ open, setOpen, className = '' }: CategoryTabsProps) {
       ref: 'Category Tabs',
       data: categories,
     },
-  ]);
+  ])
 
   const findDeep = useCallback(
     (item: any) => list.findIndex((tab) => tab.data.map((i: any) => i.title).includes(item.title)),
     [list]
-  );
+  )
 
   const handleMouseOver = useCallback(
     (item: any) => {
-      if (!item.subs) return;
+      if (!item.subs) return
 
-      const deep = findDeep(item);
-      const subs = item.subs;
-      let newList = [...list];
-      newList = newList.slice(0, deep + 1);
-      newList[deep + 1] = subs;
-      setList(newList);
+      const deep = findDeep(item)
+      const subs = item.subs
+      let newList = [...list]
+      newList = newList.slice(0, deep + 1)
+      newList[deep + 1] = subs
+      setList(newList)
     },
     [findDeep, list]
-  );
+  )
 
   const handleMouseLeave = useCallback(
     (index: number) => {
       if (index + 1 === list.length) {
-        const newList = list.slice(0, index);
-        setList(newList);
+        const newList = list.slice(0, index)
+        setList(newList)
       }
     },
     [list]
-  );
+  )
 
   return (
     <AnimatePresence>
@@ -63,8 +63,8 @@ function CategoryTabs({ open, setOpen, className = '' }: CategoryTabsProps) {
                 title: 'Category Tabs',
                 data: categories,
               },
-            ]);
-            setOpen(false);
+            ])
+            setOpen(false)
           }}
         >
           {list.map((tab, tabIndex) => (
@@ -102,7 +102,7 @@ function CategoryTabs({ open, setOpen, className = '' }: CategoryTabsProps) {
         </motion.div>
       )}
     </AnimatePresence>
-  );
+  )
 }
 
-export default CategoryTabs;
+export default memo(CategoryTabs)

@@ -2,7 +2,7 @@
 
 import { IChapter } from '@/models/ChapterModel'
 import { ICourse } from '@/models/CourseModel'
-import { useState } from 'react'
+import { memo, useState } from 'react'
 import Chapter from './Chapter'
 import Divider from './Divider'
 
@@ -36,7 +36,7 @@ function CourseContent({ course, chapters, className = '' }: CourseContentProps)
         </div>
         <button
           className='font-semibold text-secondary text-right drop-shadow-md underline underline-offset-1'
-          onClick={() => setCollapseAll(prev => !prev)}
+          onClick={() => setCollapseAll((prev) => !prev)}
         >
           {!collapseAll ? 'Mở tất cả' : 'Đóng tất cả'}
         </button>
@@ -45,7 +45,7 @@ function CourseContent({ course, chapters, className = '' }: CourseContentProps)
       <Divider size={3} />
 
       <ul className='flex flex-col gap-2'>
-        {chapters.map(chapter => (
+        {chapters.map((chapter) => (
           <Chapter
             courseId={course._id}
             collapseAll={collapseAll}
@@ -59,4 +59,4 @@ function CourseContent({ course, chapters, className = '' }: CourseContentProps)
   )
 }
 
-export default CourseContent
+export default memo(CourseContent)

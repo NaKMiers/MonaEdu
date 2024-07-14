@@ -1,9 +1,9 @@
 import { IReport } from '@/models/ReportModel'
-import React, { useState } from 'react'
+import Link from 'next/link'
+import React, { memo, useState } from 'react'
 import { FaEye, FaTrash } from 'react-icons/fa'
 import { RiDonutChartFill } from 'react-icons/ri'
 import ConfirmDialog from '../dialogs/ConfirmDialog'
-import Link from 'next/link'
 
 interface ReportItemProps {
   data: IReport
@@ -35,15 +35,17 @@ function ReportItem({
         } ${className}`}
         key={data._id}
         onClick={() =>
-          setSelectedReports(prev =>
-            prev.includes(data._id) ? prev.filter(id => id !== data._id) : [...prev, data._id]
+          setSelectedReports((prev) =>
+            prev.includes(data._id) ? prev.filter((id) => id !== data._id) : [...prev, data._id]
           )
-        }>
+        }
+      >
         {/* Type */}
         <div className='mb-2'>
           <p
             className='inline-block font-semibold text-xs bg-primary font-body tracking-wider rounded-lg shadow-lg px-2 py-1'
-            title=''>
+            title=''
+          >
             {data.type}
           </p>
         </div>
@@ -59,20 +61,22 @@ function ReportItem({
           <Link
             href={data.link}
             className='block group'
-            onClick={e => e.stopPropagation()}
-            title='Detail'>
+            onClick={(e) => e.stopPropagation()}
+            title='Detail'
+          >
             <FaEye size={18} className='text-primary wiggle' />
           </Link>
 
           {/* Delete Button */}
           <button
             className='block group'
-            onClick={e => {
+            onClick={(e) => {
               e.stopPropagation()
               setIsOpenConfirmModal(true)
             }}
             disabled={loadingReports.includes(data._id)}
-            title='Delete'>
+            title='Delete'
+          >
             {loadingReports.includes(data._id) ? (
               <RiDonutChartFill size={18} className='animate-spin text-slate-300' />
             ) : (
@@ -95,4 +99,4 @@ function ReportItem({
   )
 }
 
-export default ReportItem
+export default memo(ReportItem)

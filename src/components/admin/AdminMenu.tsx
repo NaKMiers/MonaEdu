@@ -4,7 +4,7 @@ import { adminLinks } from '@/constants'
 import { getSession, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import { FaPlus } from 'react-icons/fa'
 import { FaBarsStaggered } from 'react-icons/fa6'
 
@@ -121,4 +121,4 @@ function AdminMenu() {
   )
 }
 
-export default AdminMenu
+export default memo(AdminMenu)

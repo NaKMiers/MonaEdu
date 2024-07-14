@@ -1,28 +1,28 @@
-import React, { useCallback, useState } from 'react';
-import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form';
-import { FaEye } from 'react-icons/fa';
-import BottomGradient from './gradients/BottomGradient';
+import React, { memo, useCallback, useState } from 'react'
+import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form'
+import { FaEye } from 'react-icons/fa'
+import BottomGradient from './gradients/BottomGradient'
 
 interface InputProps {
-  label: string;
-  icon?: React.ElementType;
-  className?: string;
+  label: string
+  icon?: React.ElementType
+  className?: string
 
-  id: string;
-  type?: string;
-  disabled?: boolean;
-  required?: boolean;
-  onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  register: UseFormRegister<FieldValues>;
-  errors: FieldErrors;
-  options?: any[];
-  rows?: number;
-  labelBg?: string;
-  onClick?: (e?: any) => void;
-  onFocus?: (e?: any) => void;
+  id: string
+  type?: string
+  disabled?: boolean
+  required?: boolean
+  onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void
+  register: UseFormRegister<FieldValues>
+  errors: FieldErrors
+  options?: any[]
+  rows?: number
+  labelBg?: string
+  onClick?: (e?: any) => void
+  onFocus?: (e?: any) => void
 
   // rest
-  [key: string]: any;
+  [key: string]: any
 }
 
 function Input({
@@ -44,12 +44,12 @@ function Input({
   ...rest
 }: InputProps) {
   // states
-  const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
+  const [isShowPassword, setIsShowPassword] = useState<boolean>(false)
 
   // show password
   const showPassword = useCallback(() => {
-    setIsShowPassword((prev) => !prev);
-  }, []);
+    setIsShowPassword((prev) => !prev)
+  }, [])
 
   return (
     <div className={`${className}`} onClick={onClick} onFocus={onFocus}>
@@ -158,7 +158,7 @@ function Input({
         <span className='text-sm drop-shadow-md text-rose-400'>{errors[id]?.message?.toString()}</span>
       )}
     </div>
-  );
+  )
 }
 
-export default Input;
+export default memo(Input)

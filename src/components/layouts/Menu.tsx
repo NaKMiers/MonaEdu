@@ -1,54 +1,51 @@
-'use client';
+'use client'
 
-import { useAppSelector } from '@/libs/hooks';
-import { getUserName } from '@/utils/string';
-import { getSession, signOut, useSession } from 'next-auth/react';
-import Image from 'next/image';
-import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import { useAppSelector } from '@/libs/hooks'
+import { getUserName } from '@/utils/string'
+import { signOut, useSession } from 'next-auth/react'
+import Image from 'next/image'
+import Link from 'next/link'
+import React, { memo, useEffect } from 'react'
 
 interface MenuProps {
-  open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  className?: string;
+  open: boolean
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>
+  className?: string
 }
 
 function Menu({ open, setOpen, className = '' }: MenuProps) {
   // hooks
-  const { data: session } = useSession();
+  const { data: session, update } = useSession()
+  const curUser: any = session?.user
 
   // reducer
-  const cartLength = useAppSelector((state) => state.cart.items.length);
-
-  // states
-  const [curUser, setCurUser] = useState<any>(session?.user || {});
+  const cartLength = useAppSelector((state) => state.cart.items.length)
 
   // update user session
   useEffect(() => {
-    const getUser = async () => {
-      const session = await getSession();
-      setCurUser(session?.user);
-    };
-
-    if (!curUser?._id) {
-      getUser();
+    const updateUser = async () => {
+      console.log('update user')
+      await update()
     }
-  }, [curUser]);
+    if (!curUser?._id) {
+      updateUser()
+    }
+  }, [update, curUser?._id])
 
   // key board event
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        e.preventDefault();
-        setOpen(false);
+        e.preventDefault()
+        setOpen(false)
       }
-    };
+    }
 
-    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown)
 
     // clean up
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [setOpen]);
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [setOpen])
 
   return (
     <>
@@ -230,7 +227,7 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
         )}
       </div>
     </>
-  );
+  )
 }
 
-export default Menu;
+export default memo(Menu)

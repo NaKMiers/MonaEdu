@@ -1,12 +1,7 @@
 'use client'
 
-import { ICategory } from '@/models/CategoryModel'
-import { ICourse } from '@/models/CourseModel'
-import { IQuestion } from '@/models/QuestionModel'
-import { Children, MouseEvent, ReactNode, useCallback, useEffect, useRef, useState } from 'react'
+import { Children, memo, MouseEvent, ReactNode, useCallback, useEffect, useRef, useState } from 'react'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
-import CourseCard from './CourseCard'
-import QuestionItem from './QuestionItem'
 
 interface GroupCoursesProps {
   className?: string
@@ -114,4 +109,4 @@ function GroupCourses({ className = '', classChild = '', children }: GroupCourse
   )
 }
 
-export default GroupCourses
+export default memo(GroupCourses)

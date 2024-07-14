@@ -1,74 +1,71 @@
-'use client';
+'use client'
 
-import { reportContents } from '@/constants';
-import { IQuestion } from '@/models/QuestionModel';
-import { IUser } from '@/models/UserModel';
-import { closeQuestionsApi, likeQuestionsApi } from '@/requests/questionRequest';
-import { addReportApi } from '@/requests/reportRequest';
-import { useSession } from 'next-auth/react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useCallback, useState } from 'react';
-import toast from 'react-hot-toast';
-import { FaRegCommentDots, FaRegThumbsUp } from 'react-icons/fa';
-import { HiDotsVertical } from 'react-icons/hi';
-import { format } from 'timeago.js';
-import ReportDialog from './dialogs/ReportDigalog';
+import { reportContents } from '@/constants'
+import { IQuestion } from '@/models/QuestionModel'
+import { IUser } from '@/models/UserModel'
+import { closeQuestionsApi, likeQuestionsApi } from '@/requests/questionRequest'
+import { addReportApi } from '@/requests/reportRequest'
+import { useSession } from 'next-auth/react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { memo, useCallback, useState } from 'react'
+import toast from 'react-hot-toast'
+import { FaRegCommentDots, FaRegThumbsUp } from 'react-icons/fa'
+import { HiDotsVertical } from 'react-icons/hi'
+import { format } from 'timeago.js'
+import ReportDialog from './dialogs/ReportDigalog'
 
 interface QuestionItemProps {
-  question: IQuestion;
-  className?: string;
+  question: IQuestion
+  className?: string
 }
 
 function QuestionItem({ question, className = '' }: QuestionItemProps) {
   // hooks
-  const { data: session } = useSession();
-  const curUser: any = session?.user;
+  const { data: session } = useSession()
+  const curUser: any = session?.user
 
   // states
-  const [data, setData] = useState<IQuestion>(question);
-  const { userId, content, likes, commentAmount, status } = data;
-  const [showActions, setShowActions] = useState<boolean>(false);
-  const user: IUser = userId as IUser;
+  const [data, setData] = useState<IQuestion>(question)
+  const { userId, content, likes, commentAmount, status } = data
+  const [showActions, setShowActions] = useState<boolean>(false)
+  const user: IUser = userId as IUser
 
   // report states
-  const [isOpenReportDialog, setIsOpenReportDialog] = useState<boolean>(false);
-  const [selectedContent, setSelectedContent] = useState<string>('');
+  const [isOpenReportDialog, setIsOpenReportDialog] = useState<boolean>(false)
+  const [selectedContent, setSelectedContent] = useState<string>('')
 
   // handle like / dislike
   const handleLike = useCallback(async () => {
     try {
-      const { updatedQuestion } = await likeQuestionsApi(data._id, likes.includes(curUser?._id));
+      const { updatedQuestion } = await likeQuestionsApi(data._id, likes.includes(curUser?._id))
 
       // update state
-      setData((prev) => ({ ...prev, likes: updatedQuestion.likes }));
+      setData((prev) => ({ ...prev, likes: updatedQuestion.likes }))
     } catch (err: any) {
-      console.log(err);
-      toast.error(err.message);
+      console.log(err)
+      toast.error(err.message)
     }
-  }, [data._id, likes, curUser?._id]);
+  }, [data._id, likes, curUser?._id])
 
   const handleClose = useCallback(async () => {
     try {
-      const { updatedQuestion } = await closeQuestionsApi(
-        data._id,
-        status === 'open' ? 'close' : 'open'
-      );
+      const { updatedQuestion } = await closeQuestionsApi(data._id, status === 'open' ? 'close' : 'open')
 
       // update state
-      setData((prev) => ({ ...prev, status: updatedQuestion.status }));
+      setData((prev) => ({ ...prev, status: updatedQuestion.status }))
     } catch (err: any) {
-      console.log(err);
-      toast.error(err.message);
+      console.log(err)
+      toast.error(err.message)
     }
-  }, [data._id, status]);
+  }, [data._id, status])
 
   // handle report question
   const handleReport = useCallback(async () => {
     // check if content is selected or not
     if (!selectedContent) {
-      toast.error('Hãy chọn nội dung đê báo cáo');
-      return;
+      toast.error('Hãy chọn nội dung đê báo cáo')
+      return
     }
 
     try {
@@ -76,15 +73,15 @@ function QuestionItem({ question, className = '' }: QuestionItemProps) {
         type: 'question',
         content: selectedContent,
         link: `/question/${question.slug}`,
-      });
+      })
 
       // show success
-      toast.success(message);
+      toast.success(message)
     } catch (err: any) {
-      console.log(err);
-      toast.error(err.message);
+      console.log(err)
+      toast.error(err.message)
     }
-  }, [selectedContent, question.slug]);
+  }, [selectedContent, question.slug])
 
   return (
     <div className={`rounded-2xl shadow-lg bg-white ${className}`}>
@@ -192,7 +189,7 @@ function QuestionItem({ question, className = '' }: QuestionItemProps) {
         isLoading={false}
       />
     </div>
-  );
+  )
 }
 
-export default QuestionItem;
+export default memo(QuestionItem)

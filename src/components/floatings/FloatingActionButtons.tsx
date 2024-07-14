@@ -8,7 +8,7 @@ import { addToCartApi, likeCourseApi } from '@/requests'
 import { formatPrice } from '@/utils/number'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { useCallback, useState } from 'react'
+import { memo, useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
 import { FaCartPlus, FaRegThumbsUp, FaShareAlt } from 'react-icons/fa'
 import { HiDotsVertical } from 'react-icons/hi'
@@ -111,9 +111,10 @@ function FloatingActionButtons({ course: data, className = '' }: FloatingActionB
       console.log(err)
     }
 
-    setCourse(prev => ({
+    setCourse((prev) => ({
       ...prev,
-      likes: value === 'y' ? [...prev.likes, curUser._id] : prev.likes.filter(id => id !== curUser._id),
+      likes:
+        value === 'y' ? [...prev.likes, curUser._id] : prev.likes.filter((id) => id !== curUser._id),
     }))
   }, [course._id, curUser?._id, course.likes])
 
@@ -157,7 +158,7 @@ function FloatingActionButtons({ course: data, className = '' }: FloatingActionB
       {/* Buy Now */}
       <button
         className='font-semibold h-[42px] flex w-full items-center justify-center rounded-lg shadow-lg bg-dark-100 text-white border-2 border-dark hover:bg-white hover:text-dark trans-300 hover:-translate-y-1 px-2'
-        onClick={e => {
+        onClick={(e) => {
           if (curUser?.courses.map((course: any) => course.course).includes(course._id)) {
             router.push(`/learning/${course?.slug}/continue`)
           } else {
@@ -191,7 +192,7 @@ function FloatingActionButtons({ course: data, className = '' }: FloatingActionB
 
       {curUser?._id && curUser.courses.map((course: any) => course.course).includes(course._id) && (
         <div className='text-white relative flex justify-end items-center w-[30px] h-[42px]'>
-          <button className='group' onClick={() => setShowActions(prev => !prev)}>
+          <button className='group' onClick={() => setShowActions((prev) => !prev)}>
             <HiDotsVertical size={24} className='wiggle' />
           </button>
           <div
@@ -212,4 +213,4 @@ function FloatingActionButtons({ course: data, className = '' }: FloatingActionB
   )
 }
 
-export default FloatingActionButtons
+export default memo(FloatingActionButtons)

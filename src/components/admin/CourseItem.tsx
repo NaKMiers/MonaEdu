@@ -1,30 +1,30 @@
-import { ICategory } from '@/models/CategoryModel';
-import { ICourse } from '@/models/CourseModel';
-import { formatPrice } from '@/utils/number';
-import Image from 'next/image';
-import Link from 'next/link';
-import React, { useState } from 'react';
-import { FaCheck, FaEye, FaTrash } from 'react-icons/fa';
-import { MdEdit } from 'react-icons/md';
-import { PiLightningFill, PiLightningSlashFill } from 'react-icons/pi';
-import { RiDonutChartFill } from 'react-icons/ri';
-import ConfirmDialog from '../dialogs/ConfirmDialog';
-import { IoRocketSharp } from 'react-icons/io5';
+import { ICategory } from '@/models/CategoryModel'
+import { ICourse } from '@/models/CourseModel'
+import { formatPrice } from '@/utils/number'
+import Image from 'next/image'
+import Link from 'next/link'
+import React, { memo, useState } from 'react'
+import { FaCheck, FaEye, FaTrash } from 'react-icons/fa'
+import { IoRocketSharp } from 'react-icons/io5'
+import { MdEdit } from 'react-icons/md'
+import { PiLightningFill, PiLightningSlashFill } from 'react-icons/pi'
+import { RiDonutChartFill } from 'react-icons/ri'
+import ConfirmDialog from '../dialogs/ConfirmDialog'
 
 interface CourseItemProps {
-  data: ICourse;
-  loadingCourses: string[];
-  className?: string;
+  data: ICourse
+  loadingCourses: string[]
+  className?: string
 
   // selected
-  selectedCourses: string[];
-  setSelectedCourses: React.Dispatch<React.SetStateAction<string[]>>;
+  selectedCourses: string[]
+  setSelectedCourses: React.Dispatch<React.SetStateAction<string[]>>
 
   // functions
-  handleActivateCourses: (ids: string[], active: boolean) => void;
-  handleBootCourses: (ids: string[], active: boolean) => void;
-  handleRemoveApplyingFlashSales: (ids: string[]) => void;
-  handleDeleteCourses: (ids: string[]) => void;
+  handleActivateCourses: (ids: string[], active: boolean) => void
+  handleBootCourses: (ids: string[], active: boolean) => void
+  handleRemoveApplyingFlashSales: (ids: string[]) => void
+  handleDeleteCourses: (ids: string[]) => void
 }
 
 function CourseItem({
@@ -41,10 +41,10 @@ function CourseItem({
   handleDeleteCourses,
 }: CourseItemProps) {
   // states
-  const [isOpenConfirmModal, setIsOpenConfirmModal] = useState<boolean>(false);
+  const [isOpenConfirmModal, setIsOpenConfirmModal] = useState<boolean>(false)
   const [confirmType, setConfirmType] = useState<
     'deactivate' | 'unbooted' | 'Remove Flash Sale' | 'delete'
-  >('delete');
+  >('delete')
 
   return (
     <>
@@ -168,13 +168,13 @@ function CourseItem({
           <button
             className='block group'
             onClick={(e) => {
-              e.stopPropagation();
+              e.stopPropagation()
               // is being active
               if (data.active) {
-                setIsOpenConfirmModal(true);
-                setConfirmType('deactivate');
+                setIsOpenConfirmModal(true)
+                setConfirmType('deactivate')
               } else {
-                handleActivateCourses([data._id], true);
+                handleActivateCourses([data._id], true)
               }
             }}
             disabled={loadingCourses.includes(data._id)}
@@ -190,13 +190,13 @@ function CourseItem({
           <button
             className='block group'
             onClick={(e) => {
-              e.stopPropagation();
+              e.stopPropagation()
               // is being booted
               if (data.booted) {
-                setIsOpenConfirmModal(true);
-                setConfirmType('unbooted');
+                setIsOpenConfirmModal(true)
+                setConfirmType('unbooted')
               } else {
-                handleBootCourses([data._id], !data.booted);
+                handleBootCourses([data._id], !data.booted)
               }
             }}
             disabled={loadingCourses.includes(data._id)}
@@ -213,9 +213,9 @@ function CourseItem({
             <button
               className='block group'
               onClick={(e) => {
-                e.stopPropagation();
-                setIsOpenConfirmModal(true);
-                setConfirmType('Remove Flash Sale');
+                e.stopPropagation()
+                setIsOpenConfirmModal(true)
+                setConfirmType('Remove Flash Sale')
               }}
               disabled={loadingCourses.includes(data._id)}
               title='Remove Flash Sale'
@@ -248,8 +248,8 @@ function CourseItem({
           <button
             className='block group'
             onClick={(e) => {
-              e.stopPropagation();
-              setIsOpenConfirmModal(true);
+              e.stopPropagation()
+              setIsOpenConfirmModal(true)
             }}
             disabled={loadingCourses.includes(data._id)}
             title='Delete'
@@ -281,7 +281,7 @@ function CourseItem({
         isLoading={loadingCourses.includes(data._id)}
       />
     </>
-  );
+  )
 }
 
-export default CourseItem;
+export default memo(CourseItem)

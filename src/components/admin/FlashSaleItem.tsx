@@ -1,13 +1,13 @@
+import { IFlashSale } from '@/models/FlashSaleModel'
 import { formatPrice } from '@/utils/number'
 import { formatTime } from '@/utils/time'
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React, { memo, useState } from 'react'
 import { FaTrash } from 'react-icons/fa'
 import { MdEdit } from 'react-icons/md'
 import { RiDonutChartFill } from 'react-icons/ri'
 import ConfirmDialog from '../dialogs/ConfirmDialog'
-import { IFlashSale } from '@/models/FlashSaleModel'
 
 interface FlashSaleItemProps {
   data: IFlashSale
@@ -40,10 +40,11 @@ function FlashSaleItem({
           selectedFlashSales.includes(data._id) ? 'bg-violet-50 -translate-y-1' : 'bg-white'
         }  ${className}`}
         onClick={() =>
-          setSelectedFlashSales(prev =>
-            prev.includes(data._id) ? prev.filter(id => id !== data._id) : [...prev, data._id]
+          setSelectedFlashSales((prev) =>
+            prev.includes(data._id) ? prev.filter((id) => id !== data._id) : [...prev, data._id]
           )
-        }>
+        }
+      >
         {/* MARK: Body */}
         {/* Value - Time Type */}
         <div className='font-semibold' title='netflix'>
@@ -83,10 +84,11 @@ function FlashSaleItem({
 
         {/* Applying Courses */}
         <div className='flex flex-wrap rounded-lg gap-2 max-h-[300px] overflow-y-auto mb-3'>
-          {data.courses?.map(course => (
+          {data.courses?.map((course) => (
             <div
               className='border border-slate-300 bg-white rounded-lg flex items-start p-2 gap-2'
-              key={course._id}>
+              key={course._id}
+            >
               <Image
                 className='aspect-video rounded-md border'
                 src={course.images[0]}
@@ -107,20 +109,22 @@ function FlashSaleItem({
           <Link
             href={`/admin/flash-sale/${data._id}/edit`}
             className='block group'
-            onClick={e => e.stopPropagation()}
-            title='Edit'>
+            onClick={(e) => e.stopPropagation()}
+            title='Edit'
+          >
             <MdEdit size={18} className='wiggle' />
           </Link>
 
           {/* Delete Button */}
           <button
             className='block group'
-            onClick={e => {
+            onClick={(e) => {
               e.stopPropagation()
               setIsOpenConfirmModal(true)
             }}
             disabled={loadingFlashSales.includes(data._id)}
-            title='Delete'>
+            title='Delete'
+          >
             {loadingFlashSales.includes(data._id) ? (
               <RiDonutChartFill size={18} className='animate-spin text-slate-300' />
             ) : (
@@ -143,4 +147,4 @@ function FlashSaleItem({
   )
 }
 
-export default FlashSaleItem
+export default memo(FlashSaleItem)

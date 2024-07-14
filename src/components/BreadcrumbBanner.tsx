@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Fragment } from 'react'
+import { Fragment, memo } from 'react'
 import { FaAngleRight } from 'react-icons/fa'
 import Divider from './Divider'
 import BeamsBackground from './backgrounds/BeamsBackground'
@@ -20,7 +20,7 @@ function BreadcrumbBanner({ title, description, background, className = '' }: Br
   const breadcrumbs = pathname
     .split('/')
     .slice(2)
-    .filter(path => path)
+    .filter((path) => path)
 
   return (
     <div
@@ -61,4 +61,4 @@ function BreadcrumbBanner({ title, description, background, className = '' }: Br
   )
 }
 
-export default BreadcrumbBanner
+export default memo(BreadcrumbBanner)

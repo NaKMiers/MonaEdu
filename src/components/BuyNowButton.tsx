@@ -4,7 +4,7 @@ import { ICourse } from '@/models/CourseModel'
 import { likeCourseApi } from '@/requests'
 import { Link } from '@react-email/components'
 import { getSession, useSession } from 'next-auth/react'
-import { useCallback, useEffect, useState } from 'react'
+import { memo, useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { FaRegThumbsUp, FaThumbsUp } from 'react-icons/fa'
 import { HiDotsVertical } from 'react-icons/hi'
@@ -47,10 +47,10 @@ function BuyNowButton({ course, className = '' }: BuyNowButtonProps) {
         console.log(err)
       }
 
-      setData(prev => ({
+      setData((prev) => ({
         ...prev,
         likes:
-          value === 'y' ? [...prev.likes, curUser._id] : prev.likes.filter(id => id !== curUser._id),
+          value === 'y' ? [...prev.likes, curUser._id] : prev.likes.filter((id) => id !== curUser._id),
       }))
     },
     [course._id, curUser?._id]
@@ -90,7 +90,7 @@ function BuyNowButton({ course, className = '' }: BuyNowButtonProps) {
       </Link>
       {curUser?._id && curUser.courses.map((course: any) => course.course).includes(course._id) && (
         <div className='relative flex justify-end items-center -ml-2.5'>
-          <button className='group' onClick={() => setShowActions(prev => !prev)}>
+          <button className='group' onClick={() => setShowActions((prev) => !prev)}>
             <HiDotsVertical size={24} className='wiggle' />
           </button>
 
@@ -116,4 +116,4 @@ function BuyNowButton({ course, className = '' }: BuyNowButtonProps) {
   )
 }
 
-export default BuyNowButton
+export default memo(BuyNowButton)

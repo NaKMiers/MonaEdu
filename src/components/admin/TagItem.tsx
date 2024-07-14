@@ -1,27 +1,27 @@
-import { ITag } from '@/models/TagModel';
-import React, { useState } from 'react';
-import { FaCheck, FaSave, FaTrash } from 'react-icons/fa';
-import { MdCancel, MdEdit } from 'react-icons/md';
-import { RiDonutChartFill } from 'react-icons/ri';
-import ConfirmDialog from '../dialogs/ConfirmDialog';
+import { ITag } from '@/models/TagModel'
+import React, { memo, useState } from 'react'
+import { FaCheck, FaSave, FaTrash } from 'react-icons/fa'
+import { MdCancel, MdEdit } from 'react-icons/md'
+import { RiDonutChartFill } from 'react-icons/ri'
+import ConfirmDialog from '../dialogs/ConfirmDialog'
 
 interface TagItemProps {
-  data: ITag;
-  loadingTags: string[];
-  className?: string;
+  data: ITag
+  loadingTags: string[]
+  className?: string
 
-  selectedTags: string[];
-  setSelectedTags: React.Dispatch<React.SetStateAction<string[]>>;
+  selectedTags: string[]
+  setSelectedTags: React.Dispatch<React.SetStateAction<string[]>>
 
-  editingTags: string[];
-  setEditingTags: React.Dispatch<React.SetStateAction<string[]>>;
+  editingTags: string[]
+  setEditingTags: React.Dispatch<React.SetStateAction<string[]>>
 
-  editingValues: { _id: string; title: string }[];
-  setEditingValues: React.Dispatch<React.SetStateAction<{ _id: string; title: string }[]>>;
+  editingValues: { _id: string; title: string }[]
+  setEditingValues: React.Dispatch<React.SetStateAction<{ _id: string; title: string }[]>>
 
-  handleSaveEditingTags: (editingValues: { _id: string; value: string }[]) => void;
-  handleDeleteTags: (ids: string[]) => void;
-  handleBootTags: (ids: string[], booted: boolean) => void;
+  handleSaveEditingTags: (editingValues: { _id: string; value: string }[]) => void
+  handleDeleteTags: (ids: string[]) => void
+  handleBootTags: (ids: string[], booted: boolean) => void
 }
 
 function TagItem({
@@ -43,7 +43,7 @@ function TagItem({
   handleBootTags,
 }: TagItemProps) {
   // states
-  const [isOpenConfirmModal, setIsOpenConfirmModal] = useState<boolean>(false);
+  const [isOpenConfirmModal, setIsOpenConfirmModal] = useState<boolean>(false)
 
   return (
     <>
@@ -92,8 +92,8 @@ function TagItem({
             <button
               className='block group'
               onClick={(e) => {
-                e.stopPropagation();
-                handleBootTags([data._id], !data.booted);
+                e.stopPropagation()
+                handleBootTags([data._id], !data.booted)
               }}
               disabled={loadingTags.includes(data._id)}
               title={data.booted ? 'Boot' : 'Unboot'}
@@ -110,13 +110,13 @@ function TagItem({
             <button
               className='block group'
               onClick={(e) => {
-                e.stopPropagation();
-                setEditingTags((prev) => (!prev.includes(data._id) ? [...prev, data._id] : prev));
+                e.stopPropagation()
+                setEditingTags((prev) => (!prev.includes(data._id) ? [...prev, data._id] : prev))
                 setEditingValues((prev) =>
                   !prev.some((cate) => cate._id === data._id)
                     ? [...prev, { _id: data._id, title: data.title }]
                     : prev
-                );
+                )
               }}
               title='Edit'
             >
@@ -129,8 +129,8 @@ function TagItem({
             <button
               className='block group'
               onClick={(e) => {
-                e.stopPropagation();
-                handleSaveEditingTags([editingValues.find((cate) => cate._id === data._id)] as any[]);
+                e.stopPropagation()
+                handleSaveEditingTags([editingValues.find((cate) => cate._id === data._id)] as any[])
               }}
               disabled={loadingTags.includes(data._id)}
               title='Save'
@@ -148,11 +148,11 @@ function TagItem({
             <button
               className='block group'
               onClick={(e) => {
-                e.stopPropagation();
+                e.stopPropagation()
                 setEditingTags((prev) =>
                   prev.includes(data._id) ? prev.filter((id) => id !== data._id) : prev
-                );
-                setEditingValues((prev) => prev.filter((cate) => cate._id !== data._id));
+                )
+                setEditingValues((prev) => prev.filter((cate) => cate._id !== data._id))
               }}
               title='Cancel'
             >
@@ -165,8 +165,8 @@ function TagItem({
             <button
               className='block group'
               onClick={(e) => {
-                e.stopPropagation();
-                setIsOpenConfirmModal(true);
+                e.stopPropagation()
+                setIsOpenConfirmModal(true)
               }}
               disabled={loadingTags.includes(data._id)}
               title='Delete'
@@ -191,7 +191,7 @@ function TagItem({
         isLoading={loadingTags.includes(data._id)}
       />
     </>
-  );
+  )
 }
 
-export default TagItem;
+export default memo(TagItem)

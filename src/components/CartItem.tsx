@@ -4,12 +4,11 @@ import { ICartItem } from '@/models/CartItemModel'
 import { ICourse } from '@/models/CourseModel'
 import { IFlashSale } from '@/models/FlashSaleModel'
 import { deleteCartItemApi } from '@/requests'
-import { formatPrice } from '@/utils/number'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useCallback, useState } from 'react'
+import { memo, useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
-import { FaHashtag, FaTrashAlt } from 'react-icons/fa'
+import { FaTrashAlt } from 'react-icons/fa'
 import { RiDonutChartFill } from 'react-icons/ri'
 import Price from './Price'
 import ConfirmDialog from './dialogs/ConfirmDialog'
@@ -24,7 +23,7 @@ interface CartItemProps {
 function CartItem({ cartItem, isCheckout, className = '', isOrderDetailCourse }: CartItemProps) {
   // hooks
   const dispatch = useAppDispatch()
-  const selectedCartItems = useAppSelector(state => state.cart.selectedItems)
+  const selectedCartItems = useAppSelector((state) => state.cart.selectedItems)
 
   // states
   const [isDeleting, setIsDeleting] = useState<boolean>(false)
@@ -55,15 +54,15 @@ function CartItem({ cartItem, isCheckout, className = '', isOrderDetailCourse }:
   return (
     <div
       className={`relative flex flex-wrap md:flex-nowrap items-start gap-3 cursor-pointer common-transition rounded-medium border p-21 ${
-        !!selectedCartItems.find(cI => cI._id === cartItem._id) && !isCheckout
+        !!selectedCartItems.find((cI) => cI._id === cartItem._id) && !isCheckout
           ? 'border-primary'
           : 'border-slate-400'
       } ${className} `}
       onClick={() =>
         dispatch(
           setSelectedItems(
-            selectedCartItems.find(cI => cI._id === cartItem._id)
-              ? selectedCartItems.filter(cI => cI._id !== cartItem._id)
+            selectedCartItems.find((cI) => cI._id === cartItem._id)
+              ? selectedCartItems.filter((cI) => cI._id !== cartItem._id)
               : [...selectedCartItems, cartItem]
           )
         )
@@ -75,10 +74,10 @@ function CartItem({ cartItem, isCheckout, className = '', isOrderDetailCourse }:
           href={`/${(cartItem.courseId as ICourse)?.slug}`}
           prefetch={false}
           className='aspect-video rounded-lg overflow-hidden shadow-lg block max-w-[150px]'
-          onClick={e => e.stopPropagation()}
+          onClick={(e) => e.stopPropagation()}
         >
           <div className='flex w-full overflow-x-scroll snap-x snap-mandatory no-scrollbar'>
-            {(cartItem.courseId as ICourse)?.images?.map(src => (
+            {(cartItem.courseId as ICourse)?.images?.map((src) => (
               <Image
                 className='flex-shrink w-full snap-start'
                 src={src}
@@ -97,12 +96,12 @@ function CartItem({ cartItem, isCheckout, className = '', isOrderDetailCourse }:
         <input
           type='checkbox'
           className='size-5 z-10 cursor-pointer absolute top-21 right-21 accent-primary'
-          checked={!!selectedCartItems.find(cI => cI._id === cartItem._id)}
+          checked={!!selectedCartItems.find((cI) => cI._id === cartItem._id)}
           onChange={() =>
             dispatch(
               setSelectedItems(
-                selectedCartItems.find(cI => cI._id === cartItem._id)
-                  ? selectedCartItems.filter(cI => cI._id !== cartItem._id)
+                selectedCartItems.find((cI) => cI._id === cartItem._id)
+                  ? selectedCartItems.filter((cI) => cI._id !== cartItem._id)
                   : [...selectedCartItems, cartItem]
               )
             )
@@ -118,7 +117,7 @@ function CartItem({ cartItem, isCheckout, className = '', isOrderDetailCourse }:
             <FaTrashAlt
               size={21}
               className='cursor-pointer hover:scale-110 common-transition wiggle'
-              onClick={e => {
+              onClick={(e) => {
                 e.stopPropagation()
                 setIsOpenConfirmModal(true)
               }}
@@ -155,4 +154,4 @@ function CartItem({ cartItem, isCheckout, className = '', isOrderDetailCourse }:
   )
 }
 
-export default CartItem
+export default memo(CartItem)

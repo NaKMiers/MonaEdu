@@ -1,15 +1,16 @@
-import { ICourse } from "@/models/CourseModel";
-import Image from "next/image";
-import BestSellerCard from "../BestSellerCard";
-import Divider from "../Divider";
-import Heading from "../Heading";
+import { ICourse } from '@/models/CourseModel'
+import Image from 'next/image'
+import { memo } from 'react'
+import BestSellerCard from '../BestSellerCard'
+import Divider from '../Divider'
+import Heading from '../Heading'
 
 interface BestSellerProps {
-  courses: ICourse[];
-  className?: string;
+  courses: ICourse[]
+  className?: string
 }
 
-function BestSeller({ courses, className = "" }: BestSellerProps) {
+function BestSeller({ courses, className = '' }: BestSellerProps) {
   return (
     <div className={`max-w-1200 mx-auto px-21 ${className}`}>
       <div className='flex items-center justify-center'>
@@ -34,7 +35,7 @@ function BestSeller({ courses, className = "" }: BestSellerProps) {
         ))}
       </div>
     </div>
-  );
+  )
 }
 
-export default BestSeller;
+export default memo(BestSeller)

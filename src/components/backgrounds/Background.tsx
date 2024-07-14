@@ -1,4 +1,5 @@
-import Image from "next/image";
+import Image from 'next/image'
+import { memo } from 'react'
 
 function Background() {
   return (
@@ -40,7 +41,7 @@ function Background() {
         />
       </div>
     </div>
-  );
+  )
 }
 
-export default Background;
+export default memo(Background)

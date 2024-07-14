@@ -1,79 +1,79 @@
-'use client';
+'use client'
 
-import React, { useEffect, useState } from 'react';
-import Heading from '../Heading';
-import Divider from '../Divider';
-import CourseCard from '../CourseCard';
-import { ICourse } from '@/models/CourseModel';
-import { ICategory } from '@/models/CategoryModel';
+import { ICategory } from '@/models/CategoryModel'
+import { ICourse } from '@/models/CourseModel'
+import { memo, useEffect, useState } from 'react'
+import CourseCard from '../CourseCard'
+import Divider from '../Divider'
+import Heading from '../Heading'
 
 interface FeatureCoursesProps {
   courses: {
-    category: ICategory;
-    courses: ICourse[];
-  }[];
-  className?: string;
+    category: ICategory
+    courses: ICourse[]
+  }[]
+  className?: string
 }
 
 function FeatureCourses({ courses: originalData, className = '' }: FeatureCoursesProps) {
   // data
-  const categories = originalData.map((item) => item.category);
+  const categories = originalData.map((item) => item.category)
 
   // state
-  const [width, setWidth] = useState<number>(0);
-  const [selectedCategory, setSelectedCategory] = useState<string>('');
-  const [courses, setCourses] = useState<any[]>([]);
+  const [width, setWidth] = useState<number>(0)
+  const [selectedCategory, setSelectedCategory] = useState<string>('')
+  const [courses, setCourses] = useState<any[]>([])
 
   useEffect(() => {
-    setWidth(window.innerWidth);
+    setWidth(window.innerWidth)
 
     const handleResize = () => {
-      setWidth(window.innerWidth);
-    };
+      setWidth(window.innerWidth)
+    }
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize)
 
     return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
 
   useEffect(() => {
-    let data = originalData.map((item) => item.courses).flat();
+    let data = originalData.map((item) => item.courses).flat()
 
     if (selectedCategory) {
-      data = originalData.find(({ category }) => category._id === selectedCategory)?.courses || [];
+      data = originalData.find(({ category }) => category._id === selectedCategory)?.courses || []
     }
 
     // split courses into 2 row
     if (data.length > 4) {
-      const newCourses = [...data];
+      const newCourses = [...data]
 
       // split courses into 2 row
-      let row1 = newCourses.splice(0, Math.ceil(newCourses.length / 2));
-      let row2 = newCourses;
+      let row1 = newCourses.splice(0, Math.ceil(newCourses.length / 2))
+      let row2 = newCourses
 
-      let row1AtLeast = 4;
+      let row1AtLeast = 4
       if (width >= 1280) {
         // xl
-        row1AtLeast = 5;
+        row1AtLeast = 5
       } else if (width >= 1024) {
         // lg
-        row1AtLeast = 4;
+        row1AtLeast = 4
       } else {
-        row1AtLeast = 3;
+        row1AtLeast = 3
       }
 
       if (row1.length < row1AtLeast) {
-        const fill = row1AtLeast - row1.length;
-        row1 = [...row1, ...row2.splice(0, fill)];
+        const fill = row1AtLeast - row1.length
+        row1 = [...row1, ...row2.splice(0, fill)]
       }
 
-      setCourses([row1, row2]);
+      setCourses([row1, row2])
     } else {
-      setCourses([data]);
+      setCourses([data])
     }
-  }, [originalData, selectedCategory, width]);
+  }, [originalData, selectedCategory, width])
 
   return (
     <div className={`border-t-2 border-b-2 border-light bg-dark-100 ${className}`}>
@@ -127,7 +127,7 @@ function FeatureCourses({ courses: originalData, className = '' }: FeatureCourse
 
       <Divider size={16} />
     </div>
-  );
+  )
 }
 
-export default FeatureCourses;
+export default memo(FeatureCourses)

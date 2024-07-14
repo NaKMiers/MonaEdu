@@ -7,12 +7,12 @@ import Slider from '@mui/material/Slider'
 import { AnimatePresence, motion } from 'framer-motion'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { memo, useCallback, useEffect, useRef, useState } from 'react'
+import { FaDeleteLeft } from 'react-icons/fa6'
 import { FiFilter } from 'react-icons/fi'
 import { HiOutlineMenuAlt3 } from 'react-icons/hi'
 import Divider from './Divider'
 import BottomGradient from './gradients/BottomGradient'
-import { FaDeleteLeft, FaX, FaXmark } from 'react-icons/fa6'
 
 interface FilterAndSearchProps {
   searchParams: { [key: string]: string[] | string } | undefined
@@ -201,7 +201,7 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
             disabled={false}
             type='text'
             value={search}
-            onChange={e => setSearch(e.target.value)}
+            onChange={(e) => setSearch(e.target.value)}
             placeholder='Bạn muốn học gì...'
           />
           <BottomGradient />
@@ -225,7 +225,7 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
             <Divider size={4} />
 
             <div className='flex flex-col gap-2.5'>
-              {subs.map(category => (
+              {subs.map((category) => (
                 <Link
                   href={`/categories/${category.slug}`}
                   className='rounded-lg hover:rounded-3xl border-b-2 border-neutral-700 drop-shadow-lg shadow-md text-md font-body tracking-wider text-sm py-1 px-3 trans-300'
@@ -307,7 +307,7 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
             Giá:{' '}
             <div
               className='relative rounded-lg border-2 border-dark px-2 py-1 text-sm cursor-pointer'
-              onClick={() => setShowSortPrice(prev => !prev)}
+              onClick={() => setShowSortPrice((prev) => !prev)}
             >
               {sortPrice === 'asc' ? 'Tăng dần' : sortPrice === 'desc' ? 'Giảm dần' : 'Không'}
 
@@ -357,7 +357,7 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
             Thời lượng:{' '}
             <div
               className='relative rounded-lg border-2 border-dark px-2 py-1 text-sm cursor-pointer'
-              onClick={() => setShowSortDuration(prev => !prev)}
+              onClick={() => setShowSortDuration((prev) => !prev)}
             >
               {sortDuration === 'asc' ? 'Tăng dần' : sortDuration === 'desc' ? 'Giảm dần' : 'Không'}
 
@@ -408,7 +408,7 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
       <div className='md:hidden flex justify-between w-full items-center gap-3 border-b border-dark pt-3 pb-5'>
         <button
           className='group flex items-center justify-center text-nowrap gap-2 rounded-lg border-b-2 hover:bg-primary border-neutral-700 drop-shadow-lg shadow-md text-md font-body tracking-wider py-1 px-3 trans-300'
-          onClick={() => setOpenSubs(prev => !prev)}
+          onClick={() => setOpenSubs((prev) => !prev)}
         >
           <HiOutlineMenuAlt3 size={16} className='wiggle' />
           <span>Danh mục con</span>
@@ -416,7 +416,7 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
 
         <button
           className='group flex items-center justify-center text-nowrap gap-2 rounded-lg border-b-2 hover:bg-primary border-neutral-700 drop-shadow-lg shadow-md text-md font-body tracking-wider py-1 px-3 trans-300'
-          onClick={() => setOpenFilter(prev => !prev)}
+          onClick={() => setOpenFilter((prev) => !prev)}
         >
           <FiFilter size={16} className='wiggle' />
           <span>Bộ lọc</span>
@@ -429,7 +429,7 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
           ref={subSidebarRef}
         >
           <div
-            onClick={e => e.stopPropagation()}
+            onClick={(e) => e.stopPropagation()}
             className='-translate-x-full trans-200 bg-white w-[90%] max-w-[300px] h-[calc(100%-72px)] shadow-lg rounded-r-lg border-r-2 border-dark p-21 overflow-y-auto'
             ref={subSidebarMainRef}
           >
@@ -438,7 +438,7 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
             <Divider size={4} />
 
             <div className='flex flex-col gap-2.5'>
-              {subs.map(category => (
+              {subs.map((category) => (
                 <Link
                   href={`/categories/${category.slug}`}
                   className='rounded-lg hover:rounded-3xl border-b-2 border-neutral-700 drop-shadow-lg shadow-md text-md font-body tracking-wider text-sm py-1 px-3 trans-300'
@@ -458,7 +458,7 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
           ref={filterSidebarRef}
         >
           <div
-            onClick={e => e.stopPropagation()}
+            onClick={(e) => e.stopPropagation()}
             className='translate-x-full ml-auto trans-200 bg-white w-[90%] max-w-[300px] h-[calc(100%-72px)] shadow-lg rounded-l-lg border-l-2 border-dark p-21 overflow-auto'
             ref={filterSidebarMainRef}
           >
@@ -520,7 +520,7 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
               Giá:{' '}
               <div
                 className='relative rounded-lg border-2 border-dark px-2 py-1 text-sm cursor-pointer'
-                onClick={() => setShowSortPrice(prev => !prev)}
+                onClick={() => setShowSortPrice((prev) => !prev)}
               >
                 {sortPrice === 'asc' ? 'Tăng dần' : sortPrice === 'desc' ? 'Giảm dần' : 'Không'}
 
@@ -570,7 +570,7 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
               Thời lượng:{' '}
               <div
                 className='relative rounded-lg border-2 border-dark px-2 py-1 text-sm cursor-pointer'
-                onClick={() => setShowSortDuration(prev => !prev)}
+                onClick={() => setShowSortDuration((prev) => !prev)}
               >
                 {sortDuration === 'asc' ? 'Tăng dần' : sortDuration === 'desc' ? 'Giảm dần' : 'Không'}
 
@@ -619,4 +619,4 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
   )
 }
 
-export default FilterAndSearch
+export default memo(FilterAndSearch)

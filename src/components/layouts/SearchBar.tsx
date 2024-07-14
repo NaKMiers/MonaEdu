@@ -1,81 +1,81 @@
-import { useAppDispatch, useAppSelector } from '@/libs/hooks';
-import { setOpenSearchBar } from '@/libs/reducers/modalReducer';
-import { getCoursesApi, searchCoursesApi } from '@/requests';
-import Image from 'next/image';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import toast from 'react-hot-toast';
-import { FaSearch } from 'react-icons/fa';
-import { IoChevronDown, IoChevronUp } from 'react-icons/io5';
-import { PiLightningFill } from 'react-icons/pi';
-import { RiDonutChartFill } from 'react-icons/ri';
-import { TiDelete } from 'react-icons/ti';
+import { useAppDispatch, useAppSelector } from '@/libs/hooks'
+import { setOpenSearchBar } from '@/libs/reducers/modalReducer'
+import { getCoursesApi, searchCoursesApi } from '@/requests'
+import Image from 'next/image'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { memo, useCallback, useEffect, useRef, useState } from 'react'
+import toast from 'react-hot-toast'
+import { FaSearch } from 'react-icons/fa'
+import { IoChevronDown, IoChevronUp } from 'react-icons/io5'
+import { PiLightningFill } from 'react-icons/pi'
+import { RiDonutChartFill } from 'react-icons/ri'
+import { TiDelete } from 'react-icons/ti'
 
 function SearchBar() {
   // hook
-  const dispatch = useAppDispatch();
-  const open = useAppSelector((state) => state.modal.openSearchBar);
-  const pathname = usePathname();
+  const dispatch = useAppDispatch()
+  const open = useAppSelector((state) => state.modal.openSearchBar)
+  const pathname = usePathname()
 
   // search
-  const [searchValue, setSearchValue] = useState<string>('');
-  const [searchLoading, setSearchLoading] = useState<boolean>(false);
-  const [initResults, setInitResults] = useState<any[] | null>(null);
-  const [searchResults, setSearchResults] = useState<any[] | null>(null);
-  const searchTimeout = useRef<any>(null);
-  const [openResults, setOpenResults] = useState<boolean>(false);
+  const [searchValue, setSearchValue] = useState<string>('')
+  const [searchLoading, setSearchLoading] = useState<boolean>(false)
+  const [initResults, setInitResults] = useState<any[] | null>(null)
+  const [searchResults, setSearchResults] = useState<any[] | null>(null)
+  const searchTimeout = useRef<any>(null)
+  const [openResults, setOpenResults] = useState<boolean>(false)
 
   // handle search
   const handleSearch = useCallback(async () => {
     // start loading
-    setSearchLoading(true);
+    setSearchLoading(true)
 
     try {
       // send request to search courses
-      const { courses } = await searchCoursesApi(searchValue);
+      const { courses } = await searchCoursesApi(searchValue)
 
       // set search results
-      setSearchResults(courses);
+      setSearchResults(courses)
     } catch (err: any) {
-      console.log(err);
-      toast.error(err.message);
+      console.log(err)
+      toast.error(err.message)
     } finally {
       // stop loading
-      setSearchLoading(false);
+      setSearchLoading(false)
     }
-  }, [searchValue]);
+  }, [searchValue])
 
   // auto search after 0.5s when search value changes
   useEffect(() => {
     if (searchValue) {
-      clearTimeout(searchTimeout.current);
+      clearTimeout(searchTimeout.current)
       searchTimeout.current = setTimeout(() => {
-        handleSearch();
-      }, 500);
+        handleSearch()
+      }, 500)
     } else {
-      setSearchResults(initResults);
+      setSearchResults(initResults)
     }
-  }, [initResults, searchValue, handleSearch]);
+  }, [initResults, searchValue, handleSearch])
 
   // get some courses as initial results
   useEffect(() => {
     const getSuggestedCourses = async () => {
       try {
         // send request to get suggested courses
-        const { courses } = await getCoursesApi('?limit=3&sort=joined|-1');
+        const { courses } = await getCoursesApi('?limit=3&sort=joined|-1')
 
         // set search results
-        setSearchResults(courses);
-        setInitResults(courses);
+        setSearchResults(courses)
+        setInitResults(courses)
       } catch (err: any) {
-        console.log(err);
-        toast.error(err.message);
+        console.log(err)
+        toast.error(err.message)
       }
-    };
+    }
 
-    getSuggestedCourses();
-  }, []);
+    getSuggestedCourses()
+  }, [])
 
   return (
     <div
@@ -120,11 +120,11 @@ function SearchBar() {
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
           onFocus={() => {
-            setOpenResults(true);
-            dispatch(setOpenSearchBar(true));
+            setOpenResults(true)
+            dispatch(setOpenSearchBar(true))
           }}
           onBlur={() => {
-            setOpenResults(false);
+            setOpenResults(false)
           }}
         />
 
@@ -194,7 +194,7 @@ function SearchBar() {
         )}
       </ul>
     </div>
-  );
+  )
 }
 
-export default SearchBar;
+export default memo(SearchBar)

@@ -1,16 +1,16 @@
-import { topCategories } from '@/constants/categories';
-import CategoryCard from '../CategoryCard';
-import Divider from '../Divider';
-import Heading from '../Heading';
-import Link from 'next/link';
-import Image from 'next/image';
+import { topCategories } from '@/constants/categories'
+import Image from 'next/image'
+import Link from 'next/link'
+import { memo } from 'react'
+import Divider from '../Divider'
+import Heading from '../Heading'
 
 interface TopCategoriesProps {
-  className?: string;
+  className?: string
 }
 
 function TopCategories({ className }: TopCategoriesProps) {
-  const categories: any[] = topCategories;
+  const categories: any[] = topCategories
 
   return (
     <div className={`max-w-1200 mx-auto px-21 ${className}`}>
@@ -45,7 +45,7 @@ function TopCategories({ className }: TopCategoriesProps) {
         ))}
       </div>
     </div>
-  );
+  )
 }
 
-export default TopCategories;
+export default memo(TopCategories)

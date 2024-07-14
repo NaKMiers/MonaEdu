@@ -1,10 +1,11 @@
-'use client';
+'use client'
 
-import Image from 'next/image';
-import Link from 'next/link';
-import Divider from '../Divider';
-import { signOut } from 'next-auth/react';
-import { FaCheck } from 'react-icons/fa';
+import { signOut } from 'next-auth/react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { memo } from 'react'
+import { FaCheck } from 'react-icons/fa'
+import Divider from '../Divider'
 
 function Footer() {
   return (
@@ -151,7 +152,7 @@ function Footer() {
         <Divider size={4} />
       </div>
     </footer>
-  );
+  )
 }
 
-export default Footer;
+export default memo(Footer)

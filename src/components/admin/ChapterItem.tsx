@@ -1,11 +1,11 @@
 import { EditingValues } from '@/app/(admin)/admin/chapter/[courseId]/all/page'
 import { IChapter } from '@/models/ChapterModel'
-import React, { useState } from 'react'
+import Link from 'next/link'
+import React, { memo, useState } from 'react'
 import { FaEye, FaPlusCircle, FaTrash } from 'react-icons/fa'
 import { MdEdit } from 'react-icons/md'
 import { RiDonutChartFill } from 'react-icons/ri'
 import ConfirmDialog from '../dialogs/ConfirmDialog'
-import Link from 'next/link'
 
 interface ChapterItemProps {
   data: IChapter
@@ -41,8 +41,8 @@ function ChapterItem({
         } ${className}`}
         key={data._id}
         onClick={() =>
-          setSelectedChapters(prev =>
-            prev.includes(data._id) ? prev.filter(id => id !== data._id) : [...prev, data._id]
+          setSelectedChapters((prev) =>
+            prev.includes(data._id) ? prev.filter((id) => id !== data._id) : [...prev, data._id]
           )
         }
       >
@@ -65,7 +65,7 @@ function ChapterItem({
           <Link
             href={`/admin/lesson/${data._id}/all`}
             className='block group'
-            onClick={e => e.stopPropagation()}
+            onClick={(e) => e.stopPropagation()}
             title='View Lessons'
           >
             <FaEye size={18} className='wiggle' />
@@ -75,7 +75,7 @@ function ChapterItem({
           <Link
             href={`/admin/lesson/${data._id}/add`}
             className='block group'
-            onClick={e => e.stopPropagation()}
+            onClick={(e) => e.stopPropagation()}
             title='Add Lesson'
           >
             <FaPlusCircle size={18} className='wiggle' />
@@ -85,7 +85,7 @@ function ChapterItem({
           <button
             className='block group'
             title='Edit'
-            onClick={e => {
+            onClick={(e) => {
               e.stopPropagation()
 
               setEditingValues({
@@ -102,7 +102,7 @@ function ChapterItem({
           {/* Delete Button */}
           <button
             className='block group'
-            onClick={e => {
+            onClick={(e) => {
               e.stopPropagation()
               setIsOpenConfirmModal(true)
             }}
@@ -131,4 +131,4 @@ function ChapterItem({
   )
 }
 
-export default ChapterItem
+export default memo(ChapterItem)

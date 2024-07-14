@@ -1,19 +1,19 @@
-'use client';
+'use client'
 
-import { changeNotificationSettingApi } from '@/requests';
-import { useSession } from 'next-auth/react';
-import { useCallback, useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
-import Divider from '../Divider';
+import { changeNotificationSettingApi } from '@/requests'
+import { useSession } from 'next-auth/react'
+import { memo, useCallback, useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
+import Divider from '../Divider'
 
 interface NotificationSettingsProps {
-  className?: string;
+  className?: string
 }
 
 function NotificationSettings({ className = '' }: NotificationSettingsProps) {
   // hook
-  const { data: session, update } = useSession();
-  const curUser: any = session?.user;
+  const { data: session, update } = useSession()
+  const curUser: any = session?.user
 
   // states
   const [userNotificationSettings, setUserNotificationSettings] = useState<any>({
@@ -22,43 +22,43 @@ function NotificationSettings({ className = '' }: NotificationSettingsProps) {
     emotionQuestion: false,
     repliedComment: false,
     emotionComment: false,
-  });
+  })
 
   // auto update initials states
   useEffect(() => {
     if (curUser?._id && curUser.notificationSettings) {
       setUserNotificationSettings({
         ...curUser.notificationSettings,
-      });
+      })
     }
-  }, [curUser?._id, curUser]);
+  }, [curUser?._id, curUser])
 
   // handle change notification settings
   const handleChangeNotificationSetting = useCallback(
     async (type: string) => {
       if (!curUser?._id) {
-        toast.error('User not found!');
-        return;
+        toast.error('User not found!')
+        return
       }
 
       try {
         // update first
-        setUserNotificationSettings((prev: any) => ({ ...prev, [type]: !prev[type] }));
+        setUserNotificationSettings((prev: any) => ({ ...prev, [type]: !prev[type] }))
 
-        const { message } = await changeNotificationSettingApi(type, !userNotificationSettings[type]);
+        const { message } = await changeNotificationSettingApi(type, !userNotificationSettings[type])
 
         // notify success
-        toast.success(message);
+        toast.success(message)
 
         // update user session
-        await update();
+        await update()
       } catch (err: any) {
-        console.log(err);
-        toast.error(err.message);
+        console.log(err)
+        toast.error(err.message)
       }
     },
     [curUser?._id, update, userNotificationSettings]
-  );
+  )
 
   return (
     <div
@@ -146,7 +146,7 @@ function NotificationSettings({ className = '' }: NotificationSettingsProps) {
         </ul>
       </div>
     </div>
-  );
+  )
 }
 
-export default NotificationSettings;
+export default memo(NotificationSettings)

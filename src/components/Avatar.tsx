@@ -4,7 +4,7 @@ import { IUser } from '@/models/UserModel'
 import { changeAvatarApi } from '@/requests'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import { FaCamera, FaSave } from 'react-icons/fa'
 import { ImCancelCircle } from 'react-icons/im'
@@ -155,4 +155,4 @@ function Avatar({ user, className = '' }: AvatarProps) {
   )
 }
 
-export default Avatar
+export default memo(Avatar)

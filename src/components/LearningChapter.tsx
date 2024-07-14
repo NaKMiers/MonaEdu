@@ -33,7 +33,7 @@ function LearningChapter({
 
   // states
   const [open, setOpen] = useState<boolean>(
-    chapter.lessons?.map(lesson => lesson.slug).includes(lessonSlug) || false
+    chapter.lessons?.map((lesson) => lesson.slug).includes(lessonSlug) || false
   )
 
   // refs
@@ -60,7 +60,9 @@ function LearningChapter({
     >
       <p
         className={`${
-          chapter.lessons?.some(lesson => lesson.slug === lessonSlug) ? 'text-orange-500' : 'text-white'
+          chapter.lessons?.some((lesson) => lesson.slug === lessonSlug)
+            ? 'text-orange-500'
+            : 'text-white'
         } font-semibold flex justify-between items-center py-2 px-3 cursor-pointer`}
         onClick={() => setOpen(!open)}
       >
@@ -71,7 +73,7 @@ function LearningChapter({
         className={`flex flex-col px-2 gap-[4px] ${open ? '' : 'max-h-0'} trans-300 overflow-hidden`}
         ref={chapterRef}
       >
-        {chapter.lessons?.map(lesson =>
+        {chapter.lessons?.map((lesson) =>
           lesson.status === 'public' ? (
             <Link
               href={`/learning/${courseSlug}/${lesson.slug}`}
