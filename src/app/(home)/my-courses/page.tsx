@@ -69,7 +69,7 @@ function MyCoursesPage({ searchParams }: { searchParams?: { [key: string]: strin
         </div>
       ) : (
         <div className='font-body tracking-wider text-center'>
-          <p className='italic'>
+          <p className='italic text-light'>
             Bạn chưa đăng ký khóa học nào cả. <br />
           </p>
           <Link

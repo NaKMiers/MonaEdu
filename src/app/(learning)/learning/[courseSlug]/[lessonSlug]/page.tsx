@@ -40,12 +40,26 @@ function LessonPage({
   const [isOpenReportDialog, setIsOpenReportDialog] = useState<boolean>(false)
   const [selectedContent, setSelectedContent] = useState<string>('')
 
+  const [videoSource, setVideoSource] = useState<string>('')
+
   // get lesson
   useEffect(() => {
     const getLesson = async () => {
       // get lesson for learning
       try {
         const { lesson, comments } = await getLessonApi(lessonSlug)
+
+        console.log('lesson', lesson)
+
+        // if (lesson.sourceType === 'file') {
+        //   // setVideoSource(lesson.source)
+        //   const response = await fetch(
+        //     'https://d141vgbk8gzs0o.cloudfront.net/videos/80460149d8eb9dd2e9b26e883c8c0df39129041152a7a2f64f31b90b418b381d'
+        //   ) // Replace with your API endpoint or video URL
+        //   const blob = await response.blob()
+        //   const url = URL.createObjectURL(blob)
+        //   setVideoSource(url)
+        // }
 
         // set states
         setLesson(lesson)
@@ -58,6 +72,8 @@ function LessonPage({
 
     getLesson()
   }, [lessonSlug, curUser?.courses, router])
+
+  console.log('video source', videoSource)
 
   // handle report lesson
   const handleReport = useCallback(async () => {

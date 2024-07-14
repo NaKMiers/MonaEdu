@@ -41,46 +41,46 @@ function Header({ className = '' }: HeaderProps) {
   // notification states
   const [isOpenNotificationMenu, setIsOpenNotificationMenu] = useState<boolean>(false)
 
-  // // get user's cart
-  // useEffect(() => {
-  //   const getUserCart = async () => {
-  //     if (curUser?._id) {
-  //       try {
-  //         // send request to get user's cart
-  //         const { cart } = await getCartApi() // cache: no-store
+  // get user's cart
+  useEffect(() => {
+    const getUserCart = async () => {
+      if (curUser?._id) {
+        try {
+          // send request to get user's cart
+          const { cart } = await getCartApi() // cache: no-store
 
-  //         // set cart to state
-  //         dispatch(setCartItems(cart))
-  //       } catch (err: any) {
-  //         console.log(err)
-  //         toast.error(err.message)
-  //       }
-  //     }
-  //   }
-  //   getUserCart()
-  // }, [dispatch, curUser?._id])
+          // set cart to state
+          dispatch(setCartItems(cart))
+        } catch (err: any) {
+          console.log(err)
+          toast.error(err.message)
+        }
+      }
+    }
+    getUserCart()
+  }, [dispatch, curUser?._id])
 
-  // // handle show/hide on scroll
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     if (pathname === '/') {
-  //       // set dark if scroll height > 100vh
-  //       if (window.scrollY > window.innerHeight) {
-  //         setIsTransparent(false)
-  //       } else {
-  //         setIsTransparent(true)
-  //       }
-  //     } else {
-  //       setIsTransparent(false)
-  //     }
-  //   }
+  // handle show/hide on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      if (pathname === '/') {
+        // set dark if scroll height > 100vh
+        if (window.scrollY > window.innerHeight) {
+          setIsTransparent(false)
+        } else {
+          setIsTransparent(true)
+        }
+      } else {
+        setIsTransparent(false)
+      }
+    }
 
-  //   // initial
-  //   handleScroll()
+    // initial
+    handleScroll()
 
-  //   window.addEventListener('scroll', handleScroll)
-  //   return () => window.removeEventListener('scroll', handleScroll)
-  // }, [pathname])
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [pathname])
 
   return (
     <header

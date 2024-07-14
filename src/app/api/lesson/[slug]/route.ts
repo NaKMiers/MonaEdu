@@ -48,7 +48,6 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
         return NextResponse.json({ message: 'Bài giảng này không được công khai' }, { status: 403 })
       }
     }
-    console.log('Lesson:', lesson)
 
     // get file url if lesson's source type is file
     if (lesson.sourceType === 'file') {

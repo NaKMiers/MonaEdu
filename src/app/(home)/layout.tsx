@@ -7,6 +7,9 @@ import { ReactNode } from 'react'
 import { Toaster } from 'react-hot-toast'
 import authOptions from '../api/auth/[...nextauth]/authOptions'
 import '../globals.scss'
+import Footer from '@/components/layouts/Footer'
+import FloatingButtons from '@/components/floatings/FloatingButtons'
+import PageLoading from '@/components/PageLoading'
 
 export const metadata: Metadata = {
   title: 'Mona Edu',
@@ -44,10 +47,10 @@ export default async function RootLayout({
           <Header />
 
           {/* Loading */}
-          {/* <PageLoading /> */}
+          <PageLoading />
 
           {/* Floating Button */}
-          {/* <FloatingButtons /> */}
+          <FloatingButtons />
 
           {/* Main */}
           <main className='md:mb-auto md:mt-[72px]'>{children}</main>
@@ -56,7 +59,7 @@ export default async function RootLayout({
           <Background />
 
           {/* Footer */}
-          {/* <Footer /> */}
+          <Footer />
         </StoreProvider>
       </body>
     </html>
