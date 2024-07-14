@@ -51,15 +51,13 @@ function LessonPage({
 
         console.log('lesson', lesson)
 
-        // if (lesson.sourceType === 'file') {
-        //   // setVideoSource(lesson.source)
-        //   const response = await fetch(
-        //     'https://d141vgbk8gzs0o.cloudfront.net/videos/80460149d8eb9dd2e9b26e883c8c0df39129041152a7a2f64f31b90b418b381d'
-        //   ) // Replace with your API endpoint or video URL
-        //   const blob = await response.blob()
-        //   const url = URL.createObjectURL(blob)
-        //   setVideoSource(url)
-        // }
+        if (lesson.sourceType === 'file') {
+          const response = await fetch(lesson.source)
+          const blob = await response.blob()
+          const url = URL.createObjectURL(blob)
+          console.log('url:', url)
+          setVideoSource(url)
+        }
 
         // set states
         setLesson(lesson)
@@ -71,9 +69,9 @@ function LessonPage({
     }
 
     getLesson()
-  }, [lessonSlug, curUser?.courses, router])
+  }, [lessonSlug])
 
-  console.log('video source', videoSource)
+  console.log('video source:', videoSource)
 
   // handle report lesson
   const handleReport = useCallback(async () => {
@@ -207,11 +205,7 @@ function LessonPage({
                   allowFullScreen
                 />
               ) : (
-                <video
-                  className='rounded-lg w-full h-full object-contain'
-                  src={lesson.source}
-                  controls
-                />
+                <video className='rounded-lg w-full h-full object-contain' src={videoSource} controls />
               )}
             </div>
           </div>
