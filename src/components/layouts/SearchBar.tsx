@@ -3,7 +3,6 @@ import { setOpenSearchBar } from '@/libs/reducers/modalReducer'
 import { getCoursesApi, searchCoursesApi } from '@/requests'
 import Image from 'next/image'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import { FaSearch } from 'react-icons/fa'
@@ -16,12 +15,11 @@ function SearchBar() {
   // hook
   const dispatch = useAppDispatch()
   const open = useAppSelector((state) => state.modal.openSearchBar)
-  const pathname = usePathname()
 
   // search
   const [searchValue, setSearchValue] = useState<string>('')
   const [searchLoading, setSearchLoading] = useState<boolean>(false)
-  const [initResults, setInitResults] = useState<any[] | null>(null)
+  const [initResults, setInitResults] = useState<any[] | null>([])
   const [searchResults, setSearchResults] = useState<any[] | null>(null)
   const searchTimeout = useRef<any>(null)
   const [openResults, setOpenResults] = useState<boolean>(false)
@@ -61,6 +59,7 @@ function SearchBar() {
   // get some courses as initial results
   useEffect(() => {
     const getSuggestedCourses = async () => {
+      console.log('get suggested courses')
       try {
         // send request to get suggested courses
         const { courses } = await getCoursesApi('?limit=3&sort=joined|-1')

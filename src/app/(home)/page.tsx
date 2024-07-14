@@ -1,27 +1,27 @@
-import Banner from '@/components/Banner';
-import Divider from '@/components/Divider';
-import BestSeller from '@/components/ranks/BestSeller';
-import FeatureCourses from '@/components/ranks/FeatureCourses';
-import TopCategories from '@/components/ranks/TopCategories';
-import TopNewCourses from '@/components/ranks/TopNewCourses';
-import { ICategory } from '@/models/CategoryModel';
-import { ICourse } from '@/models/CourseModel';
-import { getHomePageApi } from '@/requests';
-import { Metadata } from 'next';
+import Banner from '@/components/Banner'
+import Divider from '@/components/Divider'
+import BestSeller from '@/components/ranks/BestSeller'
+import FeatureCourses from '@/components/ranks/FeatureCourses'
+import TopCategories from '@/components/ranks/TopCategories'
+import TopNewCourses from '@/components/ranks/TopNewCourses'
+import { ICategory } from '@/models/CategoryModel'
+import { ICourse } from '@/models/CourseModel'
+import { getHomePageApi } from '@/requests'
+import { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Trang chủ - Mona Edu',
   description: 'Mona Edu - Nền tảng học trực tuyến hàng đầu Việt Nam',
-};
+}
 
 async function Home() {
-  let courses: ICourse[] = [];
-  let bestSellers: ICourse[] = [];
-  let newCourses: ICourse[] = [];
+  let courses: ICourse[] = []
+  let bestSellers: ICourse[] = []
+  let newCourses: ICourse[] = []
   let bootedCourses: {
-    category: ICategory;
-    courses: ICourse[];
-  }[] = [];
+    category: ICategory
+    courses: ICourse[]
+  }[] = []
 
   // try {
   //   const data = await getHomePageApi();
@@ -57,7 +57,7 @@ async function Home() {
       'https://www.twitter.com/anphashop',
       'https://www.twitter.com/anphashop',
     ],
-  };
+  }
 
   return (
     <div className='min-h-screen'>
@@ -89,7 +89,7 @@ async function Home() {
 
       <Divider size={54} />
     </div>
-  );
+  )
 }
 
-export default Home;
+export default Home

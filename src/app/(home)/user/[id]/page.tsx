@@ -1,43 +1,43 @@
-import Avatar from '@/components/Avatar';
-import CourseCard from '@/components/CourseCard';
-import Divider from '@/components/Divider';
-import MyLink from '@/components/MyLink';
-import QuestionItem from '@/components/QuestionItem';
-import UserBanner from '@/components/UserBanner';
-import { ICourse } from '@/models/CourseModel';
-import { IQuestion } from '@/models/QuestionModel';
-import { IUser } from '@/models/UserModel';
-import { getUsersApi } from '@/requests';
-import { getUserName } from '@/utils/string';
-import { Metadata } from 'next';
-import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import Avatar from '@/components/Avatar'
+import CourseCard from '@/components/CourseCard'
+import Divider from '@/components/Divider'
+import MyLink from '@/components/MyLink'
+import QuestionItem from '@/components/QuestionItem'
+import UserBanner from '@/components/UserBanner'
+import { ICourse } from '@/models/CourseModel'
+import { IQuestion } from '@/models/QuestionModel'
+import { IUser } from '@/models/UserModel'
+import { getUsersApi } from '@/requests'
+import { getUserName } from '@/utils/string'
+import { Metadata } from 'next'
+import Link from 'next/link'
+import { notFound } from 'next/navigation'
 
 export const generateMetadata = ({ params }: any): Metadata => {
   return {
     title: `${params.id} - Thông tin cá nhân - Mona Edu`,
     description: 'Mona Edu - Nền tảng học trực tuyến hàng đầu Việt Nam',
-  };
-};
+  }
+}
 
-export async function ProfilePage({ params: { id } }: { params: { id: string } }) {
-  let user: IUser | null = null;
-  let courses: ICourse[] = [];
-  let questions: IQuestion[] = [];
+async function ProfilePage({ params: { id } }: { params: { id: string } }) {
+  let user: IUser | null = null
+  let courses: ICourse[] = []
+  let questions: IQuestion[] = []
 
   try {
     // get user profile
-    const data = await getUsersApi(id);
+    const data = await getUsersApi(id)
 
-    user = data.user;
-    courses = data.user.courses.map((course: any) => course.course);
+    user = data.user
+    courses = data.user.courses.map((course: any) => course.course)
     questions = data.questions.map((question: any) => ({
       ...question,
       userId: user,
-    }));
+    }))
   } catch (err: any) {
-    console.error(err);
-    return notFound();
+    console.error(err)
+    return notFound()
   }
 
   // jsonLD
@@ -81,7 +81,7 @@ export async function ProfilePage({ params: { id } }: { params: { id: string } }
         price: course.price,
       })),
     },
-  };
+  }
 
   return (
     <div>
@@ -243,7 +243,7 @@ export async function ProfilePage({ params: { id } }: { params: { id: string } }
         <Divider size={28} />
       </div>
     </div>
-  );
+  )
 }
 
-export default ProfilePage;
+export default ProfilePage
