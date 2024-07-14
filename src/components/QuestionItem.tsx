@@ -1,29 +1,26 @@
-"use client";
+'use client';
 
-import { reportContents } from "@/constants";
-import { IQuestion } from "@/models/QuestionModel";
-import { IUser } from "@/models/UserModel";
-import {
-  closeQuestionsApi,
-  likeQuestionsApi,
-} from "@/requests/questionRequest";
-import { addReportApi } from "@/requests/reportRequest";
-import { useSession } from "next-auth/react";
-import Image from "next/image";
-import Link from "next/link";
-import { useCallback, useState } from "react";
-import toast from "react-hot-toast";
-import { FaRegCommentDots, FaRegThumbsUp } from "react-icons/fa";
-import { format } from "timeago.js";
-import ReportDialog from "./dialogs/ReportDigalog";
-import { HiDotsVertical } from "react-icons/hi";
+import { reportContents } from '@/constants';
+import { IQuestion } from '@/models/QuestionModel';
+import { IUser } from '@/models/UserModel';
+import { closeQuestionsApi, likeQuestionsApi } from '@/requests/questionRequest';
+import { addReportApi } from '@/requests/reportRequest';
+import { useSession } from 'next-auth/react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useCallback, useState } from 'react';
+import toast from 'react-hot-toast';
+import { FaRegCommentDots, FaRegThumbsUp } from 'react-icons/fa';
+import { HiDotsVertical } from 'react-icons/hi';
+import { format } from 'timeago.js';
+import ReportDialog from './dialogs/ReportDigalog';
 
 interface QuestionItemProps {
   question: IQuestion;
   className?: string;
 }
 
-function QuestionItem({ question, className = "" }: QuestionItemProps) {
+function QuestionItem({ question, className = '' }: QuestionItemProps) {
   // hooks
   const { data: session } = useSession();
   const curUser: any = session?.user;
@@ -36,15 +33,12 @@ function QuestionItem({ question, className = "" }: QuestionItemProps) {
 
   // report states
   const [isOpenReportDialog, setIsOpenReportDialog] = useState<boolean>(false);
-  const [selectedContent, setSelectedContent] = useState<string>("");
+  const [selectedContent, setSelectedContent] = useState<string>('');
 
   // handle like / dislike
   const handleLike = useCallback(async () => {
     try {
-      const { updatedQuestion } = await likeQuestionsApi(
-        data._id,
-        likes.includes(curUser?._id)
-      );
+      const { updatedQuestion } = await likeQuestionsApi(data._id, likes.includes(curUser?._id));
 
       // update state
       setData((prev) => ({ ...prev, likes: updatedQuestion.likes }));
@@ -58,7 +52,7 @@ function QuestionItem({ question, className = "" }: QuestionItemProps) {
     try {
       const { updatedQuestion } = await closeQuestionsApi(
         data._id,
-        status === "open" ? "close" : "open"
+        status === 'open' ? 'close' : 'open'
       );
 
       // update state
@@ -73,13 +67,13 @@ function QuestionItem({ question, className = "" }: QuestionItemProps) {
   const handleReport = useCallback(async () => {
     // check if content is selected or not
     if (!selectedContent) {
-      toast.error("Hãy chọn nội dung đê báo cáo");
+      toast.error('Hãy chọn nội dung đê báo cáo');
       return;
     }
 
     try {
       const { message } = await addReportApi({
-        type: "question",
+        type: 'question',
         content: selectedContent,
         link: `/question/${question.slug}`,
       });
@@ -95,70 +89,59 @@ function QuestionItem({ question, className = "" }: QuestionItemProps) {
   return (
     <div className={`rounded-2xl shadow-lg bg-white ${className}`}>
       {/* Top */}
-      <div className="relative flex gap-3 p-4 border-b-2 border-slate-300">
+      <div className='relative flex gap-3 p-4 border-b-2 border-slate-300'>
         <Link
           href={`/user/${user?.username || user?.email}`}
-          className="flex-shrink-0 w-[40px] h-[40px] rounded-full aspect-square overflow-hidden shadow-lg"
+          className='flex-shrink-0 w-[40px] h-[40px] rounded-full aspect-square overflow-hidden shadow-lg'
         >
           <Image
-            className="w-full h-full object-cover"
+            className='w-full h-full object-cover'
             src={user?.avatar}
             width={75}
             height={75}
-            alt="avatar"
+            alt='avatar'
           />
         </Link>
         <Link href={`/user/${user?.username || user?.email}`}>
-          <p className="text-lg font-bold -mt-1.5">
-            {user?.firstName && user?.lastName
-              ? `${user.firstName} ${user.lastName}`
-              : user?.username}
+          <p className='text-lg font-bold -mt-1.5'>
+            {user?.firstName && user?.lastName ? `${user.firstName} ${user.lastName}` : user?.username}
           </p>
-          <p className="text-slate-500 text-sm font-semibold">
-            {format(question.createdAt)}
-          </p>
+          <p className='text-slate-500 text-sm font-semibold'>{format(question.createdAt)}</p>
         </Link>
 
         {/* Action Buttons */}
         {curUser?._id && (
-          <div className="relative flex-1 flex justify-end items-center">
-            <button
-              className="group"
-              onClick={() => setShowActions((prev) => !prev)}
-            >
-              <HiDotsVertical size={20} className="wiggle" />
+          <div className='relative flex-1 flex justify-end items-center'>
+            <button className='group' onClick={() => setShowActions((prev) => !prev)}>
+              <HiDotsVertical size={20} className='wiggle' />
             </button>
 
             <div
-              className={`fixed z-10 top-0 left-0 right-0 bottom-0 ${
-                showActions ? "" : "hidden"
-              }`}
+              className={`fixed z-10 top-0 left-0 right-0 bottom-0 ${showActions ? '' : 'hidden'}`}
               onClick={() => setShowActions(false)}
             />
             <div
               className={`${
-                showActions
-                  ? "max-w-[120px] max-h-[80px]"
-                  : "max-w-0 max-h-0 p-0"
+                showActions ? 'max-w-[120px] max-h-[80px]' : 'max-w-0 max-h-0 p-0'
               }  overflow-hidden absolute z-20 bottom-full right-0 flex flex-col shadow-lg rounded-md bg-white trans-300`}
             >
-              {(user?._id === curUser._id || user?.role === "admin") && (
+              {(user?._id === curUser._id || user?.role === 'admin') && (
                 <button
                   className={`font-bold px-1.5 py-1 text-[10px] bg-slate-200 hover:text-white trans-200 ${
-                    status === "open"
-                      ? "border-dark hover:bg-black"
-                      : "border-green-500 text-green-500 hover:bg-green-500"
+                    status === 'open'
+                      ? 'border-dark hover:bg-black'
+                      : 'border-green-500 text-green-500 hover:bg-green-500'
                   }`}
-                  title={status === "open" ? "opening" : "closing"}
+                  title={status === 'open' ? 'opening' : 'closing'}
                   onClick={handleClose}
                 >
-                  {status === "open" ? "close" : "open"}
+                  {status === 'open' ? 'close' : 'open'}
                 </button>
               )}
 
               <button
                 className={`font-bold px-1.5 py-1 text-[10px] hover:bg-dark-0 hover:border-dark hover:text-rose-500 border-rose-400 text-rose-400 trans-200`}
-                title="Report"
+                title='Report'
                 onClick={() => setIsOpenReportDialog(true)}
               >
                 Báo cáo
@@ -169,34 +152,30 @@ function QuestionItem({ question, className = "" }: QuestionItemProps) {
       </div>
 
       {/* Center */}
-      <div className="px-5 py-6 font-body tracking-wider border-b-2 border-slate-300 overflow-auto">
+      <div className='px-5 py-6 font-body tracking-wider border-b-2 border-slate-300 overflow-auto'>
         {content}
       </div>
 
       {/* Bottom */}
-      <div className="flex h-[50px]">
-        <div className="flex justify-center items-center w-full border-r-2 border-slate-300">
-          <button className="flex items-center justify-center group -mb-1">
-            <span className="mr-1.5 font-semibold">{likes.length}</span>{" "}
+      <div className='flex h-[50px]'>
+        <div className='flex justify-center items-center w-full border-r-2 border-slate-300'>
+          <button className='flex items-center justify-center group -mb-1'>
+            <span className='mr-1.5 font-semibold'>{likes.length}</span>{' '}
             <FaRegThumbsUp
               size={18}
               className={`${
                 !likes.includes(curUser?._id)
-                  ? "text-dark group-hover:text-rose-500"
-                  : "text-rose-500 group-hover:text-dark"
+                  ? 'text-dark group-hover:text-rose-500'
+                  : 'text-rose-500 group-hover:text-dark'
               } -mt-1.5 trans-200`}
               onClick={handleLike}
             />
           </button>
         </div>
 
-        <div className="flex justify-center items-center w-full">
-          <Link
-            href={`/forum/${question.slug}`}
-            className="flex items-center justify-center"
-          >
-            <span className="mr-1.5 font-semibold">{commentAmount}</span>{" "}
-            <FaRegCommentDots size={18} />
+        <div className='flex justify-center items-center w-full'>
+          <Link href={`/forum/${question.slug}`} className='flex items-center justify-center'>
+            <span className='mr-1.5 font-semibold'>{commentAmount}</span> <FaRegCommentDots size={18} />
           </Link>
         </div>
       </div>
@@ -205,7 +184,7 @@ function QuestionItem({ question, className = "" }: QuestionItemProps) {
       <ReportDialog
         open={isOpenReportDialog}
         setOpen={setIsOpenReportDialog}
-        title="Báo cáo câu hỏi"
+        title='Báo cáo câu hỏi'
         contents={reportContents.question}
         selectedContent={selectedContent}
         setSelectedContent={setSelectedContent}

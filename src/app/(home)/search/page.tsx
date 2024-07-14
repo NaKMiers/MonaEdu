@@ -1,14 +1,14 @@
-import CourseCard from "@/components/CourseCard";
-import Divider from "@/components/Divider";
-import Pagination from "@/components/layouts/Pagination";
-import { ICourse } from "@/models/CourseModel";
-import { getSearchPageApi } from "@/requests";
-import { handleQuery } from "@/utils/handleQuery";
-import Link from "next/link";
+import CourseCard from '@/components/CourseCard';
+import Divider from '@/components/Divider';
+import Pagination from '@/components/layouts/Pagination';
+import { ICourse } from '@/models/CourseModel';
+import { getSearchPageApi } from '@/requests';
+import { handleQuery } from '@/utils/handleQuery';
+import Link from 'next/link';
 
 async function SearchPage({ searchParams }: { searchParams?: { [key: string]: string[] } }) {
   let courses: ICourse[] = [];
-  let query: string = "";
+  let query: string = '';
   let amount: number = 0;
   let itemPerPage = 16;
 
@@ -26,8 +26,40 @@ async function SearchPage({ searchParams }: { searchParams?: { [key: string]: st
     console.log(err);
   }
 
+  // jsonLD
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: `Kết quả tìm kiếm cho ${query}`,
+    numberOfItems: amount,
+    itemListElement: courses.map((course, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      url: `${process.env.NEXT_PUBLIC_APP_URL}/${course.slug}`,
+      item: {
+        '@type': 'Course',
+        name: course.title,
+        description: course.description,
+        provider: {
+          '@type': 'Organization',
+          name: 'Mona Edu',
+          url: `${process.env.NEXT_PUBLIC_APP_URL}`,
+        },
+        offers: {
+          '@type': 'Offer',
+          price: course.price,
+          priceCurrency: 'VND',
+          availability: 'https://schema.org/InStock',
+        },
+      },
+    })),
+  };
+
   return (
     <div className='px-21'>
+      {/* MARK: Add JSON-LD */}
+      <script type='application/ld+json' dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+
       <Divider size={12} />
 
       {/* Heading */}

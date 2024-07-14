@@ -1,9 +1,9 @@
-import { generateSlug } from '@/utils'
-import mongoose from 'mongoose'
-import { IChapter } from './ChapterModel'
-import { ICourse } from './CourseModel'
-import { IUser } from './UserModel'
-const Schema = mongoose.Schema
+import { generateSlug } from '@/utils';
+import mongoose from 'mongoose';
+import { IChapter } from './ChapterModel';
+import { ICourse } from './CourseModel';
+import { IUser } from './UserModel';
+const Schema = mongoose.Schema;
 
 const LessonSchema = new Schema(
   {
@@ -58,36 +58,41 @@ const LessonSchema = new Schema(
         ref: 'user',
       },
     ],
+    commentAmount: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
-)
+);
 
 // pre-save hook to generate slug from title
 LessonSchema.pre('save', function (next) {
-  console.log('- Pre-Save Lesson -')
+  console.log('- Pre-Save Lesson -');
 
   if (this.isModified('title')) {
-    this.slug = generateSlug(this.title)
+    this.slug = generateSlug(this.title);
   }
-  next()
-})
+  next();
+});
 
-const LessonModel = mongoose.models.lesson || mongoose.model('lesson', LessonSchema)
-export default LessonModel
+const LessonModel = mongoose.models.lesson || mongoose.model('lesson', LessonSchema);
+export default LessonModel;
 
 export interface ILesson {
-  _id: string
-  courseId: string | ICourse
-  chapterId: string | IChapter
-  title: string
-  sourceType: 'embed' | 'file'
-  slug: string
-  duration: number
-  source: string
-  description: string
-  active: boolean
-  status: string
-  likes: string[] | IUser[]
-  createdAt: string
-  updatedAt: string
+  _id: string;
+  courseId: string | ICourse;
+  chapterId: string | IChapter;
+  title: string;
+  sourceType: 'embed' | 'file';
+  slug: string;
+  duration: number;
+  source: string;
+  description: string;
+  active: boolean;
+  status: string;
+  likes: string[] | IUser[];
+  commentAmount: number;
+  createdAt: string;
+  updatedAt: string;
 }

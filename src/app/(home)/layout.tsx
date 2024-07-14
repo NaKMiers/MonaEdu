@@ -1,30 +1,30 @@
-import Header from '@/components/layouts/Header'
-import StoreProvider from '@/libs/StoreProvider'
-import type { Metadata } from 'next'
-import { getServerSession } from 'next-auth'
-import { Toaster } from 'react-hot-toast'
-import '../globals.scss'
-import Footer from '@/components/layouts/Footer'
-import PageLoading from '@/components/PageLoading'
-import FloatingButtons from '@/components/floatings/FloatingButtons'
-import Background from '@/components/backgrounds/Background'
+import Header from '@/components/layouts/Header';
+import StoreProvider from '@/libs/StoreProvider';
+import type { Metadata } from 'next';
+import { getServerSession } from 'next-auth';
+import { Toaster } from 'react-hot-toast';
+import '../globals.scss';
+import Footer from '@/components/layouts/Footer';
+import PageLoading from '@/components/PageLoading';
+import FloatingButtons from '@/components/floatings/FloatingButtons';
+import Background from '@/components/backgrounds/Background';
 
 export const metadata: Metadata = {
-  title: 'MonaEdu',
+  title: 'Mona Edu',
   icons: {
     icon: ['/favicon.ico?v=4'],
     apple: ['/apple-touch-icon.png?v=4'],
     shortcut: ['/apple-touch-icon.png'],
   },
   manifest: '/site.webmanifest',
-}
+};
 
 export default async function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
-  const session = await getServerSession()
+  const session = await getServerSession();
 
   return (
     <html lang='vi'>
@@ -60,5 +60,5 @@ export default async function RootLayout({
         </StoreProvider>
       </body>
     </html>
-  )
+  );
 }

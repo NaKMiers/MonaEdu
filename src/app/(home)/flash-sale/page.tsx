@@ -1,14 +1,14 @@
-import CourseCard from "@/components/CourseCard";
-import Divider from "@/components/Divider";
-import Pagination from "@/components/layouts/Pagination";
-import { ICourse } from "@/models/CourseModel";
-import { getFlashSalePageApi } from "@/requests";
-import { handleQuery } from "@/utils/handleQuery";
-import Link from "next/link";
+import CourseCard from '@/components/CourseCard';
+import Divider from '@/components/Divider';
+import Pagination from '@/components/layouts/Pagination';
+import { ICourse } from '@/models/CourseModel';
+import { getFlashSalePageApi } from '@/requests';
+import { handleQuery } from '@/utils/handleQuery';
+import Link from 'next/link';
 
 async function FlashSalePage({ searchParams }: { searchParams?: { [key: string]: string[] } }) {
   let courses: ICourse[] = [];
-  let query: string = "";
+  let query: string = '';
   let amount: number = 0;
   let itemPerPage = 16;
 
@@ -26,8 +26,42 @@ async function FlashSalePage({ searchParams }: { searchParams?: { [key: string]:
     console.log(err);
   }
 
+  // jsonLd
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Flash Sale Courses',
+    description: 'Danh sách các khóa học đang giảm giá',
+    itemListElement: courses.map((course, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      item: {
+        '@type': 'Course',
+        name: course.title,
+        description: course.description,
+        provider: {
+          '@type': 'Organization',
+          name: 'Mona Edu',
+          url: `${process.env.NEXT_PUBLIC_APP_URL}`,
+        },
+        offers: {
+          '@type': 'Offer',
+          price: course.price,
+          priceCurrency: 'VND', // Điều chỉnh nếu cần thiết
+          url: `${process.env.NEXT_PUBLIC_APP_URL}/${course.slug}`,
+          availability: 'https://schema.org/InStock',
+        },
+      },
+    })),
+  };
+
+  console.log('jsonLd', jsonLd.itemListElement);
+
   return (
     <div className='px-21'>
+      {/* MARK: Add JSON-LD */}
+      <script type='application/ld+json' dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+
       <Divider size={12} />
 
       {/* Heading */}

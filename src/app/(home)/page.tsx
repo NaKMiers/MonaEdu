@@ -4,14 +4,14 @@ import BestSeller from '@/components/ranks/BestSeller';
 import FeatureCourses from '@/components/ranks/FeatureCourses';
 import TopCategories from '@/components/ranks/TopCategories';
 import TopNewCourses from '@/components/ranks/TopNewCourses';
-import TopKeywords from '@/components/ranks/TopTags';
 import { ICategory } from '@/models/CategoryModel';
 import { ICourse } from '@/models/CourseModel';
 import { getHomePageApi } from '@/requests';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Trang Chủ - MonaEdu',
+  title: 'Trang chủ - MonaEdu',
+  description: 'MonaEdu - Học trực tuyến mọi lúc, mọi nơi',
 };
 
 async function Home() {
@@ -34,35 +34,60 @@ async function Home() {
     console.log(err);
   }
 
+  // jsonLD
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Mona Edu',
+    logo: `${process.env.NEXT_PUBLIC_APP_URL}/images/logo.png`,
+    url: `${process.env.NEXT_PUBLIC_APP_URL}`,
+    inLanguage: 'vi',
+    description:
+      'Mona Edu - Nền tảng học trực tuyến và hàng đầu với nhiều khóa học đa dạng và chất lượng.',
+    publisher: {
+      '@type': 'Organization',
+      name: 'Mona Edu',
+      logo: {
+        '@type': 'ImageObject',
+        url: `${process.env.NEXT_PUBLIC_APP_URL}/images/logo.png`,
+      },
+    },
+    sameAs: [
+      'https://www.facebook.com/anphashop',
+      'https://www.twitter.com/anphashop',
+      'https://www.twitter.com/anphashop',
+    ],
+  };
+
   return (
     <div className='min-h-screen'>
+      {/* MARK: Add JSON-LD */}
+      <script type='application/ld+json' dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+
       {/* Banner */}
       <Banner courses={courses} />
 
-      <Divider size={32} />
+      <Divider size={36} />
 
       {/* Top 8 Courses */}
       <BestSeller courses={bestSellers} />
 
-      <Divider size={24} />
+      <Divider size={36} />
 
-      {/* Top 8 Features Keywords */}
-      <TopKeywords />
+      {/* Top 8 (max) New Courses */}
+      <TopNewCourses courses={newCourses} />
 
       <Divider size={24} />
 
       {/* Feature Courses */}
       <FeatureCourses courses={bootedCourses} />
 
-      <Divider size={32} />
+      <Divider size={36} />
 
       {/* Top 8 Categories */}
       <TopCategories />
 
-      <Divider size={32} />
-
-      {/* Top 8 (max) New Courses */}
-      <TopNewCourses courses={newCourses} />
+      <Divider size={36} />
 
       <Divider size={54} />
     </div>

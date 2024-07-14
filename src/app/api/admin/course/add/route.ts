@@ -27,8 +27,6 @@ export async function POST(req: NextRequest) {
     const languages: string[] = JSON.parse(data.languages as string);
     let images = formData.getAll('images');
 
-    console.log('languages:', languages);
-
     // check images
     if (!images.length) {
       return NextResponse.json({ message: 'Images are required' }, { status: 400 });

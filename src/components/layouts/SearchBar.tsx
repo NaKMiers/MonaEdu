@@ -1,16 +1,16 @@
-import { useAppDispatch, useAppSelector } from "@/libs/hooks";
-import { setOpenSearchBar } from "@/libs/reducers/modalReducer";
-import { getCoursesApi, searchCoursesApi } from "@/requests";
-import Image from "next/image";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
-import toast from "react-hot-toast";
-import { FaSearch } from "react-icons/fa";
-import { IoChevronDown, IoChevronUp } from "react-icons/io5";
-import { PiLightningFill } from "react-icons/pi";
-import { RiDonutChartFill } from "react-icons/ri";
-import { TiDelete } from "react-icons/ti";
+import { useAppDispatch, useAppSelector } from '@/libs/hooks';
+import { setOpenSearchBar } from '@/libs/reducers/modalReducer';
+import { getCoursesApi, searchCoursesApi } from '@/requests';
+import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import toast from 'react-hot-toast';
+import { FaSearch } from 'react-icons/fa';
+import { IoChevronDown, IoChevronUp } from 'react-icons/io5';
+import { PiLightningFill } from 'react-icons/pi';
+import { RiDonutChartFill } from 'react-icons/ri';
+import { TiDelete } from 'react-icons/ti';
 
 function SearchBar() {
   // hook
@@ -19,7 +19,7 @@ function SearchBar() {
   const pathname = usePathname();
 
   // search
-  const [searchValue, setSearchValue] = useState<string>("");
+  const [searchValue, setSearchValue] = useState<string>('');
   const [searchLoading, setSearchLoading] = useState<boolean>(false);
   const [initResults, setInitResults] = useState<any[] | null>(null);
   const [searchResults, setSearchResults] = useState<any[] | null>(null);
@@ -63,7 +63,7 @@ function SearchBar() {
     const getSuggestedCourses = async () => {
       try {
         // send request to get suggested courses
-        const { courses } = await getCoursesApi("?limit=3&sort=joined|-1");
+        const { courses } = await getCoursesApi('?limit=3&sort=joined|-1');
 
         // set search results
         setSearchResults(courses);
@@ -81,14 +81,14 @@ function SearchBar() {
     <div
       className={`${
         open
-          ? "opacity-100 bg-dark-100 lg:bg-transparent"
-          : "translate-y-full md:-translate-y-full opacity-0"
+          ? 'opacity-100 bg-dark-100 lg:bg-transparent'
+          : 'translate-y-full md:-translate-y-full opacity-0'
       } absolute z-20 h-[72px] px-4 md:px-8 rounded-b-[40px] top-0 lg:static left-0 right-0 lg:opacity-100 lg:translate-y-0 flex items-center lg:max-w-[400px] xl:max-w-[500px] w-full trans-300`}
     >
       {/* Hide Button */}
       <button
         className={`lg:hidden absolute top-0 md:top-auto md:bottom-0 left-1/2 -translate-x-1/2 ${
-          open ? "-translate-y-1/2 md:translate-y-1/2" : ""
+          open ? '-translate-y-1/2 md:translate-y-1/2' : ''
         } z-30 rounded-full px-1.5 py-1.5 max-w-8 bg-white shadow-lg trans-200`}
         onClick={() => dispatch(setOpenSearchBar(false))}
       >
@@ -100,21 +100,22 @@ function SearchBar() {
       <div
         className={`w-full border border-dark rounded-[24px] relative h-[38px] overflow-hidden flex items-center justify-center text-dark`}
       >
-        <div
+        <button
           className={`${
-            searchValue.trim() ? "max-w-[60px]" : "max-w-0"
+            searchValue.trim() ? 'max-w-[60px]' : 'max-w-0'
           } trans-500 overflow-hidden group h-full w-[60px] flex justify-center items-center bg-white ${
-            searchLoading ? "pointer-events-none" : ""
+            searchLoading ? 'pointer-events-none' : ''
           }`}
+          onClick={() => setSearchValue('')}
         >
           <TiDelete size={20} className='wiggle text-orange-600' />
-        </div>
+        </button>
 
         <input
           type='text'
           placeholder='Search...'
           className={`${
-            searchValue.trim() ? "" : "pl-[20px]"
+            searchValue.trim() ? '' : 'pl-[20px]'
           } trans-500 appearance-none w-full h-full font-body tracking-wider pb-0.5 outline-none rounded-0 bg-white`}
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
@@ -124,7 +125,6 @@ function SearchBar() {
           }}
           onBlur={() => {
             setOpenResults(false);
-            dispatch(setOpenSearchBar(false));
           }}
         />
 
@@ -132,7 +132,7 @@ function SearchBar() {
           href={`/search?search=${searchValue}`}
           onClick={(e) => !searchValue && e.preventDefault()}
           className={`group h-full w-[60px] flex justify-center items-center bg-white ${
-            searchLoading ? "pointer-events-none" : ""
+            searchLoading ? 'pointer-events-none' : ''
           }`}
         >
           {searchLoading ? (
@@ -146,7 +146,7 @@ function SearchBar() {
       {/* Search Results */}
       <ul
         className={`${
-          searchResults && openResults ? "max-h-[500px] p-2 shadow-medium" : "max-h-0 p-0"
+          searchResults && openResults ? 'max-h-[500px] p-2 shadow-medium' : 'max-h-0 p-0'
         } absolute z-20 bottom-full md:bottom-auto md:top-full left-0 w-full rounded-lg bg-neutral-800 text-light gap-2 overflow-y-auto transition-all duration-300`}
       >
         {searchResults?.length ? (

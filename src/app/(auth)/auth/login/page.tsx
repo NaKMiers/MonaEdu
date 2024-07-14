@@ -1,19 +1,18 @@
-"use client";
-import Divider from "@/components/Divider";
-import Input from "@/components/Input";
-import BeamsBackground from "@/components/backgrounds/BeamsBackground";
-import BottomGradient from "@/components/gradients/BottomGradient";
-import { signIn } from "next-auth/react";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import toast from "react-hot-toast";
-import { FaCircleNotch } from "react-icons/fa";
+'use client';
+import Divider from '@/components/Divider';
+import Input from '@/components/Input';
+import BottomGradient from '@/components/gradients/BottomGradient';
+import { signIn } from 'next-auth/react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import { FaCircleNotch } from 'react-icons/fa';
 
 function LoginPage() {
-  document.title = "Đăng nhập - MonaEdu";
+  document.title = 'Đăng nhập - MonaEdu';
 
   // hooks
   const router = useRouter();
@@ -30,8 +29,8 @@ function LoginPage() {
     clearErrors,
   } = useForm<FieldValues>({
     defaultValues: {
-      usernameOrEmail: "",
-      password: "",
+      usernameOrEmail: '',
+      password: '',
     },
   });
 
@@ -43,21 +42,21 @@ function LoginPage() {
 
       try {
         // send request to server
-        const res = await signIn("credentials", { ...data, redirect: false });
+        const res = await signIn('credentials', { ...data, redirect: false });
 
         if (res?.ok) {
           // show success message
-          toast.success("Đăng nhập thành công!");
+          toast.success('Đăng nhập thành công!');
 
           // redirect to home page
-          router.push("/");
+          router.push('/');
         }
 
         if (res?.error) {
           // show error message
           toast.error(res.error);
-          setError("usernameOrEmail", { type: "manual" });
-          setError("password", { type: "manual" });
+          setError('usernameOrEmail', { type: 'manual' });
+          setError('password', { type: 'manual' });
         }
       } catch (err: any) {
         toast.error(err.message);
@@ -73,18 +72,18 @@ function LoginPage() {
   // keyboard event
   useEffect(() => {
     // set page title
-    document.title = "Đăng nhập - Mona Edu";
+    document.title = 'Đăng nhập - Mona Edu';
 
     const handleKeydown = (e: KeyboardEvent) => {
-      if (e.key === "Enter") {
+      if (e.key === 'Enter') {
         handleSubmit(onSubmit)();
       }
     };
 
-    window.addEventListener("keydown", handleKeydown);
+    window.addEventListener('keydown', handleKeydown);
 
     return () => {
-      window.removeEventListener("keydown", handleKeydown);
+      window.removeEventListener('keydown', handleKeydown);
     };
   }, [handleSubmit, onSubmit]);
 
@@ -162,7 +161,7 @@ function LoginPage() {
           type='text'
           labelBg='bg-white'
           className='min-w-[40%] mt-3'
-          onFocus={() => clearErrors("usernameOrEmail")}
+          onFocus={() => clearErrors('usernameOrEmail')}
         />
 
         <Input
@@ -175,7 +174,7 @@ function LoginPage() {
           type='password'
           labelBg='bg-white'
           className='min-w-[40%] mt-6'
-          onFocus={() => clearErrors("password")}
+          onFocus={() => clearErrors('password')}
         />
 
         <div className='flex justify-end'>
@@ -194,7 +193,7 @@ function LoginPage() {
             onClick={handleSubmit(onSubmit)}
             disabled={isLoading}
             className={`group relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 ${
-              isLoading ? "bg-slate-200 pointer-events-none" : ""
+              isLoading ? 'bg-slate-200 pointer-events-none' : ''
             }`}
           >
             <span className='absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]' />
@@ -202,7 +201,7 @@ function LoginPage() {
               {isLoading ? (
                 <FaCircleNotch size={18} className='text-slate-400 trans-200 animate-spin' />
               ) : (
-                "Đăng nhập"
+                'Đăng nhập'
               )}
             </span>
           </button>
@@ -211,7 +210,7 @@ function LoginPage() {
         <Divider size={10} />
 
         <p className='font-semibold text-center'>
-          Bạn chưa có tài khoản?{" "}
+          Bạn chưa có tài khoản?{' '}
           <Link href='/auth/register' className='underline underline-offset-2'>
             Đăng ký ngay
           </Link>
@@ -238,7 +237,7 @@ function LoginPage() {
                 alt='github'
               />
             </div>
-            <span className='font-semibold text-sm' onClick={() => signIn("github")}>
+            <span className='font-semibold text-sm' onClick={() => signIn('github')}>
               Đăng ký với GitHub
             </span>
             <BottomGradient />
@@ -254,7 +253,7 @@ function LoginPage() {
                 alt='github'
               />
             </div>
-            <span className='font-semibold text-sm' onClick={() => signIn("google")}>
+            <span className='font-semibold text-sm' onClick={() => signIn('google')}>
               Đăng ký với Google
             </span>
             <BottomGradient />

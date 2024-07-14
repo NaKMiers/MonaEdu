@@ -1,32 +1,32 @@
-'use client'
+'use client';
 
-import { useAppDispatch, useAppSelector } from '@/libs/hooks'
-import { setOpenAuthentication } from '@/libs/reducers/modalReducer'
-import { updatePrivateInfoApi } from '@/requests'
-import { useSession } from 'next-auth/react'
-import { useCallback, useEffect, useState } from 'react'
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
-import toast from 'react-hot-toast'
-import { FaEyeSlash, FaSave } from 'react-icons/fa'
-import { MdCancel, MdEdit } from 'react-icons/md'
-import { RiDonutChartFill } from 'react-icons/ri'
-import Divider from '../Divider'
-import Input from '../Input'
+import { useAppDispatch, useAppSelector } from '@/libs/hooks';
+import { setOpenAuthentication } from '@/libs/reducers/modalReducer';
+import { updatePrivateInfoApi } from '@/requests';
+import { useSession } from 'next-auth/react';
+import { useCallback, useEffect, useState } from 'react';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import { FaEyeSlash, FaSave } from 'react-icons/fa';
+import { MdCancel, MdEdit } from 'react-icons/md';
+import { RiDonutChartFill } from 'react-icons/ri';
+import Divider from '../Divider';
+import Input from '../Input';
 
 interface PrivateInfoProps {
-  className?: string
+  className?: string;
 }
 
 function PrivateInfo({ className = '' }: PrivateInfoProps) {
   // hook
-  const dispatch = useAppDispatch()
-  const { data: session, update } = useSession()
-  const authenticated = useAppSelector(state => state.modal.authenticated)
-  const curUser: any = session?.user
+  const dispatch = useAppDispatch();
+  const { data: session, update } = useSession();
+  const authenticated = useAppSelector((state) => state.modal.authenticated);
+  const curUser: any = session?.user;
 
   // states
-  const [editMode, setEditMode] = useState<boolean>(false)
-  const [loading, setLoading] = useState<boolean>(false)
+  const [editMode, setEditMode] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   // form
   const {
@@ -39,26 +39,28 @@ function PrivateInfo({ className = '' }: PrivateInfoProps) {
     clearErrors,
   } = useForm<FieldValues>({
     defaultValues: {
+      username: '',
       email: '',
       phone: '',
       newPassword: '',
     },
-  })
+  });
 
   // auto fill data
   useEffect(() => {
     if (curUser?._id) {
       reset({
+        username: curUser.username,
         email: curUser.email,
         phone: curUser.phone,
-      })
+      });
     }
-  }, [reset, curUser])
+  }, [reset, curUser]);
 
   // validate form
   const handleValidate: SubmitHandler<FieldValues> = useCallback(
-    data => {
-      let isValid = true
+    (data) => {
+      let isValid = true;
 
       // new password must be at least 6 characters and contain at least 1 lowercase, 1 uppercase, 1 number
       if (
@@ -68,108 +70,86 @@ function PrivateInfo({ className = '' }: PrivateInfoProps) {
       ) {
         setError('newPassword', {
           type: 'manual',
-          message:
-            'New password must be at least 6 characters and contain at least 1 lowercase, 1 uppercase, 1 number',
-        })
-        isValid = false
+          message: 'Mật khẩu mới phải chứa ít nhất 6 kí tự, 1 chữ thường, 1 chữ hoa và 1 chữ số',
+        });
+        isValid = false;
       }
 
-      return isValid
+      return isValid;
     },
     [setError, curUser?.role]
-  )
+  );
 
   // update personal info
   const onSubmit: SubmitHandler<FieldValues> = useCallback(
-    async data => {
+    async (data) => {
       // validate form
-      if (!handleValidate(data)) return
+      if (!handleValidate(data)) return;
 
       // start loading
-      setLoading(true)
+      setLoading(true);
 
       try {
-        const { message } = await updatePrivateInfoApi(data)
+        const { message } = await updatePrivateInfoApi(data);
 
         // notify success
-        toast.success(message)
+        toast.success(message);
 
         // hide edit mode
-        setEditMode(false)
+        setEditMode(false);
 
         // update user session
-        await update()
+        await update();
       } catch (err: any) {
-        toast.error(err.message)
-        console.log(err)
+        toast.error(err.message);
+        console.log(err);
       } finally {
         // stop loading
-        setLoading(false)
+        setLoading(false);
       }
     },
     [update, handleValidate, setLoading]
-  )
+  );
 
   return (
     <div
-      className={`relative rounded-lg border border-dark shadow-lg py-8 overflow-x-scroll ${className}`}>
+      className={`relative rounded-lg border border-dark shadow-lg pt-8 overflow-x-scroll ${className}`}
+    >
       <div className='absolute font-semibold text-2xl w-[calc(100%_-_20px)] left-1/2 -translate-x-1/2 h-0.5 bg-slate-700'>
         <span className='absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 text-sm bg-white px-2 py-1 rounded-lg text-center'>
-          Private Information
+          Riêng tư
         </span>
       </div>
 
       <Divider size={6} />
 
       <div className='relative grid grid-cols-3 p-5 gap-21'>
-        <div className='flex items-center justify-center gap-2 absolute -top-4 right-2'>
-          {!editMode ? (
-            <button
-              className='flex gap-1 items-center justify-center rounded-lg border border-dark shadow-lg bg-slate-200 px-2 py-1 hover:bg-white trans-2000'
-              onClick={() =>
-                curUser?.authType === 'local'
-                  ? !authenticated
-                    ? dispatch(setOpenAuthentication(true))
-                    : setEditMode(true)
-                  : setEditMode(true)
-              }>
-              <MdEdit size={20} />
-              <span className='font-semibold'>Edit</span>
-            </button>
-          ) : (
-            <>
-              <button
-                className={`flex gap-1 items-center justify-center rounded-lg border group border-dark shadow-lg bg-slate-200 px-2 py-1 hover:bg-white trans-200 ${
-                  loading ? 'pointer-events-none' : 'cursor-pointer'
-                }`}
-                onClick={handleSubmit(onSubmit)}>
-                {loading ? (
-                  <RiDonutChartFill size={23} className='animate-spin text-slate-400' />
-                ) : (
-                  <>
-                    <FaSave size={18} className='wiggle' />
-                    <span className='font-semibold'>Save</span>
-                  </>
-                )}
-              </button>
-
-              <button
-                className={`flex gap-1 items-center justify-center rounded-lg border border-dark shadow-lg bg-slate-200 px-2 py-1 hover:bg-white trans-200 ${
-                  loading ? 'pointer-events-none' : 'cursor-pointer'
-                }`}
-                onClick={() => setEditMode(false)}>
-                <MdCancel size={20} />
-                <span className='font-semibold'>Cancel</span>
-              </button>
-            </>
-          )}
-        </div>
-
         <div className='col-span-3 md:col-span-1'>
           {!editMode ? (
             <>
-              <p className='text-slate-500'>Email</p>
-              <p>{getValues('email')}</p>
+              <p className='text-slate-600'>Tên người dùng</p>
+              <p>{getValues('username') || <span className='text-slate-500 text-sm'>Trống</span>}</p>
+            </>
+          ) : (
+            <Input
+              id='username'
+              label='Tên người dùng'
+              disabled={false}
+              register={register}
+              errors={errors}
+              required
+              type='username'
+              labelBg='bg-white'
+              className='min-w-[40%] mt-3'
+              onFocus={() => clearErrors('username')}
+            />
+          )}
+        </div>
+        <div className='col-span-3 md:col-span-1'>
+          {!editMode ? (
+            <>
+              <p className='text-slate-600'>Email</p>
+              <p>{getValues('email') || <span className='text-slate-500 text-sm'>Trống</span>}</p>
             </>
           ) : (
             <Input
@@ -189,13 +169,13 @@ function PrivateInfo({ className = '' }: PrivateInfoProps) {
         <div className='col-span-3 md:col-span-1'>
           {!editMode ? (
             <>
-              <p className='text-slate-500'>Phone</p>
-              <p>{getValues('phone') || <span className='text-slate-300'>Empty</span>}</p>
+              <p className='text-slate-600'>Số điện thoại</p>
+              <p>{getValues('phone') || <span className='text-slate-500 text-sm'>Trống</span>}</p>
             </>
           ) : (
             <Input
               id='phone'
-              label='Phone'
+              label='Số điện thoại'
               disabled={false}
               register={register}
               errors={errors}
@@ -210,13 +190,13 @@ function PrivateInfo({ className = '' }: PrivateInfoProps) {
           <div className='col-span-3 md:col-span-1'>
             {!editMode ? (
               <>
-                <p className='text-slate-500'>Password</p>
+                <p className='text-slate-600'>Mật khẩu</p>
                 <p>*********</p>
               </>
             ) : (
               <Input
                 id='newPassword'
-                label='Change New Password'
+                label='Đổi mật khẩu'
                 disabled={false}
                 register={register}
                 errors={errors}
@@ -229,13 +209,55 @@ function PrivateInfo({ className = '' }: PrivateInfoProps) {
             )}
           </div>
         )}
-        <div className='col-span-3 md:col-span-1'>
-          <p className='text-slate-500'>Role</p>
-          <p className='uppercase font-semibold text-purple-500'>{curUser?.role}</p>
+
+        <div className='flex items-center justify-center gap-2 col-span-full'>
+          {!editMode ? (
+            <button
+              className='flex gap-1 items-center justify-center rounded-lg border border-dark shadow-lg bg-slate-200 px-2 py-1 hover:bg-white trans-2000'
+              onClick={() =>
+                curUser?.authType === 'local'
+                  ? !authenticated
+                    ? dispatch(setOpenAuthentication(true))
+                    : setEditMode(true)
+                  : setEditMode(true)
+              }
+            >
+              <MdEdit size={18} />
+              <span className='font-semibold'>Chỉnh sửa</span>
+            </button>
+          ) : (
+            <>
+              <button
+                className={`flex gap-1 items-center justify-center rounded-lg border border-dark shadow-lg bg-slate-200 px-2 py-1 hover:bg-white trans-200 ${
+                  loading ? 'pointer-events-none' : 'cursor-pointer'
+                }`}
+                onClick={() => setEditMode(false)}
+              >
+                <MdCancel size={18} />
+                <span className='font-semibold'>Hủy</span>
+              </button>
+
+              <button
+                className={`flex gap-1 items-center justify-center rounded-lg border group border-dark shadow-lg bg-slate-200 px-2 py-1 hover:bg-white trans-200 ${
+                  loading ? 'pointer-events-none' : 'cursor-pointer'
+                }`}
+                onClick={handleSubmit(onSubmit)}
+              >
+                {loading ? (
+                  <RiDonutChartFill size={23} className='animate-spin text-slate-400' />
+                ) : (
+                  <>
+                    <FaSave size={16} className='wiggle' />
+                    <span className='font-semibold'>Lưu</span>
+                  </>
+                )}
+              </button>
+            </>
+          )}
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default PrivateInfo
+export default PrivateInfo;

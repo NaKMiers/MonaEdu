@@ -8,20 +8,20 @@ import { ICourse } from '@/models/CourseModel';
 import { IFlashSale } from '@/models/FlashSaleModel';
 import { addToCartApi } from '@/requests';
 import { applyFlashSalePrice, countPercent } from '@/utils/number';
+import { styled, Tooltip, tooltipClasses, TooltipProps } from '@mui/material';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Fragment, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import toast from 'react-hot-toast';
 import { FaCartPlus } from 'react-icons/fa';
 import { HiDotsVertical } from 'react-icons/hi';
+import { IoTimer } from 'react-icons/io5';
+import { MdVideoLibrary } from 'react-icons/md';
 import { RiDonutChartFill } from 'react-icons/ri';
 import Divider from './Divider';
 import Price from './Price';
-import { styled, Tooltip, tooltipClasses, TooltipProps, Typography } from '@mui/material';
-import { MdVideoLibrary } from 'react-icons/md';
-import { IoTimer } from 'react-icons/io5';
 
 interface CourseCardProps {
   course: ICourse;
@@ -192,7 +192,7 @@ function CourseCard({ course, hideBadge, className = '' }: CourseCardProps) {
         </div>
       }
     >
-      <div>
+      <div className='h-full'>
         <CardContainer className={`inter-var ${className}`}>
           <CardBody className='flex flex-col bg-neutral-800 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:border-white/[0.2] border-black/[0.1] h-full rounded-xl p-2.5 md:p-4 border'>
             {course.oldPrice && !hideBadge && (

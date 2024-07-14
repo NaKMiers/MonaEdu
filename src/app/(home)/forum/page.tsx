@@ -1,32 +1,54 @@
-import AddQuestionForm from '@/components/AddQuestionForm'
-import BeamsBackground from '@/components/backgrounds/BeamsBackground'
-import BoxesBackground from '@/components/backgrounds/BoxesBackground'
-import Divider from '@/components/Divider'
-import Pagination from '@/components/layouts/Pagination'
-import QuestionItem from '@/components/QuestionItem'
-import { IQuestion } from '@/models/QuestionModel'
-import { getForumPageApi } from '@/requests'
-import { handleQuery } from '@/utils/handleQuery'
+import AddQuestionForm from '@/components/AddQuestionForm';
+import Divider from '@/components/Divider';
+import Pagination from '@/components/layouts/Pagination';
+import QuestionItem from '@/components/QuestionItem';
+import { IQuestion } from '@/models/QuestionModel';
+import { IUser } from '@/models/UserModel';
+import { getForumPageApi } from '@/requests';
+import { handleQuery } from '@/utils/handleQuery';
+import { getUserName } from '@/utils/string';
 
 async function ForumPage({ searchParams }: { searchParams?: { [key: string]: string[] } }) {
-  let questions: IQuestion[] = []
-  let amount: number = 0
-  let itemsPerPage: number = 8
+  let questions: IQuestion[] = [];
+  let amount: number = 0;
+  let itemsPerPage: number = 8;
 
   try {
     // get query
-    const query = handleQuery(searchParams)
+    const query = handleQuery(searchParams);
 
-    const res = await getForumPageApi(query)
+    const res = await getForumPageApi(query);
 
-    questions = res.questions
-    amount = res.amount
+    questions = res.questions;
+    amount = res.amount;
   } catch (err: any) {
-    console.error(err)
+    console.error(err);
   }
+
+  // jsonLD
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'QAPage',
+    name: 'Hỏi và trả lời - Diễn đàn học viên',
+    description: 'Chia sẻ kiến thức và kinh nghiệm của bạn với cộng đồng học viên.',
+    mainEntity: questions.map((question) => ({
+      '@type': 'Question',
+      name: question.content,
+      text: question.content,
+      answerCount: question.commentAmount,
+      dateCreated: question.createdAt,
+      author: {
+        '@type': 'Person',
+        name: getUserName(question.userId as IUser),
+      },
+    })),
+  };
 
   return (
     <div>
+      {/* MARK: Add JSON-LD */}
+      <script type='application/ld+json' dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+
       {/* Head */}
       <div className='bg-white'>
         <div className='max-w-1200 h-80 mx-auto px-21 md:-mt-[72px] md:pt-[72px] pt-21'>
@@ -52,7 +74,7 @@ async function ForumPage({ searchParams }: { searchParams?: { [key: string]: str
 
           {/* Question List */}
           <ul className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-21'>
-            {questions.map(question => (
+            {questions.map((question) => (
               <QuestionItem question={question} key={question._id} />
             ))}
           </ul>
@@ -66,7 +88,7 @@ async function ForumPage({ searchParams }: { searchParams?: { [key: string]: str
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default ForumPage
+export default ForumPage;

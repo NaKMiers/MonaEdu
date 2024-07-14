@@ -1,21 +1,21 @@
-"use client";
-import Divider from "@/components/Divider";
-import Input from "@/components/Input";
-import BeamsBackground from "@/components/backgrounds/BeamsBackground";
-import BottomGradient from "@/components/gradients/BottomGradient";
-import { commonEmailMistakes } from "@/constants/mistakes";
-import { registerApi } from "@/requests";
-import { signIn } from "next-auth/react";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import toast from "react-hot-toast";
-import { FaCircleNotch } from "react-icons/fa";
+'use client';
+import Divider from '@/components/Divider';
+import Input from '@/components/Input';
+import BeamsBackground from '@/components/backgrounds/BeamsBackground';
+import BottomGradient from '@/components/gradients/BottomGradient';
+import { commonEmailMistakes } from '@/constants/mistakes';
+import { registerApi } from '@/requests';
+import { signIn } from 'next-auth/react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import { FaCircleNotch } from 'react-icons/fa';
 
 function RegisterPage() {
-  document.title = "Đăng ký - MonaEdu";
+  document.title = 'Đăng ký - MonaEdu';
 
   // hooks
   const router = useRouter();
@@ -33,11 +33,11 @@ function RegisterPage() {
   } = useForm<FieldValues>({
     shouldFocusError: false,
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      username: "",
-      email: "",
-      password: "",
+      firstName: '',
+      lastName: '',
+      username: '',
+      email: '',
+      password: '',
     },
   });
 
@@ -48,18 +48,18 @@ function RegisterPage() {
 
       // username must be at least 5 characters
       if (data.username.length < 5) {
-        setError("username", {
-          type: "manual",
-          message: "Username phải có ít nhất 5 ký tự",
+        setError('username', {
+          type: 'manual',
+          message: 'Username phải có ít nhất 5 ký tự',
         });
         isValid = false;
       }
 
       // email must be valid
       if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(data.email)) {
-        setError("email", {
-          type: "manual",
-          message: "Email không hợp lệ",
+        setError('email', {
+          type: 'manual',
+          message: 'Email không hợp lệ',
         });
         isValid = false;
       } else {
@@ -67,11 +67,11 @@ function RegisterPage() {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/i;
 
         if (!emailRegex.test(email)) {
-          setError("email", { message: "Email không hợp lệ" });
+          setError('email', { message: 'Email không hợp lệ' });
           isValid = false;
         } else {
           if (commonEmailMistakes.some((mistake) => email.toLowerCase().includes(mistake))) {
-            setError("email", { message: "Email không hợp lệ" });
+            setError('email', { message: 'Email không hợp lệ' });
             isValid = false;
           }
         }
@@ -79,10 +79,10 @@ function RegisterPage() {
 
       // password must be at least 6 characters and contain at least 1 lowercase, 1 uppercase, 1 number
       if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/.test(data.password)) {
-        setError("password", {
-          type: "manual",
+        setError('password', {
+          type: 'manual',
           message:
-            "Mật khẩu phải có ít nhất 6 kí tự và bao gồm ít nhất 1 chữ hoa, 1 chữ thường, 1 chữ số",
+            'Mật khẩu phải có ít nhất 6 kí tự và bao gồm ít nhất 1 chữ hoa, 1 chữ thường, 1 chữ số',
         });
         isValid = false;
       }
@@ -106,7 +106,7 @@ function RegisterPage() {
         const { user, message } = await registerApi(data);
 
         // sign in user
-        const callback = await signIn("credentials", {
+        const callback = await signIn('credentials', {
           usernameOrEmail: user.username,
           password: data.password,
           redirect: false,
@@ -119,7 +119,7 @@ function RegisterPage() {
           toast.success(message);
 
           // redirect to home page
-          router.push("/");
+          router.push('/');
         }
       } catch (err: any) {
         // show error message
@@ -136,18 +136,18 @@ function RegisterPage() {
   // keyboard event
   useEffect(() => {
     // set page title
-    document.title = "Đăng ký - Mona Edu";
+    document.title = 'Đăng ký - Mona Edu';
 
     const handleKeydown = (e: KeyboardEvent) => {
-      if (e.key === "Enter") {
+      if (e.key === 'Enter') {
         handleSubmit(onSubmit)();
       }
     };
 
-    window.addEventListener("keydown", handleKeydown);
+    window.addEventListener('keydown', handleKeydown);
 
     return () => {
-      window.removeEventListener("keydown", handleKeydown);
+      window.removeEventListener('keydown', handleKeydown);
     };
   }, [handleSubmit, onSubmit]);
 
@@ -240,7 +240,7 @@ function RegisterPage() {
               required
               type='text'
               className='min-w-[40%] w-full sm:w-auto bg-white rounded-2xl'
-              onFocus={() => clearErrors("firstName")}
+              onFocus={() => clearErrors('firstName')}
             />
 
             <Input
@@ -252,7 +252,7 @@ function RegisterPage() {
               required
               type='text'
               className='min-w-[40%] w-full sm:w-auto bg-white rounded-2xl'
-              onFocus={() => clearErrors("lastName")}
+              onFocus={() => clearErrors('lastName')}
             />
           </div>
 
@@ -265,7 +265,7 @@ function RegisterPage() {
             required
             type='text'
             className='min-w-[40%] w-full sm:w-auto bg-white rounded-2xl'
-            onFocus={() => clearErrors("username")}
+            onFocus={() => clearErrors('username')}
           />
 
           <Input
@@ -277,7 +277,7 @@ function RegisterPage() {
             required
             type='text'
             className='min-w-[40%] w-full sm:w-auto bg-white rounded-2xl'
-            onFocus={() => clearErrors("email")}
+            onFocus={() => clearErrors('email')}
           />
 
           <Input
@@ -289,7 +289,7 @@ function RegisterPage() {
             required
             type='password'
             className='min-w-[40%] w-full sm:w-auto bg-white rounded-2xl'
-            onFocus={() => clearErrors("password")}
+            onFocus={() => clearErrors('password')}
           />
 
           <div className='flex items-center justify-center gap-3'>
@@ -297,7 +297,7 @@ function RegisterPage() {
               onClick={handleSubmit(onSubmit)}
               disabled={isLoading}
               className={`group relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50  ${
-                isLoading ? "bg-slate-200 pointer-events-none" : ""
+                isLoading ? 'bg-slate-200 pointer-events-none' : ''
               }`}
             >
               <span className='absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]' />
@@ -305,7 +305,7 @@ function RegisterPage() {
                 {isLoading ? (
                   <FaCircleNotch size={18} className='text-slate-400 trans-200 animate-spin' />
                 ) : (
-                  "Tạo tài khoản"
+                  'Tạo tài khoản'
                 )}
               </span>
             </button>
@@ -314,7 +314,7 @@ function RegisterPage() {
           <Divider size={2} />
 
           <p className='font-semibold text-center text-light'>
-            Đã có tài khoản?{" "}
+            Đã có tài khoản?{' '}
             <Link href='/auth/login' className='underline underline-offset-2'>
               Login
             </Link>
@@ -337,7 +337,7 @@ function RegisterPage() {
                   alt='github'
                 />
               </div>
-              <span className='font-semibold text-sm' onClick={() => signIn("github")}>
+              <span className='font-semibold text-sm' onClick={() => signIn('github')}>
                 Đăng ký với GitHub
               </span>
               <BottomGradient />
@@ -353,7 +353,7 @@ function RegisterPage() {
                   alt='github'
                 />
               </div>
-              <span className='font-semibold text-sm' onClick={() => signIn("google")}>
+              <span className='font-semibold text-sm' onClick={() => signIn('google')}>
                 Đăng ký với Google
               </span>
               <BottomGradient />

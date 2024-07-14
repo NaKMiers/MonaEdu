@@ -1,64 +1,103 @@
-import CourseContent from '@/components/CourseContent'
-import Divider from '@/components/Divider'
-import FloatingActionButtons from '@/components/floatings/FloatingActionButtons'
-import FloatingSummary from '@/components/floatings/FloatingSummary'
-import Price from '@/components/Price'
-import { ICategory } from '@/models/CategoryModel'
-import { IChapter } from '@/models/ChapterModel'
-import { ICourse } from '@/models/CourseModel'
-import { IFlashSale } from '@/models/FlashSaleModel'
-import { ITag } from '@/models/TagModel'
-import { getCoursePageApi } from '@/requests'
-import moment from 'moment-timezone'
-import { Metadata } from 'next'
-import Image from 'next/image'
-import Link from 'next/link'
-import { notFound } from 'next/navigation'
-import { Fragment } from 'react'
-import { FaAngleRight, FaStarOfLife } from 'react-icons/fa'
-import { ImUser } from 'react-icons/im'
-import { IoIosPhonePortrait } from 'react-icons/io'
-import { IoTimer } from 'react-icons/io5'
-import { MdLanguage, MdVideoLibrary } from 'react-icons/md'
+import CourseContent from '@/components/CourseContent';
+import Divider from '@/components/Divider';
+import FloatingActionButtons from '@/components/floatings/FloatingActionButtons';
+import FloatingSummary from '@/components/floatings/FloatingSummary';
+import Price from '@/components/Price';
+import { ICategory } from '@/models/CategoryModel';
+import { IChapter } from '@/models/ChapterModel';
+import { ICourse } from '@/models/CourseModel';
+import { IFlashSale } from '@/models/FlashSaleModel';
+import { ITag } from '@/models/TagModel';
+import { getCoursePageApi } from '@/requests';
+import moment from 'moment-timezone';
+import { Metadata } from 'next';
+import Image from 'next/image';
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import { Fragment } from 'react';
+import { FaAngleRight, FaStarOfLife } from 'react-icons/fa';
+import { ImUser } from 'react-icons/im';
+import { IoIosPhonePortrait } from 'react-icons/io';
+import { IoTimer } from 'react-icons/io5';
+import { MdLanguage, MdVideoLibrary } from 'react-icons/md';
 
 export const metadata: Metadata = {
-  title: 'Course',
-}
+  title: 'Khóa học',
+};
 
 async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
   // Data
-  let course: ICourse | null = null
-  let chapters: IChapter[] = []
+  let course: ICourse | null = null;
+  let chapters: IChapter[] = [];
   let totalTime: {
-    hours: number
-    minutes: number
+    hours: number;
+    minutes: number;
   } = {
     hours: 0,
     minutes: 0,
-  }
+  };
 
   // MARK: Get Data
   try {
     // revalidate every 1 minute
-    const data = await getCoursePageApi(slug)
+    const data = await getCoursePageApi(slug);
 
-    course = data.course
-    chapters = data.chapters
+    course = data.course;
+    chapters = data.chapters;
 
     // Calculate total time
     const totalDuration = chapters.reduce(
       (total, chapter) =>
         total + (chapter.lessons?.reduce((total, lesson) => total + lesson.duration, 0) || 0),
       0
-    )
-    totalTime.hours = Math.floor(totalDuration / 3600)
-    totalTime.minutes = (totalDuration % 3600) % 60
+    );
+    totalTime.hours = Math.floor(totalDuration / 3600);
+    totalTime.minutes = (totalDuration % 3600) % 60;
   } catch (err: any) {
-    return notFound()
+    return notFound();
   }
+
+  // jsonLd
+  const jsonLd = {
+    '@context': 'https://schema.org/',
+    '@type': 'Course',
+    name: course?.title,
+    description: course?.description,
+    provider: {
+      '@type': 'Organization',
+      name: 'Mona Edu',
+      sameAs: `${process.env.NEXT_PUBLIC_APP_URL}`,
+    },
+    author: {
+      '@type': 'Person',
+      name: course?.author,
+    },
+    datePublished: moment(course?.createdAt).toISOString(),
+    dateModified: moment(course?.updatedAt).toISOString(),
+    offers: {
+      '@type': 'Offer',
+      priceCurrency: 'VND',
+      price: course?.price,
+      priceValidUntil: moment().add(30, 'days').toISOString(),
+      availability: 'https://schema.org/InStock',
+      url: `${process.env.NEXT_PUBLIC_APP_URL}/${course?.slug}`,
+      seller: {
+        '@type': 'Organization',
+        name: 'Mona Edu',
+      },
+    },
+    educationalCredentialAwarded: 'Certificate of Completion',
+    courseMode: 'online',
+    typicalAgeRange: 'Adult',
+    timeRequired: `PT${totalTime.hours}H${totalTime.minutes}M`,
+    numberOfCredits: '3',
+  };
 
   return (
     <div className='bg-white md:-mt-8 -mb-28 md:-mb-8 md:pt-8 pb-36'>
+      {/* MARK: Add JSON-LD */}
+      <script type='application/ld+json' dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+
       {/* Banner */}
       <div className='relative bg-neutral-800 text-light -mt-8 pt-8'>
         {/* <BeamsBackground /> */}
@@ -97,7 +136,7 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
             {/* Thumbnails */}
             <div className='lg:hidden max-w-[500px] relative aspect-video rounded-lg overflow-hidden shadow-lg block group mt-8'>
               <div className='flex w-full overflow-x-scroll snap-x snap-mandatory hover:scale-105 trans-500'>
-                {course?.images.map(src => (
+                {course?.images.map((src) => (
                   <Image
                     className='flex-shrink-0 snap-start w-full h-full object-cover'
                     src={src}
@@ -242,7 +281,7 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
         />
       )}
     </div>
-  )
+  );
 }
 
-export default CoursePage
+export default CoursePage;

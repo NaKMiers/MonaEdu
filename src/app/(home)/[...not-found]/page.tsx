@@ -1,5 +1,10 @@
-import Divider from "@/components/Divider";
-import Link from "next/link";
+import Divider from '@/components/Divider';
+import { Metadata } from 'next';
+import Link from 'next/link';
+
+export const metadata: Metadata = {
+  title: 'Không tìm thấy trang',
+};
 
 function NotFoundPage() {
   return (
@@ -8,10 +13,10 @@ function NotFoundPage() {
         <h1
           className='text-[90px] sm:text-[120px] md:text-[160px] lg:text-[180px] xl:text-[222px] text-transparent font-extrabold tracking-wide drop-shadow-md'
           style={{
-            background: "url(/images/not-found.jpg)",
-            backgroundPosition: "10% 85%",
-            backgroundClip: "text",
-            backgroundRepeat: "no-repeat",
+            background: 'url(/images/not-found.jpg)',
+            backgroundPosition: '6.7% 97%',
+            backgroundClip: 'text',
+            backgroundRepeat: 'no-repeat',
           }}
         >
           Oops!

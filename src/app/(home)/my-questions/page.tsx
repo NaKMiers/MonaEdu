@@ -1,53 +1,53 @@
-'use client'
+'use client';
 
-import Divider from '@/components/Divider'
-import QuestionItem from '@/components/QuestionItem'
-import Pagination from '@/components/layouts/Pagination'
-import { useAppDispatch } from '@/libs/hooks'
-import { setPageLoading } from '@/libs/reducers/modalReducer'
-import { IQuestion } from '@/models/QuestionModel'
-import { getMyQuestionsApi } from '@/requests'
-import { useSession } from 'next-auth/react'
-import Link from 'next/link'
-import { useEffect, useState } from 'react'
-import toast from 'react-hot-toast'
+import Divider from '@/components/Divider';
+import QuestionItem from '@/components/QuestionItem';
+import Pagination from '@/components/layouts/Pagination';
+import { useAppDispatch } from '@/libs/hooks';
+import { setPageLoading } from '@/libs/reducers/modalReducer';
+import { IQuestion } from '@/models/QuestionModel';
+import { getMyQuestionsApi } from '@/requests';
+import { useSession } from 'next-auth/react';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 
 function MyQuestionsPage({ searchParams }: { searchParams?: { [key: string]: string[] } }) {
   // hooks
-  const dispatch = useAppDispatch()
-  const { data: session } = useSession()
-  const curUser: any = session?.user
+  const dispatch = useAppDispatch();
+  const { data: session } = useSession();
+  const curUser: any = session?.user;
 
   // states
-  const [questions, setQuestions] = useState<IQuestion[]>([])
-  const [amount, setAmount] = useState<number>(0)
+  const [questions, setQuestions] = useState<IQuestion[]>([]);
+  const [amount, setAmount] = useState<number>(0);
 
   // get my questions
   useEffect(() => {
     const getQuestions = async () => {
       // start page loading
-      dispatch(setPageLoading(true))
+      dispatch(setPageLoading(true));
 
       try {
         // send request to get my questions
-        const { questions, amount } = await getMyQuestionsApi()
+        const { questions, amount } = await getMyQuestionsApi();
 
         // set states
-        setQuestions(questions)
-        setAmount(amount)
+        setQuestions(questions);
+        setAmount(amount);
       } catch (err: any) {
-        console.log(err)
-        toast.error(err.message)
+        console.log(err);
+        toast.error(err.message);
       } finally {
         // stop page loading
-        dispatch(setPageLoading(false))
+        dispatch(setPageLoading(false));
       }
-    }
+    };
 
     if (curUser?._id) {
-      getQuestions()
+      getQuestions();
     }
-  }, [dispatch, curUser?._id])
+  }, [dispatch, curUser?._id]);
 
   return (
     <div className='max-w-1200 mx-auto px-21'>
@@ -61,7 +61,7 @@ function MyQuestionsPage({ searchParams }: { searchParams?: { [key: string]: str
       {/* MAIN List */}
       {!!questions.length ? (
         <ul className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-21'>
-          {questions.map(question => (
+          {questions.map((question) => (
             <QuestionItem question={question} key={question._id} />
           ))}
         </ul>
@@ -86,7 +86,7 @@ function MyQuestionsPage({ searchParams }: { searchParams?: { [key: string]: str
 
       <Divider size={20} />
     </div>
-  )
+  );
 }
 
-export default MyQuestionsPage
+export default MyQuestionsPage;

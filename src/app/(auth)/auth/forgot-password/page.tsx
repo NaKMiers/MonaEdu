@@ -1,16 +1,16 @@
-"use client";
-import Divider from "@/components/Divider";
-import Input from "@/components/Input";
-import BeamsBackground from "@/components/backgrounds/BeamsBackground";
-import BottomGradient from "@/components/gradients/BottomGradient";
-import { forgotPasswordApi } from "@/requests";
-import { signIn } from "next-auth/react";
-import Image from "next/image";
-import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import toast from "react-hot-toast";
-import { FaCircleNotch } from "react-icons/fa";
+'use client';
+import Divider from '@/components/Divider';
+import Input from '@/components/Input';
+import BeamsBackground from '@/components/backgrounds/BeamsBackground';
+import BottomGradient from '@/components/gradients/BottomGradient';
+import { forgotPasswordApi } from '@/requests';
+import { signIn } from 'next-auth/react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useCallback, useEffect, useState } from 'react';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import { FaCircleNotch } from 'react-icons/fa';
 
 const time = 60;
 
@@ -48,7 +48,7 @@ function ForgotPasswordPage() {
     clearErrors,
   } = useForm<FieldValues>({
     defaultValues: {
-      email: "",
+      email: '',
     },
   });
 
@@ -70,7 +70,7 @@ function ForgotPasswordPage() {
         // show error message
         console.log(err);
         const { message } = err;
-        setError("email", { type: "manual", message });
+        setError('email', { type: 'manual', message });
         toast.error(message);
       } finally {
         // reset loading state
@@ -83,18 +83,18 @@ function ForgotPasswordPage() {
   // keyboard event
   useEffect(() => {
     // set page title
-    document.title = "Quên mật khẩu - Mona Edu";
+    document.title = 'Quên mật khẩu - Mona Edu';
 
     const handleKeydown = (e: KeyboardEvent) => {
-      if (e.key === "Enter") {
+      if (e.key === 'Enter') {
         handleSubmit(onSubmit)();
       }
     };
 
-    window.addEventListener("keydown", handleKeydown);
+    window.addEventListener('keydown', handleKeydown);
 
     return () => {
-      window.removeEventListener("keydown", handleKeydown);
+      window.removeEventListener('keydown', handleKeydown);
     };
   }, [handleSubmit, onSubmit]);
 
@@ -169,8 +169,8 @@ function ForgotPasswordPage() {
         {isSent && isCounting ? (
           <div className='flex items-center gap-3 mb-3 '>
             <div className='flex items-center gap-2 border border-dark py-2 px-3 rounded-lg bg-white'>
-              {countDown ? <FaCircleNotch size={20} className='text-dark animate-spin' /> : ""}
-              <span className='text-dark text-nowrap'>{countDown > 0 ? countDown : "Hết giờ"}</span>
+              {countDown ? <FaCircleNotch size={20} className='text-dark animate-spin' /> : ''}
+              <span className='text-dark text-nowrap'>{countDown > 0 ? countDown : 'Hết giờ'}</span>
             </div>
 
             <p className='text-[14px] italic text-slate-500 leading-5'>
@@ -187,7 +187,7 @@ function ForgotPasswordPage() {
             required
             type='email'
             labelBg='bg-white'
-            onFocus={() => clearErrors("email")}
+            onFocus={() => clearErrors('email')}
           />
         )}
 
@@ -207,7 +207,7 @@ function ForgotPasswordPage() {
             onClick={handleSubmit(onSubmit)}
             disabled={isSent && isCounting}
             className={`group relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50  ${
-              isLoading || isCounting ? "bg-slate-200 pointer-events-none" : ""
+              isLoading || isCounting ? 'bg-slate-200 pointer-events-none' : ''
             }`}
           >
             <span className='absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]' />
@@ -215,7 +215,7 @@ function ForgotPasswordPage() {
               {isLoading || isCounting ? (
                 <FaCircleNotch size={18} className='text-slate-400 trans-200 animate-spin' />
               ) : (
-                "Gửi mã"
+                'Gửi mã'
               )}
             </span>
           </button>
@@ -224,7 +224,7 @@ function ForgotPasswordPage() {
         <Divider size={10} />
 
         <p className='font-semibold text-center'>
-          Bạn chưa có tài khoản?{" "}
+          Bạn chưa có tài khoản?{' '}
           <Link href='/auth/register' className='underline underline-offset-2'>
             Đăng ký ngay
           </Link>
@@ -251,7 +251,7 @@ function ForgotPasswordPage() {
                 alt='github'
               />
             </div>
-            <span className='font-semibold text-sm' onClick={() => signIn("github")}>
+            <span className='font-semibold text-sm' onClick={() => signIn('github')}>
               Đăng ký với GitHub
             </span>
             <BottomGradient />
@@ -267,7 +267,7 @@ function ForgotPasswordPage() {
                 alt='github'
               />
             </div>
-            <span className='font-semibold text-sm' onClick={() => signIn("google")}>
+            <span className='font-semibold text-sm' onClick={() => signIn('google')}>
               Đăng ký với Google
             </span>
             <BottomGradient />

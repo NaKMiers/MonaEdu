@@ -24,7 +24,7 @@ export async function PUT(req: NextRequest) {
     }
 
     // get data to update personal info
-    const { firstName, lastName, birthday, job, bio } = await req.json();
+    const { firstName, lastName, birthday, job, bio, gender } = await req.json();
 
     // update personal info
     await UserModel.findByIdAndUpdate(userId, {
@@ -34,6 +34,7 @@ export async function PUT(req: NextRequest) {
         birthday,
         job,
         bio,
+        gender,
       },
     });
 

@@ -1,25 +1,25 @@
-import StoreProvider from '@/libs/StoreProvider'
-import type { Metadata } from 'next'
-import { getServerSession } from 'next-auth'
-import { Toaster } from 'react-hot-toast'
-import '../globals.scss'
+import StoreProvider from '@/libs/StoreProvider';
+import type { Metadata } from 'next';
+import { getServerSession } from 'next-auth';
+import { Toaster } from 'react-hot-toast';
+import '../globals.scss';
 
 export const metadata: Metadata = {
-  title: 'MonaEdu',
+  title: 'Mona Edu',
   icons: {
     icon: ['/favicon.ico?v=4'],
     apple: ['/apple-touch-icon.png?v=4'],
     shortcut: ['/apple-touch-icon.png'],
   },
   manifest: '/site.webmanifest',
-}
+};
 
 export default async function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
-  const session = await getServerSession()
+  const session = await getServerSession();
 
   return (
     <html lang='vi'>
@@ -40,5 +40,5 @@ export default async function RootLayout({
         </StoreProvider>
       </body>
     </html>
-  )
+  );
 }
