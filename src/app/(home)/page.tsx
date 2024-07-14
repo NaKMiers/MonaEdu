@@ -10,8 +10,8 @@ import { getHomePageApi } from '@/requests';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Trang chủ - MonaEdu',
-  description: 'MonaEdu - Học trực tuyến mọi lúc, mọi nơi',
+  title: 'Trang chủ - Mona Edu',
+  description: 'Mona Edu - Nền tảng học trực tuyến hàng đầu Việt Nam',
 };
 
 async function Home() {

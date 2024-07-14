@@ -1,7 +1,6 @@
 'use client';
 import Divider from '@/components/Divider';
 import Input from '@/components/Input';
-import BeamsBackground from '@/components/backgrounds/BeamsBackground';
 import BottomGradient from '@/components/gradients/BottomGradient';
 import { forgotPasswordApi } from '@/requests';
 import { signIn } from 'next-auth/react';
@@ -153,7 +152,7 @@ function ForgotPasswordPage() {
               alt='logo'
             />
           </div>
-          <span className='font-bold text-3xl text-orange-500'>MonaEdu</span>
+          <span className='font-bold text-3xl text-orange-500'>Mona Edu</span>
         </div>
 
         <Divider size={4} />

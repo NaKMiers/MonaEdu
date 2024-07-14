@@ -1,27 +1,27 @@
-'use client'
+'use client';
 
-import Input from '@/components/Input'
-import LoadingButton from '@/components/LoadingButton'
-import AdminHeader from '@/components/admin/AdminHeader'
-import { useAppDispatch, useAppSelector } from '@/libs/hooks'
-import { setLoading } from '@/libs/reducers/modalReducer'
-import { IUser } from '@/models/UserModel'
-import { addVoucherApi, getRoleUsersApi } from '@/requests'
-import { generateRandomString } from '@/utils/generate'
-import { useCallback, useEffect, useState } from 'react'
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
-import toast from 'react-hot-toast'
-import { FaArrowCircleLeft, FaMinus, FaQuoteRight, FaUserEdit, FaWindowMaximize } from 'react-icons/fa'
-import { FaPause, FaPlay } from 'react-icons/fa6'
+import Input from '@/components/Input';
+import LoadingButton from '@/components/LoadingButton';
+import AdminHeader from '@/components/admin/AdminHeader';
+import { useAppDispatch, useAppSelector } from '@/libs/hooks';
+import { setLoading } from '@/libs/reducers/modalReducer';
+import { IUser } from '@/models/UserModel';
+import { addVoucherApi, getRoleUsersApi } from '@/requests';
+import { generateRandomString } from '@/utils/generate';
+import { useCallback, useEffect, useState } from 'react';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import { FaArrowCircleLeft, FaMinus, FaQuoteRight, FaUserEdit, FaWindowMaximize } from 'react-icons/fa';
+import { FaPause, FaPlay } from 'react-icons/fa6';
 
-import { MdNumbers } from 'react-icons/md'
-import { RiCharacterRecognitionLine, RiCheckboxMultipleBlankLine } from 'react-icons/ri'
+import { MdNumbers } from 'react-icons/md';
+import { RiCharacterRecognitionLine, RiCheckboxMultipleBlankLine } from 'react-icons/ri';
 
 function AddVoucherPage() {
   // store
-  const dispatch = useAppDispatch()
-  const isLoading = useAppSelector(state => state.modal.isLoading)
-  const [roleUsers, setRoleUsers] = useState<IUser[]>([])
+  const dispatch = useAppDispatch();
+  const isLoading = useAppSelector((state) => state.modal.isLoading);
+  const [roleUsers, setRoleUsers] = useState<IUser[]>([]);
 
   // form
   const {
@@ -47,7 +47,7 @@ function AddVoucherPage() {
       owner: '',
       active: true,
     },
-  })
+  });
 
   // MARK: Get Data
   // get roleUsers, admins, editors
@@ -55,37 +55,37 @@ function AddVoucherPage() {
     const getRoleUsers = async () => {
       try {
         // send request to server to get role-users
-        const { roleUsers } = await getRoleUsersApi() // cache: no-store
+        const { roleUsers } = await getRoleUsersApi(); // cache: no-store
 
         // set roleUsers to state
-        setRoleUsers(roleUsers)
-        setValue('owner', roleUsers.find((user: IUser) => user.role === 'admin')._id)
+        setRoleUsers(roleUsers);
+        setValue('owner', roleUsers.find((user: IUser) => user.role === 'admin')._id);
       } catch (err: any) {
-        console.log(err)
+        console.log(err);
       }
-    }
-    getRoleUsers()
-  }, [setValue])
+    };
+    getRoleUsers();
+  }, [setValue]);
 
   // validate form
   const handleValidate: SubmitHandler<FieldValues> = useCallback(
-    data => {
-      let isValid = true
+    (data) => {
+      let isValid = true;
       // code >= 5
       if (data.code.length < 5) {
         setError('code', {
           type: 'manual',
           message: 'Code must be at least 5 characters',
-        })
-        isValid = false
+        });
+        isValid = false;
       } else {
         // code < 10
         if (data.code.length > 10) {
           setError('code', {
             type: 'manual',
             message: 'Code must be at most 10 characters',
-          })
-          isValid = false
+          });
+          isValid = false;
         }
       }
 
@@ -94,8 +94,8 @@ function AddVoucherPage() {
         setError('expire', {
           type: 'manual',
           message: 'Expire must be greater than begin',
-        })
-        isValid = false
+        });
+        isValid = false;
       }
 
       // minTotal >= 0
@@ -103,8 +103,8 @@ function AddVoucherPage() {
         setError('minTotal', {
           type: 'manual',
           message: 'Min total must be >= 0',
-        })
-        isValid = false
+        });
+        isValid = false;
       }
 
       // maxReduce >= 0
@@ -112,8 +112,8 @@ function AddVoucherPage() {
         setError('maxReduce', {
           type: 'manual',
           message: 'Max reduce must be >= 0',
-        })
-        isValid = false
+        });
+        isValid = false;
       }
 
       // timesLeft >= 0
@@ -121,8 +121,8 @@ function AddVoucherPage() {
         setError('timesLeft', {
           type: 'manual',
           message: 'Times left must be >= 0',
-        })
-        isValid = false
+        });
+        isValid = false;
       }
 
       // value < maxReduce
@@ -130,70 +130,73 @@ function AddVoucherPage() {
         setError('value', {
           type: 'manual',
           message: 'Value must be <= max reduce',
-        })
-        isValid = false
+        });
+        isValid = false;
       }
 
       // if type if percentage, value must have % at the end
       if (data.type === 'percentage') {
         if (!data.value.endsWith('%')) {
-          setError('value', { type: 'manual', message: 'Value must have %' })
-          isValid = false
+          setError('value', { type: 'manual', message: 'Value must have %' });
+          isValid = false;
         }
       } else {
         // if type is fixed, value must be number
         if (isNaN(+data.value)) {
-          setError('value', { type: 'manual', message: 'Value must be a number' })
-          isValid = false
+          setError('value', { type: 'manual', message: 'Value must be a number' });
+          isValid = false;
         }
       }
 
-      return isValid
+      return isValid;
     },
     [setError]
-  )
+  );
 
   // MARK: Submit
   // handle send request to server to add voucher
   const onSubmit: SubmitHandler<FieldValues> = useCallback(
-    async data => {
+    async (data) => {
       // validate form
-      if (!handleValidate(data)) return
+      if (!handleValidate(data)) return;
 
-      dispatch(setLoading(true))
+      dispatch(setLoading(true));
 
       try {
         // send request to server to add voucher
-        const { message } = await addVoucherApi(data)
+        const { message } = await addVoucherApi(data);
 
         // show success message
-        toast.success(message)
+        toast.success(message);
         // reset form
-        reset()
-        setValue('code', generateRandomString(5).toUpperCase())
-        const adminUser = roleUsers.find((user: IUser) => user.role === 'admin')
+        reset();
+        setValue('code', generateRandomString(5).toUpperCase());
+        const adminUser = roleUsers.find((user: IUser) => user.role === 'admin');
         if (adminUser) {
-          setValue('onwer', adminUser._id)
+          setValue('onwer', adminUser._id);
         }
       } catch (err: any) {
-        console.log(err)
-        toast.error(err.message)
+        console.log(err);
+        toast.error(err.message);
       } finally {
-        dispatch(setLoading(false))
+        dispatch(setLoading(false));
       }
     },
     [handleValidate, reset, dispatch, setValue, roleUsers]
-  )
+  );
 
   // Enter key to submit
   useEffect(() => {
-    const handleEnter = (e: KeyboardEvent) => {
-      if (e.key === 'Enter') handleSubmit(onSubmit)()
-    }
+    // page title
+    document.title = 'Add Voucher - Mona Edu';
 
-    window.addEventListener('keydown', handleEnter)
-    return () => window.removeEventListener('keydown', handleEnter)
-  }, [handleSubmit, onSubmit])
+    const handleEnter = (e: KeyboardEvent) => {
+      if (e.key === 'Enter') handleSubmit(onSubmit)();
+    };
+
+    window.addEventListener('keydown', handleEnter);
+    return () => window.removeEventListener('keydown', handleEnter);
+  }, [handleSubmit, onSubmit]);
 
   return (
     <div className='max-w-1200 mx-auto'>
@@ -224,7 +227,7 @@ function AddVoucherPage() {
             required
             type='select'
             onFocus={() => clearErrors('owner')}
-            options={roleUsers.map(user => ({
+            options={roleUsers.map((user) => ({
               value: user._id,
               label: `${user.firstName} ${user.lastName} - (${
                 user.role.charAt(0).toUpperCase() + user.role.slice(1)
@@ -378,7 +381,8 @@ function AddVoucherPage() {
           />
           <label
             className='select-none cursor-pointer border border-green-500 px-4 py-2 rounded-lg trans-200 peer-checked:bg-green-500 peer-checked:text-white bg-white text-green-500'
-            htmlFor='active'>
+            htmlFor='active'
+          >
             Active
           </label>
         </div>
@@ -392,7 +396,7 @@ function AddVoucherPage() {
         />
       </div>
     </div>
-  )
+  );
 }
 
-export default AddVoucherPage
+export default AddVoucherPage;

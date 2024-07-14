@@ -1,22 +1,22 @@
-'use client'
+'use client';
 
-import Input from '@/components/Input'
-import LoadingButton from '@/components/LoadingButton'
-import AdminHeader from '@/components/admin/AdminHeader'
-import { useAppDispatch, useAppSelector } from '@/libs/hooks'
-import { setLoading } from '@/libs/reducers/modalReducer'
-import { ITag } from '@/models/TagModel'
-import { addTagApi } from '@/requests'
-import { useCallback, useEffect } from 'react'
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
-import toast from 'react-hot-toast'
-import { FaPlay } from 'react-icons/fa'
-import { MdTitle } from 'react-icons/md'
+import Input from '@/components/Input';
+import LoadingButton from '@/components/LoadingButton';
+import AdminHeader from '@/components/admin/AdminHeader';
+import { useAppDispatch, useAppSelector } from '@/libs/hooks';
+import { setLoading } from '@/libs/reducers/modalReducer';
+import { ITag } from '@/models/TagModel';
+import { addTagApi } from '@/requests';
+import { useCallback, useEffect } from 'react';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import { FaPlay } from 'react-icons/fa';
+import { MdTitle } from 'react-icons/md';
 
 function AddTagPage() {
   // store
-  const dispatch = useAppDispatch()
-  const isLoading = useAppSelector(state => state.modal.isLoading)
+  const dispatch = useAppDispatch();
+  const isLoading = useAppSelector((state) => state.modal.isLoading);
 
   // form
   const {
@@ -30,42 +30,45 @@ function AddTagPage() {
       title: '',
       booted: false,
     } as ITag,
-  })
+  });
 
   // MARK: Submit
   // add new tag
   const onSubmit: SubmitHandler<FieldValues> = useCallback(
-    async data => {
-      dispatch(setLoading(true))
+    async (data) => {
+      dispatch(setLoading(true));
 
       try {
         // add new tag login here
-        const { message } = await addTagApi(data)
+        const { message } = await addTagApi(data);
 
         // show success message
-        toast.success(message)
+        toast.success(message);
 
         // clear form
-        reset()
+        reset();
       } catch (err: any) {
-        toast.error(err.message)
-        console.log(err)
+        toast.error(err.message);
+        console.log(err);
       } finally {
-        dispatch(setLoading(false))
+        dispatch(setLoading(false));
       }
     },
     [dispatch, reset]
-  )
+  );
 
   // Enter key to submit
   useEffect(() => {
-    const handleEnter = (e: KeyboardEvent) => {
-      if (e.key === 'Enter') handleSubmit(onSubmit)()
-    }
+    // page title
+    document.title = 'Add Tag - Mona Edu';
 
-    window.addEventListener('keydown', handleEnter)
-    return () => window.removeEventListener('keydown', handleEnter)
-  }, [handleSubmit, onSubmit])
+    const handleEnter = (e: KeyboardEvent) => {
+      if (e.key === 'Enter') handleSubmit(onSubmit)();
+    };
+
+    window.addEventListener('keydown', handleEnter);
+    return () => window.removeEventListener('keydown', handleEnter);
+  }, [handleSubmit, onSubmit]);
 
   return (
     <div className='max-w-1200 mx-auto'>
@@ -100,7 +103,8 @@ function AddTagPage() {
           />
           <label
             className='select-none cursor-pointer border border-green-500 px-4 py-2 rounded-lg trans-200 bg-white text-green-500 peer-checked:bg-green-500 peer-checked:text-white'
-            htmlFor='booted'>
+            htmlFor='booted'
+          >
             Booted
           </label>
         </div>
@@ -114,7 +118,7 @@ function AddTagPage() {
         />
       </div>
     </div>
-  )
+  );
 }
 
-export default AddTagPage
+export default AddTagPage;

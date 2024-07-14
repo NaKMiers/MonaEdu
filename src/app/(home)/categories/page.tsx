@@ -3,7 +3,13 @@ import CategoryCard from '@/components/CategoryCard';
 import Divider from '@/components/Divider';
 import { ICategory } from '@/models/CategoryModel';
 import { getAllParentCategoriesApi } from '@/requests';
+import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+
+export const metadata: Metadata = {
+  title: 'Danh mục khóa học - Mona Edu',
+  description: 'Mona Edu - Học trực tuyến mọi lúc, mọi nơi',
+};
 
 async function CategoriesPage() {
   // data

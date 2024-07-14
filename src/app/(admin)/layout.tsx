@@ -9,6 +9,7 @@ import Header from '@/components/layouts/Header';
 
 export const metadata: Metadata = {
   title: 'Mona Edu',
+  description: 'Mona Edu - Nền tảng học trực tuyến hàng đầu Việt Nam',
   icons: {
     icon: ['/favicon.ico?v=4'],
     apple: ['/apple-touch-icon.png?v=4'],

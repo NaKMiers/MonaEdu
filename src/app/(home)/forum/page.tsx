@@ -7,6 +7,12 @@ import { IUser } from '@/models/UserModel';
 import { getForumPageApi } from '@/requests';
 import { handleQuery } from '@/utils/handleQuery';
 import { getUserName } from '@/utils/string';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Diễn đàn câu hỏi - Mona Edu',
+  description: 'Mona Edu - Học trực tuyến mọi lúc, mọi nơi',
+};
 
 async function ForumPage({ searchParams }: { searchParams?: { [key: string]: string[] } }) {
   let questions: IQuestion[] = [];

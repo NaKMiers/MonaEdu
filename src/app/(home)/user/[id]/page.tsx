@@ -15,7 +15,8 @@ import { notFound } from 'next/navigation';
 
 export const generateMetadata = ({ params }: any): Metadata => {
   return {
-    title: `${params.id} - Thông tin cá nhân`,
+    title: `${params.id} - Thông tin cá nhân - Mona Edu`,
+    description: 'Mona Edu - Nền tảng học trực tuyến hàng đầu Việt Nam',
   };
 };
 

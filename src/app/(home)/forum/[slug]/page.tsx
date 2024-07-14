@@ -1,25 +1,33 @@
-import BottomOfQuestion from '@/components/BottomOfQuestion'
-import Comment from '@/components/Comment'
-import Divider from '@/components/Divider'
-import { IComment } from '@/models/CommentModel'
-import { IQuestion } from '@/models/QuestionModel'
-import { IUser } from '@/models/UserModel'
-import { getQuestionDetailPage } from '@/requests'
-import Image from 'next/image'
-import { format } from 'timeago.js'
+import BottomOfQuestion from '@/components/BottomOfQuestion';
+import Comment from '@/components/Comment';
+import Divider from '@/components/Divider';
+import { IComment } from '@/models/CommentModel';
+import { IQuestion } from '@/models/QuestionModel';
+import { IUser } from '@/models/UserModel';
+import { getQuestionDetailPage } from '@/requests';
+import { Metadata } from 'next';
+import Image from 'next/image';
+import { format } from 'timeago.js';
+
+export const generateMetadata = ({ params: { slug } }: { params: { slug: string } }): Metadata => {
+  return {
+    title: `${slug} - Mona Edu`,
+    description: 'Mona Edu - Nền tảng học trực tuyến hàng đầu Việt Nam',
+  };
+};
 
 async function QuestionDetailPage({ params: { slug } }: { params: { slug: string } }) {
-  let question: IQuestion | null = null
-  let comments: IComment[] = []
-  let user: IUser | null = null
+  let question: IQuestion | null = null;
+  let comments: IComment[] = [];
+  let user: IUser | null = null;
 
   try {
-    const data = await getQuestionDetailPage(slug)
-    question = data.question
-    user = question?.userId as IUser
-    comments = data.comments
+    const data = await getQuestionDetailPage(slug);
+    question = data.question;
+    user = question?.userId as IUser;
+    comments = data.comments;
   } catch (err: any) {
-    console.log(err)
+    console.log(err);
   }
 
   return (
@@ -69,7 +77,7 @@ async function QuestionDetailPage({ params: { slug } }: { params: { slug: string
 
       <Divider size={28} />
     </div>
-  )
+  );
 }
 
-export default QuestionDetailPage
+export default QuestionDetailPage;

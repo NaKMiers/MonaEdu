@@ -4,7 +4,13 @@ import Pagination from '@/components/layouts/Pagination';
 import { ICourse } from '@/models/CourseModel';
 import { getSearchPageApi } from '@/requests';
 import { handleQuery } from '@/utils/handleQuery';
+import { Metadata } from 'next';
 import Link from 'next/link';
+
+export const metadata: Metadata = {
+  title: 'Tìm kiếm - Mona Edu',
+  description: 'Mona Edu - Học trực tuyến mọi lúc, mọi nơi',
+};
 
 async function SearchPage({ searchParams }: { searchParams?: { [key: string]: string[] } }) {
   let courses: ICourse[] = [];

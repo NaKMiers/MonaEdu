@@ -49,6 +49,11 @@ function MyQuestionsPage({ searchParams }: { searchParams?: { [key: string]: str
     }
   }, [dispatch, curUser?._id]);
 
+  // set page title
+  useEffect(() => {
+    document.title = 'Câu hỏi của tôi - Mona Edu';
+  }, []);
+
   return (
     <div className='max-w-1200 mx-auto px-21'>
       <Divider size={12} />

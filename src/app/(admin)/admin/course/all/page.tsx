@@ -294,6 +294,9 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
 
   // keyboard event
   useEffect(() => {
+    // page title
+    document.title = 'All Courses - Mona Edu';
+
     const handleKeyDown = (e: KeyboardEvent) => {
       // Alt + A (Select All)
       if (e.altKey && e.key === 'a') {

@@ -1,25 +1,25 @@
-"use client";
+'use client';
 
-import Input from "@/components/Input";
-import LoadingButton from "@/components/LoadingButton";
-import { useAppDispatch, useAppSelector } from "@/libs/hooks";
-import { useCallback, useEffect, useState } from "react";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import { FaCheck, FaFile, FaInfo } from "react-icons/fa";
+import Input from '@/components/Input';
+import LoadingButton from '@/components/LoadingButton';
+import { useAppDispatch, useAppSelector } from '@/libs/hooks';
+import { useCallback, useEffect, useState } from 'react';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { FaCheck, FaFile, FaInfo } from 'react-icons/fa';
 
-import Divider from "@/components/Divider";
-import AdminHeader from "@/components/admin/AdminHeader";
-import { setLoading } from "@/libs/reducers/modalReducer";
-import { IChapter } from "@/models/ChapterModel";
-import { ICourse } from "@/models/CourseModel";
-import { ILesson } from "@/models/LessonModel";
-import { getLessonByIdApi, updateLessonApi } from "@/requests";
-import { useParams, useRouter } from "next/navigation";
-import toast from "react-hot-toast";
-import { FaX } from "react-icons/fa6";
-import { MdCategory, MdOutlinePublic } from "react-icons/md";
-import { RiCharacterRecognitionLine } from "react-icons/ri";
-import { SiFramer } from "react-icons/si";
+import Divider from '@/components/Divider';
+import AdminHeader from '@/components/admin/AdminHeader';
+import { setLoading } from '@/libs/reducers/modalReducer';
+import { IChapter } from '@/models/ChapterModel';
+import { ICourse } from '@/models/CourseModel';
+import { ILesson } from '@/models/LessonModel';
+import { getLessonByIdApi, updateLessonApi } from '@/requests';
+import { useParams, useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
+import { FaX } from 'react-icons/fa6';
+import { MdCategory, MdOutlinePublic } from 'react-icons/md';
+import { RiCharacterRecognitionLine } from 'react-icons/ri';
+import { SiFramer } from 'react-icons/si';
 
 export type GroupTypes = {
   [key: string]: ICourse[];
@@ -35,9 +35,9 @@ function EditLessonPage() {
   // states
   const [course, setCourse] = useState<ICourse | null>(null);
   const [chapter, setChapter] = useState<IChapter | null>(null);
-  const [sourceType, setSourceType] = useState<"file" | "embed">("embed");
-  const [fileUrl, setFileUrl] = useState<string>("");
-  const [embedSrc, setEmbedSrc] = useState<string>("");
+  const [sourceType, setSourceType] = useState<'file' | 'embed'>('embed');
+  const [fileUrl, setFileUrl] = useState<string>('');
+  const [embedSrc, setEmbedSrc] = useState<string>('');
   const [file, setFile] = useState<File | null>(null);
 
   // form
@@ -51,15 +51,15 @@ function EditLessonPage() {
     clearErrors,
   } = useForm<FieldValues>({
     defaultValues: {
-      courseId: "",
-      chapterId: "",
-      title: "",
-      description: "",
+      courseId: '',
+      chapterId: '',
+      title: '',
+      description: '',
       hours: 0,
       minutes: 1,
       seconds: 0,
       active: true,
-      status: "private",
+      status: 'private',
     },
   });
 
@@ -73,22 +73,22 @@ function EditLessonPage() {
         setChapter(lesson.chapterId);
 
         // set value to form
-        setValue("courseId", lesson.courseId._id);
-        setValue("chapterId", lesson.chapterId._id);
-        setValue("title", lesson.title);
-        setValue("price", lesson.price);
-        setValue("oldPrice", lesson.oldPrice);
-        setValue("description", lesson.description);
-        setValue("active", lesson.active);
-        setValue("status", lesson.status);
-        setValue("hours", Math.floor(lesson.duration / 3600));
-        setValue("minutes", Math.floor((lesson.duration % 3600) / 60));
-        setValue("seconds", Math.floor(((lesson.duration % 3600) % 60) / 60));
+        setValue('courseId', lesson.courseId._id);
+        setValue('chapterId', lesson.chapterId._id);
+        setValue('title', lesson.title);
+        setValue('price', lesson.price);
+        setValue('oldPrice', lesson.oldPrice);
+        setValue('description', lesson.description);
+        setValue('active', lesson.active);
+        setValue('status', lesson.status);
+        setValue('hours', Math.floor(lesson.duration / 3600));
+        setValue('minutes', Math.floor((lesson.duration % 3600) / 60));
+        setValue('seconds', Math.floor(((lesson.duration % 3600) % 60) / 60));
 
         setSourceType(lesson.sourceType);
-        if (lesson.sourceType === "file") {
+        if (lesson.sourceType === 'file') {
           setFileUrl(lesson.source);
-        } else if (lesson.sourceType === "embed") {
+        } else if (lesson.sourceType === 'embed') {
           setEmbedSrc(lesson.source);
         }
       } catch (err: any) {
@@ -99,8 +99,6 @@ function EditLessonPage() {
     getLesson();
   }, [chapterId, id, setValue, getValues]);
 
-  // MARK: Get Data
-
   // validate form
   const handleValidate: SubmitHandler<FieldValues> = useCallback(
     (data) => {
@@ -108,27 +106,27 @@ function EditLessonPage() {
 
       // hours must be >= 0 and <= 23
       if (data.hours < 0) {
-        setError("hours", {
-          type: "manual",
-          message: "Hours must be from 0 - 23",
+        setError('hours', {
+          type: 'manual',
+          message: 'Hours must be from 0 - 23',
         });
         isValid = false;
       }
 
       // minutes must be >= 0 and <= 59
       if (data.minutes < 0 || data.minutes > 59) {
-        setError("minutes", {
-          type: "manual",
-          message: "Minutes must be from 0 - 59",
+        setError('minutes', {
+          type: 'manual',
+          message: 'Minutes must be from 0 - 59',
         });
         isValid = false;
       }
 
       // seconds must be >= 0 and <= 59
       if (data.seconds < 0 || data.seconds > 59) {
-        setError("seconds", {
-          type: "manual",
-          message: "Seconds must be from 0 - 59",
+        setError('seconds', {
+          type: 'manual',
+          message: 'Seconds must be from 0 - 59',
         });
         isValid = false;
       }
@@ -144,27 +142,24 @@ function EditLessonPage() {
     if (!handleValidate(data)) return;
 
     if (!file && !fileUrl && !embedSrc) {
-      return toast.error("Please embed an url or upload a video");
+      return toast.error('Please embed an url or upload a video');
     }
 
     dispatch(setLoading(true));
 
     try {
       const formData = new FormData();
-      formData.append("courseId", data.courseId);
-      formData.append("chapterId", data.chapterId);
-      formData.append("title", data.title);
-      formData.append("description", data.title);
-      formData.append(
-        "duration",
-        data.hours * 3600 + data.minutes * 60 + data.seconds
-      );
-      formData.append("active", data.active);
-      formData.append("status", data.status);
-      if (sourceType === "file" && file) {
-        formData.append("file", file);
-      } else if (sourceType === "embed" && embedSrc) {
-        formData.append("embedUrl", embedSrc);
+      formData.append('courseId', data.courseId);
+      formData.append('chapterId', data.chapterId);
+      formData.append('title', data.title);
+      formData.append('description', data.title);
+      formData.append('duration', data.hours * 3600 + data.minutes * 60 + data.seconds);
+      formData.append('active', data.active);
+      formData.append('status', data.status);
+      if (sourceType === 'file' && file) {
+        formData.append('file', file);
+      } else if (sourceType === 'embed' && embedSrc) {
+        formData.append('embedUrl', embedSrc);
       }
 
       // add new category here
@@ -191,13 +186,11 @@ function EditLessonPage() {
         const file = e.target.files[0];
 
         // validate file type and size
-        if (!file.type.startsWith("video/")) {
-          return toast.error("Please select a video");
+        if (!file.type.startsWith('video/')) {
+          return toast.error('Please select a video');
         }
         if (file.size > 200 * 1024 * 1024) {
-          return toast.error(
-            "Please select an video less than 200Mb or select an url fileUrl instead"
-          );
+          return toast.error('Please select an video less than 200Mb or select an url fileUrl instead');
         }
 
         setFile(file);
@@ -207,7 +200,7 @@ function EditLessonPage() {
         }
         setFileUrl(URL.createObjectURL(file));
 
-        e.target.value = "";
+        e.target.value = '';
         e.target.files = null;
       }
     },
@@ -217,11 +210,11 @@ function EditLessonPage() {
   // handle remove image
   const handleRemoveSource = useCallback(
     (url: string) => {
-      if (sourceType === "file") {
+      if (sourceType === 'file') {
         setFile(null);
-        setFileUrl("");
-      } else if (sourceType === "embed") {
-        setEmbedSrc("");
+        setFileUrl('');
+      } else if (sourceType === 'embed') {
+        setEmbedSrc('');
       }
       URL.revokeObjectURL(url);
     },
@@ -229,9 +222,9 @@ function EditLessonPage() {
   );
 
   const handlePaste = (e: any) => {
-    const pasteData = e.clipboardData.getData("text/plain");
+    const pasteData = e.clipboardData.getData('text/plain');
 
-    if (pasteData.includes("<iframe")) {
+    if (pasteData.includes('<iframe')) {
       const src = pasteData.match(/src="([^"]+)"/);
 
       if (src) {
@@ -244,125 +237,125 @@ function EditLessonPage() {
 
   // revoke blob url when component unmount
   useEffect(() => {
+    // page title
+    document.title = 'Edit Lesson - Mona Edu';
+
     return () => URL.revokeObjectURL(fileUrl);
   }, [fileUrl]);
 
   return (
-    <div className="max-w-1200 mx-auto">
+    <div className='max-w-1200 mx-auto'>
       {/* MARK: Admin Header */}
-      <AdminHeader
-        title="Edit Lesson"
-        backLink={`/admin/lesson/${chapter?._id}/all`}
-      />
+      <AdminHeader title='Edit Lesson' backLink={`/admin/lesson/${chapter?._id}/all`} />
 
-      <div className="mt-5 bg-slate-200 p-21 rounded-lg shadow-lg">
+      <div className='mt-5 bg-slate-200 p-21 rounded-lg shadow-lg'>
         {/* Course */}
-        <h2 className="text-dark font-semibold text-2xl">
-          Course: <span className="text-slate-500">{course?.title}</span>
+        <h2 className='text-dark font-semibold text-2xl'>
+          Course: <span className='text-slate-500'>{course?.title}</span>
         </h2>
 
         {/* Chapter */}
-        <h2 className="text-dark font-semibold text-xl">
-          Chapter: <span className="text-slate-500">{chapter?.title}</span>
+        <h2 className='text-dark font-semibold text-xl'>
+          Chapter: <span className='text-slate-500'>{chapter?.title}</span>
         </h2>
 
         <Divider size={4} />
 
         {/* Title */}
         <Input
-          id="title"
-          label="Title"
+          id='title'
+          label='Title'
           disabled={isLoading}
           register={register}
           errors={errors}
           required
-          type="text"
+          type='text'
           icon={RiCharacterRecognitionLine}
-          className="mb-5"
-          onFocus={() => clearErrors("title")}
+          className='mb-5'
+          onFocus={() => clearErrors('title')}
         />
 
         {/* Description */}
         <Input
-          id="description"
-          label="Description"
+          id='description'
+          label='Description'
           disabled={isLoading}
           register={register}
           errors={errors}
           required
-          type="textarea"
+          type='textarea'
           rows={8}
           icon={FaInfo}
-          onFocus={() => clearErrors("description")}
-          className="mb-5"
+          onFocus={() => clearErrors('description')}
+          className='mb-5'
         />
 
         {/* MARK: Duration */}
-        <p className="text-dark font-semibold text-xl mb-1">Duration</p>
-        <div className="grid grid-cols-1 md:grid-cols-3 mb-5 gap-2">
+        <p className='text-dark font-semibold text-xl mb-1'>Duration</p>
+        <div className='grid grid-cols-1 md:grid-cols-3 mb-5 gap-2'>
           {/* Hours */}
           <Input
-            id="hours"
-            label="Hours"
+            id='hours'
+            label='Hours'
             disabled={isLoading}
             register={register}
             errors={errors}
-            type="number"
+            type='number'
             min={0}
-            onFocus={() => clearErrors("hours")}
+            onFocus={() => clearErrors('hours')}
           />
           {/* Minutes */}
           <Input
-            id="minutes"
-            label="Minutes"
+            id='minutes'
+            label='Minutes'
             disabled={isLoading}
             register={register}
             errors={errors}
-            type="number"
+            type='number'
             min={0}
             max={59}
-            onFocus={() => clearErrors("minutes")}
+            onFocus={() => clearErrors('minutes')}
           />
           {/* Seconds */}
           <Input
-            id="seconds"
-            label="Seconds"
+            id='seconds'
+            label='Seconds'
             disabled={isLoading}
             register={register}
             errors={errors}
-            type="number"
+            type='number'
             min={0}
             max={59}
-            onFocus={() => clearErrors("seconds")}
+            onFocus={() => clearErrors('seconds')}
           />
         </div>
 
-        <div className="mb-5">
+        <div className='mb-5'>
           <div className={`flex`}>
             <span
               className={`inline-flex items-center px-3 rounded-tl-lg rounded-bl-lg border-[2px] text-sm text-gray-900 border-slate-200 bg-slate-100`}
             >
-              <MdCategory size={19} className="text-secondary" />
+              <MdCategory size={19} className='text-secondary' />
             </span>
             <div
               className={`relative w-full border-[2px] border-l-0 bg-white rounded-tr-lg rounded-br-lg border-slate-200`}
             >
               <select
-                id="sourceType"
-                className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-dark bg-transparent focus:outline-none focus:ring-0 peer"
+                id='sourceType'
+                className='block px-2.5 pb-2.5 pt-4 w-full text-sm text-dark bg-transparent focus:outline-none focus:ring-0 peer'
                 disabled={isLoading}
                 value={sourceType}
                 onChange={(e: any) => setSourceType(e.target.value)}
               >
-                <option value="embed">Embed</option>
-                <option value="file">File</option>
+                <option value='embed'>Embed</option>
+                <option value='file'>File</option>
               </select>
 
               {/* label */}
               <label
-                htmlFor="sourceType"
+                htmlFor='sourceType'
                 className={`absolute rounded-md text-sm text-gray-500 trans-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1 cursor-pointer ${
-                  errors.couseId ? "text-rose-400" : "text-dark"
+                  errors.couseId ? 'text-rose-400' : 'text-dark'
                 }`}
               >
                 Source Type
@@ -370,51 +363,49 @@ function EditLessonPage() {
             </div>
           </div>
           {errors.type?.message && (
-            <span className="text-sm text-rose-400">
-              {errors.type?.message?.toString()}
-            </span>
+            <span className='text-sm text-rose-400'>{errors.type?.message?.toString()}</span>
           )}
         </div>
 
         {/* Source */}
-        <div className="mb-5">
-          {sourceType === "file" ? (
-            <div className="flex">
-              <span className="inline-flex items-center px-3 rounded-tl-lg rounded-bl-lg border-[2px] text-sm text-gray-900 border-slate-200 bg-slate-100">
-                <FaFile size={19} className="text-secondary" />
+        <div className='mb-5'>
+          {sourceType === 'file' ? (
+            <div className='flex'>
+              <span className='inline-flex items-center px-3 rounded-tl-lg rounded-bl-lg border-[2px] text-sm text-gray-900 border-slate-200 bg-slate-100'>
+                <FaFile size={19} className='text-secondary' />
               </span>
-              <div className="relative w-full border-[2px] border-l-0 rounded-r-lg bg-white border-slate-200">
+              <div className='relative w-full border-[2px] border-l-0 rounded-r-lg bg-white border-slate-200'>
                 <input
-                  id="fileUrl"
-                  className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-dark bg-transparent focus:outline-none focus:ring-0 peer"
-                  placeholder=" "
+                  id='fileUrl'
+                  className='block px-2.5 pb-2.5 pt-4 w-full text-sm text-dark bg-transparent focus:outline-none focus:ring-0 peer'
+                  placeholder=' '
                   disabled={isLoading}
-                  type="file"
-                  accept="video/*"
+                  type='file'
+                  accept='video/*'
                   onChange={handleAddFile}
                 />
 
                 {/* label */}
                 <label
-                  htmlFor={"fileUrl"}
-                  className="absolute rounded-md text-sm trans-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1 cursor-pointer text-dark"
+                  htmlFor={'fileUrl'}
+                  className='absolute rounded-md text-sm trans-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1 cursor-pointer text-dark'
                 >
                   Source
                 </label>
               </div>
             </div>
           ) : (
-            <div className="flex">
-              <span className="inline-flex items-center px-3 rounded-tl-lg rounded-bl-lg border-[2px] text-sm text-gray-900 border-slate-200 bg-slate-100">
-                <SiFramer size={19} className="text-secondary" />
+            <div className='flex'>
+              <span className='inline-flex items-center px-3 rounded-tl-lg rounded-bl-lg border-[2px] text-sm text-gray-900 border-slate-200 bg-slate-100'>
+                <SiFramer size={19} className='text-secondary' />
               </span>
-              <div className="relative w-full border-[2px] border-l-0 rounded-r-lg bg-white border-slate-200">
+              <div className='relative w-full border-[2px] border-l-0 rounded-r-lg bg-white border-slate-200'>
                 <input
-                  id="fileUrl"
-                  className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-dark bg-transparent focus:outline-none focus:ring-0 peer"
-                  placeholder=" "
+                  id='fileUrl'
+                  className='block px-2.5 pb-2.5 pt-4 w-full text-sm text-dark bg-transparent focus:outline-none focus:ring-0 peer'
+                  placeholder=' '
                   disabled={isLoading}
-                  type="url"
+                  type='url'
                   value={embedSrc}
                   onPaste={handlePaste}
                   onChange={(e) => setEmbedSrc(e.target.value)}
@@ -422,8 +413,8 @@ function EditLessonPage() {
 
                 {/* label */}
                 <label
-                  htmlFor={"fileUrl"}
-                  className="absolute rounded-md text-sm trans-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1 cursor-pointer text-dark"
+                  htmlFor={'fileUrl'}
+                  className='absolute rounded-md text-sm trans-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1 cursor-pointer text-dark'
                 >
                   Source
                 </label>
@@ -432,56 +423,48 @@ function EditLessonPage() {
           )}
         </div>
 
-        {((fileUrl && sourceType === "file") ||
-          (embedSrc && sourceType === "embed")) && (
-          <div className="relative aspect-video rounded-lg bg-white p-21 mb-5">
-            {fileUrl && sourceType === "file" && (
-              <video
-                className="rounded-lg w-full h-full object-contain"
-                src={fileUrl}
-                controls
-              />
+        {((fileUrl && sourceType === 'file') || (embedSrc && sourceType === 'embed')) && (
+          <div className='relative aspect-video rounded-lg bg-white p-21 mb-5'>
+            {fileUrl && sourceType === 'file' && (
+              <video className='rounded-lg w-full h-full object-contain' src={fileUrl} controls />
             )}
-            {embedSrc && sourceType === "embed" && (
+            {embedSrc && sourceType === 'embed' && (
               <iframe
-                className="rounded-lg w-full h-full object-contain"
-                width="1519"
-                height="574"
+                className='rounded-lg w-full h-full object-contain'
+                width='1519'
+                height='574'
                 src={embedSrc}
-                title="Is Civilization on the Brink of Collapse?"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerPolicy="strict-origin-when-cross-origin"
+                title='Is Civilization on the Brink of Collapse?'
+                allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+                referrerPolicy='strict-origin-when-cross-origin'
                 allowFullScreen
               />
             )}
 
             <button
               onClick={() => handleRemoveSource(fileUrl)}
-              className="absolute top-2 bg-slate-300 p-2 right-2 group hover:bg-dark-100 rounded-lg"
+              className='absolute top-2 bg-slate-300 p-2 right-2 group hover:bg-dark-100 rounded-lg'
             >
-              <FaX
-                size={16}
-                className="text-dark group-hover:text-white trans-200"
-              />
+              <FaX size={16} className='text-dark group-hover:text-white trans-200' />
             </button>
           </div>
         )}
 
         {/* Active */}
-        <div className="flex mb-5">
-          <div className="bg-white rounded-lg px-3 flex items-center">
-            <FaCheck size={16} className="text-secondary" />
+        <div className='flex mb-5'>
+          <div className='bg-white rounded-lg px-3 flex items-center'>
+            <FaCheck size={16} className='text-secondary' />
           </div>
           <input
-            className="peer"
-            type="checkbox"
-            id="active"
+            className='peer'
+            type='checkbox'
+            id='active'
             hidden
-            {...register("active", { required: false })}
+            {...register('active', { required: false })}
           />
           <label
             className={`select-none cursor-pointer border border-green-500 px-4 py-2 rounded-lg trans-200 bg-white text-green-500 peer-checked:bg-green-500 peer-checked:text-white`}
-            htmlFor="active"
+            htmlFor='active'
           >
             Active
           </label>
@@ -489,27 +472,27 @@ function EditLessonPage() {
 
         {/* Status */}
         <Input
-          id="status"
-          label="Status"
+          id='status'
+          label='Status'
           disabled={isLoading}
           register={register}
           errors={errors}
           required
-          type="select"
-          onFocus={() => clearErrors("status")}
+          type='select'
+          onFocus={() => clearErrors('status')}
           options={[
-            { label: "Public", value: "public" },
-            { label: "Private", value: "private" },
+            { label: 'Public', value: 'public' },
+            { label: 'Private', value: 'private' },
           ]}
           icon={MdOutlinePublic}
-          className="mb-5"
+          className='mb-5'
         />
 
         {/* MARK: Add Button */}
         <LoadingButton
-          className="px-4 py-2 bg-secondary hover:bg-primary text-light rounded-lg font-semibold trans-200"
+          className='px-4 py-2 bg-secondary hover:bg-primary text-light rounded-lg font-semibold trans-200'
           onClick={handleSubmit(onSubmit)}
-          text="Save"
+          text='Save'
           isLoading={isLoading}
         />
       </div>

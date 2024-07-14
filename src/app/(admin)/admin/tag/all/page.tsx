@@ -1,50 +1,50 @@
-'use client'
+'use client';
 
-import Input from '@/components/Input'
-import AdminHeader from '@/components/admin/AdminHeader'
-import AdminMeta from '@/components/admin/AdminMeta'
-import TagItem from '@/components/admin/TagItem'
-import ConfirmDialog from '@/components/dialogs/ConfirmDialog'
-import Pagination from '@/components/layouts/Pagination'
-import { useAppDispatch } from '@/libs/hooks'
-import { setPageLoading } from '@/libs/reducers/modalReducer'
-import { ITag } from '@/models/TagModel'
-import { bootTagsApi, deleteTagsApi, getAllTagsApi, updateTagsApi } from '@/requests'
-import { handleQuery } from '@/utils/handleQuery'
-import { Slider } from '@mui/material'
-import { usePathname, useRouter } from 'next/navigation'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
-import toast from 'react-hot-toast'
-import { FaSort } from 'react-icons/fa'
+import Input from '@/components/Input';
+import AdminHeader from '@/components/admin/AdminHeader';
+import AdminMeta from '@/components/admin/AdminMeta';
+import TagItem from '@/components/admin/TagItem';
+import ConfirmDialog from '@/components/dialogs/ConfirmDialog';
+import Pagination from '@/components/layouts/Pagination';
+import { useAppDispatch } from '@/libs/hooks';
+import { setPageLoading } from '@/libs/reducers/modalReducer';
+import { ITag } from '@/models/TagModel';
+import { bootTagsApi, deleteTagsApi, getAllTagsApi, updateTagsApi } from '@/requests';
+import { handleQuery } from '@/utils/handleQuery';
+import { Slider } from '@mui/material';
+import { usePathname, useRouter } from 'next/navigation';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import { FaSort } from 'react-icons/fa';
 
 export type EditingValues = {
-  _id: string
-  title: string
-}
+  _id: string;
+  title: string;
+};
 
 function AllTagsPage({ searchParams }: { searchParams?: { [key: string]: string[] } }) {
   // store
-  const dispatch = useAppDispatch()
-  const pathname = usePathname()
-  const router = useRouter()
+  const dispatch = useAppDispatch();
+  const pathname = usePathname();
+  const router = useRouter();
 
   // states
-  const [tags, setTags] = useState<ITag[]>([])
-  const [amount, setAmount] = useState<number>(0)
-  const [selectedTags, setSelectedTags] = useState<string[]>([])
-  const [editingValues, setEditingValues] = useState<EditingValues[]>([])
+  const [tags, setTags] = useState<ITag[]>([]);
+  const [amount, setAmount] = useState<number>(0);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [editingValues, setEditingValues] = useState<EditingValues[]>([]);
 
   // loading and confirming
-  const [loadingTags, setLoadingTags] = useState<string[]>([])
-  const [editingTags, setEditingTags] = useState<string[]>([])
-  const [isOpenConfirmModal, setIsOpenConfirmModal] = useState<boolean>(false)
+  const [loadingTags, setLoadingTags] = useState<string[]>([]);
+  const [editingTags, setEditingTags] = useState<string[]>([]);
+  const [isOpenConfirmModal, setIsOpenConfirmModal] = useState<boolean>(false);
 
   // values
-  const itemPerPage = 10
-  const [minCQ, setMinPQ] = useState<number>(0)
-  const [maxCQ, setMaxPQ] = useState<number>(0)
-  const [courseQuantity, setCourseQuantity] = useState<number[]>([0, 0])
+  const itemPerPage = 10;
+  const [minCQ, setMinPQ] = useState<number>(0);
+  const [maxCQ, setMaxPQ] = useState<number>(0);
+  const [courseQuantity, setCourseQuantity] = useState<number[]>([0, 0]);
 
   // form
   const defaultValues = useMemo<FieldValues>(
@@ -53,7 +53,7 @@ function AllTagsPage({ searchParams }: { searchParams?: { [key: string]: string[
       booted: '',
     }),
     []
-  )
+  );
 
   const {
     register,
@@ -65,139 +65,141 @@ function AllTagsPage({ searchParams }: { searchParams?: { [key: string]: string[
     clearErrors,
   } = useForm<FieldValues>({
     defaultValues,
-  })
+  });
 
   // MARK: Get Data
   // get all tags
   useEffect(() => {
     // get all tags
     const getAllTags = async () => {
-      const query = handleQuery(searchParams)
+      const query = handleQuery(searchParams);
 
       // start page loading
-      dispatch(setPageLoading(true))
+      dispatch(setPageLoading(true));
 
       try {
         // sent request to server
-        const { tags, amount, chops } = await getAllTagsApi(query) // cache: no-store
+        const { tags, amount, chops } = await getAllTagsApi(query); // cache: no-store
 
         // set to states
-        setTags(tags)
-        setAmount(amount)
+        setTags(tags);
+        setAmount(amount);
 
         // sync search params with states
-        setValue('sort', searchParams?.sort || getValues('sort'))
-        setValue('booted', searchParams?.booted || getValues('booted'))
+        setValue('sort', searchParams?.sort || getValues('sort'));
+        setValue('booted', searchParams?.booted || getValues('booted'));
 
         // set min - max - courseQuantity
-        setMinPQ(chops?.minCourseQuantity || 0)
-        setMaxPQ(chops?.maxCourseQuantity || 0)
+        setMinPQ(chops?.minCourseQuantity || 0);
+        setMaxPQ(chops?.maxCourseQuantity || 0);
         if (searchParams?.courseQuantity) {
           const [from, to] = Array.isArray(searchParams.courseQuantity)
             ? searchParams.courseQuantity[0].split('-')
-            : (searchParams.courseQuantity as string).split('-')
-          setCourseQuantity([+from, +to])
+            : (searchParams.courseQuantity as string).split('-');
+          setCourseQuantity([+from, +to]);
         } else {
-          setCourseQuantity([chops?.minCourseQuantity || 0, chops?.maxCourseQuantity || 0])
+          setCourseQuantity([chops?.minCourseQuantity || 0, chops?.maxCourseQuantity || 0]);
         }
       } catch (err: any) {
-        console.log(err)
-        toast.error(err.message)
+        console.log(err);
+        toast.error(err.message);
       } finally {
         // stop page loading
-        dispatch(setPageLoading(false))
+        dispatch(setPageLoading(false));
       }
-    }
-    getAllTags()
-  }, [dispatch, searchParams, setValue, getValues])
+    };
+    getAllTags();
+  }, [dispatch, searchParams, setValue, getValues]);
 
   // MARK: Handlers
   // delete tag
   const handleDeleteTags = useCallback(async (ids: string[]) => {
-    setLoadingTags(ids)
+    setLoadingTags(ids);
 
     try {
       // send request to server
-      const { deletedTags, message } = await deleteTagsApi(ids)
+      const { deletedTags, message } = await deleteTagsApi(ids);
 
       // remove deleted tags from state
-      setTags(prev => prev.filter(tag => !deletedTags.map((tag: ITag) => tag._id).includes(tag._id)))
+      setTags((prev) =>
+        prev.filter((tag) => !deletedTags.map((tag: ITag) => tag._id).includes(tag._id))
+      );
 
       // show success message
-      toast.success(message)
+      toast.success(message);
     } catch (err: any) {
-      console.log(err)
-      toast.error(err.message)
+      console.log(err);
+      toast.error(err.message);
     } finally {
-      setLoadingTags([])
-      setSelectedTags([])
+      setLoadingTags([]);
+      setSelectedTags([]);
     }
-  }, [])
+  }, []);
 
   // feature tag
   const handleBootTags = useCallback(async (ids: string[], value: boolean) => {
     try {
       // send request to server
-      const { updatedTags, message } = await bootTagsApi(ids, value)
+      const { updatedTags, message } = await bootTagsApi(ids, value);
 
       // update tags from state
-      setTags(prev =>
-        prev.map(tag =>
+      setTags((prev) =>
+        prev.map((tag) =>
           updatedTags.map((tag: ITag) => tag._id).includes(tag._id) ? { ...tag, booted: value } : tag
         )
-      )
+      );
 
       // show success message
-      toast.success(message)
+      toast.success(message);
     } catch (err: any) {
-      console.log(err)
-      toast.error(err.message)
+      console.log(err);
+      toast.error(err.message);
     }
-  }, [])
+  }, []);
 
   // handle submit edit tag
   const handleSaveEditingTags = useCallback(async (editingValues: any[]) => {
-    setLoadingTags(editingValues.map(t => t._id))
+    setLoadingTags(editingValues.map((t) => t._id));
 
     try {
       // send request to server
-      const { editedTags, message } = await updateTagsApi(editingValues)
+      const { editedTags, message } = await updateTagsApi(editingValues);
 
       // update tags from state
-      setTags(prev =>
-        prev.map(t =>
+      setTags((prev) =>
+        prev.map((t) =>
           editedTags.map((t: ITag) => t._id).includes(t._id)
             ? editedTags.find((cat: ITag) => cat._id === t._id)
             : t
         )
-      )
-      setEditingTags(prev => prev.filter(id => !editedTags.map((t: any) => t._id).includes(id)))
+      );
+      setEditingTags((prev) => prev.filter((id) => !editedTags.map((t: any) => t._id).includes(id)));
 
       // show success message
-      toast.success(message)
+      toast.success(message);
     } catch (err: any) {
-      console.log(err)
-      toast.error(err.message)
+      console.log(err);
+      toast.error(err.message);
     } finally {
-      setLoadingTags([])
+      setLoadingTags([]);
     }
-  }, [])
+  }, []);
 
   // handle optimize filter
   const handleOptimizeFilter: SubmitHandler<FieldValues> = useCallback(
-    data => {
+    (data) => {
       // reset page
       if (searchParams?.page) {
-        delete searchParams.page
+        delete searchParams.page;
       }
 
       // loop through data to prevent filter default
       for (let key in data) {
         if (data[key] === defaultValues[key]) {
           if (!searchParams?.[key]) {
-            delete data[key]
+            delete data[key];
           } else {
-            data[key] = ''
+            data[key] = '';
           }
         }
       }
@@ -206,56 +208,61 @@ function AllTagsPage({ searchParams }: { searchParams?: { [key: string]: string[
         ...data,
         courseQuantity:
           courseQuantity[0] === minCQ && courseQuantity[1] === maxCQ ? '' : courseQuantity.join('-'),
-      }
+      };
     },
     [courseQuantity, minCQ, maxCQ, searchParams, defaultValues]
-  )
+  );
 
   // handle submit filter
   const handleFilter: SubmitHandler<FieldValues> = useCallback(
-    async data => {
-      const params: any = handleOptimizeFilter(data)
+    async (data) => {
+      const params: any = handleOptimizeFilter(data);
 
       // handle query
       const query = handleQuery({
         ...searchParams,
         ...params,
-      })
+      });
 
       // push to router
-      router.push(pathname + query)
+      router.push(pathname + query);
     },
     [handleOptimizeFilter, searchParams, router, pathname]
-  )
+  );
 
   // handle reset filter
   const handleResetFilter = useCallback(() => {
-    reset()
-    router.push(pathname)
-  }, [reset, router, pathname])
+    reset();
+    router.push(pathname);
+  }, [reset, router, pathname]);
 
   // keyboard event
   useEffect(() => {
+    // page title
+    document.title = 'All Tags - Mona Edu';
+
     const handleKeyDown = (e: KeyboardEvent) => {
       // Alt + A (Select All)
       if (e.altKey && e.key === 'a') {
-        e.preventDefault()
-        setSelectedTags(prev => (prev.length === tags.length ? [] : tags.map(category => category._id)))
+        e.preventDefault();
+        setSelectedTags((prev) =>
+          prev.length === tags.length ? [] : tags.map((category) => category._id)
+        );
       }
 
       // Alt + Delete (Delete)
       if (e.altKey && e.key === 'Delete') {
-        e.preventDefault()
-        setIsOpenConfirmModal(true)
+        e.preventDefault();
+        setIsOpenConfirmModal(true);
       }
-    }
+    };
 
     // Add the event listener
-    window.addEventListener('keydown', handleKeyDown)
+    window.addEventListener('keydown', handleKeyDown);
 
     // Remove the event listener on cleanup
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [tags, selectedTags, handleDeleteTags, handleFilter, handleSubmit, handleResetFilter])
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [tags, selectedTags, handleDeleteTags, handleFilter, handleSubmit, handleResetFilter]);
 
   return (
     <div className='w-full'>
@@ -350,18 +357,20 @@ function AllTagsPage({ searchParams }: { searchParams?: { [key: string]: string[
           {/* Select All Button */}
           <button
             className='border border-sky-400 text-sky-400 rounded-lg px-3 py-2 hover:bg-sky-400 hover:text-white trans-200'
-            onClick={() => setSelectedTags(selectedTags.length > 0 ? [] : tags.map(tag => tag._id))}
+            onClick={() => setSelectedTags(selectedTags.length > 0 ? [] : tags.map((tag) => tag._id))}
           >
             {selectedTags.length > 0 ? 'Unselect All' : 'Select All'}
           </button>
 
-          {!!editingTags.filter(id => selectedTags.includes(id)).length && (
+          {!!editingTags.filter((id) => selectedTags.includes(id)).length && (
             <>
               {/* Save Many Button */}
               <button
                 className='border border-green-500 text-green-500 rounded-lg px-3 py-2 hover:bg-green-500 hover:text-white trans-200'
                 onClick={() =>
-                  handleSaveEditingTags(editingValues.filter(value => selectedTags.includes(value._id)))
+                  handleSaveEditingTags(
+                    editingValues.filter((value) => selectedTags.includes(value._id))
+                  )
                 }
               >
                 Save All
@@ -371,8 +380,8 @@ function AllTagsPage({ searchParams }: { searchParams?: { [key: string]: string[
                 className='border border-slate-400 text-slate-400 rounded-lg px-3 py-2 hover:bg-slate-400 hover:text-white trans-200'
                 onClick={() => {
                   // cancel editing values are selected
-                  setEditingTags(editingTags.filter(id => !selectedTags.includes(id)))
-                  setEditingValues(editingValues.filter(value => !selectedTags.includes(value._id)))
+                  setEditingTags(editingTags.filter((id) => !selectedTags.includes(id)));
+                  setEditingValues(editingValues.filter((value) => !selectedTags.includes(value._id)));
                 }}
               >
                 Cancel
@@ -382,7 +391,7 @@ function AllTagsPage({ searchParams }: { searchParams?: { [key: string]: string[
 
           {/* Mark Many Button */}
           {!!selectedTags.length &&
-            selectedTags.some(id => !tags.find(tag => tag._id === id)?.booted) && (
+            selectedTags.some((id) => !tags.find((tag) => tag._id === id)?.booted) && (
               <button
                 className='border border-green-400 text-green-400 rounded-lg px-3 py-2 hover:bg-green-400 hover:text-white trans-200'
                 onClick={() => handleBootTags(selectedTags, true)}
@@ -393,7 +402,7 @@ function AllTagsPage({ searchParams }: { searchParams?: { [key: string]: string[
 
           {/* Unmark Many Button */}
           {!!selectedTags.length &&
-            selectedTags.some(id => tags.find(tag => tag._id === id)?.booted) && (
+            selectedTags.some((id) => tags.find((tag) => tag._id === id)?.booted) && (
               <button
                 className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-white trans-200'
                 onClick={() => handleBootTags(selectedTags, false)}
@@ -431,7 +440,7 @@ function AllTagsPage({ searchParams }: { searchParams?: { [key: string]: string[
 
       {/* MARK: MAIN LIST */}
       <div className='grid grid-cols-1 md:grid-cols-3 gap-21 lg:grid-cols-5'>
-        {tags.map(tag => (
+        {tags.map((tag) => (
           <TagItem
             data={tag}
             loadingTags={loadingTags}
@@ -449,7 +458,7 @@ function AllTagsPage({ searchParams }: { searchParams?: { [key: string]: string[
         ))}
       </div>
     </div>
-  )
+  );
 }
 
-export default AllTagsPage
+export default AllTagsPage;

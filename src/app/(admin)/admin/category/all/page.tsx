@@ -1,63 +1,67 @@
-'use client'
+'use client';
 
-import CategoryItem from '@/components/admin/CategoryItem'
-import CategoryModal from '@/components/admin/CategoryModal'
-import Pagination from '@/components/layouts/Pagination'
-import { useAppDispatch } from '@/libs/hooks'
-import { setPageLoading } from '@/libs/reducers/modalReducer'
-import { ICategory } from '@/models/CategoryModel'
-import { getAllCategoriesApi } from '@/requests'
-import { handleQuery } from '@/utils/handleQuery'
-import Link from 'next/link'
-import { useEffect, useMemo, useState } from 'react'
-import { FieldValues } from 'react-hook-form'
-import toast from 'react-hot-toast'
-import { FaArrowLeft, FaPlus } from 'react-icons/fa'
+import CategoryItem from '@/components/admin/CategoryItem';
+import CategoryModal from '@/components/admin/CategoryModal';
+import Pagination from '@/components/layouts/Pagination';
+import { useAppDispatch } from '@/libs/hooks';
+import { setPageLoading } from '@/libs/reducers/modalReducer';
+import { ICategory } from '@/models/CategoryModel';
+import { getAllCategoriesApi } from '@/requests';
+import { handleQuery } from '@/utils/handleQuery';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
+import { FaArrowLeft, FaPlus } from 'react-icons/fa';
 
 export type EditingValues = {
-  _id: string
-  title: string
-}
+  _id: string;
+  title: string;
+};
 
 function AllCategoriesPage({ searchParams }: { searchParams?: { [key: string]: string[] } }) {
   // store
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
   // states
-  const [categories, setCategories] = useState<ICategory[]>([])
-  const [amount, setAmount] = useState<number>(0)
-  const [openAddCategoryModal, setOpenAddCategoryModal] = useState<boolean>(false)
+  const [categories, setCategories] = useState<ICategory[]>([]);
+  const [amount, setAmount] = useState<number>(0);
+  const [openAddCategoryModal, setOpenAddCategoryModal] = useState<boolean>(false);
 
   // values
-  const itemPerPage = 10
+  const itemPerPage = 10;
 
   // MARK: Get Data
   // get all categories
   useEffect(() => {
     // get all categories
     const getAllCategories = async () => {
-      const query = handleQuery(searchParams)
+      const query = handleQuery(searchParams);
 
       // start page loading
-      dispatch(setPageLoading(true))
+      dispatch(setPageLoading(true));
 
       try {
         // sent request to server
-        const { categories, amount } = await getAllCategoriesApi(query) // cache: no-store
+        const { categories, amount } = await getAllCategoriesApi(query); // cache: no-store
 
         // set to states
-        setCategories(categories)
-        setAmount(amount)
+        setCategories(categories);
+        setAmount(amount);
       } catch (err: any) {
-        console.log(err)
-        toast.error(err.message)
+        console.log(err);
+        toast.error(err.message);
       } finally {
         // stop page loading
-        dispatch(setPageLoading(false))
+        dispatch(setPageLoading(false));
       }
-    }
-    getAllCategories()
-  }, [dispatch, searchParams])
+    };
+    getAllCategories();
+  }, [dispatch, searchParams]);
+
+  // set page title
+  useEffect(() => {
+    document.title = 'Categories - Mona Edu';
+  }, []);
 
   return (
     <div className='w-full'>
@@ -93,7 +97,7 @@ function AllCategoriesPage({ searchParams }: { searchParams?: { [key: string]: s
 
       {/* MARK: MAIN LIST */}
       <div className='flex flex-col gap-2'>
-        {categories.map(category => (
+        {categories.map((category) => (
           <CategoryItem data={category} setCategories={setCategories} key={category._id} />
         ))}
       </div>
@@ -106,7 +110,7 @@ function AllCategoriesPage({ searchParams }: { searchParams?: { [key: string]: s
         setCategories={setCategories}
       />
     </div>
-  )
+  );
 }
 
-export default AllCategoriesPage
+export default AllCategoriesPage;

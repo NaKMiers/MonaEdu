@@ -1,44 +1,44 @@
-'use client'
+'use client';
 
-import Input from '@/components/Input'
-import AdminHeader from '@/components/admin/AdminHeader'
-import AdminMeta from '@/components/admin/AdminMeta'
-import UserItem from '@/components/admin/UserItem'
-import ConfirmDialog from '@/components/dialogs/ConfirmDialog'
-import Pagination from '@/components/layouts/Pagination'
-import { useAppDispatch } from '@/libs/hooks'
-import { setPageLoading } from '@/libs/reducers/modalReducer'
-import { IUser } from '@/models/UserModel'
-import { deleteUsersApi, getAllUsersApi } from '@/requests'
-import { handleQuery } from '@/utils/handleQuery'
-import { formatPrice } from '@/utils/number'
-import { Slider } from '@mui/material'
-import { usePathname, useRouter } from 'next/navigation'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
-import toast from 'react-hot-toast'
-import { FaSearch, FaSort } from 'react-icons/fa'
+import Input from '@/components/Input';
+import AdminHeader from '@/components/admin/AdminHeader';
+import AdminMeta from '@/components/admin/AdminMeta';
+import UserItem from '@/components/admin/UserItem';
+import ConfirmDialog from '@/components/dialogs/ConfirmDialog';
+import Pagination from '@/components/layouts/Pagination';
+import { useAppDispatch } from '@/libs/hooks';
+import { setPageLoading } from '@/libs/reducers/modalReducer';
+import { IUser } from '@/models/UserModel';
+import { deleteUsersApi, getAllUsersApi } from '@/requests';
+import { handleQuery } from '@/utils/handleQuery';
+import { formatPrice } from '@/utils/number';
+import { Slider } from '@mui/material';
+import { usePathname, useRouter } from 'next/navigation';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import { FaSearch, FaSort } from 'react-icons/fa';
 
 function AllUsersPage({ searchParams }: { searchParams?: { [key: string]: string[] } }) {
   // hooks
-  const dispatch = useAppDispatch()
-  const pathname = usePathname()
-  const router = useRouter()
+  const dispatch = useAppDispatch();
+  const pathname = usePathname();
+  const router = useRouter();
 
   // states
-  const [users, setUsers] = useState<IUser[]>([])
-  const [amount, setAmount] = useState<number>(0)
-  const [selectedUsers, setSelectedUsers] = useState<string[]>([])
+  const [users, setUsers] = useState<IUser[]>([]);
+  const [amount, setAmount] = useState<number>(0);
+  const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
 
   // loading and confirming
-  const [loadingUsers, setLoadingUsers] = useState<string[]>([])
-  const [isOpenConfirmModal, setIsOpenConfirmModal] = useState<boolean>(false)
+  const [loadingUsers, setLoadingUsers] = useState<string[]>([]);
+  const [isOpenConfirmModal, setIsOpenConfirmModal] = useState<boolean>(false);
 
   // values
-  const itemPerPage = 9
-  const [minExpended, setMinExpended] = useState<number>(0)
-  const [maxExpended, setMaxExpended] = useState<number>(0)
-  const [expended, setExpended] = useState<number[]>([0, 0])
+  const itemPerPage = 9;
+  const [minExpended, setMinExpended] = useState<number>(0);
+  const [maxExpended, setMaxExpended] = useState<number>(0);
+  const [expended, setExpended] = useState<number[]>([0, 0]);
 
   // form
   const defaultValues = useMemo<FieldValues>(
@@ -49,7 +49,7 @@ function AllUsersPage({ searchParams }: { searchParams?: { [key: string]: string
       authType: '',
     }),
     []
-  )
+  );
 
   const {
     register,
@@ -61,100 +61,102 @@ function AllUsersPage({ searchParams }: { searchParams?: { [key: string]: string
     clearErrors,
   } = useForm<FieldValues>({
     defaultValues,
-  })
+  });
 
   // MARK: Get Data
   // get all users
   useEffect(() => {
     // get all users
     const getAllUsers = async () => {
-      const query = handleQuery(searchParams)
+      const query = handleQuery(searchParams);
 
       // start page loading
-      dispatch(setPageLoading(true))
+      dispatch(setPageLoading(true));
 
       try {
-        const { users, amount, chops } = await getAllUsersApi(query) // cache: no-store
+        const { users, amount, chops } = await getAllUsersApi(query); // cache: no-store
 
         // set to states
-        setUsers(users)
-        setAmount(amount)
+        setUsers(users);
+        setAmount(amount);
 
         // sync search params with states
-        setValue('search', searchParams?.search || getValues('search'))
-        setValue('sort', searchParams?.sort || getValues('sort'))
-        setValue('role', searchParams?.role || getValues('role'))
-        setValue('authType', searchParams?.authType || getValues('authType'))
+        setValue('search', searchParams?.search || getValues('search'));
+        setValue('sort', searchParams?.sort || getValues('sort'));
+        setValue('role', searchParams?.role || getValues('role'));
+        setValue('authType', searchParams?.authType || getValues('authType'));
 
         // set expended
-        setMinExpended(chops.minExpended)
-        setMaxExpended(chops.maxExpended)
+        setMinExpended(chops.minExpended);
+        setMaxExpended(chops.maxExpended);
         if (searchParams?.expended) {
           const [from, to] = Array.isArray(searchParams.expended)
             ? searchParams.expended[0].split('-')
-            : (searchParams.expended as string).split('-')
+            : (searchParams.expended as string).split('-');
 
-          setExpended([+from, +to])
+          setExpended([+from, +to]);
         } else {
-          setExpended([chops?.minExpended || 0, chops?.maxExpended || 0])
+          setExpended([chops?.minExpended || 0, chops?.maxExpended || 0]);
         }
       } catch (err: any) {
-        console.log(err)
+        console.log(err);
       } finally {
         // stop page loading
-        dispatch(setPageLoading(false))
+        dispatch(setPageLoading(false));
       }
-    }
-    getAllUsers()
-  }, [dispatch, searchParams, setValue, getValues])
+    };
+    getAllUsers();
+  }, [dispatch, searchParams, setValue, getValues]);
 
   // MARK: Handlers
   // delete user
   const handleDeleteUsers = useCallback(async (ids: string[]) => {
-    setLoadingUsers(ids)
+    setLoadingUsers(ids);
 
     try {
       // send request to server
-      const { deletedUsers, message } = await deleteUsersApi(ids)
+      const { deletedUsers, message } = await deleteUsersApi(ids);
 
       // remove deleted users from state
-      setUsers(prev =>
-        prev.filter(user => !deletedUsers.map((user: IUser) => user._id).includes(user._id))
-      )
+      setUsers((prev) =>
+        prev.filter((user) => !deletedUsers.map((user: IUser) => user._id).includes(user._id))
+      );
 
       // show success message
-      toast.success(message)
+      toast.success(message);
     } catch (err: any) {
-      console.log(err)
-      toast.error(err.message)
+      console.log(err);
+      toast.error(err.message);
     } finally {
-      setLoadingUsers([])
-      setSelectedUsers([])
+      setLoadingUsers([]);
+      setSelectedUsers([]);
     }
-  }, [])
+  }, []);
 
   // handle select all users
   const handleSelectAllUsers = useCallback(() => {
     setSelectedUsers(
-      selectedUsers.length > 0 ? [] : users.filter(user => user.role === 'user').map(user => user._id)
-    )
-  }, [users, selectedUsers.length])
+      selectedUsers.length > 0
+        ? []
+        : users.filter((user) => user.role === 'user').map((user) => user._id)
+    );
+  }, [users, selectedUsers.length]);
 
   // handle optimize filter
   const handleOptimizeFilter: SubmitHandler<FieldValues> = useCallback(
-    data => {
+    (data) => {
       // reset page
       if (searchParams?.page) {
-        delete searchParams.page
+        delete searchParams.page;
       }
 
       // loop through data to prevent filter default
       for (let key in data) {
         if (data[key] === defaultValues[key]) {
           if (!searchParams?.[key]) {
-            delete data[key]
+            delete data[key];
           } else {
-            data[key] = ''
+            data[key] = '';
           }
         }
       }
@@ -162,56 +164,59 @@ function AllUsersPage({ searchParams }: { searchParams?: { [key: string]: string
       return {
         ...data,
         expended: expended[0] === minExpended && expended[1] === maxExpended ? '' : expended.join('-'),
-      }
+      };
     },
     [expended, minExpended, maxExpended, searchParams, defaultValues]
-  )
+  );
 
   // handle submit filter
   const handleFilter: SubmitHandler<FieldValues> = useCallback(
-    async data => {
-      const params: any = handleOptimizeFilter(data)
+    async (data) => {
+      const params: any = handleOptimizeFilter(data);
 
       // handle query
       const query = handleQuery({
         ...searchParams,
         ...params,
-      })
+      });
 
       // push to router
-      router.push(pathname + query)
+      router.push(pathname + query);
     },
     [handleOptimizeFilter, router, searchParams, pathname]
-  )
+  );
 
   // handle reset filter
   const handleResetFilter = useCallback(() => {
-    reset()
-    router.push(pathname)
-  }, [reset, router, pathname])
+    reset();
+    router.push(pathname);
+  }, [reset, router, pathname]);
 
   // keyboard event
   useEffect(() => {
+    // page title
+    document.title = 'All Users - Mona Edu';
+
     const handleKeyDown = (e: KeyboardEvent) => {
       // Alt + A (Select All)
       if (e.altKey && e.key === 'a') {
-        e.preventDefault()
-        handleSelectAllUsers()
+        e.preventDefault();
+        handleSelectAllUsers();
       }
 
       // Alt + Delete (Delete)
       if (e.altKey && e.key === 'Delete') {
-        e.preventDefault()
-        setIsOpenConfirmModal(true)
+        e.preventDefault();
+        setIsOpenConfirmModal(true);
       }
-    }
+    };
 
     // Add the event listener
-    window.addEventListener('keydown', handleKeyDown)
+    window.addEventListener('keydown', handleKeyDown);
 
     // Remove the event listener on cleanup
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [handleFilter, handleResetFilter, handleSelectAllUsers, handleSubmit])
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleFilter, handleResetFilter, handleSelectAllUsers, handleSubmit]);
 
   return (
     <div className='w-full'>
@@ -391,7 +396,7 @@ function AllUsersPage({ searchParams }: { searchParams?: { [key: string]: string
 
       {/* MARK: MAIN LIST */}
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-21'>
-        {users.map(user => (
+        {users.map((user) => (
           <UserItem
             data={user}
             loadingUsers={loadingUsers}
@@ -405,7 +410,7 @@ function AllUsersPage({ searchParams }: { searchParams?: { [key: string]: string
         ))}
       </div>
     </div>
-  )
+  );
 }
 
-export default AllUsersPage
+export default AllUsersPage;

@@ -1,9 +1,18 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
+import { useEffect } from 'react';
 
 function AdminPage() {
-  return <div className='bg-white rounded-lg p-21 text-dark'>Admin Page</div>
+  useEffect(() => {
+    // page title
+    document.title = 'Admin - Mona Edu';
+  }, []);
+
+  return (
+    <>
+      <div className='bg-white rounded-lg p-21 text-dark'>Admin Page</div>
+    </>
+  );
 }
 
-export default AdminPage
+export default AdminPage;

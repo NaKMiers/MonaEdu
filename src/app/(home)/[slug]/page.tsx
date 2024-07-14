@@ -22,7 +22,8 @@ import { IoTimer } from 'react-icons/io5';
 import { MdLanguage, MdVideoLibrary } from 'react-icons/md';
 
 export const metadata: Metadata = {
-  title: 'Khóa học',
+  title: 'Khóa học - Mona Edu',
+  description: 'Mona Edu - Học trực tuyến mọi lúc, mọi nơi',
 };
 
 async function CoursePage({ params: { slug } }: { params: { slug: string } }) {

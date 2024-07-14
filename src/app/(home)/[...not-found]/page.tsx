@@ -3,7 +3,8 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Không tìm thấy trang',
+  title: 'Không tìm thấy trang - Mona Edu',
+  description: 'Mona Edu - Học trực tuyến mọi lúc, mọi nơi',
 };
 
 function NotFoundPage() {

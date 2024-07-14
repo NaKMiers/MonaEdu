@@ -119,6 +119,9 @@ function AddCoursePage() {
 
   // revoke blob url when component unmount
   useEffect(() => {
+    // page title
+    document.title = 'Edit Course - Mona Edu';
+
     return () => {
       imageUrls.forEach((url) => URL.revokeObjectURL(url));
     };

@@ -1,44 +1,44 @@
-'use client'
+'use client';
 
-import Input from '@/components/Input'
-import AdminHeader from '@/components/admin/AdminHeader'
-import AdminMeta from '@/components/admin/AdminMeta'
-import OrderItem from '@/components/admin/OrderItem'
-import ConfirmDialog from '@/components/dialogs/ConfirmDialog'
-import Pagination from '@/components/layouts/Pagination'
-import { useAppDispatch } from '@/libs/hooks'
-import { setPageLoading } from '@/libs/reducers/modalReducer'
-import { IOrder } from '@/models/OrderModel'
-import { cancelOrdersApi, deletedOrdersApi, getAllOrdersApi } from '@/requests'
-import { handleQuery } from '@/utils/handleQuery'
-import { formatPrice } from '@/utils/number'
-import { Slider } from '@mui/material'
-import { usePathname, useRouter } from 'next/navigation'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
-import toast from 'react-hot-toast'
-import { FaCalendar, FaSearch, FaSort } from 'react-icons/fa'
+import Input from '@/components/Input';
+import AdminHeader from '@/components/admin/AdminHeader';
+import AdminMeta from '@/components/admin/AdminMeta';
+import OrderItem from '@/components/admin/OrderItem';
+import ConfirmDialog from '@/components/dialogs/ConfirmDialog';
+import Pagination from '@/components/layouts/Pagination';
+import { useAppDispatch } from '@/libs/hooks';
+import { setPageLoading } from '@/libs/reducers/modalReducer';
+import { IOrder } from '@/models/OrderModel';
+import { cancelOrdersApi, deletedOrdersApi, getAllOrdersApi } from '@/requests';
+import { handleQuery } from '@/utils/handleQuery';
+import { formatPrice } from '@/utils/number';
+import { Slider } from '@mui/material';
+import { usePathname, useRouter } from 'next/navigation';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import { FaCalendar, FaSearch, FaSort } from 'react-icons/fa';
 
 function AllOrdersPage({ searchParams }: { searchParams?: { [key: string]: string | string[] } }) {
   // store
-  const dispatch = useAppDispatch()
-  const pathname = usePathname()
-  const router = useRouter()
+  const dispatch = useAppDispatch();
+  const pathname = usePathname();
+  const router = useRouter();
 
   // states
-  const [orders, setOrders] = useState<IOrder[]>([])
-  const [amount, setAmount] = useState<number>(0)
-  const [selectedOrders, setSelectedOrders] = useState<string[]>([])
+  const [orders, setOrders] = useState<IOrder[]>([]);
+  const [amount, setAmount] = useState<number>(0);
+  const [selectedOrders, setSelectedOrders] = useState<string[]>([]);
 
   // loading and confirming
-  const [loadingOrders, setLoadingOrders] = useState<string[]>([])
-  const [isOpenConfirmModal, setIsOpenConfirmModal] = useState<boolean>(false)
+  const [loadingOrders, setLoadingOrders] = useState<string[]>([]);
+  const [isOpenConfirmModal, setIsOpenConfirmModal] = useState<boolean>(false);
 
   // values
-  const itemPerPage = 9
-  const [minTotal, setMinTotal] = useState<number>(0)
-  const [maxTotal, setMaxTotal] = useState<number>(0)
-  const [total, setTotal] = useState<number[]>([0, 0])
+  const itemPerPage = 9;
+  const [minTotal, setMinTotal] = useState<number>(0);
+  const [maxTotal, setMaxTotal] = useState<number>(0);
+  const [total, setTotal] = useState<number[]>([0, 0]);
 
   // Form
   const defaultValues: FieldValues = useMemo<FieldValues>(
@@ -53,7 +53,7 @@ function AllOrdersPage({ searchParams }: { searchParams?: { [key: string]: strin
       to: '',
     }),
     []
-  )
+  );
   const {
     register,
     handleSubmit,
@@ -64,180 +64,185 @@ function AllOrdersPage({ searchParams }: { searchParams?: { [key: string]: strin
     clearErrors,
   } = useForm<FieldValues>({
     defaultValues,
-  })
+  });
 
   // MARK: Get Data
   // get all orders
   useEffect(() => {
     const getAllTags = async () => {
-      const query = handleQuery(searchParams)
+      const query = handleQuery(searchParams);
 
       // start page loading
-      dispatch(setPageLoading(true))
+      dispatch(setPageLoading(true));
 
       try {
         // sent request to server
-        const { orders, amount, chops } = await getAllOrdersApi(query) // cache: no-store
+        const { orders, amount, chops } = await getAllOrdersApi(query); // cache: no-store
 
         // update orders from state
-        setOrders(orders)
-        setAmount(amount)
+        setOrders(orders);
+        setAmount(amount);
 
         // sync search params with states
-        setValue('search', searchParams?.search || getValues('search'))
-        setValue('sort', searchParams?.sort || getValues('sort'))
-        setValue('userId', searchParams?.userId || getValues('userId'))
-        setValue('voucher', searchParams?.voucher || getValues('voucher'))
-        setValue('status', searchParams?.status || getValues('status'))
-        setValue('paymentMethod', searchParams?.paymentMethod || getValues('paymentMethod'))
+        setValue('search', searchParams?.search || getValues('search'));
+        setValue('sort', searchParams?.sort || getValues('sort'));
+        setValue('userId', searchParams?.userId || getValues('userId'));
+        setValue('voucher', searchParams?.voucher || getValues('voucher'));
+        setValue('status', searchParams?.status || getValues('status'));
+        setValue('paymentMethod', searchParams?.paymentMethod || getValues('paymentMethod'));
 
         // sync search params to states
         // set min - max - total
-        setMinTotal(chops?.minTotal || 0)
-        setMaxTotal(chops?.maxTotal || 0)
+        setMinTotal(chops?.minTotal || 0);
+        setMaxTotal(chops?.maxTotal || 0);
         if (searchParams?.total) {
           const [from, to] = Array.isArray(searchParams.total)
             ? searchParams.total[0].split('-')
-            : searchParams.total.split('-')
-          setTotal([+from, +to])
+            : searchParams.total.split('-');
+          setTotal([+from, +to]);
         } else {
-          setTotal([chops?.minTotal || 0, chops?.maxTotal || 0])
+          setTotal([chops?.minTotal || 0, chops?.maxTotal || 0]);
         }
       } catch (err: any) {
-        console.log(err)
-        toast.error(err.message)
+        console.log(err);
+        toast.error(err.message);
       } finally {
         // stop page loading
-        dispatch(setPageLoading(false))
+        dispatch(setPageLoading(false));
       }
-    }
-    getAllTags()
-  }, [dispatch, searchParams, setValue, getValues])
+    };
+    getAllTags();
+  }, [dispatch, searchParams, setValue, getValues]);
 
   // MARK: Handlers
   // cancel orders
   const handleCancelOrders = useCallback(async (ids: string[]) => {
     try {
       // send request to server
-      const { canceledOrders, message } = await cancelOrdersApi(ids)
+      const { canceledOrders, message } = await cancelOrdersApi(ids);
 
       // update orders from state
-      setOrders(prev =>
-        prev.map(order =>
+      setOrders((prev) =>
+        prev.map((order) =>
           canceledOrders.map((order: IOrder) => order._id).includes(order._id)
             ? { ...order, status: 'cancel' }
             : order
         )
-      )
+      );
 
       // show success message
-      toast.success(message)
+      toast.success(message);
     } catch (err: any) {
-      console.log(err)
-      toast.error(err.message)
+      console.log(err);
+      toast.error(err.message);
     }
-  }, [])
+  }, []);
 
   // delete orders
   const handleDeleteOrders = useCallback(async (ids: string[]) => {
-    setLoadingOrders(ids)
+    setLoadingOrders(ids);
 
     try {
       // send request to server
-      const { deletedOrders, message } = await deletedOrdersApi(ids)
+      const { deletedOrders, message } = await deletedOrdersApi(ids);
 
       // remove deleted tags from state
-      setOrders(prev =>
-        prev.filter(order => !deletedOrders.map((order: IOrder) => order._id).includes(order._id))
-      )
+      setOrders((prev) =>
+        prev.filter((order) => !deletedOrders.map((order: IOrder) => order._id).includes(order._id))
+      );
 
       // show success message
-      toast.success(message)
+      toast.success(message);
     } catch (err: any) {
-      console.log(err)
-      toast.error(err.message)
+      console.log(err);
+      toast.error(err.message);
     } finally {
-      setLoadingOrders([])
-      setSelectedOrders([])
+      setLoadingOrders([]);
+      setSelectedOrders([]);
     }
-  }, [])
+  }, []);
 
   // handle optimize filter
   const handleOptimizeFilter: SubmitHandler<FieldValues> = useCallback(
-    data => {
+    (data) => {
       // reset page
       if (searchParams?.page) {
-        delete searchParams.page
+        delete searchParams.page;
       }
 
       // loop through data to prevent filter default
       for (let key in data) {
         if (data[key] === defaultValues[key]) {
           if (!searchParams?.[key]) {
-            delete data[key]
+            delete data[key];
           } else {
-            data[key] = ''
+            data[key] = '';
           }
         }
       }
 
       // from | to
-      const { from, to, ...rest } = data
-      const fromTo = (from || '') + '|' + (to || '')
+      const { from, to, ...rest } = data;
+      const fromTo = (from || '') + '|' + (to || '');
       if (fromTo !== '|') {
-        rest['from-to'] = fromTo
+        rest['from-to'] = fromTo;
       }
 
-      return { ...rest, total: total[0] === minTotal && total[1] === maxTotal ? '' : total.join('-') }
+      return { ...rest, total: total[0] === minTotal && total[1] === maxTotal ? '' : total.join('-') };
     },
     [minTotal, maxTotal, total, searchParams, defaultValues]
-  )
+  );
 
   // handle submit filter
   const handleFilter: SubmitHandler<FieldValues> = useCallback(
-    data => {
-      const params: any = handleOptimizeFilter(data)
+    (data) => {
+      const params: any = handleOptimizeFilter(data);
 
       // handle query
       const query = handleQuery({
         ...searchParams,
         ...params,
-      })
+      });
 
       // push to router
-      router.push(pathname + query)
+      router.push(pathname + query);
     },
     [handleOptimizeFilter, router, searchParams, pathname]
-  )
+  );
 
   // handle reset filter
   const handleResetFilter = useCallback(() => {
-    reset()
-    router.push(pathname)
-  }, [reset, router, pathname])
+    reset();
+    router.push(pathname);
+  }, [reset, router, pathname]);
 
   // keyboard event
   useEffect(() => {
+    // page title
+    document.title = 'All Orders - Mona Edu';
+
     const handleKeyDown = (e: KeyboardEvent) => {
       // Alt + A (Select All)
       if (e.altKey && e.key === 'a') {
-        e.preventDefault()
-        setSelectedOrders(prev => (prev.length === orders.length ? [] : orders.map(order => order._id)))
+        e.preventDefault();
+        setSelectedOrders((prev) =>
+          prev.length === orders.length ? [] : orders.map((order) => order._id)
+        );
       }
 
       // Alt + Delete (Delete)
       if (e.altKey && e.key === 'Delete') {
-        e.preventDefault()
-        setIsOpenConfirmModal(true)
+        e.preventDefault();
+        setIsOpenConfirmModal(true);
       }
-    }
+    };
 
     // Add the event listener
-    window.addEventListener('keydown', handleKeyDown)
+    window.addEventListener('keydown', handleKeyDown);
 
     // Remove the event listener on cleanup
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [handleFilter, handleResetFilter, handleSubmit, orders])
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleFilter, handleResetFilter, handleSubmit, orders]);
 
   return (
     <div className='w-full'>
@@ -434,7 +439,7 @@ function AllOrdersPage({ searchParams }: { searchParams?: { [key: string]: strin
           <button
             className='border border-sky-400 text-sky-400 rounded-lg px-3 py-2 hover:bg-sky-400 hover:text-white trans-200'
             onClick={() =>
-              setSelectedOrders(selectedOrders.length > 0 ? [] : orders.map(order => order._id))
+              setSelectedOrders(selectedOrders.length > 0 ? [] : orders.map((order) => order._id))
             }
           >
             {selectedOrders.length > 0 ? 'Unselect All' : 'Select All'}
@@ -442,7 +447,9 @@ function AllOrdersPage({ searchParams }: { searchParams?: { [key: string]: strin
 
           {/* Cancel Many Button */}
           {!!selectedOrders.length &&
-            selectedOrders.every(id => orders.find(order => order._id === id)?.status === 'pending') && (
+            selectedOrders.every(
+              (id) => orders.find((order) => order._id === id)?.status === 'pending'
+            ) && (
               <button
                 className='border border-slate-300 rounded-lg px-3 py-2 hover:bg-slate-300 hover:text-white trans-200'
                 onClick={() => handleCancelOrders(selectedOrders)}
@@ -481,7 +488,7 @@ function AllOrdersPage({ searchParams }: { searchParams?: { [key: string]: strin
 
       {/* MARK: MAIN LIST */}
       <div className='grid grid-cols-1 md:grid-cols-2 gap-21 lg:grid-cols-3'>
-        {orders.map(order => (
+        {orders.map((order) => (
           <OrderItem
             data={order}
             loadingOrders={loadingOrders}
@@ -497,7 +504,7 @@ function AllOrdersPage({ searchParams }: { searchParams?: { [key: string]: strin
         ))}
       </div>
     </div>
-  )
+  );
 }
 
-export default AllOrdersPage
+export default AllOrdersPage;

@@ -4,7 +4,13 @@ import Pagination from '@/components/layouts/Pagination';
 import { ICourse } from '@/models/CourseModel';
 import { getFlashSalePageApi } from '@/requests';
 import { handleQuery } from '@/utils/handleQuery';
+import { Metadata } from 'next';
 import Link from 'next/link';
+
+export const metadata: Metadata = {
+  title: 'Đang giảm giá - Mona Edu',
+  description: 'Mona Edu - Học trực tuyến mọi lúc, mọi nơi',
+};
 
 async function FlashSalePage({ searchParams }: { searchParams?: { [key: string]: string[] } }) {
   let courses: ICourse[] = [];

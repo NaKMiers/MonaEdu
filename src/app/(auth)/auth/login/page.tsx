@@ -12,8 +12,6 @@ import toast from 'react-hot-toast';
 import { FaCircleNotch } from 'react-icons/fa';
 
 function LoginPage() {
-  document.title = 'Đăng nhập - MonaEdu';
-
   // hooks
   const router = useRouter();
 
@@ -142,7 +140,7 @@ function LoginPage() {
               alt='logo'
             />
           </div>
-          <span className='font-bold text-3xl text-orange-500'>MonaEdu</span>
+          <span className='font-bold text-3xl text-orange-500'>Mona Edu</span>
         </div>
 
         <Divider size={4} />

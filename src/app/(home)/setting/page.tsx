@@ -9,7 +9,7 @@ import { setAuthenticated, setOpenAuthentication } from '@/libs/reducers/modalRe
 import { checkAuthenticationApi } from '@/requests';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { FaCircleNotch } from 'react-icons/fa';
 import { IoMdCloseCircleOutline } from 'react-icons/io';
@@ -60,6 +60,11 @@ function PersonalSetting() {
       setIsCheckingAuthentication(false);
     }
   }, [dispatch, password]);
+
+  // set page title
+  useEffect(() => {
+    document.title = 'Cài đặt - Mona Edu';
+  }, []);
 
   return (
     <div className='max-w-1200 mx-auto px-21'>

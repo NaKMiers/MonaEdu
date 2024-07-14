@@ -13,8 +13,6 @@ import toast from 'react-hot-toast';
 import { FaCircleNotch } from 'react-icons/fa';
 
 function ResetPasswordPage() {
-  document.title = 'Đặt lại mật khẩu - MonaEdu';
-
   // hooks
   const router = useRouter();
   const queryParams = useSearchParams();
@@ -176,7 +174,7 @@ function ResetPasswordPage() {
               alt='logo'
             />
           </div>
-          <span className='font-bold text-3xl text-orange-500'>MonaEdu</span>
+          <span className='font-bold text-3xl text-orange-500'>Mona Edu</span>
         </div>
 
         <Divider size={4} />

@@ -1,50 +1,50 @@
-'use client'
+'use client';
 
-import Input from '@/components/Input'
-import AdminHeader from '@/components/admin/AdminHeader'
-import AdminMeta from '@/components/admin/AdminMeta'
-import VoucherItem from '@/components/admin/VoucherItem'
-import ConfirmDialog from '@/components/dialogs/ConfirmDialog'
-import Pagination from '@/components/layouts/Pagination'
-import { useAppDispatch } from '@/libs/hooks'
-import { setPageLoading } from '@/libs/reducers/modalReducer'
-import { IVoucher } from '@/models/VoucherModel'
-import { activateVouchersApi, deleteVouchersApi, getAllVouchersApi } from '@/requests'
-import { handleQuery } from '@/utils/handleQuery'
-import { formatPrice } from '@/utils/number'
-import { Slider } from '@mui/material'
-import { usePathname, useRouter } from 'next/navigation'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
-import toast from 'react-hot-toast'
-import { FaCalendar, FaSearch, FaSort } from 'react-icons/fa'
+import Input from '@/components/Input';
+import AdminHeader from '@/components/admin/AdminHeader';
+import AdminMeta from '@/components/admin/AdminMeta';
+import VoucherItem from '@/components/admin/VoucherItem';
+import ConfirmDialog from '@/components/dialogs/ConfirmDialog';
+import Pagination from '@/components/layouts/Pagination';
+import { useAppDispatch } from '@/libs/hooks';
+import { setPageLoading } from '@/libs/reducers/modalReducer';
+import { IVoucher } from '@/models/VoucherModel';
+import { activateVouchersApi, deleteVouchersApi, getAllVouchersApi } from '@/requests';
+import { handleQuery } from '@/utils/handleQuery';
+import { formatPrice } from '@/utils/number';
+import { Slider } from '@mui/material';
+import { usePathname, useRouter } from 'next/navigation';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import { FaCalendar, FaSearch, FaSort } from 'react-icons/fa';
 
-export type VoucherWithOwner = IVoucher & { owner: { firstName: string; lastName: string } }
+export type VoucherWithOwner = IVoucher & { owner: { firstName: string; lastName: string } };
 
 function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: string[] } }) {
   // store
-  const dispatch = useAppDispatch()
-  const pathname = usePathname()
-  const router = useRouter()
+  const dispatch = useAppDispatch();
+  const pathname = usePathname();
+  const router = useRouter();
 
   // states
-  const [vouchers, setVouchers] = useState<VoucherWithOwner[]>([])
-  const [amount, setAmount] = useState<number>(0)
-  const [selectedVouchers, setSelectedVouchers] = useState<string[]>([])
+  const [vouchers, setVouchers] = useState<VoucherWithOwner[]>([]);
+  const [amount, setAmount] = useState<number>(0);
+  const [selectedVouchers, setSelectedVouchers] = useState<string[]>([]);
 
   // loading and confirming
-  const [loadingVouchers, setLoadingVouchers] = useState<string[]>([])
-  const [isOpenConfirmModal, setIsOpenConfirmModal] = useState<boolean>(false)
+  const [loadingVouchers, setLoadingVouchers] = useState<string[]>([]);
+  const [isOpenConfirmModal, setIsOpenConfirmModal] = useState<boolean>(false);
 
   // values
-  const itemPerPage = 9
-  const [minMinTotal, setMinMinTotal] = useState<number>(0)
-  const [maxMinTotal, setMaxMinTotal] = useState<number>(0)
-  const [minTotal, setMinTotal] = useState<number[]>([0, 0])
+  const itemPerPage = 9;
+  const [minMinTotal, setMinMinTotal] = useState<number>(0);
+  const [maxMinTotal, setMaxMinTotal] = useState<number>(0);
+  const [minTotal, setMinTotal] = useState<number[]>([0, 0]);
 
-  const [minMaxReduce, setMinMaxReduce] = useState<number>(0)
-  const [maxMaxReduce, setMaxMaxReduce] = useState<number>(0)
-  const [maxReduce, setMaxReduce] = useState<number[]>([0, 0])
+  const [minMaxReduce, setMinMaxReduce] = useState<number>(0);
+  const [maxMaxReduce, setMaxMaxReduce] = useState<number>(0);
+  const [maxReduce, setMaxReduce] = useState<number[]>([0, 0]);
 
   // form
   const defaultValues = useMemo<FieldValues>(
@@ -60,7 +60,7 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
       expireTo: '',
     }),
     []
-  )
+  );
   const {
     register,
     handleSubmit,
@@ -71,144 +71,144 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
     clearErrors,
   } = useForm<FieldValues>({
     defaultValues,
-  })
+  });
 
   // MARK: Get Data
   // get all vouchers
   useEffect(() => {
     // get all vouchers
     const getAllVouchers = async () => {
-      const query = handleQuery(searchParams)
+      const query = handleQuery(searchParams);
 
       // start page loading
-      dispatch(setPageLoading(true))
+      dispatch(setPageLoading(true));
 
       try {
-        const { vouchers, amount, chops } = await getAllVouchersApi(query) // cache: no-store
+        const { vouchers, amount, chops } = await getAllVouchersApi(query); // cache: no-store
 
         // set vouchers to state
-        setVouchers(vouchers)
-        setAmount(amount)
+        setVouchers(vouchers);
+        setAmount(amount);
 
         // sync search params with states
-        setValue('search', searchParams?.search || getValues('search'))
-        setValue('sort', searchParams?.sort || getValues('sort'))
-        setValue('type', searchParams?.type || getValues('type'))
-        setValue('active', searchParams?.active || getValues('active'))
-        setValue('timesLeft', searchParams?.timesLeft || getValues('timesLeft'))
-        setValue('beginFrom', searchParams?.beginFrom || getValues('beginFrom'))
-        setValue('beginTo', searchParams?.beginTo || getValues('beginTo'))
-        setValue('expireFrom', searchParams?.expireFrom || getValues('expireFrom'))
-        setValue('expireTo', searchParams?.expireTo || getValues('expireTo'))
+        setValue('search', searchParams?.search || getValues('search'));
+        setValue('sort', searchParams?.sort || getValues('sort'));
+        setValue('type', searchParams?.type || getValues('type'));
+        setValue('active', searchParams?.active || getValues('active'));
+        setValue('timesLeft', searchParams?.timesLeft || getValues('timesLeft'));
+        setValue('beginFrom', searchParams?.beginFrom || getValues('beginFrom'));
+        setValue('beginTo', searchParams?.beginTo || getValues('beginTo'));
+        setValue('expireFrom', searchParams?.expireFrom || getValues('expireFrom'));
+        setValue('expireTo', searchParams?.expireTo || getValues('expireTo'));
 
         // get min - max
-        setMinMinTotal(chops.minMinTotal)
-        setMaxMinTotal(chops.maxMinTotal)
+        setMinMinTotal(chops.minMinTotal);
+        setMaxMinTotal(chops.maxMinTotal);
         if (searchParams?.minTotal) {
           const [from, to] = Array.isArray(searchParams.minTotal)
             ? searchParams.minTotal[0].split('-')
-            : (searchParams.minTotal as string).split('-')
-          setMinTotal([+from, +to])
+            : (searchParams.minTotal as string).split('-');
+          setMinTotal([+from, +to]);
         } else {
-          setMinTotal([chops?.minTotal || 0, chops?.maxTotal || 0])
+          setMinTotal([chops?.minTotal || 0, chops?.maxTotal || 0]);
         }
 
-        setMinMaxReduce(chops.minMaxReduce)
-        setMaxMaxReduce(chops.maxMaxReduce)
+        setMinMaxReduce(chops.minMaxReduce);
+        setMaxMaxReduce(chops.maxMaxReduce);
         if (searchParams?.maxReduce) {
           const [from, to] = Array.isArray(searchParams.maxReduce)
             ? searchParams.maxReduce[0].split('-')
-            : (searchParams.maxReduce as string).split('-')
-          setMaxReduce([+from, +to])
+            : (searchParams.maxReduce as string).split('-');
+          setMaxReduce([+from, +to]);
         } else {
-          setMaxReduce([chops?.maxReduce || 0, chops?.maxTotal || 0])
+          setMaxReduce([chops?.maxReduce || 0, chops?.maxTotal || 0]);
         }
       } catch (err: any) {
-        console.log(err)
+        console.log(err);
       } finally {
         // stop page loading
-        dispatch(setPageLoading(false))
+        dispatch(setPageLoading(false));
       }
-    }
-    getAllVouchers()
-  }, [dispatch, searchParams, setValue, getValues])
+    };
+    getAllVouchers();
+  }, [dispatch, searchParams, setValue, getValues]);
 
   // MARK: Handlers
   // activate voucher
   const handleActivateVouchers = useCallback(async (ids: string[], value: boolean) => {
     try {
       // send request to server
-      const { updatedVouchers, message } = await activateVouchersApi(ids, value)
+      const { updatedVouchers, message } = await activateVouchersApi(ids, value);
 
       // update vouchers from state
-      setVouchers(prev =>
-        prev.map(voucher =>
+      setVouchers((prev) =>
+        prev.map((voucher) =>
           updatedVouchers.map((voucher: VoucherWithOwner) => voucher._id).includes(voucher._id)
             ? { ...voucher, active: value }
             : voucher
         )
-      )
+      );
 
       // show success message
-      toast.success(message)
+      toast.success(message);
     } catch (err: any) {
-      console.log(err)
-      toast.error(err.message)
+      console.log(err);
+      toast.error(err.message);
     }
-  }, [])
+  }, []);
 
   // delete voucher
   const handleDeleteVouchers = useCallback(async (ids: string[]) => {
-    setLoadingVouchers(ids)
+    setLoadingVouchers(ids);
 
     try {
       // send request to server
-      const { deletedVouchers, message } = await deleteVouchersApi(ids)
+      const { deletedVouchers, message } = await deleteVouchersApi(ids);
 
       // remove deleted vouchers from state
-      setVouchers(prev =>
+      setVouchers((prev) =>
         prev.filter(
-          voucher => !deletedVouchers.map((voucher: IVoucher) => voucher._id).includes(voucher._id)
+          (voucher) => !deletedVouchers.map((voucher: IVoucher) => voucher._id).includes(voucher._id)
         )
-      )
+      );
 
       // show success message
-      toast.success(message)
+      toast.success(message);
     } catch (err: any) {
-      console.log(err)
-      toast.error(err.message)
+      console.log(err);
+      toast.error(err.message);
     } finally {
-      setLoadingVouchers([])
-      setSelectedVouchers([])
+      setLoadingVouchers([]);
+      setSelectedVouchers([]);
     }
-  }, [])
+  }, []);
 
   // handle optimize filter
   const handleOptimizeFilter: SubmitHandler<FieldValues> = useCallback(
-    data => {
+    (data) => {
       // reset page
       if (searchParams?.page) {
-        delete searchParams.page
+        delete searchParams.page;
       }
 
       // loop through data to prevent filter default
       for (let key in data) {
         if (data[key] === defaultValues[key]) {
           if (!searchParams?.[key]) {
-            delete data[key]
+            delete data[key];
           } else {
-            data[key] = ''
+            data[key] = '';
           }
         }
       }
 
-      const { beginFrom, beginTo, expireFrom, expireTo, ...rest } = data
+      const { beginFrom, beginTo, expireFrom, expireTo, ...rest } = data;
       if (beginFrom || beginTo) {
-        rest.begin = (beginFrom || '') + '|' + (beginTo || '')
+        rest.begin = (beginFrom || '') + '|' + (beginTo || '');
       }
 
       if (expireFrom || expireTo) {
-        rest.expire = (expireFrom || '') + '|' + (expireTo || '')
+        rest.expire = (expireFrom || '') + '|' + (expireTo || '');
       }
 
       return {
@@ -216,7 +216,7 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
         minTotal: minTotal[0] === minMinTotal && minTotal[1] === maxMinTotal ? '' : minTotal.join('-'),
         maxReduce:
           maxReduce[0] === minMaxReduce && maxReduce[1] === maxMaxReduce ? '' : maxReduce.join('-'),
-      }
+      };
     },
     [
       searchParams,
@@ -228,55 +228,58 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
       minMaxReduce,
       maxMaxReduce,
     ]
-  )
+  );
 
   // handle submit filter
   const handleFilter: SubmitHandler<FieldValues> = useCallback(
-    async data => {
-      const params: any = handleOptimizeFilter(data)
+    async (data) => {
+      const params: any = handleOptimizeFilter(data);
 
       // handle query
       const query = handleQuery({
         ...searchParams,
         ...params,
-      })
+      });
 
       // push to router
-      router.push(pathname + query)
+      router.push(pathname + query);
     },
     [handleOptimizeFilter, router, searchParams, pathname]
-  )
+  );
 
   // handle reset filter
   const handleResetFilter = useCallback(() => {
-    reset()
-    router.push(pathname)
-  }, [reset, router, pathname])
+    reset();
+    router.push(pathname);
+  }, [reset, router, pathname]);
 
   // keyboard event
   useEffect(() => {
+    // page title
+    document.title = 'All Vouchers - Mona Edu';
+
     const handleKeyDown = (e: KeyboardEvent) => {
       // Alt + A (Select All)
       if (e.altKey && e.key === 'a') {
-        e.preventDefault()
-        setSelectedVouchers(prev =>
-          prev.length === vouchers.length ? [] : vouchers.map(voucher => voucher._id)
-        )
+        e.preventDefault();
+        setSelectedVouchers((prev) =>
+          prev.length === vouchers.length ? [] : vouchers.map((voucher) => voucher._id)
+        );
       }
 
       // Alt + Delete (Delete)
       if (e.altKey && e.key === 'Delete') {
-        e.preventDefault()
-        setIsOpenConfirmModal(true)
+        e.preventDefault();
+        setIsOpenConfirmModal(true);
       }
-    }
+    };
 
     // Add the event listener
-    window.addEventListener('keydown', handleKeyDown)
+    window.addEventListener('keydown', handleKeyDown);
 
     // Remove the event listener on cleanup
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [handleFilter, handleResetFilter, handleSubmit, vouchers])
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleFilter, handleResetFilter, handleSubmit, vouchers]);
 
   return (
     <div className='w-full'>
@@ -518,7 +521,7 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
             className='border border-sky-400 text-sky-400 rounded-lg px-3 py-2 hover:bg-sky-400 hover:text-white trans-200'
             onClick={() =>
               setSelectedVouchers(
-                selectedVouchers.length > 0 ? [] : vouchers.map(voucher => voucher._id)
+                selectedVouchers.length > 0 ? [] : vouchers.map((voucher) => voucher._id)
               )
             }
           >
@@ -526,7 +529,7 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
           </button>
 
           {/* Activate Many Button */}
-          {selectedVouchers.some(id => !vouchers.find(voucher => voucher._id === id)?.active) && (
+          {selectedVouchers.some((id) => !vouchers.find((voucher) => voucher._id === id)?.active) && (
             <button
               className='border border-green-400 text-green-400 rounded-lg px-3 py-2 hover:bg-green-400 hover:text-white trans-200'
               onClick={() => handleActivateVouchers(selectedVouchers, true)}
@@ -536,7 +539,7 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
           )}
 
           {/* Deactivate Many Button */}
-          {selectedVouchers.some(id => vouchers.find(voucher => voucher._id === id)?.active) && (
+          {selectedVouchers.some((id) => vouchers.find((voucher) => voucher._id === id)?.active) && (
             <button
               className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-white trans-200'
               onClick={() => handleActivateVouchers(selectedVouchers, false)}
@@ -575,7 +578,7 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
 
       {/* MARK: MAIN LIST */}
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-21'>
-        {vouchers.map(voucher => (
+        {vouchers.map((voucher) => (
           <VoucherItem
             data={voucher}
             loadingVouchers={loadingVouchers}
@@ -588,7 +591,7 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
         ))}
       </div>
     </div>
-  )
+  );
 }
 
-export default AllVouchersPage
+export default AllVouchersPage;

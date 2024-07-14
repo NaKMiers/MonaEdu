@@ -1,31 +1,31 @@
-'use client'
+'use client';
 
-import Input from '@/components/Input'
-import LoadingButton from '@/components/LoadingButton'
-import AdminHeader from '@/components/admin/AdminHeader'
-import { useAppDispatch, useAppSelector } from '@/libs/hooks'
-import { setLoading } from '@/libs/reducers/modalReducer'
-import { ICourse } from '@/models/CourseModel'
-import { addFlashSaleApi, getAllCoursesApi, getForceAllCoursesApi } from '@/requests'
-import Image from 'next/image'
-import { useCallback, useEffect, useState } from 'react'
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
-import toast from 'react-hot-toast'
-import { FaPause, FaPlay } from 'react-icons/fa6'
-import { IoReload } from 'react-icons/io5'
+import Input from '@/components/Input';
+import LoadingButton from '@/components/LoadingButton';
+import AdminHeader from '@/components/admin/AdminHeader';
+import { useAppDispatch, useAppSelector } from '@/libs/hooks';
+import { setLoading } from '@/libs/reducers/modalReducer';
+import { ICourse } from '@/models/CourseModel';
+import { addFlashSaleApi, getAllCoursesApi, getForceAllCoursesApi } from '@/requests';
+import Image from 'next/image';
+import { useCallback, useEffect, useState } from 'react';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import { FaPause, FaPlay } from 'react-icons/fa6';
+import { IoReload } from 'react-icons/io5';
 
-import { MdNumbers } from 'react-icons/md'
-import { RiCharacterRecognitionLine } from 'react-icons/ri'
+import { MdNumbers } from 'react-icons/md';
+import { RiCharacterRecognitionLine } from 'react-icons/ri';
 
 function AddFlashSalePage() {
   // hooks
-  const dispatch = useAppDispatch()
-  const isLoading = useAppSelector(state => state.modal.isLoading)
+  const dispatch = useAppDispatch();
+  const isLoading = useAppSelector((state) => state.modal.isLoading);
 
   // states
-  const [courses, setCourses] = useState<ICourse[]>([])
-  const [selectedCourses, setSelectedCourses] = useState<string[]>([])
-  const [timeType, setTimeType] = useState<'loop' | 'once'>('loop')
+  const [courses, setCourses] = useState<ICourse[]>([]);
+  const [selectedCourses, setSelectedCourses] = useState<string[]>([]);
+  const [timeType, setTimeType] = useState<'loop' | 'once'>('loop');
 
   // form
   const {
@@ -45,7 +45,7 @@ function AddFlashSalePage() {
       timeType: 'loop',
       duration: 120,
     },
-  })
+  });
 
   // MARK: Get Data
   // get all courses to apply
@@ -53,90 +53,95 @@ function AddFlashSalePage() {
     const getAllCourses = async () => {
       try {
         // send request to server
-        const { courses } = await getForceAllCoursesApi()
+        const { courses } = await getForceAllCoursesApi();
 
         // set courses to state
-        setCourses(courses)
+        setCourses(courses);
       } catch (err: any) {
-        console.log(err)
-        toast.error(err.message)
+        console.log(err);
+        toast.error(err.message);
       }
-    }
-    getAllCourses()
-  }, [])
+    };
+    getAllCourses();
+  }, []);
 
   // validate form
   const handleValidate: SubmitHandler<FieldValues> = useCallback(
-    data => {
-      let isValid = true
+    (data) => {
+      let isValid = true;
 
       // if type if percentage, value must have % at the end
       if (data.type === 'percentage' && !data.value.endsWith('%')) {
-        setError('value', { type: 'manual', message: 'Value must have %' })
-        isValid = false
+        setError('value', { type: 'manual', message: 'Value must have %' });
+        isValid = false;
       }
 
       // if type if percentage, value have '%' at the end and must be number
       if (data.type === 'percentage' && isNaN(Number(data.value.replace('%', '')))) {
-        setError('value', { type: 'manual', message: 'Value must be number' })
-        isValid = false
+        setError('value', { type: 'manual', message: 'Value must be number' });
+        isValid = false;
       }
 
       // if type if fixed-reduce, value must be number
       if (data.type !== 'percentage' && isNaN(Number(data.value))) {
-        setError('value', { type: 'manual', message: 'Value must be number' })
-        isValid = false
+        setError('value', { type: 'manual', message: 'Value must be number' });
+        isValid = false;
       }
 
       // if time type is loop, duration must be > 0
       if (data.timeType === 'loop' && data.duration <= 0) {
-        setError('duration', { type: 'manual', message: 'Duration must be > 0' })
-        isValid = false
+        setError('duration', { type: 'manual', message: 'Duration must be > 0' });
+        isValid = false;
       }
 
       // if expire is less than begin
       if (new Date(data.expire).getTime() <= new Date(data.begin).getTime()) {
-        setError('expire', { type: 'manual', message: 'Expire must be > begin' })
-        isValid = false
+        setError('expire', { type: 'manual', message: 'Expire must be > begin' });
+        isValid = false;
       }
 
-      return isValid
+      return isValid;
     },
     [setError]
-  )
+  );
 
   // MARK: Submit
   // handle send request to server to add flash sale
-  const onSubmit: SubmitHandler<FieldValues> = async data => {
-    if (!handleValidate(data)) return
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    if (!handleValidate(data)) return;
 
     // set loading
-    dispatch(setLoading(true))
+    dispatch(setLoading(true));
 
     try {
       // send request to server
       const { message } = await addFlashSaleApi({
         ...data,
         appliedCourses: selectedCourses,
-      })
+      });
 
       // show success message
-      toast.success(message)
+      toast.success(message);
 
       // reset
-      reset()
-      setSelectedCourses([])
+      reset();
+      setSelectedCourses([]);
 
       // update courses
-      const { courses } = await getAllCoursesApi()
-      setCourses(courses)
+      const { courses } = await getAllCoursesApi();
+      setCourses(courses);
     } catch (err: any) {
-      console.log(err)
-      toast.error(err.message)
+      console.log(err);
+      toast.error(err.message);
     } finally {
-      dispatch(setLoading(false))
+      dispatch(setLoading(false));
     }
-  }
+  };
+
+  // set page title
+  useEffect(() => {
+    document.title = 'Add Flash Sale - Mona Edu';
+  }, []);
 
   return (
     <div className='max-w-1200 mx-auto'>
@@ -216,9 +221,9 @@ function AddFlashSalePage() {
             required
             type='select'
             onFocus={() => clearErrors('timeType')}
-            onChange={e => {
-              setValue('timeType', e.target.value)
-              setTimeType(e.target.value as 'loop' | 'once')
+            onChange={(e) => {
+              setValue('timeType', e.target.value);
+              setTimeType(e.target.value as 'loop' | 'once');
             }}
             options={[
               {
@@ -279,11 +284,12 @@ function AddFlashSalePage() {
             onClick={() =>
               courses.length === selectedCourses.length
                 ? setSelectedCourses([])
-                : setSelectedCourses(courses.map(course => course._id))
-            }>
+                : setSelectedCourses(courses.map((course) => course._id))
+            }
+          >
             <span className='block text-ellipsis line-clamp-1 text-nowrap'>All</span>
           </div>
-          {courses.map(course => (
+          {courses.map((course) => (
             <div
               className={`max-w-[250px] border-2 border-slate-300 rounded-lg flex items-center py-1 px-2 gap-2 cursor-pointer trans-200 ${
                 selectedCourses.includes(course._id)
@@ -295,10 +301,11 @@ function AddFlashSalePage() {
               title={course.title}
               onClick={() =>
                 selectedCourses.includes(course._id)
-                  ? setSelectedCourses(prev => prev.filter(id => id !== course._id))
-                  : setSelectedCourses(prev => [...prev, course._id])
+                  ? setSelectedCourses((prev) => prev.filter((id) => id !== course._id))
+                  : setSelectedCourses((prev) => [...prev, course._id])
               }
-              key={course._id}>
+              key={course._id}
+            >
               <Image
                 className='aspect-video rounded-md border-2 border-white'
                 src={course.images[0]}
@@ -322,7 +329,7 @@ function AddFlashSalePage() {
         />
       </div>
     </div>
-  )
+  );
 }
 
-export default AddFlashSalePage
+export default AddFlashSalePage;

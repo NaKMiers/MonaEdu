@@ -8,8 +8,14 @@ import { ICategory } from '@/models/CategoryModel';
 import { ICourse } from '@/models/CourseModel';
 import { getCategoryPageApi } from '@/requests';
 import { handleQuery } from '@/utils/handleQuery';
+import { Metadata } from 'next';
 import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
+
+export const metadata: Metadata = {
+  title: 'Danh mục khóa học - Mona Edu',
+  description: 'Mona Edu - Học trực tuyến mọi lúc, mọi nơi',
+};
 
 async function CategoriesPage({ searchParams }: { searchParams?: { [key: string]: string[] } }) {
   const headerList = headers();
