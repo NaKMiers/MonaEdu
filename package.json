@@ -16,6 +16,7 @@
     "@aws-sdk/s3-request-presigner": "^3.614.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@mui/icons-material": "^5.16.4",
     "@mui/material": "^5.15.21",
     "@react-email/components": "^0.0.17",
     "@reduxjs/toolkit": "^2.2.3",

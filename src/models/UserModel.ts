@@ -1,8 +1,8 @@
-import bcrypt from 'bcrypt';
-import mongoose from 'mongoose';
-import { ICourse } from './CourseModel';
-import { IVoucher } from './VoucherModel';
-const Schema = mongoose.Schema;
+import bcrypt from 'bcrypt'
+import mongoose from 'mongoose'
+import { ICourse } from './CourseModel'
+import { IVoucher } from './VoucherModel'
+const Schema = mongoose.Schema
 
 const UserSchema = new Schema(
   {
@@ -10,10 +10,10 @@ const UserSchema = new Schema(
     username: {
       type: String,
       required: function (this: { authType: string }) {
-        return this.authType === 'local';
+        return this.authType === 'local'
       },
       unique: function (this: { authType: string }) {
-        return this.authType === 'local';
+        return this.authType === 'local'
       },
     },
     nickname: {
@@ -26,7 +26,7 @@ const UserSchema = new Schema(
       unique: true,
       validate: {
         validator: function (value: string) {
-          return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value);
+          return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,8}$$/.test(value)
         },
         message: 'Email không hợp lệ',
       },
@@ -37,7 +37,7 @@ const UserSchema = new Schema(
       sparse: true,
       validate: {
         validator: function (value: string) {
-          return /^0\d{9,10}$/.test(value);
+          return /^0\d{9,10}$/.test(value)
         },
         message: 'Số điện thoại không hợp lệ',
       },
@@ -57,11 +57,11 @@ const UserSchema = new Schema(
     password: {
       type: String,
       required: function (this: { authType: string }) {
-        return this.authType === 'local';
+        return this.authType === 'local'
       },
       validate: {
         validator: function (value: string) {
-          return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/.test(value);
+          return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/.test(value)
         },
         message: 'Mật khẩu không hợp lệ',
       },
@@ -223,79 +223,79 @@ const UserSchema = new Schema(
   {
     timestamps: true,
   }
-);
+)
 
 UserSchema.pre('save', async function (next) {
-  console.log('- Pre Save User -');
+  console.log('- Pre Save User -')
   // check authType & username before saving
   if (this.authType !== 'local' || !this.isModified('password')) {
-    return next();
+    return next()
   }
 
   // hash password before saving
   try {
-    const hashedPassword = await bcrypt.hash(this.password || '', +process.env.BCRYPT_SALT_ROUND! || 10);
-    this.password = hashedPassword;
+    const hashedPassword = await bcrypt.hash(this.password || '', +process.env.BCRYPT_SALT_ROUND! || 10)
+    this.password = hashedPassword
 
-    next();
+    next()
   } catch (err: any) {
-    return next(err);
+    return next(err)
   }
-});
+})
 
-const UserModel = mongoose.models.user || mongoose.model('user', UserSchema);
-export default UserModel;
+const UserModel = mongoose.models.user || mongoose.model('user', UserSchema)
+export default UserModel
 
 export interface IUser {
-  _id: string;
-  username: string;
-  nickname: string;
-  email: string;
-  phone: string;
-  bio: string;
-  verifiedEmail: boolean;
-  verifiedPhone: boolean;
-  password: string;
-  authType: string;
-  role: string;
-  avatar: string;
-  banner: string;
-  firstName: string;
-  lastName: string;
-  birthday: string;
-  address: string;
-  gender: string;
-  job: string;
-  expended: number;
-  commission: { type: string; value: string };
-  courses: { course: ICourse; progress: number }[];
-  gifts: string[] | ICourse[];
-  notifications: INotification[];
+  _id: string
+  username: string
+  nickname: string
+  email: string
+  phone: string
+  bio: string
+  verifiedEmail: boolean
+  verifiedPhone: boolean
+  password: string
+  authType: string
+  role: string
+  avatar: string
+  banner: string
+  firstName: string
+  lastName: string
+  birthday: string
+  address: string
+  gender: string
+  job: string
+  expended: number
+  commission: { type: string; value: string }
+  courses: { course: ICourse; progress: number }[]
+  gifts: string[] | ICourse[]
+  notifications: INotification[]
   notificationSettings: {
-    newLesson: boolean;
-    repliedQuestion: boolean;
-    emotionQuestion: boolean;
-    repliedComment: boolean;
-    emotionComment: boolean;
-  };
+    newLesson: boolean
+    repliedQuestion: boolean
+    emotionQuestion: boolean
+    repliedComment: boolean
+    emotionComment: boolean
+  }
   blockStatuses: {
-    blockedComment: boolean;
-    blockedAddingQuestion: boolean;
-  };
-  createdAt: string;
-  updatedAt: string;
+    blockedComment: boolean
+    blockedAddingQuestion: boolean
+  }
+  createdAt: string
+  updatedAt: string
 
   // Subs
-  vouchers?: IVoucher[];
+  vouchers?: IVoucher[]
 }
 
 export interface INotification {
-  _id: string;
-  image: string;
-  title: string;
-  content?: string;
-  link?: string;
-  type: string;
-  status: 'read' | 'unread';
-  createdAt: string;
+  _id: string
+  image: string
+  title: string
+  content?: string
+  link?: string
+  type: string
+  status: 'read' | 'unread'
+  createdAt: string
 }

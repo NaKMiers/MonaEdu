@@ -55,11 +55,11 @@ function Footer() {
             <h3 className='font-bold text-xl'>VỀ CHÚNG TÔI</h3>
 
             <p className='font-body tracking-wider mt-2'>
-              Mona Edu brings you online learning solutions, studying online at home at an economical
-              cost. best. This is suitable for those whose finances are still tight and limited
-              (students, real trainees, new graduates,...) but can still participate in top value courses
-              to Develop professional skills and develop your career. If you want to save more on your
-              investment If you are interested in learning, Mona Edu is the ideal destination for you.
+              Mona Edu là nền tảng giáo dục trực tuyến, nơi bạn có thể khám phá thế giới kiến thức một
+              cách linh hoạt và tiết kiệm. Với mức chi phí hợp lý, chúng tôi dành cho sinh viên, thực tập
+              sinh và những người mới ra trường cơ hội tiếp cận các khóa học chất lượng, giúp phát triển
+              kỹ năng chuyên môn và mở ra cơ hội nghề nghiệp mới. Hãy đầu tư vào sự nghiệp học vấn của
+              bạn cùng với Mona Edu - Trãi nghiệm học tập của bạn sẽ trở nên thú vị hơn bao giờ hết.
             </p>
           </div>
 

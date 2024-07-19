@@ -1,7 +1,7 @@
 import { categories } from '@/constants/categories'
 import { AnimatePresence, motion } from 'framer-motion'
 import Link from 'next/link'
-import { Dispatch, memo, SetStateAction, useCallback, useState } from 'react'
+import { Dispatch, memo, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 import { FaChevronRight } from 'react-icons/fa'
 
 interface CategoryTabsProps {
@@ -18,6 +18,10 @@ function CategoryTabs({ open, setOpen, className = '' }: CategoryTabsProps) {
       data: categories,
     },
   ])
+
+  // refs
+  const timeoutRef = useRef<any>(null)
+  const tabsRef = useRef<HTMLUListElement>(null)
 
   const findDeep = useCallback(
     (item: any) => list.findIndex((tab) => tab.data.map((i: any) => i.title).includes(item.title)),
@@ -48,6 +52,31 @@ function CategoryTabs({ open, setOpen, className = '' }: CategoryTabsProps) {
     [list]
   )
 
+  useEffect(() => {
+    // if (!tabsRef.current || !timeoutRef.current || !open) return
+
+    console.log('effect')
+
+    let timeout: any = timeoutRef.current
+    let tabs: any = tabsRef.current
+
+    if (!tabs || !open) return
+
+    tabs.addEventListener('mouseenter', () => {
+      clearTimeout(timeout)
+    })
+
+    timeout = setTimeout(() => {
+      setList([
+        {
+          ref: 'Category Tabs',
+          data: categories,
+        },
+      ])
+      setOpen(false)
+    }, 750)
+  }, [setOpen, open])
+
   return (
     <AnimatePresence>
       {open && (
@@ -68,7 +97,12 @@ function CategoryTabs({ open, setOpen, className = '' }: CategoryTabsProps) {
           }}
         >
           {list.map((tab, tabIndex) => (
-            <ul className='flex flex-col' onMouseLeave={() => handleMouseLeave(tabIndex)} key={tabIndex}>
+            <ul
+              className='flex flex-col p-0.5'
+              onMouseLeave={() => handleMouseLeave(tabIndex)}
+              key={tabIndex}
+              ref={tabsRef}
+            >
               {tab?.data?.map((item: any, itemIndex: number) => (
                 <li className='p-0.5' onMouseOver={() => handleMouseOver(item)} key={itemIndex}>
                   <Link

@@ -1,5 +1,6 @@
 'use client'
 
+import { commonEmailMistakes } from '@/constants/mistakes'
 import { useAppDispatch, useAppSelector } from '@/libs/hooks'
 import { setOpenAuthentication } from '@/libs/reducers/modalReducer'
 import { updatePrivateInfoApi } from '@/requests'
@@ -61,6 +62,29 @@ function PrivateInfo({ className = '' }: PrivateInfoProps) {
   const handleValidate: SubmitHandler<FieldValues> = useCallback(
     (data) => {
       let isValid = true
+
+      // username must be at least 5 characters
+      if (data.username.length < 5) {
+        setError('username', {
+          type: 'manual',
+          message: 'Username phải có ít nhất 5 ký tự',
+        })
+        isValid = false
+      }
+
+      // email must be valid
+      if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,8}$/.test(data.email)) {
+        setError('email', {
+          type: 'manual',
+          message: 'Email không hợp lệ',
+        })
+        isValid = false
+      } else {
+        if (commonEmailMistakes.some((mistake) => data.email.toLowerCase().includes(mistake))) {
+          setError('email', { message: 'Email không hợp lệ' })
+          isValid = false
+        }
+      }
 
       // new password must be at least 6 characters and contain at least 1 lowercase, 1 uppercase, 1 number
       if (

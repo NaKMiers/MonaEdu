@@ -1,15 +1,16 @@
 import { connectDatabase } from '@/config/database'
 import LessonModel, { ILesson } from '@/models/LessonModel'
 import { NextRequest, NextResponse } from 'next/server'
-
-// Models: Lesson, Comment, User
-import '@/models/LessonModel'
-import '@/models/CommentModel'
-import '@/models/UserModel'
 import CommentModel from '@/models/CommentModel'
 import { getFileUrl } from '@/utils/uploadFile'
 import { getToken } from 'next-auth/jwt'
 import { ICourse } from '@/models/CourseModel'
+
+// Models: Lesson, Comment, User, Category
+import '@/models/LessonModel'
+import '@/models/CommentModel'
+import '@/models/UserModel'
+import '@/models/CategoryModel'
 
 export const dynamic = 'force-dynamic'
 
@@ -33,6 +34,10 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
     const lesson: ILesson | null = await LessonModel.findOne({ slug })
       .populate({
         path: 'courseId',
+        populate: {
+          path: 'category',
+          select: 'title slug',
+        },
       })
       .lean()
 
@@ -44,8 +49,18 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
     // check if lesson is public
     if (lesson.status !== 'public') {
       // if user is not enrolled in this course
-      if (!user.courses.map((course: any) => course.course).includes((lesson.courseId as ICourse)._id)) {
-        return NextResponse.json({ message: 'Bài giảng này không được công khai' }, { status: 403 })
+      const userCourses = user.courses.map((course: any) => course.course)
+      console.log('userCourses', userCourses)
+      console.log('lesson.courseId as ICourse)._id', (lesson.courseId as ICourse)._id)
+      if (
+        !user.courses
+          .map((course: any) => course.course)
+          .includes((lesson.courseId as ICourse)._id.toString())
+      ) {
+        return NextResponse.json(
+          { message: 'Bạn không được phép truy cập bài giảng này' },
+          { status: 403 }
+        )
       }
     }
 

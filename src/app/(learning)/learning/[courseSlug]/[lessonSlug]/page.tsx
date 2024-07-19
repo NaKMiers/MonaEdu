@@ -2,6 +2,7 @@
 
 import Comment from '@/components/Comment'
 import Divider from '@/components/Divider'
+import IframePlayer from '@/components/IframePlayer'
 import ReportDialog from '@/components/dialogs/ReportDigalog'
 import { reportContents } from '@/constants'
 import { useAppDispatch, useAppSelector } from '@/libs/hooks'
@@ -10,13 +11,14 @@ import { IComment } from '@/models/CommentModel'
 import { ICourse } from '@/models/CourseModel'
 import { ILesson } from '@/models/LessonModel'
 import { addReportApi, getLessonApi, likeLessonApi } from '@/requests'
+import moment from 'moment-timezone'
+import 'moment/locale/vi'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { useCallback, useEffect, useState } from 'react'
+import { Fragment, useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { BsLayoutSidebarInsetReverse } from 'react-icons/bs'
-import { FaChevronLeft, FaHeart, FaQuestion, FaRegHeart } from 'react-icons/fa'
+import { FaAngleRight, FaChevronLeft, FaHeart, FaQuestion, FaRegHeart } from 'react-icons/fa'
 import { HiDotsHorizontal } from 'react-icons/hi'
 
 function LessonPage({
@@ -29,20 +31,18 @@ function LessonPage({
   const openSidebar = useAppSelector((state) => state.modal.openSidebar)
   const { data: session } = useSession()
   const curUser: any = session?.user
-  const router = useRouter()
 
-  // states
+  // MARK: states
   const [lesson, setLesson] = useState<ILesson | null>(null)
   const [comments, setComments] = useState<IComment[]>([])
   const [showActions, setShowActions] = useState<boolean>(false)
+  const [breadcrumbs, setBreadcrumbs] = useState<string[]>([])
 
   // report states
   const [isOpenReportDialog, setIsOpenReportDialog] = useState<boolean>(false)
   const [selectedContent, setSelectedContent] = useState<string>('')
 
-  const [videoSource, setVideoSource] = useState<string>('')
-
-  // get lesson
+  // MARK: get lesson
   useEffect(() => {
     const getLesson = async () => {
       // get lesson for learning
@@ -51,13 +51,8 @@ function LessonPage({
 
         console.log('lesson', lesson)
 
-        if (lesson.sourceType === 'file') {
-          const response = await fetch(lesson.source)
-          const blob = await response.blob()
-          const url = URL.createObjectURL(blob)
-          console.log('url:', url)
-          setVideoSource(url)
-        }
+        // set breadcrumbs
+        setBreadcrumbs((lesson.courseId as any).category.slug.split('/'))
 
         // set states
         setLesson(lesson)
@@ -71,9 +66,6 @@ function LessonPage({
     getLesson()
   }, [lessonSlug])
 
-  console.log('video source:', videoSource)
-
-  // handle report lesson
   const handleReport = useCallback(async () => {
     // check if content is selected or not
     if (!selectedContent) {
@@ -96,7 +88,7 @@ function LessonPage({
     }
   }, [lesson?._id, selectedContent])
 
-  // like / unlike lesson
+  // MARK: like / unlike lesson
   const likeLesson = useCallback(
     async (value: 'y' | 'n') => {
       if (lesson?._id) {
@@ -105,7 +97,10 @@ function LessonPage({
           const { updatedLesson } = await likeLessonApi(lesson._id, value)
 
           // like / dislike lesson
-          setLesson(updatedLesson)
+          setLesson({
+            ...lesson,
+            likes: updatedLesson.likes,
+          })
         } catch (err: any) {
           toast.error(err.message)
           console.log(err)
@@ -114,19 +109,19 @@ function LessonPage({
         toast.error('Không tìm thấy khóa học')
       }
     },
-    [lesson?._id]
+    [lesson]
   )
 
   return (
-    <div className='w-full'>
+    <div className='w-full px-3'>
       <Divider size={5} />
 
-      {/* Heading */}
-      <div className='flex justify-between items-center px-3'>
-        <div className='flex items-center gap-3'>
+      {/* MARK: Header Buttons */}
+      <div className='flex justify-between items-center'>
+        <div className='flex items-center'>
           <button
             className={`${
-              openSidebar ? 'max-w-0 p-0 m-0 -ml-3' : 'max-w-[44px] -mx-3 mr-2 px-3 py-1.5'
+              openSidebar ? 'max-w-0 p-0 mr-0' : 'max-w-[44px] px-3 py-2 mr-2'
             } flex-shrink-0 overflow-hidden group rounded-lg trans-300`}
             onClick={() => dispatch(setOpenSidebar(!openSidebar))}
           >
@@ -181,10 +176,36 @@ function LessonPage({
         />
       </div>
 
+      <Divider size={4} />
+
       {lesson ? (
         <>
+          {/* Breadcrumbs */}
+          <div className='flex items-center gap-3 relative z-20 text-slate-400 text-sm'>
+            <Link href='/' className='hover:text-secondary trans-200 hover:drop-shadow-md'>
+              trang-chu
+            </Link>
+            <FaAngleRight size={14} />
+            <Link href='/categories' className='hover:text-secondary trans-200 hover:drop-shadow-md'>
+              danh-muc
+            </Link>
+            {breadcrumbs.map((breadcrumb, index) => (
+              <Fragment key={index}>
+                {index === 0 && <FaAngleRight size={14} />}
+                <Link
+                  href={`/categories/${breadcrumbs.slice(0, index + 1).join('/')}`}
+                  className='hover:text-secondary trans-200 hover:drop-shadow-md'
+                >
+                  {breadcrumb}
+                </Link>
+                {index !== breadcrumbs.length - 1 && <FaAngleRight size={14} />}
+              </Fragment>
+            ))}
+          </div>
+
+          {/* Course */}
           <h2
-            className='font-semibold text-2xl px-3 mt-2 text-ellipsis line-clamp-1'
+            className='font-semibold text-2xl mt-2 text-ellipsis line-clamp-1'
             title={(lesson?.courseId as ICourse)?.title}
           >
             {(lesson?.courseId as ICourse)?.title}
@@ -192,27 +213,20 @@ function LessonPage({
 
           <Divider size={4} />
 
-          {/* Source */}
-          <div className='px-3'>
-            <div className='aspect-video w-full rounded-lg shadow-lg overflow-hidden'>
-              {lesson.sourceType === 'embed' ? (
-                <iframe
-                  className='w-full h-full object-contain'
-                  src={lesson.source}
-                  title='The Largest Black Hole in the Universe - Size Comparison'
-                  allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-                  referrerPolicy='strict-origin-when-cross-origin'
-                  allowFullScreen
-                />
-              ) : (
-                <video className='rounded-lg w-full h-full object-contain' src={videoSource} controls />
-              )}
-            </div>
+          {/* MARK: Source */}
+          <div className='aspect-video w-full rounded-lg shadow-lg overflow-hidden'>
+            {lesson.sourceType === 'embed' ? (
+              <IframePlayer
+                videoId={lesson.source.split('https://www.youtube.com/embed/')[1].split('?')[0]}
+              />
+            ) : (
+              <video className='rounded-lg w-full h-full object-contain' src={lesson.source} controls />
+            )}
           </div>
 
           <Divider size={4} />
 
-          <div className='flex justify-between font-semibold gap-21 px-3'>
+          <div className='flex justify-between font-semibold gap-21'>
             <div className='group flex items-center justify-center gap-1'>
               {lesson.likes.includes(curUser?._id) ? (
                 <FaHeart
@@ -241,22 +255,43 @@ function LessonPage({
 
           <Divider size={2} />
 
+          <div className='flex items-center flex-wrap gap-x-4 gap-y-1 text-sm text-slate-500'>
+            <p className='font-body tracking-wider'>
+              Thời gian tạo:{' '}
+              <span className='font-semibold text-slate-600'>{moment(lesson.createdAt).fromNow()}</span>
+            </p>
+            <p className='font-body tracking-wider'>
+              Thời gian cập nhật:{' '}
+              <span className='font-semibold text-slate-600'>{moment(lesson.updatedAt).fromNow()}</span>
+            </p>
+          </div>
+
+          <Divider size={2} />
+
           {/* Title */}
-          <h1
-            className='text-ellipsis line-clamp-2 w-full text-4xl font-body tracking-wider px-3'
-            title=''
-          >
+          <h1 className='text-ellipsis line-clamp-2 w-full text-3xl font-body tracking-wider' title=''>
             {lesson.title}
           </h1>
 
           <Divider size={4} />
 
+          {/* Category */}
+          <Link
+            href={`/categories/${(lesson.courseId as any).category.slug}`}
+            className='rounded-3xl shadow-lg bg-primary text-slate-800 font-semibold uppercase px-3 py-2 text-xs md:text-sm text-nowrap'
+          >
+            {(lesson.courseId as any).category.title}
+          </Link>
+
+          <Divider size={4} />
+
           {/* Description */}
-          <div className='px-4'>{lesson.description}</div>
+          <div className=''>{lesson.description}</div>
 
-          <Divider size={8} />
+          <Divider size={12} />
 
-          <div className='px-3'>
+          {/* MARK: Comments */}
+          <div className=''>
             <h3 className='font-semibold text-xl mb-2 text-slate-800'>Bình luận</h3>
 
             <Comment comments={comments} lessonId={lesson._id} />
@@ -265,7 +300,7 @@ function LessonPage({
           <Divider size={8} />
         </>
       ) : (
-        <p className='font-body tracking-wider font-semibold text-2xl px-3 italic text-slate-400 text-center mt-4'>
+        <p className='font-body tracking-wider font-semibold text-2xl italic text-slate-400 text-center mt-4'>
           Không tìm thấy bài giảng. Vui lòng kiểm tra lại đường dẫn.
         </p>
       )}

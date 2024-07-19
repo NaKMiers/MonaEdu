@@ -8,6 +8,7 @@ import { memo, useEffect, useRef, useState } from 'react'
 import { FaAngleDown } from 'react-icons/fa'
 import { TiLockClosed, TiLockOpen } from 'react-icons/ti'
 import Divider from './Divider'
+import useDetectDevTools from '@/libs/hooks/useDetectDevTools'
 
 interface LearningChapterProps {
   courseId: string
@@ -25,6 +26,8 @@ function LearningChapter({
   className = '',
 }: LearningChapterProps) {
   // hook
+  useDetectDevTools()
+
   const { data: session } = useSession()
   const curUser: any = session?.user
 
@@ -80,7 +83,7 @@ function LearningChapter({
         ref={chapterRef}
       >
         {chapter.lessons?.map((lesson) =>
-          lesson.status === 'public' ? (
+          lesson.status === 'public' || isEnrolled ? (
             <Link
               href={`/learning/${courseSlug}/${lesson.slug}`}
               className={`bg-white rounded-md py-2 px-3 gap-4 hover:bg-primary trans-200 flex items-center ${

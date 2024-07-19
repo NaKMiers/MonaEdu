@@ -1,61 +1,61 @@
-import CourseContent from '@/components/CourseContent';
-import Divider from '@/components/Divider';
-import FloatingActionButtons from '@/components/floatings/FloatingActionButtons';
-import FloatingSummary from '@/components/floatings/FloatingSummary';
-import Price from '@/components/Price';
-import { ICategory } from '@/models/CategoryModel';
-import { IChapter } from '@/models/ChapterModel';
-import { ICourse } from '@/models/CourseModel';
-import { IFlashSale } from '@/models/FlashSaleModel';
-import { ITag } from '@/models/TagModel';
-import { getCoursePageApi } from '@/requests';
-import moment from 'moment-timezone';
-import { Metadata } from 'next';
-import Image from 'next/image';
-import Link from 'next/link';
-import { notFound } from 'next/navigation';
-import { Fragment } from 'react';
-import { FaAngleRight, FaStarOfLife } from 'react-icons/fa';
-import { ImUser } from 'react-icons/im';
-import { IoIosPhonePortrait } from 'react-icons/io';
-import { IoTimer } from 'react-icons/io5';
-import { MdLanguage, MdVideoLibrary } from 'react-icons/md';
+import CourseContent from '@/components/CourseContent'
+import Divider from '@/components/Divider'
+import FloatingActionButtons from '@/components/floatings/FloatingActionButtons'
+import FloatingSummary from '@/components/floatings/FloatingSummary'
+import Price from '@/components/Price'
+import { ICategory } from '@/models/CategoryModel'
+import { IChapter } from '@/models/ChapterModel'
+import { ICourse } from '@/models/CourseModel'
+import { IFlashSale } from '@/models/FlashSaleModel'
+import { ITag } from '@/models/TagModel'
+import { getCoursePageApi } from '@/requests'
+import moment from 'moment-timezone'
+import { Metadata } from 'next'
+import Image from 'next/image'
+import Link from 'next/link'
+import { notFound } from 'next/navigation'
+import { Fragment } from 'react'
+import { FaAngleRight, FaStarOfLife } from 'react-icons/fa'
+import { ImUser } from 'react-icons/im'
+import { IoIosPhonePortrait } from 'react-icons/io'
+import { IoTimer } from 'react-icons/io5'
+import { MdLanguage, MdVideoLibrary } from 'react-icons/md'
 
 export const metadata: Metadata = {
   title: 'Khóa học - Mona Edu',
   description: 'Mona Edu - Học trực tuyến mọi lúc, mọi nơi',
-};
+}
 
 async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
   // Data
-  let course: ICourse | null = null;
-  let chapters: IChapter[] = [];
+  let course: ICourse | null = null
+  let chapters: IChapter[] = []
   let totalTime: {
-    hours: number;
-    minutes: number;
+    hours: number
+    minutes: number
   } = {
     hours: 0,
     minutes: 0,
-  };
+  }
 
   // MARK: Get Data
   try {
     // revalidate every 1 minute
-    const data = await getCoursePageApi(slug);
+    const data = await getCoursePageApi(slug)
 
-    course = data.course;
-    chapters = data.chapters;
+    course = data.course
+    chapters = data.chapters
 
     // Calculate total time
     const totalDuration = chapters.reduce(
       (total, chapter) =>
         total + (chapter.lessons?.reduce((total, lesson) => total + lesson.duration, 0) || 0),
       0
-    );
-    totalTime.hours = Math.floor(totalDuration / 3600);
-    totalTime.minutes = (totalDuration % 3600) % 60;
+    )
+    totalTime.hours = Math.floor(totalDuration / 3600)
+    totalTime.minutes = (totalDuration % 3600) % 60
   } catch (err: any) {
-    return notFound();
+    return notFound()
   }
 
   // jsonLd
@@ -92,7 +92,7 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
     typicalAgeRange: 'Adult',
     timeRequired: `PT${totalTime.hours}H${totalTime.minutes}M`,
     numberOfCredits: '3',
-  };
+  }
 
   return (
     <div className='bg-white md:-mt-8 -mb-28 md:-mb-8 md:pt-8 pb-36'>
@@ -282,7 +282,7 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
         />
       )}
     </div>
-  );
+  )
 }
 
-export default CoursePage;
+export default CoursePage

@@ -1,25 +1,25 @@
-'use client';
-import Divider from '@/components/Divider';
-import Input from '@/components/Input';
-import BeamsBackground from '@/components/backgrounds/BeamsBackground';
-import BottomGradient from '@/components/gradients/BottomGradient';
-import { commonEmailMistakes } from '@/constants/mistakes';
-import { registerApi } from '@/requests';
-import { signIn } from 'next-auth/react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
-import { FaCircleNotch } from 'react-icons/fa';
+'use client'
+import Divider from '@/components/Divider'
+import Input from '@/components/Input'
+import BeamsBackground from '@/components/backgrounds/BeamsBackground'
+import BottomGradient from '@/components/gradients/BottomGradient'
+import { commonEmailMistakes } from '@/constants/mistakes'
+import { registerApi } from '@/requests'
+import { signIn } from 'next-auth/react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useCallback, useEffect, useState } from 'react'
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
+import { FaCircleNotch } from 'react-icons/fa'
 
 function RegisterPage() {
   // hooks
-  const router = useRouter();
+  const router = useRouter()
 
   // states
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   // form
   const {
@@ -37,41 +37,33 @@ function RegisterPage() {
       email: '',
       password: '',
     },
-  });
+  })
 
   // validate form
   const handleValidate: SubmitHandler<FieldValues> = useCallback(
     (data) => {
-      let isValid = true;
+      let isValid = true
 
       // username must be at least 5 characters
       if (data.username.length < 5) {
         setError('username', {
           type: 'manual',
           message: 'Username phải có ít nhất 5 ký tự',
-        });
-        isValid = false;
+        })
+        isValid = false
       }
 
       // email must be valid
-      if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(data.email)) {
+      if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,8}$/.test(data.email)) {
         setError('email', {
           type: 'manual',
           message: 'Email không hợp lệ',
-        });
-        isValid = false;
+        })
+        isValid = false
       } else {
-        const { email } = data;
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/i;
-
-        if (!emailRegex.test(email)) {
-          setError('email', { message: 'Email không hợp lệ' });
-          isValid = false;
-        } else {
-          if (commonEmailMistakes.some((mistake) => email.toLowerCase().includes(mistake))) {
-            setError('email', { message: 'Email không hợp lệ' });
-            isValid = false;
-          }
+        if (commonEmailMistakes.some((mistake) => data.email.toLowerCase().includes(mistake))) {
+          setError('email', { message: 'Email không hợp lệ' })
+          isValid = false
         }
       }
 
@@ -81,73 +73,73 @@ function RegisterPage() {
           type: 'manual',
           message:
             'Mật khẩu phải có ít nhất 6 kí tự và bao gồm ít nhất 1 chữ hoa, 1 chữ thường, 1 chữ số',
-        });
-        isValid = false;
+        })
+        isValid = false
       }
 
-      return isValid;
+      return isValid
     },
     [setError]
-  );
+  )
 
   // MARK: Register Submition
   const onSubmit: SubmitHandler<FieldValues> = useCallback(
     async (data) => {
       // validate form
-      if (!handleValidate(data)) return;
+      if (!handleValidate(data)) return
 
       // start loading
-      setIsLoading(true);
+      setIsLoading(true)
 
       try {
         // register logic here
-        const { user, message } = await registerApi(data);
+        const { user, message } = await registerApi(data)
 
         // sign in user
         const callback = await signIn('credentials', {
           usernameOrEmail: user.username,
           password: data.password,
           redirect: false,
-        });
+        })
 
         if (callback?.error) {
-          toast.error(callback.error);
+          toast.error(callback.error)
         } else {
           // show success message
-          toast.success(message);
+          toast.success(message)
 
           // redirect to home page
-          router.push('/');
+          router.push('/')
         }
       } catch (err: any) {
         // show error message
-        console.log(err);
-        toast.error(err.message);
+        console.log(err)
+        toast.error(err.message)
       } finally {
         // stop loading
-        setIsLoading(false);
+        setIsLoading(false)
       }
     },
     [handleValidate, router]
-  );
+  )
 
   // keyboard event
   useEffect(() => {
     // set page title
-    document.title = 'Đăng ký - Mona Edu';
+    document.title = 'Đăng ký - Mona Edu'
 
     const handleKeydown = (e: KeyboardEvent) => {
       if (e.key === 'Enter') {
-        handleSubmit(onSubmit)();
+        handleSubmit(onSubmit)()
       }
-    };
+    }
 
-    window.addEventListener('keydown', handleKeydown);
+    window.addEventListener('keydown', handleKeydown)
 
     return () => {
-      window.removeEventListener('keydown', handleKeydown);
-    };
-  }, [handleSubmit, onSubmit]);
+      window.removeEventListener('keydown', handleKeydown)
+    }
+  }, [handleSubmit, onSubmit])
 
   return (
     <div className='relative min-h-screen w-full overflow-hidden'>
@@ -360,6 +352,6 @@ function RegisterPage() {
         </div>
       </div>
     </div>
-  );
+  )
 }
-export default RegisterPage;
+export default RegisterPage

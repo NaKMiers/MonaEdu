@@ -1,0 +1,473 @@
+'use client'
+
+import { Slider } from '@mui/material'
+import moment from 'moment-timezone'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { FaCirclePause, FaCirclePlay } from 'react-icons/fa6'
+import { HiSpeakerWave, HiSpeakerXMark } from 'react-icons/hi2'
+import { RiFullscreenFill } from 'react-icons/ri'
+
+interface IframePlayerProps {
+  videoId: string
+  className?: string
+}
+
+// videoId: cYX3xoHnzeg
+// autoplay: 0
+// mute: 0
+// controls: 0
+// origin: https://monaedu.com
+// playsinline: 1
+// rel: 0
+// iv_load_policy: 3
+// enablejsapi: 1
+// widgetid: 1
+
+function IframePlayer({ videoId, className = '' }: IframePlayerProps) {
+  // states
+  const [showControls, setShowControls] = useState<boolean>(true)
+  const [volume, setVolume] = useState<number>(100)
+  const [prevVolume, setPrevVolume] = useState<number>(100)
+  const [isPlaying, setIsPlaying] = useState<boolean>(false)
+  const [isFullscreen, setIsFullscreen] = useState<boolean>(false)
+  const [currentTime, setCurrentTime] = useState<number>(0)
+  const [duration, setDuration] = useState<number>(0)
+  const [isDragging, setIsDragging] = useState<boolean>(false)
+  const [buffered, setBuffered] = useState<number>(0)
+
+  // refs
+  const iframeRef = useRef<HTMLIFrameElement>(null)
+  const playerContainerRef = useRef<HTMLDivElement>(null)
+  const progressBarRef = useRef<HTMLDivElement>(null)
+  const controlsRef = useRef<HTMLDivElement>(null)
+  const playRef = useRef<HTMLDivElement>(null)
+  const videoBarRef = useRef<HTMLDivElement>(null)
+  const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+
+  const onPlayerReady = useCallback((e: any) => {
+    const wd: any = window
+    wd.player = e.target
+    setDuration(e.target.getDuration())
+  }, [])
+
+  const onStateChange = (event: any) => {
+    console.log('State changed:', event.data)
+  }
+
+  // load youtube iframe api
+  useEffect(() => {
+    const wd: any = window
+    const onYouTubeIframeAPIReady = () => {
+      if (iframeRef.current) {
+        new wd.YT.Player(iframeRef.current, {
+          videoId: videoId,
+          playerVars: {
+            autoplay: 0,
+            mute: 0,
+            controls: 1,
+            origin: process.env.NEXT_PUBLIC_APP_URL,
+            playsinline: 1,
+            rel: 0,
+            iv_load_policy: 3,
+            enablejsapi: 1,
+            widgetid: 1,
+          },
+          events: {
+            onReady: onPlayerReady,
+            onStateChange: onStateChange,
+          },
+        })
+      }
+    }
+
+    if (!wd.YT) {
+      const tag = document.createElement('script')
+      tag.src = 'https://www.youtube.com/iframe_api'
+      const firstScriptTag = document.getElementsByTagName('script')[0]
+      firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag)
+      wd.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady
+    } else {
+      onYouTubeIframeAPIReady()
+    }
+
+    // set volume from local storage
+    setVolume(+(localStorage.getItem('volume') || '100'))
+  }, [videoId, onPlayerReady])
+
+  // update current time and buffered
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const wd: any = window
+      if (wd.player && isPlaying) {
+        const buffered = wd.player.getVideoLoadedFraction()
+        console.log('Buffered:', buffered)
+        setBuffered(buffered * duration)
+        setCurrentTime(wd.player.getCurrentTime())
+      }
+    }, 1000)
+
+    return () => clearInterval(interval)
+  }, [isPlaying, duration])
+
+  // MARK: Play/Pause
+  const play = () => {
+    // play if player is ready
+    const wd: any = window
+    if (wd.player) {
+      const wd: any = window
+      wd.player.playVideo()
+      setIsPlaying(true)
+    }
+  }
+
+  const pause = () => {
+    const wd: any = window
+    if (wd.player) {
+      wd.player.pauseVideo()
+      setIsPlaying(false)
+    }
+  }
+
+  const handlePlay = useCallback(() => {
+    const wd: any = window
+    if (wd.player) {
+      if (isPlaying) {
+        pause()
+      } else {
+        play()
+      }
+    }
+  }, [isPlaying])
+
+  // MARK: Seek
+  const handleSeek = useCallback((seconds: number) => {
+    const wd: any = window
+    if (wd.player) {
+      wd.player.seekTo(seconds, true)
+      setCurrentTime(seconds)
+    }
+  }, [])
+
+  const handleSeekMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    setIsDragging(true)
+    handleSeekMouseMove(e)
+
+    console.log('Seek mouse down')
+  }
+
+  const handleSeekMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (isDragging && progressBarRef.current) {
+      console.log('Seek mouse move')
+      const rect = progressBarRef.current.getBoundingClientRect()
+      const newTime = ((e.clientX - rect.left) / rect.width) * duration
+      handleSeek(newTime)
+    }
+  }
+
+  const handleSeekMouseUp = () => {
+    setIsDragging(false)
+    console.log('Seek mouse up')
+  }
+
+  const handleSeekMouseClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    console.log('Seek mouse click')
+    if (progressBarRef.current) {
+      const rect = progressBarRef.current.getBoundingClientRect()
+      const newTime = ((e.clientX - rect.left) / rect.width) * duration
+      console.log('New time:', newTime)
+      handleSeek(newTime)
+    }
+  }
+
+  // MARK: Volume
+  const handleChangeVolume = useCallback(
+    (newValue: number) => {
+      setVolume(newValue as number)
+      localStorage.setItem('volume', JSON.stringify(newValue))
+
+      const wd: any = window
+      if (wd.player) {
+        wd.player.setVolume(volume)
+      }
+    },
+    [volume]
+  )
+
+  const handleMute = useCallback(() => {
+    const wd: any = window
+    if (wd.player) {
+      if (volume > 0) {
+        setPrevVolume(volume)
+        setVolume(0)
+        wd.player.mute()
+      } else {
+        setVolume(prevVolume)
+        wd.player.unMute()
+      }
+    }
+  }, [prevVolume, volume])
+
+  // MARK: Fullscreen
+  const handleFullscreen = useCallback(() => {
+    if (!isFullscreen) {
+      if (playerContainerRef.current?.requestFullscreen) {
+        playerContainerRef.current.requestFullscreen()
+      }
+      setIsFullscreen(true)
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen()
+      }
+      setIsFullscreen(false)
+    }
+  }, [isFullscreen])
+
+  console.log(currentTime, duration)
+
+  // MARK: Show/Hide Controls
+  const showControlsHandler = useCallback(() => {
+    if (currentTime === 0 || isDragging) return
+
+    setShowControls(true)
+    if (controlsTimeoutRef.current) {
+      clearTimeout(controlsTimeoutRef.current)
+    }
+    controlsTimeoutRef.current = setTimeout(() => {
+      console.log('hide')
+      setShowControls(false)
+    }, 1000)
+  }, [currentTime, isDragging])
+
+  // useEffect to handle mouse move for showing/hiding controls
+  useEffect(() => {
+    const playerContainer = playerContainerRef.current
+
+    if (playerContainer) {
+      playerContainer.addEventListener('mousemove', showControlsHandler)
+
+      return () => {
+        playerContainer.removeEventListener('mousemove', showControlsHandler)
+      }
+    }
+  }, [showControlsHandler])
+
+  useEffect(() => {
+    if (currentTime === 0 || isDragging) return
+
+    if (showControls) {
+      if (!controlsRef.current || !playRef.current || !videoBarRef.current) return
+
+      playRef.current.style.opacity = '1'
+      videoBarRef.current.style.transform = 'translateY(0)'
+      controlsRef.current.classList.add('bg-neutral-950')
+      controlsRef.current.classList.add('g-opacity-50')
+    } else {
+      if (!controlsRef.current || !playRef.current || !videoBarRef.current) return
+
+      playRef.current.style.opacity = '0'
+      videoBarRef.current.style.transform = 'translateY(100%)'
+      controlsRef.current.classList.remove('bg-neutral-950')
+      controlsRef.current.classList.remove('g-opacity-50')
+    }
+  }, [showControls, currentTime, isDragging])
+
+  // MARK: Keyboard events
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Space
+      if (e.code === 'Space' || e.key === 'k') {
+        e.preventDefault()
+        handlePlay()
+      }
+
+      // M
+      if (e.key === 'm') {
+        e.preventDefault()
+        handleMute()
+      }
+
+      // F
+      if (e.key === 'f') {
+        e.preventDefault()
+        handleFullscreen()
+      }
+
+      // Arrow Left
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault()
+        handleSeek(currentTime - 5)
+      }
+
+      // Arrow Right
+      if (e.key === 'ArrowRight') {
+        e.preventDefault()
+        handleSeek(currentTime + 5)
+      }
+
+      // Arrow Up
+      if (e.key === 'ArrowUp') {
+        e.preventDefault()
+        handleChangeVolume(volume + 5 > 100 ? 100 : volume + 5)
+      }
+
+      // Arrow Down
+      if (e.key === 'ArrowDown') {
+        e.preventDefault()
+        handleChangeVolume(volume - 5 < 0 ? 0 : volume - 5)
+      }
+
+      // J
+      if (e.key === 'j') {
+        e.preventDefault()
+        handleSeek(currentTime - 5)
+      }
+
+      // L
+      if (e.key === 'K') {
+        e.preventDefault()
+        handleSeek(currentTime - 5)
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [handlePlay, handleMute, handleFullscreen, handleSeek, handleChangeVolume, currentTime, volume])
+
+  return (
+    <div
+      className={`relative w-full h-full ${className}`}
+      onDoubleClick={handleFullscreen}
+      ref={playerContainerRef}
+    >
+      {/* Video */}
+      <iframe
+        className='w-full h-full object-contain'
+        src={`https://www.youtube.com/embed/${videoId}?enablejsapi=1&autoplay=0&mute=0&controls=0&rel=0&playsinline=1&iv_load_policy=3&origin=${process.env.NEXT_PUBLIC_APP_URL}`}
+        allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+        referrerPolicy='strict-origin-when-cross-origin'
+        allowFullScreen
+        ref={iframeRef}
+      />
+
+      {/* Controls */}
+      <div
+        className='flex items-end absolute top-0 left-0 right-0 bottom-0 w-full h-full bg-neutral-950 bg-opacity-50 select-none trans-300'
+        onClick={handlePlay}
+        ref={controlsRef}
+      >
+        {/* Play Button */}
+        <div
+          className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center trans-300'
+          onClick={(e) => e.stopPropagation()}
+          ref={playRef}
+        >
+          <button
+            className='rounded-full bg-orange-400 w-[80px] h-[80px] flex items-center justify-center shadow-lg hover:shadow-orange-400 trans-300'
+            onClick={handlePlay}
+          >
+            {isPlaying ? (
+              <FaCirclePause size={40} className='text-white' />
+            ) : (
+              <FaCirclePlay size={40} className='text-white' />
+            )}
+          </button>
+        </div>
+
+        <div
+          className='flex flex-col w-full px-4 trans-300 overflow-hidden'
+          onClick={(e) => e.stopPropagation()}
+          ref={videoBarRef}
+        >
+          {/* Seek */}
+          <div
+            className='relative w-full h-1 bg-slate-400 bg-opacity-50 cursor-pointer hover:h-2 trans-200'
+            ref={progressBarRef}
+            onMouseDown={handleSeekMouseDown}
+            onMouseMove={handleSeekMouseMove}
+            onMouseUp={handleSeekMouseUp}
+            onMouseLeave={handleSeekMouseUp}
+            onClick={handleSeekMouseClick}
+          >
+            <div
+              className={`h-full bg-slate-300`}
+              style={{
+                width: `${(buffered / duration) * 100}%`,
+              }}
+            />
+            <div
+              className='absolute top-1/2 left-0 -translate-y-1/2 h-[100%] bg-orange-400'
+              style={{
+                width: `${(currentTime / duration) * 100}%`,
+              }}
+            />
+          </div>
+
+          {/* Actions Buttons */}
+          <div className='flex items-center justify-between w-full'>
+            <div className='flex items-center gap-[13px]'>
+              <button
+                className='group w-12 h-[50px] flex items-center justify-center'
+                onClick={handlePlay}
+              >
+                {isPlaying ? (
+                  <FaCirclePause
+                    size={22}
+                    className='text-white wiggle group-hover:shadow-orange-400 shadow-md rounded-full trans-200'
+                  />
+                ) : (
+                  <FaCirclePlay
+                    size={22}
+                    className='text-white wiggle group-hover:shadow-orange-400 shadow-md rounded-full trans-200'
+                  />
+                )}
+              </button>
+              <div className='flex h-[50px] items-center cursor-pointer'>
+                <button className='flex items-center justify-center group peer' onClick={handleMute}>
+                  {volume > 0 ? (
+                    <HiSpeakerWave size={23} className='text-white wiggle flex-shrink-0' />
+                  ) : (
+                    <HiSpeakerXMark size={23} className='text-white wiggle flex-shrink-0' />
+                  )}
+                </button>
+
+                <div className='w-0 h-full items-center peer-hover:flex peer-hover:w-[135px] peer-hover:px-4 hover:flex hover:w-[135px] hover:px-4 hover:overflow-visible overflow-hidden hover:mr-1 peer-hover:mr-1 mr-3 flex trans-300'>
+                  <Slider
+                    value={volume}
+                    onChange={(_, newValue) => handleChangeVolume(newValue as number)}
+                    color='warning'
+                  />
+                </div>
+              </div>
+              <div className='text-white tracking-widest font-semibold text-sm flex items-center'>
+                <span>
+                  {currentTime / 3600 < 1
+                    ? moment.utc(currentTime * 1000).format('m:ss')
+                    : moment.utc(currentTime * 1000).format('h:mm:ss')}
+                </span>
+                <span className='mx-0.5'>/</span>
+                <span>
+                  {duration / 3600 < 1
+                    ? moment.utc(duration * 1000).format('m:ss')
+                    : moment.utc(duration * 1000).format('h:mm:ss')}
+                </span>
+              </div>
+            </div>
+            <div className='flex items-center'>
+              <button
+                className='group w-12 h-[50px] flex items-center justify-center'
+                onClick={handleFullscreen}
+              >
+                <RiFullscreenFill size={24} className='text-white wiggle' />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default IframePlayer
