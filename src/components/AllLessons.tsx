@@ -24,8 +24,6 @@ function AllLessons() {
   const params = useParams()
   const courseSlug = params.courseSlug as string
   const lessonSlug = params.lessonSlug as string
-  // const { data: session } = useSession()
-  // const curUser: any = session?.user
 
   // states
   const [courseId, setCourseId] = useState<string>('')

@@ -6,6 +6,7 @@ import IframePlayer from '@/components/IframePlayer'
 import ReportDialog from '@/components/dialogs/ReportDigalog'
 import { reportContents } from '@/constants'
 import { useAppDispatch, useAppSelector } from '@/libs/hooks'
+import useDetectDevTools from '@/libs/hooks/useDetectDevTools'
 import { setOpenSidebar } from '@/libs/reducers/modalReducer'
 import { IComment } from '@/models/CommentModel'
 import { ICourse } from '@/models/CourseModel'
@@ -27,6 +28,7 @@ function LessonPage({
   params: { courseSlug: string; lessonSlug: string }
 }) {
   // hooks
+  // useDetectDevTools()
   const dispatch = useAppDispatch()
   const openSidebar = useAppSelector((state) => state.modal.openSidebar)
   const { data: session } = useSession()

@@ -7,9 +7,9 @@ const useDetectDevTools = () => {
 
   // disabled dev tool by reloading the page
   useEffect(() => {
-    if (process.env.NODE_ENV !== 'production') {
-      return
-    }
+    // if (process.env.NODE_ENV !== 'production') {
+    //   return
+    // }
 
     const threshold = 160
     let devtools = { open: false }
@@ -41,9 +41,9 @@ const useDetectDevTools = () => {
 
   // disabled keyboard shortcuts (Ctrl + Shift + I, Ctrl + Shift + J, Ctrl + Shift + C, Ctrl + Shift + M, Ctrl + U, F12)
   useEffect(() => {
-    if (process.env.NODE_ENV !== 'production') {
-      return
-    }
+    // if (process.env.NODE_ENV !== 'production') {
+    //   return
+    // }
 
     const disableShortcuts = (e: KeyboardEvent) => {
       if (
