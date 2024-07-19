@@ -21,6 +21,7 @@ function CategoryCard({ category, className = '' }: CategoryCardProps) {
         height='1000'
         width='1000'
         className='h-full bg-white w-full object-cover rounded-xl'
+        loading='lazy'
         alt='thumbnail'
       />
 

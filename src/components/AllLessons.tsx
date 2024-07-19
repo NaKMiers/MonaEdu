@@ -24,6 +24,8 @@ function AllLessons() {
   const params = useParams()
   const courseSlug = params.courseSlug as string
   const lessonSlug = params.lessonSlug as string
+  const { data: session } = useSession()
+  const curUser: any = session?.user
 
   // states
   const [courseId, setCourseId] = useState<string>('')
@@ -90,7 +92,7 @@ function AllLessons() {
 
       {/* Sidebar */}
       <div
-        className={`fixed overflow-hidden z-20 top-0 bottom-0 left-0 w-full sm:max-w-[300px] px-3 trans-300 border-r-2 border-dark bg-neutral-800 ${
+        className={`fixed overflow-hidden z-40 top-0 bottom-0 left-0 w-full sm:max-w-[300px] px-3 trans-300 border-r-2 border-dark bg-neutral-800 ${
           openSidebar ? 'translate-x-0' : '-translate-x-full'
         } pt-[18px] border-r-2 border-primary sm:rounded-r-lg shadow-md shadow-primary`}
       >
@@ -111,10 +113,8 @@ function AllLessons() {
             <div className='relative overflow-hidden rounded-md w-full h-6 shadow-sm shadow-primary'>
               <div className='w-[3%] h-full bg-primary flex items-center' />
               <div className='absolute flex items-center justify-between top-1/2 px-4 left-0 right-0 -translate-y-1/2 text-orange-400 text-sm font-body tracking-wider font-semibold drop-shadow-sm'>
-                <span>50%</span>
                 <span>
-                  10/
-                  {chapters.reduce((acc, chapter) => acc + chapter.lessonQuantity, 0)}
+                  {curUser?.courses.find((course: any) => course.course === courseId)?.progress || 0}%
                 </span>
               </div>
             </div>

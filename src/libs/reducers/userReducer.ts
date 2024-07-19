@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-export const loading = createSlice({
-  name: 'loading',
+export const user = createSlice({
+  name: 'user',
   initialState: {
     curUser: null,
   },
@@ -12,5 +12,5 @@ export const loading = createSlice({
   },
 })
 
-export const { setCurUser } = loading.actions
-export default loading.reducer
+export const { setCurUser } = user.actions
+export default user.reducer

@@ -7,6 +7,7 @@ import ReportDialog from '@/components/dialogs/ReportDigalog'
 import { reportContents } from '@/constants'
 import { useAppDispatch, useAppSelector } from '@/libs/hooks'
 import useDetectDevTools from '@/libs/hooks/useDetectDevTools'
+import { setLearningLesson } from '@/libs/reducers/learningReducer'
 import { setOpenSidebar } from '@/libs/reducers/modalReducer'
 import { IComment } from '@/models/CommentModel'
 import { ICourse } from '@/models/CourseModel'
@@ -33,9 +34,9 @@ function LessonPage({
   const openSidebar = useAppSelector((state) => state.modal.openSidebar)
   const { data: session } = useSession()
   const curUser: any = session?.user
+  const lesson = useAppSelector((state) => state.learning.learningLesson)
 
   // MARK: states
-  const [lesson, setLesson] = useState<ILesson | null>(null)
   const [comments, setComments] = useState<IComment[]>([])
   const [showActions, setShowActions] = useState<boolean>(false)
   const [breadcrumbs, setBreadcrumbs] = useState<string[]>([])
@@ -53,11 +54,13 @@ function LessonPage({
 
         console.log('lesson', lesson)
 
+        // set learning lesson
+        dispatch(setLearningLesson(lesson))
+
         // set breadcrumbs
         setBreadcrumbs((lesson.courseId as any).category.slug.split('/'))
 
         // set states
-        setLesson(lesson)
         setComments(comments)
       } catch (err: any) {
         console.log(err)
@@ -66,7 +69,7 @@ function LessonPage({
     }
 
     getLesson()
-  }, [lessonSlug])
+  }, [dispatch, lessonSlug])
 
   const handleReport = useCallback(async () => {
     // check if content is selected or not
@@ -99,10 +102,12 @@ function LessonPage({
           const { updatedLesson } = await likeLessonApi(lesson._id, value)
 
           // like / dislike lesson
-          setLesson({
-            ...lesson,
-            likes: updatedLesson.likes,
-          })
+          dispatch(
+            setLearningLesson({
+              ...lesson,
+              likes: updatedLesson.likes,
+            })
+          )
         } catch (err: any) {
           toast.error(err.message)
           console.log(err)
@@ -111,7 +116,7 @@ function LessonPage({
         toast.error('Không tìm thấy khóa học')
       }
     },
-    [lesson]
+    [dispatch, lesson]
   )
 
   return (
@@ -183,7 +188,7 @@ function LessonPage({
       {lesson ? (
         <>
           {/* Breadcrumbs */}
-          <div className='flex items-center gap-3 relative z-20 text-slate-400 text-sm'>
+          <div className='flex items-center flex-wrap gap-x-3 gap-y-1 relative z-20 text-slate-400 text-sm'>
             <Link href='/' className='hover:text-secondary trans-200 hover:drop-shadow-md'>
               trang-chu
             </Link>
@@ -218,9 +223,7 @@ function LessonPage({
           {/* MARK: Source */}
           <div className='aspect-video w-full rounded-lg shadow-lg overflow-hidden'>
             {lesson.sourceType === 'embed' ? (
-              <IframePlayer
-                videoId={lesson.source.split('https://www.youtube.com/embed/')[1].split('?')[0]}
-              />
+              <IframePlayer />
             ) : (
               <video className='rounded-lg w-full h-full object-contain' src={lesson.source} controls />
             )}
@@ -279,10 +282,10 @@ function LessonPage({
 
           {/* Category */}
           <Link
-            href={`/categories/${(lesson.courseId as any).category.slug}`}
+            href={`/categories/${(lesson.courseId as any)?.category?.slug}`}
             className='rounded-3xl shadow-lg bg-primary text-slate-800 font-semibold uppercase px-3 py-2 text-xs md:text-sm text-nowrap'
           >
-            {(lesson.courseId as any).category.title}
+            {(lesson.courseId as any)?.category?.title}
           </Link>
 
           <Divider size={4} />

@@ -37,5 +37,8 @@ export * from './questionRequest'
 // Report
 export * from './reportRequest'
 
+// Progress
+export * from './progressRequest'
+
 // Admin
 export * from './adminRequest'

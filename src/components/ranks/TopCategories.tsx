@@ -31,6 +31,7 @@ function TopCategories({ className }: TopCategoriesProps) {
               width='1000'
               className='h-full bg-white w-full object-cover rounded-xl'
               alt='thumbnail'
+              loading='lazy'
             />
 
             <div className='absolute z-20 bottom-0 left-0 right-0 w-full p-1.5 bg-neutral-950 bg-opacity-50 text-light'>

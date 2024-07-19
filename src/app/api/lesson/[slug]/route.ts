@@ -1,16 +1,18 @@
 import { connectDatabase } from '@/config/database'
-import LessonModel, { ILesson } from '@/models/LessonModel'
-import { NextRequest, NextResponse } from 'next/server'
 import CommentModel from '@/models/CommentModel'
+import { ICourse } from '@/models/CourseModel'
+import LessonModel, { ILesson } from '@/models/LessonModel'
+import ProgressModel, { IProgress } from '@/models/ProgressModel'
 import { getFileUrl } from '@/utils/uploadFile'
 import { getToken } from 'next-auth/jwt'
-import { ICourse } from '@/models/CourseModel'
+import { NextRequest, NextResponse } from 'next/server'
 
-// Models: Lesson, Comment, User, Category
-import '@/models/LessonModel'
-import '@/models/CommentModel'
-import '@/models/UserModel'
+// Models: Lesson, Comment, User, Category, Progress
 import '@/models/CategoryModel'
+import '@/models/CommentModel'
+import '@/models/LessonModel'
+import '@/models/ProgressModel'
+import '@/models/UserModel'
 
 export const dynamic = 'force-dynamic'
 
@@ -44,6 +46,16 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
     // check lesson
     if (!lesson) {
       return NextResponse.json({ message: 'Không tìm thấy bài giảng' }, { status: 404 })
+    }
+
+    // get progress of this user of this lesson
+    const progress: IProgress | null = await ProgressModel.findOne({
+      userId: user._id,
+      lessonId: lesson?._id,
+    }).lean()
+
+    if (progress) {
+      lesson.progress = progress
     }
 
     // check if lesson is public

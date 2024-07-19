@@ -20,6 +20,7 @@ function BestSeller({ courses, className = '' }: BestSellerProps) {
           width={200}
           height={200}
           alt='thumbnail'
+          loading='lazy'
         />
       </div>
 

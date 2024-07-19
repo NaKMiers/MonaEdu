@@ -96,7 +96,7 @@ function Header({ className = '' }: HeaderProps) {
         <div
           className={`flex items-center gap-3 pl-4 -ml-4 h-full overflow-x-scroll no-scrollbar trans-300`}
         >
-          <Link href='/' prefetch={false} className='shrink-0 trans-200 spin'>
+          <Link href='/' prefetch={false} className='shrink-0 trans-200 spin rounded-md'>
             <Image
               className='aspect-square rounded-md'
               src='/images/logo.png'

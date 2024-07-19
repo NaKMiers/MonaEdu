@@ -1,14 +1,20 @@
 'use client'
 
+import { useAppDispatch, useAppSelector } from '@/libs/hooks'
+import { setLearningLesson } from '@/libs/reducers/learningReducer'
+import { ICourse } from '@/models/CourseModel'
+import { IProgress } from '@/models/ProgressModel'
+import { updateProgressApi } from '@/requests'
 import { Slider } from '@mui/material'
 import moment from 'moment-timezone'
+import { useSession } from 'next-auth/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import toast from 'react-hot-toast'
 import { FaCirclePause, FaCirclePlay } from 'react-icons/fa6'
 import { HiSpeakerWave, HiSpeakerXMark } from 'react-icons/hi2'
 import { RiFullscreenFill } from 'react-icons/ri'
 
 interface IframePlayerProps {
-  videoId: string
   className?: string
 }
 
@@ -23,7 +29,14 @@ interface IframePlayerProps {
 // enablejsapi: 1
 // widgetid: 1
 
-function IframePlayer({ videoId, className = '' }: IframePlayerProps) {
+function IframePlayer({ className = '' }: IframePlayerProps) {
+  // hooks
+  const dispatch = useAppDispatch()
+  const lesson = useAppSelector((state) => state.learning.learningLesson)
+  const videoId = lesson?.source.split('https://www.youtube.com/embed/')[1].split('?')[0]
+  const { data: session, update } = useSession()
+  const curUser: any = session?.user
+
   // states
   const [showControls, setShowControls] = useState<boolean>(true)
   const [volume, setVolume] = useState<number>(100)
@@ -50,9 +63,7 @@ function IframePlayer({ videoId, className = '' }: IframePlayerProps) {
     setDuration(e.target.getDuration())
   }, [])
 
-  const onStateChange = (event: any) => {
-    console.log('State changed:', event.data)
-  }
+  const onStateChange = (e: any) => {}
 
   // load youtube iframe api
   useEffect(() => {
@@ -100,7 +111,6 @@ function IframePlayer({ videoId, className = '' }: IframePlayerProps) {
       const wd: any = window
       if (wd.player && isPlaying) {
         const buffered = wd.player.getVideoLoadedFraction()
-        console.log('Buffered:', buffered)
         setBuffered(buffered * duration)
         setCurrentTime(wd.player.getCurrentTime())
       }
@@ -108,6 +118,70 @@ function IframePlayer({ videoId, className = '' }: IframePlayerProps) {
 
     return () => clearInterval(interval)
   }, [isPlaying, duration])
+
+  // handle update lesson progress
+  const handleUpdateLessonProgress = useCallback(async () => {
+    console.log('!lesson?.progress: ', !lesson?.progress)
+
+    const isEnrolled = curUser?.courses
+      ?.map((course: any) => course.course)
+      .includes((lesson?.courseId as ICourse)._id)
+    console.log('!isEnrolled: ', !isEnrolled)
+
+    if (!lesson?.progress || !isEnrolled) return
+    const invalidProgress = (currentTime / duration) * 100 <= lesson.progress.progress
+    console.log('invalidProgress: ', invalidProgress)
+    if (invalidProgress) return
+
+    try {
+      console.log('Update lesson progress')
+      const { progress } = await updateProgressApi(
+        (lesson.progress as IProgress)._id,
+        (lesson.courseId as ICourse)._id,
+        currentTime >= 0.8 * duration ? 'completed' : 'in-progress',
+        currentTime >= 0.8 * duration ? 100 : (currentTime / duration) * 100
+      )
+      console.log('progress:', progress)
+
+      // update states
+      dispatch(setLearningLesson({ ...lesson, progress }))
+
+      // update course's progress
+      if (progress.status === 'completed') {
+        await update()
+      }
+    } catch (err: any) {
+      console.log(err)
+      toast.error(err.message)
+    }
+  }, [dispatch, update, currentTime, duration, lesson, curUser])
+
+  // MARK: Update lesson progress
+  useEffect(() => {
+    // update progress every
+    // - 2m for video duration > 10m
+    // - 1m for video duration <= 10m
+    // - 30s for video duration <= 5m
+
+    let interval = 0
+    if (duration > 600) {
+      interval = 120000
+    } else if (duration <= 600 && duration > 300) {
+      interval = 60000
+    } else {
+      interval = 30000
+    }
+
+    const progressInterval = setInterval(() => {
+      console.log('22')
+      handleUpdateLessonProgress()
+    }, interval)
+
+    return () => {
+      console.log('clear')
+      clearInterval(progressInterval)
+    }
+  }, [handleUpdateLessonProgress, duration])
 
   // MARK: Play/Pause
   const play = () => {
@@ -148,36 +222,41 @@ function IframePlayer({ videoId, className = '' }: IframePlayerProps) {
     }
   }, [])
 
-  const handleSeekMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    setIsDragging(true)
-    handleSeekMouseMove(e)
+  const handleSeekMouseMove = useCallback(
+    (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      if (isDragging && progressBarRef.current) {
+        const rect = progressBarRef.current.getBoundingClientRect()
+        const newTime = ((e.clientX - rect.left) / rect.width) * duration
+        handleSeek(newTime)
+        handleUpdateLessonProgress()
+      }
+    },
+    [duration, handleSeek, handleUpdateLessonProgress, isDragging]
+  )
 
-    console.log('Seek mouse down')
-  }
-
-  const handleSeekMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (isDragging && progressBarRef.current) {
-      console.log('Seek mouse move')
-      const rect = progressBarRef.current.getBoundingClientRect()
-      const newTime = ((e.clientX - rect.left) / rect.width) * duration
-      handleSeek(newTime)
-    }
-  }
-
-  const handleSeekMouseUp = () => {
+  const handleSeekMouseUp = useCallback(() => {
     setIsDragging(false)
-    console.log('Seek mouse up')
-  }
+  }, [])
 
-  const handleSeekMouseClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    console.log('Seek mouse click')
-    if (progressBarRef.current) {
-      const rect = progressBarRef.current.getBoundingClientRect()
-      const newTime = ((e.clientX - rect.left) / rect.width) * duration
-      console.log('New time:', newTime)
-      handleSeek(newTime)
-    }
-  }
+  const handleSeekMouseDown = useCallback(
+    (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      setIsDragging(true)
+      handleSeekMouseMove(e)
+    },
+    [handleSeekMouseMove]
+  )
+
+  const handleSeekMouseClick = useCallback(
+    (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      if (progressBarRef.current) {
+        const rect = progressBarRef.current.getBoundingClientRect()
+        const newTime = ((e.clientX - rect.left) / rect.width) * duration
+        handleSeek(newTime)
+        handleUpdateLessonProgress()
+      }
+    },
+    [duration, handleSeek, handleUpdateLessonProgress]
+  )
 
   // MARK: Volume
   const handleChangeVolume = useCallback(
@@ -222,8 +301,6 @@ function IframePlayer({ videoId, className = '' }: IframePlayerProps) {
     }
   }, [isFullscreen])
 
-  console.log(currentTime, duration)
-
   // MARK: Show/Hide Controls
   const showControlsHandler = useCallback(() => {
     if (currentTime === 0 || isDragging) return
@@ -233,7 +310,6 @@ function IframePlayer({ videoId, className = '' }: IframePlayerProps) {
       clearTimeout(controlsTimeoutRef.current)
     }
     controlsTimeoutRef.current = setTimeout(() => {
-      console.log('hide')
       setShowControls(false)
     }, 1000)
   }, [currentTime, isDragging])
@@ -251,6 +327,7 @@ function IframePlayer({ videoId, className = '' }: IframePlayerProps) {
     }
   }, [showControlsHandler])
 
+  // useEffect to show/hide controls
   useEffect(() => {
     if (currentTime === 0 || isDragging) return
 

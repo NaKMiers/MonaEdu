@@ -244,6 +244,7 @@ function CourseCard({ course, hideBadge, className = '' }: CourseCardProps) {
                       width={320}
                       height={320}
                       alt='netflix'
+                      loading='lazy'
                       key={src}
                     />
                   ))}

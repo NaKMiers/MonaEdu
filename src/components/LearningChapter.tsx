@@ -8,6 +8,7 @@ import { memo, useEffect, useRef, useState } from 'react'
 import { FaAngleDown } from 'react-icons/fa'
 import { TiLockClosed, TiLockOpen } from 'react-icons/ti'
 import Divider from './Divider'
+import LessonItemOfChapter from './LessonItemOfChapter'
 
 interface LearningChapterProps {
   courseId: string
@@ -80,19 +81,13 @@ function LearningChapter({
       >
         {chapter.lessons?.map((lesson) =>
           lesson.status === 'public' || isEnrolled ? (
-            <Link
-              href={`/learning/${courseSlug}/${lesson.slug}`}
-              className={`bg-white rounded-md py-2 px-3 gap-4 hover:bg-primary trans-200 flex items-center ${
-                lesson.slug === lessonSlug ? 'font-semibold text-orange-500' : ''
-              }`}
+            <LessonItemOfChapter
+              lesson={lesson}
+              lessonSlug={lessonSlug}
+              courseSlug={courseSlug}
+              isEnrolled={isEnrolled}
               key={lesson._id}
-            >
-              {!isEnrolled && <TiLockOpen size={16} className='flex-shrink-0' />}
-              <span className='text-ellipsis line-clamp-1'>{lesson.title}</span>
-              <span className='text-xs font-semibold text-nowrap text-slate-500 ml-auto'>
-                {duration(lesson.duration)}
-              </span>
-            </Link>
+            />
           ) : (
             <div
               className={`bg-white rounded-md py-2 px-3 gap-4 flex items-center ${

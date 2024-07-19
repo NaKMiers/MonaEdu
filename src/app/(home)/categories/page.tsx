@@ -1,25 +1,25 @@
-import BreadcrumbBanner from '@/components/BreadcrumbBanner';
-import CategoryCard from '@/components/CategoryCard';
-import Divider from '@/components/Divider';
-import { ICategory } from '@/models/CategoryModel';
-import { getAllParentCategoriesApi } from '@/requests';
-import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import BreadcrumbBanner from '@/components/BreadcrumbBanner'
+import CategoryCard from '@/components/CategoryCard'
+import Divider from '@/components/Divider'
+import { ICategory } from '@/models/CategoryModel'
+import { getAllParentCategoriesApi } from '@/requests'
+import { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 
 export const metadata: Metadata = {
   title: 'Danh mục khóa học - Mona Edu',
   description: 'Mona Edu - Học trực tuyến mọi lúc, mọi nơi',
-};
+}
 
 async function CategoriesPage() {
   // data
-  let categories: ICategory[] = [];
+  let categories: ICategory[] = []
 
   try {
-    const data = await getAllParentCategoriesApi(process.env.NEXT_PUBLIC_APP_URL);
-    categories = data.categories;
+    const data = await getAllParentCategoriesApi(process.env.NEXT_PUBLIC_APP_URL)
+    categories = data.categories
   } catch (err: any) {
-    return notFound();
+    return notFound()
   }
 
   // jsonLd
@@ -39,7 +39,7 @@ async function CategoriesPage() {
         url: `${process.env.NEXT_PUBLIC_APP_URL}/categories/${category.slug}`,
       },
     })),
-  };
+  }
 
   return (
     <div>
@@ -66,7 +66,7 @@ async function CategoriesPage() {
 
       <Divider size={32} />
     </div>
-  );
+  )
 }
 
-export default CategoriesPage;
+export default CategoriesPage

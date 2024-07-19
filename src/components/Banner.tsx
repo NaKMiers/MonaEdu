@@ -114,9 +114,9 @@ function Banner({ courses, className = '' }: BannerProps) {
       ref={carouselRef}
     >
       {/* List Items */}
-      <div className='list' ref={listRef}>
+      <div className='list bg-white' ref={listRef}>
         {courses.map((course) => (
-          <div className='item absolute inset-0 ' key={course._id}>
+          <div className='item absolute inset-0' key={course._id}>
             <div className='w-full h-full'>
               <Image
                 className='img w-full h-full object-cover brightness-[0.8]'
@@ -124,6 +124,8 @@ function Banner({ courses, className = '' }: BannerProps) {
                 width={1920}
                 height={1080}
                 alt='item'
+                quality={100}
+                loading='lazy'
               />
             </div>
             <div className='content absolute top-[15%] left-1/2 -translate-x-1/2 max-w-[85%] w-[1140px] drop-shadow-2xl text-white'>
