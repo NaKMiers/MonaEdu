@@ -7,7 +7,7 @@ import { ILesson } from '@/models/LessonModel'
 import { getLearningChaptersApi } from '@/requests/chapterRequest'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { memo, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { BsLayoutSidebarInset } from 'react-icons/bs'
@@ -21,6 +21,7 @@ function AllLessons() {
   // hooks
   const dispatch = useAppDispatch()
   const openSidebar = useAppSelector((state) => state.modal.openSidebar)
+  const router = useRouter()
   const params = useParams()
   const courseSlug = params.courseSlug as string
   const lessonSlug = params.lessonSlug as string
@@ -37,9 +38,6 @@ function AllLessons() {
   // get all chapters with lessons
   useEffect(() => {
     const getChaptersWithLessons = async () => {
-      // start page loading
-      dispatch(setPageLoading(true))
-
       try {
         // send request to get all chapters with lessons
         const { chapters, courseId } = await getLearningChaptersApi(courseSlug)
@@ -51,16 +49,33 @@ function AllLessons() {
         // set states
         setChapters(chapters)
         setCourseId(courseId)
+
+        if (lessonSlug === 'continue') {
+          const lessons: ILesson[] = chapters.reduce(
+            (acc: ILesson[], chapter: any) => [...acc, ...chapter.lessons],
+            []
+          )
+          console.log('lessons', lessons)
+
+          let lesson = lessons[0]
+
+          const inProgressLessons = lessons.filter(
+            (lesson: any) => lesson?.progress?.status === 'in-progress'
+          )
+
+          if (inProgressLessons.length > 0) {
+            lesson = inProgressLessons[0]
+          }
+
+          router.push(`/learning/${courseSlug}/${lesson.slug}`)
+        }
       } catch (err: any) {
         console.log(err)
         toast.error(err.message)
-      } finally {
-        // stop page loading
-        dispatch(setPageLoading(false))
       }
     }
     getChaptersWithLessons()
-  }, [dispatch, courseSlug])
+  }, [router, dispatch, courseSlug, lessonSlug])
 
   // find next and prev lesson
   useEffect(() => {

@@ -12,6 +12,7 @@ import { FaEye, FaEyeSlash, FaHeart, FaRegHeart, FaSortDown } from 'react-icons/
 import { format } from 'timeago.js'
 import LoadingButton from './LoadingButton'
 import ReportDialog from './dialogs/ReportDigalog'
+import { HiDotsHorizontal, HiDotsVertical } from 'react-icons/hi'
 
 interface CommentItemProps {
   comment: IComment
@@ -27,6 +28,7 @@ function CommentItem({ comment, setCmts, className = '' }: CommentItemProps) {
   // states
   const [isOpenReply, setIsOpenReply] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [showActions, setShowActions] = useState<boolean>(false)
 
   // report states
   const [isOpenReportDialog, setIsOpenReportDialog] = useState<boolean>(false)
@@ -198,26 +200,45 @@ function CommentItem({ comment, setCmts, className = '' }: CommentItemProps) {
             {user?.firstName && user?.lastName ? `${user?.firstName} ${user?.lastName}` : user?.username}
           </span>{' '}
           - <span className='text-slate-500 text-sm'>{format(comment.createdAt)}</span>{' '}
-          {curUser?.role !== 'user' && (
-            <button
-              className={`ml-2 px-[6px] py-[1px] rounded-[4px] text-sm border ${
-                comment.hide
-                  ? 'border-rose-500 hover:bg-rose-500 text-rose-500'
-                  : 'border-green-500 hover:bg-green-500 text-green-500'
-              } hover:text-white trans-200`}
-              onClick={() => hideComment(comment._id, comment.hide ? 'n' : 'y')}
-            >
-              {comment.hide ? <FaEyeSlash size={16} /> : <FaEye size={16} />}
-            </button>
-          )}
+          {/* Action Buttons */}
           {curUser?._id && (
-            <button
-              className={`font-bold px-1.5 py-0.5 text-[10px] hover:bg-dark-0 hover:border-dark hover:text-rose-500 border border-rose-400 text-rose-400 rounded-[4px] trans-200`}
-              title='Report'
-              onClick={() => setIsOpenReportDialog(true)}
-            >
-              Report
-            </button>
+            <div className='relative flex justify-end items-center'>
+              <button className='group' onClick={() => setShowActions((prev) => !prev)}>
+                <HiDotsHorizontal size={20} className='wiggle' />
+              </button>
+
+              <div
+                className={`fixed z-10 top-0 left-0 right-0 bottom-0 ${showActions ? '' : 'hidden'}`}
+                onClick={() => setShowActions(false)}
+              />
+              <div
+                className={`${
+                  showActions ? 'max-w-[120px] max-h-[80px]' : 'max-w-0 max-h-0 p-0'
+                }  overflow-hidden absolute z-20 top-full right-0 flex shadow-lg rounded-md bg-white trans-300`}
+              >
+                {(user?._id === curUser._id || user?.role === 'admin') && (
+                  <button
+                    className={`font-bold px-1.5 py-1 text-[10px] bg-slate-200 hover:text-white trans-200 ${
+                      status === 'open'
+                        ? 'border-dark hover:bg-black'
+                        : 'border-green-500 text-green-500 hover:bg-green-500'
+                    }`}
+                    title={status === 'open' ? 'opening' : 'closing'}
+                    onClick={() => hideComment(comment._id, comment.hide ? 'n' : 'y')}
+                  >
+                    {comment.hide ? <FaEyeSlash size={16} /> : <FaEye size={16} />}
+                  </button>
+                )}
+
+                <button
+                  className={`font-bold text-nowrap px-1.5 py-1 text-[10px] hover:bg-dark-0 hover:border-dark hover:text-rose-500 border-rose-400 text-rose-400 trans-200`}
+                  title='Report'
+                  onClick={() => setIsOpenReportDialog(true)}
+                >
+                  Báo cáo
+                </button>
+              </div>
+            </div>
           )}
           {/* Confirm Demote Collaborator Dialog */}
           <ReportDialog

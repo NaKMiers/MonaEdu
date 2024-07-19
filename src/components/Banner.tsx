@@ -119,7 +119,7 @@ function Banner({ courses, className = '' }: BannerProps) {
           <div className='item absolute inset-0' key={course._id}>
             <div className='w-full h-full'>
               <Image
-                className='img w-full h-full object-cover brightness-[0.8]'
+                className='img w-full h-full object-cover object-left brightness-[0.8]'
                 src={course.images[0]}
                 width={1920}
                 height={1080}
@@ -157,7 +157,7 @@ function Banner({ courses, className = '' }: BannerProps) {
                       buyNow(course)
                     }
                   }}
-                  className='h-10 flex items-center justify-center px-2 shadow-md text-white border-2 border-white font-semibold font-body tracking-wider rounded-md hover:bg-white hover:text-dark trans-200'
+                  className='h-10 flex items-center justify-center px-2 shadow-md text-white border-2 border-white font-semibold font-body tracking-wider rounded-md hover:bg-white hover:text-dark trans-200 uppercase'
                 >
                   {curUser?._id &&
                   curUser?.courses.map((course: any) => course.course).includes(course._id)

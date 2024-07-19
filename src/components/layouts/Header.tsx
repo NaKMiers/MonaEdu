@@ -91,7 +91,7 @@ function Header({ className = '' }: HeaderProps) {
       }  bg-dark-100 text-white w-full trans-300 bottom-0 md:bottom-auto md:top-0 ${className}`}
     >
       {/* Main Header */}
-      <div className='relative flex justify-between gap-3 items-center max-w-1200 trans-300 w-full h-[72px] m-auto px-21'>
+      <div className='relative flex justify-between gap-1 items-center max-w-1200 trans-300 w-full h-[72px] m-auto px-3 sm:px-21'>
         {/* MARK: Left */}
         <div
           className={`flex items-center gap-3 pl-4 -ml-4 h-full overflow-x-scroll no-scrollbar trans-300`}
@@ -113,7 +113,7 @@ function Header({ className = '' }: HeaderProps) {
           <div className=''>
             <Link
               href='/categories'
-              className='flex items-center justify-center gap-2 group text-nowrap bg-primary font-semibold text-dark px-3 py-1 rounded-md hover:bg-secondary hover:text-light trans-200'
+              className='flex items-center justify-center gap-2 group text-nowrap bg-primary text-sm md:text-base font-semibold text-dark px-1.5 md:px-3 py-1 rounded-md hover:bg-secondary hover:text-light trans-200'
               onMouseOver={() => setOpenCategoryTabs(true)}
             >
               <BiSolidCategory size={20} className='hidden md:block' />

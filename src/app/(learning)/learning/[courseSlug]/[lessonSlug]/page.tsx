@@ -8,7 +8,7 @@ import { reportContents } from '@/constants'
 import { useAppDispatch, useAppSelector } from '@/libs/hooks'
 import useDetectDevTools from '@/libs/hooks/useDetectDevTools'
 import { setLearningLesson } from '@/libs/reducers/learningReducer'
-import { setOpenSidebar } from '@/libs/reducers/modalReducer'
+import { setOpenSidebar, setPageLoading } from '@/libs/reducers/modalReducer'
 import { IComment } from '@/models/CommentModel'
 import { ICourse } from '@/models/CourseModel'
 import { ILesson } from '@/models/LessonModel'
@@ -48,6 +48,9 @@ function LessonPage({
   // MARK: get lesson
   useEffect(() => {
     const getLesson = async () => {
+      // start page loading
+      dispatch(setPageLoading(true))
+
       // get lesson for learning
       try {
         const { lesson, comments } = await getLessonApi(lessonSlug)
@@ -64,11 +67,16 @@ function LessonPage({
         setComments(comments)
       } catch (err: any) {
         console.log(err)
-        // router.back()
+        dispatch(setPageLoading(true))
+      } finally {
+        // stop page loading
+        dispatch(setPageLoading(false))
       }
     }
 
-    getLesson()
+    if (lessonSlug !== 'continue') {
+      getLesson()
+    }
   }, [dispatch, lessonSlug])
 
   const handleReport = useCallback(async () => {
