@@ -34,7 +34,6 @@ function LessonItemOfChapter({
   useEffect(() => {
     // create new progress if not exists
     const initProgress = async () => {
-      console.log('initProgress', lesson)
       try {
         const { progress } = await addProgressApi(lesson.courseId as string, lesson._id)
 
@@ -54,7 +53,6 @@ function LessonItemOfChapter({
   // using learning lesson instead of data from parent component when current lesson is learning
   useEffect(() => {
     if (learningLesson && learningLesson._id === lesson._id) {
-      console.log('setLessonLearning', learningLesson)
       setLesson(learningLesson)
     }
   }, [learningLesson, lesson._id])

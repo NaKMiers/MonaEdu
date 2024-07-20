@@ -25,13 +25,13 @@ interface HeaderProps {
 function Header({ className = '' }: HeaderProps) {
   // hooks
   const dispatch = useAppDispatch()
-  const { data: session, update } = useSession()
+  const { data: session } = useSession()
   const curUser: any = session?.user
 
   const pathname = usePathname()
 
   // reducer
-  const cartLength = useAppSelector((state) => state.cart.items.length)
+  const cartLength = useAppSelector(state => state.cart.items.length)
 
   // states
   const [isTransparent, setIsTransparent] = useState<boolean>(pathname === '/')
@@ -146,18 +146,18 @@ function Header({ className = '' }: HeaderProps) {
               </Link>
               <button
                 className='relative wiggle'
-                onClick={() => setIsOpenNotificationMenu((prev) => !prev)}
+                onClick={() => setIsOpenNotificationMenu(prev => !prev)}
               >
                 <FaBell size={24} />
                 {!!curUser?.notifications.length && (
                   <span className='absolute -top-2 right-[-5px] bg-orange-400 rounded-full text-center px-[6px] py-[2px] text-[10px] font-bold flex items-center justify-center min-w-[24px]'>
-                    {curUser?.notifications.length}
+                    {curUser?.notifications.filter((n: any) => n.status === 'unread').length}
                   </span>
                 )}
               </button>
               <div
                 className='flex items-center gap-2 cursor-pointer'
-                onClick={() => setIsOpenMenu((prev) => !prev)}
+                onClick={() => setIsOpenMenu(prev => !prev)}
               >
                 <Image
                   className='aspect-square rounded-full wiggle-0 shadow-lg'
@@ -200,7 +200,7 @@ function Header({ className = '' }: HeaderProps) {
               </span>
             )}
           </Link>
-          <button className='relative group' onClick={() => setIsOpenNotificationMenu((prev) => !prev)}>
+          <button className='relative group' onClick={() => setIsOpenNotificationMenu(prev => !prev)}>
             <FaBell size={22} className='wiggle' />
             {!!curUser?.notifications?.length && (
               <span className='absolute -top-2 right-[-5px] bg-orange-400 rounded-full text-center px-[6px] py-[2px] text-[10px] font-bold'>
@@ -210,7 +210,7 @@ function Header({ className = '' }: HeaderProps) {
           </button>
           <button
             className='flex justify-center items-center w-[40px] h-[40px]'
-            onClick={() => setIsOpenMenu((prev) => !prev)}
+            onClick={() => setIsOpenMenu(prev => !prev)}
           >
             <FaBars size={22} className='trans-200 wiggle' />
           </button>

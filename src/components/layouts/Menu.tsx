@@ -24,7 +24,6 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
   // update user session
   useEffect(() => {
     const updateUser = async () => {
-      console.log('update user')
       await update()
     }
     if (!curUser?._id) {

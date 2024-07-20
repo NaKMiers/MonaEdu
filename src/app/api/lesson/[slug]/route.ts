@@ -62,8 +62,6 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
     if (lesson.status !== 'public') {
       // if user is not enrolled in this course
       const userCourses = user.courses.map((course: any) => course.course)
-      console.log('userCourses', userCourses)
-      console.log('lesson.courseId as ICourse)._id', (lesson.courseId as ICourse)._id)
       if (
         !user.courses
           .map((course: any) => course.course)

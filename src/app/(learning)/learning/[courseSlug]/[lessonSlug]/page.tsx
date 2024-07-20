@@ -55,8 +55,6 @@ function LessonPage({
       try {
         const { lesson, comments } = await getLessonApi(lessonSlug)
 
-        console.log('lesson', lesson)
-
         // set learning lesson
         dispatch(setLearningLesson(lesson))
 
@@ -126,6 +124,12 @@ function LessonPage({
     },
     [dispatch, lesson]
   )
+
+  // set page title
+  useEffect(() => {
+    if (!lesson?.title) return
+    document.title = `${lesson?.title} - Mona Edu`
+  }, [lesson?.title])
 
   return (
     <div className='w-full px-3'>
@@ -231,7 +235,7 @@ function LessonPage({
           {/* MARK: Source */}
           <div className='aspect-video w-full rounded-lg shadow-lg overflow-hidden'>
             {lesson.sourceType === 'embed' ? (
-              <IframePlayer />
+              <IframePlayer lesson={lesson} />
             ) : (
               <video className='rounded-lg w-full h-full object-contain' src={lesson.source} controls />
             )}

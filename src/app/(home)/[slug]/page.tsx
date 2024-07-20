@@ -1,7 +1,9 @@
+import CourseCard from '@/components/CourseCard'
 import CourseContent from '@/components/CourseContent'
 import Divider from '@/components/Divider'
 import FloatingActionButtons from '@/components/floatings/FloatingActionButtons'
 import FloatingSummary from '@/components/floatings/FloatingSummary'
+import GroupCourses from '@/components/GroupCourses'
 import Price from '@/components/Price'
 import { ICategory } from '@/models/CategoryModel'
 import { IChapter } from '@/models/ChapterModel'
@@ -30,6 +32,7 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
   // Data
   let course: ICourse | null = null
   let chapters: IChapter[] = []
+  let relatedCourses: ICourse[] = []
   let totalTime: {
     hours: number
     minutes: number
@@ -45,6 +48,7 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
 
     course = data.course
     chapters = data.chapters
+    relatedCourses = data.relatedCourses
 
     // Calculate total time
     const totalDuration = chapters.reduce(
@@ -92,6 +96,23 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
     typicalAgeRange: 'Adult',
     timeRequired: `PT${totalTime.hours}H${totalTime.minutes}M`,
     numberOfCredits: '3',
+    about: relatedCourses.map(course => ({
+      '@type': 'Course',
+      name: course.title,
+      description: course.description,
+      url: `${process.env.NEXT_PUBLIC_APP_URL}/${course.slug}`,
+      provider: {
+        '@type': 'Organization',
+        name: 'Mona Edu',
+      },
+      offers: {
+        '@type': 'Offer',
+        priceCurrency: 'VND',
+        price: course.price,
+        availability: 'https://schema.org/InStock',
+        url: `${process.env.NEXT_PUBLIC_APP_URL}/${course.slug}`,
+      },
+    })),
   }
 
   return (
@@ -99,7 +120,7 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
       {/* MARK: Add JSON-LD */}
       <script type='application/ld+json' dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      {/* Banner */}
+      {/* MARK: Banner */}
       <div className='relative bg-neutral-800 text-light -mt-8 pt-8'>
         {/* <BeamsBackground /> */}
 
@@ -137,7 +158,7 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
             {/* Thumbnails */}
             <div className='lg:hidden max-w-[500px] relative aspect-video rounded-lg overflow-hidden shadow-lg block group mt-8'>
               <div className='flex w-full overflow-x-scroll snap-x snap-mandatory hover:scale-105 trans-500'>
-                {course?.images.map((src) => (
+                {course?.images.map(src => (
                   <Image
                     className='flex-shrink-0 snap-start w-full h-full object-cover'
                     src={src}
@@ -223,7 +244,7 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
       <div className='flex max-w-1200 mx-auto py-8 gap-8 px-21'>
         {/* Main */}
         <div className='mb-8 flex-1'>
-          {/* Include */}
+          {/* MARK: Include */}
           <div className='lg:hidden font-body tracking-wider mb-8'>
             <h2 className='font-semibold font-sans text-3xl'>Khóa Học Gồm Có:</h2>
             <Divider size={3} />
@@ -263,7 +284,7 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
           <p className='font-body tracking-wider'>{course?.description}</p>
         </div>
 
-        {/* Floating Box */}
+        {/* MARK: Floating Box */}
         <div className='hidden lg:flex flex-shrink-0 w-full max-w-[300px] justify-end items-start'>
           {course && (
             <FloatingSummary
@@ -274,13 +295,26 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
         </div>
       </div>
 
-      {/* Floating Action Buttons */}
+      {/* MARK: Floating Action Buttons */}
       {course && (
         <FloatingActionButtons
           className='lg:hidden fixed bottom-[72px] md:bottom-0 left-0 w-full right-0 flex px-3 py-1.5 rounded-t-xl border-t-2 border-primary gap-2 bg-white shadow-md shadow-primary z-20'
           course={course}
         />
       )}
+
+      <Divider size={8} />
+
+      {/* MARK: Related Courses */}
+      <div className={`max-w-1200 w-full mx-auto px-21`}>
+        <h2 className='font-semibold font-sans text-3xl'>Các khóa học liên quan</h2>
+
+        <GroupCourses className='' classChild='w-full sm:w-1/2 md:w-1/3 lg:w-1/4'>
+          {relatedCourses.map(course => (
+            <CourseCard course={course} key={course._id} />
+          ))}
+        </GroupCourses>
+      </div>
     </div>
   )
 }

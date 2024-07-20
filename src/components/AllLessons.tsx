@@ -55,8 +55,6 @@ function AllLessons() {
             (acc: ILesson[], chapter: any) => [...acc, ...chapter.lessons],
             []
           )
-          console.log('lessons', lessons)
-
           let lesson = lessons[0]
 
           const inProgressLessons = lessons.filter(
@@ -111,7 +109,7 @@ function AllLessons() {
           openSidebar ? 'translate-x-0' : '-translate-x-full'
         } pt-[18px] border-r-2 border-primary sm:rounded-r-lg shadow-md shadow-primary`}
       >
-        <BeamsBackground />
+        {/* <BeamsBackground /> */}
 
         <div className='flex flex-col h-full relative z-10'>
           <div className='flex items-center gap-4'>
@@ -126,7 +124,14 @@ function AllLessons() {
             </Link>
 
             <div className='relative overflow-hidden rounded-md w-full h-6 shadow-sm shadow-primary'>
-              <div className='w-[3%] h-full bg-primary flex items-center' />
+              <div
+                className='h-full bg-primary flex items-center'
+                style={{
+                  width: `${
+                    curUser?.courses.find((course: any) => course.course === courseId)?.progress || 0
+                  }%`,
+                }}
+              />
               <div className='absolute flex items-center justify-between top-1/2 px-4 left-0 right-0 -translate-y-1/2 text-orange-400 text-sm font-body tracking-wider font-semibold drop-shadow-sm'>
                 <span>
                   {curUser?.courses.find((course: any) => course.course === courseId)?.progress || 0}%

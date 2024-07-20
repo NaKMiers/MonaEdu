@@ -34,9 +34,9 @@ function CartPage() {
 
   // reducers
   const dispatch = useAppDispatch()
-  const isLoading = useAppSelector((state) => state.modal.isLoading)
-  let cartItems = useAppSelector((state) => state.cart.items)
-  const selectedItems = useAppSelector((state) => state.cart.selectedItems)
+  const isLoading = useAppSelector(state => state.modal.isLoading)
+  let cartItems = useAppSelector(state => state.cart.items)
+  const selectedItems = useAppSelector(state => state.cart.selectedItems)
 
   // states
   const [subTotal, setSubTotal] = useState<number>(0)
@@ -73,7 +73,7 @@ function CartPage() {
   // auto calc total, discount, subTotal
   useEffect(() => {
     const subTotal = selectedItems.reduce((total, cartItem) => {
-      const item: any = cartItems.find((cI) => cI._id === cartItem._id)
+      const item: any = cartItems.find(cI => cI._id === cartItem._id)
 
       return total + (applyFlashSalePrice(item?.courseId?.flashSale, item?.courseId.price) ?? 0)
     }, 0)
@@ -102,7 +102,7 @@ function CartPage() {
 
   // auto select cart item
   useEffect(() => {
-    const selectedItems = cartItems.filter((item) =>
+    const selectedItems = cartItems.filter(item =>
       queryParams.getAll('course').includes((item.courseId as ICourse)?.slug)
     )
 
@@ -111,7 +111,7 @@ function CartPage() {
 
   // send request to server to check voucher
   const handleApplyVoucher: SubmitHandler<FieldValues> = useCallback(
-    async (data) => {
+    async data => {
       // check user
       if (!curUser?._id) {
         toast.error('User not found!')
@@ -145,7 +145,7 @@ function CartPage() {
   )
 
   // send request to server to check voucher
-  const handleFindUser: SubmitHandler<FieldValues> = useCallback(async (data) => {
+  const handleFindUser: SubmitHandler<FieldValues> = useCallback(async data => {
     // start finding user
     setFindingUser(true)
 
@@ -340,7 +340,7 @@ function CartPage() {
               Bạn muốn tặng cho ai đó? (
               <button
                 className='text-orange-600 hover:underline z-10'
-                onClick={() => setIsShowGift((prev) => !prev)}
+                onClick={() => setIsShowGift(prev => !prev)}
               >
                 ấn vào đây
               </button>
@@ -461,7 +461,7 @@ function CartPage() {
           </div>
         </div>
 
-        {/* Suggest Courses */}
+        {/* MARK: Suggest Courses */}
         <div className='col-span-3 mt-12'>
           <SuggestedList />
         </div>

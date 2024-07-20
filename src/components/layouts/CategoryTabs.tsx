@@ -55,8 +55,6 @@ function CategoryTabs({ open, setOpen, className = '' }: CategoryTabsProps) {
   useEffect(() => {
     // if (!tabsRef.current || !timeoutRef.current || !open) return
 
-    console.log('effect')
-
     let timeout: any = timeoutRef.current
     let tabs: any = tabsRef.current
 

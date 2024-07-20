@@ -25,16 +25,7 @@ function NotificationMenu({ open, setOpen, className = '' }: NotificationMenuPro
   // states
   const [notifications, setNotifications] = useState<INotification[]>(curUser?.notifications || [])
 
-  // update user session
-  useEffect(() => {
-    const updateUser = async () => {
-      console.log('update user')
-      await update()
-    }
-    if (!curUser?._id) {
-      updateUser()
-    }
-  }, [update, curUser?._id])
+  console.log('notifications:', notifications)
 
   // handle remove notifications
   const handleRemoveNotifications = useCallback(
@@ -43,42 +34,45 @@ function NotificationMenu({ open, setOpen, className = '' }: NotificationMenuPro
         const { message } = await removeNotificationsApi(ids)
 
         // remove notifications
-        const newNotifications = notifications.filter((noti) => !ids.includes(noti._id))
+        const newNotifications = notifications.filter(n => !ids.includes(n._id))
         setNotifications(newNotifications)
         if (newNotifications.length === 0) {
           setOpen(false)
         }
 
-        // show success
-        toast.success(message)
+        // update user
+        await update()
       } catch (err: any) {
         console.log(err)
         toast.error(err.message)
       }
     },
-    [setOpen, notifications]
+    [update, setOpen, notifications]
   )
 
   // handle read notifications
-  const handleReadNotifications = useCallback(async (ids: string[], value: boolean) => {
-    try {
-      const { message } = await readNotificationsApi(ids, value)
+  const handleReadNotifications = useCallback(
+    async (ids: string[], value: boolean) => {
+      try {
+        const { message } = await readNotificationsApi(ids, value)
 
-      // read / unread notifications
+        // read / unread notifications
 
-      setNotifications((prev) =>
-        prev.map((noti) =>
-          ids.includes(noti._id) ? { ...noti, status: value ? 'read' : 'unread' } : noti
+        setNotifications(prev =>
+          prev.map(noti =>
+            ids.includes(noti._id) ? { ...noti, status: value ? 'read' : 'unread' } : noti
+          )
         )
-      )
 
-      // show success
-      toast.success(message)
-    } catch (err: any) {
-      console.log(err)
-      toast.error(err.message)
-    }
-  }, [])
+        // update user
+        await update()
+      } catch (err: any) {
+        console.log(err)
+        toast.error(err.message)
+      }
+    },
+    [update]
+  )
 
   // key board event
   useEffect(() => {
@@ -146,7 +140,7 @@ function NotificationMenu({ open, setOpen, className = '' }: NotificationMenuPro
                     <IoCloseCircleOutline
                       size={18}
                       className='wiggle-1 flex-shrink-0 cursor-pointer'
-                      onClick={(e) => {
+                      onClick={e => {
                         e.stopPropagation()
                         handleRemoveNotifications([noti._id])
                       }}
@@ -155,7 +149,7 @@ function NotificationMenu({ open, setOpen, className = '' }: NotificationMenuPro
                       <IoMail
                         size={16}
                         className='wiggle-1 flex-shrink-0 cursor-pointer'
-                        onClick={(e) => {
+                        onClick={e => {
                           e.stopPropagation()
                           handleReadNotifications([noti._id], true)
                         }}
@@ -164,7 +158,7 @@ function NotificationMenu({ open, setOpen, className = '' }: NotificationMenuPro
                       <IoMailOpen
                         size={16}
                         className='wiggle-1 flex-shrink-0 cursor-pointer'
-                        onClick={(e) => {
+                        onClick={e => {
                           e.stopPropagation()
                           handleReadNotifications([noti._id], false)
                         }}

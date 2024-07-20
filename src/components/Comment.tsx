@@ -1,12 +1,12 @@
 'use client'
 
-import { IComment } from '@/models/CommentModel'
-import { addCommentApi } from '@/requests/commentRequest'
-import { useSession } from 'next-auth/react'
+import {IComment} from '@/models/CommentModel'
+import {addCommentApi} from '@/requests/commentRequest'
+import {useSession} from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { memo, useCallback, useEffect, useState } from 'react'
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+import {memo, useCallback, useEffect, useState} from 'react'
+import {FieldValues, SubmitHandler, useForm} from 'react-hook-form'
 import toast from 'react-hot-toast'
 import CommentItem from './CommentItem'
 import LoadingButton from './LoadingButton'
@@ -18,9 +18,9 @@ interface CommentProps {
   className?: string
 }
 
-function Comment({ comments, questionId, lessonId, className = '' }: CommentProps) {
+function Comment({comments, questionId, lessonId, className = ''}: CommentProps) {
   // hooks
-  const { data: session } = useSession()
+  const {data: session} = useSession()
   const curUser: any = session?.user
 
   // states
@@ -31,7 +31,7 @@ function Comment({ comments, questionId, lessonId, className = '' }: CommentProp
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: {errors},
     clearErrors,
     reset,
   } = useForm<FieldValues>({
@@ -47,7 +47,7 @@ function Comment({ comments, questionId, lessonId, className = '' }: CommentProp
 
   // handle send comment
   const sendComment: SubmitHandler<FieldValues> = useCallback(
-    async (data) => {
+    async data => {
       // check login
       if (!curUser) return toast.error('Hãy đăng nhập để bình luận')
 
@@ -57,7 +57,7 @@ function Comment({ comments, questionId, lessonId, className = '' }: CommentProp
 
         try {
           // send request to add comment
-          const { newComment } = await addCommentApi({
+          const {newComment} = await addCommentApi({
             questionId,
             lessonId,
             content: data.comment,
@@ -65,7 +65,7 @@ function Comment({ comments, questionId, lessonId, className = '' }: CommentProp
           newComment.user = curUser
 
           // add new comment to list
-          setCmts((prev) => [newComment, ...prev])
+          setCmts(prev => [newComment, ...prev])
 
           // reset form
           reset()
@@ -105,7 +105,7 @@ function Comment({ comments, questionId, lessonId, className = '' }: CommentProp
             placeholder=' '
             disabled={isLoading}
             type='text'
-            {...register('comment', { required: true })}
+            {...register('comment', {required: true})}
             onBlur={() => clearErrors('comment')}
           />
 
@@ -131,10 +131,10 @@ function Comment({ comments, questionId, lessonId, className = '' }: CommentProp
       )}
 
       {/* MARK: Comment List */}
-      <div className='flex flex-col mt-5 gap-3 max-h-[500px] overflow-y-scroll'>
+      <div className='flex flex-col mt-5 gap-3'>
         {cmts
-          .filter((comment) => !comment.hide || comment.userId === curUser?._id)
-          .map((comment) => (
+          .filter(comment => !comment.hide || comment.userId === curUser?._id)
+          .map(comment => (
             <CommentItem comment={comment} setCmts={setCmts} key={comment._id} />
           ))}
       </div>

@@ -1,8 +1,9 @@
 'use client'
 
-import { useAppDispatch, useAppSelector } from '@/libs/hooks'
+import { useAppDispatch } from '@/libs/hooks'
 import { setLearningLesson } from '@/libs/reducers/learningReducer'
 import { ICourse } from '@/models/CourseModel'
+import { ILesson } from '@/models/LessonModel'
 import { IProgress } from '@/models/ProgressModel'
 import { updateProgressApi } from '@/requests'
 import { Slider } from '@mui/material'
@@ -15,6 +16,7 @@ import { HiSpeakerWave, HiSpeakerXMark } from 'react-icons/hi2'
 import { RiFullscreenFill } from 'react-icons/ri'
 
 interface IframePlayerProps {
+  lesson: ILesson
   className?: string
 }
 
@@ -29,10 +31,9 @@ interface IframePlayerProps {
 // enablejsapi: 1
 // widgetid: 1
 
-function IframePlayer({ className = '' }: IframePlayerProps) {
+function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
   // hooks
   const dispatch = useAppDispatch()
-  const lesson = useAppSelector((state) => state.learning.learningLesson)
   const videoId = lesson?.source.split('https://www.youtube.com/embed/')[1].split('?')[0]
   const { data: session, update } = useSession()
   const curUser: any = session?.user
@@ -56,6 +57,7 @@ function IframePlayer({ className = '' }: IframePlayerProps) {
   const playRef = useRef<HTMLDivElement>(null)
   const videoBarRef = useRef<HTMLDivElement>(null)
   const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const progressTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   const onPlayerReady = useCallback((e: any) => {
     const wd: any = window
@@ -121,26 +123,36 @@ function IframePlayer({ className = '' }: IframePlayerProps) {
 
   // handle update lesson progress
   const handleUpdateLessonProgress = useCallback(async () => {
-    console.log('!lesson?.progress: ', !lesson?.progress)
-
-    const isEnrolled = curUser?.courses
-      ?.map((course: any) => course.course)
-      .includes((lesson?.courseId as ICourse)._id)
-    console.log('!isEnrolled: ', !isEnrolled)
-
-    if (!lesson?.progress || !isEnrolled) return
-    const invalidProgress = (currentTime / duration) * 100 <= lesson.progress.progress
-    console.log('invalidProgress: ', invalidProgress)
-    if (invalidProgress) return
-
     try {
-      console.log('Update lesson progress')
+      const isEnrolled = curUser?.courses
+        ?.map((course: any) => course.course)
+        .includes((lesson?.courseId as ICourse)._id)
+      // console.log('!lesson?.progress:', !lesson?.progress)
+      // console.log('!isEnrolled:', !isEnrolled)
+      // console.log('duration:', duration)
+      // console.log('(currentTime / duration) * 100:', (currentTime / duration) * 100)
+      if (!lesson?.progress || !isEnrolled || !duration) return
+      // console.log('lesson.progress.progress:', lesson?.progress?.progress)
+
+      const wd: any = window
+      const curTime = wd.player.getCurrentTime()
+
+      const invalidProgress =
+        Math.floor((curTime / duration) * 100 * 100) / 100 <= lesson.progress.progress
+      console.log('curTime:', curTime)
+      console.log('duration:', duration)
+      console.log('(curTime / duration) * 100:', Math.floor((curTime / duration) * 100 * 100) / 100)
+      console.log('lesson.progress.progress:', Math.floor(lesson.progress.progress * 100) / 100)
+      console.log('invalidProgress:', invalidProgress)
+      if (invalidProgress) return
+
       const { progress } = await updateProgressApi(
         (lesson.progress as IProgress)._id,
         (lesson.courseId as ICourse)._id,
-        currentTime >= 0.8 * duration ? 'completed' : 'in-progress',
-        currentTime >= 0.8 * duration ? 100 : (currentTime / duration) * 100
+        curTime > 0.8 * duration ? 'completed' : 'in-progress',
+        curTime > 0.8 * duration ? 100 : Math.floor((curTime / duration) * 100 * 100) / 100
       )
+
       console.log('progress:', progress)
 
       // update states
@@ -153,54 +165,51 @@ function IframePlayer({ className = '' }: IframePlayerProps) {
     } catch (err: any) {
       console.log(err)
       toast.error(err.message)
+    } finally {
+      let interval = 0
+      if (duration > 600) {
+        interval = 120000
+      } else if (duration <= 600 && duration > 300) {
+        interval = 60000
+      } else {
+        interval = 30000
+      }
+
+      // interval = 5000 // need to remove
+      progressTimeoutRef.current = setTimeout(() => {
+        if (progressTimeoutRef.current) {
+          console.log('next timeout:', interval)
+          handleUpdateLessonProgress()
+        }
+      }, interval)
     }
-  }, [dispatch, update, currentTime, duration, lesson, curUser])
-
-  // MARK: Update lesson progress
-  useEffect(() => {
-    // update progress every
-    // - 2m for video duration > 10m
-    // - 1m for video duration <= 10m
-    // - 30s for video duration <= 5m
-
-    let interval = 0
-    if (duration > 600) {
-      interval = 120000
-    } else if (duration <= 600 && duration > 300) {
-      interval = 60000
-    } else {
-      interval = 30000
-    }
-
-    const progressInterval = setInterval(() => {
-      console.log('22')
-      handleUpdateLessonProgress()
-    }, interval)
-
-    return () => {
-      console.log('clear')
-      clearInterval(progressInterval)
-    }
-  }, [handleUpdateLessonProgress, duration])
+  }, [dispatch, update, duration, lesson, curUser])
 
   // MARK: Play/Pause
-  const play = () => {
+  const play = useCallback(() => {
     // play if player is ready
     const wd: any = window
     if (wd.player) {
       const wd: any = window
       wd.player.playVideo()
       setIsPlaying(true)
-    }
-  }
 
-  const pause = () => {
+      handleUpdateLessonProgress()
+    }
+  }, [handleUpdateLessonProgress])
+
+  const pause = useCallback(() => {
     const wd: any = window
     if (wd.player) {
       wd.player.pauseVideo()
       setIsPlaying(false)
+
+      if (progressTimeoutRef.current) {
+        console.log('clearTimeout(progressTimeoutRef.current)')
+        clearTimeout(progressTimeoutRef.current)
+      }
     }
-  }
+  }, [])
 
   const handlePlay = useCallback(() => {
     const wd: any = window
@@ -211,7 +220,7 @@ function IframePlayer({ className = '' }: IframePlayerProps) {
         play()
       }
     }
-  }, [isPlaying])
+  }, [play, pause, isPlaying])
 
   // MARK: Seek
   const handleSeek = useCallback((seconds: number) => {
@@ -228,10 +237,9 @@ function IframePlayer({ className = '' }: IframePlayerProps) {
         const rect = progressBarRef.current.getBoundingClientRect()
         const newTime = ((e.clientX - rect.left) / rect.width) * duration
         handleSeek(newTime)
-        handleUpdateLessonProgress()
       }
     },
-    [duration, handleSeek, handleUpdateLessonProgress, isDragging]
+    [duration, handleSeek, isDragging]
   )
 
   const handleSeekMouseUp = useCallback(() => {
@@ -288,18 +296,20 @@ function IframePlayer({ className = '' }: IframePlayerProps) {
 
   // MARK: Fullscreen
   const handleFullscreen = useCallback(() => {
-    if (!isFullscreen) {
-      if (playerContainerRef.current?.requestFullscreen) {
-        playerContainerRef.current.requestFullscreen()
-      }
-      setIsFullscreen(true)
-    } else {
-      if (document.exitFullscreen) {
-        document.exitFullscreen()
-      }
-      setIsFullscreen(false)
-    }
-  }, [isFullscreen])
+    // if (!isFullscreen) {
+    //   if (playerContainerRef.current?.requestFullscreen) {
+    //     playerContainerRef.current.requestFullscreen()
+    //   }
+    //   setIsFullscreen(true)
+    // } else {
+    //   if (document.exitFullscreen) {
+    //     document.exitFullscreen()
+    //   }
+    //   setIsFullscreen(false)
+    // }
+
+    handleUpdateLessonProgress()
+  }, [handleUpdateLessonProgress])
 
   // MARK: Show/Hide Controls
   const showControlsHandler = useCallback(() => {
@@ -438,7 +448,7 @@ function IframePlayer({ className = '' }: IframePlayerProps) {
         {/* Play Button */}
         <div
           className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center trans-300'
-          onClick={(e) => e.stopPropagation()}
+          onClick={e => e.stopPropagation()}
           ref={playRef}
         >
           <button
@@ -455,7 +465,7 @@ function IframePlayer({ className = '' }: IframePlayerProps) {
 
         <div
           className='flex flex-col w-full px-4 trans-300 overflow-hidden'
-          onClick={(e) => e.stopPropagation()}
+          onClick={e => e.stopPropagation()}
           ref={videoBarRef}
         >
           {/* Seek */}

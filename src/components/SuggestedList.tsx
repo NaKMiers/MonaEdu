@@ -12,7 +12,7 @@ interface SuggestedListProps {
 
 function SuggestedList({ className = '' }: SuggestedListProps) {
   // reducer
-  const cartItems = useAppSelector((state) => state.cart.items)
+  const cartItems = useAppSelector(state => state.cart.items)
 
   // states
   const [courses, setCourses] = useState<ICourse[]>([])
@@ -21,8 +21,8 @@ function SuggestedList({ className = '' }: SuggestedListProps) {
   useEffect(() => {
     const getSuggestedCourses = async () => {
       try {
-        const coursesInCart = cartItems.map((cartItem) => (cartItem.courseId as ICourse)._id)
-        const query = '?' + coursesInCart.map((courseId) => `courses=${courseId}`).join('&')
+        const coursesInCart = cartItems.map(cartItem => (cartItem.courseId as ICourse)._id)
+        const query = '?' + coursesInCart.map(courseId => `courses=${courseId}`).join('&')
 
         const { courses } = await getSuggestedCoursesApi(query)
         setCourses(courses)
@@ -40,7 +40,7 @@ function SuggestedList({ className = '' }: SuggestedListProps) {
       <h3 className='font-semibold text-2xl mb-2'>Các khóa học đề xuất</h3>
 
       <GroupCourses className='-mx-21/2' classChild='w-full sm:w-1/2 md:w-1/3 lg:w-1/4'>
-        {courses.map((course) => (
+        {courses.map(course => (
           <CourseCard course={course} key={course._id} />
         ))}
       </GroupCourses>

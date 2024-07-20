@@ -59,7 +59,6 @@ function SearchBar() {
   // get some courses as initial results
   useEffect(() => {
     const getSuggestedCourses = async () => {
-      console.log('get suggested courses')
       try {
         // send request to get suggested courses
         const { courses } = await getCoursesApi('?limit=3&sort=joined|-1')
