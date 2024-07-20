@@ -175,7 +175,7 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
         interval = 30000
       }
 
-      // interval = 5000 // need to remove
+      interval = 5000 // need to remove
       progressTimeoutRef.current = setTimeout(() => {
         if (progressTimeoutRef.current) {
           console.log('next timeout:', interval)
