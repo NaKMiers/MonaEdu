@@ -119,7 +119,7 @@ function Banner({ courses, className = '' }: BannerProps) {
           <div className='item absolute inset-0' key={course._id}>
             <div className='w-full h-full'>
               <Image
-                className='img w-full h-full object-cover object-left brightness-[0.8]'
+                className='img w-full h-full object-cover object-right brightness-[0.8]'
                 src={course.images[0]}
                 width={1920}
                 height={1080}
@@ -128,42 +128,44 @@ function Banner({ courses, className = '' }: BannerProps) {
                 loading='lazy'
               />
             </div>
-            <div className='content absolute top-[15%] left-1/2 -translate-x-1/2 max-w-[85%] w-[1140px] drop-shadow-2xl text-white'>
-              <div className='author font-bold tracking-[10px] drop-shadow-lg uppercase'>
-                {course.author}
-              </div>
-              <div
-                className='title font-bold text-[30px] md:text-[5em] leading-[1.3em] drop-shadow-xl text-ellipsis line-clamp-1'
-                title={course.title}
-              >
-                {course.title}
-              </div>
+            <div className='content absolute top-[20%] md:top-[15%] left-1/2 -translate-x-1/2 max-w-[1200px] px-21 w-full drop-shadow-2xl text-white'>
+              <div className='max-w-[700px] w-full'>
+                <div className='author font-bold tracking-[10px] drop-shadow-lg uppercase'>
+                  {course.author}
+                </div>
+                <div
+                  className='title font-bold text-[30px] md:text-[3em] leading-[1.3em] drop-shadow-md stroke-neutral-950 stroke-2 text-ellipsis line-clamp-2'
+                  title={course.title}
+                >
+                  {course.title}
+                </div>
 
-              <div className='desc drop-shadow-md font-body tracking-wider pr-[20%] text-ellipsis line-clamp-4'>
-                {course.textHook}
-              </div>
-              <div className='buttons flex flex-wrap gap-1.5 mt-5'>
-                <Link
-                  href={`/${course.slug}`}
-                  className='h-10 flex items-center justify-center px-2 shadow-md text-dark bg-slate-100 font-semibold font-body tracking-wider rounded-md hover:bg-dark-0 hover:text-white trans-200'
-                >
-                  CHI TIẾT
-                </Link>
-                <button
-                  onClick={e => {
-                    if (curUser?.courses.map((course: any) => course.course).includes(course._id)) {
-                      router.push(`/learning/${course?.slug}/continue`)
-                    } else {
-                      buyNow(course)
-                    }
-                  }}
-                  className='h-10 flex items-center justify-center px-2 shadow-md text-white border-2 border-white font-semibold font-body tracking-wider rounded-md hover:bg-white hover:text-dark trans-200 uppercase'
-                >
-                  {curUser?._id &&
-                  curUser?.courses.map((course: any) => course.course).includes(course._id)
-                    ? 'Học tiếp'
-                    : 'Mua ngay'}
-                </button>
+                <div className='desc drop-shadow-md font-body tracking-wider pr-[20%] text-ellipsis line-clamp-4'>
+                  {course.textHook}
+                </div>
+                <div className='buttons flex flex-wrap gap-1.5 mt-5'>
+                  <Link
+                    href={`/${course.slug}`}
+                    className='h-10 flex items-center justify-center px-2 shadow-md text-dark bg-slate-100 font-semibold font-body tracking-wider rounded-md hover:bg-dark-0 hover:text-white trans-200'
+                  >
+                    CHI TIẾT
+                  </Link>
+                  <button
+                    onClick={e => {
+                      if (curUser?.courses.map((course: any) => course.course).includes(course._id)) {
+                        router.push(`/learning/${course?.slug}/continue`)
+                      } else {
+                        buyNow(course)
+                      }
+                    }}
+                    className='h-10 flex items-center justify-center px-2 shadow-md text-white border-2 border-white font-semibold font-body tracking-wider rounded-md hover:bg-white hover:text-dark trans-200 uppercase'
+                  >
+                    {curUser?._id &&
+                    curUser?.courses.map((course: any) => course.course).includes(course._id)
+                      ? 'Học tiếp'
+                      : 'Mua ngay'}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
