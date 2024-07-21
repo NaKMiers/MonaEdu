@@ -69,8 +69,6 @@ function Header({ className = '' }: HeaderProps) {
         // send request to get user's notifications
         const { notifications } = await getUserNotificationsApi() // cache: no-store
 
-        console.log('notifications:', notifications)
-
         // set notifications
         setNotifications(notifications)
       } catch (err: any) {
