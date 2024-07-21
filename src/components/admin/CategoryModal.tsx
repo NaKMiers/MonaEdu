@@ -91,7 +91,7 @@ function CategoryModal({
 
   // add new category
   const onAddSubmit: SubmitHandler<FieldValues> = useCallback(
-    async (data) => {
+    async data => {
       // if (!file) {
       //   return toast.error('Please select an image file')
       // }
@@ -115,7 +115,7 @@ function CategoryModal({
         toast.success(message)
 
         // update categories
-        setCategories((prev) => [category, ...prev])
+        setCategories(prev => [category, ...prev])
 
         // clear form
         reset()
@@ -138,7 +138,7 @@ function CategoryModal({
   )
 
   const onEditSubmit: SubmitHandler<FieldValues> = useCallback(
-    async (data) => {
+    async data => {
       // if (!file && !category?.image) {
       //   return toast.error('Please select an image file')
       // }
@@ -162,8 +162,8 @@ function CategoryModal({
         const { category: ctg, message } = await updateCategoryApi(category._id, formData)
 
         // update categories from state
-        setCategories((prev) =>
-          prev.map((category) =>
+        setCategories(prev =>
+          prev.map(category =>
             category._id === ctg._id
               ? {
                   ...category,
@@ -204,7 +204,7 @@ function CategoryModal({
             animate={{ scale: 1 }}
             exit={{ scale: 0 }}
             className='w-full max-w-[500px] rounded-medium shadow-medium bg-white p-21'
-            onClick={(e) => e.stopPropagation()}
+            onClick={e => e.stopPropagation()}
           >
             <h1 className='text-dark text-center font-semibold text-xl'>{title}</h1>
 
@@ -221,6 +221,7 @@ function CategoryModal({
                   width={200}
                   height={200}
                   alt='image'
+                  loading='lazy'
                 />
               )}
               <input

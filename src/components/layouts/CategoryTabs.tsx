@@ -1,7 +1,9 @@
 import { categories } from '@/constants/categories'
+import { getAllCategoriesApi } from '@/requests'
 import { AnimatePresence, motion } from 'framer-motion'
 import Link from 'next/link'
 import { Dispatch, memo, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
+import toast from 'react-hot-toast'
 import { FaChevronRight } from 'react-icons/fa'
 
 interface CategoryTabsProps {
@@ -12,6 +14,7 @@ interface CategoryTabsProps {
 
 function CategoryTabs({ open, setOpen, className = '' }: CategoryTabsProps) {
   // states
+  // const [categories, setCategories] = useState<any[]>([])
   const [list, setList] = useState<any[]>([
     {
       ref: 'Category Tabs',
@@ -23,8 +26,30 @@ function CategoryTabs({ open, setOpen, className = '' }: CategoryTabsProps) {
   const timeoutRef = useRef<any>(null)
   const tabsRef = useRef<HTMLUListElement>(null)
 
+  // // get categories
+  // useEffect(() => {
+  //   const getCategories = async () => {
+  //     try {
+  //       // send request to get categories
+  //       const { categories } = await getAllCategoriesApi()
+  //       console.log('categories: ', categories)
+  //       setCategories(categories)
+  //       setList([
+  //         {
+  //           ref: 'Category Tabs',
+  //           data: categories,
+  //         },
+  //       ])
+  //     } catch (err: any) {
+  //       console.log(err)
+  //       toast.error(err.response.data.message)
+  //     }
+  //   }
+  //   getCategories()
+  // }, [])
+
   const findDeep = useCallback(
-    (item: any) => list.findIndex((tab) => tab.data.map((i: any) => i.title).includes(item.title)),
+    (item: any) => list.findIndex(tab => tab.data.map((i: any) => i.title).includes(item.title)),
     [list]
   )
 
@@ -52,6 +77,7 @@ function CategoryTabs({ open, setOpen, className = '' }: CategoryTabsProps) {
     [list]
   )
 
+  // auto close tabs if not hover in specific time
   useEffect(() => {
     // if (!tabsRef.current || !timeoutRef.current || !open) return
 

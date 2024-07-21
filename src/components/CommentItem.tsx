@@ -52,7 +52,7 @@ function CommentItem({ comment, setCmts, className = '' }: CommentItemProps) {
   // MARK: Handlers
   // reply comment
   const replyComment: SubmitHandler<FieldValues> = useCallback(
-    async (data) => {
+    async data => {
       // check login
       if (!curUser) return toast.error('Bạn cần đăng nhập để thực hiện chức năng này')
 
@@ -66,8 +66,8 @@ function CommentItem({ comment, setCmts, className = '' }: CommentItemProps) {
           newComment.user = curUser
 
           // add new comment to list
-          setCmts((prev) =>
-            prev.map((comment) =>
+          setCmts(prev =>
+            prev.map(comment =>
               comment._id === parentComment._id
                 ? {
                     ...comment,
@@ -125,8 +125,8 @@ function CommentItem({ comment, setCmts, className = '' }: CommentItemProps) {
         if (!cmt.lessonId && !cmt.questionId) {
           // replied comment
 
-          setCmts((prev) =>
-            prev.map((c) =>
+          setCmts(prev =>
+            prev.map(c =>
               c.replied.map((reply: any) => reply._id).includes(cmt._id)
                 ? {
                     ...c,
@@ -137,7 +137,7 @@ function CommentItem({ comment, setCmts, className = '' }: CommentItemProps) {
           )
         } else {
           // normal comment
-          setCmts((prev) => prev.map((comment) => (comment._id === cmt._id ? cmt : comment)))
+          setCmts(prev => prev.map(comment => (comment._id === cmt._id ? cmt : comment)))
         }
       } catch (err: any) {
         toast.error(err.message)
@@ -158,8 +158,8 @@ function CommentItem({ comment, setCmts, className = '' }: CommentItemProps) {
         if (!cmt.lessonId && !cmt.questionId) {
           // replied comment
 
-          setCmts((prev) =>
-            prev.map((c) => {
+          setCmts(prev =>
+            prev.map(c => {
               return c.replied.map((reply: any) => reply._id).includes(cmt._id)
                 ? {
                     ...c,
@@ -170,7 +170,7 @@ function CommentItem({ comment, setCmts, className = '' }: CommentItemProps) {
           )
         } else {
           // normal comment
-          setCmts((prev) => prev.map((comment) => (comment._id === cmt._id ? cmt : comment)))
+          setCmts(prev => prev.map(comment => (comment._id === cmt._id ? cmt : comment)))
         }
       } catch (err: any) {
         console.log(err)
@@ -203,7 +203,7 @@ function CommentItem({ comment, setCmts, className = '' }: CommentItemProps) {
           {/* Action Buttons */}
           {curUser?._id && (
             <div className='relative flex justify-end items-center'>
-              <button className='group' onClick={() => setShowActions((prev) => !prev)}>
+              <button className='group' onClick={() => setShowActions(prev => !prev)}>
                 <HiDotsHorizontal size={20} className='wiggle' />
               </button>
 
@@ -278,7 +278,7 @@ function CommentItem({ comment, setCmts, className = '' }: CommentItemProps) {
           {(comment.questionId || comment.lessonId) && (
             <div
               className='flex font-semibold text-primary gap-1 cursor-pointer select-none'
-              onClick={() => setIsOpenReply((prev) => !prev)}
+              onClick={() => setIsOpenReply(prev => !prev)}
             >
               <span>{comment.replied.length}</span>
               <span className=''>Response</span>
@@ -310,7 +310,7 @@ function CommentItem({ comment, setCmts, className = '' }: CommentItemProps) {
                 disabled={isLoading}
                 type='text'
                 {...register('comment', { required: true })}
-                onWheel={(e) => e.currentTarget.blur()}
+                onWheel={e => e.currentTarget.blur()}
               />
               <div className='flex gap-2 mt-2 justify-end'>
                 <button

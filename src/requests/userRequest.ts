@@ -231,33 +231,3 @@ export const deleteUsersApi = async (ids: string[]) => {
 
   return await res.json()
 }
-
-// [PATCH]: /user/remove-notifications
-export const removeNotificationsApi = async (ids: string[]) => {
-  const res = await fetch(`/api/user/remove-notification`, {
-    method: 'PATCH',
-    body: JSON.stringify({ ids }),
-  })
-
-  // check status
-  if (!res.ok) {
-    throw new Error((await res.json()).message)
-  }
-
-  return await res.json()
-}
-
-// [PATCH]: /user/read-notifications
-export const readNotificationsApi = async (ids: string[], value: boolean) => {
-  const res = await fetch(`/api/user/read-notification`, {
-    method: 'PATCH',
-    body: JSON.stringify({ ids, value }),
-  })
-
-  // check status
-  if (!res.ok) {
-    throw new Error((await res.json()).message)
-  }
-
-  return await res.json()
-}

@@ -3,7 +3,8 @@
 import { useAppDispatch, useAppSelector } from '@/libs/hooks'
 import { setCartItems } from '@/libs/reducers/cartReducer'
 import { setOpenSearchBar } from '@/libs/reducers/modalReducer'
-import { getCartApi } from '@/requests'
+import { INotification } from '@/models/NotificationModel'
+import { getCartApi, getUserNotificationsApi } from '@/requests'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -34,6 +35,7 @@ function Header({ className = '' }: HeaderProps) {
   const cartLength = useAppSelector(state => state.cart.items.length)
 
   // states
+  const [notifications, setNotifications] = useState<INotification[]>([])
   const [isTransparent, setIsTransparent] = useState<boolean>(pathname === '/')
   const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false)
   const [openCategoryTabs, setOpenCategoryTabs] = useState<boolean>(false)
@@ -44,21 +46,40 @@ function Header({ className = '' }: HeaderProps) {
   // get user's cart
   useEffect(() => {
     const getUserCart = async () => {
-      if (curUser?._id) {
-        try {
-          // send request to get user's cart
-          const { cart } = await getCartApi() // cache: no-store
+      try {
+        // send request to get user's cart
+        const { cart } = await getCartApi() // cache: no-store
 
-          // set cart to state
-          dispatch(setCartItems(cart))
-        } catch (err: any) {
-          console.log(err)
-          toast.error(err.message)
-        }
+        // set cart to state
+        dispatch(setCartItems(cart))
+      } catch (err: any) {
+        console.log(err)
+        toast.error(err.message)
       }
     }
-    getUserCart()
+    if (curUser?._id) {
+      getUserCart()
+    }
   }, [dispatch, curUser?._id])
+
+  // get user's notifications
+  useEffect(() => {
+    const getUserNotifications = async () => {
+      try {
+        // send request to get user's notifications
+        const { notifications } = await getUserNotificationsApi() // cache: no-store
+
+        console.log('notifications:', notifications)
+
+        // set notifications
+        setNotifications(notifications)
+      } catch (err: any) {
+        console.log(err)
+        toast.error(err.message)
+      }
+    }
+    getUserNotifications()
+  }, [])
 
   // handle show/hide on scroll
   useEffect(() => {
@@ -149,9 +170,9 @@ function Header({ className = '' }: HeaderProps) {
                 onClick={() => setIsOpenNotificationMenu(prev => !prev)}
               >
                 <FaBell size={24} />
-                {!!curUser?.notifications.length && (
+                {!!notifications.filter((n: any) => n.status === 'unread').length && (
                   <span className='absolute -top-2 right-[-5px] bg-orange-400 rounded-full text-center px-[6px] py-[2px] text-[10px] font-bold flex items-center justify-center min-w-[24px]'>
-                    {curUser?.notifications.filter((n: any) => n.status === 'unread').length}
+                    {notifications.filter((n: any) => n.status === 'unread').length}
                   </span>
                 )}
               </button>
@@ -202,9 +223,9 @@ function Header({ className = '' }: HeaderProps) {
           </Link>
           <button className='relative group' onClick={() => setIsOpenNotificationMenu(prev => !prev)}>
             <FaBell size={22} className='wiggle' />
-            {!!curUser?.notifications?.length && (
+            {!!notifications?.length && (
               <span className='absolute -top-2 right-[-5px] bg-orange-400 rounded-full text-center px-[6px] py-[2px] text-[10px] font-bold'>
-                {curUser?.notifications.length}
+                {notifications.length}
               </span>
             )}
           </button>
@@ -220,7 +241,12 @@ function Header({ className = '' }: HeaderProps) {
         <Menu open={isOpenMenu} setOpen={setIsOpenMenu} />
 
         {/* MARK: Notification Menu */}
-        <NotificationMenu open={isOpenNotificationMenu} setOpen={setIsOpenNotificationMenu} />
+        <NotificationMenu
+          open={isOpenNotificationMenu}
+          setOpen={setIsOpenNotificationMenu}
+          notifications={notifications}
+          setNotifications={setNotifications}
+        />
       </div>
     </header>
   )

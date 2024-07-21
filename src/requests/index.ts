@@ -40,5 +40,8 @@ export * from './reportRequest'
 // Progress
 export * from './progressRequest'
 
+// Notification
+export * from './notificationRequest'
+
 // Admin
 export * from './adminRequest'

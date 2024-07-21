@@ -7,9 +7,11 @@ import { getUserName } from '@/utils/string'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Models: Comment, Question, User, Lesson
+// Models: Comment, Question, User, Lesson, Notification
 import '@/models/CommentModel'
 import '@/models/LessonModel'
+import '@/models/NotificationModel'
+import NotificationModel from '@/models/NotificationModel'
 import '@/models/QuestionModel'
 import '@/models/UserModel'
 
@@ -76,17 +78,12 @@ export async function POST(req: NextRequest) {
       }
 
       // notify user
-      await UserModel.findByIdAndUpdate((question as IQuestion).userId, {
-        $push: {
-          notifications: {
-            _id: new Date().getTime(),
-            title: getUserName(user) + ' đã trả lời bình luận của bạn',
-            image: user.avatar,
-            link: `/question/${(question as IQuestion).slug}`,
-            type: 'comment-question',
-            status: 'unread',
-          },
-        },
+      await NotificationModel.create({
+        userId: (question as IQuestion).userId,
+        title: getUserName(user) + ' đã trả lời câu hỏi của bạn',
+        image: user.avatar,
+        link: `/forum/${(question as IQuestion).slug}`,
+        type: 'comment-question',
       })
     }
 

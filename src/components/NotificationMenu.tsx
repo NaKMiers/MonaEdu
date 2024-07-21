@@ -1,11 +1,11 @@
 'use client'
 
-import { INotification } from '@/models/UserModel'
+import { INotification } from '@/models/NotificationModel'
 import { readNotificationsApi, removeNotificationsApi } from '@/requests'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { Dispatch, memo, SetStateAction, useCallback, useEffect, useState } from 'react'
+import { Dispatch, memo, SetStateAction, useCallback, useEffect } from 'react'
 import toast from 'react-hot-toast'
 import { IoCloseCircleOutline, IoMail, IoMailOpen } from 'react-icons/io5'
 import { format } from 'timeago.js'
@@ -13,19 +13,22 @@ import { format } from 'timeago.js'
 interface NotificationMenuProps {
   open: boolean
   setOpen: Dispatch<SetStateAction<boolean>>
+  notifications: INotification[]
+  setNotifications: Dispatch<SetStateAction<INotification[]>>
   className?: string
 }
 
-function NotificationMenu({ open, setOpen, className = '' }: NotificationMenuProps) {
+function NotificationMenu({
+  open,
+  setOpen,
+  notifications,
+  setNotifications,
+  className = '',
+}: NotificationMenuProps) {
   // hooks
   const { data: session, update } = useSession()
   const router = useRouter()
   const curUser: any = session?.user
-
-  // states
-  const [notifications, setNotifications] = useState<INotification[]>(curUser?.notifications || [])
-
-  console.log('notifications:', notifications)
 
   // handle remove notifications
   const handleRemoveNotifications = useCallback(
@@ -47,22 +50,18 @@ function NotificationMenu({ open, setOpen, className = '' }: NotificationMenuPro
         toast.error(err.message)
       }
     },
-    [update, setOpen, notifications]
+    [update, setNotifications, setOpen, notifications]
   )
 
   // handle read notifications
   const handleReadNotifications = useCallback(
-    async (ids: string[], value: boolean) => {
+    async (ids: string[], status: 'read' | 'unread') => {
       try {
-        const { message } = await readNotificationsApi(ids, value)
+        const { message } = await readNotificationsApi(ids, status)
 
         // read / unread notifications
 
-        setNotifications(prev =>
-          prev.map(noti =>
-            ids.includes(noti._id) ? { ...noti, status: value ? 'read' : 'unread' } : noti
-          )
-        )
+        setNotifications(prev => prev.map(noti => (ids.includes(noti._id) ? { ...noti, status } : noti)))
 
         // update user
         await update()
@@ -71,7 +70,7 @@ function NotificationMenu({ open, setOpen, className = '' }: NotificationMenuPro
         toast.error(err.message)
       }
     },
-    [update]
+    [update, setNotifications]
   )
 
   // key board event
@@ -109,6 +108,20 @@ function NotificationMenu({ open, setOpen, className = '' }: NotificationMenuPro
           curUser && !curUser?._id ? 'hidden' : ''
         } text-dark flex flex-col gap-2 overflow-y-auto w-full overflow-hidden trans-300 absolute bottom-[72px] md:bottom-auto md:top-[60px] right-0 sm:right-21 z-30 sm:rounded-medium sm:shadow-sky-400 shadow-md bg-slate-100`}
       >
+        <li className='flex items-center justify-end px-2'>
+          <button
+            className='text-xs font-semibold trans-200'
+            onClick={() =>
+              handleReadNotifications(
+                notifications.map(n => n._id),
+                notifications.some(n => n.status === 'unread') ? 'read' : 'unread'
+              )
+            }
+          >
+            {notifications.some(n => n.status === 'unread') ? 'Đọc tất cả' : 'Chưa đọc tất cả'}
+          </button>
+        </li>
+
         {notifications
           .sort((a, b) => +new Date(b.createdAt) - +new Date(a.createdAt))
           .map((noti: INotification) => (
@@ -151,7 +164,7 @@ function NotificationMenu({ open, setOpen, className = '' }: NotificationMenuPro
                         className='wiggle-1 flex-shrink-0 cursor-pointer'
                         onClick={e => {
                           e.stopPropagation()
-                          handleReadNotifications([noti._id], true)
+                          handleReadNotifications([noti._id], 'read')
                         }}
                       />
                     ) : (
@@ -160,7 +173,7 @@ function NotificationMenu({ open, setOpen, className = '' }: NotificationMenuPro
                         className='wiggle-1 flex-shrink-0 cursor-pointer'
                         onClick={e => {
                           e.stopPropagation()
-                          handleReadNotifications([noti._id], false)
+                          handleReadNotifications([noti._id], 'unread')
                         }}
                       />
                     )}

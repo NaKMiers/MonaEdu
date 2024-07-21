@@ -23,7 +23,7 @@ function Price({ price, oldPrice, flashSale, big, className = '' }: PriceProps) 
   // MARK: Effects
   // count down
   useEffect(() => {
-    // check flahsale
+    // check flash sale
     if (!flashSale) return
 
     let interval: NodeJS.Timeout

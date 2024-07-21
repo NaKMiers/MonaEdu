@@ -60,6 +60,7 @@ export const verifyEmailApi = async (email: string, token: string = '') => {
   return await res.json()
 }
 
+// [POST]
 export const verifyPhoneApi = async (phone: string) => {
   const res = await fetch('/api/auth/verify-phone', {
     method: 'POST',

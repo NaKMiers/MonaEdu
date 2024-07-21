@@ -1,6 +1,5 @@
 import { connectDatabase } from '@/config/database'
-import CategoryModel, { ICategory } from '@/models/CategoryModel'
-import { searchParamsToObject } from '@/utils/handleQuery'
+import CategoryModel from '@/models/CategoryModel'
 import { NextRequest, NextResponse } from 'next/server'
 
 // Models: Category
@@ -17,7 +16,7 @@ export async function GET(req: NextRequest) {
     await connectDatabase()
 
     // get all categories from database
-    const categories = await CategoryModel.find({}).sort({ courseQuantity: -1 }).lean()
+    const categories = await CategoryModel.find({}).sort({ createdAt: 1 }).lean()
 
     // Function to build the tree
     const buildTree = (categories: any[], parentId: string | null = null): any[] => {

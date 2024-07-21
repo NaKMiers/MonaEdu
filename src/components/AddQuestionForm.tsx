@@ -70,9 +70,9 @@ function AddQuestionForm() {
       <textarea
         className='w-full px-3 py-1 rounded-lg shadow-lg outline-none text-slate-700 font-body tracking-wider placeholder:font-body placeholder:tracking-wider'
         value={value}
-        onChange={(e) => setValue(e.target.value)}
-        rows={1}
-        placeholder={`Bạn đang nghĩ gì ${curUser?.firstName ? `, ${curUser.firstName}` : ''}?`}
+        onChange={e => setValue(e.target.value)}
+        rows={2}
+        placeholder={`Bạn đang nghĩ gì${curUser?.firstName ? `, ${curUser.firstName}` : ''}?`}
       />
 
       <LoadingButton

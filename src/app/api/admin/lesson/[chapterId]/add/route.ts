@@ -1,15 +1,17 @@
 import { connectDatabase } from '@/config/database'
 import ChapterModel from '@/models/ChapterModel'
+import CourseModel from '@/models/CourseModel'
 import LessonModel from '@/models/LessonModel'
+import NotificationModel from '@/models/NotificationModel'
 import UserModel from '@/models/UserModel'
 import { uploadFile } from '@/utils/uploadFile'
 import { NextRequest, NextResponse } from 'next/server'
-import CourseModel from '@/models/CourseModel'
 
-// Models: Lesson, Course, Chapter, User
+// Models: Lesson, Course, Chapter, User, Notification
 import '@/models/ChapterModel'
 import '@/models/CourseModel'
 import '@/models/LessonModel'
+import '@/models/NotificationModel'
 import '@/models/UserModel'
 
 // [POST]: /admin/lesson/add
@@ -54,28 +56,31 @@ export async function POST(
       status,
     })
 
-    // notify to all users who joined course
-    await UserModel.updateMany(
-      { 'courses.course': courseId },
-      {
-        $push: {
-          notifications: {
-            _id: new Date().getTime(),
-            title: 'New Lesson Added: ' + title,
-            image: '/images/logo.png',
-            link: `/learning/${courseId}/${newLesson._id}`,
-            type: 'new-lesson',
-            status: 'unread',
-          },
-        },
-      }
-    )
+    // get all users who joined the course | course slug
+    const [userIds, courseSlug] = await Promise.all([
+      // get all users who joined the course
+      UserModel.find({ 'courses.course': courseId }).distinct('_id'),
+      // course slug
+      CourseModel.findById(courseId).distinct('slug'),
+    ])
 
-    // update total duration of course
-    await CourseModel.findByIdAndUpdate(courseId, { $inc: { duration } })
-
-    // increase lesson quantity in chapter
-    await ChapterModel.findByIdAndUpdate(chapterId, { $inc: { lessonQuantity: 1 } })
+    // notify to all users who joined course | update total duration of course | increase lesson quantity in chapter
+    await Promise.all([
+      // notify to all users who joined course
+      NotificationModel.insertMany(
+        userIds.map(userId => ({
+          userId,
+          title: 'Bài học mới: ' + title,
+          image: '/images/logo.png',
+          link: `/learning/${courseSlug}/${newLesson.slug}`,
+          type: 'new-lesson',
+        }))
+      ),
+      // update total duration of course
+      CourseModel.findByIdAndUpdate(courseId, { $inc: { duration } }),
+      // increase lesson quantity in chapter
+      ChapterModel.findByIdAndUpdate(chapterId, { $inc: { lessonQuantity: 1 } }),
+    ])
 
     // return response
     return NextResponse.json({ message: 'Add lesson successfully' }, { status: 200 })

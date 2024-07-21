@@ -41,7 +41,7 @@ function QuestionItem({ question, className = '' }: QuestionItemProps) {
       const { updatedQuestion } = await likeQuestionsApi(data._id, likes.includes(curUser?._id))
 
       // update state
-      setData((prev) => ({ ...prev, likes: updatedQuestion.likes }))
+      setData(prev => ({ ...prev, likes: updatedQuestion.likes }))
     } catch (err: any) {
       console.log(err)
       toast.error(err.message)
@@ -53,7 +53,7 @@ function QuestionItem({ question, className = '' }: QuestionItemProps) {
       const { updatedQuestion } = await closeQuestionsApi(data._id, status === 'open' ? 'close' : 'open')
 
       // update state
-      setData((prev) => ({ ...prev, status: updatedQuestion.status }))
+      setData(prev => ({ ...prev, status: updatedQuestion.status }))
     } catch (err: any) {
       console.log(err)
       toast.error(err.message)
@@ -72,7 +72,7 @@ function QuestionItem({ question, className = '' }: QuestionItemProps) {
       const { message } = await addReportApi({
         type: 'question',
         content: selectedContent,
-        link: `/question/${question.slug}`,
+        link: `/forum/${question.slug}`,
       })
 
       // show success
@@ -109,7 +109,7 @@ function QuestionItem({ question, className = '' }: QuestionItemProps) {
         {/* Action Buttons */}
         {curUser?._id && (
           <div className='relative flex-1 flex justify-end items-center'>
-            <button className='group' onClick={() => setShowActions((prev) => !prev)}>
+            <button className='group' onClick={() => setShowActions(prev => !prev)}>
               <HiDotsVertical size={20} className='wiggle' />
             </button>
 

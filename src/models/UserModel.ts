@@ -270,7 +270,6 @@ export interface IUser {
   commission: { type: string; value: string }
   courses: { course: ICourse; progress: number }[]
   gifts: string[] | ICourse[]
-  notifications: INotification[]
   notificationSettings: {
     newLesson: boolean
     repliedQuestion: boolean
@@ -287,15 +286,4 @@ export interface IUser {
 
   // Subs
   vouchers?: IVoucher[]
-}
-
-export interface INotification {
-  _id: string
-  image: string
-  title: string
-  content?: string
-  link?: string
-  type: string
-  status: 'read' | 'unread'
-  createdAt: string
 }

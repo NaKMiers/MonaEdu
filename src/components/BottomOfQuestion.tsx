@@ -31,7 +31,7 @@ function BottomOfQuestion({ question, commentAmount, className = '' }: BottomOfQ
       const { updatedQuestion } = await likeQuestionsApi(data._id, likes.includes(curUser?._id))
 
       // update state
-      setData((prev) => ({ ...prev, likes: updatedQuestion.likes }))
+      setData(prev => ({ ...prev, likes: updatedQuestion.likes }))
     } catch (err: any) {
       console.log(err)
       toast.error(err.message)
@@ -53,7 +53,7 @@ function BottomOfQuestion({ question, commentAmount, className = '' }: BottomOfQ
         />
       </button>
 
-      <Link href={`/question/${question.slug}`} className='flex items-center justify-center'>
+      <Link href={`/forum/${question.slug}`} className='flex items-center justify-center'>
         <span className='mr-1.5 font-semibold'>{commentAmount}</span> <FaRegCommentDots size={18} />
       </Link>
     </div>
