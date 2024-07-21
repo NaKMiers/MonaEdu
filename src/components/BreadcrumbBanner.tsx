@@ -20,7 +20,7 @@ function BreadcrumbBanner({ title, description, background, className = '' }: Br
   const breadcrumbs = pathname
     .split('/')
     .slice(2)
-    .filter((path) => path)
+    .filter(path => path)
 
   return (
     <div
@@ -54,7 +54,7 @@ function BreadcrumbBanner({ title, description, background, className = '' }: Br
       <Divider size={3} />
 
       <h2 className='text-white text-2xl md:text-6xl font-bold text-center relative z-20'>{title}</h2>
-      <p className='text-white text-sm md:text-2xl max-w-xl mt-6 text-center relative z-20'>
+      <p className='text-white text-sm md:text-base max-w-xl mt-6 text-center relative z-20'>
         {description}
       </p>
     </div>

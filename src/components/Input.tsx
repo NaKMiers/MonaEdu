@@ -48,7 +48,7 @@ function Input({
 
   // show password
   const showPassword = useCallback(() => {
-    setIsShowPassword((prev) => !prev)
+    setIsShowPassword(prev => !prev)
   }, [])
 
   return (
@@ -98,7 +98,7 @@ function Input({
               disabled={disabled}
               {...register(id, { required })}
               onChange={onChange}
-              defaultValue={options?.find((option) => option.selected)?.value}
+              defaultValue={options?.find(option => option.selected)?.value}
               {...rest}
             >
               {options?.map((option, index) => (
@@ -118,7 +118,7 @@ function Input({
               disabled={disabled}
               type={type === 'password' ? (isShowPassword ? 'text' : 'password') : type}
               {...register(id, { required })}
-              onWheel={(e) => e.currentTarget.blur()}
+              onWheel={e => e.currentTarget.blur()}
               placeholder=''
               {...rest}
             />

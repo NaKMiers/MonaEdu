@@ -1,4 +1,5 @@
 export const languages = [
+  { value: 'Vietnamese', label: 'Vietnamese' },
   { value: 'Afrikaans', label: 'Afrikaans' },
   { value: 'Albanian', label: 'Albanian' },
   { value: 'Amharic', label: 'Amharic' },
@@ -104,7 +105,6 @@ export const languages = [
   { value: 'Urdu', label: 'Urdu' },
   { value: 'Uyghur', label: 'Uyghur' },
   { value: 'Uzbek', label: 'Uzbek' },
-  { value: 'Vietnamese', label: 'Vietnamese' },
   { value: 'Welsh', label: 'Welsh' },
   { value: 'Xhosa', label: 'Xhosa' },
   { value: 'Yiddish', label: 'Yiddish' },

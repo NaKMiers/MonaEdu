@@ -115,7 +115,7 @@ function Banner({ courses, className = '' }: BannerProps) {
     >
       {/* List Items */}
       <div className='list bg-white' ref={listRef}>
-        {courses.map((course) => (
+        {courses.map(course => (
           <div className='item absolute inset-0' key={course._id}>
             <div className='w-full h-full'>
               <Image
@@ -140,7 +140,7 @@ function Banner({ courses, className = '' }: BannerProps) {
               </div>
 
               <div className='desc drop-shadow-md font-body tracking-wider pr-[20%] text-ellipsis line-clamp-4'>
-                {course.description}
+                {course.textHook}
               </div>
               <div className='buttons flex flex-wrap gap-1.5 mt-5'>
                 <Link
@@ -150,7 +150,7 @@ function Banner({ courses, className = '' }: BannerProps) {
                   CHI TIẾT
                 </Link>
                 <button
-                  onClick={(e) => {
+                  onClick={e => {
                     if (curUser?.courses.map((course: any) => course.course).includes(course._id)) {
                       router.push(`/learning/${course?.slug}/continue`)
                     } else {
@@ -176,7 +176,7 @@ function Banner({ courses, className = '' }: BannerProps) {
           className='thumbnails absolute bottom-[50px] left-1/2 z-10 flex gap-21 text-white'
           ref={thumbnailsRef}
         >
-          {[...courses.slice(1), courses[0]].map((course) => (
+          {[...courses.slice(1), courses[0]].map(course => (
             <div
               className='item relative w-[150px] h-[220px] flex-shrink-0 overflow-hidden rounded-medium'
               key={course._id}

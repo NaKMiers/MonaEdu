@@ -281,7 +281,7 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
           {/* Description */}
           <h2 className='font-semibold text-3xl'>Mô Tả</h2>
           <Divider size={2} />
-          <p className='font-body tracking-wider'>{course?.description}</p>
+          <pre className='font-body tracking-wider'>{course?.description}</pre>
         </div>
 
         {/* MARK: Floating Box */}
