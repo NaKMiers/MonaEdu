@@ -14,7 +14,7 @@ import { TiDelete } from 'react-icons/ti'
 function SearchBar() {
   // hook
   const dispatch = useAppDispatch()
-  const open = useAppSelector((state) => state.modal.openSearchBar)
+  const open = useAppSelector(state => state.modal.openSearchBar)
 
   // search
   const [searchValue, setSearchValue] = useState<string>('')
@@ -116,7 +116,7 @@ function SearchBar() {
             searchValue.trim() ? '' : 'pl-[20px]'
           } trans-500 appearance-none w-full h-full font-body tracking-wider pb-0.5 outline-none rounded-0 bg-white`}
           value={searchValue}
-          onChange={(e) => setSearchValue(e.target.value)}
+          onChange={e => setSearchValue(e.target.value)}
           onFocus={() => {
             setOpenResults(true)
             dispatch(setOpenSearchBar(true))
@@ -128,7 +128,7 @@ function SearchBar() {
 
         <Link
           href={`/search?search=${searchValue}`}
-          onClick={(e) => !searchValue && e.preventDefault()}
+          onClick={e => !searchValue && e.preventDefault()}
           className={`group h-full w-[60px] flex justify-center items-center bg-white ${
             searchLoading ? 'pointer-events-none' : ''
           }`}
@@ -148,7 +148,7 @@ function SearchBar() {
         } absolute z-20 bottom-full md:bottom-auto md:top-full left-0 w-full rounded-lg bg-neutral-800 text-light gap-2 overflow-y-auto transition-all duration-300`}
       >
         {searchResults?.length ? (
-          searchResults.map((course) => (
+          searchResults.map(course => (
             <Link
               href={`/${course.slug}`}
               key={course._id}

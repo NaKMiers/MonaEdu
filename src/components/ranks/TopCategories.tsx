@@ -18,8 +18,8 @@ function TopCategories({ className }: TopCategoriesProps) {
 
       <Divider size={16} />
 
-      <div className='grid grid-cols-2 md:grid-cols-4 gap-21 sm:gap-8'>
-        {categories.map((category) => (
+      <div className='grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-21 sm:gap-8'>
+        {categories.map(category => (
           <Link
             key={category._id}
             href={`/categories/${category.slug}`}

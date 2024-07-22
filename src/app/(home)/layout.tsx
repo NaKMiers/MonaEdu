@@ -1,5 +1,8 @@
 import Background from '@/components/backgrounds/Background'
+import FloatingButtons from '@/components/floatings/FloatingButtons'
+import Footer from '@/components/layouts/Footer'
 import Header from '@/components/layouts/Header'
+import PageLoading from '@/components/PageLoading'
 import StoreProvider from '@/libs/StoreProvider'
 import type { Metadata } from 'next'
 import { getServerSession } from 'next-auth'
@@ -7,9 +10,6 @@ import { ReactNode } from 'react'
 import { Toaster } from 'react-hot-toast'
 import authOptions from '../api/auth/[...nextauth]/authOptions'
 import '../globals.scss'
-import Footer from '@/components/layouts/Footer'
-import FloatingButtons from '@/components/floatings/FloatingButtons'
-import PageLoading from '@/components/PageLoading'
 
 export const metadata: Metadata = {
   title: 'Mona Edu',

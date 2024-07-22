@@ -144,7 +144,7 @@ function BestSellerCard({ course, index, className = '' }: BestSellerCardProps) 
           <div className='flex items-center gap-1 w-full'>
             <button
               className='font-semibold h-[42px] flex w-full items-center justify-center rounded-lg shadow-lg bg-dark-100 text-white border-2 border-dark hover:bg-white hover:text-dark trans-300 hover:-translate-y-1 px-2'
-              onClick={(e) => {
+              onClick={e => {
                 if (curUser?.courses.map((course: any) => course.course).includes(course._id)) {
                   router.push(`/learning/${course?.slug}/continue`)
                 } else {
@@ -180,7 +180,7 @@ function BestSellerCard({ course, index, className = '' }: BestSellerCardProps) 
             {curUser?._id &&
               curUser.courses.map((course: any) => course.course).includes(course._id) && (
                 <div className='text-white relative flex justify-end items-center w-[30px] h-[42px]'>
-                  <button className='group' onClick={() => setShowActions((prev) => !prev)}>
+                  <button className='group' onClick={() => setShowActions(prev => !prev)}>
                     <HiDotsVertical size={24} className='wiggle text-dark' />
                   </button>
                   <div
@@ -227,7 +227,10 @@ function BestSellerCard({ course, index, className = '' }: BestSellerCardProps) 
               <p className='font-semibold text-lg text-ellipsis line-clamp-1'>{course.title}</p>
 
               {index <= 2 && (
-                <CardItem translateZ={50} className='absolute w-[60px] h-[60px] right-8 -top-5'>
+                <CardItem
+                  translateZ={50}
+                  className='hidden xs:block absolute w-[60px] h-[60px] right-8 -top-5'
+                >
                   <Image
                     className='w-full h-full object-cover'
                     src={`/icons/top-${index + 1}-badge.png`}

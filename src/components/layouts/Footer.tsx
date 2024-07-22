@@ -9,7 +9,7 @@ import Divider from '../Divider'
 
 function Footer() {
   return (
-    <footer className='mb-[72px] md:mb-0 bg-dark-100 text-light border-t-2 rounded-t-[40px] border-slate-300 px-21 pt-3'>
+    <footer className='mb-[72px] md:mb-0 bg-dark-100 text-light border-t-2 rounded-t-[40px] border-slate-300 px-21 pt-3 overflow-hidden'>
       <div className='max-w-1200 mx-auto'>
         {/* Head */}
         <div className='flex items-center justify-between gap-21'>
@@ -50,7 +50,7 @@ function Footer() {
         <Divider size={2} border />
 
         {/* Body */}
-        <div className='grid grid-cols-12 py-3 gap-7 text-center md:text-left'>
+        <div className='grid grid-cols-12 py-3 gap-y-7 sm:gap-x-7 text-center md:text-left'>
           <div className='flex flex-col col-span-12 md:col-span-7'>
             <h3 className='font-bold text-xl'>VỀ CHÚNG TÔI</h3>
 

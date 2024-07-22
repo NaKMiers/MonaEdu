@@ -65,7 +65,7 @@ async function ProfilePage({ params: { id } }: { params: { id: string } }) {
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
       name: 'Courses',
-      itemListElement: courses.map((course) => ({
+      itemListElement: courses.map(course => ({
         '@type': 'Offer',
         itemOffered: {
           '@type': 'Course',
@@ -140,7 +140,7 @@ async function ProfilePage({ params: { id } }: { params: { id: string } }) {
             <Divider size={8} />
 
             <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-21'>
-              {courses.map((course) => (
+              {courses.map(course => (
                 <CourseCard course={course} key={course._id} />
               ))}
             </div>
@@ -234,7 +234,7 @@ async function ProfilePage({ params: { id } }: { params: { id: string } }) {
           <Divider size={8} />
 
           <ul className='grid grid-cols-1 md:grid-cols-3 gap-21 text-dark'>
-            {questions.map((question) => (
+            {questions.map(question => (
               <QuestionItem question={question} key={question._id} />
             ))}
           </ul>

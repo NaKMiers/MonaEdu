@@ -17,7 +17,7 @@ interface FeatureCoursesProps {
 
 function FeatureCourses({ courses: originalData, className = '' }: FeatureCoursesProps) {
   // data
-  const categories = originalData.map((item) => item.category)
+  const categories = originalData.map(item => item.category)
 
   // state
   const [width, setWidth] = useState<number>(0)
@@ -39,7 +39,7 @@ function FeatureCourses({ courses: originalData, className = '' }: FeatureCourse
   }, [])
 
   useEffect(() => {
-    let data = originalData.map((item) => item.courses).flat()
+    let data = originalData.map(item => item.courses).flat()
 
     if (selectedCategory) {
       data = originalData.find(({ category }) => category._id === selectedCategory)?.courses || []
@@ -96,7 +96,7 @@ function FeatureCourses({ courses: originalData, className = '' }: FeatureCourse
           >
             Tất cả
           </button>
-          {categories.map((category) => (
+          {categories.map(category => (
             <button
               className={`${
                 selectedCategory === category._id ? 'bg-neutral-700 text-light' : ''

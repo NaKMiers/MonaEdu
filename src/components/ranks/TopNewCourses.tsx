@@ -18,7 +18,7 @@ function TopNewCourses({ courses, className = '' }: TopNewCoursesProps) {
 
       <div className='max-w-1200 mx-auto'>
         <div className='grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 md:mx-0 flex-1 mb-8'>
-          {courses.map((course) => (
+          {courses.map(course => (
             <CourseCard course={course} key={course._id} />
           ))}
         </div>
