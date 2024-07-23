@@ -51,6 +51,7 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
       }).lean(),
       LessonModel.find({
         courseId: course._id,
+        active: true,
       }).lean(),
       CourseModel.find({
         category: { $in: categoryIds },

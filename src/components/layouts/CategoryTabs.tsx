@@ -1,4 +1,3 @@
-import { categories } from '@/constants/categories'
 import { getAllCategoriesApi } from '@/requests'
 import { AnimatePresence, motion } from 'framer-motion'
 import Link from 'next/link'
@@ -14,7 +13,7 @@ interface CategoryTabsProps {
 
 function CategoryTabs({ open, setOpen, className = '' }: CategoryTabsProps) {
   // states
-  // const [categories, setCategories] = useState<any[]>([])
+  const [categories, setCategories] = useState<any[]>([])
   const [list, setList] = useState<any[]>([
     {
       ref: 'Category Tabs',
@@ -26,27 +25,27 @@ function CategoryTabs({ open, setOpen, className = '' }: CategoryTabsProps) {
   const timeoutRef = useRef<any>(null)
   const tabsRef = useRef<HTMLUListElement>(null)
 
-  // // get categories
-  // useEffect(() => {
-  //   const getCategories = async () => {
-  //     try {
-  //       // send request to get categories
-  //       const { categories } = await getAllCategoriesApi()
-  //       console.log('categories: ', categories)
-  //       setCategories(categories)
-  //       setList([
-  //         {
-  //           ref: 'Category Tabs',
-  //           data: categories,
-  //         },
-  //       ])
-  //     } catch (err: any) {
-  //       console.log(err)
-  //       toast.error(err.response.data.message)
-  //     }
-  //   }
-  //   getCategories()
-  // }, [])
+  // get categories
+  useEffect(() => {
+    const getCategories = async () => {
+      try {
+        // send request to get categories
+        const { categories } = await getAllCategoriesApi('', { next: { revalidate: 3600 } })
+        console.log('categories: ', categories)
+        setCategories(categories)
+        setList([
+          {
+            ref: 'Category Tabs',
+            data: categories,
+          },
+        ])
+      } catch (err: any) {
+        console.log(err)
+        toast.error(err.response.data.message)
+      }
+    }
+    getCategories()
+  }, [])
 
   const findDeep = useCallback(
     (item: any) => list.findIndex(tab => tab.data.map((i: any) => i.title).includes(item.title)),
@@ -99,7 +98,7 @@ function CategoryTabs({ open, setOpen, className = '' }: CategoryTabsProps) {
       ])
       setOpen(false)
     }, 750)
-  }, [setOpen, open])
+  }, [setOpen, open, categories])
 
   return (
     <AnimatePresence>

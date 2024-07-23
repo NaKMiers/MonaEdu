@@ -71,7 +71,7 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
           userId,
           status: 'completed',
         }),
-        LessonModel.countDocuments({ courseId }),
+        LessonModel.countDocuments({ courseId, active: true }),
       ])
       const percent = Math.round((completedProgresses / totalLessons) * 100)
 

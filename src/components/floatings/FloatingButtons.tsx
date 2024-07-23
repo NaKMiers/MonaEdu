@@ -30,7 +30,7 @@ function FloatingButtons({ className = '' }: FloatingButtonsProps) {
 
   return (
     <div
-      className={`fixed z-30 right-3 bottom-[140px] flex flex-col gap-2 items-center rounded-xl trans-300 overflow-hidden shadow-medium-light select-none ${className}`}
+      className={`fixed z-30 right-3 bottom-[140px] flex flex-col gap-2 items-center rounded-xl trans-300 overflow-hidden select-none ${className}`}
     >
       <Link
         href='/flash-sale'

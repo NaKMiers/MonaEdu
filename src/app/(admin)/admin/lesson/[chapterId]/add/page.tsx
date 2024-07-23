@@ -27,7 +27,7 @@ export type GroupCourses = {
 function AddLessonPage({ params: { chapterId } }: { params: { chapterId: string } }) {
   // hooks
   const dispatch = useAppDispatch()
-  const isLoading = useAppSelector((state) => state.modal.isLoading)
+  const isLoading = useAppSelector(state => state.modal.isLoading)
 
   // states
   const [chapter, setChapter] = useState<IChapter | null>(null)
@@ -77,7 +77,7 @@ function AddLessonPage({ params: { chapterId } }: { params: { chapterId: string 
 
   // validate form
   const handleValidate: SubmitHandler<FieldValues> = useCallback(
-    (data) => {
+    data => {
       let isValid = true
 
       // hours must be >= 0 and <= 23
@@ -105,7 +105,7 @@ function AddLessonPage({ params: { chapterId } }: { params: { chapterId: string 
 
   // MARK: Submit
   // send request to server to add lesson
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+  const onSubmit: SubmitHandler<FieldValues> = async data => {
     if (!handleValidate(data)) return
 
     if (!file && !fileUrl && !embedSrc) {
@@ -138,6 +138,7 @@ function AddLessonPage({ params: { chapterId } }: { params: { chapterId: string 
 
       // clear form
       reset()
+      setValue('courseId', data.courseId)
       setFile(null)
       setFileUrl('')
       setEmbedSrc('')
@@ -386,7 +387,7 @@ function AddLessonPage({ params: { chapterId } }: { params: { chapterId: string 
                   type='url'
                   value={embedSrc}
                   onPaste={handlePaste}
-                  onChange={(e) => setEmbedSrc(e.target.value)}
+                  onChange={e => setEmbedSrc(e.target.value)}
                 />
 
                 {/* label */}

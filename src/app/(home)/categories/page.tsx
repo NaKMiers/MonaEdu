@@ -16,7 +16,9 @@ async function CategoriesPage() {
   let categories: ICategory[] = []
 
   try {
-    const data = await getAllParentCategoriesApi(process.env.NEXT_PUBLIC_APP_URL)
+    const data = await getAllParentCategoriesApi(process.env.NEXT_PUBLIC_APP_URL, {
+      next: { revalidate: 3600 },
+    })
     categories = data.categories
   } catch (err: any) {
     return notFound()

@@ -282,7 +282,9 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
           <h2 className='font-semibold text-3xl'>Mô Tả</h2>
           <Divider size={2} />
           <div className='font-body tracking-wider'>
-            <p className='font-body tracking-wider'>{course?.description}</p>
+            {course?.description.split('\n').map((description, index) => (
+              <p key={index}>{description.trim() === '' ? <br /> : description}</p>
+            ))}
           </div>
         </div>
 

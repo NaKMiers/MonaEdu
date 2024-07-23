@@ -15,8 +15,11 @@ export const getCategoriesApi = async (query: string = '') => {
 }
 
 // [GET]: /category/all
-export const getAllParentCategoriesApi = async (prefix: string = '') => {
-  const res = await fetch(`${prefix}/api/category`, { next: { revalidate: 30 } })
+export const getAllParentCategoriesApi = async (
+  prefix: string = '',
+  option: RequestInit = { cache: 'no-store' }
+) => {
+  const res = await fetch(`${prefix}/api/category`, option)
 
   // check status
   if (!res.ok) {
@@ -27,9 +30,12 @@ export const getAllParentCategoriesApi = async (prefix: string = '') => {
 }
 
 // [GET]
-export const getAllCategoriesApi = async (query: string = '') => {
+export const getAllCategoriesApi = async (
+  query: string = '',
+  option: RequestInit = { cache: 'no-store' }
+) => {
   // no cache
-  const res = await fetch(`/api/category/all${query}`, { cache: 'no-store' })
+  const res = await fetch(`/api/category/all${query}`, option)
 
   // check status
   if (!res.ok) {

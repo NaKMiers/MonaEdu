@@ -296,20 +296,18 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
 
   // MARK: Fullscreen
   const handleFullscreen = useCallback(() => {
-    // if (!isFullscreen) {
-    //   if (playerContainerRef.current?.requestFullscreen) {
-    //     playerContainerRef.current.requestFullscreen()
-    //   }
-    //   setIsFullscreen(true)
-    // } else {
-    //   if (document.exitFullscreen) {
-    //     document.exitFullscreen()
-    //   }
-    //   setIsFullscreen(false)
-    // }
-
-    handleUpdateLessonProgress()
-  }, [handleUpdateLessonProgress])
+    if (!isFullscreen) {
+      if (playerContainerRef.current?.requestFullscreen) {
+        playerContainerRef.current.requestFullscreen()
+      }
+      setIsFullscreen(true)
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen()
+      }
+      setIsFullscreen(false)
+    }
+  }, [isFullscreen])
 
   // MARK: Show/Hide Controls
   const showControlsHandler = useCallback(() => {
@@ -414,6 +412,13 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
         e.preventDefault()
         handleSeek(currentTime - 5)
       }
+
+      // Number: 0-9
+      if (e.key >= '0' && e.key <= '9') {
+        e.preventDefault()
+        const number = +e.key
+        handleSeek((number / 9) * duration)
+      }
     }
 
     document.addEventListener('keydown', handleKeyDown)
@@ -421,7 +426,16 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
     return () => {
       document.removeEventListener('keydown', handleKeyDown)
     }
-  }, [handlePlay, handleMute, handleFullscreen, handleSeek, handleChangeVolume, currentTime, volume])
+  }, [
+    handlePlay,
+    handleMute,
+    handleFullscreen,
+    handleSeek,
+    handleChangeVolume,
+    currentTime,
+    volume,
+    duration,
+  ])
 
   return (
     <div

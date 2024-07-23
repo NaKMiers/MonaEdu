@@ -33,7 +33,7 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
     }
 
     // get lesson from database
-    const lesson: ILesson | null = await LessonModel.findOne({ slug })
+    const lesson: ILesson | null = await LessonModel.findOne({ slug, active: true })
       .populate({
         path: 'courseId',
         populate: {
@@ -95,7 +95,7 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
       .limit(8)
       .lean()
 
-    comments = comments.map((comment) => ({
+    comments = comments.map(comment => ({
       ...comment,
       userId: comment.userId._id,
       user: comment.userId,

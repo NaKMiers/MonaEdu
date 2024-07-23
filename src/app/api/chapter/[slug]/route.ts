@@ -36,6 +36,7 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
       }).lean(),
       LessonModel.find({
         courseId: course._id,
+        active: true,
       }).lean(),
       ProgressModel.find({
         courseId: course._id,
