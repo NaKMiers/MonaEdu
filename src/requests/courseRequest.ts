@@ -17,10 +17,7 @@ export const getAllCoursesApi = async (
 }
 
 // [GET]
-export const getCoursesApi = async (
-  query: string = '',
-  option: RequestInit = { next: { revalidate: 300 } }
-) => {
+export const getCoursesApi = async (query: string = '', option: RequestInit = { cache: 'no-store' }) => {
   // no-store to avoid cache
   const res = await fetch(`/api/course${query}`, option)
 

@@ -61,7 +61,7 @@ function SearchBar() {
     const getSuggestedCourses = async () => {
       try {
         // send request to get suggested courses
-        const { courses } = await getCoursesApi('?limit=3&sort=joined|-1')
+        const { courses } = await getCoursesApi('?limit=3&sort=joined|-1', { next: { revalidate: 300 } })
 
         // set search results
         setSearchResults(courses)

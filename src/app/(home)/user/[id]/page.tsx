@@ -233,7 +233,7 @@ async function ProfilePage({ params: { id } }: { params: { id: string } }) {
 
           <Divider size={8} />
 
-          <ul className='grid grid-cols-1 md:grid-cols-3 gap-21 text-dark'>
+          <ul className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-21 text-dark'>
             {questions.map(question => (
               <QuestionItem question={question} key={question._id} />
             ))}

@@ -1,10 +1,11 @@
 'use client'
 
 import { useAppDispatch, useAppSelector } from '@/libs/hooks'
-import { setOpenSidebar, setPageLoading } from '@/libs/reducers/modalReducer'
+import { setOpenSidebar } from '@/libs/reducers/modalReducer'
 import { IChapter } from '@/models/ChapterModel'
 import { ILesson } from '@/models/LessonModel'
 import { getLearningChaptersApi } from '@/requests/chapterRequest'
+import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
@@ -12,15 +13,13 @@ import { memo, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { BsLayoutSidebarInset } from 'react-icons/bs'
 import { FaChevronCircleLeft, FaChevronCircleRight } from 'react-icons/fa'
-import BeamsBackground from './backgrounds/BeamsBackground'
 import Divider from './Divider'
 import LearningChapter from './LearningChapter'
-import { useSession } from 'next-auth/react'
 
 function AllLessons() {
   // hooks
   const dispatch = useAppDispatch()
-  const openSidebar = useAppSelector((state) => state.modal.openSidebar)
+  const openSidebar = useAppSelector(state => state.modal.openSidebar)
   const router = useRouter()
   const params = useParams()
   const courseSlug = params.courseSlug as string
@@ -77,12 +76,12 @@ function AllLessons() {
 
   // find next and prev lesson
   useEffect(() => {
-    let lessons: ILesson[] = chapters.map((chapter) => chapter.lessons).flat() as ILesson[]
+    let lessons: ILesson[] = chapters.map(chapter => chapter.lessons).flat() as ILesson[]
     // if (!isEnrolled) {
     //   lessons = lessons.filter((lesson) => lesson.status === 'public') // public lesson
     // }
 
-    const curLessonIndex = lessons.findIndex((lesson) => lesson.slug === lessonSlug)
+    const curLessonIndex = lessons.findIndex(lesson => lesson.slug === lessonSlug)
 
     setPrevLesson(curLessonIndex > 0 ? lessons[curLessonIndex - 1].slug : '')
     setNextLesson(curLessonIndex < lessons.length - 1 ? lessons[curLessonIndex + 1].slug : '')
@@ -156,7 +155,7 @@ function AllLessons() {
           <Divider size={2} />
 
           <ul className='flex flex-col gap-2 overflow-y-auto no-scrollbar'>
-            {chapters.map((chapter) => (
+            {chapters.map(chapter => (
               <LearningChapter
                 courseId={courseId}
                 chapter={chapter}

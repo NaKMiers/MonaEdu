@@ -1,7 +1,7 @@
 'use client'
 
 import Divider from '@/components/Divider'
-import QuestionItem from '@/components/QuestionItem'
+import QuestionItemX from '@/components/QuestionItem'
 import Pagination from '@/components/layouts/Pagination'
 import { useAppDispatch } from '@/libs/hooks'
 import { setPageLoading } from '@/libs/reducers/modalReducer'
@@ -66,8 +66,8 @@ function MyQuestionsPage({ searchParams }: { searchParams?: { [key: string]: str
       {/* MAIN List */}
       {!!questions.length ? (
         <ul className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-21'>
-          {questions.map((question) => (
-            <QuestionItem question={question} key={question._id} />
+          {questions.map(question => (
+            <QuestionItemX question={question} key={question._id} />
           ))}
         </ul>
       ) : (
