@@ -15,16 +15,16 @@ function FloatingActionButtonsX({ className = '' }: { className?: string }) {
       </div>
 
       {/* Price */}
-      <div className='flex flex-col justify-center tracking-tighter text-dark font-semibold pl-2 sm:px-4 border-l'>
+      <div className='flex flex-col justify-center tracking-tighter pl-2 sm:px-4 border-l'>
         <div className='h-5 max-w-full w-[70px] sm:w-[100px] mb-1 rounded-md bg-slate-700 animate-pulse' />
         <div className='h-4 max-w-full w-[50px] sm:w-[80px] rounded-md bg-slate-500 animate-pulse' />
       </div>
 
       {/* Buy Now */}
-      <div className='h-[42px] flex w-full items-center justify-center rounded-lg shadow-lg px-2 bg-slate-500 animate-pulse' />
+      <div className='h-[42px] flex w-full items-center justify-center rounded-lg px-2 bg-slate-500 animate-pulse' />
 
       {/* Add To Cart */}
-      <div className='flex-shrink-0 h-[42px] w-[48px] flex items-center justify-center rounded-lg shadow-lg bg-slate-500 animate-pulse' />
+      <div className='flex-shrink-0 h-[42px] w-[48px] flex items-center justify-center rounded-lg bg-slate-500 animate-pulse' />
     </div>
   )
 }

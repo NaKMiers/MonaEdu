@@ -1,12 +1,12 @@
 'use client'
 
-import {IComment} from '@/models/CommentModel'
-import {addCommentApi} from '@/requests/commentRequest'
-import {useSession} from 'next-auth/react'
+import { IComment } from '@/models/CommentModel'
+import { addCommentApi } from '@/requests/commentRequest'
+import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
-import {memo, useCallback, useEffect, useState} from 'react'
-import {FieldValues, SubmitHandler, useForm} from 'react-hook-form'
+import { memo, useCallback, useEffect, useState } from 'react'
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import CommentItem from './CommentItem'
 import LoadingButton from './LoadingButton'
@@ -18,9 +18,9 @@ interface CommentProps {
   className?: string
 }
 
-function Comment({comments, questionId, lessonId, className = ''}: CommentProps) {
+function Comment({ comments, questionId, lessonId, className = '' }: CommentProps) {
   // hooks
-  const {data: session} = useSession()
+  const { data: session } = useSession()
   const curUser: any = session?.user
 
   // states
@@ -31,7 +31,7 @@ function Comment({comments, questionId, lessonId, className = ''}: CommentProps)
   const {
     register,
     handleSubmit,
-    formState: {errors},
+    formState: { errors },
     clearErrors,
     reset,
   } = useForm<FieldValues>({
@@ -57,7 +57,7 @@ function Comment({comments, questionId, lessonId, className = ''}: CommentProps)
 
         try {
           // send request to add comment
-          const {newComment} = await addCommentApi({
+          const { newComment } = await addCommentApi({
             questionId,
             lessonId,
             content: data.comment,
@@ -105,7 +105,7 @@ function Comment({comments, questionId, lessonId, className = ''}: CommentProps)
             placeholder=' '
             disabled={isLoading}
             type='text'
-            {...register('comment', {required: true})}
+            {...register('comment', { required: true })}
             onBlur={() => clearErrors('comment')}
           />
 

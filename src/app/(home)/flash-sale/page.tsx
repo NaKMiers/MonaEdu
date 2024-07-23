@@ -1,35 +1,35 @@
-import CourseCard from '@/components/CourseCard';
-import Divider from '@/components/Divider';
-import Pagination from '@/components/layouts/Pagination';
-import { ICourse } from '@/models/CourseModel';
-import { getFlashSalePageApi } from '@/requests';
-import { handleQuery } from '@/utils/handleQuery';
-import { Metadata } from 'next';
-import Link from 'next/link';
+import CourseCard from '@/components/CourseCard'
+import Divider from '@/components/Divider'
+import Pagination from '@/components/layouts/Pagination'
+import { ICourse } from '@/models/CourseModel'
+import { getFlashSalePageApi } from '@/requests'
+import { handleQuery } from '@/utils/handleQuery'
+import { Metadata } from 'next'
+import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'Đang giảm giá - Mona Edu',
   description: 'Mona Edu - Học trực tuyến mọi lúc, mọi nơi',
-};
+}
 
 async function FlashSalePage({ searchParams }: { searchParams?: { [key: string]: string[] } }) {
-  let courses: ICourse[] = [];
-  let query: string = '';
-  let amount: number = 0;
-  let itemPerPage = 16;
+  let courses: ICourse[] = []
+  let query: string = ''
+  let amount: number = 0
+  let itemPerPage = 16
 
   try {
     // get query
-    query = handleQuery(searchParams);
+    query = handleQuery(searchParams)
 
     // cache: no-store for filter
-    const data = await getFlashSalePageApi(query);
+    const data = await getFlashSalePageApi(query)
 
     // destructure
-    courses = data.courses;
-    amount = data.amount;
+    courses = data.courses
+    amount = data.amount
   } catch (err: any) {
-    console.log(err);
+    console.log(err)
   }
 
   // jsonLd
@@ -59,16 +59,14 @@ async function FlashSalePage({ searchParams }: { searchParams?: { [key: string]:
         },
       },
     })),
-  };
+  }
 
-  console.log('jsonLd', jsonLd.itemListElement);
+  console.log('jsonLd', jsonLd.itemListElement)
 
   return (
-    <div className='px-21'>
+    <div className='px-21 pt-12 md:pt-16'>
       {/* MARK: Add JSON-LD */}
       <script type='application/ld+json' dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-
-      <Divider size={12} />
 
       {/* Heading */}
       <h1 className='text-4xl font-semibold px-21 text-white text-center'>Đang Giảm Giá ({amount})</h1>
@@ -78,7 +76,7 @@ async function FlashSalePage({ searchParams }: { searchParams?: { [key: string]:
       {/* MAIN List */}
       {!!courses.length ? (
         <div className='grid grid-cols-2 md:grid-cols-4 gap-21'>
-          {courses.map((course) => (
+          {courses.map(course => (
             <CourseCard course={course} key={course._id} />
           ))}
         </div>
@@ -94,14 +92,14 @@ async function FlashSalePage({ searchParams }: { searchParams?: { [key: string]:
         </div>
       )}
 
-      <Divider size={8} />
+      <Divider size={10} />
 
       {/* Pagination */}
       <Pagination searchParams={searchParams} amount={amount} itemsPerPage={itemPerPage} />
 
       <Divider size={20} />
     </div>
-  );
+  )
 }
 
-export default FlashSalePage;
+export default FlashSalePage

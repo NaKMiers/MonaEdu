@@ -3,14 +3,14 @@ import AddQuestionFormX from '@/components/loading/AddQuestionFormX'
 import PaginationX from '@/components/loading/PaginationX'
 import QuestionItemX from '@/components/loading/QuestionItemX'
 
-async function ForumPageX() {
+async function Loading() {
   return (
     <div>
       {/* Head */}
       <div className='bg-white'>
         <div className='max-w-1200 h-80 mx-auto px-21 md:-mt-[72px] md:pt-[72px] pt-21'>
           {/* Banner */}
-          <div className='h-96 px-21 relative w-full overflow-hidden bg-neutral-700 flex flex-col items-center justify-center rounded-xl border-b-2 border-primary shadow-md'>
+          <div className='h-96 px-21 relative w-full overflow-hidden bg-neutral-700 flex flex-col items-center justify-center rounded-xl border-b-2 border-primary'>
             <div className='absolute inset-0 w-full h-full bg-dark-0 z-20 [mask-image:radial-gradient(transparent,white)] pointer-events-none' />
 
             {/* <BeamsBackground /> */}
@@ -48,4 +48,4 @@ async function ForumPageX() {
   )
 }
 
-export default ForumPageX
+export default Loading

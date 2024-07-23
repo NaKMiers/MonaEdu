@@ -17,8 +17,8 @@ function BestSellerX() {
       <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-21'>
         {Array.from({ length: 8 }).map((_, index) => (
           <div className='' key={index}>
-            <div className='w-full aspect-video rounded-lg shadow-lg bg-slate-700 animate-pulse' />
-            <div className='w-full  rounded-lg shadow-lg bg-slate-200 px-21 py-4'>
+            <div className='w-full aspect-video rounded-lg bg-slate-700 animate-pulse' />
+            <div className='w-full  rounded-lg bg-slate-200 px-21 py-4'>
               <div className='h-4 w-2/3 mb-1 bg-slate-700 animate-pulse rounded-md' />
               <div className='h-7 w-full bg-slate-700 animate-pulse rounded-md' />
             </div>

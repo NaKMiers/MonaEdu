@@ -4,20 +4,20 @@ function FloatingSummaryX({ className = '' }: { className?: string }) {
   return (
     <div className={`px-4 max-h-[calc(100vh-100px)] overflow-y-auto ${className}`}>
       {/* Thumbnails */}
-      <div className='aspect-video -mx-4 rounded-lg shadow-lg bg-slate-300 animate-pulse' />
+      <div className='aspect-video -mx-4 rounded-lg bg-slate-300 animate-pulse' />
 
       <Divider size={4} />
 
       <div className='overflow-y-auto h-full'>
         {/* Price */}
-        <div className='w-full h-9 bg-slate-500 rounded-md shadow-lg animate-pulse' />
+        <div className='w-full h-9 bg-slate-500 rounded-md animate-pulse' />
 
         <Divider size={4} />
 
         {/* Action Buttons */}
         <div className='flex items-center gap-1 w-full'>
-          <div className='h-[42px] flex w-full items-center justify-center rounded-lg shadow-lg px-2 bg-slate-500 animate-pulse' />
-          <div className='group h-[42px] w-[48px] flex items-center justify-center rounded-lg shadow-lg bg-slate-500 animate-pulse' />
+          <div className='h-[42px] flex w-full items-center justify-center rounded-lg px-2 bg-slate-500 animate-pulse' />
+          <div className='group h-[42px] w-[48px] flex items-center justify-center rounded-lg bg-slate-500 animate-pulse' />
         </div>
 
         <Divider size={4} />
