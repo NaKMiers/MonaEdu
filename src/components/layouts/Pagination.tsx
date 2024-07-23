@@ -103,10 +103,10 @@ function Pagination({
 
         {/* MARK: 1 ... n */}
         <div className='flex gap-2'>
-          {pageList.map((page) => (
+          {pageList.map(page => (
             <Link
               href={getPageLink(page || 0)}
-              onClick={(e) => page || e.preventDefault()}
+              onClick={e => page || e.preventDefault()}
               className={`rounded-lg border-2 py-[6px] px-4 hover:bg-secondary hover:text-white hover:border-white ${
                 dark ? 'text-dark' : 'text-white'
               } ${!page ? 'pointer-events-none' : ''} trans-200 ${
