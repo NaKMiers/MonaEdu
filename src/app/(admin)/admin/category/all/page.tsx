@@ -97,7 +97,7 @@ function AllCategoriesPage({ searchParams }: { searchParams?: { [key: string]: s
 
       {/* MARK: MAIN LIST */}
       <div className='flex flex-col gap-2'>
-        {categories.map((category) => (
+        {categories.map(category => (
           <CategoryItem data={category} setCategories={setCategories} key={category._id} />
         ))}
       </div>

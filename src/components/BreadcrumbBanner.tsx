@@ -14,7 +14,7 @@ interface BreadcrumbBannerProps {
   className?: string
 }
 
-function BreadcrumbBanner({ title, description, background, className = '' }: BreadcrumbBannerProps) {
+function BreadcrumbBanner({ title, description, className = '' }: BreadcrumbBannerProps) {
   // hooks
   const pathname = usePathname()
   const breadcrumbs = pathname
