@@ -1,7 +1,7 @@
 import AddQuestionForm from '@/components/AddQuestionForm'
 import Divider from '@/components/Divider'
 import Pagination from '@/components/layouts/Pagination'
-import QuestionItemX from '@/components/QuestionItem'
+import QuestionItem from '@/components/QuestionItem'
 import { IQuestion } from '@/models/QuestionModel'
 import { IUser } from '@/models/UserModel'
 import { getForumPageApi } from '@/requests'
@@ -81,7 +81,7 @@ async function ForumPage({ searchParams }: { searchParams?: { [key: string]: str
           {/* Question List */}
           <ul className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-21'>
             {questions.map(question => (
-              <QuestionItemX question={question} key={question._id} />
+              <QuestionItem question={question} key={question._id} />
             ))}
           </ul>
 
