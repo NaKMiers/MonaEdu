@@ -2,7 +2,7 @@ function PaginationX() {
   return (
     <div className='flex gap-2 justify-center w-full mx-auto'>
       {/* MARK: Prev */}
-      <div className='rounded-lg h-[40px] w-[60px] bg-white border-slate-200 animate-pulse' />
+      <div className='rounded-lg h-[40px] w-[60px] bg-slate-300 border-slate-200 animate-pulse' />
 
       {/* MARK: 1 ... n */}
       <div className='flex gap-2'>
@@ -12,7 +12,7 @@ function PaginationX() {
       </div>
 
       {/* MARK: Next */}
-      <div className='rounded-lg h-[40px] w-[60px] bg-white border-slate-200 animate-pulse' />
+      <div className='rounded-lg h-[40px] w-[60px] bg-slate-300 border-slate-200 animate-pulse' />
     </div>
   )
 }

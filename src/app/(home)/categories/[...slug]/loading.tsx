@@ -5,7 +5,7 @@ import FilterAndSearchX from '@/components/loading/FilterAndSearchX'
 import PaginationX from '@/components/loading/PaginationX'
 import ShortPaginationX from '@/components/loading/ShortPaginationX'
 
-async function CategoryPage() {
+async function Loading() {
   return (
     <div>
       {/* Banner */}
@@ -56,4 +56,4 @@ async function CategoryPage() {
   )
 }
 
-export default CategoryPage
+export default Loading
