@@ -4,6 +4,7 @@ import BestSellerX from '@/components/loading/BestSellerX'
 import FeatureCoursesX from '@/components/loading/FeatureCoursesX'
 import TopCategoriesX from '@/components/loading/TopCategoriesX'
 import TopNewCoursesX from '@/components/loading/TopNewCoursesX'
+import RecentlyVisit from '@/components/ranks/RecentlyVisit'
 
 async function HomeX() {
   return (
@@ -30,6 +31,10 @@ async function HomeX() {
 
       {/* Top 8 Categories */}
       <TopCategoriesX />
+      <Divider size={24} />
+
+      {/* Recently Visit */}
+      <RecentlyVisit />
 
       <Divider size={54} />
     </div>

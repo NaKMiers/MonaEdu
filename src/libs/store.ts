@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import cartReducer from './reducers/cartReducer'
+import courseReducer from './reducers/courseReducer'
 import learningReducer from './reducers/learningReducer'
 import modalReducer from './reducers/modalReducer'
 import userReducer from './reducers/userReducer'
@@ -10,6 +11,7 @@ export const makeStore = () => {
       user: userReducer,
       cart: cartReducer,
       learning: learningReducer,
+      course: courseReducer,
       modal: modalReducer,
     },
     devTools: process.env.NODE_ENV !== 'production',

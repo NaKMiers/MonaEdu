@@ -2,6 +2,7 @@ import Banner from '@/components/Banner'
 import Divider from '@/components/Divider'
 import BestSeller from '@/components/ranks/BestSeller'
 import FeatureCourses from '@/components/ranks/FeatureCourses'
+import RecentlyVisit from '@/components/ranks/RecentlyVisit'
 import TopCategories from '@/components/ranks/TopCategories'
 import TopNewCourses from '@/components/ranks/TopNewCourses'
 import { ICategory } from '@/models/CategoryModel'
@@ -86,6 +87,10 @@ async function Home() {
 
       {/* Top 8 Categories */}
       <TopCategories />
+      <Divider size={24} />
+
+      {/* Recently Visit */}
+      <RecentlyVisit />
 
       <Divider size={54} />
     </div>
