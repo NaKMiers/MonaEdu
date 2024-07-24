@@ -48,7 +48,9 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
     const [chapters, lessons, relatedCourses] = await Promise.all([
       ChapterModel.find({
         courseId: course._id,
-      }).lean(),
+      })
+        .sort({ order: 1 })
+        .lean(),
       LessonModel.find({
         courseId: course._id,
         active: true,

@@ -33,7 +33,9 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
     let [chapters, lessons, progresses]: any = await Promise.all([
       ChapterModel.find({
         courseId: course._id,
-      }).lean(),
+      })
+        .sort({ order: 1 })
+        .lean(),
       LessonModel.find({
         courseId: course._id,
         active: true,
@@ -42,7 +44,6 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
         courseId: course._id,
       }),
     ])
-    chapters = chapters.sort((a: IChapter, b: IChapter) => a.order - b.order)
 
     // // add lessons to each chapter
     // const chaptersWithLessons = chapters.map((chapter: IChapter) => {

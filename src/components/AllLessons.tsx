@@ -32,7 +32,7 @@ function AllLessons() {
   const [chapters, setChapters] = useState<IChapter[]>([])
   const [nextLesson, setNextLesson] = useState<string>('')
   const [prevLesson, setPrevLesson] = useState<string>('')
-  // const [isEnrolled, setIsEnrolled] = useState<boolean>(false)
+  const [isEnrolled, setIsEnrolled] = useState<boolean>(false)
 
   // get all chapters with lessons
   useEffect(() => {
@@ -42,8 +42,8 @@ function AllLessons() {
         const { chapters, courseId } = await getLearningChaptersApi(courseSlug)
 
         // check if user is enrolled in this course
-        // const isEnrolled = curUser?.courses?.map((course: any) => course.course).includes(courseId)
-        // setIsEnrolled(isEnrolled)
+        const isEnrolled = curUser?.courses?.map((course: any) => course.course).includes(courseId)
+        setIsEnrolled(isEnrolled)
 
         // set states
         setChapters(chapters)
@@ -72,30 +72,30 @@ function AllLessons() {
       }
     }
     getChaptersWithLessons()
-  }, [router, dispatch, courseSlug, lessonSlug])
+  }, [router, dispatch, courseSlug, lessonSlug, curUser?.courses])
 
   // find next and prev lesson
   useEffect(() => {
     let lessons: ILesson[] = chapters.map(chapter => chapter.lessons).flat() as ILesson[]
-    // if (!isEnrolled) {
-    //   lessons = lessons.filter((lesson) => lesson.status === 'public') // public lesson
-    // }
+    if (!isEnrolled) {
+      lessons = lessons.filter(lesson => lesson.status === 'public') // public lesson
+    }
 
     const curLessonIndex = lessons.findIndex(lesson => lesson.slug === lessonSlug)
 
     setPrevLesson(curLessonIndex > 0 ? lessons[curLessonIndex - 1].slug : '')
     setNextLesson(curLessonIndex < lessons.length - 1 ? lessons[curLessonIndex + 1].slug : '')
 
-    // // user is enrolled in this course
-    // if (isEnrolled) {
-    //   setPrevLesson(curLessonIndex > 0 ? lessons[curLessonIndex - 1].slug : '')
-    //   setNextLesson(curLessonIndex < lessons.length - 1 ? lessons[curLessonIndex + 1].slug : '')
-    // } else {
-    //   // user is not enrolled in this course
-    //   setPrevLesson(curLessonIndex > 0 ? lessons[curLessonIndex - 1].slug : '')
-    //   setNextLesson(curLessonIndex < lessons.length - 1 ? lessons[curLessonIndex + 1].slug : '')
-    // }
-  }, [chapters, lessonSlug])
+    // user is enrolled in this course
+    if (isEnrolled) {
+      setPrevLesson(curLessonIndex > 0 ? lessons[curLessonIndex - 1].slug : '')
+      setNextLesson(curLessonIndex < lessons.length - 1 ? lessons[curLessonIndex + 1].slug : '')
+    } else {
+      // user is not enrolled in this course
+      setPrevLesson(curLessonIndex > 0 ? lessons[curLessonIndex - 1].slug : '')
+      setNextLesson(curLessonIndex < lessons.length - 1 ? lessons[curLessonIndex + 1].slug : '')
+    }
+  }, [chapters, lessonSlug, isEnrolled])
 
   return (
     <>

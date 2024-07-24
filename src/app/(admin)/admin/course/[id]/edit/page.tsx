@@ -2,6 +2,7 @@
 
 import Input from '@/components/Input'
 import LoadingButton from '@/components/LoadingButton'
+import TextEditor from '@/components/Tiptap'
 import AdminHeader from '@/components/admin/AdminHeader'
 import CategoryItem from '@/components/admin/CategoryItem'
 import { languages } from '@/constants/languages'
@@ -330,17 +331,13 @@ function AddCoursePage() {
         />
 
         {/* Description */}
-        <Input
-          id='description'
-          label='Description'
-          disabled={isLoading}
-          register={register}
-          errors={errors}
-          type='textarea'
-          rows={10}
-          icon={MdNumbers}
-          className='mb-5'
-          onFocus={() => clearErrors('description')}
+        <TextEditor
+          onChange={(content: string) => {
+            setValue('description', content)
+            console.log('content', content)
+          }}
+          content={getValues('description')}
+          className='w-full p-21 rounded-lg shadow-lg border border-dark bg-slate-200 text-dark mb-5'
         />
 
         {/* Languages */}
