@@ -301,10 +301,7 @@ function AddCoursePage() {
 
         {/* Description */}
         <TextEditor
-          onChange={(content: string) => {
-            setValue('description', content)
-            console.log('content', content)
-          }}
+          onChange={(content: string) => setValue('description', content)}
           className='w-full p-21 rounded-lg shadow-lg border border-dark bg-slate-200 text-dark mb-5'
         />
 

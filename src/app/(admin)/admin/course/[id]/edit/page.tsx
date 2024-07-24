@@ -331,14 +331,13 @@ function AddCoursePage() {
         />
 
         {/* Description */}
-        <TextEditor
-          onChange={(content: string) => {
-            setValue('description', content)
-            console.log('content', content)
-          }}
-          content={getValues('description')}
-          className='w-full p-21 rounded-lg shadow-lg border border-dark bg-slate-200 text-dark mb-5'
-        />
+        {getValues('description') && (
+          <TextEditor
+            onChange={(content: string) => setValue('description', content)}
+            content={getValues('description')}
+            className='w-full p-21 rounded-lg shadow-lg border border-dark bg-slate-200 text-dark mb-5'
+          />
+        )}
 
         {/* Languages */}
         <Input

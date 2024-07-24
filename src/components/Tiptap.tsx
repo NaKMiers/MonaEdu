@@ -1,36 +1,59 @@
 'use client'
 
-import { BubbleMenu, EditorContent, useEditor } from '@tiptap/react'
-import StarterKit from '@tiptap/starter-kit'
-import { useCallback, useEffect, useState } from 'react'
+import { EditorContent, useEditor } from '@tiptap/react'
+import { useCallback } from 'react'
 
 import Bold from '@tiptap/extension-bold'
 import CharacterCount from '@tiptap/extension-character-count'
 import Code from '@tiptap/extension-code'
 import { Color } from '@tiptap/extension-color'
 import Document from '@tiptap/extension-document'
-// import FontFamily from '@tiptap/extension-font-family'
+import Blockquote from '@tiptap/extension-blockquote'
+import BulletList from '@tiptap/extension-bullet-list'
+import GapCursor from '@tiptap/extension-gapcursor'
+import Heading from '@tiptap/extension-heading'
 import Highlight from '@tiptap/extension-highlight'
+import History from '@tiptap/extension-history'
+import HorizontalRule from '@tiptap/extension-horizontal-rule'
+import Image from '@tiptap/extension-image'
 import Italic from '@tiptap/extension-italic'
 import Link from '@tiptap/extension-link'
+import ListItem from '@tiptap/extension-list-item'
+import OrderedList from '@tiptap/extension-ordered-list'
 import Paragraph from '@tiptap/extension-paragraph'
-import Placeholder from '@tiptap/extension-placeholder'
 import Strike from '@tiptap/extension-strike'
 import Subscript from '@tiptap/extension-subscript'
 import Superscript from '@tiptap/extension-superscript'
+import Table from '@tiptap/extension-table'
+import TableCell from '@tiptap/extension-table-cell'
+import TableHeader from '@tiptap/extension-table-header'
+import TableRow from '@tiptap/extension-table-row'
 import Text from '@tiptap/extension-text'
+import TextAlign from '@tiptap/extension-text-align'
 import Underline from '@tiptap/extension-underline'
+import Youtube from '@tiptap/extension-youtube'
 import {
+  FaAlignCenter,
+  FaAlignJustify,
+  FaAlignLeft,
+  FaAlignRight,
   FaBold,
+  FaCode,
   FaHighlighter,
+  FaImage,
   FaItalic,
   FaLink,
+  FaListOl,
+  FaListUl,
+  FaQuoteRight,
+  FaRedo,
   FaStrikethrough,
   FaSubscript,
   FaSuperscript,
   FaUnderline,
+  FaUndo,
+  FaYoutube,
 } from 'react-icons/fa'
-import { FaCode } from 'react-icons/fa6'
 
 interface TextEditorProps {
   onChange: (content: string) => void
@@ -40,12 +63,49 @@ interface TextEditorProps {
 
 const limit = 5000
 
+const CustomHeading = Heading.extend({
+  addOptions() {
+    return {
+      ...this.parent?.(),
+      HTMLAttributes: {
+        class: 'mt-4 mb-2',
+      },
+    }
+  },
+  renderHTML({ node, HTMLAttributes }) {
+    // Apply custom classes based on the heading level
+    const level = node.attrs.level
+    let customClass = HTMLAttributes.class
+    switch (level) {
+      case 1:
+        customClass += ' text-4xl font-bold'
+        break
+      case 2:
+        customClass += ' text-3xl font-semibold'
+        break
+      case 3:
+        customClass += ' text-2xl font-semibold'
+        break
+      case 4:
+        customClass += ' text-xl font-semibold'
+        break
+      case 5:
+        customClass += ' text-lg font-semibold'
+        break
+      case 6:
+        customClass += ' text-base font-semibold'
+        break
+    }
+
+    return [`h${node.attrs.level}`, { ...HTMLAttributes, class: customClass }, 0]
+  },
+})
+
 const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps) => {
-  const [isEditable, setIsEditable] = useState<boolean>(true)
+  console.log('TextEditor -> content', content)
 
   const editor = useEditor({
     extensions: [
-      StarterKit,
       Document,
       Paragraph,
       Text,
@@ -73,11 +133,61 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
         limit,
       }),
       Color,
-      // FontFamily,
-      Placeholder.configure({
-        placeholder: 'Describe the course …',
+      CustomHeading,
+      Blockquote.configure({
+        HTMLAttributes: {
+          class: 'border-l-[3px] border-slate-300 pl-4',
+        },
       }),
+      BulletList.configure({
+        HTMLAttributes: {
+          class: 'list-disc px-[1rem] mr-[1rem] ml-[0.4rem]',
+        },
+      }),
+      OrderedList.configure({
+        HTMLAttributes: {
+          class: 'list-decimal px-[1rem] mr-[1rem] ml-[0.4rem]',
+        },
+      }),
+      ListItem.configure({
+        HTMLAttributes: {
+          class: 'my-[0.25em]',
+        },
+      }),
+      HorizontalRule.configure({
+        HTMLAttributes: {
+          class: 'my-8 border-t border-slate-200',
+        },
+      }),
+      Image.configure({
+        HTMLAttributes: {
+          class: 'w-full h-auto rounded-lg shadow-md max-w-[640px]',
+        },
+      }),
+      Youtube.configure({
+        controls: true,
+        nocookie: true,
+        HTMLAttributes: {
+          class: 'aspect-video w-full h-auto rounded-lg shadow-md max-w-[640px]',
+        },
+      }),
+      TextAlign.configure({
+        types: ['heading', 'paragraph'],
+      }),
+      History,
+      GapCursor,
+      Table.configure({
+        resizable: true,
+      }),
+      TableRow,
+      TableHeader,
+      TableCell,
     ],
+    editorProps: {
+      attributes: {
+        class: 'outline-none border border-dark rounded-lg shadow-lg px-4 py-3 bg-white overflow-hidden',
+      },
+    },
     content,
 
     onUpdate: ({ editor }) => onChange(editor.getHTML()),
@@ -105,11 +215,25 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
     editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run()
   }, [editor])
 
-  useEffect(() => {
-    if (editor) {
-      editor.setEditable(isEditable)
+  const addImage = useCallback(() => {
+    const url = window.prompt('URL')
+
+    if (url) {
+      if (!editor) return
+      editor.chain().focus().setImage({ src: url }).run()
     }
-  }, [isEditable, editor])
+  }, [editor])
+
+  const addYoutubeVideo = useCallback(() => {
+    if (!editor) return
+    const url = prompt('Enter YouTube URL')
+
+    if (url) {
+      editor.commands.setYoutubeVideo({
+        src: url,
+      })
+    }
+  }, [editor])
 
   if (!editor) {
     return null
@@ -119,167 +243,380 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
 
   return (
     <div className={`${className}`}>
-      <div className='mb-5'>
+      <div className='flex flex-col gap-2 mb-5'>
+        {/* Marks & Headings */}
+        <div className='flex justify-between gap-4'>
+          {/* Marks */}
+          <div className='flex items-center flex-wrap gap-x-2 gap-y-1'>
+            {/* Bold */}
+            <button
+              onClick={() => editor.commands.toggleBold()}
+              className={`${
+                editor.isActive('bold') ? 'bg-dark-100 text-white' : ''
+              } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
+              title='Bold'
+            >
+              <FaBold />
+            </button>
+
+            {/* Italic */}
+            <button
+              onClick={() => editor.commands.toggleItalic()}
+              className={`${
+                editor.isActive('italic') ? 'bg-dark-100 text-white' : ''
+              } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
+              title='Italic'
+            >
+              <FaItalic />
+            </button>
+
+            {/* Underline */}
+            <button
+              onClick={() => editor.commands.toggleUnderline()}
+              className={`${
+                editor.isActive('underline') ? 'bg-dark-100 text-white' : ''
+              } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
+              title='Underline'
+            >
+              <FaUnderline />
+            </button>
+
+            {/* Strike */}
+            <button
+              onClick={() => editor.commands.toggleStrike()}
+              className={`${
+                editor.isActive('strike') ? 'bg-dark-100 text-white' : ''
+              } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
+              title='Strike'
+            >
+              <FaStrikethrough />
+            </button>
+
+            {/* Code */}
+            <button
+              onClick={() => editor.commands.toggleCode()}
+              className={`${
+                editor.isActive('code') ? 'bg-dark-100 text-white' : ''
+              } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
+              title='Code'
+            >
+              <FaCode />
+            </button>
+
+            {/* Link */}
+            <button
+              onClick={setLink}
+              className={`${
+                editor.isActive('link') ? 'bg-dark-100 text-white' : ''
+              } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
+              title='Link'
+            >
+              <FaLink />
+            </button>
+
+            {/* Subscript */}
+            <button
+              onClick={() => editor.commands.toggleSubscript()}
+              className={`${
+                editor.isActive('subscript') ? 'bg-dark-100 text-white' : ''
+              } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
+              title='Subscript'
+            >
+              <FaSubscript />
+            </button>
+
+            {/* Superscript */}
+            <button
+              onClick={() => editor.commands.toggleSuperscript()}
+              className={`${
+                editor.isActive('superscript') ? 'bg-dark-100 text-white' : ''
+              } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
+              title='Superscript'
+            >
+              <FaSuperscript />
+            </button>
+
+            {/* Highlight */}
+            <button
+              onClick={() => editor.commands.toggleHighlight()}
+              className={`${
+                editor.isActive('highlight') ? 'bg-dark-100 text-white' : ''
+              } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
+              title='Highlight'
+            >
+              <FaHighlighter />
+            </button>
+
+            {/* Color */}
+            <input
+              type='color'
+              className='rounded-md shadow-lg h-[32px] p-1.5 border border-dark bg-transparent cursor-pointer'
+              onInput={(e: any) => editor.commands.setColor(e.target.value)}
+              title='Color'
+            />
+          </div>
+
+          {/* Headings */}
+          <div className='flex items-center flex-wrap gap-x-2 gap-y-1'>
+            {Array.from({ length: 6 }, (_, index) => (
+              <button
+                onClick={() => editor.commands.toggleHeading({ level: (index + 1) as any })}
+                className={`${
+                  editor.isActive('heading', { level: index + 1 })
+                    ? 'bg-dark-100 text-white font-semibold'
+                    : ''
+                } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
+                title={`Heading ${index + 1}`}
+                key={index}
+              >
+                H{index + 1}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Nodes & Alignments */}
+        <div className='flex justify-between gap-4'>
+          {/* Nodes */}
+          <div className='flex items-center flex-wrap gap-x-2 gap-y-1'>
+            {/* Block Quote */}
+            <button
+              onClick={() => editor.commands.toggleBlockquote()}
+              className={`${
+                editor.isActive('blockquote') ? 'bg-dark-100 text-white' : ''
+              } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
+              title='Block Quote'
+            >
+              <FaQuoteRight />
+            </button>
+
+            {/* Bullet List */}
+            <button
+              onClick={() => editor.commands.toggleBulletList()}
+              className={`${
+                editor.isActive('bulletList') ? 'bg-dark-100 text-white' : ''
+              } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
+              title='Bullet List'
+            >
+              <FaListUl />
+            </button>
+
+            {/* Order List */}
+            <button
+              onClick={() => editor.commands.toggleOrderedList()}
+              className={`${
+                editor.isActive('orderedList') ? 'bg-dark-100 text-white' : ''
+              } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
+              title='Order List'
+            >
+              <FaListOl />
+            </button>
+
+            {/* Horizontal Rule */}
+            <button
+              onClick={() => editor.commands.setHorizontalRule()}
+              className={`border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
+              title='Horizontal Rule'
+            >
+              ---
+            </button>
+
+            {/* Image */}
+            <button
+              onClick={addImage}
+              className={`border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
+              title='Image'
+            >
+              <FaImage />
+            </button>
+
+            {/* Youtube */}
+            <button
+              onClick={addYoutubeVideo}
+              className={`border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
+              title='Youtube'
+            >
+              <FaYoutube />
+            </button>
+          </div>
+
+          {/* Alignment */}
+          <div className='flex items-center flex-wrap gap-x-2 gap-y-1'>
+            {/* Left */}
+            <button
+              onClick={() => editor.commands.setTextAlign('left')}
+              className={`${
+                editor.isActive('left') ? 'bg-dark-100 text-white' : ''
+              } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
+              title='Left'
+            >
+              <FaAlignLeft />
+            </button>
+
+            {/* Center */}
+            <button
+              onClick={() => editor.commands.setTextAlign('center')}
+              className={`${
+                editor.isActive('center') ? 'bg-dark-100 text-white' : ''
+              } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
+              title='Center'
+            >
+              <FaAlignCenter />
+            </button>
+
+            {/* Right */}
+            <button
+              onClick={() => editor.commands.setTextAlign('right')}
+              className={`${
+                editor.isActive('right') ? 'bg-dark-100 text-white' : ''
+              } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
+              title='Right'
+            >
+              <FaAlignRight />
+            </button>
+
+            {/* Justify */}
+            <button
+              onClick={() => editor.commands.setTextAlign('justify')}
+              className='border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center'
+              title='Justify'
+            >
+              <FaAlignJustify />
+            </button>
+
+            {/* Undo */}
+            <button
+              onClick={() => editor.commands.undo()}
+              className='border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center'
+              title='Undo'
+            >
+              <FaUndo />
+            </button>
+
+            {/* Redo */}
+            <button
+              onClick={() => editor.commands.redo()}
+              className='border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center'
+              title='Redo'
+            >
+              <FaRedo />
+            </button>
+          </div>
+        </div>
+
+        {/* Table */}
         <div className='flex items-center flex-wrap gap-x-2 gap-y-1'>
-          {/* Font */}
-          {/* <select
-            className='border border-dark font-semibold p-1.5 rounded-md shadow-lg bg-transparent outline-none'
-            onChange={e => editor.commands.setFontFamily(e.target.value)}
-          >
-            <option value='Inter' className='px-3 py-1 bg-dark-0 text-white'>
-              Inter
-            </option>
-            <option value='Montserrat' className='px-3 py-1 bg-dark-0 text-white'>
-              Montserrat
-            </option>
-            <option value='Source Sans Pro' className='px-3 py-1 bg-dark-0 text-white'>
-              Source Sans Pro
-            </option>
-          </select> */}
-          {/* Bold */}
+          {/* Insert Table */}
           <button
-            onClick={() => editor.commands.toggleBold()}
-            className={`${
-              editor.isActive('bold') ? 'bg-dark-100 text-white' : ''
-            } border border-dark rounded-md shadow-md p-2`}
-            title='Bold'
+            className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+            onClick={() => editor.commands.insertTable({ rows: 3, cols: 3, withHeaderRow: true })}
           >
-            <FaBold />
+            Insert table
           </button>
-          {/* Italic */}
           <button
-            onClick={() => editor.commands.toggleItalic()}
-            className={`${
-              editor.isActive('italic') ? 'bg-dark-100 text-white' : ''
-            } border border-dark rounded-md shadow-md p-2`}
-            title='Italic'
+            className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+            onClick={() => editor.commands.addColumnBefore()}
           >
-            <FaItalic />
+            Add column before
           </button>
-          {/* Underline */}
           <button
-            onClick={() => editor.commands.toggleUnderline()}
-            className={`${
-              editor.isActive('underline') ? 'bg-dark-100 text-white' : ''
-            } border border-dark rounded-md shadow-md p-2`}
-            title='Underline'
+            className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+            onClick={() => editor.commands.addColumnAfter()}
           >
-            <FaUnderline />
+            Add column after
           </button>
-          {/* Strike */}
           <button
-            onClick={() => editor.commands.toggleStrike()}
-            className={`${
-              editor.isActive('strike') ? 'bg-dark-100 text-white' : ''
-            } border border-dark rounded-md shadow-md p-2`}
-            title='Strike'
+            className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+            onClick={() => editor.commands.deleteColumn()}
           >
-            <FaStrikethrough />
+            Delete column
           </button>
-          {/* Code */}
           <button
-            onClick={() => editor.commands.toggleCode()}
-            className={`${
-              editor.isActive('code') ? 'bg-dark-100 text-white' : ''
-            } border border-dark rounded-md shadow-md p-2`}
-            title='Code'
+            className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+            onClick={() => editor.commands.addRowBefore()}
           >
-            <FaCode />
+            Add row before
           </button>
-          {/* Link */}
           <button
-            onClick={setLink}
-            className={`${
-              editor.isActive('link') ? 'bg-dark-100 text-white' : ''
-            } border border-dark rounded-md shadow-md p-2`}
-            title='Link'
+            className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+            onClick={() => editor.commands.addRowAfter()}
           >
-            <FaLink />
+            Add row after
           </button>
-          {/* Subscript */}
           <button
-            onClick={() => editor.commands.toggleSubscript()}
-            className={`${
-              editor.isActive('subscript') ? 'bg-dark-100 text-white' : ''
-            } border border-dark rounded-md shadow-md p-2`}
-            title='Subscript'
+            className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+            onClick={() => editor.commands.deleteRow()}
           >
-            <FaSubscript />
+            Delete row
           </button>
-          {/* Superscript */}
           <button
-            onClick={() => editor.commands.toggleSuperscript()}
-            className={`${
-              editor.isActive('superscript') ? 'bg-dark-100 text-white' : ''
-            } border border-dark rounded-md shadow-md p-2`}
-            title='Superscript'
+            className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+            onClick={() => editor.commands.deleteTable()}
           >
-            <FaSuperscript />
+            Delete table
           </button>
-          {/* Highlight */}
           <button
-            onClick={() => editor.commands.toggleHighlight()}
-            className={`${
-              editor.isActive('superscript') ? 'bg-dark-100 text-white' : ''
-            } border border-dark rounded-md shadow-md p-2`}
-            title='Superscript'
+            className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+            onClick={() => editor.commands.mergeCells()}
           >
-            <FaHighlighter />
+            Merge cells
           </button>
-          {/* COlor */}
-          <input
-            type='color'
-            className='rounded-md shadow-lg h-[33.6px] p-1.5 border border-dark bg-transparent'
-            onInput={(e: any) => editor.chain().focus().setColor(e.target.value).run()}
-            value={editor.getAttributes('textStyle').color}
-          />
+          <button
+            className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+            onClick={() => editor.commands.splitCell()}
+          >
+            Split cell
+          </button>
+          <button
+            className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+            onClick={() => editor.commands.toggleHeaderColumn()}
+          >
+            Toggle header column
+          </button>
+          <button
+            className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+            onClick={() => editor.commands.toggleHeaderRow()}
+          >
+            Toggle header row
+          </button>
+          <button
+            className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+            onClick={() => editor.commands.toggleHeaderCell()}
+          >
+            Toggle header cell
+          </button>
+          <button
+            className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+            onClick={() => editor.commands.mergeOrSplit()}
+          >
+            Merge or split
+          </button>
+          <button
+            className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+            onClick={() => editor.commands.setCellAttribute('colspan', 2)}
+          >
+            Set cell attribute
+          </button>
+          <button
+            className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+            onClick={() => editor.commands.fixTables()}
+          >
+            Fix tables
+          </button>
+          <button
+            className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+            onClick={() => editor.commands.goToNextCell()}
+          >
+            Go to next cell
+          </button>
+          <button
+            className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+            onClick={() => editor.commands.goToPreviousCell()}
+          >
+            Go to previous cell
+          </button>
         </div>
       </div>
-      {/* Bubble Menu */}
-      <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
-        <div className='rounded-3xl px-3 py-1.5 border border-dark bg-white shadow-lg flex items-center justify-center gap-1'>
-          <button
-            onClick={() => editor.chain().focus().toggleBold().run()}
-            className={`${
-              editor.isActive('bold') ? 'bg-dark-0 text-white' : ''
-            } font-semibold rounded-full p-1 text-dark`}
-          >
-            <FaBold />
-          </button>
-          <button
-            onClick={() => editor.chain().focus().toggleItalic().run()}
-            className={`${
-              editor.isActive('italic') ? 'bg-dark-0 text-white' : ''
-            } font-semibold rounded-full p-1 text-dark`}
-          >
-            <FaItalic />
-          </button>
-          <button
-            onClick={() => editor.chain().focus().toggleUnderline().run()}
-            className={`${
-              editor.isActive('underline') ? 'bg-dark-0 text-white' : ''
-            } font-semibold rounded-full p-1 text-dark`}
-          >
-            <FaUnderline />
-          </button>
-          <button
-            onClick={() => editor.chain().focus().toggleStrike().run()}
-            className={`${
-              editor.isActive('strike') ? 'bg-dark-0 text-white' : ''
-            } font-semibold rounded-full p-1 text-dark`}
-          >
-            <FaStrikethrough />
-          </button>
-          <button
-            onClick={() => editor.chain().focus().setHighlight().run()}
-            className={`${
-              editor.isActive('highlight') ? 'bg-dark-0 text-white' : ''
-            } font-semibold rounded-full p-1 text-dark`}
-          >
-            <FaHighlighter />
-          </button>
-        </div>
-      </BubbleMenu>
 
       <EditorContent editor={editor} />
 
