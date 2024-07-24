@@ -93,8 +93,8 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
         setPrice([+from, +to])
       }
 
-      if (searchParams.time) {
-        const [from, to] = (searchParams.time as string).split('-')
+      if (searchParams.duration) {
+        const [from, to] = (searchParams.duration as string).split('-')
         setDuration([+from, +to])
       }
 

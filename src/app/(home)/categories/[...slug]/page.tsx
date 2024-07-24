@@ -3,7 +3,7 @@ import CourseCard from '@/components/CourseCard'
 import Divider from '@/components/Divider'
 import FilterAndSearch from '@/components/FilterAndSearch'
 import Pagination from '@/components/layouts/Pagination'
-import ShortPagination from '@/components/layouts/ShortPagination'
+import QuickSortTabs from '@/components/QuickSortTabs'
 import { ICategory } from '@/models/CategoryModel'
 import { ICourse } from '@/models/CourseModel'
 import { getCategoryPageApi } from '@/requests'
@@ -108,24 +108,7 @@ async function CategoryPage({ searchParams }: { searchParams?: { [key: string]: 
           {/* Main */}
           <div className='flex-1 w-full'>
             {/* Top */}
-            <div className='flex flex-wrap gap-2 w-full'>
-              {['Liên quan', 'Phổ biến', 'Mới nhất', 'Cũ nhất', 'Yêu thích nhất'].map((item, index) => (
-                <button
-                  className='rounded-3xl text-nowrap shadow-md px-2 md:px-3 py-1 flex items-center justify-center h-[42px] text-sm md:text-lg font-semibold font-body tracking-wider border-2 border-secondary hover:border-secondary hover:bg-primary text-secondary hover:drop-shadow-lg hover:text-dark hover:shadow-lg trans-300'
-                  key={index}
-                >
-                  {item}
-                </button>
-              ))}
-
-              {/* Mini Pagination */}
-              <ShortPagination
-                searchParams={searchParams}
-                amount={amount}
-                itemsPerPage={16}
-                className='justify-end hidden md:flex flex-1'
-              />
-            </div>
+            <QuickSortTabs searchParams={searchParams} amount={amount} />
 
             <Divider size={8} />
 

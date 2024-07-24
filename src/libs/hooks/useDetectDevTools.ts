@@ -1,13 +1,21 @@
+'use client'
+
+import { useSession } from 'next-auth/react'
 import { useEffect } from 'react'
 import { useAppDispatch } from '../hooks'
 import { setPageLoading } from '../reducers/modalReducer'
 
-const useDetectDevTools = () => {
+function UseDetectDevTools() {
+  // hooks
   const dispatch = useAppDispatch()
+  const { data: session } = useSession()
+  const curUser: any = session?.user
+
+  console.log('UseDetectDevTools:', curUser)
 
   // disabled dev tool by reloading the page
   useEffect(() => {
-    if (process.env.NODE_ENV !== 'production') {
+    if (process.env.NODE_ENV !== 'production' || curUser?.role === 'admin') {
       return
     }
 
@@ -37,11 +45,11 @@ const useDetectDevTools = () => {
     return () => {
       clearInterval(intervalId)
     }
-  }, [dispatch])
+  }, [dispatch, curUser])
 
   // disabled keyboard shortcuts (Ctrl + Shift + I, Ctrl + Shift + J, Ctrl + Shift + C, Ctrl + Shift + M, Ctrl + U, F12)
   useEffect(() => {
-    if (process.env.NODE_ENV !== 'production') {
+    if (process.env.NODE_ENV !== 'production' || curUser?.role === 'admin') {
       return
     }
 
@@ -63,7 +71,9 @@ const useDetectDevTools = () => {
     return () => {
       window.removeEventListener('keydown', disableShortcuts)
     }
-  }, [dispatch])
+  }, [dispatch, curUser])
+
+  return null
 }
 
-export default useDetectDevTools
+export default UseDetectDevTools

@@ -8,6 +8,7 @@ import { Toaster } from 'react-hot-toast'
 import authOptions from '../api/auth/[...nextauth]/authOptions'
 import '../globals.scss'
 import NextTopLoader from 'nextjs-toploader'
+import UseDetectDevTools from '@/libs/hooks/useDetectDevTools'
 
 export const metadata: Metadata = {
   title: 'Mona Edu',
@@ -40,6 +41,9 @@ export default async function RootLayout({
               },
             }}
           />
+
+          {/* Detect Dev Tools */}
+          <UseDetectDevTools />
 
           {/* Top Loader */}
           <NextTopLoader

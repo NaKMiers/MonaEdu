@@ -6,12 +6,10 @@ import IframePlayer from '@/components/IframePlayer'
 import ReportDialog from '@/components/dialogs/ReportDigalog'
 import { reportContents } from '@/constants'
 import { useAppDispatch, useAppSelector } from '@/libs/hooks'
-import useDetectDevTools from '@/libs/hooks/useDetectDevTools'
 import { setLearningLesson } from '@/libs/reducers/learningReducer'
 import { setOpenSidebar, setPageLoading } from '@/libs/reducers/modalReducer'
 import { IComment } from '@/models/CommentModel'
 import { ICourse } from '@/models/CourseModel'
-import { ILesson } from '@/models/LessonModel'
 import { addReportApi, getLessonApi, likeLessonApi } from '@/requests'
 import moment from 'moment-timezone'
 import 'moment/locale/vi'
@@ -29,12 +27,11 @@ function LessonPage({
   params: { courseSlug: string; lessonSlug: string }
 }) {
   // hooks
-  // useDetectDevTools()
   const dispatch = useAppDispatch()
-  const openSidebar = useAppSelector((state) => state.modal.openSidebar)
+  const openSidebar = useAppSelector(state => state.modal.openSidebar)
   const { data: session } = useSession()
   const curUser: any = session?.user
-  const lesson = useAppSelector((state) => state.learning.learningLesson)
+  const lesson = useAppSelector(state => state.learning.learningLesson)
 
   // MARK: states
   const [comments, setComments] = useState<IComment[]>([])
@@ -158,7 +155,7 @@ function LessonPage({
 
         {curUser?._id && (
           <div className='relative flex-shrink-0 flex justify-end items-center bg'>
-            <button className='group' onClick={() => setShowActions((prev) => !prev)}>
+            <button className='group' onClick={() => setShowActions(prev => !prev)}>
               <HiDotsHorizontal size={24} className='wiggle' />
             </button>
 

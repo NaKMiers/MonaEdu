@@ -84,7 +84,7 @@ const CourseSchema = new Schema(
       type: [{ type: String }],
     },
     duration: {
-      type: Number,
+      type: Number, // seconds
     },
     booted: {
       type: Boolean,
