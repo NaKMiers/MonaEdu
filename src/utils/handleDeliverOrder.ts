@@ -3,6 +3,8 @@ import OrderModel, { IOrder } from '@/models/OrderModel'
 import UserModel, { IUser } from '@/models/UserModel'
 import VoucherModel, { IVoucher } from '@/models/VoucherModel'
 import { notifyDeliveryOrder, notifyGivenCourse } from './sendMail'
+import NotificationModel from '@/models/NotificationModel'
+import { getUserName } from './string'
 
 // Models: Order, Voucher, User, Course, Notification
 import '@/models/CourseModel'
@@ -10,8 +12,6 @@ import '@/models/OrderModel'
 import '@/models/UserModel'
 import '@/models/VoucherModel'
 import '@/models/NotificationModel'
-import NotificationModel from '@/models/NotificationModel'
-import { getUserName } from './string'
 
 export default async function handleDeliverOrder(id: string, message: string = '') {
   console.log('- Handle Deliver Order -')

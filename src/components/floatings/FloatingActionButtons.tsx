@@ -144,12 +144,10 @@ function FloatingActionButtons({ course: data, className = '' }: FloatingActionB
 
       {/* Price */}
       <div className='flex flex-col justify-center tracking-tighter text-dark font-semibold pl-2 sm:px-4 border-l'>
-        <span className='font-bold leading-4 text-sm sm:text-[18px]'>
-          {formatPrice(course.price * 1000)}
-        </span>
+        <span className='font-bold leading-4 text-sm sm:text-[18px]'>{formatPrice(course.price)}</span>
         {course.oldPrice && (
           <span className='line-through leading-4 text-slate-400 text-[10px] sm:text-sm'>
-            {formatPrice(course.oldPrice * 1000)}
+            {formatPrice(course.oldPrice)}
           </span>
         )}
       </div>
@@ -197,7 +195,7 @@ function FloatingActionButtons({ course: data, className = '' }: FloatingActionB
           <div
             className={`${
               showActions ? 'max-w-[100px] max-h-[40px] px-1.5 py-1' : 'max-w-0 max-h-0 p-0'
-            }  overflow-hidden absolute z-20 top-[80%] flex gap-2 rounded-md trans-300`}
+            }  overflow-hidden absolute z-20 bottom-[80%] flex gap-2 rounded-md trans-300`}
           >
             <button
               className={`font-bold text-nowrap px-1.5 py-1 text-[10px] bg-white hover:bg-dark-0 hover:text-white border border-dark text-dark rounded-md shadow-md trans-200`}

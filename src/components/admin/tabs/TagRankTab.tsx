@@ -1,0 +1,73 @@
+import { ITag } from '@/models/TagModel'
+import { getAllCoursesApi } from '@/requests'
+import { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
+import { FaCircleNotch } from 'react-icons/fa'
+
+interface TagRankTabProps {
+  className?: string
+}
+
+function TagRankTab({ className = '' }: TagRankTabProps) {
+  // states
+  const [loading, setLoading] = useState<boolean>(false)
+  const [tags, setTags] = useState<any[]>([])
+
+  useEffect(() => {
+    const getCourses = async () => {
+      // start loading
+      setLoading(true)
+
+      try {
+        const query = '?limit=no-limit&sort=createdAt|-1'
+        const { courses } = await getAllCoursesApi(query)
+
+        // Tag Sold Rank
+        const tagSoldMap: { [key: string]: ITag & { joined: number } } = {}
+        courses.forEach((course: any) => {
+          course.tags.forEach((tag: ITag) => {
+            if (!tagSoldMap[tag.slug]) {
+              tagSoldMap[tag.slug] = { ...tag, joined: 0 }
+            }
+            tagSoldMap[tag.slug].joined += course.joined || 0
+          })
+        })
+        const rankTags = Object.values(tagSoldMap).sort((a, b) => b.joined - a.joined)
+
+        setTags(rankTags)
+      } catch (err: any) {
+        console.log(err)
+        toast.error(err.message)
+      } finally {
+        // stop loading
+        setLoading(false)
+      }
+    }
+    getCourses()
+  }, [])
+
+  return (
+    <div className={`${className}`}>
+      {!loading ? (
+        tags.map((tag, index) => (
+          <div
+            className={`flex items-center justify-between gap-3 px-3 py-1 mb-4 bg-white shadow-lg rounded-xl `}
+            style={{ width: `calc(100% - ${index * 6 < 40 ? index * 6 : 40}%)` }}
+            key={index}
+          >
+            <span className='font-body tracking-wider text-dark'>{tag.title}</span>
+            <span className='flex justify-center items-center font-semibold text-xs h-5 px-2 rounded-full bg-dark-100 text-white'>
+              {tag.joined}
+            </span>
+          </div>
+        ))
+      ) : (
+        <div className='flex items-center justify-center'>
+          <FaCircleNotch size={18} className='animate-spin text-slate-400' />
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default TagRankTab

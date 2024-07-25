@@ -1,5 +1,6 @@
 import Banner from '@/components/Banner'
 import Divider from '@/components/Divider'
+import Quote from '@/components/Quote'
 import BestSeller from '@/components/ranks/BestSeller'
 import FeatureCourses from '@/components/ranks/FeatureCourses'
 import RecentlyVisit from '@/components/ranks/RecentlyVisit'
@@ -87,10 +88,15 @@ async function Home() {
 
       {/* Top 8 Categories */}
       <TopCategories />
-      <Divider size={24} />
+
+      <Divider size={36} />
 
       {/* Recently Visit */}
       <RecentlyVisit />
+      <Divider size={36} />
+
+      {/* Quote */}
+      <Quote />
 
       <Divider size={54} />
     </div>
