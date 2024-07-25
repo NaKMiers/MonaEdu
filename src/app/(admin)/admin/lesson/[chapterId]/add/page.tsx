@@ -19,6 +19,7 @@ import { FaX } from 'react-icons/fa6'
 import { MdCategory, MdOutlinePublic } from 'react-icons/md'
 import { RiCharacterRecognitionLine } from 'react-icons/ri'
 import { SiFramer } from 'react-icons/si'
+import TextEditor from '@/components/Tiptap'
 
 export type GroupCourses = {
   [key: string]: ICourse[]
@@ -120,7 +121,7 @@ function AddLessonPage({ params: { chapterId } }: { params: { chapterId: string 
       formData.append('chapterId', data.chapterId)
       formData.append('title', data.title)
       formData.append('textHook', data.textHook)
-      formData.append('description', data.title)
+      formData.append('description', data.description)
       formData.append('duration', String(+data.hours * 3600 + +data.minutes * 60 + +data.seconds))
       formData.append('active', data.active)
       formData.append('status', data.status)
@@ -255,18 +256,10 @@ function AddLessonPage({ params: { chapterId } }: { params: { chapterId: string 
         />
 
         {/* Description */}
-        <Input
-          id='description'
-          label='Description'
-          disabled={isLoading}
-          register={register}
-          errors={errors}
-          required
-          type='textarea'
-          rows={8}
-          icon={FaInfo}
-          onFocus={() => clearErrors('description')}
-          className='mb-5'
+        <p className='text-dark font-semibold text-xl mb-1'>Description</p>
+        <TextEditor
+          onChange={(content: string) => setValue('description', content)}
+          className='w-full p-21 rounded-lg shadow-lg border border-dark bg-slate-200 text-dark mb-5'
         />
 
         {/* MARK: Duration */}

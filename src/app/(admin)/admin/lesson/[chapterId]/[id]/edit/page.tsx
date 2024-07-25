@@ -5,14 +5,14 @@ import LoadingButton from '@/components/LoadingButton'
 import { useAppDispatch, useAppSelector } from '@/libs/hooks'
 import { useCallback, useEffect, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
-import { FaCheck, FaFile, FaInfo } from 'react-icons/fa'
+import { FaCheck, FaFile } from 'react-icons/fa'
 
 import Divider from '@/components/Divider'
+import TextEditor from '@/components/Tiptap'
 import AdminHeader from '@/components/admin/AdminHeader'
 import { setLoading } from '@/libs/reducers/modalReducer'
 import { IChapter } from '@/models/ChapterModel'
 import { ICourse } from '@/models/CourseModel'
-import { ILesson } from '@/models/LessonModel'
 import { getLessonByIdApi, updateLessonApi } from '@/requests'
 import { useParams, useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
@@ -153,7 +153,7 @@ function EditLessonPage() {
       formData.append('courseId', data.courseId)
       formData.append('chapterId', data.chapterId)
       formData.append('title', data.title)
-      formData.append('description', data.title)
+      formData.append('description', data.description)
       formData.append('duration', String(+data.hours * 3600 + +data.minutes * 60 + +data.seconds))
       formData.append('active', data.active)
       formData.append('status', data.status)
@@ -277,19 +277,14 @@ function EditLessonPage() {
         />
 
         {/* Description */}
-        <Input
-          id='description'
-          label='Description'
-          disabled={isLoading}
-          register={register}
-          errors={errors}
-          required
-          type='textarea'
-          rows={8}
-          icon={FaInfo}
-          onFocus={() => clearErrors('description')}
-          className='mb-5'
-        />
+        <p className='text-dark font-semibold text-xl mb-1'>Description</p>
+        {getValues('description') && (
+          <TextEditor
+            onChange={(content: string) => setValue('description', content)}
+            content={getValues('description')}
+            className='w-full p-21 rounded-lg shadow-lg border border-dark bg-slate-200 text-dark mb-5'
+          />
+        )}
 
         {/* MARK: Duration */}
         <p className='text-dark font-semibold text-xl mb-1'>Duration</p>

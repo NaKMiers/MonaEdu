@@ -300,6 +300,7 @@ function AddCoursePage() {
         />
 
         {/* Description */}
+        <p className='text-dark font-semibold text-xl mb-1'>Description</p>
         <TextEditor
           onChange={(content: string) => setValue('description', content)}
           className='w-full p-21 rounded-lg shadow-lg border border-dark bg-slate-200 text-dark mb-5'

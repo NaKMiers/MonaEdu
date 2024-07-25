@@ -1,7 +1,7 @@
 'use client'
 
 import { EditorContent, useEditor } from '@tiptap/react'
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 
 import Bold from '@tiptap/extension-bold'
 import CharacterCount from '@tiptap/extension-character-count'
@@ -38,6 +38,8 @@ import {
   FaAlignLeft,
   FaAlignRight,
   FaBold,
+  FaChevronDown,
+  FaChevronUp,
   FaCode,
   FaHighlighter,
   FaImage,
@@ -102,7 +104,7 @@ const CustomHeading = Heading.extend({
 })
 
 const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps) => {
-  console.log('TextEditor -> content', content)
+  const [openTableControls, setOpenTableControls] = useState<boolean>(false)
 
   const editor = useEditor({
     extensions: [
@@ -505,116 +507,132 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
         </div>
 
         {/* Table */}
-        <div className='flex items-center flex-wrap gap-x-2 gap-y-1'>
+
+        <div className='rounded-lg shadow-lg border border-dark'>
+          <button
+            className={`flex w-full items-center justify-center px-3 py-3 group border-b rounded-b-lg delay-300 trans-200 ${
+              openTableControls ? 'border-dark' : 'border-transparent'
+            }`}
+            onClick={() => setOpenTableControls(prev => !prev)}
+          >
+            <FaChevronUp className={`${openTableControls ? 'rotate-180' : ''} trans-200`} />
+          </button>
+
           {/* Insert Table */}
-          <button
-            className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
-            onClick={() => editor.commands.insertTable({ rows: 3, cols: 3, withHeaderRow: true })}
+          <div
+            className={`${
+              openTableControls ? 'max-h-[200px] py-2 overflow-y-auto' : 'max-h-0 py-0 overflow-hidden'
+            } trans-300 flex items-center flex-wrap gap-x-2 gap-y-1 px-2`}
           >
-            Insert table
-          </button>
-          <button
-            className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
-            onClick={() => editor.commands.addColumnBefore()}
-          >
-            Add column before
-          </button>
-          <button
-            className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
-            onClick={() => editor.commands.addColumnAfter()}
-          >
-            Add column after
-          </button>
-          <button
-            className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
-            onClick={() => editor.commands.deleteColumn()}
-          >
-            Delete column
-          </button>
-          <button
-            className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
-            onClick={() => editor.commands.addRowBefore()}
-          >
-            Add row before
-          </button>
-          <button
-            className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
-            onClick={() => editor.commands.addRowAfter()}
-          >
-            Add row after
-          </button>
-          <button
-            className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
-            onClick={() => editor.commands.deleteRow()}
-          >
-            Delete row
-          </button>
-          <button
-            className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
-            onClick={() => editor.commands.deleteTable()}
-          >
-            Delete table
-          </button>
-          <button
-            className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
-            onClick={() => editor.commands.mergeCells()}
-          >
-            Merge cells
-          </button>
-          <button
-            className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
-            onClick={() => editor.commands.splitCell()}
-          >
-            Split cell
-          </button>
-          <button
-            className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
-            onClick={() => editor.commands.toggleHeaderColumn()}
-          >
-            Toggle header column
-          </button>
-          <button
-            className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
-            onClick={() => editor.commands.toggleHeaderRow()}
-          >
-            Toggle header row
-          </button>
-          <button
-            className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
-            onClick={() => editor.commands.toggleHeaderCell()}
-          >
-            Toggle header cell
-          </button>
-          <button
-            className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
-            onClick={() => editor.commands.mergeOrSplit()}
-          >
-            Merge or split
-          </button>
-          <button
-            className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
-            onClick={() => editor.commands.setCellAttribute('colspan', 2)}
-          >
-            Set cell attribute
-          </button>
-          <button
-            className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
-            onClick={() => editor.commands.fixTables()}
-          >
-            Fix tables
-          </button>
-          <button
-            className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
-            onClick={() => editor.commands.goToNextCell()}
-          >
-            Go to next cell
-          </button>
-          <button
-            className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
-            onClick={() => editor.commands.goToPreviousCell()}
-          >
-            Go to previous cell
-          </button>
+            <button
+              className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+              onClick={() => editor.commands.insertTable({ rows: 3, cols: 3, withHeaderRow: true })}
+            >
+              Insert table
+            </button>
+            <button
+              className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+              onClick={() => editor.commands.addColumnBefore()}
+            >
+              Add column before
+            </button>
+            <button
+              className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+              onClick={() => editor.commands.addColumnAfter()}
+            >
+              Add column after
+            </button>
+            <button
+              className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+              onClick={() => editor.commands.deleteColumn()}
+            >
+              Delete column
+            </button>
+            <button
+              className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+              onClick={() => editor.commands.addRowBefore()}
+            >
+              Add row before
+            </button>
+            <button
+              className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+              onClick={() => editor.commands.addRowAfter()}
+            >
+              Add row after
+            </button>
+            <button
+              className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+              onClick={() => editor.commands.deleteRow()}
+            >
+              Delete row
+            </button>
+            <button
+              className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+              onClick={() => editor.commands.deleteTable()}
+            >
+              Delete table
+            </button>
+            <button
+              className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+              onClick={() => editor.commands.mergeCells()}
+            >
+              Merge cells
+            </button>
+            <button
+              className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+              onClick={() => editor.commands.splitCell()}
+            >
+              Split cell
+            </button>
+            <button
+              className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+              onClick={() => editor.commands.toggleHeaderColumn()}
+            >
+              Toggle header column
+            </button>
+            <button
+              className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+              onClick={() => editor.commands.toggleHeaderRow()}
+            >
+              Toggle header row
+            </button>
+            <button
+              className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+              onClick={() => editor.commands.toggleHeaderCell()}
+            >
+              Toggle header cell
+            </button>
+            <button
+              className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+              onClick={() => editor.commands.mergeOrSplit()}
+            >
+              Merge or split
+            </button>
+            <button
+              className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+              onClick={() => editor.commands.setCellAttribute('colspan', 2)}
+            >
+              Set cell attribute
+            </button>
+            <button
+              className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+              onClick={() => editor.commands.fixTables()}
+            >
+              Fix tables
+            </button>
+            <button
+              className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+              onClick={() => editor.commands.goToNextCell()}
+            >
+              Go to next cell
+            </button>
+            <button
+              className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+              onClick={() => editor.commands.goToPreviousCell()}
+            >
+              Go to previous cell
+            </button>
+          </div>
         </div>
       </div>
 

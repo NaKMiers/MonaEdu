@@ -331,6 +331,7 @@ function AddCoursePage() {
         />
 
         {/* Description */}
+        <p className='text-dark font-semibold text-xl mb-1'>Description</p>
         {getValues('description') && (
           <TextEditor
             onChange={(content: string) => setValue('description', content)}

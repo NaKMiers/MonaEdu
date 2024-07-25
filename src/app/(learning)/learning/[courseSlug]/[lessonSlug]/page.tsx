@@ -297,10 +297,10 @@ function LessonPage({
             {(lesson.courseId as any)?.category?.title}
           </Link>
 
-          <Divider size={4} />
+          <Divider size={12} />
 
           {/* Description */}
-          <div className=''>{lesson.description}</div>
+          <div dangerouslySetInnerHTML={{ __html: lesson?.description || '' }} />
 
           <Divider size={12} />
 
