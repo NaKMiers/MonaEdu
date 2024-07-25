@@ -4,11 +4,11 @@ import { NextRequest, NextResponse } from 'next/server'
 
 // Models: Question
 import '@/models/QuestionModel'
-import QuestionModel, { IQuestion } from '@/models/QuestionModel'
+import QuestionModel from '@/models/QuestionModel'
 
 export const dynamic = 'force-dynamic'
 
-// [GET]: /question?...
+// [GET]: /forum?...
 export async function GET(req: NextRequest) {
   console.log('- Get Questions -')
 
@@ -56,16 +56,14 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    // amount
-    const amount = await QuestionModel.countDocuments(filter)
+    // get amount, get questions
+    const [amount, questions] = await Promise.all([
+      // amount
+      QuestionModel.countDocuments(filter),
 
-    // get questions from database with filter
-    let questions: IQuestion[] = await QuestionModel.find(filter)
-      .populate('userId')
-      .sort(sort)
-      .skip(skip)
-      .limit(itemPerPage)
-      .lean()
+      // get questions from database with filter
+      QuestionModel.find(filter).populate('userId').sort(sort).skip(skip).limit(itemPerPage).lean(),
+    ])
 
     // return response
     return NextResponse.json({ questions, amount }, { status: 200 })

@@ -1,5 +1,5 @@
 import { connectDatabase } from '@/config/database'
-import UserModel, { IUser } from '@/models/UserModel'
+import UserModel from '@/models/UserModel'
 import VoucherModel from '@/models/VoucherModel'
 import { summaryNotification } from '@/utils/sendMail'
 import { NextRequest, NextResponse } from 'next/server'
@@ -19,14 +19,16 @@ export async function POST(req: NextRequest) {
     // get course ids to delete
     const { ids } = await req.json()
 
-    // get voucher of this collaborator
-    const vouchers = await VoucherModel.find({
-      owner: { $in: ids },
-      $or: [{ active: true }, { active: { $exists: false } }],
-    }).lean()
+    const [vouchers, collaborators] = await Promise.all([
+      // get voucher of this collaborator
+      VoucherModel.find({
+        owner: { $in: ids },
+        $or: [{ active: true }, { active: { $exists: false } }],
+      }).lean(),
 
-    // get collaborator
-    const collaborators: IUser[] = await UserModel.find({ _id: { $in: ids } }).lean()
+      // get collaborator
+      UserModel.find({ _id: { $in: ids } }).lean(),
+    ])
 
     // get summaries
     const summaries = collaborators.map(collaborator => {

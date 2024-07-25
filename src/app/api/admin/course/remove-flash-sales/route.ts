@@ -1,11 +1,11 @@
 import { connectDatabase } from '@/config/database'
-import FlashSaleModel from '@/models/FlashSaleModel'
 import CourseModel from '@/models/CourseModel'
+import FlashSaleModel from '@/models/FlashSaleModel'
 import { NextRequest, NextResponse } from 'next/server'
 
 // Models: Course, Flashsale
-import '@/models/FlashSaleModel'
 import '@/models/CourseModel'
+import '@/models/FlashSaleModel'
 
 // [PATCH]: /admin/course/activate
 export async function PATCH(req: NextRequest) {
@@ -18,11 +18,14 @@ export async function PATCH(req: NextRequest) {
     // get course ids to remove flash sales
     const { ids } = await req.json()
 
-    // update courses from database
-    await CourseModel.updateMany({ _id: { $in: ids } }, { $set: { flashSale: null } })
+    // get update course, update courses
+    const [updatedCourses] = await Promise.all([
+      // get updated courses
+      CourseModel.find({ _id: { $in: ids } }).lean(),
 
-    // get updated courses
-    const updatedCourses = await CourseModel.find({ _id: { $in: ids } }).lean()
+      // update courses from database
+      CourseModel.updateMany({ _id: { $in: ids } }, { $set: { flashSale: null } }),
+    ])
 
     if (!updatedCourses.length) {
       throw new Error('No course found')

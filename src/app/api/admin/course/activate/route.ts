@@ -16,11 +16,14 @@ export async function PATCH(req: NextRequest) {
     // get course id to delete
     const { ids, value } = await req.json()
 
-    // update courses from database
-    await CourseModel.updateMany({ _id: { $in: ids } }, { $set: { active: value || false } })
+    // update courses, get updated courses
+    const [updatedCourses] = await Promise.all([
+      // get updated courses
+      CourseModel.find({ _id: { $in: ids } }).lean(),
 
-    // get updated courses
-    const updatedCourses = await CourseModel.find({ _id: { $in: ids } }).lean()
+      // update courses from database
+      CourseModel.updateMany({ _id: { $in: ids } }, { $set: { active: value || false } }),
+    ])
 
     if (!updatedCourses.length) {
       throw new Error('No course found')

@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
     }
 
     // add new cart item
-    const newCartItem = await CartItemModel.create({
+    const newCartItem = new CartItemModel({
       userId,
       courseId,
     })

@@ -50,7 +50,7 @@ export async function GET(
         if (key === 'search') {
           const searchFields = ['title', 'description', 'sourceType', 'source']
 
-          filter.$or = searchFields.map((field) => ({
+          filter.$or = searchFields.map(field => ({
             [field]: { $regex: params[key][0], $options: 'i' },
           }))
           continue
@@ -75,27 +75,30 @@ export async function GET(
       }
     }
 
-    // get amount of lesson
-    const amount = await LessonModel.countDocuments(filter)
+    // get amount, get all lessons
+    let [amount, lessons] = await Promise.all([
+      // get amount of lesson
+      LessonModel.countDocuments(filter),
 
-    // get all lesson
-    let lessons = await LessonModel.find(filter)
-      .populate({
-        path: 'courseId',
-        select: 'title images slug',
-      })
-      .populate({
-        path: 'chapterId',
-        select: 'title',
-      })
-      .sort(sort)
-      .skip(skip)
-      .limit(itemPerPage)
-      .lean()
+      // get all lesson
+      LessonModel.find(filter)
+        .populate({
+          path: 'courseId',
+          select: 'title images slug',
+        })
+        .populate({
+          path: 'chapterId',
+          select: 'title',
+        })
+        .sort(sort)
+        .skip(skip)
+        .limit(itemPerPage)
+        .lean(),
+    ])
 
     // get file urls of lessons
     lessons = await Promise.all(
-      lessons.map(async (lesson) => {
+      lessons.map(async lesson => {
         if (lesson.sourceType === 'file') {
           const url = await getFileUrl(lesson.source)
           return {

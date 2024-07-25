@@ -16,12 +16,15 @@ export async function DELETE(req: Request) {
     // get user ids to delete
     const { ids } = await req.json()
 
-    // get deleted users
-    const deletedUsers = await UserModel.find({ _id: { $in: ids } }).lean()
+    const [deletedUsers] = await Promise.all([
+      // get deleted users
+      UserModel.find({ _id: { $in: ids } }).lean(),
 
-    // delete users in databases
-    await UserModel.deleteMany({ _id: { $in: ids } })
+      // delete users from database
+      UserModel.deleteMany({ _id: { $in: ids } }),
+    ])
 
+    // return response
     return NextResponse.json({
       deletedUsers,
       message: `Users "${deletedUsers

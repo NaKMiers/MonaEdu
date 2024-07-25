@@ -56,6 +56,7 @@ export async function GET() {
         .filter(Boolean)
     )
 
+    // return response
     return NextResponse.json({ spentUser }, { status: 200 })
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })

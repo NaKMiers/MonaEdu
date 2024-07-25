@@ -86,8 +86,6 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
       relatedCourses.push(...moreCourses)
     }
 
-    console.log('relatedCourses', relatedCourses)
-
     // return course with chapters and lessons
     return NextResponse.json({ course, chapters: chaptersWithLessons, relatedCourses }, { status: 200 })
   } catch (err: any) {

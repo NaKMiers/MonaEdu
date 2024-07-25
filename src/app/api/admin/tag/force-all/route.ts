@@ -18,6 +18,7 @@ export async function GET() {
     // get all tags from database
     const tags = await TagModel.find().select('title').sort({ createdAt: -1 }).lean()
 
+    // return response
     return NextResponse.json({ tags }, { status: 200 })
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })

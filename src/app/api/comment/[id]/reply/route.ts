@@ -1,10 +1,10 @@
 import { connectDatabase } from '@/config/database'
 import CommentModel, { IComment } from '@/models/CommentModel'
+import NotificationModel from '@/models/NotificationModel'
 import UserModel, { IUser } from '@/models/UserModel'
 import { getUserName } from '@/utils/string'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
-import NotificationModel from '@/models/NotificationModel'
 
 // Models: Comment, User, Notification
 import '@/models/CommentModel'
@@ -46,13 +46,10 @@ export async function POST(req: NextRequest, { params: { id } }: { params: { id:
     }
 
     // create new comment
-    const newComment = new CommentModel({
+    const newComment = await CommentModel.create({
       userId,
       content: content.trim(),
     })
-
-    // save new comment to database
-    await newComment.save()
 
     // add new comment to parent comment
     const parentComment: IComment | null = await CommentModel.findByIdAndUpdate(
@@ -67,11 +64,10 @@ export async function POST(req: NextRequest, { params: { id } }: { params: { id:
     if (!parentComment) {
       return NextResponse.json({ message: 'Không tìm thấy bình luận' }, { status: 404 })
     }
-    const notifyUserId = parentComment?.userId
 
     // notify user
     await NotificationModel.create({
-      userId: notifyUserId,
+      userId: parentComment?.userId,
       title: getUserName(user) + ' đã trả lời bình luận của bạn',
       image: user.avatar,
       type: 'replied-comment',

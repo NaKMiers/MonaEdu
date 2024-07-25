@@ -26,10 +26,10 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
     console.log('Data: ', data)
     console.log('File: ', file)
 
-    // get course from database to edit
+    // get lesson from database to edit
     const lesson: ILesson | null = await LessonModel.findById(id).lean()
 
-    // course does exist
+    // lesson does not exist
     if (!lesson) {
       return NextResponse.json({ message: 'Lesson does not exist' }, { status: 404 })
     }
@@ -40,8 +40,14 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
     if (file || embedUrl) {
       console.log('New Source: ', file, embedUrl)
       if (lesson.sourceType === 'file') {
-        await deleteFile(lesson.source)
-        newSource = await uploadFile(file, '16:9', 'video')
+        const [newSrc] = await Promise.all([
+          uploadFile(file, '16:9', 'video'),
+          deleteFile(lesson.source),
+        ])
+
+        if (newSrc) {
+          newSource = newSrc as string
+        }
       }
 
       if (embedUrl) {
@@ -49,26 +55,28 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
       }
     }
 
-    // update lesson in database
-    await LessonModel.findByIdAndUpdate(lesson._id, {
-      $set: {
-        courseId,
-        chapterId,
-        title,
-        duration,
-        sourceType: embedUrl ? 'embed' : file ? 'file' : lesson.sourceType,
-        source: newSource,
-        description,
-        active,
-        status,
-        slug: generateSlug(title as string),
-      },
-    })
+    await Promise.all([
+      // update lesson in database
+      await LessonModel.findByIdAndUpdate(lesson._id, {
+        $set: {
+          courseId,
+          chapterId,
+          title,
+          duration,
+          sourceType: embedUrl ? 'embed' : file ? 'file' : lesson.sourceType,
+          source: newSource,
+          description,
+          active,
+          status,
+          slug: generateSlug(title as string),
+        },
+      }),
 
-    // // update total duration of course
-    // await CourseModel.findByIdAndUpdate(courseId, {
-    //   $inc: { duration: +duration - lesson.duration },
-    // })
+      // update total duration of course
+      await CourseModel.findByIdAndUpdate(courseId, {
+        $inc: { duration: +duration - lesson.duration },
+      }),
+    ])
 
     // return response
     return NextResponse.json({ message: 'Edit lesson successfully' }, { status: 200 })

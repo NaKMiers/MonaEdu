@@ -23,6 +23,7 @@ export async function PATCH(req: NextRequest, { params: { id } }: { params: { id
       { new: true }
     )
 
+    // return response
     return NextResponse.json({
       updatedUser,
       message: `User has been ${value ? 'blocked' : 'unblocked'} comment`,

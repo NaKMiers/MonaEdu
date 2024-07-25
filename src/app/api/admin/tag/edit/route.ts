@@ -18,22 +18,21 @@ export async function PUT(req: NextRequest) {
     // get tag values to edit
     const { editingValues } = await req.json()
 
-    // create an array of promises for each update operation
-    const updatePromises = editingValues.map((editValue: EditingValues) =>
-      TagModel.findByIdAndUpdate(
-        editValue._id,
-        {
-          $set: {
-            title: editValue.title.trim(),
-            slug: generateSlug(editValue.title.trim()),
+    // update tags
+    const editedTags = await Promise.all(
+      editingValues.map((editValue: EditingValues) =>
+        TagModel.findByIdAndUpdate(
+          editValue._id,
+          {
+            $set: {
+              title: editValue.title.trim(),
+              slug: generateSlug(editValue.title.trim()),
+            },
           },
-        },
-        { new: true }
+          { new: true }
+        )
       )
     )
-
-    // wait for all update operations to complete
-    const editedTags = await Promise.all(updatePromises)
 
     return NextResponse.json({
       editedTags,

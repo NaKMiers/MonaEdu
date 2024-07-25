@@ -20,15 +20,12 @@ export async function POST(
     const { title, content, order } = await req.json()
 
     // create new chapter
-    const newChapter = new ChapterModel({
+    const newChapter = await ChapterModel.create({
       courseId,
       title,
       content,
       order,
     })
-
-    // save new chapter to database
-    await newChapter.save()
 
     // stay current page
     return NextResponse.json(

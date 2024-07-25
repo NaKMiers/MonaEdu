@@ -20,11 +20,13 @@ export async function PATCH(req: NextRequest) {
       return NextResponse.json({ canceledOrders: [], message: 'No order to cancel' }, { status: 400 })
     }
 
-    // cancel orders
-    await OrderModel.updateMany({ _id: { $in: ids } }, { $set: { status: 'cancel' } })
+    const [canceledOrders] = await Promise.all([
+      // get canceled orders
+      OrderModel.find({ _id: { $in: ids } }).lean(),
 
-    // get canceled orders
-    const canceledOrders = await OrderModel.find({ _id: { $in: ids } }).lean()
+      // cancel orders
+      OrderModel.updateMany({ _id: { $in: ids } }, { $set: { status: 'cancel' } }),
+    ])
 
     // stay in current page
     return NextResponse.json(

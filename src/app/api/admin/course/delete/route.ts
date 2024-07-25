@@ -1,7 +1,7 @@
 import { connectDatabase } from '@/config/database'
 import CategoryModel from '@/models/CategoryModel'
 import ChapterModel from '@/models/ChapterModel'
-import CourseModel, { ICourse } from '@/models/CourseModel'
+import CourseModel from '@/models/CourseModel'
 import FlashSaleModel from '@/models/FlashSaleModel'
 import LessonModel from '@/models/LessonModel'
 import TagModel from '@/models/TagModel'
@@ -22,17 +22,12 @@ import '@/models/UserModel'
 export async function DELETE(req: NextRequest) {
   console.log('- Delete Courses - ')
 
-  // connect to database
-  await connectDatabase()
-
-  // get course ids to delete
-  const { ids } = await req.json()
-
   try {
-    // find courses by their IDs before deletion
-    const courses: ICourse[] = await CourseModel.find({
-      _id: { $in: ids },
-    }).lean()
+    // connect to database
+    await connectDatabase()
+
+    // get course ids to delete
+    const { ids } = await req.json()
 
     // only allow to delete course if it has no users joined
     const userExists = await UserModel.exists({
@@ -73,12 +68,12 @@ export async function DELETE(req: NextRequest) {
       )
     }
 
-    // delete course by ids
-    await CourseModel.deleteMany({
-      _id: { $in: ids },
-    })
+    // get delete courses, delete courses
+    const [courses] = await Promise.all([
+      CourseModel.find({ _id: { $in: ids } }).lean(),
+      CourseModel.deleteMany({ _id: { $in: ids } }),
+    ])
 
-    // decrease course quantity filed in related categories, tags, and flashSales, and delete the images associated with each course
     await Promise.all(
       courses.map(async course => {
         // decrease related categories course quantity
@@ -114,7 +109,7 @@ export async function DELETE(req: NextRequest) {
         }
 
         // delete the images associated with each course
-        await Promise.all(course.images.map(image => deleteFile(image)))
+        await Promise.all(course.images.map((image: string) => deleteFile(image)))
       })
     )
 

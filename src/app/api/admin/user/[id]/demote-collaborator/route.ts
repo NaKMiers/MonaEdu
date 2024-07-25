@@ -27,10 +27,10 @@ export async function PATCH(req: NextRequest, { params: { id } }: { params: { id
       { new: true }
     )
 
-    // stay in current page
+    // return response
     return NextResponse.json({
-      message: `Collaborator "${updatedUser.email}" has been demoted`,
       user: updatedUser,
+      message: `Collaborator "${updatedUser.email}" has been demoted`,
     })
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })

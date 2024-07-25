@@ -43,23 +43,24 @@ export async function POST(
       source = await uploadFile(file, '16:9', 'video')
     }
 
-    // create new lesson
-    const newLesson = await LessonModel.create({
-      courseId,
-      chapterId,
-      title,
-      duration,
-      sourceType: embedUrl ? 'embed' : 'file',
-      source,
-      description,
-      active,
-      status,
-    })
-
     // get all users who joined the course | course slug
-    const [userIds, courseSlug] = await Promise.all([
+    const [newLesson, userIds, courseSlug] = await Promise.all([
+      // create new lesson
+      LessonModel.create({
+        courseId,
+        chapterId,
+        title,
+        duration,
+        sourceType: embedUrl ? 'embed' : 'file',
+        source,
+        description,
+        active,
+        status,
+      }),
+
       // get all users who joined the course
       UserModel.find({ 'courses.course': courseId }).distinct('_id'),
+
       // course slug
       CourseModel.findById(courseId).distinct('slug'),
     ])
@@ -76,8 +77,10 @@ export async function POST(
           type: 'new-lesson',
         }))
       ),
+
       // update total duration of course
       CourseModel.findByIdAndUpdate(courseId, { $inc: { duration } }),
+
       // increase lesson quantity in chapter
       ChapterModel.findByIdAndUpdate(chapterId, { $inc: { lessonQuantity: 1 } }),
     ])

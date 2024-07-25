@@ -16,6 +16,7 @@ export async function PUT(req: NextRequest) {
     // get chapter values to edit
     const { id, title, content, order } = await req.json()
 
+    // update chapter
     const updatedChapter = await ChapterModel.findByIdAndUpdate(
       id,
       {
@@ -28,6 +29,7 @@ export async function PUT(req: NextRequest) {
       { new: true }
     )
 
+    // return response
     return NextResponse.json({
       updatedChapter,
       message: `Edited Chapter: ${updatedChapter.title} has been updated`,

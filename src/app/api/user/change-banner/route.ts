@@ -34,13 +34,18 @@ export async function PATCH(req: NextRequest) {
       return NextResponse.json({ message: 'Không có hình ảnh tải lên' }, { status: 400 })
     }
 
+    const promises: any[] = []
+
     // remove old banner
     if (oldBanner) {
-      await deleteFile(oldBanner)
+      promises.push(deleteFile(oldBanner))
     }
 
     // upload banner and get imageUrl from AWS S3 Bucket
-    const bannerUrl = await uploadFile(banner)
+    promises.push(uploadFile(banner))
+
+    // Execute all promises concurrently
+    const [_, bannerUrl] = await Promise.all(promises)
 
     // update user
     const updatedUser = await UserModel.findByIdAndUpdate(

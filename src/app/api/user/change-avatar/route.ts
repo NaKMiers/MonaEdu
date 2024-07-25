@@ -34,11 +34,7 @@ export async function PATCH(req: NextRequest) {
       return NextResponse.json({ message: 'Vui lòng tải ảnh lên' }, { status: 400 })
     }
 
-    // remove old avatar
-    await deleteFile(oldAvatar)
-
-    // upload avatar and get imageUrl from AWS S3 Bucket
-    const avatarUrl = await uploadFile(avatar, '1:1')
+    const [avatarUrl] = await Promise.all([uploadFile(avatar, '1:1'), deleteFile(oldAvatar)])
 
     // update user
     const updatedUser = await UserModel.findByIdAndUpdate(

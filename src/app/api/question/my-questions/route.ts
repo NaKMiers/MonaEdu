@@ -1,11 +1,11 @@
 // Models:
 
 import { connectDatabase } from '@/config/database'
+import QuestionModel from '@/models/QuestionModel'
+import { searchParamsToObject } from '@/utils/handleQuery'
+import momentTZ from 'moment-timezone'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
-import QuestionModel from '@/models/QuestionModel'
-import momentTZ from 'moment-timezone'
-import { searchParamsToObject } from '@/utils/handleQuery'
 
 // Models: Question, User
 import '@/models/QuestionModel'
@@ -85,16 +85,14 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    // get amount of lesson
-    const amount = await QuestionModel.countDocuments(filter)
+    // get amount, get user's questions
+    const [amount, questions] = await Promise.all([
+      // get amount of lesson
+      QuestionModel.countDocuments(filter),
 
-    // get user's questions
-    const questions = await QuestionModel.find(filter)
-      .populate('userId')
-      .sort(sort)
-      .skip(skip)
-      .limit(itemPerPage)
-      .lean()
+      // get user's questions
+      QuestionModel.find(filter).populate('userId').sort(sort).skip(skip).limit(itemPerPage).lean(),
+    ])
 
     // return user's questions
     return NextResponse.json({ questions, amount }, { status: 200 })

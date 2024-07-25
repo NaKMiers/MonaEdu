@@ -31,8 +31,10 @@ export async function GET(req: NextRequest) {
     let sort: { [key: string]: any } = { updatedAt: -1 } // default sort
 
     // get tags and categories
-    const tgs = await TagModel.find().select('title slug').lean()
-    const cates = await CategoryModel.find().select('title slug').lean()
+    const [tgs, cates] = await Promise.all([
+      TagModel.find().select('title slug').lean(),
+      CategoryModel.find().select('title slug').lean(),
+    ])
 
     // build filter
     for (const key in params) {

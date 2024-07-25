@@ -16,11 +16,13 @@ export async function PATCH(req: NextRequest) {
     // get tag id to delete
     const { ids, value } = await req.json()
 
-    // update tags from database
-    await TagModel.updateMany({ _id: { $in: ids } }, { $set: { boot: value || false } })
+    const [updatedTags] = await Promise.all([
+      // get updated tags
+      TagModel.find({ _id: { $in: ids } }).lean(),
 
-    // get updated tags
-    const updatedTags = await TagModel.find({ _id: { $in: ids } }).lean()
+      // update tags from database
+      TagModel.updateMany({ _id: { $in: ids } }, { $set: { boot: value || false } }),
+    ])
 
     if (!updatedTags.length) {
       throw new Error('No tag found')

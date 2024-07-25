@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
     const { code, desc, begin, expire, minTotal, maxReduce, type, value, timesLeft, owner, active } =
       await req.json()
 
-    // get voucher with code from database
+    // get voucher by code from database
     const voucher = await VoucherModel.findOne({ code }).lean()
 
     // return error if voucher has already existed
@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
     }
 
     // create new voucher
-    const newVoucher = new VoucherModel({
+    const newVoucher = await VoucherModel.create({
       code,
       desc,
       begin,
@@ -39,9 +39,6 @@ export async function POST(req: NextRequest) {
       owner: owner || null,
       active,
     })
-
-    // save new voucher to database
-    await newVoucher.save()
 
     // return response
     return NextResponse.json(

@@ -1,6 +1,7 @@
 import { connectDatabase } from '@/config/database'
 import CommentModel from '@/models/CommentModel'
 import LessonModel from '@/models/LessonModel'
+import NotificationModel from '@/models/NotificationModel'
 import QuestionModel, { IQuestion } from '@/models/QuestionModel'
 import UserModel, { IUser } from '@/models/UserModel'
 import { getUserName } from '@/utils/string'
@@ -11,7 +12,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import '@/models/CommentModel'
 import '@/models/LessonModel'
 import '@/models/NotificationModel'
-import NotificationModel from '@/models/NotificationModel'
 import '@/models/QuestionModel'
 import '@/models/UserModel'
 
@@ -53,15 +53,12 @@ export async function POST(req: NextRequest) {
     }
 
     // create new comment
-    const comment = new CommentModel({
+    const comment = await CommentModel.create({
       userId,
       questionId,
       lessonId,
       content: content.trim(),
     })
-
-    // save new comment to database
-    await comment.save()
 
     // if user comment on question
     if (questionId) {

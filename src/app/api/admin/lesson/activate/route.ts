@@ -1,11 +1,10 @@
 import { connectDatabase } from '@/config/database'
-import LessonModel, { ILesson } from '@/models/LessonModel'
-import CourseModel from '@/models/CourseModel'
+import LessonModel from '@/models/LessonModel'
 import { NextRequest, NextResponse } from 'next/server'
 
 // Models: Lesson, Course
-import '@/models/LessonModel'
 import '@/models/CourseModel'
+import '@/models/LessonModel'
 
 // [PATCH]: /admin/lesson/activate
 export async function PATCH(req: NextRequest) {
@@ -18,11 +17,13 @@ export async function PATCH(req: NextRequest) {
     // get lesson id to delete
     const { ids, value } = await req.json()
 
-    // update lessons from database
-    await LessonModel.updateMany({ _id: { $in: ids } }, { $set: { active: value || false } })
+    const [lessons] = await Promise.all([
+      // get lessons from database
+      LessonModel.find({ _id: { $in: ids } }).lean(),
 
-    // get updated lessons
-    const lessons: ILesson[] = await LessonModel.find({ _id: { $in: ids } }).lean()
+      // update lessons from database
+      LessonModel.updateMany({ _id: { $in: ids } }, { $set: { active: value || false } }),
+    ])
 
     if (!lessons.length) {
       throw new Error('No lesson found')

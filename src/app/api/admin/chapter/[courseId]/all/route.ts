@@ -80,11 +80,14 @@ export async function GET(req: NextRequest, { params: { courseId } }: { params: 
       }
     }
 
-    // get amount of course
-    const amount = await ChapterModel.countDocuments(filter)
+    // get amount, get all chapters
+    const [amount, chapters] = await Promise.all([
+      // get amount of course
+      ChapterModel.countDocuments(filter),
 
-    // get all chapters from database
-    const chapters = await ChapterModel.find(filter).sort(sort).skip(skip).limit(itemPerPage).lean()
+      // get all chapters from database
+      ChapterModel.find(filter).sort(sort).skip(skip).limit(itemPerPage).lean(),
+    ])
 
     // return all courses
     return NextResponse.json({ course, chapters, amount }, { status: 200 })

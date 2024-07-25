@@ -18,11 +18,15 @@ export async function DELETE(req: NextRequest) {
     // get order ids to delete
     const { ids } = await req.json()
 
-    // get deleted orders
-    const deletedOrders = await OrderModel.find({
-      _id: { $in: ids },
-    }).lean()
+    const [deletedOrders] = await Promise.all([
+      // get deleted orders
+      OrderModel.find({ _id: { $in: ids } }).lean(),
 
+      // delete orders
+      OrderModel.deleteMany({ _id: { $in: ids } }),
+    ])
+
+    // take the courses out of the user's course list
     await Promise.all(
       deletedOrders.map(async (order: any) => {
         const { userId, item } = order
@@ -32,11 +36,6 @@ export async function DELETE(req: NextRequest) {
         })
       })
     )
-
-    // delete orders
-    await OrderModel.deleteMany({
-      _id: { $in: ids },
-    })
 
     return NextResponse.json(
       {

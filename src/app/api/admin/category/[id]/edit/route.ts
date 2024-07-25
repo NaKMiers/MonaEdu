@@ -1,4 +1,3 @@
-import { EditingValues } from '@/app/(admin)/admin/category/all/page'
 import { connectDatabase } from '@/config/database'
 import CategoryModel, { ICategory } from '@/models/CategoryModel'
 import { generateSlug } from '@/utils'
@@ -46,20 +45,18 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
 
     // check if new image is uploaded
     if (image) {
-      const imageUrl = await uploadFile(image, '1:1')
-      set.image = imageUrl
+      const [imageUrl] = await Promise.all([
+        // upload new image
+        uploadFile(image, '1:1'),
+        // delete old image
+        await deleteFile(originalImage as string),
+      ])
 
-      // delete old image
-      await deleteFile(originalImage as string)
+      set.image = imageUrl
     }
 
     // update category
     const updatedCategory = await CategoryModel.findByIdAndUpdate(id, { $set: set }, { new: true })
-
-    // check if category exists
-    if (!category) {
-      return NextResponse.json({ message: 'Category not found' }, { status: 404 })
-    }
 
     // return updated category
     return NextResponse.json({

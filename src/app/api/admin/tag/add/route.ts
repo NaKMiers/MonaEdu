@@ -17,13 +17,10 @@ export async function POST(req: NextRequest) {
     const { title, booted } = await req.json()
 
     // create new tag
-    const newTag = new TagModel({
+    const newTag = await TagModel.create({
       title: title.trim(),
       booted: !!booted,
     } as ITag)
-
-    // save new tag to database
-    await newTag.save()
 
     // stay current page
     return NextResponse.json({ message: `Tag "${newTag.title}" has been created` }, { status: 201 })

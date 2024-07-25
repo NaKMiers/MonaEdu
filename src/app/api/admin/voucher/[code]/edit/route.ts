@@ -48,6 +48,7 @@ export async function PUT(req: NextRequest, { params: { code } }: { params: { co
       }
     )
 
+    // return response
     return NextResponse.json({ message: 'Voucher has been updated' }, { status: 200 })
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })

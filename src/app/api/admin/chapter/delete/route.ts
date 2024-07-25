@@ -18,9 +18,6 @@ export async function DELETE(req: NextRequest) {
     // get chapter ids to delete
     const { ids } = await req.json()
 
-    // get delete categories
-    const deletedChapters = await ChapterModel.find({ _id: { $in: ids } }).lean()
-
     // only delete chapter if it has no lessons
     const lessonExists = await LessonModel.exists({ chapterId: { $in: ids } })
     if (lessonExists) {
@@ -30,8 +27,11 @@ export async function DELETE(req: NextRequest) {
       )
     }
 
-    // delete chapter from database
-    await ChapterModel.deleteMany({ _id: { $in: ids } })
+    // get delete chapters, delete chapters
+    const [deletedChapters] = await Promise.all([
+      ChapterModel.find({ _id: { $in: ids } }).lean(),
+      ChapterModel.deleteMany({ _id: { $in: ids } }),
+    ])
 
     // return response
     return NextResponse.json(

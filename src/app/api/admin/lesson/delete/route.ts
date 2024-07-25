@@ -1,5 +1,5 @@
 import { connectDatabase } from '@/config/database'
-import LessonModel, { ILesson } from '@/models/LessonModel'
+import LessonModel from '@/models/LessonModel'
 import { NextRequest, NextResponse } from 'next/server'
 
 // Models: Lesson, Course
@@ -17,15 +17,13 @@ export async function DELETE(req: NextRequest) {
     // get lesson ids to delete
     const { ids } = await req.json()
 
-    // Find lessons by their IDs before deletion
-    const lessons: ILesson[] = await LessonModel.find({
-      _id: { $in: ids },
-    }).lean()
+    const [lessons] = await Promise.all([
+      // get lessons from database
+      LessonModel.find({ _id: { $in: ids } }).lean(),
 
-    // delete lesson by ids
-    await LessonModel.deleteMany({
-      _id: { $in: ids },
-    })
+      // delete lessons from database
+      LessonModel.deleteMany({ _id: { $in: ids } }),
+    ])
 
     // return response
     return NextResponse.json(

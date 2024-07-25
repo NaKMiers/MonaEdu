@@ -3,7 +3,6 @@ import CategoryModel from '@/models/CategoryModel'
 import CourseModel from '@/models/CourseModel'
 import TagModel from '@/models/TagModel'
 import { uploadFile } from '@/utils/uploadFile'
-import mongoose from 'mongoose'
 import { NextRequest, NextResponse } from 'next/server'
 
 // Models: Course, Tag, Category
@@ -55,8 +54,10 @@ export async function POST(req: NextRequest) {
     })
 
     // increase related category and tags course quantity
-    await TagModel.updateMany({ _id: { $in: tags } }, { $inc: { courseQuantity: 1 } })
-    await CategoryModel.updateOne({ _id: category }, { $inc: { courseQuantity: 1 } })
+    await Promise.all([
+      TagModel.updateMany({ _id: { $in: tags } }, { $inc: { courseQuantity: 1 } }),
+      CategoryModel.updateOne({ _id: category }, { $inc: { courseQuantity: 1 } }),
+    ])
 
     // return new course
     return NextResponse.json(

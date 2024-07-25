@@ -16,9 +16,6 @@ export async function PATCH(req: NextRequest) {
     // get notification ids to remove
     const { ids, status } = await req.json()
 
-    console.log('ids:', ids)
-    console.log('status:', status)
-
     // mark notification as read / unread
     await NotificationModel.updateMany({ _id: { $in: ids } }, { $set: { status } })
 

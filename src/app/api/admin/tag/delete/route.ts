@@ -1,11 +1,11 @@
 import { connectDatabase } from '@/config/database'
+import CourseModel from '@/models/CourseModel'
 import TagModel from '@/models/TagModel'
 import { NextRequest, NextResponse } from 'next/server'
-import CourseModel from '@/models/CourseModel'
 
 // Models: Tag, Course
-import '@/models/TagModel'
 import '@/models/CourseModel'
+import '@/models/TagModel'
 
 // [DELETE]: /admin/tag/delete
 export async function DELETE(req: NextRequest) {
@@ -27,11 +27,13 @@ export async function DELETE(req: NextRequest) {
       )
     }
 
-    // get delete tags
-    const deletedTags = await TagModel.find({ _id: { $in: ids } }).lean()
+    const [deletedTags] = await Promise.all([
+      // get deleted tags
+      TagModel.find({ _id: { $in: ids } }).lean(),
 
-    // delete tag from database
-    await TagModel.deleteMany({ _id: { $in: ids } })
+      // delete tags from database
+      TagModel.deleteMany({ _id: { $in: ids } }),
+    ])
 
     // return response
     return NextResponse.json(

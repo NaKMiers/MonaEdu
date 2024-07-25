@@ -38,6 +38,7 @@ export async function GET() {
     // Build and return the tree
     const tree = buildTree(categories)
 
+    // return response
     return NextResponse.json({ categories: tree }, { status: 200 })
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })

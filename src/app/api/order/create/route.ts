@@ -14,7 +14,6 @@ import '@/models/CategoryModel'
 import '@/models/CourseModel'
 import '@/models/OrderModel'
 import '@/models/TagModel'
-import '@/models/TagModel'
 
 // [POST]: /order/create
 export async function POST(req: NextRequest) {
@@ -75,24 +74,22 @@ export async function POST(req: NextRequest) {
     const code = await generateOrderCode(5)
 
     // create new order
-    const newOrder = new OrderModel({
-      code,
-      userId,
-      email,
-      receivedUser,
-      voucher,
-      discount,
-      total,
-      items: courses,
-      paymentMethod,
-    })
-
-    await Promise.all([
+    const [newOrder] = await Promise.all([
       // save new order
-      newOrder.save(),
+      OrderModel.create({
+        code,
+        userId,
+        email,
+        receivedUser,
+        voucher,
+        discount,
+        total,
+        items: courses,
+        paymentMethod,
+      }),
 
       // notify user
-      await NotificationModel.create({
+      NotificationModel.create({
         userId,
         title: 'Cảm ơn bạn đã tham gia khóa học của chúng tôi, chúc bạn học tốt!',
         image: '/images/logo.png',

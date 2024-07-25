@@ -45,14 +45,6 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
       }),
     ])
 
-    // // add lessons to each chapter
-    // const chaptersWithLessons = chapters.map((chapter: IChapter) => {
-    //   const chapterLessons = lessons.filter(
-    //     (lesson: ILesson) => lesson.chapterId.toString() === chapter._id.toString()
-    //   )
-    //   return { ...chapter, lessons: chapterLessons }
-    // })
-
     // add progress to each lessons and add lessons to each chapter
     const chaptersWithLessons = chapters.map((chapter: IChapter) => {
       const chapterLessons = lessons.filter(

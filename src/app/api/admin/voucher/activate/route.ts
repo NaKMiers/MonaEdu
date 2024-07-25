@@ -16,11 +16,13 @@ export async function PATCH(req: NextRequest) {
     // get voucher id to delete
     const { ids, value } = await req.json()
 
-    // update vouchers from database
-    await VoucherModel.updateMany({ _id: { $in: ids } }, { $set: { active: value || false } })
+    const [updatedVouchers] = await Promise.all([
+      // get updated vouchers
+      VoucherModel.find({ _id: { $in: ids } }).lean(),
 
-    // get updated vouchers
-    const updatedVouchers = await VoucherModel.find({ _id: { $in: ids } }).lean()
+      // update vouchers from database
+      VoucherModel.updateMany({ _id: { $in: ids } }, { $set: { active: value || false } }),
+    ])
 
     if (!updatedVouchers.length) {
       throw new Error('No voucher found')

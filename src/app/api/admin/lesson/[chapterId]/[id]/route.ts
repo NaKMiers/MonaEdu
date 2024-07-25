@@ -1,52 +1,46 @@
-import { connectDatabase } from "@/config/database";
-import LessonModel, { ILesson } from "@/models/LessonModel";
-import { NextRequest, NextResponse } from "next/server";
+import { connectDatabase } from '@/config/database'
+import LessonModel, { ILesson } from '@/models/LessonModel'
+import { NextRequest, NextResponse } from 'next/server'
 
 // Models: Lesson, Chapter, Course
-import "@/models/ChapterModel";
-import "@/models/CourseModel";
-import "@/models/LessonModel";
-import { getFileUrl } from "@/utils/uploadFile";
+import '@/models/ChapterModel'
+import '@/models/CourseModel'
+import '@/models/LessonModel'
+import { getFileUrl } from '@/utils/uploadFile'
 
 // [GET]: /admin/lesson/:chapterId/:id
-export async function GET(
-  req: NextRequest,
-  { params: { id } }: { params: { id: string } }
-) {
-  console.log("- Get Lesson By ID - ");
+export async function GET(req: NextRequest, { params: { id } }: { params: { id: string } }) {
+  console.log('- Get Lesson By ID - ')
 
   try {
     // connect to database
-    await connectDatabase();
+    await connectDatabase()
 
     // get lesson
     const lesson: ILesson | null = await LessonModel.findById(id)
       .populate({
-        path: "courseId",
-        select: "title",
+        path: 'courseId',
+        select: 'title',
       })
       .populate({
-        path: "chapterId",
-        select: "title",
+        path: 'chapterId',
+        select: 'title',
       })
-      .lean();
+      .lean()
 
     // check if lesson exists
     if (!lesson) {
-      return NextResponse.json(
-        { message: "Lesson not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ message: 'Lesson not found' }, { status: 404 })
     }
 
     // get signed url of video source
-    if (lesson.sourceType === "file") {
-      lesson.source = await getFileUrl(lesson.source);
+    if (lesson.sourceType === 'file') {
+      lesson.source = await getFileUrl(lesson.source)
     }
 
     // return lesson
-    return NextResponse.json({ lesson }, { status: 200 });
+    return NextResponse.json({ lesson }, { status: 200 })
   } catch (err: any) {
-    return NextResponse.json({ message: err.message }, { status: 500 });
+    return NextResponse.json({ message: err.message }, { status: 500 })
   }
 }
