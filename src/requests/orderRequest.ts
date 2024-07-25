@@ -93,6 +93,21 @@ export const createOrderApi = async ({
   return await res.json()
 }
 
+// [PUT]
+export const editOrderApi = async (orderId: string, data: any) => {
+  const res = await fetch(`/api/admin/order/${orderId}/edit`, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  })
+
+  // check status
+  if (!res.ok) {
+    throw new Error((await res.json()).message)
+  }
+
+  return await res.json()
+}
+
 // [PATCH]
 export const deliverOrderApi = async (orderId: string, message: string = '') => {
   const res = await fetch(`/api/admin/order/${orderId}/deliver`, {

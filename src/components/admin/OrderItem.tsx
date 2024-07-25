@@ -8,7 +8,7 @@ import Link from 'next/link'
 import React, { memo, useCallback, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
-import { FaHistory, FaRegTrashAlt, FaSearch } from 'react-icons/fa'
+import { FaEye, FaHistory, FaRegTrashAlt, FaSearch } from 'react-icons/fa'
 import { GrDeliver } from 'react-icons/gr'
 import { ImCancelCircle } from 'react-icons/im'
 import { RiDonutChartFill } from 'react-icons/ri'
@@ -82,7 +82,7 @@ function OrderItem({
       const { message } = await deliverOrderApi(data._id, getValues('message'))
 
       // update order status
-      setOrders((prev) => prev.map((o) => (o._id === data._id ? { ...o, status: 'done' } : o)))
+      setOrders(prev => prev.map(o => (o._id === data._id ? { ...o, status: 'done' } : o)))
 
       // show success message
       toast.success(message)
@@ -134,8 +134,8 @@ function OrderItem({
             : 'bg-slate-200'
         }  ${className}`}
         onClick={() =>
-          setSelectedOrders((prev) =>
-            prev.includes(data._id) ? prev.filter((id) => id !== data._id) : [...prev, data._id]
+          setSelectedOrders(prev =>
+            prev.includes(data._id) ? prev.filter(id => id !== data._id) : [...prev, data._id]
           )
         }
       >
@@ -148,7 +148,7 @@ function OrderItem({
                   href={`/${course.slug}`}
                   prefetch={false}
                   className='relative rounded-lg shadow-md overflow-hidden flex-shrink-0'
-                  onClick={(e) => e.stopPropagation()}
+                  onClick={e => e.stopPropagation()}
                   key={course._id}
                 >
                   <Image
@@ -195,7 +195,7 @@ function OrderItem({
           <div className='block underline text-ellipsis line-clamp-1' title={'Email: ' + data.email}>
             <span
               className='mr-1'
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation()
                 handleCopy(data.email)
               }}
@@ -205,7 +205,7 @@ function OrderItem({
             <div className='inline-flex items-center gap-1.5 border border-secondary rounded-md px-1.5 py-1'>
               <span
                 className='text-secondary group'
-                onClick={(e) => {
+                onClick={e => {
                   e.stopPropagation()
                   setValue('search', data.email)
                   handleFilter()
@@ -262,12 +262,22 @@ function OrderItem({
 
         {/* MARK: Action Buttons */}
         <div className='flex flex-col flex-shrink-0 border bg-white border-dark text-dark rounded-lg px-2 py-3 gap-4'>
+          {/* Detail Button */}
+          <Link
+            href={`/admin/order/${data.code}`}
+            className='block group'
+            onClick={e => e.stopPropagation()}
+            title='Detail'
+          >
+            <FaEye size={18} className='text-primary wiggle' />
+          </Link>
+
           {/* Deliver Button */}
           {data.status !== 'done' && (
             <button
               className='block group'
               disabled={loadingOrders.includes(data._id) || isLoading}
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation()
                 setConfirmType('deliver')
                 setIsOpenConfirmModal(true)
@@ -287,7 +297,7 @@ function OrderItem({
             <button
               className='block group'
               disabled={loadingOrders.includes(data._id) || isLoading}
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation()
                 setConfirmType('re-deliver')
                 setIsOpenConfirmModal(true)
@@ -306,7 +316,7 @@ function OrderItem({
           <button
             className='block group'
             disabled={loadingOrders.includes(data._id) || isLoading}
-            onClick={(e) => {
+            onClick={e => {
               e.stopPropagation()
               setIsOpenMessageModal(true)
             }}
@@ -320,7 +330,7 @@ function OrderItem({
             <button
               className='block group'
               disabled={loadingOrders.includes(data._id) || isLoading}
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation()
                 handleCancelOrders([data._id])
               }}
@@ -334,7 +344,7 @@ function OrderItem({
           <button
             className='block group'
             disabled={loadingOrders.includes(data._id) || isLoading}
-            onClick={(e) => {
+            onClick={e => {
               e.stopPropagation()
               setConfirmType('delete')
               setIsOpenConfirmModal(true)
@@ -352,7 +362,7 @@ function OrderItem({
         {isOpenMessageModal && (
           <div
             className='absolute z-20 p-21 top-0 left-0 w-full h-full flex items-center justify-center gap-2 rounded-md bg-teal-400 bg-opacity-80'
-            onClick={(e) => {
+            onClick={e => {
               e.stopPropagation()
               setIsOpenMessageModal(false)
             }}
@@ -366,7 +376,7 @@ function OrderItem({
               type='text'
               icon={SiGooglemessages}
               className='w-full shadow-lg'
-              onClick={(e) => e.stopPropagation()}
+              onClick={e => e.stopPropagation()}
               onFocus={() => clearErrors('message')}
             />
           </div>
