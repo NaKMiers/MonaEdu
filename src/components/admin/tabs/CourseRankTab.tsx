@@ -3,6 +3,8 @@ import { getAllOrdersApi, getForceAllCategoriesApi } from '@/requests'
 import { formatPrice } from '@/utils/number'
 import { rankCourseRevenue } from '@/utils/stat'
 import moment from 'moment'
+import Image from 'next/image'
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { FaCircleNotch } from 'react-icons/fa'
@@ -33,10 +35,14 @@ function CourseRankTab({ className = '' }: CourseRankTabProps) {
           from = currentTime.startOf('year').format('YYYY-MM-DD HH:mm:ss')
         }
 
-        const query = `?limit=no-limit&status=done&sort=createdAt|-1&from-to=${from}|`
-        const { orders } = await getAllOrdersApi(query)
+        // get orders and categories
+        const [{ orders }, { categories }] = await Promise.all([
+          getAllOrdersApi(`?limit=no-limit&status=done&sort=createdAt|-1&from-to=${from}|`),
+          getForceAllCategoriesApi('?pure=true'),
+        ])
 
-        const { categories } = await getForceAllCategoriesApi()
+        console.log('orders', orders, categories)
+
         const courses = rankCourseRevenue(orders, categories)
         setCourses(courses)
       } catch (err: any) {
@@ -82,26 +88,35 @@ function CourseRankTab({ className = '' }: CourseRankTabProps) {
 
           <Divider size={4} />
 
-          {courses.map((account, index) => (
-            <div className='flex flex-col items-start gap-1 mb-3' key={index}>
-              <p className='text-white text-sm bg-slate-700 px-2 py-[2px] rounded-lg'>{account.email}</p>
-              <div className='flex gap-2'>
-                <span className='text-green-500 text-sm font-semibold'>
-                  {formatPrice(account.revenue)}
-                </span>
-                <span
-                  className={`shadow-md text-xs px-1 py-[3px] select-none rounded-md font-body`}
-                  style={{
-                    background: account.category.color,
-                  }}
+          <div className='flex flex-col gap-2'>
+            {courses.map((course, index) => (
+              <div
+                className='flex items-start gap-2.5 bg-slate-700 rounded-lg shadow-lg p-2 text-light'
+                key={index}
+              >
+                <Link
+                  href={`/${course.slug}`}
+                  className='aspect-video rounded-sm overflow-hidden flex-shrink-0 w-full max-w-[60px]'
                 >
-                  <span className='bg-white tex-dark rounded-md px-1 text-[11px]'>
-                    {account.category.title}
-                  </span>
-                </span>
+                  <Image
+                    className='w-full h-full object-cover'
+                    src={course.images[0]}
+                    width={60}
+                    height={40}
+                    alt={course.slug}
+                    loading='lazy'
+                  />
+                </Link>
+                <div className='flex flex-col'>
+                  <p className='font-body tracking-wider font-semibold -mt-1'>{course.title}</p>
+                  <p>
+                    <span className='text-xs'>Revenue</span>:{' '}
+                    <span className='font-semibold'>{formatPrice(course.revenue)}</span>
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </>
       ) : (
         <div className='flex items-center justify-center'>

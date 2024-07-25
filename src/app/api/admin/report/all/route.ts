@@ -47,11 +47,14 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    // get amount of lesson
-    const amount = await ReportModel.countDocuments(filter)
+    // get amount, get all reports
+    const [amount, reports] = await Promise.all([
+      // get amount of lesson
+      ReportModel.countDocuments(filter),
 
-    // get all reports from database
-    const reports = await ReportModel.find(filter).sort(sort).skip(skip).limit(itemPerPage).lean()
+      // get all reports from database
+      ReportModel.find(filter).sort(sort).skip(skip).limit(itemPerPage).lean(),
+    ])
 
     // return response
     return NextResponse.json({ reports, amount }, { status: 200 })

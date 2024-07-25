@@ -23,6 +23,9 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
     const { courseId, chapterId, title, description, duration, active, status, embedUrl } = data
     let file = formData.get('file')
 
+    console.log('Data: ', data)
+    console.log('File: ', file)
+
     // get course from database to edit
     const lesson: ILesson | null = await LessonModel.findById(id).lean()
 
@@ -31,17 +34,18 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
       return NextResponse.json({ message: 'Lesson does not exist' }, { status: 404 })
     }
 
-    let newSource: string = ''
+    let newSource: string = lesson.source
+
     // delete the file do not associated with the lesson in cloud
     if (file || embedUrl) {
+      console.log('New Source: ', file, embedUrl)
       if (lesson.sourceType === 'file') {
         await deleteFile(lesson.source)
+        newSource = await uploadFile(file, '16:9', 'video')
       }
 
       if (embedUrl) {
         newSource = embedUrl as string
-      } else if (file) {
-        newSource = await uploadFile(file, '16:9', 'video')
       }
     }
 
@@ -61,10 +65,10 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
       },
     })
 
-    // update total duration of course
-    await CourseModel.findByIdAndUpdate(courseId, {
-      $inc: { duration: +duration - lesson.duration },
-    })
+    // // update total duration of course
+    // await CourseModel.findByIdAndUpdate(courseId, {
+    //   $inc: { duration: +duration - lesson.duration },
+    // })
 
     // return response
     return NextResponse.json({ message: 'Edit lesson successfully' }, { status: 200 })

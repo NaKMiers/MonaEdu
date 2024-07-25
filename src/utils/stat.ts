@@ -218,7 +218,7 @@ export const newCoursesSoldStatCalc = (orders: any[]) => {
   const lastMonth = moment(currentDate).subtract(1, 'months')
   const lastYear = moment(currentDate).subtract(1, 'years')
 
-  // new accounts sold
+  // new courses sold
   const newCoursesSoldToday = calculateNewCoursesSold(
     orders,
     currentDate.startOf('day').toDate(),
@@ -283,7 +283,7 @@ const calculateUsedVouchers = (orders: any[], startDate: Date | string, endDate:
   let usedVouchers = 0
   orders.forEach(order => {
     if (moment(order.createdAt).isBetween(startDate, endDate, undefined, '[]')) {
-      if (order.discount && order.discount !== 0) {
+      if (order.voucher && order.voucher !== 0) {
         usedVouchers++
       }
     }
@@ -355,17 +355,17 @@ export const newUsedVoucherStatCalc = (orders: any[]) => {
 
 // MARK: Revenue By Course Rank
 export const rankCourseRevenue = (orders: any[], categories: ICategory[]) => {
-  const crs: any = []
+  const rawCourses: any = []
 
-  // export courses from orders
+  // export rawCourses from orders
   orders.forEach(order => {
     const items: any[] = order.items
     const discount = order.discount || 0
     const quantity = items.length
 
-    items.forEach(item => {
-      let price = item.price
-      const flashSale = item.flashSale
+    items.forEach(course => {
+      let price = course.price
+      const flashSale = course.flashSale
 
       if (flashSale) {
         switch (flashSale.type) {
@@ -386,66 +386,33 @@ export const rankCourseRevenue = (orders: any[], categories: ICategory[]) => {
 
       price = price - discount / quantity
 
-      crs.push(item)
+      rawCourses.push({
+        ...course,
+        price,
+      })
     })
   })
 
-  const categoryCoursesMap: { [key: string]: any[] } = {}
-  crs.forEach((course: any) => {
-    const slug: string = course.category.slug
+  const coursesMap: { [key: string]: any[] } = {}
+  rawCourses.forEach((course: any) => {
+    const slug: string = course.slug
 
-    if (!categoryCoursesMap[slug]) {
-      categoryCoursesMap[slug] = [course]
+    if (!coursesMap[slug]) {
+      coursesMap[slug] = [course]
     } else {
-      categoryCoursesMap[slug].push(course)
+      coursesMap[slug].push(course)
     }
   })
 
-  const groupCoursesByEmail = (categoryCoursesMap: { [key: string]: any[] }) => {
-    const groupedCoursesByEmail: { [key: string]: { [key: string]: any[] } } = {}
-
-    for (const category in categoryCoursesMap) {
-      if (categoryCoursesMap.hasOwnProperty(category)) {
-        const courses = categoryCoursesMap[category]
-
-        const groupedByEmail: { [key: string]: any[] } = {}
-
-        courses.forEach((course, index) => {
-          const emailMatch = course.info.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/)
-
-          if (emailMatch) {
-            const email = emailMatch[0]
-
-            if (!groupedByEmail[email]) {
-              groupedByEmail[email] = [course]
-            } else {
-              groupedByEmail[email].push(course)
-            }
-          }
-        })
-
-        groupedCoursesByEmail[category] = groupedByEmail
+  const results = Object.entries(coursesMap)
+    .map(([_, courses]) => {
+      const totalRevenue = courses.reduce((total, course) => total + course.price, 0)
+      return {
+        ...courses[0],
+        revenue: totalRevenue.toFixed(2),
       }
-    }
+    })
+    .sort((a, b) => b.revenue - a.revenue)
 
-    return groupedCoursesByEmail
-  }
-
-  // group courses by email
-  const groupedCoursesByEmail = groupCoursesByEmail(categoryCoursesMap)
-
-  const courses = Object.entries(groupedCoursesByEmail).map(([_, courseByEmailGroups]) => {
-    return Object.entries(courseByEmailGroups)
-      .map(([email, courses]) => {
-        const totalRevenue = courses.reduce((total, course) => total + course.price, 0)
-        return {
-          email,
-          category: courses[0].category,
-          revenue: totalRevenue.toFixed(2),
-        }
-      })
-      .sort((a, b) => b.revenue - a.revenue)
-  })
-
-  return courses.flat()
+  return results
 }

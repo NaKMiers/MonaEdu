@@ -40,14 +40,14 @@ function Chapter({
   // states
   const [open, setOpen] = useState<boolean>(
     collapseAll ||
-      ((chapter.lessons?.some((lesson) => lesson.status === 'public') || false) && !isEnrolled)
+      ((chapter.lessons?.some(lesson => lesson.status === 'public') || false) && !isEnrolled)
   )
 
   // refs
   const chapterRef = useRef<HTMLUListElement>(null)
 
   useEffect(() => {
-    if ((chapter.lessons?.some((lesson) => lesson.status === 'public') || false) && !isEnrolled) return
+    if ((chapter.lessons?.some(lesson => lesson.status === 'public') || false) && !isEnrolled) return
     setOpen(!!collapseAll)
   }, [collapseAll, chapter.lessons, isEnrolled])
 
@@ -72,20 +72,24 @@ function Chapter({
     >
       <p
         className={`${
-          chapter.lessons?.some((lesson) => lesson.slug === lessonSlug)
-            ? 'text-orange-500'
-            : 'text-white'
-        } font-semibold flex justify-between items-center py-2 px-3 cursor-pointer`}
+          chapter.lessons?.some(lesson => lesson.slug === lessonSlug) ? 'text-orange-500' : 'text-white'
+        } font-semibold flex justify-between items-center gap-2 py-2 px-3 cursor-pointer`}
         onClick={() => setOpen(!open)}
       >
-        {chapter.title} <FaAngleDown size={18} className={`${open ? 'rotate-180' : ''} trans-200`} />
+        {chapter.title}
+        <div className='flex items-center gap-2'>
+          <span className='text-xs'>
+            {duration(chapter.lessons?.reduce((total, lesson) => total + lesson.duration, 0) || 0)}
+          </span>{' '}
+          <FaAngleDown size={18} className={`${open ? 'rotate-180' : ''} trans-200`} />
+        </div>
       </p>
 
       <ul
         className={`flex flex-col px-2 gap-[4px] ${open ? '' : 'max-h-0'} trans-300 overflow-hidden`}
         ref={chapterRef}
       >
-        {chapter.lessons?.map((lesson) =>
+        {chapter.lessons?.map(lesson =>
           lesson.status === 'public' || isEnrolled ? (
             <Tooltip title={`Học thử ngay`} placement='top' arrow key={lesson._id}>
               <Link
@@ -93,7 +97,7 @@ function Chapter({
                 className={`bg-white rounded-md py-2 px-3 gap-4 hover:bg-primary trans-200 flex items-center ${
                   lesson.slug === lessonSlug ? 'font-semibold text-orange-500' : ''
                 }`}
-                onClick={(e) => {
+                onClick={e => {
                   e.preventDefault()
                   if (!curUser?._id) {
                     toast.error('Bạn cần phải đăng nhập để học thử')

@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { memo } from 'react'
 import { FaCheck } from 'react-icons/fa'
 import Divider from '../Divider'
+import Quote from '../Quote'
 
 function Footer() {
   return (
@@ -47,6 +48,15 @@ function Footer() {
           </div>
         </div>
 
+        <Divider size={2} border />
+        <Divider size={4} />
+
+        {/* Quote */}
+        <div className='max-w-[640px] mx-auto'>
+          <Quote />
+        </div>
+
+        <Divider size={4} />
         <Divider size={2} border />
 
         {/* Body */}

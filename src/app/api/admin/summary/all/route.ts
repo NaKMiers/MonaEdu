@@ -2,7 +2,6 @@ import { connectDatabase } from '@/config/database'
 import UserModel, { IUser } from '@/models/UserModel'
 import VoucherModel, { IVoucher } from '@/models/VoucherModel'
 import { searchParamsToObject } from '@/utils/handleQuery'
-import momentTZ from 'moment-timezone'
 import { NextRequest, NextResponse } from 'next/server'
 
 // Models: User, Voucher
@@ -50,27 +49,26 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    // get amount of collaborators
-    const amount = await UserModel.countDocuments(filter)
+    // get amount, get all collaborators, all vouchers
+    let [amount, collaborators, vouchers] = await Promise.all([
+      // get amount of collaborators
+      UserModel.countDocuments(filter),
 
-    // get all collaborators from database
-    let collaborators: IUser[] = await UserModel.find(filter)
-      .sort(sort)
-      .skip(skip)
-      .limit(itemPerPage)
-      .lean()
+      // get all collaborators from database
+      UserModel.find(filter).sort(sort).skip(skip).limit(itemPerPage).lean(),
 
-    // get all vouchers from database
-    const vouchers: IVoucher[] = await VoucherModel.find({
-      active: true,
-    }).lean()
+      // get all vouchers from database
+      VoucherModel.find({
+        active: true,
+      }).lean(),
+    ])
 
     // get vouchers associated with each collaborator
     collaborators = await Promise.all(
       collaborators.map(async (collaborator: any) => {
         const userVouchers: IVoucher[] = vouchers.filter(
           voucher => voucher.owner.toString() === collaborator._id.toString()
-        )
+        ) as IVoucher[]
         return { ...collaborator, vouchers: userVouchers } as UserWithVouchers
       })
     )

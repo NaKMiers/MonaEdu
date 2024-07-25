@@ -200,7 +200,7 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
               <MdLanguage size={16} />
               Ngôn ngữ:{' '}
               {course?.languages?.map((language, index) => (
-                <span className='text-slate-600' key={index}>
+                <span className='text-slate-300' key={index}>
                   {language}
                   {index < course?.languages.length - 1 ? ', ' : ''}
                 </span>

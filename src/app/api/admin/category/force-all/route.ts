@@ -1,6 +1,6 @@
 import { connectDatabase } from '@/config/database'
 import CategoryModel from '@/models/CategoryModel'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
 // Models: Category
 import '@/models/CategoryModel'
@@ -8,7 +8,7 @@ import '@/models/CategoryModel'
 export const dynamic = 'force-dynamic'
 
 // [GET]: /admin/category/force-all
-export async function GET() {
+export async function GET(req: NextRequest) {
   console.log('- Get Force All Categories -')
 
   try {
@@ -17,6 +17,12 @@ export async function GET() {
 
     // get all categories from database
     const categories = await CategoryModel.find().sort({ createdAt: -1 }).lean()
+
+    // check query if it has "pure"
+    if (req.nextUrl.searchParams.get('pure') === 'true') {
+      console.log('- Get Pure Categories -')
+      return NextResponse.json({ categories }, { status: 200 })
+    }
 
     // Function to build the tree
     const buildTree = (categories: any[], parentId: string | null = null): any[] => {

@@ -149,9 +149,12 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
       }
     }
 
-    // get subs categories & get all courses of current categories
-    const [subs, courses, amount] = await Promise.all([
-      await CategoryModel.find({ parentId: category._id }).lean(),
+    // get subs categories,  get all courses of current categories, get chops
+    const [subs, courses, amount, chops] = await Promise.all([
+      // get all sub categories
+      CategoryModel.find({ parentId: category._id }).lean(),
+
+      // get all courses of current categories
       CourseModel.aggregate([
         { $match: filter },
         { $addFields: { likesCount: { $size: '$likes' } } },
@@ -159,18 +162,20 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
         { $skip: skip },
         { $limit: itemPerPage },
       ]).exec(),
-      await CourseModel.countDocuments(filter),
-    ])
 
-    // get all order without filter
-    const chops = await CourseModel.aggregate([
-      {
-        $group: {
-          _id: null,
-          minPrice: { $min: '$Price' },
-          maxPrice: { $max: '$Price' },
+      // get amount of courses
+      await CourseModel.countDocuments(filter),
+
+      // get all order without filter
+      CourseModel.aggregate([
+        {
+          $group: {
+            _id: null,
+            minPrice: { $min: '$Price' },
+            maxPrice: { $max: '$Price' },
+          },
         },
-      },
+      ]),
     ])
 
     // return response

@@ -46,9 +46,12 @@ export const getAllCategoriesApi = async (
 }
 
 // [GET]
-export const getForceAllCategoriesApi = async (option: RequestInit = { cache: 'no-store' }) => {
+export const getForceAllCategoriesApi = async (
+  query: string = '',
+  option: RequestInit = { cache: 'no-store' }
+) => {
   // no cache
-  const res = await fetch('/api/admin/category/force-all', option)
+  const res = await fetch(`/api/admin/category/force-all${query}`, option)
 
   // check status
   if (!res.ok) {

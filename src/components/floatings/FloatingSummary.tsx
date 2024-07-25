@@ -273,7 +273,7 @@ function FloatingSummary({ course: data, className = '' }: FloatingSummaryProps)
           </p>
           <p className='flex items-center flex-wrap'>
             <IoIosPhonePortrait size={16} className='mr-3' />
-            <span>Access on mobile and TV</span>
+            <span>Tương thích trên mọi thiết bị</span>
           </p>
         </div>
 

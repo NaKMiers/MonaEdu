@@ -5,7 +5,6 @@ import { searchParamsToObject } from '@/utils/handleQuery'
 import { NextRequest, NextResponse } from 'next/server'
 // Models: Category, Tag, Course
 import '@/models/CategoryModel'
-import '@/models/CategoryModel'
 import '@/models/CourseModel'
 import '@/models/TagModel'
 export const dynamic = 'force-dynamic'
@@ -85,31 +84,29 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    // get amount of course
-    const amount = await CourseModel.countDocuments(filter)
+    // count amount, get all courses, get all tags and categories, get all order
+    const [amount, courses, tgs, chops] = await Promise.all([
+      // get amount of course
+      CourseModel.countDocuments(filter),
 
-    // get all courses from database
-    const courses = await CourseModel.find(filter)
-      .populate('tags category')
-      .sort(sort)
-      .skip(skip)
-      .limit(itemPerPage)
-      .lean()
+      // get all courses from database
+      CourseModel.find(filter).populate('tags category').sort(sort).skip(skip).limit(itemPerPage).lean(),
 
-    // get tags and categories
-    const tgs = await TagModel.find().select('title').lean()
+      // get tags and categories
+      TagModel.find().select('title').lean(),
 
-    // get all order without filter
-    const chops = await CourseModel.aggregate([
-      {
-        $group: {
-          _id: null,
-          minPrice: { $min: '$price' },
-          maxPrice: { $max: '$price' },
-          minSold: { $min: '$sold' },
-          maxSold: { $max: '$sold' },
+      // get all order without filter
+      CourseModel.aggregate([
+        {
+          $group: {
+            _id: null,
+            minPrice: { $min: '$price' },
+            maxPrice: { $max: '$price' },
+            minSold: { $min: '$sold' },
+            maxSold: { $max: '$sold' },
+          },
         },
-      },
+      ]),
     ])
 
     // return all courses

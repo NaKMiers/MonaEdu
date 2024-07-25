@@ -116,32 +116,39 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    // get amount of lesson
-    const amount = await OrderModel.countDocuments(filter)
+    console.log('filter', filter)
 
-    // get all order from database
-    const orders = await OrderModel.find(filter)
-      .populate({
-        path: 'voucher',
-        select: 'code desc',
-      })
-      .sort(sort)
-      .skip(skip)
-      .limit(itemPerPage)
-      .lean()
+    // get amount, get all orders, get chops
+    const [amount, orders, chops] = await Promise.all([
+      // get amount of lesson
+      OrderModel.countDocuments(filter),
 
-    // get all order without filter
-    const chops = await OrderModel.aggregate([
-      {
-        $group: {
-          _id: null,
-          minTotal: { $min: '$total' },
-          maxTotal: { $max: '$total' },
+      // get all orders from database
+      OrderModel.find(filter)
+        .populate({
+          path: 'voucher',
+          select: 'code desc',
+        })
+        .sort(sort)
+        .skip(skip)
+        .limit(itemPerPage)
+        .lean(),
+
+      // get all order without filter
+      OrderModel.aggregate([
+        {
+          $group: {
+            _id: null,
+            minTotal: { $min: '$total' },
+            maxTotal: { $max: '$total' },
+          },
         },
-      },
+      ]),
     ])
 
-    // retunr all orders
+    console.log('orders', orders)
+
+    // return response
     return NextResponse.json({ orders, amount, chops: chops[0] }, { status: 200 })
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })

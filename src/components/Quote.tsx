@@ -3,7 +3,7 @@ import Slider from './Slider'
 
 function Quote() {
   return (
-    <div className='max-w-1200 mx-auto flex justify-center px-21'>
+    <div className='max-w-1200 mx-auto flex justify-center'>
       <Slider time={10000}>
         <div className='w-full rounded-lg shadow-lg overflow-hidden'>
           <Image

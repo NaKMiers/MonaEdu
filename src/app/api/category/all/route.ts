@@ -1,6 +1,6 @@
 import { connectDatabase } from '@/config/database'
 import CategoryModel from '@/models/CategoryModel'
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 
 // Models: Category
 import '@/models/CategoryModel'
@@ -8,7 +8,7 @@ import '@/models/CategoryModel'
 export const dynamic = 'force-dynamic'
 
 // [GET]: /admin/category/all
-export async function GET(req: NextRequest) {
+export async function GET() {
   console.log('- Get All Categories -')
 
   try {

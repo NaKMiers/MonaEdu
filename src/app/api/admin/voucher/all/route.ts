@@ -105,31 +105,34 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    // get amount of lesson
-    const amount = await VoucherModel.countDocuments(filter)
+    // get amount, get all vouchers, chops
+    const [amount, vouchers, chops] = await Promise.all([
+      // get amount of lesson
+      VoucherModel.countDocuments(filter),
 
-    // get all vouchers from database
-    const vouchers = await VoucherModel.find(filter)
-      .populate('owner', 'firstName lastName')
-      .sort(sort)
-      .skip(skip)
-      .limit(itemPerPage)
-      .lean()
+      // get all vouchers from database
+      VoucherModel.find(filter)
+        .populate('owner', 'firstName lastName')
+        .sort(sort)
+        .skip(skip)
+        .limit(itemPerPage)
+        .lean(),
 
-    // get all order without filter
-    const chops = await VoucherModel.aggregate([
-      {
-        $group: {
-          _id: null,
-          minMinTotal: { $min: '$minTotal' },
-          maxMinTotal: { $max: '$minTotal' },
-          minMaxReduce: { $min: '$maxReduce' },
-          maxMaxReduce: { $max: '$maxReduce' },
+      // get all order without filter
+      VoucherModel.aggregate([
+        {
+          $group: {
+            _id: null,
+            minMinTotal: { $min: '$minTotal' },
+            maxMinTotal: { $max: '$minTotal' },
+            minMaxReduce: { $min: '$maxReduce' },
+            maxMaxReduce: { $max: '$maxReduce' },
+          },
         },
-      },
+      ]),
     ])
 
-    // return vouchers
+    // return response
     return NextResponse.json({ vouchers, amount, chops: chops[0] }, { status: 200 })
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })

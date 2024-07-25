@@ -68,23 +68,27 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    // get amount of lesson
-    const amount = await TagModel.countDocuments(filter)
+    // get amount, get all tags, get chops
+    const [amount, tags, chops] = await Promise.all([
+      // get amount of lesson
+      TagModel.countDocuments(filter),
 
-    // get all tags from database
-    const tags = await TagModel.find(filter).sort(sort).skip(skip).limit(itemPerPage).lean()
+      // get all tags from database
+      TagModel.find(filter).sort(sort).skip(skip).limit(itemPerPage).lean(),
 
-    // get all order without filter
-    const chops = await TagModel.aggregate([
-      {
-        $group: {
-          _id: null,
-          minCourseQuantity: { $min: '$courseQuantity' },
-          maxCourseQuantity: { $max: '$courseQuantity' },
+      // get all order without filter
+      TagModel.aggregate([
+        {
+          $group: {
+            _id: null,
+            minCourseQuantity: { $min: '$courseQuantity' },
+            maxCourseQuantity: { $max: '$courseQuantity' },
+          },
         },
-      },
+      ]),
     ])
 
+    // return response
     return NextResponse.json({ tags, amount, chops: chops[0] }, { status: 200 })
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })

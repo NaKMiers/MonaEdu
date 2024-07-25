@@ -27,14 +27,12 @@ export const duration = (seconds: number, type: 'short' | 'long' = 'short') => {
 
   if (type === 'short') {
     // format: hh:mm
-    const hh = `${h < 10 ? '0' : ''}${h}h`
-    const mm = `${m < 10 ? '0' : ''}${m}m`
-    return `${h > 0 ? hh : ''}${h > 0 && m > 9 ? ':' : ''}${m > 0 ? mm : ''}`
+    const hh = `${h}h`
+    const mm = `${m}m`
+    return `${h > 0 ? hh : ''}${m > 0 ? mm : ''}`
   } else if (type === 'long') {
-    // format: 1 hour 2 minutes
-    return `${h > 0 ? `${h} hour${h > 1 ? 's' : ''}` : ''} ${
-      m > 0 ? `${m} minute${m > 1 ? 's' : ''}` : ''
-    }`
+    // format: 1 giờ 2 phút
+    return `${h > 0 ? `${h} giờ` : ''} ${m > 0 ? `${m} phút` : ''}`
   }
 }
 

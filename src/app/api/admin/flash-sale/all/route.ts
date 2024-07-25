@@ -1,12 +1,12 @@
 import { connectDatabase } from '@/config/database'
-import FlashSaleModel from '@/models/FlashSaleModel'
 import CourseModel from '@/models/CourseModel'
+import FlashSaleModel from '@/models/FlashSaleModel'
 import { searchParamsToObject } from '@/utils/handleQuery'
 import { NextRequest, NextResponse } from 'next/server'
 
 // Models: Course, Flash Sale
-import '@/models/FlashSaleModel'
 import '@/models/CourseModel'
+import '@/models/FlashSaleModel'
 
 export const dynamic = 'force-dynamic'
 
@@ -70,11 +70,14 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    // get amount of lesson
-    const amount = await FlashSaleModel.countDocuments(filter)
+    // get amount, get all flash sales
+    const [amount, flashSales] = await Promise.all([
+      // get amount of lesson
+      FlashSaleModel.countDocuments(filter),
 
-    // Get all flash sales from database
-    const flashSales = await FlashSaleModel.find(filter).sort(sort).skip(skip).limit(itemPerPage).lean()
+      // Get all flash sales from database
+      FlashSaleModel.find(filter).sort(sort).skip(skip).limit(itemPerPage).lean(),
+    ])
 
     // get courses associated with each flash sale
     const flashSalesWithCourses = await Promise.all(

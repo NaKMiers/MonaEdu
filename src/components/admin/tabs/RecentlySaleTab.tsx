@@ -1,7 +1,9 @@
 'use client'
 
 import { ICourse } from '@/models/CourseModel'
-import { getAllCoursesApi } from '@/requests'
+import { IOrder } from '@/models/OrderModel'
+import { getAllCoursesApi, getAllOrdersApi } from '@/requests'
+import { formatPrice } from '@/utils/number'
 import moment from 'moment'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -15,7 +17,7 @@ interface RecentlySaleTab {
 
 function RecentlySaleTab({ className = '' }: RecentlySaleTab) {
   // states
-  const [courses, setCourses] = useState<ICourse[]>([])
+  const [courses, setCourses] = useState<any[]>([])
   const [loading, setLoading] = useState<boolean>(false)
   const [page, setPage] = useState<number>(1)
 
@@ -27,8 +29,14 @@ function RecentlySaleTab({ className = '' }: RecentlySaleTab) {
     setLoading(true)
 
     try {
-      const query = `?limit=15&sort=begin|-1&active=true&usingUser=true&page=${page}`
-      const { courses } = await getAllCoursesApi(query)
+      const query = `?limit=15&sort=createdAt|-1&page=${page}`
+      const { orders } = await getAllOrdersApi(query)
+
+      const courses = orders
+        .map((order: IOrder) =>
+          order.items.map((course: ICourse) => ({ ...course, saleTime: order.createdAt }))
+        )
+        .flat()
 
       return courses
     } catch (err: any) {
@@ -60,63 +68,70 @@ function RecentlySaleTab({ className = '' }: RecentlySaleTab) {
 
   return (
     <div className={`${className}`}>
-      {/* {courses.map(course => {
-        const minutesAgo = moment().diff(moment(course.begin), 'minutes')
+      <div className='flex flex-col gap-2 mb-2'>
+        {courses.map((course, index) => {
+          const minutesAgo = moment().diff(moment(course.saleTime), 'minutes')
 
-        let color
-        if (minutesAgo <= 30) {
-          color = 'green-500' // Màu xanh lá
-        } else if (minutesAgo <= 60) {
-          color = 'sky-500' // Màu xanh dương
-        } else if (minutesAgo <= 120) {
-          color = 'yellow-400' // Màu vàng
-        } else {
-          color = 'default' // Màu mặc định nếu hơn 30 phút
-        }
+          let color
+          if (minutesAgo <= 30) {
+            color = 'green-500'
+          } else if (minutesAgo <= 60) {
+            color = 'sky-500'
+          } else if (minutesAgo <= 120) {
+            color = 'yellow-400'
+          } else {
+            color = 'default'
+          }
 
-        return (
-          <div className='flex gap-3 mb-4' key={course._id}>
-            <Link
-              href={`/${(course.type as IProduct).slug}`}
-              className='flex-shrink-0 flex max-w-[80px] items-start w-full no-scrollbar'>
-              <Image
-                className='aspect-video rounded-lg shadow-lg'
-                src={(course.type as IProduct)?.images[0] || '/images/not-found.jpg'}
-                height={80}
-                width={80}
-                alt='thumbnail'
-              />
-            </Link>
-            <div className='font-body tracking-wider'>
-              <p className='font-semibold text-ellipsis line-clamp-1 -mt-1.5'>
-                {(course.type as IProduct).title}
-              </p>
-              <Link
-                href={`/admin/course/all?search=${course.usingUser}`}
-                className='text-ellipsis line-clamp-1 text-sm'>
-                {course.usingUser}
-              </Link>
+          return (
+            <div
+              className='flex flex-col bg-slate-100 border border-dark rounded-lg shadow-lg p-2 text-dark'
+              key={index}
+            >
+              <div className='flex items-start gap-2.5'>
+                <Link
+                  href={`/${course.slug}`}
+                  className='aspect-video rounded-sm overflow-hidden flex-shrink-0 w-full max-w-[60px]'
+                >
+                  <Image
+                    className='w-full h-full object-cover'
+                    src={course.images[0]}
+                    width={60}
+                    height={40}
+                    alt={course.slug}
+                    loading='lazy'
+                  />
+                </Link>
+                <div className='flex flex-col'>
+                  <p className='font-body tracking-wider font-semibold -mt-1'>{course.title}</p>
+                  <p>
+                    <span className='text-xs'>Revenue</span>:{' '}
+                    <span className='font-semibold'>{formatPrice(course.revenue)}</span>
+                  </p>
+                </div>
+              </div>
               <p className={`text-ellipsis line-clamp-1 text-sm text-${color}`}>
                 {moment(course.begin).format('DD/MM/YYYY HH:mm:ss')}
               </p>
             </div>
-          </div>
-        )
-      })} */}
+          )
+        })}
+      </div>
 
-      {/* <div className='flex items-center justify-center'>
+      <div className='flex items-center justify-center'>
         <button
           className={`flex items-center justify-center font-semibold rounded-md px-3 h-8 text-sm text-white border-2 hover:bg-white hover:text-dark common-transition ${
             loading ? 'pointer-events-none bg-white border-slate-400' : 'bg-dark-100 border-dark'
           }`}
-          onClick={handleLoadMore}>
+          onClick={handleLoadMore}
+        >
           {loading ? (
             <FaCircleNotch size={18} className='animate-spin text-slate-400' />
           ) : (
             <span>({courses.length}) Load more...</span>
           )}
         </button>
-      </div> */}
+      </div>
     </div>
   )
 }

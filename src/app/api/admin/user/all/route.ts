@@ -89,21 +89,24 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    // get amount of lesson
-    const amount = await UserModel.countDocuments(filter)
+    // get amount, get all users, get chops
+    const [amount, users, chops] = await Promise.all([
+      // get amount of lesson
+      UserModel.countDocuments(filter),
 
-    // get all users from database
-    const users = await UserModel.find(filter).sort(sort).skip(skip).limit(itemPerPage).lean()
+      // get all users from database
+      UserModel.find(filter).sort(sort).skip(skip).limit(itemPerPage).lean(),
 
-    // get all order without filter
-    const chops = await UserModel.aggregate([
-      {
-        $group: {
-          _id: null,
-          minExpended: { $min: '$expended' },
-          maxExpended: { $max: '$expended' },
+      // get all order without filter
+      UserModel.aggregate([
+        {
+          $group: {
+            _id: null,
+            minExpended: { $min: '$expended' },
+            maxExpended: { $max: '$expended' },
+          },
         },
-      },
+      ]),
     ])
 
     // return response

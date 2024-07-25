@@ -1,5 +1,6 @@
 import { connectDatabase } from '@/config/database'
 import CourseModel from '@/models/CourseModel'
+import NotificationModel from '@/models/NotificationModel'
 import OrderModel from '@/models/OrderModel'
 import UserModel from '@/models/UserModel'
 import { generateOrderCode } from '@/utils'
@@ -8,11 +9,12 @@ import { notifyNewOrderToAdmin } from '@/utils/sendMail'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Models: User, Order, Course
+// Models: User, Order, Course, Category, Tag
+import '@/models/CategoryModel'
 import '@/models/CourseModel'
 import '@/models/OrderModel'
-import '@/models/UserModel'
-import NotificationModel from '@/models/NotificationModel'
+import '@/models/TagModel'
+import '@/models/TagModel'
 
 // [POST]: /order/create
 export async function POST(req: NextRequest) {
@@ -66,7 +68,10 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const courses = await CourseModel.find({ _id: { $in: itemsIds } }).lean()
+    // get courses to create order
+    const courses = await CourseModel.find({ _id: { $in: itemsIds } })
+      .populate('tags category')
+      .lean()
     const code = await generateOrderCode(5)
 
     // create new order
@@ -111,6 +116,7 @@ export async function POST(req: NextRequest) {
     // notify new order to admin
     await notifyNewOrderToAdmin(newOrder)
 
+    // return code
     return NextResponse.json({ code, message }, { status: 201 })
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })

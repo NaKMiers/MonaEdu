@@ -67,10 +67,16 @@ function LearningChapter({
       <p
         className={`${
           chapter.lessons?.some(lesson => lesson.slug === lessonSlug) ? 'text-orange-500' : 'text-white'
-        } font-semibold flex justify-between items-center py-2 px-3 cursor-pointer`}
+        } font-semibold flex justify-between items-center gap-2 py-2 px-3 cursor-pointer`}
         onClick={() => setOpen(!open)}
       >
-        {chapter.title} <FaAngleDown size={18} className={`${open ? 'rotate-180' : ''} trans-200`} />
+        {chapter.title}
+        <div className='flex items-center gap-2'>
+          <span className='text-xs'>
+            {duration(chapter.lessons?.reduce((total, lesson) => total + lesson.duration, 0) || 0)}
+          </span>{' '}
+          <FaAngleDown size={18} className={`${open ? 'rotate-180' : ''} trans-200`} />
+        </div>
       </p>
 
       <ul

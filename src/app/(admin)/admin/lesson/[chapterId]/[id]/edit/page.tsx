@@ -1,44 +1,44 @@
-'use client';
+'use client'
 
-import Input from '@/components/Input';
-import LoadingButton from '@/components/LoadingButton';
-import { useAppDispatch, useAppSelector } from '@/libs/hooks';
-import { useCallback, useEffect, useState } from 'react';
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { FaCheck, FaFile, FaInfo } from 'react-icons/fa';
+import Input from '@/components/Input'
+import LoadingButton from '@/components/LoadingButton'
+import { useAppDispatch, useAppSelector } from '@/libs/hooks'
+import { useCallback, useEffect, useState } from 'react'
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+import { FaCheck, FaFile, FaInfo } from 'react-icons/fa'
 
-import Divider from '@/components/Divider';
-import AdminHeader from '@/components/admin/AdminHeader';
-import { setLoading } from '@/libs/reducers/modalReducer';
-import { IChapter } from '@/models/ChapterModel';
-import { ICourse } from '@/models/CourseModel';
-import { ILesson } from '@/models/LessonModel';
-import { getLessonByIdApi, updateLessonApi } from '@/requests';
-import { useParams, useRouter } from 'next/navigation';
-import toast from 'react-hot-toast';
-import { FaX } from 'react-icons/fa6';
-import { MdCategory, MdOutlinePublic } from 'react-icons/md';
-import { RiCharacterRecognitionLine } from 'react-icons/ri';
-import { SiFramer } from 'react-icons/si';
+import Divider from '@/components/Divider'
+import AdminHeader from '@/components/admin/AdminHeader'
+import { setLoading } from '@/libs/reducers/modalReducer'
+import { IChapter } from '@/models/ChapterModel'
+import { ICourse } from '@/models/CourseModel'
+import { ILesson } from '@/models/LessonModel'
+import { getLessonByIdApi, updateLessonApi } from '@/requests'
+import { useParams, useRouter } from 'next/navigation'
+import toast from 'react-hot-toast'
+import { FaX } from 'react-icons/fa6'
+import { MdCategory, MdOutlinePublic } from 'react-icons/md'
+import { RiCharacterRecognitionLine } from 'react-icons/ri'
+import { SiFramer } from 'react-icons/si'
 
 export type GroupTypes = {
-  [key: string]: ICourse[];
-};
+  [key: string]: ICourse[]
+}
 
 function EditLessonPage() {
   // hooks
-  const dispatch = useAppDispatch();
-  const isLoading = useAppSelector((state) => state.modal.isLoading);
-  const { id, chapterId } = useParams<{ id: string; chapterId: string }>();
-  const router = useRouter();
+  const dispatch = useAppDispatch()
+  const isLoading = useAppSelector(state => state.modal.isLoading)
+  const { id, chapterId } = useParams<{ id: string; chapterId: string }>()
+  const router = useRouter()
 
   // states
-  const [course, setCourse] = useState<ICourse | null>(null);
-  const [chapter, setChapter] = useState<IChapter | null>(null);
-  const [sourceType, setSourceType] = useState<'file' | 'embed'>('embed');
-  const [fileUrl, setFileUrl] = useState<string>('');
-  const [embedSrc, setEmbedSrc] = useState<string>('');
-  const [file, setFile] = useState<File | null>(null);
+  const [course, setCourse] = useState<ICourse | null>(null)
+  const [chapter, setChapter] = useState<IChapter | null>(null)
+  const [sourceType, setSourceType] = useState<'file' | 'embed'>('embed')
+  const [fileUrl, setFileUrl] = useState<string>('')
+  const [embedSrc, setEmbedSrc] = useState<string>('')
+  const [file, setFile] = useState<File | null>(null)
 
   // form
   const {
@@ -61,56 +61,57 @@ function EditLessonPage() {
       active: true,
       status: 'private',
     },
-  });
+  })
 
   // get lesson by id
   useEffect(() => {
     const getLesson = async () => {
       try {
         // send request to server to get course
-        const { lesson } = await getLessonByIdApi(chapterId, id); // cache: no-store
-        setCourse(lesson.courseId);
-        setChapter(lesson.chapterId);
+        const { lesson } = await getLessonByIdApi(chapterId, id) // cache: no-store
+        console.log('lesson', lesson)
+        setCourse(lesson.courseId)
+        setChapter(lesson.chapterId)
 
         // set value to form
-        setValue('courseId', lesson.courseId._id);
-        setValue('chapterId', lesson.chapterId._id);
-        setValue('title', lesson.title);
-        setValue('price', lesson.price);
-        setValue('oldPrice', lesson.oldPrice);
-        setValue('description', lesson.description);
-        setValue('active', lesson.active);
-        setValue('status', lesson.status);
-        setValue('hours', Math.floor(lesson.duration / 3600));
-        setValue('minutes', Math.floor((lesson.duration % 3600) / 60));
-        setValue('seconds', Math.floor(((lesson.duration % 3600) % 60) / 60));
+        setValue('courseId', lesson.courseId._id)
+        setValue('chapterId', lesson.chapterId._id)
+        setValue('title', lesson.title)
+        setValue('price', lesson.price)
+        setValue('oldPrice', lesson.oldPrice)
+        setValue('description', lesson.description)
+        setValue('active', lesson.active)
+        setValue('status', lesson.status)
+        setValue('hours', Math.floor(lesson.duration / 3600))
+        setValue('minutes', Math.floor((lesson.duration % 3600) / 60))
+        setValue('seconds', (lesson.duration % 3600) % 60)
 
-        setSourceType(lesson.sourceType);
+        setSourceType(lesson.sourceType)
         if (lesson.sourceType === 'file') {
-          setFileUrl(lesson.source);
+          setFileUrl(lesson.source)
         } else if (lesson.sourceType === 'embed') {
-          setEmbedSrc(lesson.source);
+          setEmbedSrc(lesson.source)
         }
       } catch (err: any) {
-        console.log(err);
-        toast.error(err.message);
+        console.log(err)
+        toast.error(err.message)
       }
-    };
-    getLesson();
-  }, [chapterId, id, setValue, getValues]);
+    }
+    getLesson()
+  }, [chapterId, id, setValue, getValues])
 
   // validate form
   const handleValidate: SubmitHandler<FieldValues> = useCallback(
-    (data) => {
-      let isValid = true;
+    data => {
+      let isValid = true
 
       // hours must be >= 0 and <= 23
       if (data.hours < 0) {
         setError('hours', {
           type: 'manual',
           message: 'Hours must be from 0 - 23',
-        });
-        isValid = false;
+        })
+        isValid = false
       }
 
       // minutes must be >= 0 and <= 59
@@ -118,8 +119,8 @@ function EditLessonPage() {
         setError('minutes', {
           type: 'manual',
           message: 'Minutes must be from 0 - 59',
-        });
-        isValid = false;
+        })
+        isValid = false
       }
 
       // seconds must be >= 0 and <= 59
@@ -127,121 +128,121 @@ function EditLessonPage() {
         setError('seconds', {
           type: 'manual',
           message: 'Seconds must be from 0 - 59',
-        });
-        isValid = false;
+        })
+        isValid = false
       }
 
-      return isValid;
+      return isValid
     },
     [setError]
-  );
+  )
 
   // MARK: Submit
   // send request to server to add lesson
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    if (!handleValidate(data)) return;
+  const onSubmit: SubmitHandler<FieldValues> = async data => {
+    if (!handleValidate(data)) return
 
     if (!file && !fileUrl && !embedSrc) {
-      return toast.error('Please embed an url or upload a video');
+      return toast.error('Please embed an url or upload a video')
     }
 
-    dispatch(setLoading(true));
+    dispatch(setLoading(true))
 
     try {
-      const formData = new FormData();
-      formData.append('courseId', data.courseId);
-      formData.append('chapterId', data.chapterId);
-      formData.append('title', data.title);
-      formData.append('description', data.title);
-      formData.append('duration', data.hours * 3600 + data.minutes * 60 + data.seconds);
-      formData.append('active', data.active);
-      formData.append('status', data.status);
+      const formData = new FormData()
+      formData.append('courseId', data.courseId)
+      formData.append('chapterId', data.chapterId)
+      formData.append('title', data.title)
+      formData.append('description', data.title)
+      formData.append('duration', String(+data.hours * 3600 + +data.minutes * 60 + +data.seconds))
+      formData.append('active', data.active)
+      formData.append('status', data.status)
       if (sourceType === 'file' && file) {
-        formData.append('file', file);
+        formData.append('file', file)
       } else if (sourceType === 'embed' && embedSrc) {
-        formData.append('embedUrl', embedSrc);
+        formData.append('embedUrl', embedSrc)
       }
 
       // add new category here
-      const { message } = await updateLessonApi(chapterId, id, formData);
+      const { message } = await updateLessonApi(chapterId, id, formData)
 
       // show success message
-      toast.success(message);
+      toast.success(message)
 
       // redirect to back
-      router.back();
+      router.back()
     } catch (err: any) {
-      console.log(err);
-      toast.error(err.message);
+      console.log(err)
+      toast.error(err.message)
     } finally {
       // stop loading
-      dispatch(setLoading(false));
+      dispatch(setLoading(false))
     }
-  };
+  }
 
   // handle add files when user select files
   const handleAddFile = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       if (e.target.files) {
-        const file = e.target.files[0];
+        const file = e.target.files[0]
 
         // validate file type and size
         if (!file.type.startsWith('video/')) {
-          return toast.error('Please select a video');
+          return toast.error('Please select a video')
         }
         if (file.size > 200 * 1024 * 1024) {
-          return toast.error('Please select an video less than 200Mb or select an url fileUrl instead');
+          return toast.error('Please select an video less than 200Mb or select an url fileUrl instead')
         }
 
-        setFile(file);
+        setFile(file)
 
         if (fileUrl) {
-          URL.revokeObjectURL(fileUrl);
+          URL.revokeObjectURL(fileUrl)
         }
-        setFileUrl(URL.createObjectURL(file));
+        setFileUrl(URL.createObjectURL(file))
 
-        e.target.value = '';
-        e.target.files = null;
+        e.target.value = ''
+        e.target.files = null
       }
     },
     [fileUrl]
-  );
+  )
 
   // handle remove image
   const handleRemoveSource = useCallback(
     (url: string) => {
       if (sourceType === 'file') {
-        setFile(null);
-        setFileUrl('');
+        setFile(null)
+        setFileUrl('')
       } else if (sourceType === 'embed') {
-        setEmbedSrc('');
+        setEmbedSrc('')
       }
-      URL.revokeObjectURL(url);
+      URL.revokeObjectURL(url)
     },
     [setFile, setFileUrl, sourceType]
-  );
+  )
 
   const handlePaste = (e: any) => {
-    const pasteData = e.clipboardData.getData('text/plain');
+    const pasteData = e.clipboardData.getData('text/plain')
 
     if (pasteData.includes('<iframe')) {
-      const src = pasteData.match(/src="([^"]+)"/);
+      const src = pasteData.match(/src="([^"]+)"/)
 
       if (src) {
         setTimeout(() => {
-          setEmbedSrc(src[1]);
-        }, 0);
+          setEmbedSrc(src[1])
+        }, 0)
       }
     }
-  };
+  }
 
   // revoke blob url when component unmount
   useEffect(() => {
     // page title
-    document.title = 'Edit Lesson - Mona Edu';
+    document.title = 'Edit Lesson - Mona Edu'
 
-    return () => URL.revokeObjectURL(fileUrl);
-  }, [fileUrl]);
+    return () => URL.revokeObjectURL(fileUrl)
+  }, [fileUrl])
 
   return (
     <div className='max-w-1200 mx-auto'>
@@ -408,7 +409,7 @@ function EditLessonPage() {
                   type='url'
                   value={embedSrc}
                   onPaste={handlePaste}
-                  onChange={(e) => setEmbedSrc(e.target.value)}
+                  onChange={e => setEmbedSrc(e.target.value)}
                 />
 
                 {/* label */}
@@ -497,7 +498,7 @@ function EditLessonPage() {
         />
       </div>
     </div>
-  );
+  )
 }
 
-export default EditLessonPage;
+export default EditLessonPage

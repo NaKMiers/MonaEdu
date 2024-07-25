@@ -7,6 +7,7 @@ import { ICourse } from '@/models/CourseModel'
 import { memo, useState } from 'react'
 import Chapter from './Chapter'
 import Divider from './Divider'
+import { duration } from '@/utils/time'
 
 interface CourseContentProps {
   course: ICourse
@@ -27,11 +28,8 @@ function CourseContent({ course, chapters, className = '' }: CourseContentProps)
       total + (chapter.lessons?.reduce((total, lesson) => total + lesson.duration, 0) || 0),
     0
   )
-  const hours = Math.floor(totalDuration / 3600)
-  const minutes = (totalDuration % 3600) % 60
-  const duration = `${hours > 0 ? `${hours} giờ` : ''}${hours > 0 && minutes > 0 ? ':' : ''}${
-    minutes > 0 ? `${minutes} phút` : ''
-  }`
+
+  console.log('totalDuration:', totalDuration)
 
   // add to recently visit courses
   dispatch(addRecentlyVisitCourses([course]))
@@ -40,7 +38,8 @@ function CourseContent({ course, chapters, className = '' }: CourseContentProps)
     <div className={`w-full ${className}`}>
       <div className='flex flex-col gap-1 md:flex-row justify-between tracking-wider text-sm'>
         <div className='text-center md:text-left'>
-          {chapters.length} Chương - {lessonAmount} Bài giảng - {duration} tổng thời lượng
+          {chapters.length} Chương - {lessonAmount} Bài giảng - {duration(totalDuration, 'long')} tổng
+          thời lượng
         </div>
         <button
           className='font-semibold text-secondary text-right drop-shadow-md underline underline-offset-1'

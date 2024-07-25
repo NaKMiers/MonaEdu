@@ -6,7 +6,7 @@ import { addCartItem } from '@/libs/reducers/cartReducer'
 import { setPageLoading } from '@/libs/reducers/modalReducer'
 import { ICourse } from '@/models/CourseModel'
 import { IFlashSale } from '@/models/FlashSaleModel'
-import { addToCartApi } from '@/requests'
+import { addToCartApi, likeCourseApi } from '@/requests'
 import { applyFlashSalePrice, countPercent } from '@/utils/number'
 import { styled, Tooltip, tooltipClasses, TooltipProps } from '@mui/material'
 import { useSession } from 'next-auth/react'
@@ -15,13 +15,15 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { memo, useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
-import { FaCartPlus } from 'react-icons/fa'
+import { FaCartPlus, FaRegThumbsUp, FaShareAlt } from 'react-icons/fa'
 import { HiDotsVertical } from 'react-icons/hi'
 import { IoTimer } from 'react-icons/io5'
 import { MdVideoLibrary } from 'react-icons/md'
 import { RiDonutChartFill } from 'react-icons/ri'
 import Divider from './Divider'
 import Price from './Price'
+import { FacebookShareButton } from 'react-share'
+import { PiStudentBold } from 'react-icons/pi'
 
 interface CourseCardProps {
   course: ICourse
@@ -41,7 +43,7 @@ const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
   },
 }))
 
-function CourseCard({ course, hideBadge, className = '' }: CourseCardProps) {
+function CourseCard({ course: data, hideBadge, className = '' }: CourseCardProps) {
   // hooks
   const dispatch = useAppDispatch()
   const { data: session } = useSession()
@@ -49,6 +51,7 @@ function CourseCard({ course, hideBadge, className = '' }: CourseCardProps) {
   const router = useRouter()
 
   // states
+  const [course, setCourse] = useState<ICourse>(data)
   const [showActions, setShowActions] = useState<boolean>(false)
   const [showActions2, setShowActions2] = useState<boolean>(false)
 
@@ -119,6 +122,25 @@ function CourseCard({ course, hideBadge, className = '' }: CourseCardProps) {
     }
   }, [course._id, dispatch, course.slug, router, curUser?._id])
 
+  // like course
+  const handleLike = useCallback(async () => {
+    if (!curUser?._id) return
+    const value = !course.likes.includes(curUser?._id) ? 'y' : 'n'
+
+    try {
+      // send request to like / dislike comment
+      await likeCourseApi(course._id, value)
+    } catch (err: any) {
+      toast.error(err.message)
+      console.log(err)
+    }
+
+    setCourse(prev => ({
+      ...prev,
+      likes: value === 'y' ? [...prev.likes, curUser._id] : prev.likes.filter(id => id !== curUser._id),
+    }))
+  }, [course._id, curUser?._id, course.likes])
+
   return (
     <HtmlTooltip
       placement='right-start'
@@ -129,15 +151,35 @@ function CourseCard({ course, hideBadge, className = '' }: CourseCardProps) {
 
           <Divider size={2} />
 
-          <p className='flex items-center flex-wrap'>
-            <MdVideoLibrary size={16} className='mr-3' />
-            <span>12 chương, 52 bài giảng</span>
-          </p>
-          <p className='flex items-center flex-wrap'>
-            <IoTimer size={16} className='mr-3' />
-            <span className='mr-1'>Thời lượng: </span>
-            <span>12 giờ 48 phút</span>
-          </p>
+          <div className='flex items-center flex-wrap gap-3'>
+            <button className='flex justify-center items-center gap-1.5 group'>
+              <FaRegThumbsUp
+                size={16}
+                className={`${
+                  !course.likes.includes(curUser?._id)
+                    ? 'text-dark group-hover:text-rose-500'
+                    : 'text-rose-500 group-hover:text-dark'
+                } trans-200`}
+                onClick={handleLike}
+              />
+              <span className='font-semibold text-base'>{course.likes.length}</span>{' '}
+            </button>
+
+            <div className='w-px h-5 bg-slate-300 rounded-lg' />
+
+            <div className='flex justify-center items-center gap-1.5'>
+              <PiStudentBold size={16} />
+              <span className='font-semibold text-base'>{course.joined}</span>
+            </div>
+
+            <div className='w-px h-5 bg-slate-300 rounded-lg' />
+
+            <div className='flex justify-center items-center'>
+              <FacebookShareButton url={`https://monaedu.com/${course.slug}`} hashtag='#mona'>
+                <FaShareAlt size={16} />
+              </FacebookShareButton>
+            </div>
+          </div>
 
           <Divider size={2} />
 
