@@ -112,7 +112,7 @@ function AllLessons() {
 
         <div className='flex flex-col h-full relative z-10'>
           <div className='flex items-center gap-4'>
-            <Link href='/' prefetch={false} className='shrink-0 trans-200'>
+            <Link href='/' className='shrink-0 trans-200'>
               <Image
                 className='aspect-square rounded-md'
                 src='/images/logo.png'
@@ -122,24 +122,30 @@ function AllLessons() {
               />
             </Link>
 
-            <div className='relative overflow-hidden rounded-md w-full h-6 shadow-sm shadow-primary'>
-              <div
-                className='h-full bg-primary flex items-center'
-                style={{
-                  width: `${
-                    curUser?.courses.find((course: any) => course.course === courseId)?.progress || 0
-                  }%`,
-                }}
-              />
-              <div className='absolute flex items-center justify-between top-1/2 px-4 left-0 right-0 -translate-y-1/2 text-orange-400 text-sm font-body tracking-wider font-semibold drop-shadow-sm'>
-                <span>
-                  {curUser?.courses.find((course: any) => course.course === courseId)?.progress || 0}%
-                </span>
+            {isEnrolled ? (
+              <div className='relative overflow-hidden rounded-md w-full h-6 shadow-sm shadow-primary'>
+                <div
+                  className='h-full bg-primary flex items-center'
+                  style={{
+                    width: `${
+                      curUser?.courses.find((course: any) => course.course === courseId)?.progress || 0
+                    }%`,
+                  }}
+                />
+                <div className='absolute flex items-center justify-between top-1/2 px-4 left-0 right-0 -translate-y-1/2 text-orange-400 text-sm font-body tracking-wider font-semibold drop-shadow-sm'>
+                  <span>
+                    {curUser?.courses.find((course: any) => course.course === courseId)?.progress || 0}%
+                  </span>
+                </div>
               </div>
-            </div>
+            ) : (
+              <Link href='/' className='text-2xl font-bold text-orange-500 drop-shadow-md -ml-1.5'>
+                MonaEdu
+              </Link>
+            )}
           </div>
 
-          <Divider size={2} />
+          <Divider size={3} />
 
           <div className='relative z-10 flex items-center justify-between gap-21 rounded-lg text-2xl font-semibold h-[40px] text-white'>
             <span>Các bài giảng</span>

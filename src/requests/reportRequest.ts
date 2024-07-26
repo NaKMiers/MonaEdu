@@ -1,9 +1,14 @@
 // Report -------------------------------------
 
-// [GET]
-export const getAllReportsApi = async (query: string = '') => {
+// [GET]: /admin/report/all
+export const getAllReportsApi = async (
+  query: string = '',
+  option: RequestInit = {
+    cache: 'no-store',
+  }
+) => {
   // no cache
-  const res = await fetch(`/api/admin/report/all${query}`, { cache: 'no-store' })
+  const res = await fetch(`/api/admin/report/all${query}`, option)
 
   // check status
   if (!res.ok) {
@@ -13,7 +18,7 @@ export const getAllReportsApi = async (query: string = '') => {
   return await res.json()
 }
 
-// [POST]
+// [POST]: /report/add
 export const addReportApi = async (data: any) => {
   const res = await fetch('/api/report/add', {
     method: 'POST',
@@ -28,7 +33,7 @@ export const addReportApi = async (data: any) => {
   return await res.json()
 }
 
-// [DELETE]
+// [DELETE]: /admin/report/delete
 export const deleteReportsApi = async (ids: string[]) => {
   const res = await fetch('/api/admin/report/delete', {
     method: 'DELETE',

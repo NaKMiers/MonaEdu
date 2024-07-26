@@ -26,7 +26,7 @@ function LessonItemOfChapter({
 }: LessonItemOfChapterProps) {
   // hooks
   const dispatch = useAppDispatch()
-  const learningLesson = useAppSelector((state) => state.learning.learningLesson)
+  const learningLesson = useAppSelector(state => state.learning.learningLesson)
 
   // states
   const [lesson, setLesson] = useState<ILesson>(data)
@@ -45,10 +45,10 @@ function LessonItemOfChapter({
       }
     }
 
-    if (!lesson.progress?._id && lessonSlug === lesson.slug) {
+    if (!lesson.progress?._id && lessonSlug === lesson.slug && isEnrolled) {
       initProgress()
     }
-  }, [dispatch, lesson, lessonSlug])
+  }, [dispatch, lessonSlug, isEnrolled, lesson])
 
   // using learning lesson instead of data from parent component when current lesson is learning
   useEffect(() => {

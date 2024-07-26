@@ -290,17 +290,17 @@ function LessonPage({
           <Divider size={4} />
 
           {/* Category */}
-          <Link
-            href={`/categories/${(lesson.courseId as any)?.category?.slug}`}
-            className='rounded-3xl shadow-lg bg-primary text-slate-800 font-semibold uppercase px-3 py-2 text-xs md:text-sm text-nowrap'
-          >
-            {(lesson.courseId as any)?.category?.title}
-          </Link>
-
-          <Divider size={12} />
+          {(lesson.courseId as any)?.category && (
+            <Link
+              href={`/categories/${(lesson.courseId as any)?.category?.slug}`}
+              className='rounded-3xl shadow-lg bg-primary text-slate-800 font-semibold uppercase px-3 py-2 text-xs md:text-sm text-nowrap'
+            >
+              {(lesson.courseId as any)?.category?.title}
+            </Link>
+          )}
 
           {/* Description */}
-          <div dangerouslySetInnerHTML={{ __html: lesson?.description || '' }} />
+          <div className='mt-8' dangerouslySetInnerHTML={{ __html: lesson?.description || '' }} />
 
           <Divider size={12} />
 

@@ -24,12 +24,12 @@ const transporter = nodeMailer.createTransport({
 export async function sendMail(to: string | string[], subject: string, html: string) {
   console.log('- Send Mail -')
 
-  // await transporter.sendMail({
-  //   from: 'MonaEdu <no-reply@monaedu.com>',
-  //   to: to,
-  //   subject: subject,
-  //   html: html,
-  // })
+  await transporter.sendMail({
+    from: 'MonaEdu <no-reply@monaedu.com>',
+    to: to,
+    subject: subject,
+    html: html,
+  })
 }
 
 // send order notification to admin

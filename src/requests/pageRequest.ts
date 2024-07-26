@@ -1,9 +1,12 @@
 // Page -------------------------------------
 
-// [GET]
-export const getHomePageApi = async () => {
+// [GET]: /
+export const getHomePageApi = async (
+  query: string = '',
+  option: RequestInit = { next: { revalidate: 0 } }
+) => {
   // revalidate every 0.5 minute
-  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api`, { next: { revalidate: 0 } })
+  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api${query}`, option)
 
   // check status
   if (!res.ok) {
@@ -13,12 +16,16 @@ export const getHomePageApi = async () => {
   return await res.json()
 }
 
-// [GET]
-export const getCoursePageApi = async (slug: string) => {
-  // no cache
-  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/course/${slug}`, {
+// [GET]: /course/:slug
+export const getCoursePageApi = async (
+  slug: string,
+  query: string = '',
+  option: RequestInit = {
     cache: 'no-store',
-  })
+  }
+) => {
+  // no cache
+  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/course/${slug}${query}`, option)
 
   // check status
   if (!res.ok) {
@@ -28,10 +35,15 @@ export const getCoursePageApi = async (slug: string) => {
   return await res.json()
 }
 
-// [GET]
-export const getTagsPageApi = async (query: string = '') => {
+// [GET]: /tag
+export const getTagsPageApi = async (
+  query: string = '',
+  option: RequestInit = {
+    cache: 'no-store',
+  }
+) => {
   // no cache for filter
-  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/tag${query}`, { cache: 'no-store' })
+  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/tag${query}`, option)
 
   // check status
   if (!res.ok) {
@@ -42,11 +54,15 @@ export const getTagsPageApi = async (query: string = '') => {
 }
 
 // [GET]: /categories/[...slug]
-export const getCategoryPageApi = async (slug: string, query: string = '') => {
-  // no cache for filter
-  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/category/${slug}${query}`, {
+export const getCategoryPageApi = async (
+  slug: string,
+  query: string = '',
+  option: RequestInit = {
     cache: 'no-store',
-  })
+  }
+) => {
+  // no cache for filter
+  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/category/${slug}${query}`, option)
 
   // check status
   if (!res.ok) {
@@ -56,12 +72,15 @@ export const getCategoryPageApi = async (slug: string, query: string = '') => {
   return await res.json()
 }
 
-// [GET]
-export const getCategoriesPageApi = async (query: string = '') => {
-  // no cache for filter
-  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/category${query}`, {
+// [GET]: /category
+export const getCategoriesPageApi = async (
+  query: string = '',
+  option: RequestInit = {
     cache: 'no-store',
-  })
+  }
+) => {
+  // no cache for filter
+  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/category${query}`, option)
 
   // check status
   if (!res.ok) {
@@ -71,12 +90,15 @@ export const getCategoriesPageApi = async (query: string = '') => {
   return await res.json()
 }
 
-// [GET]
-export const getFlashSalePageApi = async (query: string = '') => {
-  // no cache for filter
-  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/flash-sale${query}`, {
+// [GET]: /flash-sale
+export const getFlashSalePageApi = async (
+  query: string = '',
+  option: RequestInit = {
     cache: 'no-store',
-  })
+  }
+) => {
+  // no cache for filter
+  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/flash-sale${query}`, option)
 
   // check status
   if (!res.ok) {
@@ -86,12 +108,15 @@ export const getFlashSalePageApi = async (query: string = '') => {
   return await res.json()
 }
 
-// [GET]
-export const getBestSellerPageApi = async (query: string = '') => {
-  // no cache for filter
-  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/best-seller${query}`, {
+// [GET]: /best-seller
+export const getBestSellerPageApi = async (
+  query: string = '',
+  option: RequestInit = {
     cache: 'no-store',
-  })
+  }
+) => {
+  // no cache for filter
+  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/best-seller${query}`, option)
 
   // check status
   if (!res.ok) {
@@ -101,12 +126,15 @@ export const getBestSellerPageApi = async (query: string = '') => {
   return await res.json()
 }
 
-// [GET]
-export const getSearchPageApi = async (query: string = '') => {
-  // no cache for filter
-  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/search${query}`, {
+// [GET]: /search
+export const getSearchPageApi = async (
+  query: string = '',
+  option: RequestInit = {
     cache: 'no-store',
-  })
+  }
+) => {
+  // no cache for filter
+  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/search${query}`, option)
 
   // check status
   if (!res.ok) {
@@ -116,7 +144,7 @@ export const getSearchPageApi = async (query: string = '') => {
   return await res.json()
 }
 
-// [GET]
+// [GET]: /question
 export const getForumPageApi = async (query: string = '') => {
   // no cache for filter
   const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/question${query}`, {
@@ -131,7 +159,7 @@ export const getForumPageApi = async (query: string = '') => {
   return await res.json()
 }
 
-// [GET]
+// [GET]: /question/:slug/detail
 export const getQuestionDetailPage = async (slug: string, query: string = '') => {
   // no cache for filter
   const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/question/${slug}/detail${query}`, {

@@ -1,4 +1,4 @@
-// [GET]
+// [GET]: /admin/order/all
 export const getAllOrdersApi = async (
   query: string = '',
   option: RequestInit = { cache: 'no-store' }
@@ -14,25 +14,15 @@ export const getAllOrdersApi = async (
   return await res.json()
 }
 
-// [GET]
-export const getOrderHistoryApi = async (query: string) => {
-  // no-store to bypass cache
-  const res = await fetch(`/api/user/order-history${query}`, {
+// [GET]: /user/order-history
+export const getOrderHistoryApi = async (
+  query: string = '',
+  option: RequestInit = {
     cache: 'no-store',
-  })
-
-  // check status
-  if (!res.ok) {
-    throw new Error((await res.json()).message)
   }
-
-  return await res.json()
-}
-
-// [GET]
-export const getOrderApi = async (code: string) => {
+) => {
   // no-store to bypass cache
-  const res = await fetch(`/api/order/${code}`, { cache: 'no-store' })
+  const res = await fetch(`/api/user/order-history${query}`, option)
 
   // check status
   if (!res.ok) {
@@ -42,12 +32,34 @@ export const getOrderApi = async (code: string) => {
   return await res.json()
 }
 
-// [GET]
-export const generateOrderCodeApi = async () => {
+// [GET]: /order/:code
+export const getOrderApi = async (
+  code: string,
+  query: string = '',
+  option: RequestInit = {
+    cache: 'no-store',
+  }
+) => {
+  // no-store to bypass cache
+  const res = await fetch(`/api/order/${code}${query}`, option)
+
+  // check status
+  if (!res.ok) {
+    throw new Error((await res.json()).message)
+  }
+
+  return await res.json()
+}
+
+// [GET]: /order/generate-order-code
+export const generateOrderCodeApi = async (
+  query: string = '',
+  option: RequestInit = {
+    cache: 'no-store',
+  }
+) => {
   // no cache
-  const res = await fetch('/api/order/generate-order-code', {
-    cache: 'no-store',
-  })
+  const res = await fetch(`/api/order/generate-order-code${query}`, option)
 
   // check status
   if (!res.ok) {
@@ -57,7 +69,7 @@ export const generateOrderCodeApi = async () => {
   return await res.json()
 }
 
-// [POST]
+// [POST]: /order/create
 export const createOrderApi = async ({
   total,
   voucher,
@@ -93,7 +105,7 @@ export const createOrderApi = async ({
   return await res.json()
 }
 
-// [PUT]
+// [PUT]: /admin/order/:orderId/edit
 export const editOrderApi = async (orderId: string, data: any) => {
   const res = await fetch(`/api/admin/order/${orderId}/edit`, {
     method: 'PUT',
@@ -108,7 +120,7 @@ export const editOrderApi = async (orderId: string, data: any) => {
   return await res.json()
 }
 
-// [PATCH]
+// [PATCH]: /admin/order/:orderId/deliver
 export const deliverOrderApi = async (orderId: string, message: string = '') => {
   const res = await fetch(`/api/admin/order/${orderId}/deliver`, {
     method: 'PATCH',
@@ -123,7 +135,7 @@ export const deliverOrderApi = async (orderId: string, message: string = '') => 
   return await res.json()
 }
 
-// [PATCH]
+// [PATCH]: /admin/order/:orderId/re-deliver
 export const reDeliverOrder = async (orderId: string, message: string = '') => {
   const res = await fetch(`/api/admin/order/${orderId}/re-deliver`, {
     method: 'PATCH',
@@ -138,7 +150,7 @@ export const reDeliverOrder = async (orderId: string, message: string = '') => {
   return await res.json()
 }
 
-// [PATCH]
+// [PATCH]: /admin/order/cancel
 export const cancelOrdersApi = async (ids: string[]) => {
   const res = await fetch('/api/admin/order/cancel', {
     method: 'PATCH',
@@ -153,7 +165,7 @@ export const cancelOrdersApi = async (ids: string[]) => {
   return await res.json()
 }
 
-// [DELETE]
+// [DELETE]: /admin/order/delete
 export const deletedOrdersApi = async (ids: string[]) => {
   const res = await fetch('/api/admin/order/delete', {
     method: 'DELETE',

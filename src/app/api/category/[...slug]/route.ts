@@ -41,7 +41,7 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
       category: { $in: categoryIds },
       active: true,
     }
-    let sort: { [key: string]: any } = {} // default sort
+    let sort: { [key: string]: any } = { updatedAt: -1 } // default sort
 
     // build filter & sort
     for (const key in params) {
@@ -120,6 +120,8 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
 
         // Special Sort Cases ---------------------
         if (key === 'sort') {
+          delete sort.updatedAt
+
           if (params[key][0] === 'popular') {
             sort.joined = -1
             continue
@@ -136,7 +138,6 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
           }
 
           if (params[key][0] === 'most-favorite') {
-            sort.createdAt = -1
             sort = { likesCount: -1 }
             continue
           }

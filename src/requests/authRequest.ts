@@ -1,6 +1,6 @@
 // Auth -------------------------------------
 
-// [POST]
+// [POST]: /auth/register
 export const registerApi = async (data: any) => {
   const res = await fetch('/api/auth/register', {
     method: 'POST',
@@ -15,7 +15,7 @@ export const registerApi = async (data: any) => {
   return await res.json()
 }
 
-// [POST]
+// [POST]: /auth/forgot-password
 export const forgotPasswordApi = async (data: any) => {
   const res = await fetch('/api/auth/forgot-password', {
     method: 'POST',
@@ -30,7 +30,7 @@ export const forgotPasswordApi = async (data: any) => {
   return await res.json()
 }
 
-// [PATCH]
+// [PATCH]: /auth/reset-password?token=...
 export const resetPassword = async (token: string, newPassword: string) => {
   const res = await fetch(`/api/auth/reset-password?token=${token}`, {
     method: 'PATCH',
@@ -45,7 +45,7 @@ export const resetPassword = async (token: string, newPassword: string) => {
   return await res.json()
 }
 
-// [POST]
+// [POST]: /auth/verify-email
 export const verifyEmailApi = async (email: string, token: string = '') => {
   const res = await fetch('/api/auth/verify-email' + (token ? '?token=' + token : ''), {
     method: 'POST',
@@ -60,7 +60,7 @@ export const verifyEmailApi = async (email: string, token: string = '') => {
   return await res.json()
 }
 
-// [POST]
+// [POST]: /auth/verify-phone
 export const verifyPhoneApi = async (phone: string) => {
   const res = await fetch('/api/auth/verify-phone', {
     method: 'POST',

@@ -1,9 +1,14 @@
-// Voucher
+// Voucher -------------------------------------
 
-// [GET]
-export const getAllVouchersApi = async (query: string = '') => {
+// [GET]: /admin/voucher/all
+export const getAllVouchersApi = async (
+  query: string = '',
+  option: RequestInit = {
+    cache: 'no-store',
+  }
+) => {
   // no cache
-  const res = await fetch(`/api/admin/voucher/all${query}`, { cache: 'no-store' })
+  const res = await fetch(`/api/admin/voucher/all${query}`, option)
 
   // check status
   if (!res.ok) {
@@ -13,10 +18,16 @@ export const getAllVouchersApi = async (query: string = '') => {
   return await res.json()
 }
 
-// [GET]
-export const getVoucherApi = async (code: string) => {
+// [GET]: /admin/voucher/:code
+export const getVoucherApi = async (
+  code: string,
+  query: string = '',
+  option: RequestInit = {
+    cache: 'no-store',
+  }
+) => {
   // no cache
-  const res = await fetch(`/api/admin/voucher/${code}`, { cache: 'no-store' })
+  const res = await fetch(`/api/admin/voucher/${code}${query}`, option)
 
   // check status
   if (!res.ok) {
@@ -26,7 +37,7 @@ export const getVoucherApi = async (code: string) => {
   return await res.json()
 }
 
-// [POST]
+// [POST]: /admin/voucher/add
 export const addVoucherApi = async (data: any) => {
   const res = await fetch('/api/admin/voucher/add', {
     method: 'POST',
@@ -41,7 +52,7 @@ export const addVoucherApi = async (data: any) => {
   return await res.json()
 }
 
-// [PATCH]
+// [PATCH]: /admin/voucher/activate
 export const activateVouchersApi = async (ids: string[], value: boolean) => {
   const res = await fetch('/api/admin/voucher/activate', {
     method: 'PATCH',
@@ -56,7 +67,7 @@ export const activateVouchersApi = async (ids: string[], value: boolean) => {
   return await res.json()
 }
 
-// [POST]
+// [POST]: /voucher/:code/apply
 export const applyVoucherApi = async (code: string, email: string, subTotal: number) => {
   const res = await fetch(`/api/voucher/${code}/apply`, {
     method: 'POST',
@@ -74,7 +85,7 @@ export const applyVoucherApi = async (code: string, email: string, subTotal: num
   return await res.json()
 }
 
-// [PUT]
+// [PUT]: /admin/voucher/:code/edit
 export const updateVoucherApi = async (code: string, data: any) => {
   const res = await fetch(`/api/admin/voucher/${code}/edit`, {
     method: 'PUT',
@@ -89,7 +100,7 @@ export const updateVoucherApi = async (code: string, data: any) => {
   return await res.json()
 }
 
-// [DELETE]
+// [DELETE]: /admin/voucher/delete
 export const deleteVouchersApi = async (ids: string[]) => {
   const res = await fetch('/api/admin/voucher/delete', {
     method: 'DELETE',

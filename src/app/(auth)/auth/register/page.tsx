@@ -41,7 +41,7 @@ function RegisterPage() {
 
   // validate form
   const handleValidate: SubmitHandler<FieldValues> = useCallback(
-    (data) => {
+    data => {
       let isValid = true
 
       // username must be at least 5 characters
@@ -61,7 +61,7 @@ function RegisterPage() {
         })
         isValid = false
       } else {
-        if (commonEmailMistakes.some((mistake) => data.email.toLowerCase().includes(mistake))) {
+        if (commonEmailMistakes.some(mistake => data.email.toLowerCase().includes(mistake))) {
           setError('email', { message: 'Email không hợp lệ' })
           isValid = false
         }
@@ -84,7 +84,7 @@ function RegisterPage() {
 
   // MARK: Register Submition
   const onSubmit: SubmitHandler<FieldValues> = useCallback(
-    async (data) => {
+    async data => {
       // validate form
       if (!handleValidate(data)) return
 
@@ -306,7 +306,7 @@ function RegisterPage() {
           <p className='font-semibold text-center text-light'>
             Đã có tài khoản?{' '}
             <Link href='/auth/login' className='underline underline-offset-2'>
-              Login
+              Đăng nhập ngay
             </Link>
           </p>
 

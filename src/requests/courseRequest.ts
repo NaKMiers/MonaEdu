@@ -1,6 +1,6 @@
 // Course -------------------------------------
 
-// [GET]
+// [GET]: /admin/course/all
 export const getAllCoursesApi = async (
   query: string = '',
   option: RequestInit = { cache: 'no-store' }
@@ -16,7 +16,7 @@ export const getAllCoursesApi = async (
   return await res.json()
 }
 
-// [GET]
+// [GET]: /course
 export const getCoursesApi = async (query: string = '', option: RequestInit = { cache: 'no-store' }) => {
   // no-store to avoid cache
   const res = await fetch(`/api/course${query}`, option)
@@ -29,10 +29,15 @@ export const getCoursesApi = async (query: string = '', option: RequestInit = { 
   return await res.json()
 }
 
-// [GET]
-export const getForceAllCoursesApi = async () => {
+// [GET]: /admin/course/force-all
+export const getForceAllCoursesApi = async (
+  query: string = '',
+  option: RequestInit = {
+    cache: 'no-store',
+  }
+) => {
   // no-store to avoid cache
-  const res = await fetch(`/api/admin/course/force-all`, { cache: 'no-store' })
+  const res = await fetch(`/api/admin/course/force-all${query}`, option)
 
   // check status
   if (!res.ok) {
@@ -42,10 +47,16 @@ export const getForceAllCoursesApi = async () => {
   return await res.json()
 }
 
-// [GET]
-export const getCourseApi = async (id: string) => {
+// [GET]: /admin/course/:id
+export const getCourseApi = async (
+  id: string,
+  query: string = '',
+  option: RequestInit = {
+    cache: 'no-store',
+  }
+) => {
   // no-cache
-  const res = await fetch(`/api/admin/course/${id}`, { cache: 'no-store' })
+  const res = await fetch(`/api/admin/course/${id}${query}`, option)
 
   // check status
   if (!res.ok) {
@@ -55,23 +66,16 @@ export const getCourseApi = async (id: string) => {
   return await res.json()
 }
 
-// [GET]
-export const getSingleCourseApi = async (slug: string) => {
-  // no-cache
-  const res = await fetch(`/api/course/${slug}/single`, { cache: 'no-store' })
-
-  // check status
-  if (!res.ok) {
-    throw new Error((await res.json()).message)
+// [GET]: /course/:slug/single
+export const getSingleCourseApi = async (
+  slug: string,
+  query: string = '',
+  option: RequestInit = {
+    cache: 'no-store',
   }
-
-  return await res.json()
-}
-
-// [GET]: /api/course/my-courses
-export const getMyCoursesApi = async () => {
+) => {
   // no-cache
-  const res = await fetch(`/api/course/my-courses`, { cache: 'no-store' })
+  const res = await fetch(`/api/course/${slug}/single${query}`, option)
 
   // check status
   if (!res.ok) {
@@ -82,9 +86,14 @@ export const getMyCoursesApi = async () => {
 }
 
 // [GET]: /course/my-courses
-export const getBestSellerCoursesApi = async () => {
-  // revalidate every 1 hour
-  const res = await fetch('/api/course/best-seller', { next: { revalidate: 0 } })
+export const getMyCoursesApi = async (
+  query: string = '',
+  option: RequestInit = {
+    cache: 'no-store',
+  }
+) => {
+  // no-cache
+  const res = await fetch(`/api/course/my-courses${query}`, option)
 
   // check status
   if (!res.ok) {
@@ -94,10 +103,33 @@ export const getBestSellerCoursesApi = async () => {
   return await res.json()
 }
 
-// [GET]
-export const searchCoursesApi = async (search: string) => {
+// [GET]: /course/best-seller
+export const getBestSellerCoursesApi = async (
+  query: string = '',
+  option: RequestInit = {
+    cache: 'no-store',
+  }
+) => {
+  // revalidate every 1 hour
+  const res = await fetch(`/api/course/best-seller${query}`, option)
+
+  // check status
+  if (!res.ok) {
+    throw new Error((await res.json()).message)
+  }
+
+  return await res.json()
+}
+
+// [GET]: /course/search?search=...
+export const searchCoursesApi = async (
+  search: string,
+  option: RequestInit = {
+    cache: 'no-store',
+  }
+) => {
   // no-cache
-  const res = await fetch(`/api/course/search?search=${search}`, { cache: 'no-store' })
+  const res = await fetch(`/api/course/search?search=${search}`, option)
 
   // check status
   if (!res.ok) {
@@ -108,8 +140,13 @@ export const searchCoursesApi = async (search: string) => {
 }
 
 // [GET]: /course/suggested-courses
-export const getSuggestedCoursesApi = async (query: string = '') => {
-  const res = await fetch(`/api/course/suggested${query}`, { next: { revalidate: 0 } })
+export const getSuggestedCoursesApi = async (
+  query: string = '',
+  option: RequestInit = {
+    cache: 'no-store',
+  }
+) => {
+  const res = await fetch(`/api/course/suggested${query}`, option)
 
   // check status
   if (!res.ok) {
@@ -119,7 +156,7 @@ export const getSuggestedCoursesApi = async (query: string = '') => {
   return await res.json()
 }
 
-// [POST]
+// [POST]: /admin/course/add
 export const addCourseApi = async (data: FormData) => {
   const res = await fetch('/api/admin/course/add', {
     method: 'POST',
@@ -134,7 +171,7 @@ export const addCourseApi = async (data: FormData) => {
   return await res.json()
 }
 
-// [PATCH]
+// [PATCH]: /admin/course/activate
 export const activateCoursesApi = async (ids: string[], value: boolean) => {
   const res = await fetch('/api/admin/course/activate', {
     method: 'PATCH',
@@ -149,7 +186,7 @@ export const activateCoursesApi = async (ids: string[], value: boolean) => {
   return await res.json()
 }
 
-// [PATCH]
+// [PATCH]: /admin/course/boot
 export const bootCoursesApi = async (ids: string[], value: boolean) => {
   const res = await fetch('/api/admin/course/boot', {
     method: 'PATCH',
@@ -164,7 +201,7 @@ export const bootCoursesApi = async (ids: string[], value: boolean) => {
   return await res.json()
 }
 
-// [PATCH]
+// [PATCH]: /course/:id/like
 export const likeCourseApi = async (id: string, value: 'y' | 'n') => {
   const res = await fetch(`/api/course/${id}/like`, {
     method: 'PATCH',
@@ -179,7 +216,7 @@ export const likeCourseApi = async (id: string, value: 'y' | 'n') => {
   return await res.json()
 }
 
-// [PATCH]
+// [PATCH]: /admin/course/remove-flash-sales
 export const removeApplyingFlashSalesApi = async (ids: string[]) => {
   const res = await fetch('/api/admin/course/remove-flash-sales', {
     method: 'PATCH',
@@ -194,7 +231,7 @@ export const removeApplyingFlashSalesApi = async (ids: string[]) => {
   return await res.json()
 }
 
-// [PATCH]
+// [PATCH]: /admin/course/:id/edit-property/:field
 export const updateCoursePropertyApi = async (id: string, field: string, value: any) => {
   const res = await fetch(`/api/admin/course/${id}/edit-property/${field}`, {
     method: 'PATCH',
@@ -209,22 +246,7 @@ export const updateCoursePropertyApi = async (id: string, field: string, value: 
   return await res.json()
 }
 
-// [PATCH]
-export const syncCoursesApi = async (ids: string[], all: boolean = false) => {
-  const res = await fetch(`/api/admin/course/sync`, {
-    method: 'PATCH',
-    body: JSON.stringify({ all, ids }),
-  })
-
-  // check status
-  if (!res.ok) {
-    throw new Error((await res.json()).message)
-  }
-
-  return await res.json()
-}
-
-// [PUT]
+// [PUT]: /admin/course/:id/edit
 export const updateCourseApi = async (id: string, data: FormData) => {
   const res = await fetch(`/api/admin/course/${id}/edit`, {
     method: 'PUT',
@@ -239,7 +261,7 @@ export const updateCourseApi = async (id: string, data: FormData) => {
   return await res.json()
 }
 
-// [DELETE]
+// [DELETE]: /admin/course/delete
 export const deleteCoursesApi = async (ids: string[]) => {
   const res = await fetch('/api/admin/course/delete', {
     method: 'DELETE',

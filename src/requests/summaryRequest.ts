@@ -1,6 +1,6 @@
 // Summary -------------------------------------
 
-// [GET]
+// [GET]: /admin/summary/all
 export const getAllCollaboratorsApi = async (query: string = '') => {
   // no-store to bypass cache
   const res = await fetch(`/api/admin/summary/all${query}`, { cache: 'no-store' })
@@ -13,7 +13,7 @@ export const getAllCollaboratorsApi = async (query: string = '') => {
   return await res.json()
 }
 
-// [GET]
+// [GET]: /admin/summary/:id
 export const sendSummaryApi = async (ids: string[]) => {
   const res = await fetch('/api/admin/summary/send', {
     method: 'POST',

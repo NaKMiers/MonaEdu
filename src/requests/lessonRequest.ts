@@ -1,11 +1,15 @@
 // Lesson -------------------------------------
 
-// [GET]
-export const getAllChapterLessonsApi = async (chapterId: string, query: string = '') => {
-  // no-store to bypass cache
-  const res = await fetch(`/api/admin/lesson/${chapterId}/all${query}`, {
+// [GET]: /admin/lesson/:chapterId/all
+export const getAllChapterLessonsApi = async (
+  chapterId: string,
+  query: string = '',
+  option: RequestInit = {
     cache: 'no-store',
-  })
+  }
+) => {
+  // no-store to bypass cache
+  const res = await fetch(`/api/admin/lesson/${chapterId}/all${query}`, option)
 
   // check status
   if (!res.ok) {
@@ -15,10 +19,16 @@ export const getAllChapterLessonsApi = async (chapterId: string, query: string =
   return await res.json()
 }
 
-// [GET]: /api/lesson/:slug
-export const getLessonApi = async (slug: string) => {
+// [GET]: /lesson/:slug
+export const getLessonApi = async (
+  slug: string,
+  query: string = '',
+  option: RequestInit = {
+    cache: 'no-store',
+  }
+) => {
   // no-cache
-  const res = await fetch(`/api/lesson/${slug}`, { cache: 'no-store' })
+  const res = await fetch(`/api/lesson/${slug}${query}`, option)
 
   // check status
   if (!res.ok) {
@@ -28,9 +38,16 @@ export const getLessonApi = async (slug: string) => {
   return await res.json()
 }
 
-// [GET]: /api/admin/lesson/:chapterId/:id
-export const getLessonByIdApi = async (chapterId: string, lessonId: string) => {
-  const res = await fetch(`/api/admin/lesson/${chapterId}/${lessonId}`)
+// [GET]: /admin/lesson/:chapterId/:lessonId
+export const getLessonByIdApi = async (
+  chapterId: string,
+  lessonId: string,
+  query: string = '',
+  option: RequestInit = {
+    cache: 'no-store',
+  }
+) => {
+  const res = await fetch(`/api/admin/lesson/${chapterId}/${lessonId}${query}`, option)
 
   // check status
   if (!res.ok) {
@@ -40,7 +57,7 @@ export const getLessonByIdApi = async (chapterId: string, lessonId: string) => {
   return await res.json()
 }
 
-// [POST]
+// [POST]: /admin/lesson/:chapterId/add
 export const addLessonApi = async (chapterId: string, data: FormData) => {
   const res = await fetch(`/api/admin/lesson/${chapterId}/add`, {
     method: 'POST',
@@ -55,7 +72,7 @@ export const addLessonApi = async (chapterId: string, data: FormData) => {
   return await res.json()
 }
 
-// [PUT]
+// [PUT]: /admin/lesson/:chapterId/:lessonId/edit
 export const updateLessonApi = async (chapterId: string, lessonId: string, data: FormData) => {
   const res = await fetch(`/api/admin/lesson/${chapterId}/${lessonId}/edit`, {
     method: 'PUT',
@@ -70,7 +87,7 @@ export const updateLessonApi = async (chapterId: string, lessonId: string, data:
   return await res.json()
 }
 
-// [PATCH]
+// [PATCH]: /admin/lesson/activate
 export const activateLessonsApi = async (ids: string[], value: boolean) => {
   const res = await fetch(`/api/admin/lesson/activate`, {
     method: 'PATCH',
@@ -85,7 +102,7 @@ export const activateLessonsApi = async (ids: string[], value: boolean) => {
   return await res.json()
 }
 
-// [PATCH]
+// [PATCH]: /lesson/:id/like
 export const likeLessonApi = async (id: string, value: 'y' | 'n') => {
   const res = await fetch(`/api/lesson/${id}/like`, {
     method: 'PATCH',
@@ -100,7 +117,7 @@ export const likeLessonApi = async (id: string, value: 'y' | 'n') => {
   return await res.json()
 }
 
-// [DELETE]
+// [DELETE]: /admin/lesson/delete
 export const deleteLessonsApi = async (ids: string[]) => {
   const res = await fetch(`/api/admin/lesson/delete`, {
     method: 'DELETE',

@@ -1,42 +1,42 @@
-'use client';
-import Divider from '@/components/Divider';
-import Input from '@/components/Input';
-import BottomGradient from '@/components/gradients/BottomGradient';
-import { forgotPasswordApi } from '@/requests';
-import { signIn } from 'next-auth/react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useCallback, useEffect, useState } from 'react';
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
-import { FaCircleNotch } from 'react-icons/fa';
+'use client'
+import Divider from '@/components/Divider'
+import Input from '@/components/Input'
+import BottomGradient from '@/components/gradients/BottomGradient'
+import { forgotPasswordApi } from '@/requests'
+import { signIn } from 'next-auth/react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useCallback, useEffect, useState } from 'react'
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
+import { FaCircleNotch } from 'react-icons/fa'
 
-const time = 60;
+const time = 60
 
 function ForgotPasswordPage() {
   // states
-  const [isSent, setIsSent] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isCounting, setIsCounting] = useState<boolean>(false);
-  const [countDown, setCountDown] = useState<number>(time);
+  const [isSent, setIsSent] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isCounting, setIsCounting] = useState<boolean>(false)
+  const [countDown, setCountDown] = useState<number>(time)
 
   useEffect(() => {
     if (isSent) {
-      setIsCounting(true);
+      setIsCounting(true)
       const interval = setInterval(() => {
         if (countDown === 0) {
           // reset
-          clearInterval(interval);
-          setIsCounting(false);
-          setIsSent(false);
-          setCountDown(time);
-          return;
+          clearInterval(interval)
+          setIsCounting(false)
+          setIsSent(false)
+          setCountDown(time)
+          return
         }
-        setCountDown((prev) => prev - 1);
-      }, 1000);
-      return () => clearInterval(interval);
+        setCountDown(prev => prev - 1)
+      }, 1000)
+      return () => clearInterval(interval)
     }
-  }, [isSent, countDown]);
+  }, [isSent, countDown])
 
   // form
   const {
@@ -49,53 +49,53 @@ function ForgotPasswordPage() {
     defaultValues: {
       email: '',
     },
-  });
+  })
 
   // MARK: Forgot Password Submition
   const onSubmit: SubmitHandler<FieldValues> = useCallback(
-    async (data) => {
-      setIsLoading(true);
+    async data => {
+      setIsLoading(true)
 
       try {
         // send request to server
-        const { message } = await forgotPasswordApi(data);
+        const { message } = await forgotPasswordApi(data)
 
         // show success message
-        toast.success(message);
+        toast.success(message)
 
         // set is sent
-        setIsSent(true);
+        setIsSent(true)
       } catch (err: any) {
         // show error message
-        console.log(err);
-        const { message } = err;
-        setError('email', { type: 'manual', message });
-        toast.error(message);
+        console.log(err)
+        const { message } = err
+        setError('email', { type: 'manual', message })
+        toast.error(message)
       } finally {
         // reset loading state
-        setIsLoading(false);
+        setIsLoading(false)
       }
     },
     [setError]
-  );
+  )
 
   // keyboard event
   useEffect(() => {
     // set page title
-    document.title = 'Quên mật khẩu - Mona Edu';
+    document.title = 'Quên mật khẩu - Mona Edu'
 
     const handleKeydown = (e: KeyboardEvent) => {
       if (e.key === 'Enter') {
-        handleSubmit(onSubmit)();
+        handleSubmit(onSubmit)()
       }
-    };
+    }
 
-    window.addEventListener('keydown', handleKeydown);
+    window.addEventListener('keydown', handleKeydown)
 
     return () => {
-      window.removeEventListener('keydown', handleKeydown);
-    };
-  }, [handleSubmit, onSubmit]);
+      window.removeEventListener('keydown', handleKeydown)
+    }
+  }, [handleSubmit, onSubmit])
 
   return (
     <div className='relative flex items-center justify-center px-2 lg:block bg-neutral-800 h-screen w-full lg:px-[46px] lg:py-[52px] overflow-hidden'>
@@ -143,7 +143,7 @@ function ForgotPasswordPage() {
       {/* MARK: Body */}
       <div className='lg:absolute z-50 top-1/2 lg:right-[50px] lg:-translate-y-1/2 px-[32px] pt-6 max-w-[550px] w-full bg-white rounded-[28px] overflow-y-auto no-scrollbar'>
         <div className='flex justify-center items-center gap-2.5 mt-2'>
-          <div className='w-[32px] rounded-md overflow-hidden shadow-lg'>
+          <Link href='/' className='w-[32px] rounded-md overflow-hidden shadow-lg'>
             <Image
               className='w-full h-full object-contain object-left'
               src='/images/logo.png'
@@ -151,7 +151,7 @@ function ForgotPasswordPage() {
               height={80}
               alt='logo'
             />
-          </div>
+          </Link>
           <span className='font-bold text-3xl text-orange-500'>Mona Edu</span>
         </div>
 
@@ -276,6 +276,6 @@ function ForgotPasswordPage() {
         <Divider size={8} />
       </div>
     </div>
-  );
+  )
 }
-export default ForgotPasswordPage;
+export default ForgotPasswordPage

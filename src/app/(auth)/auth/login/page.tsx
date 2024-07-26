@@ -1,22 +1,22 @@
-'use client';
-import Divider from '@/components/Divider';
-import Input from '@/components/Input';
-import BottomGradient from '@/components/gradients/BottomGradient';
-import { signIn } from 'next-auth/react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
-import { FaCircleNotch } from 'react-icons/fa';
+'use client'
+import Divider from '@/components/Divider'
+import Input from '@/components/Input'
+import BottomGradient from '@/components/gradients/BottomGradient'
+import { signIn } from 'next-auth/react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useCallback, useEffect, useState } from 'react'
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
+import { FaCircleNotch } from 'react-icons/fa'
 
 function LoginPage() {
   // hooks
-  const router = useRouter();
+  const router = useRouter()
 
   // states
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   // form
   const {
@@ -30,60 +30,60 @@ function LoginPage() {
       usernameOrEmail: '',
       password: '',
     },
-  });
+  })
 
   // MARK: Login Submition
   const onSubmit: SubmitHandler<FieldValues> = useCallback(
-    async (data) => {
+    async data => {
       // start loading
-      setIsLoading(true);
+      setIsLoading(true)
 
       try {
         // send request to server
-        const res = await signIn('credentials', { ...data, redirect: false });
+        const res = await signIn('credentials', { ...data, redirect: false })
 
         if (res?.ok) {
           // show success message
-          toast.success('Đăng nhập thành công!');
+          toast.success('Đăng nhập thành công!')
 
           // redirect to home page
-          router.push('/');
+          router.push('/')
         }
 
         if (res?.error) {
           // show error message
-          toast.error(res.error);
-          setError('usernameOrEmail', { type: 'manual' });
-          setError('password', { type: 'manual' });
+          toast.error(res.error)
+          setError('usernameOrEmail', { type: 'manual' })
+          setError('password', { type: 'manual' })
         }
       } catch (err: any) {
-        toast.error(err.message);
-        console.log(err);
+        toast.error(err.message)
+        console.log(err)
       } finally {
         // stop loading state
-        setIsLoading(false);
+        setIsLoading(false)
       }
     },
     [setError, router]
-  );
+  )
 
   // keyboard event
   useEffect(() => {
     // set page title
-    document.title = 'Đăng nhập - Mona Edu';
+    document.title = 'Đăng nhập - Mona Edu'
 
     const handleKeydown = (e: KeyboardEvent) => {
       if (e.key === 'Enter') {
-        handleSubmit(onSubmit)();
+        handleSubmit(onSubmit)()
       }
-    };
+    }
 
-    window.addEventListener('keydown', handleKeydown);
+    window.addEventListener('keydown', handleKeydown)
 
     return () => {
-      window.removeEventListener('keydown', handleKeydown);
-    };
-  }, [handleSubmit, onSubmit]);
+      window.removeEventListener('keydown', handleKeydown)
+    }
+  }, [handleSubmit, onSubmit])
 
   return (
     <div className='relative flex items-center justify-center lg:block bg-neutral-800 px-2 h-screen w-full lg:px-[46px] lg:py-[52px] overflow-hidden'>
@@ -131,7 +131,7 @@ function LoginPage() {
       {/* MARK: Body */}
       <div className='lg:absolute z-10 top-1/2 lg:right-[50px] lg:-translate-y-1/2 px-[32px] pt-6 max-w-[550px] w-full bg-white rounded-[28px] overflow-y-auto no-scrollbar'>
         <div className='flex justify-center items-center gap-2.5 mt-2'>
-          <div className='w-[32px] rounded-md overflow-hidden shadow-lg'>
+          <Link href='/' className='w-[32px] rounded-md overflow-hidden shadow-lg'>
             <Image
               className='w-full h-full object-contain object-left'
               src='/images/logo.png'
@@ -139,7 +139,7 @@ function LoginPage() {
               height={80}
               alt='logo'
             />
-          </div>
+          </Link>
           <span className='font-bold text-3xl text-orange-500'>Mona Edu</span>
         </div>
 
@@ -261,6 +261,6 @@ function LoginPage() {
         <Divider size={8} />
       </div>
     </div>
-  );
+  )
 }
-export default LoginPage;
+export default LoginPage

@@ -92,9 +92,8 @@ function Chapter({
         {chapter.lessons?.map(lesson =>
           lesson.status === 'public' || isEnrolled ? (
             <Tooltip title={`Học thử ngay`} placement='top' arrow key={lesson._id}>
-              <Link
-                href={`/learning/${courseSlug}/${lesson.slug}`}
-                className={`bg-white rounded-md py-2 px-3 gap-4 hover:bg-primary trans-200 flex items-center ${
+              <div
+                className={`bg-white rounded-md py-2 px-3 gap-4 hover:bg-primary trans-200 flex items-center cursor-pointer ${
                   lesson.slug === lessonSlug ? 'font-semibold text-orange-500' : ''
                 }`}
                 onClick={e => {
@@ -111,7 +110,7 @@ function Chapter({
                 <span className='text-xs font-semibold text-nowrap text-slate-500 ml-auto'>
                   {duration(lesson.duration)}
                 </span>
-              </Link>
+              </div>
             </Tooltip>
           ) : (
             <div

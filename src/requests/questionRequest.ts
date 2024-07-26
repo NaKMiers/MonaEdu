@@ -1,9 +1,14 @@
 // Question -------------------------------------
 
-// [GET]: /api/question/my-questions
-export const getMyQuestionsApi = async () => {
+// [GET]: /question/my-questions
+export const getMyQuestionsApi = async (
+  query: string = '',
+  option: RequestInit = {
+    cache: 'no-store',
+  }
+) => {
   // no-cache
-  const res = await fetch(`/api/question/my-questions`, { cache: 'no-store' })
+  const res = await fetch(`/api/question/my-questions${query}`, option)
 
   // check status
   if (!res.ok) {
@@ -13,7 +18,7 @@ export const getMyQuestionsApi = async () => {
   return await res.json()
 }
 
-// [POST]
+// [POST]: /question/add
 export const addQuestionApi = async (data: any) => {
   const res = await fetch('/api/question/add', {
     method: 'POST',
@@ -28,7 +33,7 @@ export const addQuestionApi = async (data: any) => {
   return await res.json()
 }
 
-// [PUT]
+// [PUT]: /question/:id/edit
 export const updateQuestionsApi = async (id: string, data: any) => {
   const res = await fetch(`/api/question/${id}/edit`, {
     method: 'PUT',
@@ -43,7 +48,7 @@ export const updateQuestionsApi = async (id: string, data: any) => {
   return await res.json()
 }
 
-// [PATCH]
+// [PATCH]: /question/:id/close
 export const closeQuestionsApi = async (id: string, value: 'close' | 'open') => {
   const res = await fetch(`/api/question/${id}/close`, {
     method: 'PATCH',
@@ -58,7 +63,7 @@ export const closeQuestionsApi = async (id: string, value: 'close' | 'open') => 
   return await res.json()
 }
 
-// [PATCH]
+// [PATCH]: /question/:id/like
 export const likeQuestionsApi = async (id: string, value: boolean) => {
   const res = await fetch(`/api/question/${id}/like`, {
     method: 'PATCH',
@@ -73,7 +78,7 @@ export const likeQuestionsApi = async (id: string, value: boolean) => {
   return await res.json()
 }
 
-// [DELETE]
+// [DELETE]: /question/delete
 export const deleteQuestionsApi = async (ids: string[]) => {
   const res = await fetch('/api/question/delete', {
     method: 'DELETE',

@@ -59,7 +59,7 @@ async function CategoriesPage() {
 
       {/* Body */}
       <div className='px-21'>
-        <div className='grid grid-cols-2 md:grid-cols-4 gap-21 sm:gap-8'>
+        <div className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-21 sm:gap-8'>
           {categories.map(category => (
             <CategoryCard category={category} key={category._id} />
           ))}

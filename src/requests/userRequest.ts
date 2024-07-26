@@ -1,9 +1,12 @@
 // User -------------------------------------
 
-// [GET]
-export const getAllUsersApi = async (query: string = '') => {
+// [GET]: /admin/user/all
+export const getAllUsersApi = async (
+  query: string = '',
+  option: RequestInit = { cache: 'no-store' }
+) => {
   // no-store to bypass cache
-  const res = await fetch(`/api/admin/user/all${query}`, { cache: 'no-store' })
+  const res = await fetch(`/api/admin/user/all${query}`, option)
 
   // check status
   if (!res.ok) {
@@ -13,10 +16,16 @@ export const getAllUsersApi = async (query: string = '') => {
   return await res.json()
 }
 
-// [GET]
-export const getUsersApi = async (id: string = '') => {
+// [GET]: /user/:id
+export const getUsersApi = async (
+  id: string = '',
+  query: string = '',
+  option: RequestInit = {
+    cache: 'no-store',
+  }
+) => {
   // no-store to bypass cache
-  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/user/${id}`, { cache: 'no-store' })
+  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/user/${id}${query}`, option)
 
   // check status
   if (!res.ok) {
@@ -26,10 +35,16 @@ export const getUsersApi = async (id: string = '') => {
   return await res.json()
 }
 
-// [GET]
-export const findUserApi = async (email: string = '') => {
+// [GET]: /user/find/:email
+export const findUserApi = async (
+  email: string = '',
+  query: string = '',
+  option: RequestInit = {
+    cache: 'no-store',
+  }
+) => {
   // no-store to bypass cache
-  const res = await fetch(`/api/user/find/${email}`, { cache: 'no-store' })
+  const res = await fetch(`/api/user/find/${email}${query}`, option)
 
   // check status
   if (!res.ok) {
@@ -39,10 +54,15 @@ export const findUserApi = async (email: string = '') => {
   return await res.json()
 }
 
-// [GET]
-export const getRoleUsersApi = async () => {
+// [GET]: /user/role-users
+export const getRoleUsersApi = async (
+  query: string = '',
+  option: RequestInit = {
+    cache: 'no-store',
+  }
+) => {
   // no-store to bypass cache
-  const res = await fetch('/api/admin/user/role-users', { cache: 'no-store' })
+  const res = await fetch(`/api/admin/user/role-users${query}`, option)
 
   // check status
   if (!res.ok) {
@@ -52,10 +72,15 @@ export const getRoleUsersApi = async () => {
   return await res.json()
 }
 
-// [GET]
-export const getRankUsersApi = async () => {
+// [GET]: /admin/user/rank-users
+export const getRankUsersApi = async (
+  query: string = '',
+  option: RequestInit = {
+    cache: 'no-store',
+  }
+) => {
   // no-store to bypass cache
-  const res = await fetch('/api/admin/user/rank-user', { cache: 'no-store' })
+  const res = await fetch(`/api/admin/user/rank-user${query}`, option)
 
   // check status
   if (!res.ok) {
@@ -65,7 +90,7 @@ export const getRankUsersApi = async () => {
   return await res.json()
 }
 
-// [POST]
+// [POST]: /user/check-authentication
 export const checkAuthenticationApi = async (password: string) => {
   // no-store to bypass cache
   const res = await fetch('/api/user/check-authentication', {
@@ -81,7 +106,7 @@ export const checkAuthenticationApi = async (password: string) => {
   return await res.json()
 }
 
-// [PUT]
+// [PUT]: /user/update-personal-info
 export const updatePersonalInfoApi = async (data: any) => {
   const res = await fetch('/api/user/update-personal-info', {
     method: 'PUT',
@@ -96,7 +121,7 @@ export const updatePersonalInfoApi = async (data: any) => {
   return await res.json()
 }
 
-// [PUT]
+// [PUT]: /user/update-private-info
 export const updatePrivateInfoApi = async (data: any) => {
   const res = await fetch('/api/user/update-private-info', {
     method: 'PUT',
@@ -111,7 +136,7 @@ export const updatePrivateInfoApi = async (data: any) => {
   return await res.json()
 }
 
-// [PATCH]: /api/user/change-avatar
+// [PATCH]: /user/change-avatar
 export const changeAvatarApi = async (data: FormData) => {
   const res = await fetch('/api/user/change-avatar', {
     method: 'PATCH',
@@ -126,7 +151,7 @@ export const changeAvatarApi = async (data: FormData) => {
   return await res.json()
 }
 
-// [PATCH]: /api/user/change-banner
+// [PATCH]: /user/change-banner
 export const changeBannerApi = async (data: FormData) => {
   const res = await fetch('/api/user/change-banner', {
     method: 'PATCH',
@@ -141,7 +166,7 @@ export const changeBannerApi = async (data: FormData) => {
   return await res.json()
 }
 
-// [PATCH]
+// [PATCH]: /user/change-password
 export const changePasswordApi = async (data: any) => {
   const res = await fetch('/api/user/change-password', {
     method: 'PATCH',
@@ -156,7 +181,7 @@ export const changePasswordApi = async (data: any) => {
   return await res.json()
 }
 
-// [PATCH]
+// [PATCH]: /admin/user/:userId/set-collaborator
 export const setCollaboratorApi = async (userId: string, type: string, value: string) => {
   const res = await fetch(`/api/admin/user/${userId}/set-collaborator`, {
     method: 'PATCH',
@@ -171,7 +196,7 @@ export const setCollaboratorApi = async (userId: string, type: string, value: st
   return await res.json()
 }
 
-// [PATCH]
+// [PATCH]: /admin/user/:userId/demote-collaborator
 export const demoteCollaboratorApi = async (userId: string) => {
   const res = await fetch(`/api/admin/user/${userId}/demote-collaborator`, {
     method: 'PATCH',
@@ -185,7 +210,7 @@ export const demoteCollaboratorApi = async (userId: string) => {
   return await res.json()
 }
 
-// [PATCH]
+// [PATCH]: /admin/user/:userId/block-comment
 export const blockCommentApi = async (userId: string, value: boolean) => {
   const res = await fetch(`/api/admin/user/${userId}/block-comment`, {
     method: 'PATCH',
@@ -200,7 +225,7 @@ export const blockCommentApi = async (userId: string, value: boolean) => {
   return await res.json()
 }
 
-// [PATCH]
+// [PATCH]: /admin/user/:userId/block-add-question
 export const blockAddQuestionApi = async (userId: string, value: boolean) => {
   const res = await fetch(`/api/admin/user/${userId}/block-add-question`, {
     method: 'PATCH',
@@ -215,7 +240,7 @@ export const blockAddQuestionApi = async (userId: string, value: boolean) => {
   return await res.json()
 }
 
-// [PATCH]
+// [PATCH]: /user/change-notification-setting
 export const changeNotificationSettingApi = async (type: string, value: boolean) => {
   const res = await fetch(`/api/user/change-notification-setting`, {
     method: 'PATCH',
@@ -230,7 +255,7 @@ export const changeNotificationSettingApi = async (type: string, value: boolean)
   return await res.json()
 }
 
-// [DELETE]
+// [DELETE]: /admin/user/delete
 export const deleteUsersApi = async (ids: string[]) => {
   const res = await fetch('/api/admin/user/delete', {
     method: 'DELETE',

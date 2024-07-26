@@ -76,8 +76,11 @@ function Header({ className = '' }: HeaderProps) {
         toast.error(err.message)
       }
     }
-    getUserNotifications()
-  }, [])
+
+    if (curUser?._id) {
+      getUserNotifications()
+    }
+  }, [curUser?._id])
 
   // handle show/hide on scroll
   useEffect(() => {

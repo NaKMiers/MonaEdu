@@ -1,9 +1,11 @@
 // Cart
 
-// [GET]
-export const getCartApi = async () => {
-  // no cache
-  const res = await fetch('/api/cart', { next: { revalidate: 60 } })
+// [GET]: /cart
+export const getCartApi = async (
+  query: string = '',
+  option: RequestInit = { next: { revalidate: 60 } }
+) => {
+  const res = await fetch(`/api/cart${query}`, option)
 
   // check status
   if (!res.ok) {
@@ -13,7 +15,7 @@ export const getCartApi = async () => {
   return await res.json()
 }
 
-// [POST]
+// [POST]: /cart/add
 export const addToCartApi = async (courseId: string) => {
   const res = await fetch('/api/cart/add', {
     method: 'POST',
@@ -28,7 +30,7 @@ export const addToCartApi = async (courseId: string) => {
   return await res.json()
 }
 
-// [DELETE]
+// [DELETE]: /cart/:cartItemId/delete
 export const deleteCartItemApi = async (cartItemId: string) => {
   const res = await fetch(`/api/cart/${cartItemId}/delete`, {
     method: 'DELETE',

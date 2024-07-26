@@ -152,7 +152,7 @@ function SearchBar() {
             <Link
               href={`/${course.slug}`}
               key={course._id}
-              className='flex gap-4 py-2 items-start rounded-lg p-2 hover:bg-slate-200 text-dark trans-200'
+              className='flex gap-4 py-2 items-start rounded-lg p-2 hover:bg-slate-200 hover:text-dark text-light trans-200'
             >
               <div className='relative aspect-video flex-shrink-0'>
                 {course.stock <= 0 && (

@@ -1,9 +1,14 @@
-// Flashsale
+// Flash Sale -------------------------------------
 
-// [GET]
-export const getAllFlashSalesApi = async (query: string) => {
+// [GET]: /admin/flash-sale/all
+export const getAllFlashSalesApi = async (
+  query: string = '',
+  option: RequestInit = {
+    cache: 'no-store',
+  }
+) => {
   // no-store to bypass cache
-  const res = await fetch(`/api/admin/flash-sale/all${query}`, { cache: 'no-store' })
+  const res = await fetch(`/api/admin/flash-sale/all${query}`, option)
 
   // check status
   if (!res.ok) {
@@ -13,10 +18,16 @@ export const getAllFlashSalesApi = async (query: string) => {
   return await res.json()
 }
 
-// [GET]
-export const getFlashSaleApi = async (id: string) => {
+// [GET]: /admin/flash-sale/:id
+export const getFlashSaleApi = async (
+  id: string,
+  query: string = '',
+  option: RequestInit = {
+    cache: 'no-store',
+  }
+) => {
   // no-store to bypass cache
-  const res = await fetch(`/api/admin/flash-sale/${id}`, { cache: 'no-store' })
+  const res = await fetch(`/api/admin/flash-sale/${id}${query}`, option)
 
   // check status
   if (!res.ok) {
@@ -26,7 +37,7 @@ export const getFlashSaleApi = async (id: string) => {
   return await res.json()
 }
 
-// [POST]
+// [POST]: /admin/flash-sale/add
 export const addFlashSaleApi = async (data: any) => {
   const res = await fetch('/api/admin/flash-sale/add', {
     method: 'POST',
@@ -41,7 +52,7 @@ export const addFlashSaleApi = async (data: any) => {
   return await res.json()
 }
 
-// [PUT]
+// [PUT]: /admin/flash-sale/:id/edit
 export const updateFlashSaleApi = async (id: string, data: any, appliedCourses: string[]) => {
   const res = await fetch(`/api/admin/flash-sale/${id}/edit`, {
     method: 'PUT',
@@ -59,7 +70,7 @@ export const updateFlashSaleApi = async (id: string, data: any, appliedCourses: 
   return await res.json()
 }
 
-// [DELETE]
+// [DELETE]: /admin/flash-sale/delete
 export const deleteFlashSalesApi = async (ids: string[], courseIds: string[]) => {
   const res = await fetch('/api/admin/flash-sale/delete', {
     method: 'DELETE',

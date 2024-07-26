@@ -1,6 +1,6 @@
 // Comment -------------------------------------
 
-// [POST]
+// [POST]: /comment/add
 export const addCommentApi = async ({
   lessonId,
   questionId,
@@ -27,7 +27,7 @@ export const addCommentApi = async ({
   return await res.json()
 }
 
-// [POST]
+// [POST]: /comment/:id/reply
 export const replyCommentApi = async (id: string, content: string) => {
   const res = await fetch(`/api/comment/${id}/reply`, {
     method: 'POST',
@@ -42,7 +42,7 @@ export const replyCommentApi = async (id: string, content: string) => {
   return await res.json()
 }
 
-// [PATCH]
+// [PATCH]: /comment/:id/like
 export const likeCommentApi = async (id: string, value: 'y' | 'n') => {
   const res = await fetch(`/api/comment/${id}/like`, {
     method: 'PATCH',
@@ -57,7 +57,7 @@ export const likeCommentApi = async (id: string, value: 'y' | 'n') => {
   return await res.json()
 }
 
-// [PATCH]
+// [PATCH]: /comment/:id/hide
 export const hideCommentApi = async (id: string, value: 'y' | 'n') => {
   const res = await fetch(`/api/comment/${id}/hide`, {
     method: 'PATCH',
@@ -72,7 +72,7 @@ export const hideCommentApi = async (id: string, value: 'y' | 'n') => {
   return await res.json()
 }
 
-// [DELETE]
+// [DELETE]: /comment/:id/delete
 export const deleteCommentApi = async (id: string) => {
   const res = await fetch(`/api/comment/${id}/delete`)
 

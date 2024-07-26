@@ -1,9 +1,14 @@
 // Category -------------------------------------
 
-// [GET]
-export const getCategoriesApi = async (query: string = '') => {
+// [GET]: /category
+export const getCategoriesApi = async (
+  query: string = '',
+  option: RequestInit = {
+    cache: 'no-store',
+  }
+) => {
   // no cache
-  const res = await fetch(`/api/category${query}`, { next: { revalidate: 30 } })
+  const res = await fetch(`/api/category${query}`, option)
   const data = await res.json()
 
   // check status
@@ -29,7 +34,7 @@ export const getAllParentCategoriesApi = async (
   return await res.json()
 }
 
-// [GET]
+// [GET]: /category/all
 export const getAllCategoriesApi = async (
   query: string = '',
   option: RequestInit = { cache: 'no-store' }
@@ -45,7 +50,7 @@ export const getAllCategoriesApi = async (
   return await res.json()
 }
 
-// [GET]
+// [GET]: /admin/category/force-all
 export const getForceAllCategoriesApi = async (
   query: string = '',
   option: RequestInit = { cache: 'no-store' }
@@ -61,10 +66,16 @@ export const getForceAllCategoriesApi = async (
   return await res.json()
 }
 
-// [GET]
-export const getCategoryApi = async (slug: string) => {
+// [GET]: /admin/category/:slug
+export const getCategoryApi = async (
+  slug: string,
+  query: string = '',
+  option: RequestInit = {
+    cache: 'no-store',
+  }
+) => {
   // no cache
-  const res = await fetch(`/api/admin/category/${slug}`, { cache: 'no-store' })
+  const res = await fetch(`/api/admin/category/${slug}${query}`, option)
 
   // check status
   if (!res.ok) {
@@ -74,7 +85,7 @@ export const getCategoryApi = async (slug: string) => {
   return await res.json()
 }
 
-// [POST]
+// [POST]: /admin/category/add
 export const addCategoryApi = async (data: FormData) => {
   const res = await fetch('/api/admin/category/add', {
     method: 'POST',
@@ -89,7 +100,7 @@ export const addCategoryApi = async (data: FormData) => {
   return await res.json()
 }
 
-// [PUT]
+// [PUT]: /admin/category/:id/edit
 export const updateCategoryApi = async (id: string, data: FormData) => {
   const res = await fetch(`/api/admin/category/${id}/edit`, {
     method: 'PUT',
@@ -104,7 +115,7 @@ export const updateCategoryApi = async (id: string, data: FormData) => {
   return await res.json()
 }
 
-// [PATCH]
+// [PATCH]: /admin/category/:id/boot
 export const bootCategoriesApi = async (id: string, value: boolean) => {
   const res = await fetch(`/api/admin/category/${id}/boot`, {
     method: 'PATCH',
@@ -119,7 +130,7 @@ export const bootCategoriesApi = async (id: string, value: boolean) => {
   return await res.json()
 }
 
-// [DELETE]
+// [DELETE]: /admin/category/:id/delete
 export const deleteCategoryApi = async (id: string) => {
   const res = await fetch(`/api/admin/category/${id}/delete`, {
     method: 'DELETE',

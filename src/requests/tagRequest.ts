@@ -1,9 +1,14 @@
 // Tag -------------------------------------
 
-// [GET]
-export const getAllTagsApi = async (query: string = '') => {
+// [GET]: /admin/tag/all
+export const getAllTagsApi = async (
+  query: string = '',
+  option: RequestInit = {
+    cache: 'no-store',
+  }
+) => {
   // no-store to bypass cache
-  const res = await fetch(`/api/admin/tag/all${query}`, { cache: 'no-store' })
+  const res = await fetch(`/api/admin/tag/all${query}`, option)
 
   // check status
   if (!res.ok) {
@@ -13,10 +18,15 @@ export const getAllTagsApi = async (query: string = '') => {
   return await res.json()
 }
 
-// [GET]
-export const getForceAllTagsApi = async () => {
+// [GET]: /admin/tag/force-all
+export const getForceAllTagsApi = async (
+  query: string = '',
+  option: RequestInit = {
+    cache: 'no-store',
+  }
+) => {
   // no-store to bypass cache
-  const res = await fetch(`/api/admin/tag/force-all`, { cache: 'no-store' })
+  const res = await fetch(`/api/admin/tag/force-all${query}`, option)
 
   // check status
   if (!res.ok) {
@@ -26,7 +36,7 @@ export const getForceAllTagsApi = async () => {
   return await res.json()
 }
 
-// [POST]
+// [POST]: /admin/tag/add
 export const addTagApi = async (data: any) => {
   const res = await fetch('/api/admin/tag/add', {
     method: 'POST',
@@ -41,7 +51,7 @@ export const addTagApi = async (data: any) => {
   return await res.json()
 }
 
-// [PATCH]
+// [PATCH]: /admin/tag/boot
 export const bootTagsApi = async (ids: string[], value: boolean) => {
   const res = await fetch('/api/admin/tag/boot', {
     method: 'PATCH',
@@ -56,7 +66,7 @@ export const bootTagsApi = async (ids: string[], value: boolean) => {
   return await res.json()
 }
 
-// [PUT]
+// [PUT]: /admin/tag/edit
 export const updateTagsApi = async (editingValues: any[]) => {
   const res = await fetch('/api/admin/tag/edit', {
     method: 'PUT',
@@ -71,7 +81,7 @@ export const updateTagsApi = async (editingValues: any[]) => {
   return await res.json()
 }
 
-// [DELETE]
+// [DELETE]: /admin/tag/delete
 export const deleteTagsApi = async (ids: string[]) => {
   const res = await fetch('/api/admin/tag/delete', {
     method: 'DELETE',

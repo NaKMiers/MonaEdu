@@ -1,24 +1,24 @@
-'use client';
-import Divider from '@/components/Divider';
-import Input from '@/components/Input';
-import BottomGradient from '@/components/gradients/BottomGradient';
-import { resetPassword } from '@/requests';
-import { signIn } from 'next-auth/react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
-import { FaCircleNotch } from 'react-icons/fa';
+'use client'
+import Divider from '@/components/Divider'
+import Input from '@/components/Input'
+import BottomGradient from '@/components/gradients/BottomGradient'
+import { resetPassword } from '@/requests'
+import { signIn } from 'next-auth/react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { useCallback, useEffect, useState } from 'react'
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
+import { FaCircleNotch } from 'react-icons/fa'
 
 function ResetPasswordPage() {
   // hooks
-  const router = useRouter();
-  const queryParams = useSearchParams();
+  const router = useRouter()
+  const queryParams = useSearchParams()
 
   // states
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   // form
   const {
@@ -32,20 +32,20 @@ function ResetPasswordPage() {
       newPassword: '',
       reNewPassword: '',
     },
-  });
+  })
 
   useEffect(() => {
     // MARK: Check if token is not provided
     if (!queryParams.get('token')) {
-      toast.error('Không có token');
-      router.push('/auth/login');
+      toast.error('Không có token')
+      router.push('/auth/login')
     }
-  }, [queryParams, router]);
+  }, [queryParams, router])
 
   // validate form
   const handleValidate: SubmitHandler<FieldValues> = useCallback(
-    (data) => {
-      let isValid = true;
+    data => {
+      let isValid = true
 
       // password must be at least 6 characters and contain at least 1 lowercase, 1 uppercase, 1 number
       if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/.test(data.newPassword)) {
@@ -53,71 +53,71 @@ function ResetPasswordPage() {
           type: 'manual',
           message:
             'Mật khẩu mới phải có ít nhất 6 kí tự và bao gồm ít nhất 1 chữ hoa, 1 chữ thường, 1 chữ số',
-        });
-        isValid = false;
+        })
+        isValid = false
       }
 
       // check if new password and re-new password are match
       if (data.newPassword !== data.reNewPassword) {
-        setError('reNewPassword', { type: 'manual', message: 'Mật khẩu không khớp' }); // add this line
-        isValid = false;
+        setError('reNewPassword', { type: 'manual', message: 'Mật khẩu không khớp' }) // add this line
+        isValid = false
       }
 
-      return isValid;
+      return isValid
     },
     [setError]
-  );
+  )
 
   // MARK: Reset Password Submition
   const onSubmit: SubmitHandler<FieldValues> = useCallback(
-    async (data) => {
+    async data => {
       // validate form
-      if (!handleValidate(data)) return;
+      if (!handleValidate(data)) return
 
       // start loading
-      setIsLoading(true);
+      setIsLoading(true)
 
       try {
         // get email and token from query
-        const token = queryParams.get('token');
+        const token = queryParams.get('token')
 
         // send request to server
-        const { message } = await resetPassword(token!, data.newPassword);
+        const { message } = await resetPassword(token!, data.newPassword)
 
         // show success message
-        toast.success(message);
+        toast.success(message)
 
         // redirect to login page
-        router.push('/auth/login');
+        router.push('/auth/login')
       } catch (err: any) {
         // show error message
-        toast.error(err.message);
-        console.log(err);
+        toast.error(err.message)
+        console.log(err)
       } finally {
         // reset loading state
-        setIsLoading(false);
+        setIsLoading(false)
       }
     },
     [handleValidate, router, queryParams]
-  );
+  )
 
   // keyboard event
   useEffect(() => {
     // set page title
-    document.title = 'Khôi phục mật khẩu - Mona Edu';
+    document.title = 'Khôi phục mật khẩu - Mona Edu'
 
     const handleKeydown = (e: KeyboardEvent) => {
       if (e.key === 'Enter') {
-        handleSubmit(onSubmit)();
+        handleSubmit(onSubmit)()
       }
-    };
+    }
 
-    window.addEventListener('keydown', handleKeydown);
+    window.addEventListener('keydown', handleKeydown)
 
     return () => {
-      window.removeEventListener('keydown', handleKeydown);
-    };
-  }, [handleSubmit, onSubmit]);
+      window.removeEventListener('keydown', handleKeydown)
+    }
+  }, [handleSubmit, onSubmit])
 
   return (
     <div className='relative flex items-center justify-center px-2 lg:block bg-neutral-800 h-screen w-full lg:px-[46px] lg:py-[52px] overflow-hidden'>
@@ -165,7 +165,7 @@ function ResetPasswordPage() {
       {/* MARK: Body */}
       <div className='lg:absolute z-50 top-1/2 lg:right-[50px] lg:-translate-y-1/2 px-[32px] pt-6 max-w-[550px] w-full bg-white rounded-[28px] overflow-y-auto no-scrollbar'>
         <div className='flex justify-center items-center gap-2.5 mt-2'>
-          <div className='w-[32px] rounded-md overflow-hidden shadow-lg'>
+          <Link href='/' className='w-[32px] rounded-md overflow-hidden shadow-lg'>
             <Image
               className='w-full h-full object-contain object-left'
               src='/images/logo.png'
@@ -173,7 +173,7 @@ function ResetPasswordPage() {
               height={80}
               alt='logo'
             />
-          </div>
+          </Link>
           <span className='font-bold text-3xl text-orange-500'>Mona Edu</span>
         </div>
 
@@ -292,6 +292,6 @@ function ResetPasswordPage() {
         <Divider size={8} />
       </div>
     </div>
-  );
+  )
 }
-export default ResetPasswordPage;
+export default ResetPasswordPage

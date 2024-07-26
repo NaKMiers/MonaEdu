@@ -1,8 +1,13 @@
 // Notification -------------------------------------
 
-// [GET]
-export const getUserNotificationsApi = async () => {
-  const res = await fetch(`/api/notification`)
+// [GET]: /notification
+export const getUserNotificationsApi = async (
+  query: string = '',
+  option: RequestInit = {
+    cache: 'no-store',
+  }
+) => {
+  const res = await fetch(`/api/notification${query}`, option)
 
   // check status
   if (!res.ok) {
