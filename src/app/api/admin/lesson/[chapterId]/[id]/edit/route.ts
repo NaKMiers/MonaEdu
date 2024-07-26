@@ -22,9 +22,12 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
     const data = Object.fromEntries(formData)
     const { courseId, chapterId, title, description, duration, active, status, embedUrl } = data
     let file = formData.get('file')
+    const originalDocs = JSON.parse(data.originalDocs as string)
+    let docs: any[] = formData.getAll('docs')
 
     console.log('Data: ', data)
     console.log('File: ', file)
+    console.log('Docs: ', docs)
 
     // get lesson from database to edit
     const lesson: ILesson | null = await LessonModel.findById(id).lean()
@@ -55,6 +58,31 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
       }
     }
 
+    // upload docs to aws s3
+    docs = await Promise.all(
+      docs.map(async (doc: any) => {
+        const url = await uploadFile(doc, 'auto', 'doc')
+        return { name: doc.name, url, size: doc.size }
+      })
+    )
+
+    console.log('DocsUrls: ', docs)
+
+    const stayDocs = lesson.docs.filter(doc => originalDocs.map((d: any) => d.url).includes(doc.url))
+    const needToRemovedDocs = lesson.docs.filter(
+      doc => !originalDocs.map((d: any) => d.url).includes(doc.url)
+    )
+
+    console.log('Stay Docs: ', stayDocs)
+
+    // delete the docs do not associated with the lesson in aws s3
+    if (needToRemovedDocs && !!needToRemovedDocs.length) {
+      await Promise.all(needToRemovedDocs.map(doc => deleteFile(doc.url)))
+    }
+
+    // merge the available docs and new upload docs
+    const newDocs = Array.from(new Set([...stayDocs, ...docs]))
+
     await Promise.all([
       // update lesson in database
       await LessonModel.findByIdAndUpdate(lesson._id, {
@@ -65,6 +93,7 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
           duration,
           sourceType: embedUrl ? 'embed' : file ? 'file' : lesson.sourceType,
           source: newSource,
+          docs: newDocs,
           description,
           active,
           status,

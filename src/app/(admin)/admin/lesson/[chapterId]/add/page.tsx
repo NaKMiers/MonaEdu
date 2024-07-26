@@ -5,9 +5,10 @@ import LoadingButton from '@/components/LoadingButton'
 import { useAppDispatch, useAppSelector } from '@/libs/hooks'
 import { useCallback, useEffect, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
-import { FaCheck, FaFile, FaInfo } from 'react-icons/fa'
+import { FaCheck, FaFile } from 'react-icons/fa'
 
 import Divider from '@/components/Divider'
+import TextEditor from '@/components/Tiptap'
 import AdminHeader from '@/components/admin/AdminHeader'
 import { setLoading } from '@/libs/reducers/modalReducer'
 import { IChapter } from '@/models/ChapterModel'
@@ -19,7 +20,7 @@ import { FaX } from 'react-icons/fa6'
 import { MdCategory, MdOutlinePublic } from 'react-icons/md'
 import { RiCharacterRecognitionLine } from 'react-icons/ri'
 import { SiFramer } from 'react-icons/si'
-import TextEditor from '@/components/Tiptap'
+import { formatFileSize } from '@/utils/number'
 
 export type GroupCourses = {
   [key: string]: ICourse[]
@@ -36,6 +37,8 @@ function AddLessonPage({ params: { chapterId } }: { params: { chapterId: string 
   const [fileUrl, setFileUrl] = useState<string>('')
   const [embedSrc, setEmbedSrc] = useState<string>('')
   const [file, setFile] = useState<File | null>(null)
+
+  const [docs, setDocs] = useState<File[]>([])
 
   // form
   const {
@@ -130,6 +133,7 @@ function AddLessonPage({ params: { chapterId } }: { params: { chapterId: string 
       } else if (sourceType === 'embed' && embedSrc) {
         formData.append('embedUrl', embedSrc)
       }
+      docs.forEach(doc => formData.append('docs', doc))
 
       // add new category here
       const { message } = await addLessonApi(chapterId, formData)
@@ -143,6 +147,7 @@ function AddLessonPage({ params: { chapterId } }: { params: { chapterId: string 
       setFile(null)
       setFileUrl('')
       setEmbedSrc('')
+      setDocs([])
       URL.revokeObjectURL(fileUrl)
     } catch (err: any) {
       console.log(err)
@@ -215,7 +220,39 @@ function AddLessonPage({ params: { chapterId } }: { params: { chapterId: string 
     }
   }
 
-  // revoke blob url when component unmount
+  // handle add files when user select files
+  const handleAddDocs = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      let newFiles = Array.from(e.target.files)
+      console.log('newFiles', newFiles)
+
+      // validate files's type and size
+      newFiles = newFiles.filter(file => {
+        if (file.size > 30 * 1024 * 1024) {
+          toast.error(`File ${file.name} is too large. Only accept images under 30MB`)
+          return false
+        }
+        return true
+      })
+
+      setDocs(prev => [...prev, ...newFiles])
+
+      e.target.value = ''
+      e.target.files = null
+    }
+  }, [])
+
+  // handle remove image
+  const handleRemoveDoc = useCallback(
+    (doc: File) => {
+      // remove file from files
+      const newFiles = docs.filter(d => d !== doc)
+      setDocs(newFiles)
+    },
+    [docs]
+  )
+
+  // set page title
   useEffect(() => {
     // page title
     document.title = 'Add Lesson - Mona Edu'
@@ -459,6 +496,63 @@ function AddLessonPage({ params: { chapterId } }: { params: { chapterId: string 
           icon={MdOutlinePublic}
           className='mb-5'
         />
+
+        <div className='mb-5'>
+          <div className='flex'>
+            <span className='inline-flex items-center px-3 rounded-tl-lg rounded-bl-lg border-[2px] text-sm text-gray-900 border-slate-200 bg-slate-100'>
+              <FaFile size={19} className='text-secondary' />
+            </span>
+            <div className='relative w-full border-[2px] border-l-0 bg-white border-slate-200'>
+              <input
+                id='docs'
+                className='block px-2.5 pb-2.5 pt-4 w-full text-sm text-dark bg-transparent focus:outline-none focus:ring-0 peer'
+                placeholder=' '
+                disabled={isLoading}
+                type='file'
+                multiple
+                onChange={handleAddDocs}
+              />
+
+              {/* label */}
+              <label
+                htmlFor={'docs'}
+                className='absolute rounded-md text-sm trans-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1 cursor-pointer text-dark'
+              >
+                Docs
+              </label>
+            </div>
+          </div>
+        </div>
+
+        {!!docs.length && (
+          <div className='flex flex-wrap gap-3 rounded-lg bg-white p-3 mb-5'>
+            {docs.map((doc, index) => {
+              console.log('doc', doc)
+              return (
+                <div
+                  className='flex items-center gap-3 max-w-[250px] rounded-md shadow-md px-2 py-1'
+                  key={index}
+                >
+                  <FaFile size={20} className='text-secondary flex-shrink-0' />
+
+                  <div className='flex flex-col w-full max-w-[160px] font-body tracking-wider'>
+                    <p className='text-dark text-sm text-ellipsis line-clamp-2 overflow-hidden'>
+                      {doc.name}
+                    </p>
+                    <p className='text-slate-500 text-xs'>{formatFileSize(doc.size)}</p>
+                  </div>
+
+                  <button
+                    onClick={() => handleRemoveDoc(doc)}
+                    className='bg-slate-300 p-2 group hover:bg-dark-100 rounded-lg flex-shrink-0'
+                  >
+                    <FaX size={16} className='text-dark group-hover:text-white trans-200' />
+                  </button>
+                </div>
+              )
+            })}
+          </div>
+        )}
 
         {/* MARK: Add Button */}
         <LoadingButton

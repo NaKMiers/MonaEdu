@@ -338,6 +338,7 @@ function AddCoursePage() {
           <input type='checkbox' id='active' hidden {...register('active', { required: false })} />
         </div>
 
+        {/* Boot */}
         <div className='flex mb-4'>
           <div className='bg-white rounded-lg px-3 flex items-center'>
             <FaPlay size={16} className='text-secondary' />

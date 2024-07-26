@@ -3,8 +3,7 @@ import { ICourse } from '@/models/CourseModel'
 import { ILesson } from '@/models/LessonModel'
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { memo, useCallback, useState } from 'react'
-import toast from 'react-hot-toast'
+import React, { memo, useState } from 'react'
 import { FaCheck, FaTrash } from 'react-icons/fa'
 import { MdEdit } from 'react-icons/md'
 import { RiDonutChartFill } from 'react-icons/ri'
@@ -35,12 +34,6 @@ function LessonItem({
 }: LessonItemProps) {
   // states
   const [isOpenConfirmModal, setIsOpenConfirmModal] = useState<boolean>(false)
-
-  // handle copy
-  const handleCopy = useCallback((text: string) => {
-    navigator.clipboard.writeText(text)
-    toast.success('Đã sao chép: ' + text)
-  }, [])
 
   return (
     <>
@@ -113,15 +106,27 @@ function LessonItem({
           </p>
 
           {/* Duration */}
-          <p className='mb-2 font-semibold text-sm text-sky-500 font-body tracking-wide'>
-            {Math.floor(data.duration / 3600)}h:{Math.floor((data.duration % 3600) / 60)}m:
-            {(data.duration % 3600) % 60}s
+          <p className='mb-2 font-semibold text-sm font-body tracking-wide'>
+            <span>Duration: </span>
+            <span className='text-sky-500'>
+              {Math.floor(data.duration / 3600)}h:{Math.floor((data.duration % 3600) / 60)}m:
+              {(data.duration % 3600) % 60}s
+            </span>
           </p>
 
           {/* Source Type */}
-          <p className='mb-2 font-semibold text-sm text-sky-500 font-body tracking-wide'>
+          <p className='mb-2 font-semibold text-sm font-body tracking-wide'>
+            <span>Source Type: </span>
             <span className='text-slate-500 text-sm font-normal'>({data.sourceType})</span>
           </p>
+
+          {/* Docs */}
+          {data?.docs?.length && (
+            <p className='mb-2 font-semibold text-sm font-body tracking-wide'>
+              <span>Docs: </span>
+              <span className='text-slate-500 text-sm font-normal'>({data.docs.length})</span>
+            </p>
+          )}
         </div>
 
         {/* MARK: Action Buttons */}

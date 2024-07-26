@@ -35,6 +35,7 @@ export async function POST(req: NextRequest) {
       images = [images]
     }
 
+    // upload images to aws s3 bucket
     const imageUrls = await Promise.all(images.map(file => uploadFile(file)))
 
     // create new course

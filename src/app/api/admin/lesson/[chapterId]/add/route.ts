@@ -30,6 +30,11 @@ export async function POST(
     const data = Object.fromEntries(formData)
     const { courseId, title, description, duration, active, status, embedUrl } = data
     let file = formData.get('file')
+    let docs: any[] = formData.getAll('docs')
+
+    console.log('data', data)
+    console.log('file', file)
+    console.log('docs', docs)
 
     if (!file && !embedUrl) {
       return NextResponse.json({ message: 'Source or embed is required' }, { status: 400 })
@@ -43,6 +48,18 @@ export async function POST(
       source = await uploadFile(file, '16:9', 'video')
     }
 
+    // check docs
+    if (docs.length) {
+      docs = await Promise.all(
+        docs.map(async (doc: any) => {
+          const url = await uploadFile(doc, 'auto', 'doc')
+          return { name: doc.name, url, size: doc.size }
+        })
+      )
+
+      console.log('Docs: ', docs)
+    }
+
     // get all users who joined the course | course slug
     const [newLesson, userIds, courseSlug] = await Promise.all([
       // create new lesson
@@ -52,6 +69,7 @@ export async function POST(
         title,
         duration,
         sourceType: embedUrl ? 'embed' : 'file',
+        docs: docs.length ? docs : [],
         source,
         description,
         active,

@@ -187,7 +187,8 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
     ],
     editorProps: {
       attributes: {
-        class: 'outline-none border border-dark rounded-lg shadow-lg px-4 py-3 bg-white overflow-hidden',
+        class:
+          'outline-none border border-dark rounded-lg shadow-lg px-4 py-3 bg-white overflow-hidden min-h-[300px]',
       },
     },
     content,

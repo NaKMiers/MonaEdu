@@ -41,6 +41,13 @@ const LessonSchema = new Schema(
       type: String,
       required: true,
     },
+    docs: [
+      {
+        name: String,
+        url: String,
+        size: Number,
+      },
+    ],
     description: {
       type: String,
     },
@@ -86,6 +93,7 @@ export interface ILesson {
   chapterId: string | IChapter
   title: string
   sourceType: 'embed' | 'file'
+  docs: IDoc[]
   slug: string
   duration: number
   source: string
@@ -99,4 +107,10 @@ export interface ILesson {
 
   // subs
   progress?: IProgress
+}
+
+export interface IDoc {
+  name: string
+  url: string
+  size: number
 }
