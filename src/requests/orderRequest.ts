@@ -14,24 +14,6 @@ export const getAllOrdersApi = async (
   return await res.json()
 }
 
-// [GET]: /user/order-history
-export const getOrderHistoryApi = async (
-  query: string = '',
-  option: RequestInit = {
-    cache: 'no-store',
-  }
-) => {
-  // no-store to bypass cache
-  const res = await fetch(`/api/user/order-history${query}`, option)
-
-  // check status
-  if (!res.ok) {
-    throw new Error((await res.json()).message)
-  }
-
-  return await res.json()
-}
-
 // [GET]: /order/:code
 export const getOrderApi = async (
   code: string,

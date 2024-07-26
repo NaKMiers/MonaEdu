@@ -59,7 +59,7 @@ function MyQuestionsPage({ searchParams }: { searchParams?: { [key: string]: str
       <Divider size={12} />
 
       {/* Heading */}
-      <h1 className='text-4xl font-semibold px-21 text-white'>Các câu hỏi của tôi</h1>
+      <h1 className='text-4xl font-semibold text-white'>Các câu hỏi của tôi</h1>
 
       <Divider size={8} />
 

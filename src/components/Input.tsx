@@ -12,7 +12,7 @@ interface InputProps {
   type?: string
   disabled?: boolean
   required?: boolean
-  onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void
+  onChange?: any
   register: UseFormRegister<FieldValues>
   errors: FieldErrors
   options?: any[]
@@ -120,6 +120,7 @@ function Input({
               {...register(id, { required })}
               onWheel={e => e.currentTarget.blur()}
               placeholder=''
+              onChange={onChange}
               {...rest}
             />
           )}

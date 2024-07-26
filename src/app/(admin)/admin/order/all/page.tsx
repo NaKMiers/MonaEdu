@@ -69,7 +69,7 @@ function AllOrdersPage({ searchParams }: { searchParams?: { [key: string]: strin
   // MARK: Get Data
   // get all orders
   useEffect(() => {
-    const getAllTags = async () => {
+    const getAllOrders = async () => {
       const query = handleQuery(searchParams)
 
       // start page loading
@@ -111,7 +111,7 @@ function AllOrdersPage({ searchParams }: { searchParams?: { [key: string]: strin
         dispatch(setPageLoading(false))
       }
     }
-    getAllTags()
+    getAllOrders()
   }, [dispatch, searchParams, setValue, getValues])
 
   // MARK: Handlers

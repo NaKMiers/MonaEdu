@@ -180,7 +180,7 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
     ])
 
     // return response
-    return NextResponse.json({ category, subs, courses, amount, chops }, { status: 200 })
+    return NextResponse.json({ category, subs, courses, amount, chops: chops[0] }, { status: 200 })
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })
   }

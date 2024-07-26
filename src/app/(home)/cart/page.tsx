@@ -18,10 +18,10 @@ import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { use, useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
-import { FaShoppingCart } from 'react-icons/fa'
+import { FaHistory, FaShoppingCart } from 'react-icons/fa'
 import { IoMail } from 'react-icons/io5'
 import { RiCoupon2Fill, RiDonutChartFill } from 'react-icons/ri'
 
@@ -245,16 +245,26 @@ function CartPage() {
     <div className='md:-mt-[72px] md:pt-[72px] -mb-20 pb-20 px-21 bg-neutral-800 bg-opacity-75 text-light'>
       <Divider size={8} />
 
-      <div className='max-w-1200 mx-auto min-h-screen grid grid-cols-3 gap-21 pb-16'>
-        <div className='col-span-3 lg:col-span-2'>
-          <h1 className='flex items-center gap-2 font-semibold font-body text-3xl mb-2'>
-            <FaShoppingCart size={30} className='wiggle' />
-            <span>Giỏ hàng</span>
-            <span>
-              (<span className='text-primary font-normal'>{cartItems.length}</span>)
-            </span>
-          </h1>
+      <div className='max-w-1200 mx-auto flex items-center justify-between flex-wrap sm:flex-nowrap gap-3 px-1.5'>
+        <h1 className='flex items-center gap-2 font-semibold font-body text-xl md:text-2xl lg:text-3xl mb-2'>
+          <FaShoppingCart className='lg:w-[30px] wiggle flex-shrink-0' />
+          <span>Giỏ hàng</span>
+          <span>
+            (<span className='text-primary font-normal'>{cartItems.length}</span>)
+          </span>
+        </h1>
 
+        <Link
+          href='/user/history'
+          className='group flex items-center gap-2 font-semibold font-body text-xl md:text-2xl lg:text-3xl mb-2'
+        >
+          <FaHistory className='text-primary lg:w-[26px] wiggle -mb-0.5 flex-shrink-0' />
+          <span>Lịch sử mua hàng</span>
+        </Link>
+      </div>
+
+      <div className='max-w-1200 mx-auto min-h-screen grid grid-cols-3 gap-21 pb-16 mt-3'>
+        <div className='col-span-3 lg:col-span-2'>
           {/* MARK: Cart */}
           {cartItems.length ? (
             <div>
@@ -298,7 +308,7 @@ function CartPage() {
 
         {/* MARK: Summary */}
         <div className='col-span-3 lg:col-span-1 text-dark'>
-          <div className='border-2 border-primary rounded-medium shadow-lg p-4 sticky lg:mt-[60px] top-[93px] bg-white overflow-auto'>
+          <div className='border-2 border-primary rounded-medium shadow-lg p-4 sticky lg:mt-[40px] top-[93px] bg-white overflow-auto'>
             {/* Voucher */}
             <div className='flex items-center gap-2 mb-2 overflow-hidden trans-200'>
               <Input

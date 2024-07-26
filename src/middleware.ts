@@ -73,7 +73,8 @@ export default async function middleware(req: NextRequest) {
     req.nextUrl.pathname.startsWith('/setting') ||
     req.nextUrl.pathname.startsWith('/checkout') ||
     req.nextUrl.pathname.startsWith('/cart') ||
-    req.nextUrl.pathname.startsWith('/learning')
+    req.nextUrl.pathname.startsWith('/learning') ||
+    req.nextUrl.pathname.startsWith('/user/history')
   ) {
     return requireAuth(req, token)
   }
@@ -108,5 +109,6 @@ export const config = {
     '/learning/:path*',
     '/checkout/:path*',
     '/cart',
+    '/user/history/:path*',
   ],
 }

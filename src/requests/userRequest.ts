@@ -90,6 +90,24 @@ export const getRankUsersApi = async (
   return await res.json()
 }
 
+// [GET]: /user/history
+export const getOrderHistoryApi = async (
+  query: string = '',
+  option: RequestInit = {
+    cache: 'no-store',
+  }
+) => {
+  // no-store to bypass cache
+  const res = await fetch(`/api/user/history${query}`, option)
+
+  // check status
+  if (!res.ok) {
+    throw new Error((await res.json()).message)
+  }
+
+  return await res.json()
+}
+
 // [POST]: /user/check-authentication
 export const checkAuthenticationApi = async (password: string) => {
   // no-store to bypass cache
