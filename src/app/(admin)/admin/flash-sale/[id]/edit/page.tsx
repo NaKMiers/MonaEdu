@@ -1,34 +1,34 @@
-'use client';
+'use client'
 
-import Divider from '@/components/Divider';
-import Input from '@/components/Input';
-import LoadingButton from '@/components/LoadingButton';
-import AdminHeader from '@/components/admin/AdminHeader';
-import { useAppDispatch, useAppSelector } from '@/libs/hooks';
-import { setLoading } from '@/libs/reducers/modalReducer';
-import { ICourse } from '@/models/CourseModel';
-import { getFlashSaleApi, getForceAllCoursesApi, updateFlashSaleApi } from '@/requests';
-import Image from 'next/image';
-import { useParams, useRouter } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
-import { FaPause, FaPlay } from 'react-icons/fa6';
-import { IoReload } from 'react-icons/io5';
-import { MdNumbers } from 'react-icons/md';
-import { RiCharacterRecognitionLine } from 'react-icons/ri';
+import Divider from '@/components/Divider'
+import Input from '@/components/Input'
+import LoadingButton from '@/components/LoadingButton'
+import AdminHeader from '@/components/admin/AdminHeader'
+import { useAppDispatch, useAppSelector } from '@/libs/hooks'
+import { setLoading } from '@/libs/reducers/modalReducer'
+import { ICourse } from '@/models/CourseModel'
+import { getFlashSaleApi, getForceAllCoursesApi, updateFlashSaleApi } from '@/requests'
+import Image from 'next/image'
+import { useParams, useRouter } from 'next/navigation'
+import { useCallback, useEffect, useState } from 'react'
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
+import { FaPause, FaPlay } from 'react-icons/fa6'
+import { IoReload } from 'react-icons/io5'
+import { MdNumbers } from 'react-icons/md'
+import { RiCharacterRecognitionLine } from 'react-icons/ri'
 
 function EditFlashSalePage() {
   // hooks
-  const dispatch = useAppDispatch();
-  const isLoading = useAppSelector((state) => state.modal.isLoading);
-  const { id } = useParams<{ id: string }>();
-  const router = useRouter();
+  const dispatch = useAppDispatch()
+  const isLoading = useAppSelector(state => state.modal.isLoading)
+  const { id } = useParams<{ id: string }>()
+  const router = useRouter()
 
   // states
-  const [courses, setCourses] = useState<ICourse[]>([]);
-  const [selectedCourses, setSelectedCourses] = useState<string[]>([]);
-  const [timeType, setTimeType] = useState<'loop' | 'once'>('loop');
+  const [courses, setCourses] = useState<ICourse[]>([])
+  const [selectedCourses, setSelectedCourses] = useState<string[]>([])
+  const [timeType, setTimeType] = useState<'loop' | 'once'>('loop')
 
   // form
   const {
@@ -47,7 +47,7 @@ function EditFlashSalePage() {
       timeType: 'loop',
       duration: 120,
     },
-  });
+  })
 
   // MARK: Get Data
   // get flash sale by id
@@ -55,115 +55,115 @@ function EditFlashSalePage() {
     const getCourse = async () => {
       try {
         // send request to server to get flash sale
-        const { flashSale } = await getFlashSaleApi(id); // cache: no-store
+        const { flashSale } = await getFlashSaleApi(id) // cache: no-store
 
         // // set value to form
-        setValue('type', flashSale.type);
-        setValue('value', flashSale.value);
-        setValue('begin', new Date(flashSale.begin).toISOString().split('T')[0]);
+        setValue('type', flashSale.type)
+        setValue('value', flashSale.value)
+        setValue('begin', new Date(flashSale.begin).toISOString().split('T')[0])
         setValue(
           'expire',
           flashSale.expire ? new Date(flashSale.expire).toISOString().split('T')[0] : ''
-        );
-        setValue('duration', flashSale.duration || 120);
-        setValue('timeType', flashSale.timeType);
-        setTimeType(flashSale.timeType);
+        )
+        setValue('duration', flashSale.duration || 120)
+        setValue('timeType', flashSale.timeType)
+        setTimeType(flashSale.timeType)
 
-        setSelectedCourses(flashSale.courses.map((course: ICourse) => course._id));
+        setSelectedCourses(flashSale.courses.map((course: ICourse) => course._id))
       } catch (err: any) {
-        console.log(err);
-        toast.error(err.message);
+        console.log(err)
+        toast.error(err.message)
       }
-    };
-    getCourse();
-  }, [id, setValue]);
+    }
+    getCourse()
+  }, [id, setValue])
 
   // get all courses to apply
   useEffect(() => {
     const getAllCourses = async () => {
       try {
         // send request to server
-        const { courses } = await getForceAllCoursesApi();
+        const { courses } = await getForceAllCoursesApi()
 
         // set courses to state
-        setCourses(courses);
+        setCourses(courses)
       } catch (err: any) {
-        console.log(err);
-        toast.error(err.message);
+        console.log(err)
+        toast.error(err.message)
       }
-    };
-    getAllCourses();
-  }, []);
+    }
+    getAllCourses()
+  }, [])
 
   // set page title
   useEffect(() => {
-    document.title = 'Edit Flash Sale - Mona Edu';
-  }, []);
+    document.title = 'Edit Flash Sale - Mona Edu'
+  }, [])
 
   // validate form
   const handleValidate: SubmitHandler<FieldValues> = useCallback(
-    (data) => {
-      let isValid = true;
+    data => {
+      let isValid = true
 
       if (data.type === 'percentage' && !data.value.endsWith('%')) {
-        setError('value', { type: 'manual', message: 'Value must have %' });
-        isValid = false;
+        setError('value', { type: 'manual', message: 'Value must have %' })
+        isValid = false
       }
 
       // if type if percentage, value have '%' at the end and must be number
       if (data.type === 'percentage' && isNaN(Number(data.value.replace('%', '')))) {
-        setError('value', { type: 'manual', message: 'Value must be number' });
-        isValid = false;
+        setError('value', { type: 'manual', message: 'Value must be number' })
+        isValid = false
       }
 
       // if type if fixed-reduce, value must be number
       if (data.type !== 'percentage' && isNaN(Number(data.value))) {
-        setError('value', { type: 'manual', message: 'Value must be number' });
-        isValid = false;
+        setError('value', { type: 'manual', message: 'Value must be number' })
+        isValid = false
       }
 
       // if time type is loop, duration must be > 0
       if (data.timeType === 'loop' && data.duration <= 0) {
-        setError('duration', { type: 'manual', message: 'Duration must be > 0' });
-        isValid = false;
+        setError('duration', { type: 'manual', message: 'Duration must be > 0' })
+        isValid = false
       }
 
       // if expire is less than begin
       if (data.expire && new Date(data.expire) <= new Date(data.begin)) {
-        setError('expire', { type: 'manual', message: 'Expire must be > begin' });
-        isValid = false;
+        setError('expire', { type: 'manual', message: 'Expire must be > begin' })
+        isValid = false
       }
 
-      return isValid;
+      return isValid
     },
     [setError]
-  );
+  )
 
   // MARK: Submit
   // handle send request to server to edit flash sale
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+  const onSubmit: SubmitHandler<FieldValues> = async data => {
     // validate form
-    if (!handleValidate(data)) return;
+    if (!handleValidate(data)) return
 
     // set loading
-    dispatch(setLoading(true));
+    dispatch(setLoading(true))
 
     try {
       // send request to server
-      const { message } = await updateFlashSaleApi(id, data, selectedCourses);
+      const { message } = await updateFlashSaleApi(id, data, selectedCourses)
 
       // show success message
-      toast.success(message);
+      toast.success(message)
 
       // redirect back
-      router.back();
+      router.back()
     } catch (err: any) {
-      console.log(err);
-      toast.error(err.message);
+      console.log(err)
+      toast.error(err.message)
     } finally {
-      dispatch(setLoading(false));
+      dispatch(setLoading(false))
     }
-  };
+  }
 
   return (
     <div className='max-w-1200 mx-auto'>
@@ -242,9 +242,9 @@ function EditFlashSalePage() {
             errors={errors}
             required
             type='select'
-            onChange={(e) => {
-              setValue('timeType', e.target.value);
-              setTimeType(e.target.value as 'loop' | 'once');
+            onChange={(e: any) => {
+              setValue('timeType', e.target.value)
+              setTimeType(e.target.value as 'loop' | 'once')
             }}
             onFocus={() => clearErrors('timeType')}
             options={[
@@ -304,12 +304,12 @@ function EditFlashSalePage() {
             onClick={() =>
               courses.length === selectedCourses.length
                 ? setSelectedCourses([])
-                : setSelectedCourses(courses.map((course) => course._id))
+                : setSelectedCourses(courses.map(course => course._id))
             }
           >
             <span className='block text-ellipsis line-clamp-1 text-nowrap'>All</span>
           </div>
-          {courses.map((course) => (
+          {courses.map(course => (
             <div
               className={`max-w-[250px] border-2 border-slate-300 rounded-lg flex items-center py-1 px-2 gap-2 cursor-pointer trans-200 ${
                 selectedCourses.includes(course._id)
@@ -321,8 +321,8 @@ function EditFlashSalePage() {
               title={course.title}
               onClick={() =>
                 selectedCourses.includes(course._id)
-                  ? setSelectedCourses((prev) => prev.filter((id) => id !== course._id))
-                  : setSelectedCourses((prev) => [...prev, course._id])
+                  ? setSelectedCourses(prev => prev.filter(id => id !== course._id))
+                  : setSelectedCourses(prev => [...prev, course._id])
               }
               key={course._id}
             >
@@ -349,7 +349,7 @@ function EditFlashSalePage() {
         />
       </div>
     </div>
-  );
+  )
 }
 
-export default EditFlashSalePage;
+export default EditFlashSalePage
