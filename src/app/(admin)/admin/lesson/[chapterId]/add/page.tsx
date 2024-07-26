@@ -224,7 +224,6 @@ function AddLessonPage({ params: { chapterId } }: { params: { chapterId: string 
   const handleAddDocs = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       let newFiles = Array.from(e.target.files)
-      console.log('newFiles', newFiles)
 
       // validate files's type and size
       newFiles = newFiles.filter(file => {
@@ -527,7 +526,6 @@ function AddLessonPage({ params: { chapterId } }: { params: { chapterId: string 
         {!!docs.length && (
           <div className='flex flex-wrap gap-3 rounded-lg bg-white p-3 mb-5'>
             {docs.map((doc, index) => {
-              console.log('doc', doc)
               return (
                 <div
                   className='flex items-center gap-3 max-w-[250px] rounded-md shadow-md px-2 py-1'

@@ -27,7 +27,6 @@ export async function POST(req: NextRequest) {
 
     // get user's courses to check if user has joined the course
     const courses: any = await UserModel.findById(userId).select('courses').lean()
-    console.log('courses', courses.courses)
 
     // courses not found
     if (!courses) {
@@ -36,19 +35,10 @@ export async function POST(req: NextRequest) {
 
     // get data to add progress
     const { courseId, lessonId } = await req.json()
-    console.log('courseId', courseId)
 
     // check if user has joined the course
     const isEnrolled = courses.courses.some((course: any) => course.course.toString() === courseId)
-    console.log('isEnrolled', isEnrolled)
     if (!isEnrolled) {
-      console.log('aaaaaaa-1')
-      console.log('courseId', courseId)
-      console.log('lessonId', lessonId)
-      console.log('isEnrolled', isEnrolled)
-      console.log('courses', courses.courses)
-      console.log('aaaaaaa-1')
-
       return NextResponse.json({ message: 'Bạn chưa tham gia khóa học' }, { status: 403 })
     }
 

@@ -127,23 +127,13 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
       const isEnrolled = curUser?.courses
         ?.map((course: any) => course.course)
         .includes((lesson?.courseId as ICourse)._id)
-      // console.log('!lesson?.progress:', !lesson?.progress)
-      // console.log('!isEnrolled:', !isEnrolled)
-      // console.log('duration:', duration)
-      // console.log('(currentTime / duration) * 100:', (currentTime / duration) * 100)
       if (!lesson?.progress || !isEnrolled || !duration) return
-      // console.log('lesson.progress.progress:', lesson?.progress?.progress)
 
       const wd: any = window
       const curTime = wd.player.getCurrentTime()
 
       const invalidProgress =
         Math.floor((curTime / duration) * 100 * 100) / 100 <= lesson.progress.progress
-      console.log('curTime:', curTime)
-      console.log('duration:', duration)
-      console.log('(curTime / duration) * 100:', Math.floor((curTime / duration) * 100 * 100) / 100)
-      console.log('lesson.progress.progress:', Math.floor(lesson.progress.progress * 100) / 100)
-      console.log('invalidProgress:', invalidProgress)
       if (invalidProgress) return
 
       const { progress } = await updateProgressApi(
@@ -152,8 +142,6 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
         curTime > 0.8 * duration ? 'completed' : 'in-progress',
         curTime > 0.8 * duration ? 100 : Math.floor((curTime / duration) * 100 * 100) / 100
       )
-
-      console.log('progress:', progress)
 
       // update states
       dispatch(setLearningLesson({ ...lesson, progress }))
@@ -178,7 +166,6 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
       interval = 5000 // need to remove
       progressTimeoutRef.current = setTimeout(() => {
         if (progressTimeoutRef.current) {
-          console.log('next timeout:', interval)
           handleUpdateLessonProgress()
         }
       }, interval)
@@ -205,7 +192,6 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
       setIsPlaying(false)
 
       if (progressTimeoutRef.current) {
-        console.log('clearTimeout(progressTimeoutRef.current)')
         clearTimeout(progressTimeoutRef.current)
       }
     }

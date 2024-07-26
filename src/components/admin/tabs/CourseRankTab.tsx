@@ -41,8 +41,6 @@ function CourseRankTab({ className = '' }: CourseRankTabProps) {
           getForceAllCategoriesApi('?pure=true'),
         ])
 
-        console.log('orders', orders, categories)
-
         const courses = rankCourseRevenue(orders, categories)
         setCourses(courses)
       } catch (err: any) {

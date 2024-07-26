@@ -196,9 +196,9 @@ function CheckoutPage({ params }: { params: { type: string } }) {
         {/* MARK: Action Buttons */}
         <div className='flex lg:hidden justify-center flex-wrap mt-10 gap-x-21 gap-y-21/2 font-body tracking-wide'>
           <Link
-            href={`/user/order/${checkout?.code}`}
+            href='/user/history'
             className='flex items-center justify-center gap-2 group rounded-lg px-21 py-3 bg-primary hover:bg-secondary hover:text-white common-transition'
-            onClick={(e) => {
+            onClick={e => {
               if (!curUser?._id) {
                 e.preventDefault()
                 toast.error('Bạn cần có tài khoản để có thể xem thông tin đơn hàng ngay khi mua')
@@ -265,9 +265,9 @@ function CheckoutPage({ params }: { params: { type: string } }) {
             {/* MARK: Action Buttons */}
             <div className='hidden sm:flex justify-center flex-wrap mt-6 gap-x-21 gap-y-21/2 font-body tracking-wide'>
               <Link
-                href={`/user/order/${checkout?.code}`}
+                href='/user/history'
                 className='flex items-center justify-center gap-2 group rounded-lg px-21 py-3 bg-primary hover:bg-secondary hover:text-white common-transition'
-                onClick={(e) => {
+                onClick={e => {
                   if (!curUser?._id) {
                     e.preventDefault()
                     toast.error('Bạn cần có tài khoản để có thể xem thông tin đơn hàng ngay khi mua')

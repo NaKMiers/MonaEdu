@@ -61,8 +61,6 @@ async function FlashSalePage({ searchParams }: { searchParams?: { [key: string]:
     })),
   }
 
-  console.log('jsonLd', jsonLd.itemListElement)
-
   return (
     <div className='px-21 pt-12 md:pt-16'>
       {/* MARK: Add JSON-LD */}

@@ -124,9 +124,6 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    console.log('Filter:', filter)
-    console.log('Sort:', sort)
-
     // get amount, get all orders, get chops
     const [amount, orders, chops] = await Promise.all([
       // get amount of lesson

@@ -49,13 +49,6 @@ function LessonItemOfChapter({
       }
     }
 
-    console.log('lesson: ', lesson)
-    console.log('courseId: ', lesson.courseId)
-    console.log('!lesson.progress?._id: ', !lesson.progress?._id)
-    console.log('lessonSlug === lesson.slug: ', lessonSlug === lesson.slug)
-    console.log('Is Enrolled: ', isEnrolled)
-    console.log('-------------------------')
-
     if (lesson && !lesson.progress?._id && lessonSlug === lesson.slug && isEnrolled) {
       initProgress()
     }

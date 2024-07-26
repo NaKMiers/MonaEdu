@@ -32,10 +32,6 @@ export async function POST(
     let file = formData.get('file')
     let docs: any[] = formData.getAll('docs')
 
-    console.log('data', data)
-    console.log('file', file)
-    console.log('docs', docs)
-
     if (!file && !embedUrl) {
       return NextResponse.json({ message: 'Source or embed is required' }, { status: 400 })
     }
@@ -56,8 +52,6 @@ export async function POST(
           return { name: doc.name, url, size: doc.size }
         })
       )
-
-      console.log('Docs: ', docs)
     }
 
     // get all users who joined the course | course slug

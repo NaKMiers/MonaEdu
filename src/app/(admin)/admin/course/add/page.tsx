@@ -181,7 +181,6 @@ function AddCoursePage() {
   const onSubmit: SubmitHandler<FieldValues> = async data => {
     if (!handleValidate(data)) return
 
-    console.log('data', data)
     // return
     dispatch(setLoading(true))
 

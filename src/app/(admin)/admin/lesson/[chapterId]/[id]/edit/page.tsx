@@ -74,7 +74,6 @@ function EditLessonPage() {
       try {
         // send request to server to get course
         const { lesson } = await getLessonByIdApi(chapterId, id) // cache: no-store
-        console.log('lesson', lesson)
         setCourse(lesson.courseId)
         setChapter(lesson.chapterId)
 
@@ -247,7 +246,6 @@ function EditLessonPage() {
   const handleAddDocs = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       let newFiles = Array.from(e.target.files)
-      console.log('newFiles', newFiles)
 
       // validate files's type and size
       newFiles = newFiles.filter(file => {

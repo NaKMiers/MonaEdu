@@ -23,8 +23,6 @@ function RecentlySaleTab({ className = '' }: RecentlySaleTab) {
 
   // get recently sale courses
   const getCourses = useCallback(async (page: number) => {
-    console.log('Get Recently Sale Courses')
-
     // start loading
     setLoading(true)
 

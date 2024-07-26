@@ -31,7 +31,6 @@ function CategoryTabs({ open, setOpen, className = '' }: CategoryTabsProps) {
       try {
         // send request to get categories
         const { categories } = await getAllCategoriesApi('', { next: { revalidate: 3600 } })
-        console.log('categories: ', categories)
         setCategories(categories)
         setList([
           {

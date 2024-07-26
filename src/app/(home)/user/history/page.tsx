@@ -79,7 +79,6 @@ function HistoryPage({ searchParams }: { searchParams?: { [key: string]: string[
     // get user's order history
     const getOrderHistory = async () => {
       const query = handleQuery(searchParams)
-      console.log('query:', query)
 
       // start page loading
       dispatch(setPageLoading(true))
@@ -88,8 +87,6 @@ function HistoryPage({ searchParams }: { searchParams?: { [key: string]: string[
         const { orders, amount, chops } = await getOrderHistoryApi(query)
         setOrders(orders)
         setAmount(amount)
-
-        console.log('chops:', chops)
 
         // sync search params with states
         setValue('search', searchParams?.search || getValues('search'))
@@ -130,7 +127,6 @@ function HistoryPage({ searchParams }: { searchParams?: { [key: string]: string[
     }
 
     const fromTo = (from || '') + '|' + (to || '')
-    console.log('fromTo:', fromTo)
     if (fromTo !== '|') {
       params['from-to'] = fromTo
     }
@@ -140,8 +136,6 @@ function HistoryPage({ searchParams }: { searchParams?: { [key: string]: string[
       ...searchParams,
       ...params,
     })
-
-    console.log('query:', query)
 
     // push to router
     router.push(pathname + query)
@@ -154,7 +148,6 @@ function HistoryPage({ searchParams }: { searchParams?: { [key: string]: string[
 
   // auto filter after timeout (part-2): filter after timeout
   useEffect(() => {
-    console.log('222')
     if (preventFilter.current) {
       preventFilter.current = false
       return
@@ -244,7 +237,6 @@ function HistoryPage({ searchParams }: { searchParams?: { [key: string]: string[
                 className='w-full'
                 onFocus={() => clearErrors('from')}
                 onChange={(e: any) => {
-                  console.log('from:', e.target.value)
                   setFrom(e.target.value)
                 }}
               />

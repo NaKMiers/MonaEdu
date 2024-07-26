@@ -41,8 +41,7 @@ async function CategoryPage({ searchParams }: { searchParams?: { [key: string]: 
     courses = data.courses
     amount = data.amount
   } catch (err: any) {
-    console.log('Error:', err)
-    // return notFound()
+    return notFound()
   }
 
   // jsonLd

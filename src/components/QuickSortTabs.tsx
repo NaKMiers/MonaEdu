@@ -18,8 +18,6 @@ function QuickSortTabs({ searchParams, amount, className = '' }: QuickSortTabsPr
 
   const [sort, setSort] = useState('related')
 
-  console.log('searchParams:', searchParams)
-
   // handle quick sort
   const handleSort = useCallback(
     (value: string) => {

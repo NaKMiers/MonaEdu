@@ -2,7 +2,6 @@
 
 // [POST]
 export const addProgressApi = async (courseId: string, lessonId: string) => {
-  console.log('courseId-------', courseId)
   const res = await fetch(`/api/progress/add`, {
     method: 'POST',
     body: JSON.stringify({ courseId, lessonId }),

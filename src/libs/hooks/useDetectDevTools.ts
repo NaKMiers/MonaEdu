@@ -11,8 +11,6 @@ function UseDetectDevTools() {
   const { data: session } = useSession()
   const curUser: any = session?.user
 
-  console.log('UseDetectDevTools:', curUser)
-
   // disabled dev tool by reloading the page
   useEffect(() => {
     if (process.env.NODE_ENV !== 'production' || curUser?.role === 'admin') {

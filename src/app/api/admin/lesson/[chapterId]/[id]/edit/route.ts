@@ -25,10 +25,6 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
     const originalDocs = JSON.parse(data.originalDocs as string)
     let docs: any[] = formData.getAll('docs')
 
-    console.log('Data: ', data)
-    console.log('File: ', file)
-    console.log('Docs: ', docs)
-
     // get lesson from database to edit
     const lesson: ILesson | null = await LessonModel.findById(id).lean()
 
@@ -41,7 +37,6 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
 
     // delete the file do not associated with the lesson in cloud
     if (file || embedUrl) {
-      console.log('New Source: ', file, embedUrl)
       if (lesson.sourceType === 'file') {
         const [newSrc] = await Promise.all([
           uploadFile(file, '16:9', 'video'),
@@ -66,14 +61,10 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
       })
     )
 
-    console.log('DocsUrls: ', docs)
-
     const stayDocs = lesson.docs.filter(doc => originalDocs.map((d: any) => d.url).includes(doc.url))
     const needToRemovedDocs = lesson.docs.filter(
       doc => !originalDocs.map((d: any) => d.url).includes(doc.url)
     )
-
-    console.log('Stay Docs: ', stayDocs)
 
     // delete the docs do not associated with the lesson in aws s3
     if (needToRemovedDocs && !!needToRemovedDocs.length) {

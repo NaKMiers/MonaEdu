@@ -92,7 +92,6 @@ function AdminOrderDetailPage({ params: { code } }: { params: { code: string } }
         setIsSaving(true)
 
         try {
-          console.log('data: ', data)
           const { updatedOrder, message } = await editOrderApi(order?._id, { ...order, ...data })
 
           // updated order state
@@ -121,7 +120,6 @@ function AdminOrderDetailPage({ params: { code } }: { params: { code: string } }
 
   // handle remove item
   const handleRemoveItem = useCallback((removeItem: any) => {
-    console.log('Remove Item', removeItem)
     setOrder(
       (prev: any) =>
         ({

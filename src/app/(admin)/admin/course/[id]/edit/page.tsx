@@ -81,8 +81,6 @@ function AddCoursePage() {
         setValue('booted', course.booted)
         setValue('languages', course.languages)
 
-        console.log('course', course)
-
         setSelectedTags(course.tags)
         setSelectedCategory(course.category)
         setOriginalImages(course.images)
@@ -214,8 +212,6 @@ function AddCoursePage() {
   // MARK: Submit
   // send data to server to create new course
   const onSubmit: SubmitHandler<FieldValues> = async data => {
-    console.log('data', data)
-
     if (!handleValidate(data)) return
 
     dispatch(setLoading(true))

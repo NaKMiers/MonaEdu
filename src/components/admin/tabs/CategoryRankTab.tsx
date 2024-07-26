@@ -24,8 +24,6 @@ function CategoryRankTab({ className = '' }: CategoryRankTabProps) {
         const query = '?limit=no-limit&sort=createdAt|-1'
         const { courses } = await getAllCoursesApi(query)
 
-        console.log('courses', courses)
-
         // Category Sold Rank
         const categorySoldMap: { [key: string]: ICategory & { joined: number } } = {}
         courses.forEach((course: ICourse) => {
@@ -41,8 +39,6 @@ function CategoryRankTab({ className = '' }: CategoryRankTabProps) {
           .sort((a, b) => b.joined - a.joined)
 
         setCategories(rankCategories)
-
-        console.log('rankCategories', rankCategories)
       } catch (err: any) {
         console.log(err)
         toast.error(err.message)
