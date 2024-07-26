@@ -64,7 +64,7 @@ function LearningChapter({
     <ul
       className={`flex flex-col border-b-2 bg-neutral-800 rounded-lg shadow-lg border-slate-300 ${className}`}
     >
-      <p
+      <div
         className={`${
           chapter.lessons?.some(lesson => lesson.slug === lessonSlug) ? 'text-orange-500' : 'text-white'
         } font-semibold flex justify-between items-center gap-2 py-2 px-3 cursor-pointer`}
@@ -77,7 +77,7 @@ function LearningChapter({
           </span>{' '}
           <FaAngleDown size={18} className={`${open ? 'rotate-180' : ''} trans-200`} />
         </div>
-      </p>
+      </div>
 
       <ul
         className={`flex flex-col px-2 gap-[4px] ${open ? '' : 'max-h-0'} trans-300 overflow-hidden`}

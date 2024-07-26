@@ -11,6 +11,7 @@ import { setOpenSidebar, setPageLoading } from '@/libs/reducers/modalReducer'
 import { IComment } from '@/models/CommentModel'
 import { ICourse } from '@/models/CourseModel'
 import { addReportApi, getLessonApi, likeLessonApi } from '@/requests'
+import { formatFileSize } from '@/utils/number'
 import moment from 'moment-timezone'
 import 'moment/locale/vi'
 import { useSession } from 'next-auth/react'
@@ -18,7 +19,7 @@ import Link from 'next/link'
 import { Fragment, useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { BsLayoutSidebarInsetReverse } from 'react-icons/bs'
-import { FaAngleRight, FaChevronLeft, FaHeart, FaQuestion, FaRegHeart } from 'react-icons/fa'
+import { FaAngleRight, FaChevronLeft, FaFile, FaHeart, FaQuestion, FaRegHeart } from 'react-icons/fa'
 import { HiDotsHorizontal } from 'react-icons/hi'
 
 function LessonPage({
@@ -37,6 +38,7 @@ function LessonPage({
   const [comments, setComments] = useState<IComment[]>([])
   const [showActions, setShowActions] = useState<boolean>(false)
   const [breadcrumbs, setBreadcrumbs] = useState<string[]>([])
+  const [tab, setTab] = useState<number>(1)
 
   // report states
   const [isOpenReportDialog, setIsOpenReportDialog] = useState<boolean>(false)
@@ -299,8 +301,54 @@ function LessonPage({
             </Link>
           )}
 
-          {/* Description */}
-          <div className='mt-8' dangerouslySetInnerHTML={{ __html: lesson?.description || '' }} />
+          <Divider size={12} />
+
+          {/* Description & Docs */}
+          <div className='w-full'>
+            <div className={`flex`}>
+              <button
+                className={`rounded-t-lg px-4 py-1.5 trans-200 font-semibold ${
+                  tab === 1 ? 'bg-primary shadow-lg' : 'bg-white shadow-md'
+                }`}
+                onClick={() => setTab(1)}
+              >
+                Mô tả
+              </button>
+              {lesson?.docs?.length > 0 && (
+                <button
+                  className={`rounded-t-lg px-4 py-1.5 trans-200 font-semibold ${
+                    tab === 2 ? 'bg-primary shadow-lg drop-shadow-lg' : 'bg-white shadow-md'
+                  }`}
+                  onClick={() => setTab(2)}
+                >
+                  Tài liệu
+                </button>
+              )}
+            </div>
+            <div className='border-t-2 border-primary bg-white rounded-b-lg py-3'>
+              {tab === 1 && <div dangerouslySetInnerHTML={{ __html: lesson?.description || '' }} />}
+              {tab === 2 && lesson?.docs?.length > 0 && (
+                <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-21'>
+                  {lesson.docs.map((doc, index) => (
+                    <Link
+                      href={doc.url}
+                      className='flex gap-1.5 rounded-md shadow-lg border border-dark p-3'
+                      key={index}
+                    >
+                      <FaFile size={20} className='text-secondary flex-shrink-0' />
+
+                      <div className='flex flex-col w-full font-body tracking-wider'>
+                        <p className='text-dark -mt-1 text-sm text-ellipsis line-clamp-2 overflow-hidden'>
+                          {doc.name}
+                        </p>
+                        <p className='text-slate-500 text-xs'>{formatFileSize(doc.size)}</p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
 
           <Divider size={12} />
 

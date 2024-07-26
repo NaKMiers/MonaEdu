@@ -5,7 +5,7 @@ import { ILesson } from '@/models/LessonModel'
 import { addProgressApi } from '@/requests'
 import { duration } from '@/utils/time'
 import Link from 'next/link'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { TiLockOpen, TiTick } from 'react-icons/ti'
 
@@ -35,7 +35,11 @@ function LessonItemOfChapter({
     // create new progress if not exists
     const initProgress = async () => {
       try {
-        const { progress } = await addProgressApi(lesson.courseId as string, lesson._id)
+        let courseId = lesson.courseId
+        if (typeof courseId !== 'string') {
+          courseId = (courseId as ICourse)._id
+        }
+        const { progress } = await addProgressApi(courseId as string, lesson._id)
 
         // update states
         dispatch(setLearningLesson({ ...lesson, progress }))
@@ -45,7 +49,14 @@ function LessonItemOfChapter({
       }
     }
 
-    if (!lesson.progress?._id && lessonSlug === lesson.slug && isEnrolled) {
+    console.log('lesson: ', lesson)
+    console.log('courseId: ', lesson.courseId)
+    console.log('!lesson.progress?._id: ', !lesson.progress?._id)
+    console.log('lessonSlug === lesson.slug: ', lessonSlug === lesson.slug)
+    console.log('Is Enrolled: ', isEnrolled)
+    console.log('-------------------------')
+
+    if (lesson && !lesson.progress?._id && lessonSlug === lesson.slug && isEnrolled) {
       initProgress()
     }
   }, [dispatch, lessonSlug, isEnrolled, lesson])
