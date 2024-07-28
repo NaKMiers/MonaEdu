@@ -4,14 +4,35 @@ import bundleAnalyzer from '@next/bundle-analyzer'
 const nextConfig = {
   reactStrictMode: false,
   images: {
-    domains: [
-      'res.cloudinary.com',
-      'lh3.googleusercontent.com',
-      'avatars.githubusercontent.com',
-      'img.vietqr.io',
-      'api.qrserver.com',
-      'monaedu.s3.ap-southeast-1.amazonaws.com',
-      'd141vgbk8gzs0o.cloudfront.net',
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'res.cloudinary.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'avatars.githubusercontent.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'img.vietqr.io',
+      },
+      {
+        protocol: 'https',
+        hostname: 'api.qrserver.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'monaedu.s3.ap-southeast-1.amazonaws.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'd141vgbk8gzs0o.cloudfront.net',
+      },
     ],
   },
 }

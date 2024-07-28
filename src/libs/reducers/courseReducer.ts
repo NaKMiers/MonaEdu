@@ -2,12 +2,23 @@ import { ICourse } from '@/models/CourseModel'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import moment from 'moment-timezone'
 
+const getRecentlyVisitedCourses = (): ICourse[] => {
+  if (typeof window !== 'undefined') {
+    // Check if localStorage is available
+    const courses = localStorage.getItem('recentlyVisit')
+    if (courses) {
+      return JSON.parse(courses).filter(
+        (course: any) => moment().diff(moment(course.lastVisit), 'days') < 1
+      )
+    }
+  }
+  return []
+}
+
 export const course = createSlice({
   name: 'course',
   initialState: {
-    recentlyVisitCourses: JSON.parse(localStorage.getItem('recentlyVisit') || '[]').filter(
-      (course: any) => moment().diff(moment(course.lastVisit), 'days') < 1
-    ) as ICourse[],
+    recentlyVisitCourses: getRecentlyVisitedCourses(),
   },
   reducers: {
     setRecentlyVisitCourses: (state, action: PayloadAction<ICourse[]>) => {
