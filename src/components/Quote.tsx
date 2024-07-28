@@ -25,6 +25,16 @@ function Quote() {
             alt='quote'
           />
         </div>
+        <div className='w-full rounded-lg shadow-lg overflow-hidden'>
+          <Image
+            src='/images/quote-3.jpg'
+            className='w-full h-full object-contain'
+            width={1280}
+            height={720}
+            loading='lazy'
+            alt='quote'
+          />
+        </div>
       </Slider>
     </div>
   )

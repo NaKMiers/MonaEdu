@@ -10,6 +10,7 @@ import { NextRequest, NextResponse } from 'next/server'
 // Models: Question, User
 import '@/models/QuestionModel'
 import '@/models/TagModel'
+import '@/models/UserModel'
 
 export const dynamic = 'force-dynamic'
 
