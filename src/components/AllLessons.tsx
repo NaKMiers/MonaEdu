@@ -39,7 +39,9 @@ function AllLessons() {
     const getChaptersWithLessons = async () => {
       try {
         // send request to get all chapters with lessons
-        const { chapters, courseId } = await getLearningChaptersApi(courseSlug)
+        const { chapters, courseId } = await getLearningChaptersApi(courseSlug, '', {
+          next: { revalidate: 60 },
+        })
 
         // check if user is enrolled in this course
         const isEnrolled = curUser?.courses?.map((course: any) => course.course).includes(courseId)

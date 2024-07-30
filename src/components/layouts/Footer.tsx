@@ -4,9 +4,19 @@ import { signOut } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { memo } from 'react'
-import { FaCheck } from 'react-icons/fa'
+import {
+  FaCheck,
+  FaHistory,
+  FaInfoCircle,
+  FaQuestion,
+  FaShoppingCart,
+  FaSignOutAlt,
+} from 'react-icons/fa'
 import Divider from '../Divider'
 import Quote from '../Quote'
+import { SiCoursera } from 'react-icons/si'
+import { MdForum, MdLogout } from 'react-icons/md'
+import { IoMdLogOut } from 'react-icons/io'
 
 function Footer() {
   return (
@@ -52,24 +62,38 @@ function Footer() {
         <Divider size={4} />
 
         {/* Quote */}
-        <div className='max-w-[640px] mx-auto'>
-          <Quote />
+        <div className='flex gap-21 justify-center lg:justify-between'>
+          <div className='flex shrink-0 max-w-[640px] w-full'>
+            <Quote />
+          </div>
+
+          <div className='hidden lg:flex flex-col'>
+            <h3 className='font-bold text-xl'>VỀ CHÚNG TÔI</h3>
+
+            <p className='font-body tracking-wider mt-2'>
+              Mona Edu là nền tảng giáo dục trực tuyến, cung cấp các khóa học chất lượng được reup từ các
+              nguồn uy tín như Udemy, Coursera, LinkedIn Learning... và nhiều trang khác. Với chi phí hợp
+              lý, chúng tôi giúp học sinh, sinh viên và người mới ra trường tiếp cận kiến thức chuyên môn
+              và cơ hội nghề nghiệp. Khám phá Mona Edu để trải nghiệm học tập hiệu quả và thú vị hơn bao
+              giờ hết!
+            </p>
+          </div>
         </div>
 
         <Divider size={4} />
         <Divider size={2} border />
 
         {/* Body */}
-        <div className='grid grid-cols-12 py-3 gap-y-7 sm:gap-x-7 text-center md:text-left'>
-          <div className='flex flex-col col-span-12 md:col-span-7'>
+        <div className='grid lg:flex justify-evenly grid-cols-12 py-3 gap-y-7 sm:gap-x-7 text-center md:text-left lg:text-center'>
+          <div className='flex lg:hidden flex-col col-span-12 md:col-span-7'>
             <h3 className='font-bold text-xl'>VỀ CHÚNG TÔI</h3>
 
             <p className='font-body tracking-wider mt-2'>
-              Mona Edu là nền tảng giáo dục trực tuyến, nơi bạn có thể khám phá thế giới kiến thức một
-              cách linh hoạt và tiết kiệm. Với mức chi phí hợp lý, chúng tôi dành cho sinh viên, thực tập
-              sinh và những người mới ra trường cơ hội tiếp cận các khóa học chất lượng, giúp phát triển
-              kỹ năng chuyên môn và mở ra cơ hội nghề nghiệp mới. Hãy đầu tư vào sự nghiệp học vấn của
-              bạn cùng với Mona Edu - Trãi nghiệm học tập của bạn sẽ trở nên thú vị hơn bao giờ hết.
+              Mona Edu là nền tảng giáo dục trực tuyến, cung cấp các khóa học chất lượng được reup từ các
+              nguồn uy tín như Udemy, Coursera, LinkedIn Learning... và nhiều trang khác. Với chi phí hợp
+              lý, chúng tôi giúp học sinh, sinh viên và người mới ra trường tiếp cận kiến thức chuyên môn
+              và cơ hội nghề nghiệp. Khám phá Mona Edu để trải nghiệm học tập hiệu quả và thú vị hơn bao
+              giờ hết!
             </p>
           </div>
 
@@ -77,25 +101,29 @@ function Footer() {
             <h3 className='font-bold text-xl'>ƯU ĐIỂM</h3>
 
             <div className='flex flex-col gap-2 mt-1'>
-              <div className='flex gap-2 items-center justify-center md:justify-start hover:tracking-wider trans-200 font-body tracking-wide'>
+              <div className='flex gap-2 items-center justify-center md:justify-start lg:justify-center hover:tracking-wider trans-200 font-body tracking-wide'>
                 <FaCheck className='text-green-400' />
-                Bài giảng chất lượng cao
+                Đa dạng khóa học
               </div>
-              <div className='flex gap-2 items-center justify-center md:justify-start hover:tracking-wider trans-200 font-body tracking-wide'>
+              <div className='flex gap-2 items-center justify-center md:justify-start lg:justify-center hover:tracking-wider trans-200 font-body tracking-wide'>
                 <FaCheck className='text-green-400' />
                 Giá thành hợp lí
               </div>
-              <div className='flex gap-2 items-center justify-center md:justify-start hover:tracking-wider trans-200 font-body tracking-wide'>
+              <div className='flex gap-2 items-center justify-center md:justify-start lg:justify-center hover:tracking-wider trans-200 font-body tracking-wide'>
                 <FaCheck className='text-green-400' />
-                Môi trường học tập tích cực
+                Giao diện thân thiện
               </div>
-              <div className='flex gap-2 items-center justify-center md:justify-start hover:tracking-wider trans-200 font-body tracking-wide'>
+              <div className='flex gap-2 items-center justify-center md:justify-start lg:justify-center hover:tracking-wider trans-200 font-body tracking-wide'>
                 <FaCheck className='text-green-400' />
                 Thường xuyên cập nhật
               </div>
-              <div className='flex gap-2 items-center justify-center md:justify-start hover:tracking-wider trans-200 font-body tracking-wide'>
+              <div className='flex gap-2 items-center justify-center md:justify-start lg:justify-center hover:tracking-wider trans-200 font-body tracking-wide'>
                 <FaCheck className='text-green-400' />
-                Đảm bảo uy tin chất lượng
+                Hỗ trợ nhanh chóng
+              </div>
+              <div className='flex gap-2 items-center justify-center md:justify-start lg:justify-center hover:tracking-wider trans-200 font-body tracking-wide'>
+                <FaCheck className='text-green-400' />
+                Thanh toán an toàn
               </div>
             </div>
           </div>
@@ -103,41 +131,54 @@ function Footer() {
           <div className='flex flex-col col-span-12 sm:col-span-6 md:col-span-2'>
             <h3 className='font-bold text-xl'>LIÊN KẾT</h3>
 
-            <div className='flex flex-col gap-2 text-center md:text-left'>
+            <div className='flex flex-col gap-2 text-center md:text-left lg:text-center mt-1'>
               <Link
-                href='/categories'
-                className='hover:tracking-wider trans-200 underline underline-offset-2 font-body tracking-wide'
+                href='/about-us'
+                className='flex justify-center items-center gap-1.5 hover:tracking-wider trans-200 underline underline-offset-2 font-body tracking-wide group'
               >
-                Danh Mục
+                <FaInfoCircle size={14} className='wiggle-0 flex-shrink-0' />
+                Về chúng tôi
               </Link>
               <Link
                 href='/forum'
-                className='hover:tracking-wider trans-200 underline underline-offset-2 font-body tracking-wide'
+                className='flex justify-center items-center gap-1.5 hover:tracking-wider trans-200 underline underline-offset-2 font-body tracking-wide group'
               >
+                <MdForum size={14} className='wiggle-0 flex-shrink-0' />
                 Diễn Đàn
               </Link>
               <Link
-                href='/flash-sale'
-                className='hover:tracking-wider trans-200 underline underline-offset-2 font-body tracking-wide'
-              >
-                Đang giảm giá
-              </Link>
-              <Link
                 href='/cart'
-                className='hover:tracking-wider trans-200 underline underline-offset-2 font-body tracking-wide'
+                className='flex justify-center items-center gap-1.5 hover:tracking-wider trans-200 underline underline-offset-2 font-body tracking-wide group'
               >
+                <FaShoppingCart size={14} className='wiggle-0 flex-shrink-0' />
                 Giỏ hàng
               </Link>
               <Link
-                href='/setting'
-                className='hover:tracking-wider trans-200 underline underline-offset-2 font-body tracking-wide'
+                href='/user/history'
+                className='flex justify-center items-center gap-1.5 hover:tracking-wider trans-200 underline underline-offset-2 font-body tracking-wide group'
               >
-                Cài Đặt
+                <FaHistory size={14} className='wiggle-0 flex-shrink-0' />
+                Lịch sử mua hàng
+              </Link>
+              <Link
+                href='/my-courses'
+                className='flex justify-center items-center gap-1.5 hover:tracking-wider trans-200 underline underline-offset-2 font-body tracking-wide group'
+              >
+                <SiCoursera size={14} className='wiggle-0 flex-shrink-0' />
+                Khóa học của tôi
+              </Link>
+              <Link
+                href='/my-questions'
+                className='flex justify-center items-center gap-1.5 hover:tracking-wider trans-200 underline underline-offset-2 font-body tracking-wide group'
+              >
+                <FaQuestion size={13} className='wiggle-0 flex-shrink-0' />
+                Câu hỏi của tôi
               </Link>
               <button
-                className='text-center md:text-left text-yellow-400 hover:tracking-wider trans-200 font-body tracking-wide'
+                className='flex items-center justify-center gap-1 md:text-left lg:text-center text-yellow-400 hover:tracking-wider trans-200 font-body tracking-wide group'
                 onClick={() => signOut()}
               >
+                <FaSignOutAlt size={15} className='wiggle-0 flex-shrink-0' />
                 Đăng xuất
               </button>
             </div>

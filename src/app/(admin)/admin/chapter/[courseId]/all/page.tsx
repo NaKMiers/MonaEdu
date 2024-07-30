@@ -1,58 +1,58 @@
-'use client';
+'use client'
 
-import ConfirmDialog from '@/components/dialogs/ConfirmDialog';
-import Divider from '@/components/Divider';
-import Input from '@/components/Input';
-import Pagination from '@/components/layouts/Pagination';
-import AddChapter from '@/components/admin/AddChapter';
-import AdminHeader from '@/components/admin/AdminHeader';
-import AdminMeta from '@/components/admin/AdminMeta';
-import ChapterItem from '@/components/admin/ChapterItem';
-import { useAppDispatch } from '@/libs/hooks';
-import { setPageLoading } from '@/libs/reducers/modalReducer';
-import { IChapter } from '@/models/ChapterModel';
-import {} from '@/requests';
-import { deleteChaptersApi, getAllCourseChaptersApi } from '@/requests/chapterRequest';
-import { handleQuery } from '@/utils/handleQuery';
-import { usePathname, useRouter } from 'next/navigation';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
-import { FaSearch, FaSort } from 'react-icons/fa';
-import { ICourse } from '@/models/CourseModel';
+import ConfirmDialog from '@/components/dialogs/ConfirmDialog'
+import Divider from '@/components/Divider'
+import Input from '@/components/Input'
+import Pagination from '@/components/layouts/Pagination'
+import AddChapter from '@/components/admin/AddChapter'
+import AdminHeader from '@/components/admin/AdminHeader'
+import AdminMeta from '@/components/admin/AdminMeta'
+import ChapterItem from '@/components/admin/ChapterItem'
+import { useAppDispatch } from '@/libs/hooks'
+import { setPageLoading } from '@/libs/reducers/modalReducer'
+import { IChapter } from '@/models/ChapterModel'
+import {} from '@/requests'
+import { deleteChaptersApi, getAllCourseChaptersApi } from '@/requests/chapterRequest'
+import { handleQuery } from '@/utils/handleQuery'
+import { usePathname, useRouter } from 'next/navigation'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
+import { FaSearch, FaSort } from 'react-icons/fa'
+import { ICourse } from '@/models/CourseModel'
 
 export type EditingValues = {
-  _id: string;
-  title: string;
-  content: string;
-  order: number;
-};
+  _id: string
+  title: string
+  content: string
+  order: number
+}
 
 function AllCourseChaptersPage({
   searchParams,
   params: { courseId },
 }: {
-  searchParams?: { [key: string]: string[] };
-  params: { courseId: string };
+  searchParams?: { [key: string]: string[] }
+  params: { courseId: string }
 }) {
   // hooks
-  const dispatch = useAppDispatch();
-  const pathname = usePathname();
-  const router = useRouter();
+  const dispatch = useAppDispatch()
+  const pathname = usePathname()
+  const router = useRouter()
 
   // states
-  const [course, setCourse] = useState<ICourse | null>(null);
-  const [chapters, setChapters] = useState<IChapter[]>([]);
-  const [amount, setAmount] = useState<number>(0);
-  const [selectedChapters, setSelectedChapters] = useState<string[]>([]);
+  const [course, setCourse] = useState<ICourse | null>(null)
+  const [chapters, setChapters] = useState<IChapter[]>([])
+  const [amount, setAmount] = useState<number>(0)
+  const [selectedChapters, setSelectedChapters] = useState<string[]>([])
 
   // loading and confirming
-  const [loadingChapters, setLoadingChapters] = useState<string[]>([]);
-  const [editingValues, setEditingValues] = useState<EditingValues | null>(null);
-  const [isOpenConfirmModal, setIsOpenConfirmModal] = useState<boolean>(false);
+  const [loadingChapters, setLoadingChapters] = useState<string[]>([])
+  const [editingValues, setEditingValues] = useState<EditingValues | null>(null)
+  const [isOpenConfirmModal, setIsOpenConfirmModal] = useState<boolean>(false)
 
   // values
-  const itemPerPage = 10;
+  const itemPerPage = 10
 
   // form
   const defaultValues = useMemo<FieldValues>(
@@ -61,7 +61,7 @@ function AllCourseChaptersPage({
       sort: 'updatedAt|-1',
     }),
     []
-  );
+  )
   const {
     register,
     handleSubmit,
@@ -72,79 +72,79 @@ function AllCourseChaptersPage({
     clearErrors,
   } = useForm<FieldValues>({
     defaultValues,
-  });
+  })
 
   // MARK: Get Data
   // get all chapters
   useEffect(() => {
     // get all chapters
     const getAllChapters = async () => {
-      const query = handleQuery(searchParams);
+      const query = handleQuery(searchParams)
 
       // start page loading
-      dispatch(setPageLoading(true));
+      dispatch(setPageLoading(true))
 
       try {
-        const { course, chapters, amount } = await getAllCourseChaptersApi(courseId, query); // cache: no-store
+        const { course, chapters, amount } = await getAllCourseChaptersApi(courseId, query) // cache: no-store
 
         // set to states
-        setCourse(course);
-        setChapters(chapters);
-        setAmount(amount);
+        setCourse(course)
+        setChapters(chapters)
+        setAmount(amount)
 
         // sync search params with states
-        setValue('search', searchParams?.search || getValues('search'));
-        setValue('sort', searchParams?.sort || getValues('sort'));
+        setValue('search', searchParams?.search || getValues('search'))
+        setValue('sort', searchParams?.sort || getValues('sort'))
       } catch (err: any) {
-        console.log(err);
+        console.log(err)
       } finally {
         // stop page loading
-        dispatch(setPageLoading(false));
+        dispatch(setPageLoading(false))
       }
-    };
-    getAllChapters();
-  }, [dispatch, setValue, getValues, searchParams, courseId]);
+    }
+    getAllChapters()
+  }, [dispatch, setValue, getValues, searchParams, courseId])
 
   // MARK: Handlers
   // delete chapter
   const handleDeleteChapters = useCallback(async (ids: string[]) => {
-    setLoadingChapters(ids);
+    setLoadingChapters(ids)
 
     try {
       // send request to server
-      const { deletedChapters, message } = await deleteChaptersApi(ids);
+      const { deletedChapters, message } = await deleteChaptersApi(ids)
       // remove deleted chapters from state
-      setChapters((prev) =>
+      setChapters(prev =>
         prev.filter(
-          (chapter) => !deletedChapters.map((chapter: IChapter) => chapter._id).includes(chapter._id)
+          chapter => !deletedChapters.map((chapter: IChapter) => chapter._id).includes(chapter._id)
         )
-      );
+      )
       // show success message
-      toast.success(message);
+      toast.success(message)
     } catch (err: any) {
-      console.log(err);
-      toast.error(err.message);
+      console.log(err)
+      toast.error(err.message)
     } finally {
-      setLoadingChapters([]);
-      setSelectedChapters([]);
+      setLoadingChapters([])
+      setSelectedChapters([])
     }
-  }, []);
+  }, [])
 
   // handle optimize filter
   const handleOptimizeFilter: SubmitHandler<FieldValues> = useCallback(
-    (data) => {
+    data => {
       // reset page
       if (searchParams?.page) {
-        delete searchParams.page;
+        delete searchParams.page
       }
 
       // loop through data to prevent filter default
       for (let key in data) {
         if (data[key] === defaultValues[key]) {
           if (!searchParams?.[key]) {
-            delete data[key];
+            delete data[key]
           } else {
-            data[key] = '';
+            data[key] = ''
           }
         }
       }
@@ -152,61 +152,61 @@ function AllCourseChaptersPage({
       return {
         ...data,
         // accumulated: accumulated === maxAccumulated ? [] : [accumulated.toString()],
-      };
+      }
     },
     [searchParams, defaultValues]
-  );
+  )
 
   // handle submit filter
   const handleFilter: SubmitHandler<FieldValues> = useCallback(
-    async (data) => {
-      const params: any = handleOptimizeFilter(data);
+    async data => {
+      const params: any = handleOptimizeFilter(data)
 
       // handle query
       const query = handleQuery({
         ...searchParams,
         ...params,
-      });
+      })
 
       // push to router
-      router.push(pathname + query);
+      router.push(pathname + query)
     },
     [handleOptimizeFilter, router, searchParams, pathname]
-  );
+  )
 
   // handle reset filter
   const handleResetFilter = useCallback(() => {
-    reset();
-    router.push(pathname);
-  }, [reset, router, pathname]);
+    reset()
+    router.push(pathname)
+  }, [reset, router, pathname])
 
   // keyboard event
   useEffect(() => {
     // page title
-    document.title = 'All Chapters - Mona Edu';
+    document.title = 'All Chapters - Mona Edu'
 
     const handleKeyDown = (e: KeyboardEvent) => {
       // Alt + A (Select All)
       if (e.altKey && e.key === 'a') {
-        e.preventDefault();
-        setSelectedChapters((prev) =>
-          prev.length === chapters.length ? [] : chapters.map((chapter) => chapter._id)
-        );
+        e.preventDefault()
+        setSelectedChapters(prev =>
+          prev.length === chapters.length ? [] : chapters.map(chapter => chapter._id)
+        )
       }
 
       // Alt + Delete (Delete)
       if (e.altKey && e.key === 'Delete') {
-        e.preventDefault();
-        setIsOpenConfirmModal(true);
+        e.preventDefault()
+        setIsOpenConfirmModal(true)
       }
-    };
+    }
 
     // Add the event listener
-    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown)
 
     // Remove the event listener on cleanup
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [chapters, selectedChapters, handleDeleteChapters, handleFilter, handleSubmit, handleResetFilter]);
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [chapters, selectedChapters, handleDeleteChapters, handleFilter, handleSubmit, handleResetFilter])
 
   return (
     <div className='w-full'>
@@ -272,7 +272,7 @@ function AllCourseChaptersPage({
             className='border border-sky-400 text-sky-400 rounded-lg px-3 py-2 hover:bg-sky-400 hover:text-white trans-200'
             onClick={() =>
               setSelectedChapters(
-                selectedChapters.length > 0 ? [] : chapters.map((chapter) => chapter._id)
+                selectedChapters.length > 0 ? [] : chapters.map(chapter => chapter._id)
               )
             }
           >
@@ -282,7 +282,7 @@ function AllCourseChaptersPage({
           {/* Delete Many Button */}
           {!!selectedChapters.length &&
             chapters
-              .filter((chapter) => selectedChapters.includes(chapter._id))
+              .filter(chapter => selectedChapters.includes(chapter._id))
               .reduce((acc, chapter) => acc + chapter.lessonQuantity, 0) === 0 && (
               <button
                 className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-white trans-200'
@@ -329,7 +329,7 @@ function AllCourseChaptersPage({
 
       {/* MARK: MAIN LIST */}
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-21'>
-        {chapters.map((chapter) => (
+        {chapters.map(chapter => (
           <ChapterItem
             data={chapter}
             loadingChapters={loadingChapters}
@@ -342,7 +342,7 @@ function AllCourseChaptersPage({
         ))}
       </div>
     </div>
-  );
+  )
 }
 
-export default AllCourseChaptersPage;
+export default AllCourseChaptersPage

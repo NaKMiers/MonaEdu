@@ -35,13 +35,13 @@ async function CategoryPage({ searchParams }: { searchParams?: { [key: string]: 
     const query = handleQuery(searchParams)
 
     // get data
-    const data = await getCategoryPageApi(slug, query)
+    const data = await getCategoryPageApi(slug, query, { next: { revalidate: 60 } })
     category = data.category
     subs = data.subs
     courses = data.courses
     amount = data.amount
   } catch (err: any) {
-    return notFound()
+    // return notFound()
   }
 
   // jsonLd

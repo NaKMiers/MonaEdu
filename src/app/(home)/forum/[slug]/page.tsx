@@ -22,7 +22,7 @@ async function QuestionDetailPage({ params: { slug } }: { params: { slug: string
   let user: IUser | null = null
 
   try {
-    const data = await getQuestionDetailPage(slug)
+    const data = await getQuestionDetailPage(slug, '', { next: { revalidate: 10 } })
     question = data.question
     user = question?.userId as IUser
     comments = data.comments

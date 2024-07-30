@@ -23,7 +23,7 @@ async function SearchPage({ searchParams }: { searchParams?: { [key: string]: st
     query = handleQuery(searchParams)
 
     // cache: no-store for filter
-    const data = await getSearchPageApi(query)
+    const data = await getSearchPageApi(query, { next: { revalidate: 60 } })
 
     // destructure
     courses = data.courses

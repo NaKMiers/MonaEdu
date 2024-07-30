@@ -23,7 +23,7 @@ async function FlashSalePage({ searchParams }: { searchParams?: { [key: string]:
     query = handleQuery(searchParams)
 
     // cache: no-store for filter
-    const data = await getFlashSalePageApi(query)
+    const data = await getFlashSalePageApi(query, { next: { revalidate: 60 } })
 
     // destructure
     courses = data.courses

@@ -71,6 +71,25 @@ function UseDetectDevTools() {
     }
   }, [dispatch, curUser])
 
+  // disable context menu on specific paths
+  useEffect(() => {
+    if (process.env.NODE_ENV !== 'production' || curUser?.role === 'admin') {
+      return
+    }
+
+    const disableContextMenu = (e: MouseEvent) => {
+      if (window.location.pathname.startsWith('/learning')) {
+        e.preventDefault()
+      }
+    }
+
+    window.addEventListener('contextmenu', disableContextMenu)
+
+    return () => {
+      window.removeEventListener('contextmenu', disableContextMenu)
+    }
+  }, [curUser])
+
   return null
 }
 

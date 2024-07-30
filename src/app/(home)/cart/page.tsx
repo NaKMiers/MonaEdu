@@ -4,6 +4,7 @@ import CartItem from '@/components/CartItem'
 import Divider from '@/components/Divider'
 import Input from '@/components/Input'
 import SuggestedList from '@/components/SuggestedList'
+// import SuggestedList from '@/components/SuggestedList'
 import { useAppDispatch, useAppSelector } from '@/libs/hooks'
 import { setSelectedItems } from '@/libs/reducers/cartReducer'
 import { setPageLoading } from '@/libs/reducers/modalReducer'
@@ -247,7 +248,7 @@ function CartPage() {
 
       <div className='max-w-1200 mx-auto flex items-center justify-between flex-wrap sm:flex-nowrap gap-3 px-1.5'>
         <h1 className='flex items-center gap-2 font-semibold font-body text-xl md:text-2xl lg:text-3xl mb-2'>
-          <FaShoppingCart className='lg:w-[30px] wiggle flex-shrink-0' />
+          <FaShoppingCart className='sm:w-[18px] lg:w-[30px] wiggle flex-shrink-0' />
           <span>Giỏ hàng</span>
           <span>
             (<span className='text-primary font-normal'>{cartItems.length}</span>)
@@ -258,7 +259,7 @@ function CartPage() {
           href='/user/history'
           className='group flex items-center gap-2 font-semibold font-body text-xl md:text-2xl lg:text-3xl mb-2'
         >
-          <FaHistory className='text-primary lg:w-[26px] wiggle -mb-0.5 flex-shrink-0' />
+          <FaHistory className='text-primary sm:w-[19px] lg:w-[26px] wiggle -mb-0.5 flex-shrink-0' />
           <span>Lịch sử mua hàng</span>
         </Link>
       </div>

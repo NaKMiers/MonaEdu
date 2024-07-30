@@ -170,11 +170,11 @@ function HistoryPage({ searchParams }: { searchParams?: { [key: string]: string[
 
       <div className='min-h-screen flex'>
         <div className='relative grid grid-cols-12 w-full'>
-          {/* Filter & Search */}
+          {/* MARK: Filter & Search */}
           <div
             className={`${
               openSidebar ? '' : '-translate-x-full'
-            } md:translate-x-0 trans-300 absolute top-0 left-0 w-full h-full md:static md:col-span-3 px-21/2 md:pl-21 md:pr-21/2`}
+            } md:translate-x-0 trans-300 absolute z-10 top-0 left-0 w-full h-full md:static md:col-span-3 px-21/2 md:pl-21 md:pr-21/2`}
           >
             <div className='bg-white rounded-lg shadow-lg w-full h-full p-3 flex flex-col gap-6'>
               {/* Search */}
@@ -280,7 +280,7 @@ function HistoryPage({ searchParams }: { searchParams?: { [key: string]: string[
             </div>
           </div>
 
-          {/* History List */}
+          {/* MARK: History List */}
           <div className='col-span-12 md:col-span-9 px-21/2 md:pr-21 md:pl-21/2'>
             <div className='flex flex-col bg-white rounded-lg shadow-lg w-full h-full'>
               <div className='flex items-center justify-between md:justify-end flex-wrap gap-4'>

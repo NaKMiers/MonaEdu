@@ -24,12 +24,12 @@ function BreadcrumbBanner({ title, description, className = '' }: BreadcrumbBann
 
   return (
     <div
-      className={`relative flex flex-col justify-center bg-neutral-950 bg-opacity-50 items-center mx-auto overflow-hidden ${className}`}
+      className={`relative flex flex-col justify-center items-center p-3 overflow-y-auto bg-neutral-950 bg-opacity-50 mx-auto overflow-hidden ${className}`}
     >
       <div className='absolute inset-0 w-full h-full bg-slate-900 z-20 [mask-image:radial-gradient(transparent,white)] pointer-events-none' />
       <BeamsBackground />
 
-      <div className='flex items-center gap-3 relative z-20 text-slate-400'>
+      <div className='flex items-center flex-wrap justify-center gap-x-3 gap-y-1 relative z-20 text-slate-400 text-nowrap'>
         <Link href='/' className='hover:text-primary trans-200 hover:drop-shadow-md'>
           trang-chu
         </Link>

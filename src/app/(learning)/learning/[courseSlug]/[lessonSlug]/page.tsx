@@ -52,7 +52,7 @@ function LessonPage({
 
       // get lesson for learning
       try {
-        const { lesson, comments } = await getLessonApi(lessonSlug)
+        const { lesson, comments } = await getLessonApi(lessonSlug, '', { next: { revalidate: 300 } })
 
         // set learning lesson
         dispatch(setLearningLesson(lesson))

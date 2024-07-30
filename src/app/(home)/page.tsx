@@ -9,6 +9,7 @@ import { ICategory } from '@/models/CategoryModel'
 import { ICourse } from '@/models/CourseModel'
 import { getHomePageApi } from '@/requests'
 import { Metadata } from 'next'
+import Image from 'next/image'
 
 export const metadata: Metadata = {
   title: 'Trang chủ - Mona Edu',
@@ -25,7 +26,7 @@ async function Home() {
   }[] = []
 
   try {
-    const data = await getHomePageApi()
+    const data = await getHomePageApi('', { next: { revalidate: 60 } })
 
     courses = data.courses
     bestSellers = data.bestSellers
@@ -68,30 +69,42 @@ async function Home() {
       {/* Banner */}
       <Banner courses={courses} />
 
-      <Divider size={36} />
+      <Divider size={40} />
 
       {/* Top 8 Courses */}
       <BestSeller courses={bestSellers} />
 
-      <Divider size={36} />
+      <Divider size={40} />
 
       {/* Top 8 (max) New Courses */}
       <TopNewCourses courses={newCourses} />
 
-      <Divider size={24} />
+      <Divider size={30} />
 
       {/* Feature Courses */}
       <FeatureCourses courses={bootedCourses} />
 
-      <Divider size={36} />
+      <Divider size={40} />
 
       {/* Top 8 Categories */}
       <TopCategories />
 
-      <Divider size={36} />
+      <Divider size={40} />
 
       {/* Recently Visit */}
       <RecentlyVisit />
+
+      <Divider size={30} />
+
+      {/* Let Buy Courses Of Author Banner */}
+      <Image
+        className='w-full h-full object-contain'
+        src='/images/let-buy-courses-of-authors.png'
+        width={1920}
+        height={960}
+        alt='let-buy-courses-of-authors'
+        draggable={false}
+      />
 
       <Divider size={54} />
     </div>

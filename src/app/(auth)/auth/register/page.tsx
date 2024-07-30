@@ -1,7 +1,6 @@
 'use client'
 import Divider from '@/components/Divider'
 import Input from '@/components/Input'
-import BeamsBackground from '@/components/backgrounds/BeamsBackground'
 import BottomGradient from '@/components/gradients/BottomGradient'
 import { commonEmailMistakes } from '@/constants/mistakes'
 import { registerApi } from '@/requests'
@@ -286,7 +285,7 @@ function RegisterPage() {
             <button
               onClick={handleSubmit(onSubmit)}
               disabled={isLoading}
-              className={`group relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50  ${
+              className={`group relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 ${
                 isLoading ? 'bg-slate-200 pointer-events-none' : ''
               }`}
             >

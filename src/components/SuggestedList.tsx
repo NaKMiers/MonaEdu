@@ -35,6 +35,10 @@ function SuggestedList({ className = '' }: SuggestedListProps) {
     getSuggestedCourses()
   }, [cartItems])
 
+  if (courses.length <= 0) {
+    return null
+  }
+
   return (
     <div className={`w-full px-21 ${className}`}>
       <h3 className='font-semibold text-2xl mb-2'>Các khóa học đề xuất</h3>

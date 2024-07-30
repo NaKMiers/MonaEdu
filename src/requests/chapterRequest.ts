@@ -27,9 +27,13 @@ export const getForceAllChaptersApi = async (courseId: string) => {
 }
 
 // [GET]: /chapter/:courseSlug
-export const getLearningChaptersApi = async (courseSlug: string) => {
+export const getLearningChaptersApi = async (
+  courseSlug: string,
+  query: string = '',
+  option: RequestInit = { cache: 'no-store' }
+) => {
   // no-cache
-  const res = await fetch(`/api/chapter/${courseSlug}`, { cache: 'no-store' })
+  const res = await fetch(`/api/chapter/${courseSlug}${query}`, option)
 
   // check status
   if (!res.ok) {
@@ -40,9 +44,13 @@ export const getLearningChaptersApi = async (courseSlug: string) => {
 }
 
 // [GET]: /admin/chapter/get-chapter/:id
-export const getChapterApi = async (id: string) => {
+export const getChapterApi = async (
+  id: string,
+  query: string = '',
+  option: RequestInit = { cache: 'no-store' }
+) => {
   // no-cache
-  const res = await fetch(`/api/admin/chapter/get-chapter/${id}`, { cache: 'no-store' })
+  const res = await fetch(`/api/admin/chapter/get-chapter/${id}${query}`, option)
 
   // check status
   if (!res.ok) {

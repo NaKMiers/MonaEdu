@@ -49,7 +49,6 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
 
   // refs
   const timeoutCtg = useRef<any>(null)
-  const timeoutTg = useRef<any>(null)
 
   // handle submit filter
   const handleFilter = useCallback(async () => {
@@ -77,7 +76,7 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
     })
 
     // push to router
-    router.push(pathname + query)
+    router.push(pathname + query, { scroll: false })
   }, [pathname, router, searchParams, search, price, sortPrice, sortDuration, duration])
 
   // sync search params with states

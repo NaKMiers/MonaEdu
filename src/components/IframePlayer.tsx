@@ -252,6 +252,30 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
     [duration, handleSeek, handleUpdateLessonProgress]
   )
 
+  const handleSeekTouchMove = useCallback(
+    (e: React.TouchEvent<HTMLDivElement>) => {
+      if (isDragging && progressBarRef.current) {
+        const rect = progressBarRef.current.getBoundingClientRect()
+        const newTime = ((e.touches[0].clientX - rect.left) / rect.width) * duration
+        handleSeek(newTime)
+      }
+    },
+    [duration, handleSeek, isDragging]
+  )
+
+  const handleSeekTouchStart = useCallback(
+    (e: React.TouchEvent<HTMLDivElement>) => {
+      setIsDragging(true)
+      handleSeekTouchMove(e)
+    },
+    [handleSeekTouchMove]
+  )
+
+  const handleSeekTouchEnd = useCallback(() => {
+    setIsDragging(false)
+    handleUpdateLessonProgress()
+  }, [handleUpdateLessonProgress])
+
   // MARK: Volume
   const handleChangeVolume = useCallback(
     (newValue: number) => {
@@ -423,6 +447,13 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
     duration,
   ])
 
+  // MARK: Before Unload
+  useEffect(() => {
+    window.addEventListener('beforeunload', e => {
+      e.preventDefault()
+    })
+  }, [])
+
   return (
     <div
       className={`relative w-full h-full ${className}`}
@@ -435,6 +466,7 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
         src={`https://www.youtube.com/embed/${videoId}?enablejsapi=1&autoplay=0&mute=0&controls=0&rel=0&playsinline=1&iv_load_policy=3&origin=${process.env.NEXT_PUBLIC_APP_URL}`}
         allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
         referrerPolicy='strict-origin-when-cross-origin'
+        sandbox='allow-same-origin allow-scripts'
         allowFullScreen
         ref={iframeRef}
       />
@@ -476,6 +508,9 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
             onMouseMove={handleSeekMouseMove}
             onMouseUp={handleSeekMouseUp}
             onMouseLeave={handleSeekMouseUp}
+            onTouchStart={handleSeekTouchStart}
+            onTouchMove={handleSeekTouchMove}
+            onTouchEnd={handleSeekTouchEnd}
             onClick={handleSeekMouseClick}
           >
             <div

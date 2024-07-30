@@ -30,7 +30,7 @@ function MyQuestionsPage({ searchParams }: { searchParams?: { [key: string]: str
 
       try {
         // send request to get my questions
-        const { questions, amount } = await getMyQuestionsApi()
+        const { questions, amount } = await getMyQuestionsApi('', { next: { revalidate: 5 } })
 
         // set states
         setQuestions(questions)
