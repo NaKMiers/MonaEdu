@@ -148,7 +148,7 @@ function Footer() {
           <div className='flex flex-col col-span-12 sm:col-span-6 md:col-span-3'>
             <h3 className='font-bold text-xl'>ƯU ĐIỂM</h3>
 
-            <div className='flex flex-col gap-2 mt-1'>
+            <div className='flex flex-col gap-3 mt-1.5'>
               <div className='flex gap-2 items-center justify-center md:justify-start lg:justify-center hover:tracking-wider trans-200 font-body tracking-wide'>
                 <FaCheck className='text-green-400' />
                 Đa dạng khóa học
@@ -179,7 +179,7 @@ function Footer() {
           <div className='flex flex-col col-span-12 sm:col-span-6 md:col-span-2'>
             <h3 className='font-bold text-xl'>LIÊN KẾT</h3>
 
-            <div className='flex flex-col gap-2 text-center md:text-left lg:text-center mt-1'>
+            <div className='flex flex-col gap-3 text-center md:text-left lg:text-center mt-1.5'>
               <Link
                 href='/about-us'
                 className='flex justify-center items-center gap-1.5 hover:tracking-wider trans-200 underline underline-offset-2 font-body tracking-wide group'
@@ -192,7 +192,7 @@ function Footer() {
                 className='flex justify-center items-center gap-1.5 hover:tracking-wider trans-200 underline underline-offset-2 font-body tracking-wide group'
               >
                 <MdForum size={14} className='wiggle-0 flex-shrink-0' />
-                Diễn Đàn
+                Diễn đàn
               </Link>
               <Link
                 href='/cart'
