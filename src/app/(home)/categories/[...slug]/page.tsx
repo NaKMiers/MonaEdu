@@ -113,11 +113,17 @@ async function CategoryPage({ searchParams }: { searchParams?: { [key: string]: 
             <Divider size={8} />
 
             {/* List */}
-            <div className='grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 md:mx-0 flex-1 mb-8'>
-              {courses.map(course => (
-                <CourseCard course={course} key={course._id} />
-              ))}
-            </div>
+            {courses.length > 0 ? (
+              <div className='grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 md:mx-0 flex-1 mb-8'>
+                {courses.map(course => (
+                  <CourseCard course={course} key={course._id} />
+                ))}
+              </div>
+            ) : (
+              <p className='font-body tracking-wider text-center text-slate-400 text-lg py-8'>
+                Không có khóa học nào, hãy thử lại với từ khóa khác
+              </p>
+            )}
 
             {/* Pagination */}
             <Pagination dark searchParams={searchParams} amount={amount} itemsPerPage={16} />

@@ -2,45 +2,58 @@ import { AnimatedTooltip } from '@/components/AnimatedTooltip'
 import Slider from '@/components/Slider'
 import Image from 'next/image'
 import Link from 'next/link'
-import { FaFacebookMessenger, FaInstagram, FaInstagramSquare } from 'react-icons/fa'
+import { FaFacebook, FaFacebookMessenger, FaInstagram } from 'react-icons/fa'
+import { LuMoonStar } from 'react-icons/lu'
 import { SiGmail } from 'react-icons/si'
 
-const people = [
+const testimonials = [
   {
     id: 1,
-    name: 'John Doe',
-    designation: 'Software Engineer',
-    image: '/images/logo.png',
+    name: 'Nguyễn Hoàng Ân',
+    designation: 'Kỹ sư phần mềm',
+    content:
+      'Mona Edu là nơi tuyệt vời để tôi cập nhật và nâng cao kỹ năng công nghệ của mình. Các khóa học rất thực tiễn và dễ hiểu.',
+    image: '/images/testimonial-1.jpg ',
   },
   {
     id: 2,
-    name: 'Robert Johnson',
-    designation: 'Product Manager',
-    image: '/images/logo.png',
+    name: 'Trần Thị Minh',
+    designation: 'Sinh viên',
+    content:
+      'Nhờ Mona Edu, tôi đã tìm thấy hướng đi rõ ràng cho tương lai của mình. Các khóa học rất phong phú và giảng viên nhiệt tình.',
+    image: '/images/testimonial-3.jpg',
   },
   {
     id: 3,
-    name: 'Jane Smith',
-    designation: 'Data Scientist',
-    image: '/images/logo.png',
+    name: 'Lê Hoàng Nam',
+    designation: 'Chuyên gia dữ liệu',
+    content:
+      'Các khóa học về khoa học dữ liệu trên Mona Edu đã giúp tôi nâng cao kiến thức và áp dụng ngay vào công việc hiện tại.',
+    image: '/images/testimonial-4.jpg',
   },
   {
     id: 4,
-    name: 'Emily Davis',
-    designation: 'UX Designer',
-    image: '/images/logo.png',
+    name: 'Phạm Thùy Dương',
+    designation: 'Nhà thiết kế UX',
+    content:
+      'Tôi rất ấn tượng với các khóa học thiết kế UX tại Mona Edu. Các bài giảng rõ ràng và có nhiều bài tập thực hành.',
+    image: '/images/testimonial-2.jpg',
   },
   {
     id: 5,
-    name: 'Tyler Durden',
-    designation: 'Soap Developer',
-    image: '/images/logo.png',
+    name: 'Hoàng Văn Long',
+    designation: 'Học sinh',
+    content:
+      'Các khóa học của Mona Edu đã giúp tôi hiểu rõ hơn về lập trình và định hướng cho tương lai nghề nghiệp của mình.',
+    image: '/images/testimonial-5.jpg',
   },
   {
     id: 6,
-    name: 'Dora',
-    designation: 'The Explorer',
-    image: '/images/logo.png',
+    name: 'Võ Thu Hà',
+    designation: 'Sinh viên',
+    content:
+      'Tôi đã tìm thấy niềm đam mê mới trong ngành công nghệ thông qua các khóa học tại Mona Edu. Các bài giảng rất dễ tiếp cận và thú vị.',
+    image: '/images/testimonial-6.jpg',
   },
 ]
 
@@ -78,7 +91,7 @@ function AboutUsPage() {
                   title='Mona Edu cung cấp hàng ngàn khóa học từ nhiều lĩnh vực, giúp bạn dễ dàng lựa chọn và phát triển kỹ năng.'
                 >
                   Mona Edu cung cấp hàng ngàn khóa học từ nhiều lĩnh vực, giúp bạn dễ dàng lựa chọn và
-                  phát triển kỹ năng.
+                  phát triển kỹ năng
                 </p>
               </div>
             </div>
@@ -93,7 +106,7 @@ function AboutUsPage() {
                 <p
                   className='text-sm font-body tracking-wider leading-[22px] text-ellipsis line-clamp-3'
                   title='Chúng tôi mang đến các khóa học chất lượng với mức giá phải chăng, phù hợp với mọi
-                  người.'
+                  người'
                 >
                   Chúng tôi mang đến các khóa học chất lượng với mức giá phải chăng, phù hợp với mọi
                   người.
@@ -110,9 +123,9 @@ function AboutUsPage() {
                 <p className='text-orange-500'>Họi mọi lúc mọi nơi</p>
                 <p
                   className='text-sm font-body tracking-wider leading-[22px] text-ellipsis line-clamp-3'
-                  title='Học tập linh hoạt trên Mona Edu với kết nối internet, bất kể bạn ở đâu.'
+                  title='Học trên Mona Edu bất kể bạn ở đâu, chỉ cần có Internet'
                 >
-                  Học tập linh hoạt trên Mona Edu với kết nối internet, bất kể bạn ở đâu.
+                  Học trên Mona Edu bất kể bạn ở đâu, chỉ cần có Internet.
                 </p>
               </div>
             </div>
@@ -120,12 +133,12 @@ function AboutUsPage() {
 
           <div className='flex flex-wrap md:flex-nowrap gap-21 py-[90px]'>
             <p className='font-body tracking-wider text-[19px] leading-8 px-21'>
-              Excepteur sint occaecat cupidatat non proident, sunulpa qui officia deserunt mollit anim id
-              est laborum. Sedut ciatis unde omnis natus error voluptatem accusantium laudantium.
+              Mona Edu không chỉ cung cấp kiến thức mà còn kết nối bạn với cộng đồng, mang đến trải
+              nghiệm học tập dễ tiếp cận cho mọi người.
             </p>
             <p className='font-body tracking-wider text-[19px] leading-8 px-21'>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
-              laudantium, totam rem aperiam, eaque ipsa quae ab inventore veritatis architecto.
+              Chúng tôi giúp học viên học hỏi và ứng dụng vào công việc, cuộc sống. Mona Edu luôn đồng
+              hành cùng bạn trong quá trình phát triển bản thân và sự nghiệp.
             </p>
           </div>
         </div>
@@ -135,10 +148,11 @@ function AboutUsPage() {
           <div className='max-w-1200 mx-auto flex'>
             <div className='flex flex-col justify-center min-h-[453px] md:min-h-[521px] lg:min-h-[642px] max-w-[642px] w-full px-21'>
               <p className='text-[32px] lg:text-[50px] leading-[44px] lg:leading-[62px]'>
-                Mission - hight quality education for everyone
+                Sứ mệnh - cung cấp sự giáo dục dễ tiếp cận cho mọi người
               </p>
               <p className='text-[22px] lg:text-[28px] leading-[32px] lg:leading-[37px] mt-4'>
-                Excepteur sint occaecat cupidatat non proident deserunt mollit anim!
+                Mona Edu cung cấp +300 khóa học đa dạng lĩnh vực với mức giá phải chăng, phù hợp với mọi
+                người
               </p>
 
               <div className='w-full h-[130px] flex items-end justify-start'>
@@ -149,7 +163,7 @@ function AboutUsPage() {
                   >
                     <span className='absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]' />
                     <span className='inline-flex font-semibold h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 trans-300 px-21 py-1 text-sm text-white backdrop-blur-3xl'>
-                      View All Courses
+                      Xem tất cả danh mục
                     </span>
                   </Link>
                 </div>
@@ -163,27 +177,29 @@ function AboutUsPage() {
           <div className='grid grid-cols-12'>
             <div className='col-span-12 md:col-span-4 pt-[85px] pb-0 md:pb-[85px] px-21'>
               <div className='flex'>
-                <span className='uppercase text-sm tracking-widest'>TESTIMONIALS</span>
+                <p className='flex items-center gap-2 uppercase text-sm tracking-widest'>
+                  <LuMoonStar size={16} className='text-orange-500' />
+                  TESTIMONIALS
+                </p>
               </div>
               <p className='text-[32px] lg:text-[48px] leading-[44px] lg:leading-[60px]'>
-                Students say about us...
+                Học sinh nói gì về chúng tôi
               </p>
 
               <div className='flex flex-row items-center w-full mt-10 flex-shrink-0'>
-                <AnimatedTooltip items={people} />
+                <AnimatedTooltip items={testimonials} />
               </div>
             </div>
 
             <div className='col-span-12 md:col-span-8 py-[85px] px-21'>
               <div className='rounded-3xl bg-[#f8f6f7] h-[209px] w-full'>
                 <Slider className='h-full' time={5000}>
-                  {Array.from({ length: 7 }).map((_, index) => (
+                  {testimonials.map((testimonial, index) => (
                     <div className='flex flex-col justify-center px-21 sm:px-[80px] h-full' key={index}>
-                      <p className='text-orange-500 font-semibold'>Jessica Jane</p>
-                      <p className='text-slate-400 text-sm'>Marketing Consultant</p>
-                      <p className='tracking-wider mt-3 max-h-[120px] overflow-y-auto'>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores animi eius earum
-                        dolor rem esse incidunt tenetur, voluptates iusto dolores!
+                      <p className='text-orange-500 font-semibold'>{testimonial.name}</p>
+                      <p className='text-slate-400 text-sm'>{testimonial.designation}</p>
+                      <p className='font-body tracking-wider mt-3 max-h-[120px] overflow-y-auto'>
+                        {testimonial.content}
                       </p>
                     </div>
                   ))}
@@ -196,9 +212,9 @@ function AboutUsPage() {
         {/* 4 */}
         <div className='bg-[#f8f6f7] py-8'>
           <div className='max-w-1200 mx-auto'>
-            <p className='text-[48px] text-center'>Thông tin liên hệ</p>
+            <p className='text-[48px] text-center mb-8'>Thông tin liên hệ</p>
 
-            <div className='rounded-t-lg overflow-hidden mt-8'>
+            {/* <div className='rounded-t-lg overflow-hidden'>
               <Image
                 className='w-full h-full object-cover'
                 src='/images/quote-3.jpg'
@@ -206,39 +222,42 @@ function AboutUsPage() {
                 height={1280}
                 alt='headquarter'
               />
-            </div>
+            </div> */}
 
-            <div className='grid grid-cols-3 gap-0.5 mt-0.5'>
-              <div className='bg-white px-21 py-[80px] text-center rounded-bl-lg'>
+            <div className='grid grid-cols-1 sm:grid-cols-3 gap-0.5 mt-0.5'>
+              <Link
+                href={process.env.NEXT_PUBLIC_FACEBOOK!}
+                target='_blank'
+                rel='noreferrer'
+                className='bg-white px-21 py-8 sm:py-[80px] text-center rounded-bl-lg trans-300 hover:bg-primary hover:text-lg'
+              >
                 <div className='flex items-center justify-center gap-2'>
-                  <FaFacebookMessenger size={24} />
+                  <FaFacebook size={24} className='flex-shrink-0' />
                   <span className='font-semibold'>Messenger</span>
                 </div>
-
-                <Link href='/' className='block mt-2.5 font-boyd tracking-wider'>
-                  http://localhost:3000/about-us
-                </Link>
-              </div>
-              <div className='bg-white px-21 py-[80px] text-center'>
+              </Link>
+              <Link
+                href={process.env.NEXT_PUBLIC_INSTAGRAM!}
+                target='_blank'
+                rel='noreferrer'
+                className='bg-white px-21 py-8 sm:py-[80px] text-center rounded-bl-lg trans-300 hover:bg-primary hover:text-lg'
+              >
                 <div className='flex items-center justify-center gap-2'>
-                  <FaInstagram size={24} />
+                  <FaInstagram size={24} className='flex-shrink-0' />
                   <span className='font-semibold'>Instagram</span>
                 </div>
-
-                <Link href='/' className='block mt-2.5 font-boyd tracking-wider'>
-                  http://localhost:3000/about-us
-                </Link>
-              </div>
-              <div className='bg-white px-21 py-[80px] text-center rounded-br-lg'>
+              </Link>
+              <Link
+                href={`mailto:${process.env.NEXT_PUBLIC_GMAIL!}`}
+                target='_blank'
+                rel='noreferrer'
+                className='bg-white px-21 py-8 sm:py-[80px] text-center rounded-bl-lg trans-300 hover:bg-primary hover:text-lg'
+              >
                 <div className='flex items-center justify-center gap-2'>
-                  <SiGmail size={24} />
+                  <SiGmail size={24} className='flex-shrink-0' />
                   <span className='font-semibold'>Gmail</span>
                 </div>
-
-                <Link href='/' className='block mt-2.5 font-boyd tracking-wider'>
-                  http://localhost:3000/about-us
-                </Link>
-              </div>
+              </Link>
             </div>
           </div>
         </div>

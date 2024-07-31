@@ -12,11 +12,10 @@ import {
   FaShoppingCart,
   FaSignOutAlt,
 } from 'react-icons/fa'
+import { MdForum } from 'react-icons/md'
+import { SiCoursera } from 'react-icons/si'
 import Divider from '../Divider'
 import Quote from '../Quote'
-import { SiCoursera } from 'react-icons/si'
-import { MdForum, MdLogout } from 'react-icons/md'
-import { IoMdLogOut } from 'react-icons/io'
 
 function Footer() {
   return (
@@ -36,6 +35,7 @@ function Footer() {
                   width={60}
                   height={60}
                   alt='github'
+                  loading='lazy'
                 />
               </Link>
               <span className='font-body text-primary font-bold text-3xl'>MonaEdu</span>
@@ -43,17 +43,65 @@ function Footer() {
           </div>
 
           <div className='flex flex-wrap items-center gap-x-4 gap-y-2'>
-            <Link href='https://github.com/NaKMiers' target='_blank'>
+            <Link
+              href={process.env.NEXT_PUBLIC_MESSENGER!}
+              target='_blank'
+              rel='noreferrer'
+              className='max-w-[32px] w-full'
+            >
               <Image
-                src='/icons/github-logo.png'
-                className='wiggle-1 bg-white rounded-full'
-                width={32}
-                height={32}
-                alt='github'
+                src='/icons/messenger.jpg'
+                className='wiggle-1'
+                width={50}
+                height={50}
+                alt='messenger'
+                loading='lazy'
               />
             </Link>
-            <Link href='mailto:contact.monaedu@gmail.com' target='_blank'>
-              <Image src='/icons/gmail.png' className='wiggle-1' width={32} height={32} alt='gmail' />
+            <Link
+              href={process.env.NEXT_PUBLIC_FACEBOOK!}
+              target='_blank'
+              rel='noreferrer'
+              className='max-w-[32px] w-full'
+            >
+              <Image
+                src='/icons/facebook.png'
+                className='wiggle-1'
+                width={50}
+                height={50}
+                alt='gmail'
+                loading='lazy'
+              />
+            </Link>
+            <Link
+              href={process.env.NEXT_PUBLIC_INSTAGRAM!}
+              target='_blank'
+              rel='noreferrer'
+              className='max-w-[32px] w-full'
+            >
+              <Image
+                src='/icons/instagram.png'
+                className='wiggle-1'
+                width={50}
+                height={50}
+                alt='instagram'
+                loading='lazy'
+              />
+            </Link>
+            <Link
+              href={`mailto:${process.env.NEXT_PUBLIC_GMAIL}`}
+              target='_blank'
+              rel='noreferrer'
+              className='max-w-[32px] w-full'
+            >
+              <Image
+                src='/icons/gmail.png'
+                className='wiggle-1'
+                width={50}
+                height={50}
+                alt='gmail'
+                loading='lazy'
+              />
             </Link>
           </div>
         </div>
