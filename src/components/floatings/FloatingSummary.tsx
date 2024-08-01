@@ -136,7 +136,7 @@ function FloatingSummary({ course: data, className = '' }: FloatingSummaryProps)
               src={src}
               width={320}
               height={320}
-              alt='netflix'
+              alt={course.title}
               key={src}
             />
           ))}

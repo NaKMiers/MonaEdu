@@ -285,7 +285,7 @@ function CourseCard({ course: data, hideBadge, className = '' }: CourseCardProps
                       src={src}
                       width={320}
                       height={320}
-                      alt='netflix'
+                      alt={course.title}
                       loading='lazy'
                       key={src}
                     />

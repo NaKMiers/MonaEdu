@@ -32,8 +32,8 @@ function SummaryItem({
         selectedSummaries.includes(data._id) ? 'bg-violet-50 -translate-y-1' : 'bg-white'
       }  ${className}`}
       onClick={() =>
-        setSelectedSummaries((prev) =>
-          prev.includes(data._id) ? prev.filter((id) => id !== data._id) : [...prev, data._id]
+        setSelectedSummaries(prev =>
+          prev.includes(data._id) ? prev.filter(id => id !== data._id) : [...prev, data._id]
         )
       }
     >
@@ -44,7 +44,7 @@ function SummaryItem({
           <span>{data.email}</span>
         </p>
 
-        <div className='flex items-center font-semibold' title='netflix'>
+        <div className='flex items-center font-semibold'>
           <span title='Collaborator' className='font-semibold text-secondary mr-2 '>
             {data.firstName && data.lastName
               ? `${data.firstName} ${data.lastName}`
@@ -94,7 +94,7 @@ function SummaryItem({
         {/* Send Summary Button */}
         <button
           className='block group'
-          onClick={(e) => {
+          onClick={e => {
             e.stopPropagation()
             handleSendSummaries([data._id])
           }}

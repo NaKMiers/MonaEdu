@@ -40,14 +40,14 @@ function FlashSaleItem({
           selectedFlashSales.includes(data._id) ? 'bg-violet-50 -translate-y-1' : 'bg-white'
         }  ${className}`}
         onClick={() =>
-          setSelectedFlashSales((prev) =>
-            prev.includes(data._id) ? prev.filter((id) => id !== data._id) : [...prev, data._id]
+          setSelectedFlashSales(prev =>
+            prev.includes(data._id) ? prev.filter(id => id !== data._id) : [...prev, data._id]
           )
         }
       >
         {/* MARK: Body */}
         {/* Value - Time Type */}
-        <div className='font-semibold' title='netflix'>
+        <div className='font-semibold'>
           <span title='Value' className='font-semibold text-primary mr-2'>
             {data.type === 'percentage' ? data.value : formatPrice(+data.value)}
           </span>
@@ -56,7 +56,7 @@ function FlashSaleItem({
         </div>
 
         {/* Type - Duration */}
-        <div className='font-semibold' title='netflix'>
+        <div className='font-semibold'>
           <span className='mr-2' title='Type'>
             {data.type}
           </span>
@@ -84,7 +84,7 @@ function FlashSaleItem({
 
         {/* Applying Courses */}
         <div className='flex flex-wrap rounded-lg gap-2 max-h-[300px] overflow-y-auto mb-3'>
-          {data.courses?.map((course) => (
+          {data.courses?.map(course => (
             <div
               className='border border-slate-300 bg-white rounded-lg flex items-start p-2 gap-2'
               key={course._id}
@@ -109,7 +109,7 @@ function FlashSaleItem({
           <Link
             href={`/admin/flash-sale/${data._id}/edit`}
             className='block group'
-            onClick={(e) => e.stopPropagation()}
+            onClick={e => e.stopPropagation()}
             title='Edit'
           >
             <MdEdit size={18} className='wiggle' />
@@ -118,7 +118,7 @@ function FlashSaleItem({
           {/* Delete Button */}
           <button
             className='block group'
-            onClick={(e) => {
+            onClick={e => {
               e.stopPropagation()
               setIsOpenConfirmModal(true)
             }}

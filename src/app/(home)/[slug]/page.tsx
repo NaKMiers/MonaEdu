@@ -164,7 +164,7 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
                     src={src}
                     width={500}
                     height={500}
-                    alt='netflix'
+                    alt={course?.title}
                     key={src}
                   />
                 ))}
