@@ -271,7 +271,7 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
             </p>
           </div>
 
-          {/* Content */}
+          {/* MARK: Content */}
           <h2 className='font-semibold text-3xl'>Nội Dung Khóa Học</h2>
           <Divider size={4} />
           {course && <CourseContent course={course} chapters={chapters} />}

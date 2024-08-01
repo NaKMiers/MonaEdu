@@ -1,16 +1,16 @@
 'use client'
 
-import ConfirmDialog from '@/components/dialogs/ConfirmDialog'
-import Divider from '@/components/Divider'
-import Input from '@/components/Input'
-import Pagination from '@/components/layouts/Pagination'
 import AddChapter from '@/components/admin/AddChapter'
 import AdminHeader from '@/components/admin/AdminHeader'
 import AdminMeta from '@/components/admin/AdminMeta'
 import ChapterItem from '@/components/admin/ChapterItem'
+import ConfirmDialog from '@/components/dialogs/ConfirmDialog'
+import Divider from '@/components/Divider'
+import Input from '@/components/Input'
 import { useAppDispatch } from '@/libs/hooks'
 import { setPageLoading } from '@/libs/reducers/modalReducer'
 import { IChapter } from '@/models/ChapterModel'
+import { ICourse } from '@/models/CourseModel'
 import {} from '@/requests'
 import { deleteChaptersApi, getAllCourseChaptersApi } from '@/requests/chapterRequest'
 import { handleQuery } from '@/utils/handleQuery'
@@ -19,7 +19,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { FaSearch, FaSort } from 'react-icons/fa'
-import { ICourse } from '@/models/CourseModel'
 
 export type EditingValues = {
   _id: string
@@ -50,9 +49,6 @@ function AllCourseChaptersPage({
   const [loadingChapters, setLoadingChapters] = useState<string[]>([])
   const [editingValues, setEditingValues] = useState<EditingValues | null>(null)
   const [isOpenConfirmModal, setIsOpenConfirmModal] = useState<boolean>(false)
-
-  // values
-  const itemPerPage = 10
 
   // form
   const defaultValues = useMemo<FieldValues>(
@@ -212,7 +208,6 @@ function AllCourseChaptersPage({
     <div className='w-full'>
       {/* MARK: Top & Pagination */}
       <AdminHeader title='All Chapters' />
-      <Pagination searchParams={searchParams} amount={amount} itemsPerPage={itemPerPage} />
 
       {/* MARK: Filter */}
       <AdminMeta handleFilter={handleSubmit(handleFilter)} handleResetFilter={handleResetFilter}>
@@ -313,7 +308,7 @@ function AllCourseChaptersPage({
 
       {/* MARK: Amount */}
       <div className='p-3 text-sm text-right text-white font-semibold'>
-        {Math.min(itemPerPage * +(searchParams?.page || 1), amount)}/{amount} chapter{amount > 1 && 's'}
+        {amount} chapter{amount > 1 && 's'}
       </div>
 
       {/* Add Chapter Form */}
@@ -328,7 +323,7 @@ function AllCourseChaptersPage({
       <Divider />
 
       {/* MARK: MAIN LIST */}
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-21'>
+      <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-21'>
         {chapters.map(chapter => (
           <ChapterItem
             data={chapter}

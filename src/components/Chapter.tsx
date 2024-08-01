@@ -4,7 +4,6 @@ import { IChapter } from '@/models/ChapterModel'
 import { duration } from '@/utils/time'
 import { Tooltip } from '@mui/material'
 import { useSession } from 'next-auth/react'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { memo, useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
@@ -91,7 +90,12 @@ function Chapter({
       >
         {chapter.lessons?.map(lesson =>
           lesson.status === 'public' || isEnrolled ? (
-            <Tooltip title={`Học thử ngay`} placement='top' arrow key={lesson._id}>
+            <Tooltip
+              title={isEnrolled ? 'Học ngay' : `Học thử ngay`}
+              placement='top'
+              arrow
+              key={lesson._id}
+            >
               <div
                 className={`bg-white rounded-md py-2 px-3 gap-4 hover:bg-primary trans-200 flex items-center cursor-pointer ${
                   lesson.slug === lessonSlug ? 'font-semibold text-orange-500' : ''
