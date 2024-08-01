@@ -1,9 +1,11 @@
 import { ICategory } from '@/models/CategoryModel'
 import { ICourse } from '@/models/CourseModel'
+import { updateCoursePropertyApi } from '@/requests'
 import { formatPrice } from '@/utils/number'
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { memo, useState } from 'react'
+import React, { memo, useCallback, useState } from 'react'
+import toast from 'react-hot-toast'
 import { FaCheck, FaEye, FaTrash } from 'react-icons/fa'
 import { IoRocketSharp } from 'react-icons/io5'
 import { MdEdit } from 'react-icons/md'
@@ -46,6 +48,41 @@ function CourseItem({
     'deactivate' | 'unbooted' | 'Remove Flash Sale' | 'delete'
   >('delete')
 
+  // editable properties
+  const [joined, setJoined] = useState<number>(data.joined)
+  const [likes, setLikes] = useState<number>(data.likes.length)
+  const [editingJoined, setEditingJoined] = useState<boolean>(false)
+  const [editingLikes, setEditingLikes] = useState<boolean>(false)
+
+  // handle update properties
+  const handleUpdateProperties = useCallback(
+    async (property: string) => {
+      try {
+        const { updatedCourse, message } = await updateCoursePropertyApi(
+          data._id,
+          property,
+          property === 'joined' ? joined : likes
+        )
+
+        // show success message
+        toast.success(message)
+
+        // update states
+        if (property === 'joined') {
+          setJoined(updatedCourse.joined)
+          setEditingJoined(false)
+        } else {
+          setLikes(updatedCourse.likes.length)
+          setEditingLikes(false)
+        }
+      } catch (err: any) {
+        console.error(err)
+        toast.error(err.message)
+      }
+    },
+    [data._id, joined, likes]
+  )
+
   return (
     <>
       <div
@@ -53,8 +90,8 @@ function CourseItem({
           selectedCourses.includes(data._id) ? 'bg-violet-50 -translate-y-1' : 'bg-white'
         }  ${className}`}
         onClick={() =>
-          setSelectedCourses((prev) =>
-            prev.includes(data._id) ? prev.filter((id) => id !== data._id) : [...prev, data._id]
+          setSelectedCourses(prev =>
+            prev.includes(data._id) ? prev.filter(id => id !== data._id) : [...prev, data._id]
           )
         }
       >
@@ -64,7 +101,7 @@ function CourseItem({
             href={`/${data.slug}`}
             prefetch={false}
             className='relative flex items-center max-w-[160px] rounded-lg shadow-md overflow-hidden mb-2'
-            onClick={(e) => e.stopPropagation()}
+            onClick={e => e.stopPropagation()}
             title={data._id}
           >
             <div className='flex items-center w-full overflow-x-scroll snap-x snap-mandatory no-scrollbar'>
@@ -149,16 +186,44 @@ function CourseItem({
             ))}
           </p>
 
-          {/* Joined */}
-          <div className='flex flex-wrap gap-3 text-slate-500 text-sm'>
-            <p>
-              <span className='font-semibold'>Joined: </span>
-              <span className='text-green-500'>{data.joined}</span>
-            </p>
-            <p>
-              <span className='font-semibold'>Likes: </span>
-              <span className='text-rose-500'>{data.likes.length}</span>
-            </p>
+          {/* Joined & Likes */}
+          <div className='flex items-center flex-wrap gap-3 text-slate-500 text-sm'>
+            <div onDoubleClick={() => setEditingJoined(true)}>
+              {!editingJoined ? (
+                <>
+                  <span className='font-semibold'>Joined: </span>
+                  <span className='text-green-500'>{joined}</span>
+                </>
+              ) : (
+                <input
+                  type='number'
+                  value={joined}
+                  min={0}
+                  onChange={e => setJoined(+e.target.value)}
+                  onClick={e => e.stopPropagation()}
+                  onBlur={() => handleUpdateProperties('joined')}
+                  className='border rounded-lg shadow-lg max-w-[80px] px-2 py-1 outline-none mt-1'
+                />
+              )}
+            </div>
+            <div onDoubleClick={() => setEditingLikes(true)}>
+              {!editingLikes ? (
+                <>
+                  <span className='font-semibold'>Likes: </span>
+                  <span className='text-rose-500'>{likes}</span>
+                </>
+              ) : (
+                <input
+                  type='number'
+                  value={likes}
+                  min={0}
+                  onChange={e => setLikes(+e.target.value)}
+                  onClick={e => e.stopPropagation()}
+                  onBlur={() => handleUpdateProperties('likes')}
+                  className='border rounded-lg shadow-lg max-w-[80px] px-2 py-1 outline-none mt-1'
+                />
+              )}
+            </div>
           </div>
         </div>
 
@@ -167,7 +232,7 @@ function CourseItem({
           {/* Active Button */}
           <button
             className='block group'
-            onClick={(e) => {
+            onClick={e => {
               e.stopPropagation()
               // is being active
               if (data.active) {
@@ -189,7 +254,7 @@ function CourseItem({
           {/* Boot Button */}
           <button
             className='block group'
-            onClick={(e) => {
+            onClick={e => {
               e.stopPropagation()
               // is being booted
               if (data.booted) {
@@ -212,7 +277,7 @@ function CourseItem({
           {data.flashSale && (
             <button
               className='block group'
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation()
                 setIsOpenConfirmModal(true)
                 setConfirmType('Remove Flash Sale')
@@ -228,7 +293,7 @@ function CourseItem({
           <Link
             href={`/admin/course/${data._id}/edit`}
             className='block group'
-            onClick={(e) => e.stopPropagation()}
+            onClick={e => e.stopPropagation()}
             title='Edit'
           >
             <MdEdit size={18} className='wiggle' />
@@ -238,7 +303,7 @@ function CourseItem({
           <Link
             href={`/admin/chapter/${data._id}/all`}
             className='block group'
-            onClick={(e) => e.stopPropagation()}
+            onClick={e => e.stopPropagation()}
             title='View Chapters'
           >
             <FaEye size={18} className='wiggle' />
@@ -247,7 +312,7 @@ function CourseItem({
           {/* Delete Button */}
           <button
             className='block group'
-            onClick={(e) => {
+            onClick={e => {
               e.stopPropagation()
               setIsOpenConfirmModal(true)
             }}

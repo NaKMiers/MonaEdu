@@ -1,8 +1,7 @@
 import { AnimatedTooltip } from '@/components/AnimatedTooltip'
 import Slider from '@/components/Slider'
-import Image from 'next/image'
 import Link from 'next/link'
-import { FaFacebook, FaFacebookMessenger, FaInstagram } from 'react-icons/fa'
+import { FaFacebook, FaInstagram } from 'react-icons/fa'
 import { LuMoonStar } from 'react-icons/lu'
 import { SiGmail } from 'react-icons/si'
 
@@ -159,12 +158,9 @@ function AboutUsPage() {
                 <div className='flex items-center justify-center gap-3'>
                   <Link
                     href='/categories'
-                    className={`group relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50`}
+                    className='h-[46px] flex items-center justify-center px-4 py-1 text-sm font-semibold bg-neutral-950 rounded-3xl text-light trans-300 shadow-lg hover:shadow-lg hover:shadow-primary'
                   >
-                    <span className='absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]' />
-                    <span className='inline-flex font-semibold h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 trans-300 px-21 py-1 text-sm text-white backdrop-blur-3xl'>
-                      Xem tất cả danh mục
-                    </span>
+                    Xem tất cả danh mục
                   </Link>
                 </div>
               </div>

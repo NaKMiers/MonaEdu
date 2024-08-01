@@ -231,11 +231,11 @@ export const removeApplyingFlashSalesApi = async (ids: string[]) => {
   return await res.json()
 }
 
-// [PATCH]: /admin/course/:id/edit-property/:field
-export const updateCoursePropertyApi = async (id: string, field: string, value: any) => {
-  const res = await fetch(`/api/admin/course/${id}/edit-property/${field}`, {
+// [PATCH]: /admin/course/:id/edit-property
+export const updateCoursePropertyApi = async (id: string, property: string, value: any) => {
+  const res = await fetch(`/api/admin/course/${id}/edit-property`, {
     method: 'PATCH',
-    body: JSON.stringify({ value }),
+    body: JSON.stringify({ property, value }),
   })
 
   // check status

@@ -1,8 +1,9 @@
 import { connectDatabase } from '@/config/database'
+import CategoryModel from '@/models/CategoryModel'
 import CourseModel, { ICourse } from '@/models/CourseModel'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Models: Course
+// Models: Course, Category
 import '@/models/CourseModel'
 
 // [GET]: /course/search?search=...
@@ -22,11 +23,8 @@ export async function GET(req: NextRequest) {
     const filter: { [key: string]: any } = { active: true }
     let sort: { [key: string]: any } = { updatedAt: -1 } // default sort
 
-    // build filter
-    const searchFields = ['title', 'slug', 'tags.title', 'tags.slug', 'category.title']
-
     // create $or array for text fields
-    const orArray: any[] = searchFields.map(field => ({
+    const orArray: any[] = ['title', 'slug'].map(field => ({
       [field]: { $regex: search, $options: 'i' },
     }))
 
@@ -35,17 +33,19 @@ export async function GET(req: NextRequest) {
     if (!isNaN(num)) {
       orArray.push({ price: num })
       orArray.push({ oldPrice: num })
-      orArray.push({ sold: num })
-      orArray.push({ stock: num })
+      orArray.push({ joined: num })
     }
 
-    // custom search
-    if (
-      ['sold out', 'soldout', 'out of stock', 'outofstock', 'hết hàng'].includes(search.toLowerCase())
-    ) {
-      orArray.push({ stock: { $lte: 0 } })
-    }
+    // search by category
+    const categoryFields = ['title', 'slug'].map(field => ({
+      [field]: { $regex: search, $options: 'i' },
+    }))
 
+    const categories = await CategoryModel.find({
+      $or: categoryFields,
+    }).distinct('_id')
+
+    orArray.push({ category: { $in: categories } })
     filter.$or = orArray
 
     // find courses by category base on search params

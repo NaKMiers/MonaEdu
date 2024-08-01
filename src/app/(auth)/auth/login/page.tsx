@@ -2,6 +2,8 @@
 import Divider from '@/components/Divider'
 import Input from '@/components/Input'
 import BottomGradient from '@/components/gradients/BottomGradient'
+import { useAppDispatch } from '@/libs/hooks'
+import { setPageLoading } from '@/libs/reducers/modalReducer'
 import { signIn } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -13,6 +15,7 @@ import { FaCircleNotch } from 'react-icons/fa'
 
 function LoginPage() {
   // hooks
+  const dispatch = useAppDispatch()
   const router = useRouter()
 
   // states
@@ -71,6 +74,7 @@ function LoginPage() {
   useEffect(() => {
     // set page title
     document.title = 'Đăng nhập - Mona Edu'
+    dispatch(setPageLoading(false))
 
     const handleKeydown = (e: KeyboardEvent) => {
       if (e.key === 'Enter') {
@@ -83,7 +87,7 @@ function LoginPage() {
     return () => {
       window.removeEventListener('keydown', handleKeydown)
     }
-  }, [handleSubmit, onSubmit])
+  }, [handleSubmit, onSubmit, dispatch])
 
   return (
     <div className='relative flex items-center justify-center lg:block bg-neutral-800 px-2 h-screen w-full lg:px-[46px] lg:py-[52px] overflow-hidden'>
@@ -190,18 +194,15 @@ function LoginPage() {
           <button
             onClick={handleSubmit(onSubmit)}
             disabled={isLoading}
-            className={`group relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 ${
+            className={`h-[46px] flex items-center justify-center px-4 py-1 text-sm font-semibold bg-neutral-950 rounded-3xl text-light trans-300 shadow-lg hover:shadow-lg hover:shadow-primary ${
               isLoading ? 'bg-slate-200 pointer-events-none' : ''
             }`}
           >
-            <span className='absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]' />
-            <span className='inline-flex font-semibold h-full w-full cursor-pointer items-center justify-center rounded-full bg-neutral-950 text-white trans-300 px-4 py-1 text-sm backdrop-blur-3xl'>
-              {isLoading ? (
-                <FaCircleNotch size={18} className='text-slate-400 trans-200 animate-spin' />
-              ) : (
-                'Đăng nhập'
-              )}
-            </span>
+            {isLoading ? (
+              <FaCircleNotch size={18} className='text-slate-400 trans-200 animate-spin' />
+            ) : (
+              'Đăng nhập'
+            )}
           </button>
         </div>
 
@@ -235,7 +236,13 @@ function LoginPage() {
                 alt='github'
               />
             </div>
-            <span className='font-semibold text-sm' onClick={() => signIn('github')}>
+            <span
+              className='font-semibold text-sm'
+              onClick={() => {
+                dispatch(setPageLoading(true))
+                signIn('github')
+              }}
+            >
               Đăng ký với GitHub
             </span>
             <BottomGradient />
@@ -251,7 +258,13 @@ function LoginPage() {
                 alt='github'
               />
             </div>
-            <span className='font-semibold text-sm' onClick={() => signIn('google')}>
+            <span
+              className='font-semibold text-sm'
+              onClick={() => {
+                dispatch(setPageLoading(true))
+                signIn('google')
+              }}
+            >
               Đăng ký với Google
             </span>
             <BottomGradient />
