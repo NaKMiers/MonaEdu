@@ -24,8 +24,6 @@ const LessonSchema = new Schema(
     },
     slug: {
       type: String,
-      unique: true,
-      index: true,
     },
     duration: {
       type: Number, // in seconds

@@ -28,10 +28,13 @@ export async function GET(req: NextRequest) {
         })
         .limit(8)
         .lean(),
+
       // get best sellers
       CourseModel.find().sort({ joined: -1 }).limit(8).lean(),
+
       // get new courses
       CourseModel.find().sort({ createdAt: -1 }).limit(8).lean(),
+
       // get booted courses
       CourseModel.find({ booted: true }).populate({
         path: 'category',
