@@ -7,9 +7,10 @@ import { getFileUrl } from '@/utils/uploadFile'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Models: Lesson, Comment, User, Category, Progress
+// Models: Lesson, Comment, User, Category, Progress, Course
 import '@/models/CategoryModel'
 import '@/models/CommentModel'
+import '@/models/CourseModel'
 import '@/models/LessonModel'
 import '@/models/ProgressModel'
 import '@/models/UserModel'

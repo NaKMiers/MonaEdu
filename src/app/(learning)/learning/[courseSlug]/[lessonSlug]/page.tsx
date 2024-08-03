@@ -66,7 +66,6 @@ function LessonPage({
         setComments(comments)
       } catch (err: any) {
         console.log(err)
-        toast.error(err.message)
         router.push('back')
         dispatch(setPageLoading(true))
       } finally {
