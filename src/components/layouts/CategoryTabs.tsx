@@ -22,7 +22,7 @@ function CategoryTabs({ open, setOpen, className = '' }: CategoryTabsProps) {
   ])
 
   // refs
-  const timeoutRef = useRef<any>(null)
+  // const timeoutRef = useRef<any>(null)
   const tabsRef = useRef<HTMLUListElement>(null)
 
   // get categories
@@ -75,29 +75,29 @@ function CategoryTabs({ open, setOpen, className = '' }: CategoryTabsProps) {
     [list]
   )
 
-  // auto close tabs if not hover in specific time
-  useEffect(() => {
-    // if (!tabsRef.current || !timeoutRef.current || !open) return
+  // // auto close tabs if not hover in specific time
+  // useEffect(() => {
+  //   // if (!tabsRef.current || !timeoutRef.current || !open) return
 
-    let timeout: any = timeoutRef.current
-    let tabs: any = tabsRef.current
+  //   let timeout: any = timeoutRef.current
+  //   let tabs: any = tabsRef.current
 
-    if (!tabs || !open) return
+  //   if (!tabs || !open) return
 
-    tabs.addEventListener('mouseenter', () => {
-      clearTimeout(timeout)
-    })
+  //   tabs.addEventListener('mouseenter', () => {
+  //     clearTimeout(timeout)
+  //   })
 
-    timeout = setTimeout(() => {
-      setList([
-        {
-          ref: 'Category Tabs',
-          data: categories,
-        },
-      ])
-      setOpen(false)
-    }, 750)
-  }, [setOpen, open, categories])
+  //   timeout = setTimeout(() => {
+  //     setList([
+  //       {
+  //         ref: 'Category Tabs',
+  //         data: categories,
+  //       },
+  //     ])
+  //     setOpen(false)
+  //   }, 750)
+  // }, [setOpen, open, categories])
 
   return (
     <AnimatePresence>

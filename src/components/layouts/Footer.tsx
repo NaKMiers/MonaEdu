@@ -23,6 +23,7 @@ function Footer() {
       <div className='max-w-1200 mx-auto'>
         {/* Head */}
         <div className='flex items-center justify-between gap-21'>
+          {/* Brand */}
           <div className='flex items-center gap-4 py-3'>
             <div className='flex items-center gap-2'>
               <Link
@@ -42,7 +43,8 @@ function Footer() {
             </div>
           </div>
 
-          <div className='flex flex-wrap items-center gap-x-4 gap-y-2'>
+          {/* Contact */}
+          <div id='contact' className='flex flex-wrap items-center gap-x-4 gap-y-2'>
             <Link
               href={process.env.NEXT_PUBLIC_MESSENGER!}
               target='_blank'

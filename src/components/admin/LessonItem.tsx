@@ -121,7 +121,7 @@ function LessonItem({
           </p>
 
           {/* Docs */}
-          {data?.docs?.length && (
+          {!!data?.docs?.length && (
             <p className='mb-2 font-semibold text-sm font-body tracking-wide'>
               <span>Docs: </span>
               <span className='text-slate-500 text-sm font-normal'>({data.docs.length})</span>
