@@ -22,7 +22,7 @@ function Footer() {
     <footer className='mb-[72px] md:mb-0 bg-dark-100 text-light border-t-2 rounded-t-[40px] border-slate-300 px-21 pt-3 overflow-hidden'>
       <div className='max-w-1200 mx-auto'>
         {/* Head */}
-        <div className='flex items-center justify-between gap-21'>
+        <div className='flex items-center justify-between flex-wrap gap-x-21'>
           {/* Brand */}
           <div className='flex items-center gap-4 py-3'>
             <div className='flex items-center gap-2'>
@@ -44,7 +44,7 @@ function Footer() {
           </div>
 
           {/* Contact */}
-          <div id='contact' className='flex flex-wrap items-center gap-x-4 gap-y-2'>
+          <div id='contact' className='flex items-center gap-x-4 gap-y-2'>
             <Link
               href={process.env.NEXT_PUBLIC_MESSENGER!}
               target='_blank'

@@ -16,6 +16,7 @@ import moment from 'moment-timezone'
 import 'moment/locale/vi'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { Fragment, useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { BsLayoutSidebarInsetReverse } from 'react-icons/bs'
@@ -29,6 +30,7 @@ function LessonPage({
 }) {
   // hooks
   const dispatch = useAppDispatch()
+  const router = useRouter()
   const openSidebar = useAppSelector(state => state.modal.openSidebar)
   const { data: session } = useSession()
   const curUser: any = session?.user
@@ -64,6 +66,8 @@ function LessonPage({
         setComments(comments)
       } catch (err: any) {
         console.log(err)
+        toast.error(err.message)
+        router.push('back')
         dispatch(setPageLoading(true))
       } finally {
         // stop page loading
@@ -74,7 +78,7 @@ function LessonPage({
     if (lessonSlug !== 'continue') {
       getLesson()
     }
-  }, [dispatch, lessonSlug])
+  }, [dispatch, router, lessonSlug])
 
   const handleReport = useCallback(async () => {
     // check if content is selected or not
