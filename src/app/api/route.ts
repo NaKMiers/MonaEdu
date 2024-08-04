@@ -1,7 +1,7 @@
 import { connectDatabase } from '@/config/database'
 import CategoryModel from '@/models/CategoryModel'
 import CourseModel from '@/models/CourseModel'
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 
 // Models: Course, Category
 import '@/models/CategoryModel'
@@ -10,7 +10,7 @@ import '@/models/CourseModel'
 export const dynamic = 'force-dynamic'
 
 // [GET]: /
-export async function GET(req: NextRequest) {
+export async function GET() {
   console.log(' - Get Home Page - ')
 
   try {
@@ -43,7 +43,9 @@ export async function GET(req: NextRequest) {
     ])
 
     // categories's slugs from booted courses
-    const categoriesFromBootedCourses = bootedCourses.map(course => course.category.slug.split('/')[0])
+    const categoriesFromBootedCourses = bootedCourses
+      .filter(course => course.category?.slug)
+      .map(course => course.category.slug.split('/')[0])
 
     // get categories from booted courses
     const categories = await CategoryModel.find({
