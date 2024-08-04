@@ -487,7 +487,7 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
       <iframe
         className='w-full h-full object-contain'
         src={`https://www.youtube.com/embed/${videoId}?enablejsapi=1&autoplay=0&mute=0&controls=0&rel=0&playsinline=1&iv_load_policy=3&origin=${process.env.NEXT_PUBLIC_APP_URL}`}
-        allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+        allow='fullscreen; accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
         referrerPolicy='strict-origin-when-cross-origin'
         sandbox='allow-same-origin allow-scripts'
         allowFullScreen
