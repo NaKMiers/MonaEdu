@@ -15,12 +15,12 @@ import { IChapter } from '@/models/ChapterModel'
 import { ICourse } from '@/models/CourseModel'
 import { addLessonApi } from '@/requests'
 import { getChapterApi } from '@/requests/chapterRequest'
+import { formatFileSize } from '@/utils/number'
 import toast from 'react-hot-toast'
 import { FaX } from 'react-icons/fa6'
 import { MdCategory, MdOutlinePublic } from 'react-icons/md'
 import { RiCharacterRecognitionLine } from 'react-icons/ri'
 import { SiFramer } from 'react-icons/si'
-import { formatFileSize } from '@/utils/number'
 
 export type GroupCourses = {
   [key: string]: ICourse[]
@@ -112,8 +112,8 @@ function AddLessonPage({ params: { chapterId } }: { params: { chapterId: string 
   const onSubmit: SubmitHandler<FieldValues> = async data => {
     if (!handleValidate(data)) return
 
-    if (!file && !fileUrl && !embedSrc) {
-      return toast.error('Please embed an url or upload a video')
+    if (!file && !fileUrl && !embedSrc && !docs.length) {
+      return toast.error('Please embed an url OR upload a video OR add a document')
     }
 
     dispatch(setLoading(true))

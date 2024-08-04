@@ -51,7 +51,7 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
 
   // refs
   const iframeRef = useRef<HTMLIFrameElement>(null)
-  const playerContainerRef = useRef<HTMLDivElement>(null)
+  const playerContainerRef = useRef<any>(null)
   const progressBarRef = useRef<HTMLDivElement>(null)
   const controlsRef = useRef<HTMLDivElement>(null)
   const playRef = useRef<HTMLDivElement>(null)
@@ -306,14 +306,37 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
 
   // MARK: Fullscreen
   const handleFullscreen = useCallback(() => {
+    const element = playerContainerRef.current
+
     if (!isFullscreen) {
-      if (playerContainerRef.current?.requestFullscreen) {
-        playerContainerRef.current.requestFullscreen()
+      if (element) {
+        if (element.requestFullscreen) {
+          element.requestFullscreen()
+        } else if (element.mozRequestFullScreen) {
+          // Firefox
+          element.mozRequestFullScreen()
+        } else if (element.webkitRequestFullscreen) {
+          // Safari
+          element.webkitRequestFullscreen()
+        } else if (element.msRequestFullscreen) {
+          // IE/Edge
+          element.msRequestFullscreen()
+        }
       }
       setIsFullscreen(true)
     } else {
-      if (document.exitFullscreen) {
-        document.exitFullscreen()
+      const dcm: any = document
+      if (dcm.exitFullscreen) {
+        dcm.exitFullscreen()
+      } else if (dcm.mozCancelFullScreen) {
+        // Firefox
+        dcm.mozCancelFullScreen()
+      } else if (dcm.webkitExitFullscreen) {
+        // Safari
+        dcm.webkitExitFullscreen()
+      } else if (dcm.msExitFullscreen) {
+        // IE/Edge
+        dcm.msExitFullscreen()
       }
       setIsFullscreen(false)
     }

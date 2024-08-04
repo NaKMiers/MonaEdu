@@ -32,8 +32,8 @@ export async function POST(
     let file = formData.get('file')
     let docs: any[] = formData.getAll('docs')
 
-    if (!file && !embedUrl) {
-      return NextResponse.json({ message: 'Source or embed is required' }, { status: 400 })
+    if (!file && !embedUrl && !docs.length) {
+      return NextResponse.json({ message: 'Source or Embed or Document is required' }, { status: 400 })
     }
 
     // check file
@@ -62,7 +62,7 @@ export async function POST(
         chapterId,
         title,
         duration,
-        sourceType: embedUrl ? 'embed' : 'file',
+        sourceType: embedUrl ? 'embed' : file ? 'file' : 'none',
         docs: docs.length ? docs : [],
         source,
         description,

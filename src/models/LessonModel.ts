@@ -32,12 +32,10 @@ const LessonSchema = new Schema(
     },
     sourceType: {
       type: String,
-      required: true,
-      enum: ['file', 'embed'],
+      enum: ['file', 'embed', 'none'],
     },
     source: {
       type: String,
-      required: true,
     },
     docs: [
       {

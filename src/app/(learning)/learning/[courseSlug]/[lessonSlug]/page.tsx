@@ -66,7 +66,7 @@ function LessonPage({
         setComments(comments)
       } catch (err: any) {
         console.log(err)
-        router.push('back')
+        router.back()
         dispatch(setPageLoading(true))
       } finally {
         // stop page loading
@@ -235,13 +235,23 @@ function LessonPage({
           <Divider size={4} />
 
           {/* MARK: Source */}
-          <div className='aspect-video w-full rounded-lg shadow-lg overflow-hidden'>
-            {lesson.sourceType === 'embed' ? (
-              <IframePlayer lesson={lesson} />
-            ) : (
-              <video className='rounded-lg w-full h-full object-contain' src={lesson.source} controls />
-            )}
-          </div>
+          {lesson.source ? (
+            <div className='aspect-video w-full rounded-lg shadow-lg overflow-hidden'>
+              {lesson.sourceType === 'embed' ? (
+                <IframePlayer lesson={lesson} />
+              ) : (
+                <video
+                  className='rounded-lg w-full h-full object-contain'
+                  src={lesson.source}
+                  controls
+                />
+              )}
+            </div>
+          ) : (
+            <p className='font-semibold text-slate-300 text-xl text-center px-3 py-2 rounded-lg border border-slate-200'>
+              Tài liệu khóa học
+            </p>
+          )}
 
           <Divider size={4} />
 
@@ -335,6 +345,8 @@ function LessonPage({
                   {lesson.docs.map((doc, index) => (
                     <Link
                       href={doc.url}
+                      target='_blank'
+                      rel='noreferrer'
                       className='flex gap-1.5 rounded-md shadow-lg border border-dark p-3'
                       key={index}
                     >

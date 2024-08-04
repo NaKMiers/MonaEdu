@@ -3,6 +3,7 @@
 import { useAppDispatch } from '@/libs/hooks'
 import { addCartItem } from '@/libs/reducers/cartReducer'
 import { setPageLoading } from '@/libs/reducers/modalReducer'
+import { IChapter } from '@/models/ChapterModel'
 import { ICourse } from '@/models/CourseModel'
 import { IFlashSale } from '@/models/FlashSaleModel'
 import { ITag } from '@/models/TagModel'
@@ -25,10 +26,12 @@ import Price from '../Price'
 
 interface FloatingSummaryProps {
   course: ICourse
+  chapters: IChapter[]
+  totalTime: any
   className?: string
 }
 
-function FloatingSummary({ course: data, className = '' }: FloatingSummaryProps) {
+function FloatingSummary({ course: data, chapters, totalTime, className = '' }: FloatingSummaryProps) {
   // hooks
   const dispatch = useAppDispatch()
   const { data: session } = useSession()
@@ -264,12 +267,18 @@ function FloatingSummary({ course: data, className = '' }: FloatingSummaryProps)
 
           <p className='flex items-center flex-wrap'>
             <MdVideoLibrary size={16} className='mr-3' />
-            <span>12 chương, 52 bài giảng</span>
+            <span>
+              {chapters.length} chương,{' '}
+              {chapters.reduce((total, chapter) => total + (chapter.lessons?.length || 0), 0)} bài giảng
+            </span>
           </p>
           <p className='flex items-center flex-wrap'>
             <IoTimer size={16} className='mr-3' />
             <span className='mr-1'>Thời lượng: </span>
-            <span>12 giờ 48 phút</span>
+            <span>
+              {totalTime.hours > 0 && `${totalTime.hours} giờ`}{' '}
+              {totalTime.minutes > 0 && `${totalTime.minutes} phút`}
+            </span>
           </p>
           <p className='flex items-center flex-wrap'>
             <IoIosPhonePortrait size={16} className='mr-3' />

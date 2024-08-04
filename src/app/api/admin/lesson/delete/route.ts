@@ -1,6 +1,7 @@
 import { connectDatabase } from '@/config/database'
 import LessonModel from '@/models/LessonModel'
 import { NextRequest, NextResponse } from 'next/server'
+import { deleteFile } from '@/utils/uploadFile'
 
 // Models: Lesson, Course
 import '@/models/CourseModel'
@@ -17,13 +18,24 @@ export async function DELETE(req: NextRequest) {
     // get lesson ids to delete
     const { ids } = await req.json()
 
-    const [lessons] = await Promise.all([
-      // get lessons from database
-      LessonModel.find({ _id: { $in: ids } }).lean(),
+    // get lessons from database
+    const lessons = await LessonModel.find({ _id: { $in: ids } }).lean()
 
-      // delete lessons from database
-      LessonModel.deleteMany({ _id: { $in: ids } }),
-    ])
+    // delete lessons from database
+    await LessonModel.deleteMany({ _id: { $in: ids } }), console.log('lessons', lessons)
+
+    // delete all video and document files of lessons
+    await Promise.all(
+      lessons.map(async (lesson: any) => {
+        if (lesson.sourceType === 'file') {
+          await deleteFile(lesson.source)
+        }
+
+        if (lesson.docs.length) {
+          await Promise.all(lesson.docs.map((doc: any) => deleteFile(doc.url)))
+        }
+      })
+    )
 
     // return response
     return NextResponse.json(

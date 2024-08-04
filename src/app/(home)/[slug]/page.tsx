@@ -192,7 +192,7 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
             {/* Last Update*/}
             <p className='flex flex-wrap items-center gap-2 font-body tracking-wider'>
               <FaStarOfLife size={16} />
-              Lần cuối cập nhật: <span>{moment(course?.updatedAt).format('mm/YYYY')}</span>
+              Lần cuối cập nhật: <span>{moment(course?.updatedAt).format('MM/YYYY')}</span>
             </p>
 
             {/* Language */}
@@ -289,6 +289,8 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
           {course && (
             <FloatingSummary
               course={course}
+              chapters={chapters}
+              totalTime={totalTime}
               className='sticky top-[90px] -mt-[100%] right-0 flex-shrink-0 w-full bg-white rounded-xl shadow-md shadow-primary'
             />
           )}
