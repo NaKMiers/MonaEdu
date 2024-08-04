@@ -3,10 +3,12 @@ import CourseModel from '@/models/CourseModel'
 import TagModel from '@/models/TagModel'
 import { searchParamsToObject } from '@/utils/handleQuery'
 import { NextRequest, NextResponse } from 'next/server'
+
 // Models: Category, Tag, Course
 import '@/models/CategoryModel'
 import '@/models/CourseModel'
 import '@/models/TagModel'
+
 export const dynamic = 'force-dynamic'
 
 // [GET]: /admin/course/all

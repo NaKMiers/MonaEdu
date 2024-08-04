@@ -1,10 +1,11 @@
 import { connectDatabase } from '@/config/database'
 import { searchParamsToObject } from '@/utils/handleQuery'
 import { NextRequest, NextResponse } from 'next/server'
-
-// Models: Question
-import '@/models/QuestionModel'
 import QuestionModel from '@/models/QuestionModel'
+
+// Models: Question, User
+import '@/models/QuestionModel'
+import '@/models/UserModel'
 
 export const dynamic = 'force-dynamic'
 

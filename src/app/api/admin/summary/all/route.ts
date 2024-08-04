@@ -8,6 +8,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import '@/models/UserModel'
 import '@/models/VoucherModel'
 
+export const dynamic = 'force-dynamic'
+
 export type UserWithVouchers = IUser & { vouchers: IVoucher[] }
 
 // [GET]: /admin/summary/all

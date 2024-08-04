@@ -8,6 +8,8 @@ import '@/models/CourseModel'
 import '@/models/LessonModel'
 import { getFileUrl } from '@/utils/uploadFile'
 
+export const dynamic = 'force-dynamic'
+
 // [GET]: /admin/lesson/:chapterId/:id
 export async function GET(req: NextRequest, { params: { id } }: { params: { id: string } }) {
   console.log('- Get Lesson By ID - ')

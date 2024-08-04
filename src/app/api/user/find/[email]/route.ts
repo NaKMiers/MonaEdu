@@ -1,10 +1,12 @@
 import { connectDatabase } from '@/config/database'
 import UserModel, { IUser } from '@/models/UserModel'
 import { NextRequest, NextResponse } from 'next/server'
+import { getToken } from 'next-auth/jwt'
 
 // Models: User
 import '@/models/UserModel'
-import { getToken } from 'next-auth/jwt'
+
+export const dynamic = 'force-dynamic'
 
 // [GET]: /api/user/:id
 export async function GET(req: NextRequest, { params: { email } }: { params: { email: string } }) {

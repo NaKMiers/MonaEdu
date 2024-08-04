@@ -2,11 +2,13 @@ import { connectDatabase } from '@/config/database'
 import CategoryModel, { ICategory } from '@/models/CategoryModel'
 import CourseModel from '@/models/CourseModel'
 import { NextRequest, NextResponse } from 'next/server'
+import { searchParamsToObject } from '@/utils/handleQuery'
 
 // Models: Category, Course
 import '@/models/CategoryModel'
 import '@/models/CourseModel'
-import { searchParamsToObject } from '@/utils/handleQuery'
+
+export const dynamic = 'force-dynamic'
 
 // [GET]: /api/category/[slug]
 export async function GET(req: NextRequest, { params: { slug } }: { params: { slug: string[] } }) {

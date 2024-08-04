@@ -8,6 +8,8 @@ import '@/models/CourseModel'
 import '@/models/QuestionModel'
 import '@/models/UserModel'
 
+export const dynamic = 'force-dynamic'
+
 // [GET]: /api/user/:id
 export async function GET(req: NextRequest, { params: { id } }: { params: { id: string } }) {
   console.log('- Get User -')

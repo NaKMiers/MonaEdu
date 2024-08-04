@@ -9,6 +9,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import '@/models/OrderModel'
 import '@/models/VoucherModel'
 
+export const dynamic = 'force-dynamic'
+
 // [GET]: /user/history
 export async function GET(req: NextRequest) {
   console.log('- Get User Order History -')

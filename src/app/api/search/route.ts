@@ -5,6 +5,8 @@ import { NextRequest, NextResponse } from 'next/server'
 // Models: Course
 import '@/models/CourseModel'
 
+export const dynamic = 'force-dynamic'
+
 // [GET]: /search?key=value&...
 export async function GET(req: NextRequest) {
   console.log('- Get Search Page -')

@@ -7,6 +7,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import '@/models/OrderModel'
 import '@/models/UserModel'
 
+export const dynamic = 'force-dynamic'
+
 // [GET]: /admin/user/rank-user
 export async function GET() {
   console.log('- Rank User -')
