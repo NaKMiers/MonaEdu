@@ -25,7 +25,7 @@ function Quote() {
             alt='quote'
           />
         </div>
-        <div className='w-full rounded-lg shadow-lg overflow-hidden'>
+        {/* <div className='w-full rounded-lg shadow-lg overflow-hidden'>
           <Image
             src='/images/quote-3.jpg'
             className='w-full h-full object-contain'
@@ -34,7 +34,7 @@ function Quote() {
             loading='lazy'
             alt='quote'
           />
-        </div>
+        </div> */}
       </Slider>
     </div>
   )

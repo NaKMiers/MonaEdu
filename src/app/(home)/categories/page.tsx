@@ -51,7 +51,7 @@ async function CategoriesPage() {
       {/* Banner */}
       <BreadcrumbBanner
         title='Danh Mục Khóa Học'
-        description='+54 danh mục và danh mục, +500 khóa học đa dạng về chủ đề, giúp bạn dễ dàng lựa chọn khóa học phù hợp với nhu cầu của mình.'
+        description='+54 danh mục và danh mục con, +500 khóa học đa dạng về chủ đề, giúp bạn dễ dàng lựa chọn khóa học phù hợp với nhu cầu của mình.'
         className='shadow-lg rounded-b-lg h-[200px] md:h-[calc(280px+72px)] md:-mt-[72px] px-21 md:pt-[50px]'
       />
 
