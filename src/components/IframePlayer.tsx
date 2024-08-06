@@ -121,7 +121,7 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
     return () => clearInterval(interval)
   }, [isPlaying, duration])
 
-  // handle update lesson progress
+  // MARK: update lesson progress
   const handleUpdateLessonProgress = useCallback(async () => {
     try {
       const isEnrolled = curUser?.courses

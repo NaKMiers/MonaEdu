@@ -23,7 +23,7 @@ interface CartItemProps {
 function CartItem({ cartItem, isCheckout, className = '', isOrderDetailCourse }: CartItemProps) {
   // hooks
   const dispatch = useAppDispatch()
-  const selectedCartItems = useAppSelector((state) => state.cart.selectedItems)
+  const selectedCartItems = useAppSelector(state => state.cart.selectedItems)
 
   // states
   const [isDeleting, setIsDeleting] = useState<boolean>(false)
@@ -54,15 +54,15 @@ function CartItem({ cartItem, isCheckout, className = '', isOrderDetailCourse }:
   return (
     <div
       className={`relative flex flex-wrap md:flex-nowrap items-start gap-3 cursor-pointer common-transition rounded-medium border p-21 ${
-        !!selectedCartItems.find((cI) => cI._id === cartItem._id) && !isCheckout
+        !!selectedCartItems.find(cI => cI._id === cartItem._id) && !isCheckout
           ? 'border-primary'
           : 'border-slate-400'
       } ${className} `}
       onClick={() =>
         dispatch(
           setSelectedItems(
-            selectedCartItems.find((cI) => cI._id === cartItem._id)
-              ? selectedCartItems.filter((cI) => cI._id !== cartItem._id)
+            selectedCartItems.find(cI => cI._id === cartItem._id)
+              ? selectedCartItems.filter(cI => cI._id !== cartItem._id)
               : [...selectedCartItems, cartItem]
           )
         )
@@ -74,10 +74,10 @@ function CartItem({ cartItem, isCheckout, className = '', isOrderDetailCourse }:
           href={`/${(cartItem.courseId as ICourse)?.slug}`}
           prefetch={false}
           className='aspect-video rounded-lg overflow-hidden shadow-lg block max-w-[150px]'
-          onClick={(e) => e.stopPropagation()}
+          onClick={e => e.stopPropagation()}
         >
           <div className='flex w-full overflow-x-scroll snap-x snap-mandatory no-scrollbar'>
-            {(cartItem.courseId as ICourse)?.images?.map((src) => (
+            {(cartItem.courseId as ICourse)?.images?.map(src => (
               <Image
                 className='flex-shrink w-full snap-start'
                 src={src}
@@ -96,12 +96,12 @@ function CartItem({ cartItem, isCheckout, className = '', isOrderDetailCourse }:
         <input
           type='checkbox'
           className='size-5 z-10 cursor-pointer absolute top-21 right-21 accent-primary'
-          checked={!!selectedCartItems.find((cI) => cI._id === cartItem._id)}
+          checked={!!selectedCartItems.find(cI => cI._id === cartItem._id)}
           onChange={() =>
             dispatch(
               setSelectedItems(
-                selectedCartItems.find((cI) => cI._id === cartItem._id)
-                  ? selectedCartItems.filter((cI) => cI._id !== cartItem._id)
+                selectedCartItems.find(cI => cI._id === cartItem._id)
+                  ? selectedCartItems.filter(cI => cI._id !== cartItem._id)
                   : [...selectedCartItems, cartItem]
               )
             )
@@ -117,7 +117,7 @@ function CartItem({ cartItem, isCheckout, className = '', isOrderDetailCourse }:
             <FaTrashAlt
               size={21}
               className='cursor-pointer hover:scale-110 common-transition wiggle'
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation()
                 setIsOpenConfirmModal(true)
               }}

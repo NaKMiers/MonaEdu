@@ -54,8 +54,8 @@ export const handleQuery = (
     }
   }
 
-  // remove all spaces
-  query = query.replace(/ /g, '')
+  // trim query
+  query = query.trim()
 
   // remove final '&'
   query = query.slice(0, -1)

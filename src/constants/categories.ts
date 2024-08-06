@@ -19,14 +19,14 @@ export const categories = [
         {
           _id: '669cc222ee2392499a47c2cb',
           parentId: '669cc19fee2392499a47c2c1',
-          title: 'Marketing trực tuyến',
+          title: 'Digital Marketing',
           description:
-            'Marketing Trực Tuyến - Tối ưu hóa chiến lược số!\r\nKhám phá các kỹ thuật và công cụ để nâng cao hiệu quả chiến dịch trực tuyến. Đưa thương hiệu của bạn đến gần hơn với khách hàng trên môi trường số!',
-          slug: 'marketing/marketing-truc-tuyen',
+            'Digital Marketing - Tối ưu hóa chiến lược số!\r\nKhám phá các kỹ thuật và công cụ để nâng cao hiệu quả chiến dịch trực tuyến. Đưa thương hiệu của bạn đến gần hơn với khách hàng trên môi trường số!',
+          slug: 'marketing/digital-marketing',
           courseQuantity: 0,
           booted: false,
           createdAt: '2024-07-21T08:09:06.662Z',
-          updatedAt: '2024-07-21T08:37:01.030Z',
+          updatedAt: '2024-08-04T04:10:00.656Z',
           __v: 0,
           image:
             'https://d141vgbk8gzs0o.cloudfront.net/images/08356f6fd6551304512710ea52118b9edf7e11e2948ad1b649a3173c8ce7c464',
@@ -34,35 +34,16 @@ export const categories = [
             ref: '669cc222ee2392499a47c2cb',
             data: [
               {
-                _id: '669cc24eee2392499a47c2ce',
-                parentId: '669cc222ee2392499a47c2cb',
-                title: 'Facebook Marketing',
-                description:
-                  'Facebook Marketing - Khai thác sức mạnh của mạng xã hội!\r\nTận dụng Facebook để tiếp cận khách hàng mục tiêu, tăng cường tương tác và nâng cao doanh thu. Khám phá các chiến lược và công cụ đắc lực để thành công trên nền tảng xã hội phổ biến nhất hiện nay!',
-                slug: 'marketing/marketing-truc-tuyen/facebook-marketing',
-                courseQuantity: 0,
-                booted: false,
-                createdAt: '2024-07-21T08:09:50.975Z',
-                updatedAt: '2024-07-21T08:40:47.882Z',
-                __v: 0,
-                image:
-                  'https://d141vgbk8gzs0o.cloudfront.net/images/b2381c25f873be13a08616ec4320c43aba7766efff80067ff77d36ae1b472ee7',
-                subs: {
-                  ref: '669cc24eee2392499a47c2ce',
-                  data: [],
-                },
-              },
-              {
                 _id: '669cc298ee2392499a47c2d1',
                 parentId: '669cc222ee2392499a47c2cb',
                 title: 'Content Marketing',
                 description:
                   'Content Marketing - Tạo nội dung hấp dẫn để thu hút khách hàng!\r\nKhám phá các chiến lược xây dựng nội dung chất lượng, từ blog đến video, để kết nối với khách hàng và nâng cao nhận diện thương hiệu.',
                 slug: 'marketing/marketing-truc-tuyen/content-marketing',
-                courseQuantity: 0,
+                courseQuantity: 3,
                 booted: false,
                 createdAt: '2024-07-21T08:11:04.091Z',
-                updatedAt: '2024-07-21T08:43:02.563Z',
+                updatedAt: '2024-08-03T08:59:39.313Z',
                 __v: 0,
                 image:
                   'https://d141vgbk8gzs0o.cloudfront.net/images/8abf73774e2b5b780196fea882c1d7246d05f6c0dbe8cdfb907bc63c1b9ce40b',
@@ -74,14 +55,14 @@ export const categories = [
               {
                 _id: '669cc2a6ee2392499a47c2d4',
                 parentId: '669cc222ee2392499a47c2cb',
-                title: 'Email Marketing',
+                title: 'SEO',
                 description:
-                  'Email Marketing - Chiến lược email hiệu quả để tăng cường quan hệ khách hàng!\r\nNâng cao tỉ lệ mở và chuyển đổi với các chiến dịch email được thiết kế tốt, cá nhân hóa và tối ưu hóa cho sự thành công lâu dài.',
-                slug: 'marketing/marketing-truc-tuyen/email-marketing',
+                  'SEO (Search Engine Optimization) là quá trình tối ưu hóa trang web để cải thiện thứ hạng trên công cụ tìm kiếm, nhằm tăng lượng truy cập tự nhiên. Các hoạt động bao gồm nghiên cứu từ khóa, tối ưu hóa nội dung, xây dựng liên kết, và cải thiện yếu tố kỹ thuật.',
+                slug: 'marketing/digital-marketing/seo',
                 courseQuantity: 0,
                 booted: false,
                 createdAt: '2024-07-21T08:11:18.254Z',
-                updatedAt: '2024-07-21T08:44:00.041Z',
+                updatedAt: '2024-08-04T04:18:26.209Z',
                 __v: 0,
                 image:
                   'https://d141vgbk8gzs0o.cloudfront.net/images/85c2f50667ea47fafa2791f1f9bb400fbbcf343245a22e364d0e88aeec039c2a',
@@ -93,14 +74,14 @@ export const categories = [
               {
                 _id: '669cc2b1ee2392499a47c2d7',
                 parentId: '669cc222ee2392499a47c2cb',
-                title: 'Google Ads',
+                title: 'Quảng cáo',
                 description:
-                  'Google Ads - Quảng cáo trực tuyến hiệu quả trên Google!\r\nTạo các chiến dịch quảng cáo nhắm mục tiêu chính xác, tối ưu hóa chi phí và tối đa hóa hiệu quả quảng cáo trên nền tảng tìm kiếm lớn nhất thế giới.',
-                slug: 'marketing/marketing-truc-tuyen/google-ads',
-                courseQuantity: 0,
+                  'Lĩnh vực truyền thông tiếp thị nhằm thúc đẩy sản phẩm, dịch vụ hoặc thương hiệu tới người tiêu dùng thông qua các kênh truyền thông khác nhau. Các hoạt động quảng cáo bao gồm tạo nội dung, chiến dịch truyền thông, quảng cáo kỹ thuật số, và quảng cáo trên mạng xã hội.',
+                slug: 'marketing/digital-marketing/quang-cao',
+                courseQuantity: 2,
                 booted: false,
                 createdAt: '2024-07-21T08:11:29.234Z',
-                updatedAt: '2024-07-21T08:45:20.930Z',
+                updatedAt: '2024-08-06T17:12:10.915Z',
                 __v: 0,
                 image:
                   'https://d141vgbk8gzs0o.cloudfront.net/images/87414ffc90f775a9dbaa7a63bbc417806c5270ad7da73b85ad3515bc5dc6c1d1',
@@ -110,35 +91,16 @@ export const categories = [
                 },
               },
               {
-                _id: '669cc2bcee2392499a47c2da',
-                parentId: '669cc222ee2392499a47c2cb',
-                title: 'TikTok Marketing',
-                description:
-                  'TikTok Marketing - Tận dụng sức hút của video ngắn trên TikTok!\r\nKhám phá cách tạo nội dung viral và xây dựng thương hiệu mạnh mẽ với chiến lược marketing sáng tạo trên nền tảng video phổ biến nhất hiện nay.',
-                slug: 'marketing/marketing-truc-tuyen/tiktok-marketing',
-                courseQuantity: 0,
-                booted: false,
-                createdAt: '2024-07-21T08:11:40.526Z',
-                updatedAt: '2024-07-21T08:47:39.306Z',
-                __v: 0,
-                image:
-                  'https://d141vgbk8gzs0o.cloudfront.net/images/d0016f211da2bcd9f5cb5ae2a5160e13dab6f5b7ebf6a752ab93593d2f4643ee',
-                subs: {
-                  ref: '669cc2bcee2392499a47c2da',
-                  data: [],
-                },
-              },
-              {
                 _id: '669cc2ccee2392499a47c2dd',
                 parentId: '669cc222ee2392499a47c2cb',
-                title: 'Zalo Marketing',
+                title: 'Truyền Thông Đa Phương Tiện',
                 description:
-                  'Zalo Marketing - Tăng cường kết nối và giao tiếp qua Zalo!\r\nKhám phá cách sử dụng Zalo để tiếp cận khách hàng, xây dựng cộng đồng và triển khai các chiến dịch quảng cáo hiệu quả trên nền tảng này.',
-                slug: 'marketing/marketing-truc-tuyen/zalo-marketing',
+                  'Kết hợp các dạng nội dung như văn bản, hình ảnh, âm thanh, video và đồ họa động để truyền tải thông điệp hiệu quả. Lĩnh vực này bao gồm thiết kế đồ họa, chỉnh sửa video, tạo nội dung tương tác và phát triển trải nghiệm người dùng số.',
+                slug: 'marketing/digital-marketing/truyen-thong-da-phuong-tien',
                 courseQuantity: 0,
                 booted: false,
                 createdAt: '2024-07-21T08:11:56.966Z',
-                updatedAt: '2024-07-21T08:49:52.799Z',
+                updatedAt: '2024-08-04T04:20:47.342Z',
                 __v: 0,
                 image:
                   'https://d141vgbk8gzs0o.cloudfront.net/images/cdf4cadfbbd05e891382c31afac08db88843669c38e61957f57a4bc82e5a080e',
@@ -153,59 +115,39 @@ export const categories = [
         {
           _id: '669cc30cee2392499a47c2e0',
           parentId: '669cc19fee2392499a47c2c1',
-          title: 'Marketing khác',
+          title: 'Marketing Cơ Bản',
           description:
             'Khám phá các chiến lược marketing độc đáo và sáng tạo!\r\nTìm hiểu những phương pháp marketing không truyền thống và các công cụ mới lạ để nổi bật giữa đám đông và thu hút sự chú ý của khách hàng.',
-          slug: 'marketing/marketing-khac',
-          courseQuantity: 0,
+          slug: 'marketing/marketing-co-ban',
+          courseQuantity: 1,
           booted: false,
           createdAt: '2024-07-21T08:13:00.568Z',
-          updatedAt: '2024-07-21T08:50:35.256Z',
+          updatedAt: '2024-08-04T08:09:18.703Z',
           __v: 0,
           image:
             'https://d141vgbk8gzs0o.cloudfront.net/images/a55fe93091db5135930bbe6af794ba1f2ece69977db3bbd06611e08516299c38',
           subs: {
             ref: '669cc30cee2392499a47c2e0',
-            data: [
-              {
-                _id: '669cc33dee2392499a47c2e3',
-                parentId: '669cc30cee2392499a47c2e0',
-                title: 'Phân tích dữ liệu quảng cáo',
-                description:
-                  'Phân tích dữ liệu quảng cáo - Hiểu rõ hiệu quả quảng cáo của bạn!\r\nKhám phá cách phân tích và tối ưu hóa dữ liệu quảng cáo để nâng cao hiệu quả chiến dịch và tối đa hóa ROI của bạn.',
-                slug: 'marketing/marketing-khac/phan-tich-du-lieu-quang-cao',
-                courseQuantity: 0,
-                booted: false,
-                createdAt: '2024-07-21T08:13:49.408Z',
-                updatedAt: '2024-07-21T08:51:58.691Z',
-                __v: 0,
-                image:
-                  'https://d141vgbk8gzs0o.cloudfront.net/images/948d622164e7c69c06e27dc7b9277c665c0d7e83edea98fbb94a068890389511',
-                subs: {
-                  ref: '669cc33dee2392499a47c2e3',
-                  data: [],
-                },
-              },
-              {
-                _id: '669cc369ee2392499a47c2e6',
-                parentId: '669cc30cee2392499a47c2e0',
-                title: 'Tuyệt chiêu Marketing',
-                description:
-                  'Tuyệt chiêu Marketing - Khám phá bí quyết thành công!\r\nKhám phá những chiến lược marketing độc đáo và hiệu quả để nâng cao doanh thu và xây dựng thương hiệu mạnh mẽ.',
-                slug: 'marketing/marketing-khac/tuyet-chieu-marketing',
-                courseQuantity: 0,
-                booted: false,
-                createdAt: '2024-07-21T08:14:33.363Z',
-                updatedAt: '2024-07-21T08:54:02.032Z',
-                __v: 0,
-                image:
-                  'https://d141vgbk8gzs0o.cloudfront.net/images/2b020bcd0efff88a9727570813d68725ec2ce4a66fb7e0400ca378ffd61dc0ac',
-                subs: {
-                  ref: '669cc369ee2392499a47c2e6',
-                  data: [],
-                },
-              },
-            ],
+            data: [],
+          },
+        },
+        {
+          _id: '66af025d6408bf6ec65ca31d',
+          parentId: '669cc19fee2392499a47c2c1',
+          title: 'Công Cụ Marketing',
+          description:
+            'Phương tiện và phần mềm hỗ trợ doanh nghiệp trong việc lập kế hoạch, triển khai và đo lường hiệu quả các chiến dịch tiếp thị.',
+          image:
+            'https://d141vgbk8gzs0o.cloudfront.net/images/3e400a7ba85955129bec23eb48f4b4643cebb7e8f459a0e1fbb7029f65daf162',
+          slug: 'marketing/cong-cu-marketing',
+          courseQuantity: 0,
+          booted: false,
+          createdAt: '2024-08-04T04:23:57.914Z',
+          updatedAt: '2024-08-04T04:23:57.914Z',
+          __v: 0,
+          subs: {
+            ref: '66af025d6408bf6ec65ca31d',
+            data: [],
           },
         },
       ],
@@ -214,14 +156,14 @@ export const categories = [
   {
     _id: '669cc38cee2392499a47c2e8',
     parentId: null,
-    title: 'Kinh doanh & Khởi nghiệp',
+    title: 'Kinh doanh',
     description:
-      'Kinh doanh & Khởi nghiệp - Bước đi đầu tiên đến thành công!\r\nKhám phá các chiến lược và kỹ năng cần thiết để khởi nghiệp thành công và phát triển doanh nghiệp bền vững.',
-    slug: 'kinh-doanh-and-khoi-nghiep',
+      'Khám phá các chiến lược và kỹ năng cần thiết để khởi nghiệp thành công và phát triển doanh nghiệp bền vững.',
+    slug: 'kinh-doanh',
     courseQuantity: 0,
     booted: false,
     createdAt: '2024-07-21T08:15:08.957Z',
-    updatedAt: '2024-07-21T08:55:12.997Z',
+    updatedAt: '2024-08-04T04:48:57.002Z',
     __v: 0,
     image:
       'https://d141vgbk8gzs0o.cloudfront.net/images/02f1e051c7a0efa69cbdef9cad38daf2662bf3013d2bdad7f5f58b794aa1f5f7',
@@ -231,14 +173,14 @@ export const categories = [
         {
           _id: '669cc591ee2392499a47c2eb',
           parentId: '669cc38cee2392499a47c2e8',
-          title: 'Kỹ Năng Kinh Doanh',
+          title: 'Thương Mại Điện Tử',
           description:
-            'Nâng cao khả năng kinh doanh với những kỹ năng thực tiễn.\r\nKhám phá các khóa học giúp bạn phát triển kỹ năng kinh doanh từ cơ bản đến nâng cao, áp dụng ngay vào thực tế để tối ưu hóa hiệu suất và đạt mục tiêu.',
-          slug: 'kinh-doanh-and-khoi-nghiep/ky-nang-kinh-doanh',
-          courseQuantity: 0,
+            '**Danh Mục: Thương Mại Điện Tử**\r\n\r\nNâng cao kỹ năng thương mại điện tử với các khóa học thực tiễn. Khám phá từ các kiến thức cơ bản đến nâng cao, áp dụng ngay vào thực tế để tối ưu hóa hiệu suất cửa hàng trực tuyến và đạt được thành công trong môi trường kinh doanh số.',
+          slug: 'kinh-doanh/thuong-mai-dien-tu',
+          courseQuantity: 1,
           booted: false,
           createdAt: '2024-07-21T08:23:45.210Z',
-          updatedAt: '2024-07-21T08:56:31.224Z',
+          updatedAt: '2024-08-04T09:17:34.327Z',
           __v: 0,
           image:
             'https://d141vgbk8gzs0o.cloudfront.net/images/917fc39a1190c1220d7279741c73a580721a2bf7e734e683846f249cd654fec4',
@@ -250,17 +192,17 @@ export const categories = [
         {
           _id: '669cc5b9ee2392499a47c2ee',
           parentId: '669cc38cee2392499a47c2e8',
-          title: 'Bất Động Sản',
+          title: 'Nhân Sự',
           description:
-            'Khám phá cơ hội đầu tư và phát triển trong lĩnh vực bất động sản. Từ những kiến thức cơ bản đến chiến lược nâng cao, các khóa học sẽ giúp bạn làm chủ thị trường và tối ưu hóa lợi nhuận.',
-          slug: 'kinh-doanh-and-khoi-nghiep/bat-dong-san',
+            'Khám phá từ các kiến thức về tuyển dụng, đào tạo, phát triển và giữ chân nhân viên, giúp bạn xây dựng và duy trì đội ngũ mạnh mẽ, đồng thời đạt được mục tiêu kinh doanh.',
+          slug: 'kinh-doanh/nhan-su',
           courseQuantity: 0,
           booted: false,
           createdAt: '2024-07-21T08:24:25.889Z',
-          updatedAt: '2024-07-21T08:58:12.177Z',
+          updatedAt: '2024-08-04T04:54:07.986Z',
           __v: 0,
           image:
-            'https://d141vgbk8gzs0o.cloudfront.net/images/8b7fefd6689def7bd73225c8f962b9b70434fcd30bf5902d6ca4febb28d4104a',
+            'https://d141vgbk8gzs0o.cloudfront.net/images/f27fa07aeb7bfee03acbf79266f186bd9f2afcd779ff5de770ecf26c74d5a340',
           subs: {
             ref: '669cc5b9ee2392499a47c2ee',
             data: [],
@@ -269,17 +211,17 @@ export const categories = [
         {
           _id: '669cc5ddee2392499a47c2f1',
           parentId: '669cc38cee2392499a47c2e8',
-          title: 'Đầu Tư',
+          title: 'Quản Trị',
           description:
-            'Tối ưu hóa chiến lược đầu tư của bạn với các khóa học chuyên sâu. Học cách phân tích, lựa chọn cơ hội và quản lý rủi ro để tối đa hóa lợi nhuận.',
-          slug: 'kinh-doanh-and-khoi-nghiep/dau-tu',
-          courseQuantity: 0,
+            'Tìm hiểu từ các kỹ năng quản lý, các chiến lược giúp bạn cải thiện quy trình làm việc, tối ưu hóa hiệu suất đội ngũ và đạt được thành công trong việc điều hành tổ chức.',
+          slug: 'kinh-doanh/quan-tri',
+          courseQuantity: 1,
           booted: false,
           createdAt: '2024-07-21T08:25:01.577Z',
-          updatedAt: '2024-07-21T08:58:48.484Z',
+          updatedAt: '2024-08-04T09:21:57.013Z',
           __v: 0,
           image:
-            'https://d141vgbk8gzs0o.cloudfront.net/images/c8007c9e5015355e2cce18e5da295db52463999c5e89b56c3619d4bcbd6ab38b',
+            'https://d141vgbk8gzs0o.cloudfront.net/images/d2f28d6a0fe25b1d35e1e86b90a4c185c1552221e7186bbd50ceb6b3fd1086cb',
           subs: {
             ref: '669cc5ddee2392499a47c2f1',
             data: [],
@@ -295,7 +237,7 @@ export const categories = [
           courseQuantity: 0,
           booted: false,
           createdAt: '2024-07-21T08:25:07.185Z',
-          updatedAt: '2024-07-21T09:00:27.412Z',
+          updatedAt: '2024-08-04T09:21:57.013Z',
           __v: 0,
           image:
             'https://d141vgbk8gzs0o.cloudfront.net/images/41e3364d1e88b8cff6406a7d6fae727dff7f8d84a4d9a85e19a7469076c18f48',
@@ -308,25 +250,6 @@ export const categories = [
     },
   },
   {
-    _id: '669cc604ee2392499a47c313',
-    parentId: null,
-    title: 'Quản Lý & Lãnh Đạo',
-    description:
-      'Nâng cao kỹ năng lãnh đạo và quản lý để điều hành đội ngũ hiệu quả. Khám phá các khóa học giúp bạn phát triển khả năng lãnh đạo, ra quyết định và quản lý dự án thành công.',
-    slug: 'quan-ly-and-lanh-dao',
-    courseQuantity: 0,
-    booted: false,
-    createdAt: '2024-07-21T08:25:41.000Z',
-    updatedAt: '2024-07-21T09:02:46.147Z',
-    __v: 0,
-    image:
-      'https://d141vgbk8gzs0o.cloudfront.net/images/e046f754d63439dfce92762b51694768e44facb5173e1418895cccb1f01fc9a2',
-    subs: {
-      ref: '669cc604ee2392499a47c313',
-      data: [],
-    },
-  },
-  {
     _id: '669cc6170ecbf394de86a8c1',
     parentId: null,
     title: 'Tài Chính',
@@ -336,86 +259,48 @@ export const categories = [
     courseQuantity: 0,
     booted: false,
     createdAt: '2024-07-21T08:25:59.581Z',
-    updatedAt: '2024-07-21T09:04:07.074Z',
+    updatedAt: '2024-08-04T09:22:14.242Z',
     __v: 0,
     image:
       'https://d141vgbk8gzs0o.cloudfront.net/images/c5185d6201fac2e51b6b99e8aab36c5c4279419e0783ac9341da2265a7090e78',
     subs: {
       ref: '669cc6170ecbf394de86a8c1',
-      data: [],
-    },
-  },
-  {
-    _id: '669cc62d0ecbf394de86a8c6',
-    parentId: null,
-    title: 'Thiết Kế Đồ Họa',
-    description:
-      'Khơi nguồn sáng tạo và nâng cao kỹ năng thiết kế với các khóa học chuyên sâu. Tìm hiểu từ các nguyên tắc cơ bản đến các kỹ thuật nâng cao để tạo ra những thiết kế đồ họa ấn tượng và chuyên nghiệp.',
-    slug: 'thiet-ke-do-hoa',
-    courseQuantity: 0,
-    booted: false,
-    createdAt: '2024-07-21T08:26:21.192Z',
-    updatedAt: '2024-07-21T09:05:03.621Z',
-    __v: 0,
-    image:
-      'https://d141vgbk8gzs0o.cloudfront.net/images/fb5d810cc657ae79305ce1b2462ef339bb58080fe83c914b615ec80c904604e6',
-    subs: {
-      ref: '669cc62d0ecbf394de86a8c6',
       data: [
         {
-          _id: '669cc6520ecbf394de86a8c9',
-          parentId: '669cc62d0ecbf394de86a8c6',
-          title: 'Photoshop',
+          _id: '66af0a564477cd09e285306d',
+          parentId: '669cc6170ecbf394de86a8c1',
+          title: 'Tài Chính Cá Nhân',
           description:
-            'Khám phá mọi khía cạnh của Photoshop để tạo ra những hình ảnh và đồ họa ấn tượng. Học các kỹ thuật chỉnh sửa ảnh, thiết kế đồ họa và sáng tạo với phần mềm phổ biến này.',
-          slug: 'thiet-ke-do-hoa/photoshop',
+            'Học cách xây dựng ngân sách, đầu tư thông minh, và quản lý tài chính một cách hiệu quả để tối ưu hóa tài sản và đạt được mục tiêu tài chính của bạn.',
+          image:
+            'https://d141vgbk8gzs0o.cloudfront.net/images/35134221a8f1a27523f23c2f0f69c76196a6ab171830261de60f42775ddb64e3',
+          slug: 'tai-chinh/tai-chinh-ca-nhan',
           courseQuantity: 0,
           booted: false,
-          createdAt: '2024-07-21T08:26:58.322Z',
-          updatedAt: '2024-07-21T09:06:32.722Z',
+          createdAt: '2024-08-04T04:57:58.091Z',
+          updatedAt: '2024-08-04T04:57:58.091Z',
           __v: 0,
-          image:
-            'https://d141vgbk8gzs0o.cloudfront.net/images/2e0aa6dbe712d8b18589462ee4f82e99ee62592ef7caa23ad3620b76a2286ef5',
           subs: {
-            ref: '669cc6520ecbf394de86a8c9',
+            ref: '66af0a564477cd09e285306d',
             data: [],
           },
         },
         {
-          _id: '669cc6570ecbf394de86a8cc',
-          parentId: '669cc62d0ecbf394de86a8c6',
-          title: 'Illustrator',
+          _id: '66af0ab94477cd09e2853070',
+          parentId: '669cc6170ecbf394de86a8c1',
+          title: 'Tài Chính Doanh Nghiệp',
           description:
-            'Nâng cao kỹ năng thiết kế vector với Illustrator. Từ việc tạo hình dạng cơ bản đến thiết kế chi tiết, khóa học này giúp bạn làm chủ phần mềm để tạo ra các sản phẩm đồ họa chuyên nghiệp.',
-          slug: 'thiet-ke-do-hoa/illustrator',
+            'Khám phá các chiến lược tài chính, quản lý ngân sách, phân tích tài chính và lập kế hoạch đầu tư để nâng cao hiệu quả hoạt động và đạt được mục tiêu kinh doanh bền vững.',
+          image:
+            'https://d141vgbk8gzs0o.cloudfront.net/images/3780b0d6312be211fcab97fd3dd446146248d16c1ccfa30eb4fe16bc9565317c',
+          slug: 'tai-chinh/tai-chinh-doanh-nghiep',
           courseQuantity: 0,
           booted: false,
-          createdAt: '2024-07-21T08:27:03.526Z',
-          updatedAt: '2024-07-21T09:08:45.274Z',
+          createdAt: '2024-08-04T04:59:37.609Z',
+          updatedAt: '2024-08-04T04:59:37.609Z',
           __v: 0,
-          image:
-            'https://d141vgbk8gzs0o.cloudfront.net/images/88213de3c8cb6f2a800dc4f3661bdad18ce73bb76bc37810de5802fa8a0160f5',
           subs: {
-            ref: '669cc6570ecbf394de86a8cc',
-            data: [],
-          },
-        },
-        {
-          _id: '669cc6690ecbf394de86a8d5',
-          parentId: '669cc62d0ecbf394de86a8c6',
-          title: 'Các Phần Mềm Khác',
-          description:
-            'Mở rộng khả năng thiết kế của bạn với các phần mềm đồ họa khác. Khám phá các công cụ và kỹ thuật độc đáo từ nhiều ứng dụng để tăng cường sự sáng tạo và hiệu suất thiết kế.',
-          slug: 'thiet-ke-do-hoa/cac-phan-mem-khac',
-          courseQuantity: 0,
-          booted: false,
-          createdAt: '2024-07-21T08:27:21.570Z',
-          updatedAt: '2024-07-21T09:09:28.642Z',
-          __v: 0,
-          image:
-            'https://d141vgbk8gzs0o.cloudfront.net/images/c75617bf9bcb93d6979e304d7798ab3d8d424beb235a0ae45c93e9894adbd921',
-          subs: {
-            ref: '669cc6690ecbf394de86a8d5',
+            ref: '66af0ab94477cd09e2853070',
             data: [],
           },
         },
@@ -423,58 +308,174 @@ export const categories = [
     },
   },
   {
-    _id: '669cc6980ecbf394de86a8d7',
+    _id: '669cc62d0ecbf394de86a8c6',
     parentId: null,
-    title: 'Thiết Kế Web & UI/UX',
+    title: 'Thiết Kế',
     description:
-      'Tạo ra những trang web hấp dẫn và dễ sử dụng với thiết kế UX/UI chuyên nghiệp. Học cách tối ưu hóa trải nghiệm người dùng và thiết kế giao diện web đẹp mắt để nâng cao hiệu quả và sự hài lòng của khách hàng.',
-    slug: 'thiet-ke-web-and-uiux',
+      'Khơi nguồn sáng tạo và nâng cao kỹ năng thiết kế với các khóa học chuyên sâu. Tìm hiểu từ các nguyên tắc cơ bản đến các kỹ thuật nâng cao để tạo ra những thiết kế ấn tượng và chuyên nghiệp.',
+    slug: 'thiet-ke',
     courseQuantity: 0,
     booted: false,
-    createdAt: '2024-07-21T08:28:08.159Z',
-    updatedAt: '2024-07-21T09:12:23.077Z',
+    createdAt: '2024-07-21T08:26:21.192Z',
+    updatedAt: '2024-08-04T05:41:26.302Z',
     __v: 0,
     image:
-      'https://d141vgbk8gzs0o.cloudfront.net/images/c4f1c508722fb56e78d6e87610d8aec55e6f3e8865eecb475d9fc6ba0a726538',
+      'https://d141vgbk8gzs0o.cloudfront.net/images/fb5d810cc657ae79305ce1b2462ef339bb58080fe83c914b615ec80c904604e6',
     subs: {
-      ref: '669cc6980ecbf394de86a8d7',
+      ref: '669cc62d0ecbf394de86a8c6',
       data: [
         {
-          _id: '669cc6a60ecbf394de86a8e0',
-          parentId: '669cc6980ecbf394de86a8d7',
-          title: 'Thiết Kế Web',
+          _id: '66af149e589d4b1109c741d3',
+          parentId: '669cc62d0ecbf394de86a8c6',
+          title: 'Thiết Kế Đồ Họa',
           description:
-            'Tạo dựng những trang web ấn tượng và chức năng với kỹ năng thiết kế web chuyên sâu. Khám phá các khóa học từ cơ bản đến nâng cao để thiết kế và phát triển trang web tối ưu.',
-          slug: 'thiet-ke-web-and-uiux/thiet-ke-web',
+            'Khám phá thế giới thiết kế đồ họa với các khóa học sáng tạo và chuyên sâu. Học cách sử dụng các công cụ thiết kế, phát triển ý tưởng và tạo ra các sản phẩm đồ họa từ logo đến tài liệu quảng cáo, giúp bạn thể hiện ý tưởng và thương hiệu một cách ấn tượng và chuyên nghiệp.',
+          slug: 'thiet-ke/thiet-ke-do-hoa',
           courseQuantity: 0,
           booted: false,
-          createdAt: '2024-07-21T08:28:22.515Z',
-          updatedAt: '2024-07-21T09:14:23.312Z',
+          createdAt: '2024-08-04T05:41:50.125Z',
+          updatedAt: '2024-08-04T05:43:23.487Z',
           __v: 0,
           image:
-            'https://d141vgbk8gzs0o.cloudfront.net/images/697cf1de7176c0243fd3d03cc85464a8851f54f07d8f5e27e7c085791ac8bc24',
+            'https://d141vgbk8gzs0o.cloudfront.net/images/ea532c59f6668caab5eff3b3cbcd676a2dadcc70ea909b0f0ef41c1b1015aaed',
           subs: {
-            ref: '669cc6a60ecbf394de86a8e0',
-            data: [],
+            ref: '66af149e589d4b1109c741d3',
+            data: [
+              {
+                _id: '66af150c1f407e484958af36',
+                parentId: '66af149e589d4b1109c741d3',
+                title: 'Thiết Kế Sản Phẩm',
+                description:
+                  'Từ ý tưởng đến hiện thực, học cách tạo ra sản phẩm sáng tạo, tối ưu hóa thiết kế và đáp ứng nhu cầu thị trường để mang lại giá trị và sự khác biệt cho doanh nghiệp.',
+                slug: 'thiet-ke/thiet-ke-do-hoa/thiet-ke-san-pham',
+                courseQuantity: 0,
+                booted: false,
+                createdAt: '2024-08-04T05:43:40.212Z',
+                updatedAt: '2024-08-04T05:44:14.786Z',
+                __v: 0,
+                image:
+                  'https://d141vgbk8gzs0o.cloudfront.net/images/e13ab750826180794e2f219acdf647cc136f6fa5dacd1c8faed58a06e19ab9a5',
+                subs: {
+                  ref: '66af150c1f407e484958af36',
+                  data: [],
+                },
+              },
+              {
+                _id: '66af15421f407e484958af3f',
+                parentId: '66af149e589d4b1109c741d3',
+                title: 'Thiết Kế Đa Phương Tiện',
+                description:
+                  'Khám phá nghệ thuật và kỹ thuật thiết kế đa phương tiện với các khóa học sáng tạo. Học cách kết hợp hình ảnh, âm thanh, video và đồ họa để tạo ra các sản phẩm truyền thông hấp dẫn, hiệu quả và thu hút sự chú ý của người xem.',
+                slug: 'thiet-ke/thiet-ke-do-hoa/thiet-ke-da-phuong-tien',
+                courseQuantity: 0,
+                booted: false,
+                createdAt: '2024-08-04T05:44:34.034Z',
+                updatedAt: '2024-08-04T05:45:11.600Z',
+                __v: 0,
+                image:
+                  'https://d141vgbk8gzs0o.cloudfront.net/images/89623fc0c3646ef62f70f08b92ef09e3f5d5443aa0716c0479f80b31339f1f25',
+                subs: {
+                  ref: '66af15421f407e484958af3f',
+                  data: [],
+                },
+              },
+              {
+                _id: '66af157d1f407e484958af48',
+                parentId: '66af149e589d4b1109c741d3',
+                title: 'Thiết Kế Bộ Nhận Diện Thương Hiệu',
+                description:
+                  'Khám phá các chiến lược thiết kế logo, nhận diện thương hiệu, và xây dựng hình ảnh để tạo dấu ấn riêng biệt, tăng cường sự nhận diện và kết nối với khách hàng.',
+                slug: 'thiet-ke/thiet-ke-do-hoa/thiet-ke-bo-nhan-dien-thuong-hieu',
+                courseQuantity: 0,
+                booted: false,
+                createdAt: '2024-08-04T05:45:33.651Z',
+                updatedAt: '2024-08-04T05:46:48.960Z',
+                __v: 0,
+                image:
+                  'https://d141vgbk8gzs0o.cloudfront.net/images/18fb7e3bd91a31ac08cf92517019e07f299598f502376f90af792baa17cfb34f',
+                subs: {
+                  ref: '66af157d1f407e484958af48',
+                  data: [],
+                },
+              },
+            ],
           },
         },
         {
-          _id: '669cc6ae0ecbf394de86a8e3',
-          parentId: '669cc6980ecbf394de86a8d7',
-          title: 'Figma',
+          _id: '66af15da1f407e484958af57',
+          parentId: '669cc62d0ecbf394de86a8c6',
+          title: 'Thiết Kế Web, App',
           description:
-            'Khám phá cách sử dụng Figma để thiết kế giao diện và tạo prototype một cách nhanh chóng và hiệu quả. Học các kỹ thuật thiết kế hiện đại và hợp tác dễ dàng trong dự án UX/UI.',
-          slug: 'thiet-ke-web-and-uiux/figma',
+            'Tạo ra những trang web hấp dẫn và dễ sử dụng với thiết kế chuyên nghiệp. Học cách tối ưu hóa trải nghiệm người dùng và thiết kế giao diện web, app đẹp mắt để nâng cao hiệu quả và sự hài lòng của khách hàng.',
+          slug: 'thiet-ke/thiet-ke-web-app',
           courseQuantity: 0,
           booted: false,
-          createdAt: '2024-07-21T08:28:30.006Z',
-          updatedAt: '2024-07-21T09:15:36.926Z',
+          createdAt: '2024-08-04T05:47:06.665Z',
+          updatedAt: '2024-08-04T05:48:43.698Z',
           __v: 0,
           image:
-            'https://d141vgbk8gzs0o.cloudfront.net/images/2b2bdac34a83e386def0b23d316f8f5adb1978cc7ca24c02c12d74cf65e120f1',
+            'https://d141vgbk8gzs0o.cloudfront.net/images/5243c4e0e6a79b143942a76f2716a566e4dfb4bbf29047d6af152d385b6dd5b0',
           subs: {
-            ref: '669cc6ae0ecbf394de86a8e3',
-            data: [],
+            ref: '66af15da1f407e484958af57',
+            data: [
+              {
+                _id: '66af16531f407e484958af5d',
+                parentId: '66af15da1f407e484958af57',
+                title: 'UX/UI',
+                description:
+                  'Tạo ra các giao diện dễ sử dụng, trực quan và hấp dẫn, tối ưu hóa trải nghiệm người dùng và cải thiện hiệu suất ứng dụng và trang web.',
+                slug: 'thiet-ke/thiet-ke-web-app/uxui',
+                courseQuantity: 0,
+                booted: false,
+                createdAt: '2024-08-04T05:49:07.598Z',
+                updatedAt: '2024-08-04T05:49:48.852Z',
+                __v: 0,
+                image:
+                  'https://d141vgbk8gzs0o.cloudfront.net/images/09bd94b59edfa1f5a006ec907a1ff9a31ca0c1dda9106e2693958a4dd3381d95',
+                subs: {
+                  ref: '66af16531f407e484958af5d',
+                  data: [],
+                },
+              },
+              {
+                _id: '66af16961f407e484958af66',
+                parentId: '66af15da1f407e484958af57',
+                title: 'Thiết Kế Ứng Dụng Di Động',
+                description:
+                  'Tạo giao diện người dùng thân thiện, tối ưu hóa trải nghiệm người dùng và phát triển các tính năng sáng tạo để xây dựng ứng dụng di động hấp dẫn và dễ sử dụng.',
+                image:
+                  'https://d141vgbk8gzs0o.cloudfront.net/images/1a781648b920f9f5bce3094f4ca4988cffe70a5c1c644cc168ce72052985dd61',
+                slug: 'thiet-ke/thiet-ke-web-app/thiet-ke-ung-dung-di-dong',
+                courseQuantity: 0,
+                booted: false,
+                createdAt: '2024-08-04T05:50:14.817Z',
+                updatedAt: '2024-08-04T05:50:29.320Z',
+                __v: 0,
+                subs: {
+                  ref: '66af16961f407e484958af66',
+                  data: [],
+                },
+              },
+              {
+                _id: '66af16bd1f407e484958af6f',
+                parentId: '66af15da1f407e484958af57',
+                title: 'Thiết Kế Web',
+                description:
+                  'Tạo giao diện người dùng đẹp mắt đến tối ưu hóa trải nghiệm người dùng, học cách xây dựng các trang web hiệu quả, dễ sử dụng và phù hợp với nhu cầu của người dùng và mục tiêu kinh doanh.',
+                image:
+                  'https://d141vgbk8gzs0o.cloudfront.net/images/3a99f2ff01dc623186abd527380062a58ef51e0fe780419750a9f60b66c6b1b3',
+                slug: 'thiet-ke/thiet-ke-web-app/thiet-ke-web',
+                courseQuantity: 1,
+                booted: false,
+                createdAt: '2024-08-04T05:50:53.617Z',
+                updatedAt: '2024-08-04T09:22:38.732Z',
+                __v: 0,
+                subs: {
+                  ref: '66af16bd1f407e484958af6f',
+                  data: [],
+                },
+              },
+            ],
           },
         },
       ],
@@ -484,12 +485,13 @@ export const categories = [
     _id: '669cc6cc0ecbf394de86a8e5',
     parentId: null,
     title: 'Quay & Dựng Video',
-    description: '',
+    description:
+      'Biến ý tưởng thành video chất lượng cao! Khóa học của chúng tôi sẽ dạy bạn từ cách sử dụng máy quay, điều chỉnh ánh sáng, âm thanh, đến kỹ thuật dựng phim tiên tiến. Trở thành chuyên gia trong lĩnh vực quay và dựng video',
     slug: 'quay-and-dung-video',
     courseQuantity: 0,
     booted: false,
     createdAt: '2024-07-21T08:29:00.516Z',
-    updatedAt: '2024-07-21T09:17:09.296Z',
+    updatedAt: '2024-07-21T11:36:34.071Z',
     __v: 0,
     image:
       'https://d141vgbk8gzs0o.cloudfront.net/images/2878caf0c3e61aa718d9e87bdf22a1f8a3d1a40daee1568ad935f2bf674608e6',
@@ -537,14 +539,14 @@ export const categories = [
         {
           _id: '669cc7360ecbf394de86a905',
           parentId: '669cc6cc0ecbf394de86a8e5',
-          title: 'Các phần mềm khác',
+          title: 'Các Kỹ Năng Quay Dựng',
           description:
-            'Nâng cao kỹ năng chỉnh sửa video với các phần mềm đa dạng khác. Tìm hiểu cách sử dụng các công cụ thay thế để mở rộng khả năng sáng tạo và hiệu suất làm việc của bạn.',
-          slug: 'quay-and-dung-video/cac-phan-mem-khac',
-          courseQuantity: 0,
+            'Học cách ghi hình, chỉnh sửa và biên tập video để tạo ra các sản phẩm chất lượng cao, từ các đoạn phim ngắn đến video quảng cáo và tài liệu học tập, nâng cao khả năng truyền tải thông điệp một cách hiệu quả.',
+          slug: 'quay-and-dung-video/cac-ky-nang-quay-dung',
+          courseQuantity: 1,
           booted: false,
           createdAt: '2024-07-21T08:30:46.365Z',
-          updatedAt: '2024-07-21T09:19:54.823Z',
+          updatedAt: '2024-08-04T05:35:49.248Z',
           __v: 0,
           image:
             'https://d141vgbk8gzs0o.cloudfront.net/images/dcf19a932951943b4f194525baa20fc6542288aa864500d2cca7306bc317950f',
@@ -576,110 +578,33 @@ export const categories = [
         {
           _id: '669cc78c52429f40ca756289',
           parentId: '669cc75252429f40ca756282',
-          title: 'Lập Trình Web',
+          title: 'Lập Trình Web, App',
           description:
-            'Khám phá các kỹ năng lập trình web từ cơ bản đến nâng cao. Học cách xây dựng và tối ưu hóa các trang web để tạo ra trải nghiệm người dùng tối ưu và hiệu quả.',
-          slug: 'lap-trinh-and-cong-nghe/lap-trinh-web',
+            'Khám phá các kỹ năng lập trình từ cơ bản đến nâng cao. Học cách xây dựng và tối ưu hóa các trang web, ứng dụng để tạo ra trải nghiệm người dùng tối ưu và hiệu quả.',
+          slug: 'lap-trinh-and-cong-nghe/lap-trinh-web-app',
           courseQuantity: 0,
           booted: false,
           createdAt: '2024-07-21T08:32:12.893Z',
-          updatedAt: '2024-07-21T09:24:12.420Z',
+          updatedAt: '2024-08-04T05:15:33.559Z',
           __v: 0,
           image:
             'https://d141vgbk8gzs0o.cloudfront.net/images/0ea24841d9e9592d3e95477840ef91a783f22dbd84863c44a857e2c27f2982c1',
           subs: {
             ref: '669cc78c52429f40ca756289',
-            data: [
-              {
-                _id: '669cc7e152429f40ca756295',
-                parentId: '669cc78c52429f40ca756289',
-                title: 'HTML/CSS',
-                description:
-                  'Khám phá nền tảng cơ bản của lập trình web với HTML và CSS. Các khóa học này cung cấp kiến thức từ việc xây dựng cấu trúc trang web đến việc tạo kiểu dáng chuyên nghiệp, giúp bạn làm chủ việc thiết kế và phát triển trang web.',
-                slug: 'lap-trinh-and-cong-nghe/lap-trinh-web/htmlcss',
-                courseQuantity: 0,
-                booted: false,
-                createdAt: '2024-07-21T08:33:37.807Z',
-                updatedAt: '2024-07-21T09:27:18.780Z',
-                __v: 0,
-                image:
-                  'https://d141vgbk8gzs0o.cloudfront.net/images/12a94b7babbd26a4a5a69d88817842cc8a8df2e7d34d3ba49a754cc89b4e3814',
-                subs: {
-                  ref: '669cc7e152429f40ca756295',
-                  data: [],
-                },
-              },
-              {
-                _id: '669cc80552429f40ca756298',
-                parentId: '669cc78c52429f40ca756289',
-                title: 'JavaScript',
-                description:
-                  'Nâng cao kỹ năng lập trình web với JavaScript, ngôn ngữ chủ lực cho các tính năng tương tác trên trang web. Khám phá cách sử dụng JavaScript để phát triển ứng dụng web động và cải thiện trải nghiệm người dùng.',
-                slug: 'lap-trinh-and-cong-nghe/lap-trinh-web/javascript',
-                courseQuantity: 0,
-                booted: false,
-                createdAt: '2024-07-21T08:34:13.469Z',
-                updatedAt: '2024-07-21T09:28:44.550Z',
-                __v: 0,
-                image:
-                  'https://d141vgbk8gzs0o.cloudfront.net/images/fc8d2117e4daf14240d2cd94e199a7eac8db2393172c4f05d139b0f9544f77f7',
-                subs: {
-                  ref: '669cc80552429f40ca756298',
-                  data: [],
-                },
-              },
-              {
-                _id: '669cc80b52429f40ca75629b',
-                parentId: '669cc78c52429f40ca756289',
-                title: 'React',
-                description:
-                  'Tìm hiểu React, thư viện JavaScript mạnh mẽ để xây dựng giao diện người dùng hiện đại. Các khóa học này giúp bạn tạo ra các ứng dụng web hiệu suất cao với cấu trúc component rõ ràng và quản lý trạng thái hiệu quả.',
-                slug: 'lap-trinh-and-cong-nghe/lap-trinh-web/react',
-                courseQuantity: 0,
-                booted: false,
-                createdAt: '2024-07-21T08:34:19.207Z',
-                updatedAt: '2024-07-21T09:29:45.197Z',
-                __v: 0,
-                image:
-                  'https://d141vgbk8gzs0o.cloudfront.net/images/111e23f51e91459e0bc2abd86cec2a2fd5e78629010e7cffbc556e2a1b365b64',
-                subs: {
-                  ref: '669cc80b52429f40ca75629b',
-                  data: [],
-                },
-              },
-              {
-                _id: '669cc81052429f40ca75629e',
-                parentId: '669cc78c52429f40ca756289',
-                title: 'TypeScript',
-                description:
-                  'Nâng cao khả năng lập trình với TypeScript, ngôn ngữ mở rộng của JavaScript cung cấp tính năng kiểu dữ liệu tĩnh. Khám phá cách TypeScript giúp bạn viết mã an toàn và dễ bảo trì hơn trong các ứng dụng web quy mô lớn.',
-                slug: 'lap-trinh-and-cong-nghe/lap-trinh-web/typescript',
-                courseQuantity: 0,
-                booted: false,
-                createdAt: '2024-07-21T08:34:24.512Z',
-                updatedAt: '2024-07-21T09:30:38.327Z',
-                __v: 0,
-                image:
-                  'https://d141vgbk8gzs0o.cloudfront.net/images/ef55ae3b74169076694d7f57e2064215fcb23941e0e87190355834c3711b20c7',
-                subs: {
-                  ref: '669cc81052429f40ca75629e',
-                  data: [],
-                },
-              },
-            ],
+            data: [],
           },
         },
         {
           _id: '669cc7a352429f40ca75628f',
           parentId: '669cc75252429f40ca756282',
-          title: 'Lập Trình Khác',
+          title: 'Ngôn Ngữ Lập Trình',
           description:
-            'Khám phá các ngôn ngữ lập trình và công nghệ khác ngoài web. Tìm hiểu cách áp dụng chúng trong các dự án phần mềm đa dạng, từ ứng dụng di động đến hệ thống nhúng.',
-          slug: 'lap-trinh-and-cong-nghe/lap-trinh-khac',
+            'Khám phá các ngôn ngữ lập trình. Tìm hiểu cách áp dụng chúng trong các dự án phần mềm đa dạng, từ ứng dụng di động đến hệ thống nhúng.',
+          slug: 'lap-trinh-and-cong-nghe/ngon-ngu-lap-trinh',
           courseQuantity: 0,
           booted: false,
           createdAt: '2024-07-21T08:32:35.785Z',
-          updatedAt: '2024-07-21T09:25:02.711Z',
+          updatedAt: '2024-08-04T05:16:04.657Z',
           __v: 0,
           image:
             'https://d141vgbk8gzs0o.cloudfront.net/images/e6e7f996bbf8c9a600163d898e0ef6632fff58ad4e99687d06ac451a619306ba',
@@ -724,141 +649,45 @@ export const categories = [
                   data: [],
                 },
               },
-              {
-                _id: '669cc85652429f40ca7562a7',
-                parentId: '669cc7a352429f40ca75628f',
-                title: 'iOS',
-                description:
-                  'Khám phá phát triển ứng dụng iOS với Swift và Xcode, công cụ chính để tạo ra các ứng dụng cho hệ điều hành của Apple. Học cách thiết kế giao diện người dùng và tối ưu hóa trải nghiệm trên các thiết bị iOS.',
-                slug: 'lap-trinh-and-cong-nghe/lap-trinh-khac/ios',
-                courseQuantity: 0,
-                booted: false,
-                createdAt: '2024-07-21T08:35:34.923Z',
-                updatedAt: '2024-07-21T09:34:55.501Z',
-                __v: 0,
-                image:
-                  'https://d141vgbk8gzs0o.cloudfront.net/images/7cc38877f0beb08f8a287c8a5d679d3a4c062ee7134290afd5846aff9b3a9736',
-                subs: {
-                  ref: '669cc85652429f40ca7562a7',
-                  data: [],
-                },
-              },
-              {
-                _id: '669cc85c52429f40ca7562aa',
-                parentId: '669cc7a352429f40ca75628f',
-                title: 'Android',
-                description:
-                  'Tìm hiểu cách phát triển ứng dụng Android bằng Java và Kotlin, các ngôn ngữ chính cho nền tảng di động của Google. Các khóa học này giúp bạn tạo ra các ứng dụng hiệu suất cao và tối ưu hóa trải nghiệm người dùng trên các thiết bị Android.',
-                slug: 'lap-trinh-and-cong-nghe/lap-trinh-khac/android',
-                courseQuantity: 0,
-                booted: false,
-                createdAt: '2024-07-21T08:35:40.517Z',
-                updatedAt: '2024-07-21T09:38:41.893Z',
-                __v: 0,
-                image:
-                  'https://d141vgbk8gzs0o.cloudfront.net/images/29541bbfde2e63363705992e480918b65109f17f53c2ece295b62ba04bb604b2',
-                subs: {
-                  ref: '669cc85c52429f40ca7562aa',
-                  data: [],
-                },
-              },
             ],
           },
         },
         {
           _id: '669cc7ad52429f40ca756292',
           parentId: '669cc75252429f40ca756282',
-          title: 'Công Nghệ',
+          title: 'Các Công Cụ Lập Trình Khác',
           description:
             'Khám phá các công nghệ tiên tiến và xu hướng mới trong ngành công nghiệp công nghệ. Từ trí tuệ nhân tạo đến blockchain, các khóa học này giúp bạn nắm bắt công nghệ hiện đại và ứng dụng hiệu quả trong dự án của mình.',
-          slug: 'lap-trinh-and-cong-nghe/cong-nghe',
+          slug: 'lap-trinh-and-cong-nghe/cac-cong-cu-lap-trinh-khac',
           courseQuantity: 0,
           booted: false,
           createdAt: '2024-07-21T08:32:45.722Z',
-          updatedAt: '2024-07-21T09:25:59.627Z',
+          updatedAt: '2024-08-04T05:16:35.183Z',
           __v: 0,
           image:
             'https://d141vgbk8gzs0o.cloudfront.net/images/60af82ea2025045496a554be07f17a92cff72aa104df7ffaa60e2b3d205e4e35',
           subs: {
             ref: '669cc7ad52429f40ca756292',
-            data: [
-              {
-                _id: '669cc89152429f40ca7562b0',
-                parentId: '669cc7ad52429f40ca756292',
-                title: 'Docker',
-                description:
-                  'Khám phá Docker để quản lý và triển khai ứng dụng trong các môi trường cách ly. Học cách tạo và vận hành các container để nâng cao hiệu quả và tính linh hoạt trong phát triển phần mềm.',
-                slug: 'lap-trinh-and-cong-nghe/cong-nghe/docker',
-                courseQuantity: 0,
-                booted: false,
-                createdAt: '2024-07-21T08:36:33.635Z',
-                updatedAt: '2024-07-21T09:40:09.357Z',
-                __v: 0,
-                image:
-                  'https://d141vgbk8gzs0o.cloudfront.net/images/47ae3d1660c3523685be84c443c50bab0ffab83e0173f192716c30e7848f5ff9',
-                subs: {
-                  ref: '669cc89152429f40ca7562b0',
-                  data: [],
-                },
-              },
-              {
-                _id: '669cc89952429f40ca7562b3',
-                parentId: '669cc7ad52429f40ca756292',
-                title: 'Git & Github',
-                description:
-                  'Nâng cao kỹ năng quản lý mã nguồn với Git và GitHub. Tìm hiểu cách sử dụng các công cụ này để theo dõi thay đổi, hợp tác trong dự án và quản lý mã nguồn hiệu quả.',
-                slug: 'lap-trinh-and-cong-nghe/cong-nghe/git-and-github',
-                courseQuantity: 0,
-                booted: false,
-                createdAt: '2024-07-21T08:36:41.246Z',
-                updatedAt: '2024-07-21T09:41:58.617Z',
-                __v: 0,
-                image:
-                  'https://d141vgbk8gzs0o.cloudfront.net/images/f5613ae0d9f45b073d642593481d2519322decdeeb0e8820124d0bbd209c0d96',
-                subs: {
-                  ref: '669cc89952429f40ca7562b3',
-                  data: [],
-                },
-              },
-              {
-                _id: '669cc8a052429f40ca7562b9',
-                parentId: '669cc7ad52429f40ca756292',
-                title: 'ChatGPT',
-                description:
-                  'Khám phá cách tích hợp và sử dụng ChatGPT trong các ứng dụng để tạo ra trải nghiệm người dùng thông minh. Học cách tận dụng công nghệ AI này để tự động hóa và cải thiện giao tiếp với khách hàng.',
-                slug: 'lap-trinh-and-cong-nghe/cong-nghe/chatgpt',
-                courseQuantity: 0,
-                booted: false,
-                createdAt: '2024-07-21T08:36:48.459Z',
-                updatedAt: '2024-07-21T09:42:58.843Z',
-                __v: 0,
-                image:
-                  'https://d141vgbk8gzs0o.cloudfront.net/images/f608a6d47c0eb6d8d08159c507b15b9dd1356cdf01b8b7554be4b8caa61a203b',
-                subs: {
-                  ref: '669cc8a052429f40ca7562b9',
-                  data: [],
-                },
-              },
-              {
-                _id: '669cc8aa52429f40ca7562bc',
-                parentId: '669cc7ad52429f40ca756292',
-                title: 'Data',
-                description:
-                  'Tìm hiểu cách làm việc với dữ liệu từ thu thập, xử lý đến phân tích. Khám phá các công cụ và kỹ thuật để xử lý dữ liệu lớn và tạo ra thông tin hữu ích cho quyết định kinh doanh.',
-                slug: 'lap-trinh-and-cong-nghe/cong-nghe/data',
-                courseQuantity: 0,
-                booted: false,
-                createdAt: '2024-07-21T08:36:58.640Z',
-                updatedAt: '2024-07-21T09:43:44.422Z',
-                __v: 0,
-                image:
-                  'https://d141vgbk8gzs0o.cloudfront.net/images/a78f735fb465aa2154be29c9ac53c121dffb20afdfe5c28cdb8658366691be3f',
-                subs: {
-                  ref: '669cc8aa52429f40ca7562bc',
-                  data: [],
-                },
-              },
-            ],
+            data: [],
+          },
+        },
+        {
+          _id: '66af0f0e4477cd09e2853091',
+          parentId: '669cc75252429f40ca756282',
+          title: 'Cơ Sở Dữ Liệu',
+          description:
+            '**Danh Mục: Cơ Sở Dữ Liệu**\r\n\r\nTìm hiểu các nguyên tắc và kỹ thuật quản lý cơ sở dữ liệu với các khóa học chuyên sâu. Khám phá cách thiết kế, triển khai và tối ưu hóa cơ sở dữ liệu để quản lý và phân tích thông tin hiệu quả.',
+          image:
+            'https://d141vgbk8gzs0o.cloudfront.net/images/f930e6a04841fc8006653b5e23681d231477d6235955c386bfd6ed4bf673e9cb',
+          slug: 'lap-trinh-and-cong-nghe/co-so-du-lieu',
+          courseQuantity: 0,
+          booted: false,
+          createdAt: '2024-08-04T05:18:06.234Z',
+          updatedAt: '2024-08-04T05:18:06.234Z',
+          __v: 0,
+          subs: {
+            ref: '66af0f0e4477cd09e2853091',
+            data: [],
           },
         },
       ],
@@ -867,14 +696,14 @@ export const categories = [
   {
     _id: '669cc8c252429f40ca7562c1',
     parentId: null,
-    title: 'Kỹ Năng Mềm & Phát Triển Bản Thân',
+    title: 'Kỹ Năng Mềm',
     description:
       'Khám phá các kỹ năng mềm thiết yếu và phương pháp phát triển bản thân để nâng cao hiệu quả cá nhân và nghề nghiệp. Các khóa học giúp bạn xây dựng sự tự tin, kỹ năng giao tiếp, quản lý thời gian và cải thiện kỹ năng lãnh đạo.',
-    slug: 'ky-nang-mem-and-phat-trien-ban-than',
+    slug: 'ky-nang-mem',
     courseQuantity: 0,
     booted: false,
     createdAt: '2024-07-21T08:37:22.622Z',
-    updatedAt: '2024-07-21T09:45:10.432Z',
+    updatedAt: '2024-08-04T05:38:41.508Z',
     __v: 0,
     image:
       'https://d141vgbk8gzs0o.cloudfront.net/images/178a6f9812386ce57c7776169299800dfcd7c86f833cd93ffbd0859ead2ed1ae',
@@ -887,11 +716,11 @@ export const categories = [
           title: 'Kỹ Năng Mềm',
           description:
             'Trang bị cho bạn những kỹ năng mềm quan trọng như giao tiếp, quản lý thời gian và làm việc nhóm để thành công trong công việc và cuộc sống. Các khóa học cung cấp công cụ và kỹ thuật để bạn tự tin hơn và hiệu quả hơn trong mọi tình huống.',
-          slug: 'ky-nang-mem-and-phat-trien-ban-than/ky-nang-mem',
-          courseQuantity: 0,
+          slug: 'ky-nang-mem/ky-nang-mem',
+          courseQuantity: 2,
           booted: false,
           createdAt: '2024-07-21T08:37:52.126Z',
-          updatedAt: '2024-07-21T09:48:07.193Z',
+          updatedAt: '2024-08-06T17:07:08.055Z',
           __v: 0,
           image:
             'https://d141vgbk8gzs0o.cloudfront.net/images/19cf478e5e191384f7fb5307b034e8e83177182ef52819d9778b3e24f35b246e',
@@ -906,14 +735,33 @@ export const categories = [
           title: 'Phát Triển Bản Thân',
           description:
             'Khám phá những phương pháp độc đáo để phát triển bản thân toàn diện, từ quản lý căng thẳng đến tư duy tích cực. Các khóa học giúp bạn nâng cao nhận thức và xây dựng thói quen tốt để cải thiện chất lượng cuộc sống.',
-          slug: 'ky-nang-mem-and-phat-trien-ban-than/phat-trien-ban-than',
-          courseQuantity: 0,
+          slug: 'ky-nang-mem/phat-trien-ban-than',
+          courseQuantity: 1,
           booted: false,
           createdAt: '2024-07-21T08:38:18.661Z',
-          updatedAt: '2024-07-21T08:38:18.661Z',
+          updatedAt: '2024-08-06T17:45:42.101Z',
           __v: 0,
           subs: {
             ref: '669cc8fa52429f40ca7562c7',
+            data: [],
+          },
+        },
+        {
+          _id: '66af0fae4477cd09e2853094',
+          parentId: '669cc8c252429f40ca7562c1',
+          title: 'Nghệ Thuật - Đời Sống',
+          description:
+            'Tìm hiểu cách nghệ thuật có thể làm phong phú thêm trải nghiệm cuộc sống, từ kỹ thuật sáng tác đến ứng dụng nghệ thuật trong các khía cạnh của đời sống hàng ngày, giúp bạn tìm thấy sự cân bằng và cảm hứng.',
+          image:
+            'https://d141vgbk8gzs0o.cloudfront.net/images/35cbd50b3d32fb09a26aeb78fceccd8405dbb8daeeb03b362cef8058ab5cbb16',
+          slug: 'ky-nang-mem/nghe-thuat-doi-song',
+          courseQuantity: 1,
+          booted: false,
+          createdAt: '2024-08-04T05:20:46.020Z',
+          updatedAt: '2024-08-06T17:45:42.101Z',
+          __v: 0,
+          subs: {
+            ref: '66af0fae4477cd09e2853094',
             data: [],
           },
         },
@@ -930,107 +778,269 @@ export const categories = [
     courseQuantity: 0,
     booted: false,
     createdAt: '2024-07-21T08:38:41.520Z',
-    updatedAt: '2024-07-21T09:49:10.480Z',
+    updatedAt: '2024-08-04T09:21:26.672Z',
     __v: 0,
     image:
       'https://d141vgbk8gzs0o.cloudfront.net/images/b3974a5df92e377725c298c0a5bac15aaa54963b1656657c5cde48e67335c9c0',
     subs: {
       ref: '669cc91152429f40ca7562c9',
-      data: [],
-    },
-  },
-  {
-    _id: '669cc92352429f40ca7562cb',
-    parentId: null,
-    title: 'Thương Mại Điện Tử',
-    description:
-      'Khám phá bí quyết xây dựng và phát triển doanh nghiệp trực tuyến thành công. Từ thiết kế website đến chiến lược marketing, các khóa học của chúng tôi giúp bạn tối ưu hóa hoạt động thương mại điện tử và gia tăng doanh thu.',
-    slug: 'thuong-mai-dien-tu',
-    courseQuantity: 0,
-    booted: false,
-    createdAt: '2024-07-21T08:38:59.624Z',
-    updatedAt: '2024-07-21T09:50:34.169Z',
-    __v: 0,
-    image:
-      'https://d141vgbk8gzs0o.cloudfront.net/images/328d9bd16979d4ebfa32ec12c32410ddafabe73f2bbe017267a55239b6fcdebf',
-    subs: {
-      ref: '669cc92352429f40ca7562cb',
       data: [
         {
-          _id: '669cc94c52429f40ca7562ce',
-          parentId: '669cc92352429f40ca7562cb',
-          title: 'Shopee',
+          _id: '66af03c02ee9261b1fb6d44f',
+          parentId: '669cc91152429f40ca7562c9',
+          title: 'Tiếng Anh',
           description:
-            'Khám phá cách tối ưu hóa cửa hàng của bạn trên Shopee để thu hút khách hàng và tăng doanh thu. Các khóa học cung cấp chiến lược và công cụ hiệu quả để thành công trên nền tảng thương mại điện tử này.',
-          slug: 'thuong-mai-dien-tu/shopee',
+            'Khám phá các khóa học và tài nguyên để nâng cao kỹ năng tiếng Anh của bạn, từ cơ bản đến nâng cao. Học ngữ pháp, từ vựng, phát âm và giao tiếp hiệu quả để mở rộng cơ hội nghề nghiệp và giao lưu quốc tế.',
+          image:
+            'https://d141vgbk8gzs0o.cloudfront.net/images/faa87a61ab1a9837761022185904725eeb96a6941e98e1d369b9bb05a63f6327',
+          slug: 'ngoai-ngu/tieng-anh',
           courseQuantity: 0,
           booted: false,
-          createdAt: '2024-07-21T08:39:40.903Z',
-          updatedAt: '2024-07-21T09:59:12.779Z',
+          createdAt: '2024-08-04T04:29:52.524Z',
+          updatedAt: '2024-08-04T04:29:52.524Z',
           __v: 0,
-          image:
-            'https://d141vgbk8gzs0o.cloudfront.net/images/2994726d20e91f6bda2c327223752988c223ba3a85771f755f340a3cbe9074b7',
           subs: {
-            ref: '669cc94c52429f40ca7562ce',
-            data: [],
+            ref: '66af03c02ee9261b1fb6d44f',
+            data: [
+              {
+                _id: '66af047d552a948224c07ffa',
+                parentId: '66af03c02ee9261b1fb6d44f',
+                title: 'TOIEC',
+                description:
+                  'Tìm hiểu các tài liệu và khóa học giúp bạn chuẩn bị cho kỳ thi TOEIC. Các bài tập luyện kỹ năng nghe, đọc, và các mẹo thi cử để bạn đạt điểm cao và mở rộng cơ hội nghề nghiệp quốc tế.',
+                image:
+                  'https://d141vgbk8gzs0o.cloudfront.net/images/c28c720573e13338a4515ab12e293bc249d2eba1d86ea208f8cce8d49c8e0e1d',
+                slug: 'ngoai-ngu/tieng-anh/toiec',
+                courseQuantity: 0,
+                booted: false,
+                createdAt: '2024-08-04T04:33:01.692Z',
+                updatedAt: '2024-08-04T04:33:01.692Z',
+                __v: 0,
+                subs: {
+                  ref: '66af047d552a948224c07ffa',
+                  data: [],
+                },
+              },
+              {
+                _id: '66af053d552a948224c07ffd',
+                parentId: '66af03c02ee9261b1fb6d44f',
+                title: 'IELTS',
+                description:
+                  'Nâng cao kỹ năng tiếng Anh của bạn với các khóa học và tài liệu chuẩn bị cho kỳ thi IELTS. Các bài tập luyện toàn diện cho từng kỹ năng, cùng với chiến lược và mẹo thi giúp bạn đạt điểm cao.',
+                image:
+                  'https://d141vgbk8gzs0o.cloudfront.net/images/26864bfe006a4d186a830fd1888a6d14f6ce974b0fb8ca0d4aa905231d97d0bd',
+                slug: 'ngoai-ngu/tieng-anh/ielts',
+                courseQuantity: 1,
+                booted: false,
+                createdAt: '2024-08-04T04:36:13.847Z',
+                updatedAt: '2024-08-06T14:16:59.363Z',
+                __v: 0,
+                subs: {
+                  ref: '66af053d552a948224c07ffd',
+                  data: [],
+                },
+              },
+              {
+                _id: '66af05d9552a948224c08000',
+                parentId: '66af03c02ee9261b1fb6d44f',
+                title: 'Listening',
+                description: '',
+                image:
+                  'https://d141vgbk8gzs0o.cloudfront.net/images/4849697d227f75b9245dc1cde680dd2cec7d0c066397a23758b559ecbfe97820',
+                slug: 'ngoai-ngu/tieng-anh/listening',
+                courseQuantity: 2,
+                booted: false,
+                createdAt: '2024-08-04T04:38:49.954Z',
+                updatedAt: '2024-08-06T15:02:19.356Z',
+                __v: 0,
+                subs: {
+                  ref: '66af05d9552a948224c08000',
+                  data: [],
+                },
+              },
+              {
+                _id: '66b22535010ee8a6953e04a8',
+                parentId: '66af03c02ee9261b1fb6d44f',
+                title: 'Speaking',
+                description: '',
+                slug: 'ngoai-ngu/tieng-anh/speaking',
+                courseQuantity: 2,
+                booted: false,
+                createdAt: '2024-08-06T13:29:25.678Z',
+                updatedAt: '2024-08-06T14:36:14.226Z',
+                __v: 0,
+                subs: {
+                  ref: '66b22535010ee8a6953e04a8',
+                  data: [],
+                },
+              },
+              {
+                _id: '66b22540010ee8a6953e04b3',
+                parentId: '66af03c02ee9261b1fb6d44f',
+                title: 'Reading',
+                description: '',
+                slug: 'ngoai-ngu/tieng-anh/reading',
+                courseQuantity: 0,
+                booted: false,
+                createdAt: '2024-08-06T13:29:36.959Z',
+                updatedAt: '2024-08-06T13:29:36.959Z',
+                __v: 0,
+                subs: {
+                  ref: '66b22540010ee8a6953e04b3',
+                  data: [],
+                },
+              },
+              {
+                _id: '66b22545010ee8a6953e04b6',
+                parentId: '66af03c02ee9261b1fb6d44f',
+                title: 'Writing',
+                description: '',
+                slug: 'ngoai-ngu/tieng-anh/writing',
+                courseQuantity: 0,
+                booted: false,
+                createdAt: '2024-08-06T13:29:41.905Z',
+                updatedAt: '2024-08-06T13:29:41.905Z',
+                __v: 0,
+                subs: {
+                  ref: '66b22545010ee8a6953e04b6',
+                  data: [],
+                },
+              },
+              {
+                _id: '66b22b9167c1e6963281d6e1',
+                parentId: '66af03c02ee9261b1fb6d44f',
+                title: 'Ngữ Pháp Và Từ Vựng',
+                description: '',
+                slug: 'ngoai-ngu/tieng-anh/ngu-phap-va-tu-vung',
+                courseQuantity: 1,
+                booted: false,
+                createdAt: '2024-08-06T13:56:33.736Z',
+                updatedAt: '2024-08-06T14:02:31.584Z',
+                __v: 0,
+                subs: {
+                  ref: '66b22b9167c1e6963281d6e1',
+                  data: [],
+                },
+              },
+            ],
           },
         },
         {
-          _id: '669cc95252429f40ca7562d1',
-          parentId: '669cc92352429f40ca7562cb',
-          title: 'Lazada',
+          _id: '66af07dc4477cd09e2853056',
+          parentId: '669cc91152429f40ca7562c9',
+          title: 'Ngôn Ngữ Khác',
           description:
-            'Tìm hiểu cách phát triển và quản lý cửa hàng trực tuyến trên Lazada. Khóa học giúp bạn áp dụng các chiến lược tối ưu để nâng cao sự hiện diện và doanh thu trên nền tảng này.',
-          slug: 'thuong-mai-dien-tu/lazada',
-          courseQuantity: 0,
-          booted: false,
-          createdAt: '2024-07-21T08:39:46.249Z',
-          updatedAt: '2024-07-21T10:01:38.972Z',
-          __v: 0,
+            '**Danh Mục: Ngôn Ngữ Khác**\r\n\r\nKhám phá các khóa học và tài nguyên dành cho nhiều ngôn ngữ khác nhau. Từ các bài học cơ bản đến nâng cao, giúp bạn làm quen và thành thạo nhiều ngôn ngữ khác nhau.',
           image:
-            'https://d141vgbk8gzs0o.cloudfront.net/images/5fcbd512064b9e400ee4acb08fb51409f4914b4b1f0cf8af608b62d253fe5898',
-          subs: {
-            ref: '669cc95252429f40ca7562d1',
-            data: [],
-          },
-        },
-        {
-          _id: '669cc95a52429f40ca7562d4',
-          parentId: '669cc92352429f40ca7562cb',
-          title: 'TikTok Shop',
-          description:
-            'Khám phá các chiến lược bán hàng và marketing trên TikTok Shop để thu hút khách hàng và tăng trưởng doanh thu. Các khóa học cung cấp hướng dẫn chi tiết về cách tận dụng sức mạnh của mạng xã hội này.',
-          slug: 'thuong-mai-dien-tu/tiktok-shop',
+            'https://d141vgbk8gzs0o.cloudfront.net/images/8d42a46fc589440e92a20a7d26ae92ca63ba53c9e513cda62312ab892f38ce6c',
+          slug: 'ngoai-ngu/ngon-ngu-khac',
           courseQuantity: 0,
           booted: false,
-          createdAt: '2024-07-21T08:39:54.663Z',
-          updatedAt: '2024-07-21T10:02:34.475Z',
-          __v: 0,
-          image:
-            'https://d141vgbk8gzs0o.cloudfront.net/images/101407af040c6f5a896a6b94bc01bb8091ba5ce0b1b1a9c4412c5d7e6599d62b',
-          subs: {
-            ref: '669cc95a52429f40ca7562d4',
-            data: [],
-          },
-        },
-        {
-          _id: '669cc96a52429f40ca7562d7',
-          parentId: '669cc92352429f40ca7562cb',
-          title: 'Dropshipping',
-          description:
-            'Nắm vững mô hình kinh doanh dropshipping và cách xây dựng cửa hàng trực tuyến thành công. Các khóa học cung cấp kiến thức về tìm nguồn hàng, quản lý đơn hàng và chiến lược marketing.',
-          slug: 'thuong-mai-dien-tu/dropshipping',
-          courseQuantity: 0,
-          booted: false,
-          createdAt: '2024-07-21T08:40:10.332Z',
-          updatedAt: '2024-07-21T08:40:10.332Z',
+          createdAt: '2024-08-04T04:47:24.951Z',
+          updatedAt: '2024-08-04T04:47:24.951Z',
           __v: 0,
           subs: {
-            ref: '669cc96a52429f40ca7562d7',
+            ref: '66af07dc4477cd09e2853056',
             data: [],
           },
         },
       ],
+    },
+  },
+  {
+    _id: '66af10bb4477cd09e28530a3',
+    parentId: null,
+    title: 'Đầu Tư',
+    description:
+      'Khám phá các chiến lược và kỹ thuật đầu tư với các khóa học chuyên sâu. Học cách phân tích thị trường, đánh giá cơ hội đầu tư và quản lý danh mục đầu tư để tối ưu hóa lợi nhuận và giảm thiểu rủi ro, giúp bạn đạt được mục tiêu tài chính cá nhân và doanh nghiệp.',
+    image:
+      'https://d141vgbk8gzs0o.cloudfront.net/images/f51e90d06660647855b46a101e310da4ed76179f613ced29b9dbfc278a9bf026',
+    slug: 'dau-tu',
+    courseQuantity: 0,
+    booted: false,
+    createdAt: '2024-08-04T05:25:15.392Z',
+    updatedAt: '2024-08-04T05:25:15.392Z',
+    __v: 0,
+    subs: {
+      ref: '66af10bb4477cd09e28530a3',
+      data: [
+        {
+          _id: '66af1179b451c53a7972446a',
+          parentId: '66af10bb4477cd09e28530a3',
+          title: 'Chứng Khoán',
+          description:
+            'Tìm hiểu các nguyên tắc và chiến lược đầu tư chứng khoán với các khóa học chuyên sâu. Khám phá cách phân tích cổ phiếu, quản lý danh mục đầu tư, và theo dõi xu hướng thị trường để tối ưu hóa lợi nhuận và giảm thiểu rủi ro trong đầu tư chứng khoán.',
+          image:
+            'https://d141vgbk8gzs0o.cloudfront.net/images/da46ef547aec2cf5cf3431dad39759b38a81fd865362aad4a3c9910daef57b97',
+          slug: 'dau-tu/chung-khoan',
+          courseQuantity: 2,
+          booted: false,
+          createdAt: '2024-08-04T05:28:25.905Z',
+          updatedAt: '2024-08-04T09:21:26.672Z',
+          __v: 0,
+          subs: {
+            ref: '66af1179b451c53a7972446a',
+            data: [],
+          },
+        },
+        {
+          _id: '66af11d2b451c53a79724470',
+          parentId: '66af10bb4477cd09e28530a3',
+          title: 'Tiền Ảo',
+          description:
+            'Tìm hiểu về các loại tiền ảo, công nghệ blockchain, và chiến lược đầu tư để nắm bắt cơ hội và quản lý rủi ro trong thị trường tiền ảo đang phát triển nhanh chóng.',
+          image:
+            'https://d141vgbk8gzs0o.cloudfront.net/images/3c6fd0ddadf7f63d2a8bb9491caf3c880bfaf3a026fb8f2277642e919b1c803b',
+          slug: 'dau-tu/tien-ao',
+          courseQuantity: 0,
+          booted: false,
+          createdAt: '2024-08-04T05:29:54.483Z',
+          updatedAt: '2024-08-04T05:29:54.483Z',
+          __v: 0,
+          subs: {
+            ref: '66af11d2b451c53a79724470',
+            data: [],
+          },
+        },
+        {
+          _id: '66af126fb451c53a79724473',
+          parentId: '66af10bb4477cd09e28530a3',
+          title: 'Bất Động Sản',
+          description:
+            'Tìm hiểu cách đầu tư, quản lý và phát triển bất động sản, từ phân tích thị trường đến thương lượng và tối ưu hóa lợi nhuận, giúp bạn thành công trong ngành bất động sản.',
+          image:
+            'https://d141vgbk8gzs0o.cloudfront.net/images/0255b148d51a1dd2047db3772874595924951ed3230c7eefa2fe4137b7b3db6f',
+          slug: 'dau-tu/bat-dong-san',
+          courseQuantity: 0,
+          booted: false,
+          createdAt: '2024-08-04T05:32:31.546Z',
+          updatedAt: '2024-08-04T05:32:31.546Z',
+          __v: 0,
+          subs: {
+            ref: '66af126fb451c53a79724473',
+            data: [],
+          },
+        },
+      ],
+    },
+  },
+  {
+    _id: '66af12bcb451c53a79724475',
+    parentId: null,
+    title: 'Tin Học Văn Phòng',
+    description:
+      'Nâng cao kỹ năng tin học văn phòng với các khóa học thực tiễn. Học cách sử dụng các công cụ phần mềm như Word, Excel, PowerPoint và các ứng dụng văn phòng khác để cải thiện hiệu quả làm việc, tổ chức dữ liệu và trình bày thông tin một cách chuyên nghiệp.',
+    image:
+      'https://d141vgbk8gzs0o.cloudfront.net/images/d65c46220580c2c6ddf776eb5ec5c899ee3998747b2b79b5f152bb3d057ba5d2',
+    slug: 'tin-hoc-van-phong',
+    courseQuantity: 1,
+    booted: false,
+    createdAt: '2024-08-04T05:33:48.444Z',
+    updatedAt: '2024-08-06T17:05:58.773Z',
+    __v: 0,
+    subs: {
+      ref: '66af12bcb451c53a79724475',
+      data: [],
     },
   },
 ]
@@ -1053,85 +1063,30 @@ export const topCategories = [
   {
     _id: '669cc38cee2392499a47c2e8',
     parentId: null,
-    title: 'Kinh doanh & Khởi nghiệp',
+    title: 'Kinh doanh',
     description:
-      'Kinh doanh & Khởi nghiệp - Bước đi đầu tiên đến thành công!\r\nKhám phá các chiến lược và kỹ năng cần thiết để khởi nghiệp thành công và phát triển doanh nghiệp bền vững.',
-    slug: 'kinh-doanh-and-khoi-nghiep',
+      'Khám phá các chiến lược và kỹ năng cần thiết để khởi nghiệp thành công và phát triển doanh nghiệp bền vững.',
+    slug: 'kinh-doanh',
     courseQuantity: 0,
     booted: false,
     createdAt: '2024-07-21T08:15:08.957Z',
-    updatedAt: '2024-07-21T08:55:12.997Z',
+    updatedAt: '2024-08-04T04:48:57.002Z',
     image:
       'https://d141vgbk8gzs0o.cloudfront.net/images/02f1e051c7a0efa69cbdef9cad38daf2662bf3013d2bdad7f5f58b794aa1f5f7',
   },
   {
-    _id: '669cc604ee2392499a47c313',
-    parentId: null,
-    title: 'Quản Lý & Lãnh Đạo',
-    description:
-      'Nâng cao kỹ năng lãnh đạo và quản lý để điều hành đội ngũ hiệu quả. Khám phá các khóa học giúp bạn phát triển khả năng lãnh đạo, ra quyết định và quản lý dự án thành công.',
-    slug: 'quan-ly-and-lanh-dao',
-    courseQuantity: 0,
-    booted: false,
-    createdAt: '2024-07-21T08:25:41.000Z',
-    updatedAt: '2024-07-21T09:02:46.147Z',
-    image:
-      'https://d141vgbk8gzs0o.cloudfront.net/images/e046f754d63439dfce92762b51694768e44facb5173e1418895cccb1f01fc9a2',
-  },
-  {
-    _id: '669cc6170ecbf394de86a8c1',
-    parentId: null,
-    title: 'Tài Chính',
-    description:
-      'Nâng cao hiểu biết về quản lý tài chính cá nhân và doanh nghiệp. Khám phá các khóa học giúp bạn tối ưu hóa chiến lược tài chính, đầu tư và lập kế hoạch tài chính hiệu quả.',
-    slug: 'tai-chinh',
-    courseQuantity: 0,
-    booted: false,
-    createdAt: '2024-07-21T08:25:59.581Z',
-    updatedAt: '2024-07-21T09:04:07.074Z',
-    image:
-      'https://d141vgbk8gzs0o.cloudfront.net/images/c5185d6201fac2e51b6b99e8aab36c5c4279419e0783ac9341da2265a7090e78',
-  },
-  {
     _id: '669cc62d0ecbf394de86a8c6',
     parentId: null,
-    title: 'Thiết Kế Đồ Họa',
+    title: 'Thiết Kế',
     description:
-      'Khơi nguồn sáng tạo và nâng cao kỹ năng thiết kế với các khóa học chuyên sâu. Tìm hiểu từ các nguyên tắc cơ bản đến các kỹ thuật nâng cao để tạo ra những thiết kế đồ họa ấn tượng và chuyên nghiệp.',
-    slug: 'thiet-ke-do-hoa',
+      'Khơi nguồn sáng tạo và nâng cao kỹ năng thiết kế với các khóa học chuyên sâu. Tìm hiểu từ các nguyên tắc cơ bản đến các kỹ thuật nâng cao để tạo ra những thiết kế ấn tượng và chuyên nghiệp.',
+    slug: 'thiet-ke',
     courseQuantity: 0,
     booted: false,
     createdAt: '2024-07-21T08:26:21.192Z',
-    updatedAt: '2024-07-21T09:05:03.621Z',
+    updatedAt: '2024-08-04T05:41:26.302Z',
     image:
       'https://d141vgbk8gzs0o.cloudfront.net/images/fb5d810cc657ae79305ce1b2462ef339bb58080fe83c914b615ec80c904604e6',
-  },
-  {
-    _id: '669cc6980ecbf394de86a8d7',
-    parentId: null,
-    title: 'Thiết Kế Web & UI/UX',
-    description:
-      'Tạo ra những trang web hấp dẫn và dễ sử dụng với thiết kế UX/UI chuyên nghiệp. Học cách tối ưu hóa trải nghiệm người dùng và thiết kế giao diện web đẹp mắt để nâng cao hiệu quả và sự hài lòng của khách hàng.',
-    slug: 'thiet-ke-web-and-uiux',
-    courseQuantity: 0,
-    booted: false,
-    createdAt: '2024-07-21T08:28:08.159Z',
-    updatedAt: '2024-07-21T09:12:23.077Z',
-    image:
-      'https://d141vgbk8gzs0o.cloudfront.net/images/c4f1c508722fb56e78d6e87610d8aec55e6f3e8865eecb475d9fc6ba0a726538',
-  },
-  {
-    _id: '669cc6cc0ecbf394de86a8e5',
-    parentId: null,
-    title: 'Quay & Dựng Video',
-    description: '',
-    slug: 'quay-and-dung-video',
-    courseQuantity: 0,
-    booted: false,
-    createdAt: '2024-07-21T08:29:00.516Z',
-    updatedAt: '2024-07-21T09:17:09.296Z',
-    image:
-      'https://d141vgbk8gzs0o.cloudfront.net/images/2878caf0c3e61aa718d9e87bdf22a1f8a3d1a40daee1568ad935f2bf674608e6',
   },
   {
     _id: '669cc75252429f40ca756282',
@@ -1146,5 +1101,61 @@ export const topCategories = [
     updatedAt: '2024-07-21T09:22:11.111Z',
     image:
       'https://d141vgbk8gzs0o.cloudfront.net/images/2709e6770c1561f5690944748c915508c3bdbf85422b7ea375ce64a5eb9cb90d',
+  },
+  {
+    _id: '669cc8c252429f40ca7562c1',
+    parentId: null,
+    title: 'Kỹ Năng Mềm',
+    description:
+      'Khám phá các kỹ năng mềm thiết yếu và phương pháp phát triển bản thân để nâng cao hiệu quả cá nhân và nghề nghiệp. Các khóa học giúp bạn xây dựng sự tự tin, kỹ năng giao tiếp, quản lý thời gian và cải thiện kỹ năng lãnh đạo.',
+    slug: 'ky-nang-mem',
+    courseQuantity: 0,
+    booted: false,
+    createdAt: '2024-07-21T08:37:22.622Z',
+    updatedAt: '2024-08-04T05:38:41.508Z',
+    image:
+      'https://d141vgbk8gzs0o.cloudfront.net/images/178a6f9812386ce57c7776169299800dfcd7c86f833cd93ffbd0859ead2ed1ae',
+  },
+  {
+    _id: '669cc91152429f40ca7562c9',
+    parentId: null,
+    title: 'Ngoại Ngữ',
+    description:
+      'Mở rộng khả năng giao tiếp và hiểu biết văn hóa với các khóa học ngoại ngữ đa dạng. Hãy nâng cao kỹ năng ngôn ngữ của bạn từ cơ bản đến nâng cao để mở ra nhiều cơ hội mới trong học tập và công việc.',
+    slug: 'ngoai-ngu',
+    courseQuantity: 0,
+    booted: false,
+    createdAt: '2024-07-21T08:38:41.520Z',
+    updatedAt: '2024-08-04T09:21:26.672Z',
+    image:
+      'https://d141vgbk8gzs0o.cloudfront.net/images/b3974a5df92e377725c298c0a5bac15aaa54963b1656657c5cde48e67335c9c0',
+  },
+  {
+    _id: '66af10bb4477cd09e28530a3',
+    parentId: null,
+    title: 'Đầu Tư',
+    description:
+      'Khám phá các chiến lược và kỹ thuật đầu tư với các khóa học chuyên sâu. Học cách phân tích thị trường, đánh giá cơ hội đầu tư và quản lý danh mục đầu tư để tối ưu hóa lợi nhuận và giảm thiểu rủi ro, giúp bạn đạt được mục tiêu tài chính cá nhân và doanh nghiệp.',
+    image:
+      'https://d141vgbk8gzs0o.cloudfront.net/images/f51e90d06660647855b46a101e310da4ed76179f613ced29b9dbfc278a9bf026',
+    slug: 'dau-tu',
+    courseQuantity: 0,
+    booted: false,
+    createdAt: '2024-08-04T05:25:15.392Z',
+    updatedAt: '2024-08-04T05:25:15.392Z',
+  },
+  {
+    _id: '66af12bcb451c53a79724475',
+    parentId: null,
+    title: 'Tin Học Văn Phòng',
+    description:
+      'Nâng cao kỹ năng tin học văn phòng với các khóa học thực tiễn. Học cách sử dụng các công cụ phần mềm như Word, Excel, PowerPoint và các ứng dụng văn phòng khác để cải thiện hiệu quả làm việc, tổ chức dữ liệu và trình bày thông tin một cách chuyên nghiệp.',
+    image:
+      'https://d141vgbk8gzs0o.cloudfront.net/images/d65c46220580c2c6ddf776eb5ec5c899ee3998747b2b79b5f152bb3d057ba5d2',
+    slug: 'tin-hoc-van-phong',
+    courseQuantity: 1,
+    booted: false,
+    createdAt: '2024-08-04T05:33:48.444Z',
+    updatedAt: '2024-08-06T17:05:58.773Z',
   },
 ]

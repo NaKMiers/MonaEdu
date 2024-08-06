@@ -12,7 +12,7 @@ const testimonials = [
     designation: 'Kỹ sư phần mềm',
     content:
       'Mona Edu là nơi tuyệt vời để tôi cập nhật và nâng cao kỹ năng công nghệ của mình. Các khóa học rất thực tiễn và dễ hiểu.',
-    image: '/images/testimonial-1.jpg ',
+    image: '/images/testimonial-1.jpg',
   },
   {
     id: 2,

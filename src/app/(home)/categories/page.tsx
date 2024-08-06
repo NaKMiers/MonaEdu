@@ -1,6 +1,7 @@
 import BreadcrumbBanner from '@/components/BreadcrumbBanner'
 import CategoryCard from '@/components/CategoryCard'
 import Divider from '@/components/Divider'
+import { categories } from '@/constants/categories'
 import { ICategory } from '@/models/CategoryModel'
 import { getAllParentCategoriesApi } from '@/requests'
 import { Metadata } from 'next'
@@ -13,16 +14,16 @@ export const metadata: Metadata = {
 
 async function CategoriesPage() {
   // data
-  let categories: ICategory[] = []
+  // let categories: ICategory[] = []
 
-  try {
-    const data = await getAllParentCategoriesApi(process.env.NEXT_PUBLIC_APP_URL, {
-      next: { revalidate: 3600 },
-    })
-    categories = data.categories
-  } catch (err: any) {
-    return notFound()
-  }
+  // try {
+  //   const data = await getAllParentCategoriesApi(process.env.NEXT_PUBLIC_APP_URL, {
+  //     next: { revalidate: 3600 },
+  //   })
+  //   categories = data.categories
+  // } catch (err: any) {
+  //   return notFound()
+  // }
 
   // jsonLd
   const jsonLd = {
@@ -60,7 +61,7 @@ async function CategoriesPage() {
       {/* Body */}
       <div className='px-21'>
         <div className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-21 sm:gap-8'>
-          {categories.map(category => (
+          {categories.map((category: any) => (
             <CategoryCard category={category} key={category._id} />
           ))}
         </div>

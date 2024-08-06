@@ -24,7 +24,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
-import { FaSort } from 'react-icons/fa'
+import { FaSearch, FaSort } from 'react-icons/fa'
 
 function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: string[] | string } }) {
   // store
@@ -56,6 +56,7 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
   // Form
   const defaultValues = useMemo<FieldValues>(
     () => ({
+      search: '',
       sort: 'updatedAt|-1',
       active: '',
       flashSale: '',
@@ -97,6 +98,7 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
         )
 
         // sync search params with states
+        setValue('search', searchParams?.search || getValues('search'))
         setValue('sort', searchParams?.sort || getValues('sort'))
         setValue('active', searchParams?.active || getValues('active'))
         setValue('flashSale', searchParams?.flashSale || getValues('flashSale'))
@@ -326,6 +328,21 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
 
       {/* Filter */}
       <AdminMeta handleFilter={handleSubmit(handleFilter)} handleResetFilter={handleResetFilter}>
+        {/* Search */}
+        <div className='flex flex-col col-span-12 md:col-span-4'>
+          <Input
+            id='search'
+            className='md:max-w-[450px]'
+            label='Search'
+            disabled={false}
+            register={register}
+            errors={errors}
+            type='text'
+            icon={FaSearch}
+            onFocus={() => clearErrors('search')}
+          />
+        </div>
+
         {/* Price */}
         <div className='flex flex-col col-span-12 md:col-span-4'>
           <label htmlFor='price'>

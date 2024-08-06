@@ -10,7 +10,8 @@ import { setLearningLesson } from '@/libs/reducers/learningReducer'
 import { setOpenSidebar, setPageLoading } from '@/libs/reducers/modalReducer'
 import { IComment } from '@/models/CommentModel'
 import { ICourse } from '@/models/CourseModel'
-import { addReportApi, getLessonApi, likeLessonApi } from '@/requests'
+import { IProgress } from '@/models/ProgressModel'
+import { addReportApi, getLessonApi, likeLessonApi, updateProgressApi } from '@/requests'
 import { formatFileSize } from '@/utils/number'
 import moment from 'moment-timezone'
 import 'moment/locale/vi'
@@ -32,7 +33,7 @@ function LessonPage({
   const dispatch = useAppDispatch()
   const router = useRouter()
   const openSidebar = useAppSelector(state => state.modal.openSidebar)
-  const { data: session } = useSession()
+  const { data: session, update } = useSession()
   const curUser: any = session?.user
   const lesson = useAppSelector(state => state.learning.learningLesson)
 
@@ -45,6 +46,34 @@ function LessonPage({
   // report states
   const [isOpenReportDialog, setIsOpenReportDialog] = useState<boolean>(false)
   const [selectedContent, setSelectedContent] = useState<string>('')
+
+  // MARK: update lesson progress
+  const handleUpdateLessonProgress = useCallback(async () => {
+    try {
+      const isEnrolled = curUser?.courses
+        ?.map((course: any) => course.course)
+        .includes((lesson?.courseId as ICourse)._id)
+      if (!lesson || lesson?.progress?.status === 'completed' || !isEnrolled) return
+
+      const { progress } = await updateProgressApi(
+        (lesson.progress as IProgress)._id,
+        (lesson.courseId as ICourse)._id,
+        'completed',
+        100
+      )
+
+      // update states
+      dispatch(setLearningLesson({ ...lesson, progress }))
+
+      // update course's progress
+      if (progress.status === 'completed') {
+        await update()
+      }
+    } catch (err: any) {
+      console.log(err)
+      toast.error(err.message)
+    }
+  }, [dispatch, update, lesson, curUser?.courses])
 
   // MARK: get lesson
   useEffect(() => {
@@ -64,6 +93,34 @@ function LessonPage({
 
         // set states
         setComments(comments)
+
+        // check if lesson is "doc only" or not
+        if (!lesson.source && lesson.docs.length > 0) {
+          setTab(2)
+          console.log('doc only')
+
+          setTimeout(async () => {
+            const isEnrolled = curUser?.courses
+              ?.map((course: any) => course.course)
+              .includes((lesson?.courseId as ICourse)._id)
+            if (!lesson || lesson?.progress?.status === 'completed' || !isEnrolled) return
+
+            const { progress } = await updateProgressApi(
+              (lesson.progress as IProgress)._id,
+              (lesson.courseId as ICourse)._id,
+              'completed',
+              100
+            )
+
+            // update states
+            dispatch(setLearningLesson({ ...lesson, progress }))
+
+            // update course's progress
+            if (progress.status === 'completed') {
+              await update()
+            }
+          }, 3000)
+        }
       } catch (err: any) {
         console.log(err)
         router.back()
@@ -77,7 +134,7 @@ function LessonPage({
     if (lessonSlug !== 'continue') {
       getLesson()
     }
-  }, [dispatch, router, lessonSlug])
+  }, [dispatch, router, lessonSlug, curUser?.courses, update])
 
   const handleReport = useCallback(async () => {
     // check if content is selected or not
