@@ -2,11 +2,11 @@ import { connectDatabase } from '@/config/database'
 import ChapterModel from '@/models/ChapterModel'
 import { searchParamsToObject } from '@/utils/handleQuery'
 import { NextRequest, NextResponse } from 'next/server'
+import CourseModel from '@/models/CourseModel'
 
 // Models: Chapter, Course
 import '@/models/ChapterModel'
 import '@/models/CourseModel'
-import CourseModel from '@/models/CourseModel'
 
 export const dynamic = 'force-dynamic'
 

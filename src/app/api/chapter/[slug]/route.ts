@@ -1,9 +1,9 @@
 import { connectDatabase } from '@/config/database'
 import ChapterModel, { IChapter } from '@/models/ChapterModel'
-import LessonModel, { ILesson } from '@/models/LessonModel'
-import { NextRequest, NextResponse } from 'next/server'
 import CourseModel, { ICourse } from '@/models/CourseModel'
+import LessonModel, { ILesson } from '@/models/LessonModel'
 import ProgressModel from '@/models/ProgressModel'
+import { NextRequest, NextResponse } from 'next/server'
 
 // Models: Course, Chapter, Lesson, Progress
 import '@/models/ChapterModel'

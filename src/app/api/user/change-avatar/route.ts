@@ -43,7 +43,7 @@ export async function PATCH(req: NextRequest) {
       { new: true }
     )
 
-    // return reponse
+    // return response
     return NextResponse.json(
       {
         updatedUser,

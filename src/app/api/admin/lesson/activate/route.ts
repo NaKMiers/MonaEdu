@@ -2,8 +2,7 @@ import { connectDatabase } from '@/config/database'
 import LessonModel from '@/models/LessonModel'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Models: Lesson, Course
-import '@/models/CourseModel'
+// Models: Lesson
 import '@/models/LessonModel'
 
 // [PATCH]: /admin/lesson/activate

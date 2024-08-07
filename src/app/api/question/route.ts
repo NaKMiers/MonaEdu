@@ -1,7 +1,7 @@
 import { connectDatabase } from '@/config/database'
+import QuestionModel from '@/models/QuestionModel'
 import { searchParamsToObject } from '@/utils/handleQuery'
 import { NextRequest, NextResponse } from 'next/server'
-import QuestionModel from '@/models/QuestionModel'
 
 // Models: Question, User
 import '@/models/QuestionModel'

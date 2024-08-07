@@ -2,6 +2,9 @@ import { connectDatabase } from '@/config/database'
 import UserModel, { IUser } from '@/models/UserModel'
 import bcrypt from 'bcrypt'
 
+// Models: User
+import '@/models/UserModel'
+
 // Providers
 import CredentialsProvider from 'next-auth/providers/credentials'
 import GitHubProvider from 'next-auth/providers/github'
@@ -105,26 +108,6 @@ const authOptions = {
           token = { ...token, ...userDB }
         }
       }
-
-      // // update user every mount
-      // const userDB: IUser | null = await UserModel.findOne({
-      //   email: user?.email || token?.email,
-      // }).lean()
-
-      // if (userDB) {
-      //   const { _id, password, courses, ...simpleUserDB } = userDB
-
-      //   token = {
-      //     ...token,
-      //     ...simpleUserDB,
-      //     _id: _id.toString(),
-      //     courses: courses.map((course: any) => ({
-      //       ...course,
-      //       course: course.course.toString(),
-      //       _id: (course as any)._id.toString(),
-      //     })),
-      //   }
-      // }
 
       return token
     },

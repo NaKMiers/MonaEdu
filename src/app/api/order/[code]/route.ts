@@ -2,14 +2,14 @@ import { connectDatabase } from '@/config/database'
 import OrderModel from '@/models/OrderModel'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Models: Order, Voucher, User
+// Models: Order, Voucher
 import '@/models/OrderModel'
 import '@/models/VoucherModel'
 
 export const dynamic = 'force-dynamic'
 
 // [GET]: /order/:id
-export async function GET(req: NextRequest, { params: { code } }: { params: { code: string } }) {
+export async function GET(_: NextRequest, { params: { code } }: { params: { code: string } }) {
   console.log('- Get Order -')
 
   try {

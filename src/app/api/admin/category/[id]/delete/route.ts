@@ -9,7 +9,7 @@ import '@/models/CategoryModel'
 import '@/models/CourseModel'
 
 // [DELETE]: /admin/category/delete
-export async function DELETE(req: NextRequest, { params: { id } }: { params: { id: string } }) {
+export async function DELETE(_: NextRequest, { params: { id } }: { params: { id: string } }) {
   console.log('- Delete Category - ')
 
   try {

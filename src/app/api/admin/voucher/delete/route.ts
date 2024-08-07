@@ -7,7 +7,7 @@ import '@/models/VoucherModel'
 
 // [DELETE]: /admin/voucher/delete
 export async function DELETE(req: NextRequest) {
-  console.log('- Delete Voucheres - ')
+  console.log('- Delete Vouchers - ')
 
   try {
     // connect to database

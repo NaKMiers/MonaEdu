@@ -5,7 +5,6 @@ import { getFileUrl } from '@/utils/uploadFile'
 import { NextRequest, NextResponse } from 'next/server'
 
 // Models: Lesson, Course, Chapter
-import '@/models/CategoryModel'
 import '@/models/ChapterModel'
 import '@/models/CourseModel'
 import '@/models/LessonModel'

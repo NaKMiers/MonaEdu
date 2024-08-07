@@ -3,9 +3,8 @@ import CourseModel from '@/models/CourseModel'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Models: Course, User
+// Models: Course
 import '@/models/CourseModel'
-import '@/models/UserModel'
 
 // [PATCH]: /course/:id/like
 export async function PATCH(req: NextRequest, { params: { slug } }: { params: { slug: string } }) {

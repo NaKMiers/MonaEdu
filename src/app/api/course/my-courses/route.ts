@@ -6,8 +6,7 @@ import UserModel, { IUser } from '@/models/UserModel'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Models: Course, Category, Tag, User
-import '@/models/CategoryModel'
+// Models: Course, Tag, User
 import '@/models/CourseModel'
 import '@/models/TagModel'
 import '@/models/UserModel'

@@ -3,7 +3,7 @@ import CourseModel from '@/models/CourseModel'
 import FlashSaleModel from '@/models/FlashSaleModel'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Models: Course, Flashsale
+// Models: Course, Flash Sale
 import '@/models/CourseModel'
 import '@/models/FlashSaleModel'
 

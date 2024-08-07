@@ -1,12 +1,12 @@
 import { connectDatabase } from '@/config/database'
+import UserModel, { IUser } from '@/models/UserModel'
+import { sendVerifyEmail } from '@/utils/sendMail'
+import { getUserName } from '@/utils/string'
 import jwt, { JwtPayload } from 'jsonwebtoken'
 import { NextRequest, NextResponse } from 'next/server'
 
 // Models: User
 import '@/models/UserModel'
-import UserModel, { IUser } from '@/models/UserModel'
-import { sendVerifyEmail } from '@/utils/sendMail'
-import { getUserName } from '@/utils/string'
 
 // [POST]: /auth/verify-email
 export async function POST(req: NextRequest) {

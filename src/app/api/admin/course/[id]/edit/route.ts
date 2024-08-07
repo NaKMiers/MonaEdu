@@ -1,15 +1,15 @@
-import { NextRequest, NextResponse } from 'next/server'
-
-// Models: Course, Category, Tag
 import { connectDatabase } from '@/config/database'
-import '@/models/CategoryModel'
 import CategoryModel from '@/models/CategoryModel'
-import '@/models/CourseModel'
 import CourseModel, { ICourse } from '@/models/CourseModel'
-import '@/models/TagModel'
 import TagModel from '@/models/TagModel'
 import { generateSlug } from '@/utils'
 import { deleteFile, uploadFile } from '@/utils/uploadFile'
+import { NextRequest, NextResponse } from 'next/server'
+
+// Models: Course, Category, Tag
+import '@/models/CategoryModel'
+import '@/models/CourseModel'
+import '@/models/TagModel'
 
 // [PUT]: /api/admin/tag/:code/edit
 export async function PUT(req: NextRequest, { params: { id } }: { params: { id: string } }) {

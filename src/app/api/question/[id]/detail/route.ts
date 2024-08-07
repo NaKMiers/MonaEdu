@@ -1,12 +1,12 @@
 import { connectDatabase } from '@/config/database'
+import CommentModel from '@/models/CommentModel'
 import QuestionModel, { IQuestion } from '@/models/QuestionModel'
 import { NextRequest, NextResponse } from 'next/server'
-import CommentModel from '@/models/CommentModel'
 
 // Models: Question, User, Comment
+import '@/models/CommentModel'
 import '@/models/QuestionModel'
 import '@/models/UserModel'
-import '@/models/CommentModel'
 
 export const dynamic = 'force-dynamic'
 

@@ -3,9 +3,8 @@ import QuestionModel from '@/models/QuestionModel'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Models: Question, User
+// Models: Question
 import '@/models/QuestionModel'
-import '@/models/UserModel'
 
 // [PATCH]: /Question/:id/close
 export async function PATCH(req: NextRequest, { params: { id } }: { params: { id: string } }) {

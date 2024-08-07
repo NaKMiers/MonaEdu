@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 // Models: Course, Category
 import '@/models/CourseModel'
+import '@/models/CategoryModel'
 
 // [GET]: /course/search?search=...
 export async function GET(req: NextRequest) {

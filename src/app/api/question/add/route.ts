@@ -1,11 +1,12 @@
 import { connectDatabase } from '@/config/database'
 import QuestionModel from '@/models/QuestionModel'
+import UserModel, { IUser } from '@/models/UserModel'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Models: Question
+// Models: Question, User
 import '@/models/QuestionModel'
-import UserModel, { IUser } from '@/models/UserModel'
+import '@/models/UserModel'
 
 // [POST]: /question/add
 export async function POST(req: NextRequest) {

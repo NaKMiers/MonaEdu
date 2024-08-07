@@ -3,8 +3,7 @@ import LessonModel from '@/models/LessonModel'
 import { NextRequest, NextResponse } from 'next/server'
 import { deleteFile } from '@/utils/uploadFile'
 
-// Models: Lesson, Course
-import '@/models/CourseModel'
+// Models: Lesson
 import '@/models/LessonModel'
 
 // [DELETE]: /admin/lesson/delete

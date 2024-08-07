@@ -1,11 +1,11 @@
 import { connectDatabase } from '@/config/database'
 import CategoryModel, { ICategory } from '@/models/CategoryModel'
+import { generateSlug } from '@/utils'
+import { uploadFile } from '@/utils/uploadFile'
 import { NextRequest, NextResponse } from 'next/server'
 
 // Models: Category
 import '@/models/CategoryModel'
-import { uploadFile } from '@/utils/uploadFile'
-import { generateSlug } from '@/utils'
 
 // [POST]: /admin/category/add
 export async function POST(req: NextRequest) {

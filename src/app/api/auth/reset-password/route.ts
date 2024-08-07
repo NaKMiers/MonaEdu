@@ -7,7 +7,7 @@ import jwt, { Jwt, JwtPayload } from 'jsonwebtoken'
 // Models: User
 import '@/models/UserModel'
 
-// [PATHC]: /auth/reset-password
+// [PATCH]: /auth/reset-password
 export async function PATCH(req: NextRequest) {
   console.log('- Reset Password -')
 

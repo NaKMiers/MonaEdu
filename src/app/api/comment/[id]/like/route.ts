@@ -1,15 +1,15 @@
 import { connectDatabase } from '@/config/database'
 import CommentModel, { IComment } from '@/models/CommentModel'
-import { getToken } from 'next-auth/jwt'
-import { NextRequest, NextResponse } from 'next/server'
+import NotificationModel from '@/models/NotificationModel'
 import UserModel, { IUser } from '@/models/UserModel'
 import { getUserName } from '@/utils/string'
-import NotificationModel from '@/models/NotificationModel'
+import { getToken } from 'next-auth/jwt'
+import { NextRequest, NextResponse } from 'next/server'
 
 // Models: Comment, User, Notification
 import '@/models/CommentModel'
-import '@/models/UserModel'
 import '@/models/NotificationModel'
+import '@/models/UserModel'
 
 // [PATCH]: /comment/:id/like
 export async function PATCH(req: NextRequest, { params: { id } }: { params: { id: string } }) {

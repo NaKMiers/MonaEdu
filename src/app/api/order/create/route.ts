@@ -9,11 +9,13 @@ import { notifyNewOrderToAdmin } from '@/utils/sendMail'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Models: User, Order, Course, Category, Tag
+// Models: User, Order, Course, Category, Tag, Notification
 import '@/models/CategoryModel'
 import '@/models/CourseModel'
+import '@/models/NotificationModel'
 import '@/models/OrderModel'
 import '@/models/TagModel'
+import '@/models/UserModel'
 
 // [POST]: /order/create
 export async function POST(req: NextRequest) {

@@ -5,7 +5,7 @@ import TagModel from '@/models/TagModel'
 import { searchParamsToObject } from '@/utils/handleQuery'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Models: Category, Tag, Course
+// Models: Category, Tag, Course, Flash Sale
 import '@/models/CategoryModel'
 import '@/models/CourseModel'
 import '@/models/FlashSaleModel'
@@ -112,6 +112,7 @@ export async function GET(req: NextRequest) {
     const [amount, courses, chops] = await Promise.all([
       // get amount of courses
       CourseModel.countDocuments(filter),
+
       // get all courses from database
       CourseModel.find(filter)
         .populate('tags category flashSale')
@@ -119,6 +120,7 @@ export async function GET(req: NextRequest) {
         .skip(skip)
         .limit(itemPerPage)
         .lean(),
+
       // get all order without filter
       CourseModel.aggregate([
         {

@@ -1,12 +1,12 @@
 import { connectDatabase } from '@/config/database'
 import LessonModel, { ILesson } from '@/models/LessonModel'
+import { getFileUrl } from '@/utils/uploadFile'
 import { NextRequest, NextResponse } from 'next/server'
 
 // Models: Lesson, Chapter, Course
 import '@/models/ChapterModel'
 import '@/models/CourseModel'
 import '@/models/LessonModel'
-import { getFileUrl } from '@/utils/uploadFile'
 
 export const dynamic = 'force-dynamic'
 

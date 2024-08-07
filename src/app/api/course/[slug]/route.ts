@@ -1,9 +1,9 @@
 import { connectDatabase } from '@/config/database'
+import CategoryModel, { ICategory } from '@/models/CategoryModel'
 import ChapterModel from '@/models/ChapterModel'
 import CourseModel, { ICourse } from '@/models/CourseModel'
 import LessonModel from '@/models/LessonModel'
 import { NextRequest, NextResponse } from 'next/server'
-import CategoryModel, { ICategory } from '@/models/CategoryModel'
 
 // Models: Course, Tag, Category, FlashSale, Chapter, Lesson,
 import '@/models/CategoryModel'

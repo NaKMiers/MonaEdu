@@ -1,8 +1,8 @@
 import { connectDatabase } from '@/config/database'
 import CategoryModel, { ICategory } from '@/models/CategoryModel'
 import CourseModel from '@/models/CourseModel'
-import { NextRequest, NextResponse } from 'next/server'
 import { searchParamsToObject } from '@/utils/handleQuery'
+import { NextRequest, NextResponse } from 'next/server'
 
 // Models: Category, Course
 import '@/models/CategoryModel'

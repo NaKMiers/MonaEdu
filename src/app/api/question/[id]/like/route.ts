@@ -1,4 +1,5 @@
 import { connectDatabase } from '@/config/database'
+import NotificationModel from '@/models/NotificationModel'
 import QuestionModel from '@/models/QuestionModel'
 import UserModel, { IUser } from '@/models/UserModel'
 import { getUserName } from '@/utils/string'
@@ -7,7 +8,6 @@ import { NextRequest, NextResponse } from 'next/server'
 
 // Models: Question, User, Notification
 import '@/models/NotificationModel'
-import NotificationModel from '@/models/NotificationModel'
 import '@/models/QuestionModel'
 import '@/models/UserModel'
 

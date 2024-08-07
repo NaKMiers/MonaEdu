@@ -1,13 +1,13 @@
 import { connectDatabase } from '@/config/database'
+import { IUser } from '@/models/UserModel'
 import VoucherModel, { IVoucher } from '@/models/VoucherModel'
 import { formatPrice } from '@/utils/number'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 
 // Models: Voucher, User
-import '@/models/VoucherModel'
 import '@/models/UserModel'
-import { IUser } from '@/models/UserModel'
+import '@/models/VoucherModel'
 
 // [POST]: /voucher/:code/apply
 export async function POST(req: NextRequest, { params: { code } }: { params: { code: string } }) {
