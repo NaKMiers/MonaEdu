@@ -47,17 +47,17 @@ export async function GET(req: NextRequest) {
       category: { $in: categoryIds },
       _id: { $nin: coursesInCart },
     })
-      .limit(6)
+      .limit(8)
       .lean()
 
-    // check if suggestedCourses less than 6
-    if (suggestedCourses.length < 6) {
+    // check if suggestedCourses less than 8
+    if (suggestedCourses.length < 8) {
       const moreCourses = await CourseModel.find({
         _id: {
           $nin: [...coursesInCart, ...suggestedCourses.map(course => course._id)],
         },
       })
-        .limit(6 - suggestedCourses.length)
+        .limit(8 - suggestedCourses.length)
         .sort({ joined: -1 })
         .lean()
 

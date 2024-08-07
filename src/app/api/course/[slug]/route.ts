@@ -59,7 +59,7 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
         category: { $in: categoryIds },
         _id: { $ne: course._id },
       })
-        .limit(6)
+        .limit(8)
         .lean(),
     ])
 
@@ -71,15 +71,15 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
       return { ...chapter, lessons: chapterLessons }
     })
 
-    // check if suggestedCourses less than 6
-    if (relatedCourses.length < 6) {
+    // check if suggestedCourses less than 8
+    if (relatedCourses.length < 8) {
       console.log('moreCourses')
       const moreCourses: ICourse[] = await CourseModel.find({
         _id: {
           $nin: [course._id, ...relatedCourses.map(course => course._id)],
         },
       })
-        .limit(6 - relatedCourses.length)
+        .limit(8 - relatedCourses.length)
         .sort({ joined: -1 })
         .lean()
 
