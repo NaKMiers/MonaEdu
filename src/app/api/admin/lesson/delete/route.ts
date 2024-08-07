@@ -1,9 +1,11 @@
 import { connectDatabase } from '@/config/database'
-import LessonModel from '@/models/LessonModel'
-import { NextRequest, NextResponse } from 'next/server'
+import ChapterModel from '@/models/ChapterModel'
+import LessonModel, { ILesson } from '@/models/LessonModel'
 import { deleteFile } from '@/utils/uploadFile'
+import { NextRequest, NextResponse } from 'next/server'
 
-// Models: Lesson
+// Models: Lesson, Chapter
+import '@/models/ChapterModel'
 import '@/models/LessonModel'
 
 // [DELETE]: /admin/lesson/delete
@@ -18,7 +20,7 @@ export async function DELETE(req: NextRequest) {
     const { ids } = await req.json()
 
     // get lessons from database
-    const lessons = await LessonModel.find({ _id: { $in: ids } }).lean()
+    const lessons: ILesson[] = await LessonModel.find({ _id: { $in: ids } }).lean()
 
     // delete lessons from database
     await LessonModel.deleteMany({ _id: { $in: ids } }), console.log('lessons', lessons)
@@ -33,6 +35,9 @@ export async function DELETE(req: NextRequest) {
         if (lesson.docs.length) {
           await Promise.all(lesson.docs.map((doc: any) => deleteFile(doc.url)))
         }
+
+        // decrease lesson quantity of chapter
+        await ChapterModel.findByIdAndUpdate(lesson.chapterId, { $inc: { lessonQuantity: -1 } })
       })
     )
 
