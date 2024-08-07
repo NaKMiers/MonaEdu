@@ -147,8 +147,8 @@ function EditLessonPage() {
   const onSubmit: SubmitHandler<FieldValues> = async data => {
     if (!handleValidate(data)) return
 
-    if (!file && !fileUrl && !embedSrc) {
-      return toast.error('Please embed an url or upload a video')
+    if (!file && !fileUrl && !embedSrc && !originalDocs.length && !docs.length) {
+      return toast.error('Please embed an url OR upload a video OR add a document')
     }
 
     dispatch(setLoading(true))

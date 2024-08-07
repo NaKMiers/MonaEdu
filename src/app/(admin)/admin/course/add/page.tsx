@@ -163,7 +163,7 @@ function AddCoursePage() {
       }
 
       if (!selectedCategory) {
-        toast.error('Please selectcategory')
+        toast.error('Please select category')
         isValid = false
       }
 
