@@ -3,371 +3,636 @@
   xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-
   <url>
     <loc>https://monaedu.com/</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>1.00</priority>
   </url>
   <url>
     <loc>https://monaedu.com/categories</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://monaedu.com/search?search=</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://monaedu.com/auth/login</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://monaedu.com/auth/register</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://monaedu.com/flash-sale</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://monaedu.com/forum</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://monaedu.com/about-us</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://monaedu.com/my-courses</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://monaedu.com/my-questions</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://monaedu.com/dropshipping-linh-thach-k42-moi-nhat-2024</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://monaedu.com/phuong-phap-luyen-nghe-cho-ky-thi-ielts</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://monaedu.com/content-marketing-level-1-tu-duy-sang-tao-dung-va-chat</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://monaedu.com/content-marketing-2-cong-nghe-sang-tao-noi-dung-xuat-than</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/dropshipping-linh-thach-k42-moi-nhat-2024</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/content-marketing-level-1-tu-duy-sang-tao-dung-va-chat</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/phuong-phap-luyen-nghe-cho-ky-thi-ielts</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/ung-dung-zalo-trong-quan-tri-kinh-doanh-marketing</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://monaedu.com/7-ngay-tang-cuong-tri-nho-sieu-toc-tai-nha</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://monaedu.com/11-chuyen-de-luyen-tap-ve-ham-excel</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/5-ngay-thiet-ke-website-cho-digital-marketing</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/google-ads-marketing-toan-tap</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/content-marketing-a-z-bi-quyet-trien-khai-va-sang-tao-content-da-kenh</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/thau-hieu-va-phan-tich-bao-cao-tai-chinh</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/quan-ly-dao-tao-trong-doanh-nghiep</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/tiep-can-100000-khach-hang-trong-30-ngay-voi-chi-phi-0-dong</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/performance-review-danh-gia-hieu-qua-nhan-su</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/toi-uu-chien-dich-quang-cao-facebook-ads</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/xay-kenh-tiktok-profile-de-ban-hang-khong-can-chay-quang-cao</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://monaedu.com/categories/marketing</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://monaedu.com/categories/kinh-doanh-and-khoi-nghiep</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <loc>https://monaedu.com/categories/kinh-doanh</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://monaedu.com/categories/quan-ly-and-lanh-dao</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://monaedu.com/categories/tai-chinh</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://monaedu.com/categories/thiet-ke-do-hoa</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://monaedu.com/categories/thiet-ke-web-and-uiux</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://monaedu.com/categories/quay-and-dung-video</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <loc>https://monaedu.com/categories/thiet-ke</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://monaedu.com/categories/lap-trinh-and-cong-nghe</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/categories/ky-nang-mem</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://monaedu.com/categories/ngoai-ngu</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/categories/dau-tu</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/categories/tin-hoc-van-phong</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/categories/tai-chinh</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.64</priority>
   </url>
   <url>
-    <loc>https://monaedu.com/categories/ky-nang-mem-and-phat-trien-ban-than</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <loc>https://monaedu.com/categories/quay-and-dung-video</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.64</priority>
   </url>
   <url>
-    <loc>https://monaedu.com/categories/thuong-mai-dien-tu</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <loc>https://monaedu.com/khoa-hoc-seo-tong-the-2023</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/khoa-hoc-zalo-marketing-mastery-ban-hang-van-don-voi-manh-dat-zalo</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/on-thi-chung-chi-mos-word-2019-exam-mo-100-microsoft-word</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/danh-thuc-nang-luc-giao-tiep-trong-ban</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/communications-truyen-thong-giao-tiep-hieu-qua</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/nhan-tuong-hoc-ung-dung</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/nhap-mon-ve-thi-truong-tien-dien-tu-crypto-hay-nhat</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/google-sheets-tu-co-ban-den-nang-cao-cong-cu-thay-the-excel</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/chung-chi-mos-excel-2019-exam-mo-200-microsoft-excel</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/hanh-trinh-trieu-do-crypto-trieu-phu-40</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/kiem-tien-tren-youtube-de-dang</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/tu-do-tai-chinh-cung-chung-khoan</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/career-leap-phuong-phap-huong-nghiep-chu-dong</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/dau-tu-chung-khoan-hieu-qua</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/bi-quyet-kinh-nghiem-dau-tu-chung-khoan</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/tro-thanh-phap-su-chatgpt-sau-mot-buoi-chieu</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/mos-word-2016-danh-bay-noi-lo-chung-chi</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>
+      https://monaedu.com/ky-nang-dau-tu-bat-dong-san-dinh-cao-mo-hinh-thue-va-cho-thue-lai-bat-dong-san</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/kien-thuc-co-ban-thi-truong-chung-khoan-cho-nguoi-moi-bat-dau</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/phong-thuy-ung-dung-trong-kinh-doanh-bat-dong-san</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/tro-thanh-sat-thu-tren-thi-truong-chung-khoan</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/ban-chat-goc-re-cua-nganh-marketing-marketing-root</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/40-chu-de-phai-biet-trong-speaking</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/chinh-phuc-ngu-phap-va-tu-vung-tieng-anh</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/basic-advertising-sang-tao-1-cach-tao-bao-thu-lua</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/thuc-hanh-tu-duy-phan-bien</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/bi-mat-dam-phan</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/9-buoc-luyen-nghe-tieng-anh-dot-pha</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/phuong-phap-luyen-phat-am-tieng-anh-chuan</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/noi-tieng-anh-tu-tin-sau-3-thang</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/22-ki-nang-mem-va-kien-thuc-phong-thuy-cho-nguoi-lam-kinh-doanh</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/phan-tich-nen-nhat-trong-dau-tu-chung-khoan-40</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/15-ngay-phan-tich-ky-thuat-chung-khoan-dinh-cao</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/free-traffic-facebook-cho-nguoi-ban-hang</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/content-marketing-3-thuc-hanh-chi-tiet-tung-dang-noi-dung</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/search?page=2</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.64</priority>
   </url>
   <url>
     <loc>https://monaedu.com/user/nakmiers</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.64</priority>
   </url>
   <url>
     <loc>https://monaedu.com/forum/hi-there</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.64</priority>
   </url>
   <url>
     <loc>https://monaedu.com/forum/hello</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.64</priority>
   </url>
   <url>
-    <loc>https://monaedu.com/categories/marketing/marketing-truc-tuyen</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <loc>https://monaedu.com/categories/marketing/digital-marketing</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.64</priority>
   </url>
   <url>
-    <loc>https://monaedu.com/categories/marketing/marketing-khac</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <loc>https://monaedu.com/categories/marketing/marketing-co-ban</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.64</priority>
   </url>
   <url>
-    <loc>https://monaedu.com/categories/kinh-doanh-and-khoi-nghiep/ky-nang-kinh-doanh</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <loc>https://monaedu.com/categories/marketing/cong-cu-marketing</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.64</priority>
   </url>
   <url>
-    <loc>https://monaedu.com/categories/kinh-doanh-and-khoi-nghiep/bat-dong-san</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <loc>https://monaedu.com/categories/kinh-doanh/thuong-mai-dien-tu</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.64</priority>
   </url>
   <url>
-    <loc>https://monaedu.com/categories/kinh-doanh-and-khoi-nghiep/dau-tu</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <loc>https://monaedu.com/categories/kinh-doanh/nhan-su</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/categories/kinh-doanh/quan-tri</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.64</priority>
   </url>
   <url>
     <loc>https://monaedu.com/categories/kinh-doanh-and-khoi-nghiep/khoi-nghiep</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.64</priority>
   </url>
   <url>
-    <loc>https://monaedu.com/categories/thiet-ke-do-hoa/photoshop</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <loc>https://monaedu.com/categories/thiet-ke/thiet-ke-do-hoa</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.64</priority>
   </url>
   <url>
-    <loc>https://monaedu.com/categories/thiet-ke-do-hoa/illustrator</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <loc>https://monaedu.com/categories/thiet-ke/thiet-ke-web-app</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.64</priority>
   </url>
   <url>
-    <loc>https://monaedu.com/categories/thiet-ke-do-hoa/cac-phan-mem-khac</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <loc>https://monaedu.com/categories/lap-trinh-and-cong-nghe/lap-trinh-web-app</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.64</priority>
   </url>
   <url>
-    <loc>https://monaedu.com/categories/thiet-ke-web-and-uiux/thiet-ke-web</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <loc>https://monaedu.com/categories/lap-trinh-and-cong-nghe/ngon-ngu-lap-trinh</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.64</priority>
   </url>
   <url>
-    <loc>https://monaedu.com/categories/thiet-ke-web-and-uiux/figma</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <loc>https://monaedu.com/categories/lap-trinh-and-cong-nghe/cac-cong-cu-lap-trinh-khac</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/categories/lap-trinh-and-cong-nghe/co-so-du-lieu</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/categories/ky-nang-mem/ky-nang-mem</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/categories/ky-nang-mem/phat-trien-ban-than</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/categories/ky-nang-mem/nghe-thuat-doi-song</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/categories/ngoai-ngu/tieng-anh</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/categories/ngoai-ngu/ngon-ngu-khac</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/categories/dau-tu/chung-khoan</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/categories/dau-tu/tien-ao</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/categories/dau-tu/bat-dong-san</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/categories/tai-chinh/tai-chinh-ca-nhan</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.51</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/categories/tai-chinh/tai-chinh-doanh-nghiep</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.51</priority>
   </url>
   <url>
     <loc>https://monaedu.com/categories/quay-and-dung-video/premiere</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
-    <priority>0.64</priority>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.51</priority>
   </url>
   <url>
     <loc>https://monaedu.com/categories/quay-and-dung-video/after-effects</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
-    <priority>0.64</priority>
-  </url>
-  <url>
-    <loc>https://monaedu.com/categories/quay-and-dung-video/cac-phan-mem-khac</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
-    <priority>0.64</priority>
-  </url>
-  <url>
-    <loc>https://monaedu.com/categories/lap-trinh-and-cong-nghe/lap-trinh-web</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
-    <priority>0.64</priority>
-  </url>
-  <url>
-    <loc>https://monaedu.com/categories/lap-trinh-and-cong-nghe/lap-trinh-khac</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
-    <priority>0.64</priority>
-  </url>
-  <url>
-    <loc>https://monaedu.com/categories/lap-trinh-and-cong-nghe/cong-nghe</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
-    <priority>0.64</priority>
-  </url>
-  <url>
-    <loc>https://monaedu.com/categories/ky-nang-mem-and-phat-trien-ban-than/ky-nang-mem</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.51</priority>
   </url>
   <url>
-    <loc>https://monaedu.com/categories/ky-nang-mem-and-phat-trien-ban-than/phat-trien-ban-than</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <loc>https://monaedu.com/categories/quay-and-dung-video/cac-ky-nang-quay-dung</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.51</priority>
   </url>
   <url>
-    <loc>https://monaedu.com/categories/thuong-mai-dien-tu/shopee</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <loc>https://monaedu.com/search?page=1</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.51</priority>
   </url>
   <url>
-    <loc>https://monaedu.com/categories/thuong-mai-dien-tu/lazada</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
-    <priority>0.51</priority>
-  </url>
-  <url>
-    <loc>https://monaedu.com/categories/thuong-mai-dien-tu/tiktok-shop</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
-    <priority>0.51</priority>
-  </url>
-  <url>
-    <loc>https://monaedu.com/categories/thuong-mai-dien-tu/dropshipping</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
-    <priority>0.51</priority>
-  </url>
-  <url>
-    <loc>https://monaedu.com/categories/marketing/marketing-truc-tuyen/facebook-marketing</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <loc>https://monaedu.com/search?page=3</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.51</priority>
   </url>
   <url>
     <loc>https://monaedu.com/categories/marketing/marketing-truc-tuyen/content-marketing</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.51</priority>
   </url>
   <url>
-    <loc>https://monaedu.com/categories/marketing/marketing-truc-tuyen/email-marketing</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <loc>https://monaedu.com/categories/marketing/digital-marketing/seo</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.51</priority>
   </url>
   <url>
-    <loc>https://monaedu.com/categories/marketing/marketing-truc-tuyen/google-ads</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <loc>https://monaedu.com/categories/marketing/digital-marketing/quang-cao</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.51</priority>
   </url>
   <url>
-    <loc>https://monaedu.com/categories/marketing/marketing-truc-tuyen/tiktok-marketing</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <loc>https://monaedu.com/categories/marketing/digital-marketing/truyen-thong-da-phuong-tien</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.51</priority>
   </url>
   <url>
-    <loc>https://monaedu.com/categories/marketing/marketing-truc-tuyen/zalo-marketing</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <loc>https://monaedu.com/categories/kinh-doanh-and-khoi-nghiep</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.51</priority>
   </url>
   <url>
-    <loc>https://monaedu.com/categories/marketing/marketing-khac/phan-tich-du-lieu-quang-cao</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <loc>https://monaedu.com/categories/thiet-ke/thiet-ke-do-hoa/thiet-ke-san-pham</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.51</priority>
   </url>
   <url>
-    <loc>https://monaedu.com/categories/marketing/marketing-khac/tuyet-chieu-marketing</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <loc>https://monaedu.com/categories/thiet-ke/thiet-ke-do-hoa/thiet-ke-da-phuong-tien</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.51</priority>
   </url>
   <url>
-    <loc>https://monaedu.com/categories/lap-trinh-and-cong-nghe/lap-trinh-web/htmlcss</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <loc>https://monaedu.com/categories/thiet-ke/thiet-ke-do-hoa/thiet-ke-bo-nhan-dien-thuong-hieu</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.51</priority>
   </url>
   <url>
-    <loc>https://monaedu.com/categories/lap-trinh-and-cong-nghe/lap-trinh-web/javascript</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <loc>https://monaedu.com/categories/thiet-ke/thiet-ke-web-app/uxui</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.51</priority>
   </url>
   <url>
-    <loc>https://monaedu.com/categories/lap-trinh-and-cong-nghe/lap-trinh-web/react</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <loc>https://monaedu.com/categories/thiet-ke/thiet-ke-web-app/thiet-ke-ung-dung-di-dong</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.51</priority>
   </url>
   <url>
-    <loc>https://monaedu.com/categories/lap-trinh-and-cong-nghe/lap-trinh-web/typescript</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <loc>https://monaedu.com/categories/thiet-ke/thiet-ke-web-app/thiet-ke-web</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.51</priority>
   </url>
   <url>
     <loc>https://monaedu.com/categories/lap-trinh-and-cong-nghe/lap-trinh-khac/python</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.51</priority>
   </url>
   <url>
     <loc>https://monaedu.com/categories/lap-trinh-and-cong-nghe/lap-trinh-khac/cc</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.51</priority>
   </url>
   <url>
-    <loc>https://monaedu.com/categories/lap-trinh-and-cong-nghe/lap-trinh-khac/ios</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <loc>https://monaedu.com/categories/ngoai-ngu/tieng-anh/toiec</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.51</priority>
   </url>
   <url>
-    <loc>https://monaedu.com/categories/lap-trinh-and-cong-nghe/lap-trinh-khac/android</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <loc>https://monaedu.com/categories/ngoai-ngu/tieng-anh/ielts</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.51</priority>
   </url>
   <url>
-    <loc>https://monaedu.com/categories/lap-trinh-and-cong-nghe/cong-nghe/docker</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <loc>https://monaedu.com/categories/ngoai-ngu/tieng-anh/listening</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.51</priority>
   </url>
   <url>
-    <loc>https://monaedu.com/categories/lap-trinh-and-cong-nghe/cong-nghe/git-and-github</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <loc>https://monaedu.com/categories/ngoai-ngu/tieng-anh/speaking</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.51</priority>
   </url>
   <url>
-    <loc>https://monaedu.com/categories/lap-trinh-and-cong-nghe/cong-nghe/chatgpt</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <loc>https://monaedu.com/categories/ngoai-ngu/tieng-anh/reading</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.51</priority>
   </url>
   <url>
-    <loc>https://monaedu.com/categories/lap-trinh-and-cong-nghe/cong-nghe/data</loc>
-    <lastmod>2024-08-01T18:49:27+00:00</lastmod>
+    <loc>https://monaedu.com/categories/ngoai-ngu/tieng-anh/writing</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
     <priority>0.51</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/categories/ngoai-ngu/tieng-anh/ngu-phap-va-tu-vung</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.51</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/search?page=4</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.41</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/categories/marketing/marketing-truc-tuyen</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.41</priority>
+  </url>
+  <url>
+    <loc>https://monaedu.com/categories/lap-trinh-and-cong-nghe/lap-trinh-khac</loc>
+    <lastmod>2024-08-08T13:36:51+00:00</lastmod>
+    <priority>0.41</priority>
   </url>
 
 
