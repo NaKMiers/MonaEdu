@@ -188,7 +188,7 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
             {course?.citing && (
               <p className='flex flex-wrap items-center gap-2 font-body tracking-wider'>
                 <BsSourceforge size={16} />
-                Nguồn: <span className='text-primary'>{course?.citing}</span>
+                Nguồn: <span className='text-sky-500'>{course?.citing}</span>
               </p>
             )}
 

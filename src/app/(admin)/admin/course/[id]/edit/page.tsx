@@ -259,7 +259,7 @@ function AddCoursePage() {
       <AdminHeader title='Edit Course' backLink='/admin/course/all' />
 
       <div className='mt-5 bg-slate-200 rounded-lg p-21 shadow-lg'>
-        <div className='mb-5 grid grid-cols-1 lg:grid-cols-2 gap-5'>
+        <div className='mb-5 grid grid-cols-1 lg:grid-cols-3 gap-5'>
           {/* Title */}
           <Input
             id='title'
