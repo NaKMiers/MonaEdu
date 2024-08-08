@@ -39,7 +39,7 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
   const [search, setSearch] = useState<string>('')
 
   const [price, setPrice] = useState<number[]>([0, 1000000])
-  const [duration, setDuration] = useState<number[]>([0, 100])
+  const [duration, setDuration] = useState<number[]>([0, 20])
 
   const [showSortPrice, setShowSortPrice] = useState(false)
   const [sortPrice, setSortPrice] = useState<'asc' | 'desc' | 'none'>('none')
@@ -282,7 +282,7 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
             <Slider
               value={duration}
               min={0}
-              max={100}
+              max={20}
               className='w-full -mb-1.5'
               onChange={(_, newValue: number | number[]) => setDuration(newValue as number[])}
               valueLabelDisplay='auto'
@@ -470,14 +470,15 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
               <p className='flex justify-between gap-3 font-body tracking-wider text-slate-700 drop-shadow-md'>
                 Giá:{' '}
                 <span>
-                  {duration[0]} - {price[1]} đ
+                  {formatPrice(price[0])} - {formatPrice(price[1])}
                 </span>
               </p>
 
               <Slider
                 value={price}
-                min={100}
-                max={500}
+                min={0}
+                max={1000000}
+                step={10000}
                 className='w-full -mb-1.5'
                 onChange={(_, newValue: number | number[]) => setPrice(newValue as number[])}
                 valueLabelDisplay='auto'
