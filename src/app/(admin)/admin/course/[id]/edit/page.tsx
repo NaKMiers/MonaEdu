@@ -16,6 +16,7 @@ import { useParams, useRouter } from 'next/navigation'
 import { Fragment, useCallback, useEffect, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
+import { BsSourceforge } from 'react-icons/bs'
 import { FaFile, FaMoneyBillAlt, FaUser } from 'react-icons/fa'
 import { FaPlay, FaX } from 'react-icons/fa6'
 
@@ -53,6 +54,7 @@ function AddCoursePage() {
       title: '',
       price: '',
       oldPrice: '',
+      citing: '',
       author: '',
       textHook: '',
       description: '',
@@ -74,6 +76,7 @@ function AddCoursePage() {
         setValue('title', course.title)
         setValue('price', course.price)
         setValue('oldPrice', course.oldPrice)
+        setValue('citing', course.citing)
         setValue('author', course.author)
         setValue('textHook', course.textHook)
         setValue('description', course.description)
@@ -223,6 +226,7 @@ function AddCoursePage() {
       formData.append('title', data.title)
       formData.append('price', data.price)
       formData.append('oldPrice', data.oldPrice)
+      formData.append('citing', data.citing)
       formData.append('author', data.author)
       formData.append('textHook', data.textHook)
       formData.append('description', data.description)
@@ -281,6 +285,20 @@ function AddCoursePage() {
             rows={10}
             icon={FaUser}
             onFocus={() => clearErrors('author')}
+          />
+
+          {/* Citing */}
+          <Input
+            id='citing'
+            label='Citing'
+            disabled={isLoading}
+            register={register}
+            required
+            errors={errors}
+            type='text'
+            rows={10}
+            icon={BsSourceforge}
+            onFocus={() => clearErrors('citing')}
           />
         </div>
 

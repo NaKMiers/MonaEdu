@@ -29,6 +29,9 @@ const CourseSchema = new Schema(
       },
       min: 0,
     },
+    citing: {
+      type: String,
+    },
     author: {
       type: String,
     },
@@ -114,6 +117,7 @@ export interface ICourse {
   title: string
   oldPrice: number
   price: number
+  citing: string
   author: string
   textHook: string
   description: string

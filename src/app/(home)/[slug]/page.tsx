@@ -17,6 +17,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { Fragment } from 'react'
+import { BsSourceforge } from 'react-icons/bs'
 import { FaAngleRight, FaStarOfLife } from 'react-icons/fa'
 import { ImUser } from 'react-icons/im'
 import { IoIosPhonePortrait } from 'react-icons/io'
@@ -182,6 +183,14 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
             <p>{course?.textHook}</p>
 
             <Divider size={3} />
+
+            {/* Citing */}
+            {course?.citing && (
+              <p className='flex flex-wrap items-center gap-2 font-body tracking-wider'>
+                <BsSourceforge size={16} />
+                Nguồn: <span className='text-primary'>{course?.citing}</span>
+              </p>
+            )}
 
             {/* Author */}
             <p className='flex flex-wrap items-center gap-2 font-body tracking-wider'>

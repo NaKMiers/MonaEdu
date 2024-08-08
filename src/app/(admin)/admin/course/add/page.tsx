@@ -16,6 +16,7 @@ import Image from 'next/image'
 import { Fragment, useCallback, useEffect, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
+import { BsSourceforge } from 'react-icons/bs'
 import { FaFile, FaMoneyBillAlt, FaUser } from 'react-icons/fa'
 import { FaPlay, FaX } from 'react-icons/fa6'
 import { MdNumbers } from 'react-icons/md'
@@ -51,6 +52,7 @@ function AddCoursePage() {
       title: '',
       price: '',
       oldPrice: '',
+      citing: '',
       author: '',
       textHook: '',
       description: '',
@@ -190,6 +192,7 @@ function AddCoursePage() {
       formData.append('title', data.title)
       formData.append('price', data.price)
       formData.append('oldPrice', data.oldPrice)
+      formData.append('citing', data.citing)
       formData.append('author', data.author)
       formData.append('description', data.description)
       formData.append('active', data.active)
@@ -228,7 +231,7 @@ function AddCoursePage() {
       <Divider size={4} />
 
       <div className='bg-slate-200 rounded-lg p-21 shadow-lg'>
-        <div className='mb-5 grid grid-cols-1 lg:grid-cols-2 gap-5'>
+        <div className='mb-5 grid grid-cols-1 lg:grid-cols-3 gap-5'>
           {/* Title */}
           <Input
             id='title'
@@ -254,6 +257,20 @@ function AddCoursePage() {
             rows={10}
             icon={FaUser}
             onFocus={() => clearErrors('author')}
+          />
+
+          {/* Citing */}
+          <Input
+            id='citing'
+            label='Citing'
+            disabled={isLoading}
+            register={register}
+            required
+            errors={errors}
+            type='text'
+            rows={10}
+            icon={BsSourceforge}
+            onFocus={() => clearErrors('citing')}
           />
         </div>
 
