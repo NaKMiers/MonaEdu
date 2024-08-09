@@ -25,11 +25,11 @@ export async function GET(req: NextRequest) {
     let sort: { [key: string]: any } = { updatedAt: -1 } // default sort
 
     // create $or array for text fields
-    const orArray: any[] = ['title', 'slug'].map(field => ({
+    const orArray: any[] = ['title', 'citing', 'author', 'slug'].map(field => ({
       [field]: { $regex: search, $options: 'i' },
     }))
 
-    // Try to convert search query to number for price and oldPrice fields
+    // Try to convert search query to number for price and oldPrice and joined fields
     const num = Number(search)
     if (!isNaN(num)) {
       orArray.push({ price: num })
