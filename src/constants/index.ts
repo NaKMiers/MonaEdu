@@ -83,10 +83,6 @@ export const adminLinks = [
         title: 'All Categories',
         href: '/admin/category/all',
       },
-      {
-        title: 'Add Category',
-        href: '/admin/category/add',
-      },
     ],
   },
   {

@@ -9,6 +9,20 @@ export const formatDate = (time: string): string => {
   return time && moment(time).format('DD/MM/YYYY')
 }
 
+export const formatDurationToHMS = (duration: string) => {
+  const match = duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/)
+  console.log('match', match)
+  if (match) {
+    const hours = match[1] ? parseInt(match[1], 10) : 0
+    const minutes = match[2] ? parseInt(match[2], 10) : 0
+    const seconds = match[3] ? parseInt(match[3], 10) : 0
+
+    return [hours, minutes, seconds]
+  }
+
+  return [0, 0, 0]
+}
+
 export const isSameDate = (date1: Date, date2: Date): boolean => {
   return (
     date1.getFullYear() === date2.getFullYear() &&

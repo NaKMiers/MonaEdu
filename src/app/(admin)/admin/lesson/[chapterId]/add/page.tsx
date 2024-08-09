@@ -16,6 +16,7 @@ import { ICourse } from '@/models/CourseModel'
 import { addLessonApi } from '@/requests'
 import { getChapterApi } from '@/requests/chapterRequest'
 import { formatFileSize } from '@/utils/number'
+import { formatDurationToHMS } from '@/utils/time'
 import toast from 'react-hot-toast'
 import { FaX } from 'react-icons/fa6'
 import { MdCategory, MdOutlinePublic } from 'react-icons/md'
@@ -177,13 +178,28 @@ function AddLessonPage({ params: { chapterId } }: { params: { chapterId: string 
         if (fileUrl) {
           URL.revokeObjectURL(fileUrl)
         }
-        setFileUrl(URL.createObjectURL(file))
+        const newFileUrl = URL.createObjectURL(file)
+        setFileUrl(newFileUrl)
+
+        // Create a video element to get duration
+        const video = document.createElement('video')
+        video.src = newFileUrl
+        video.addEventListener('loadedmetadata', () => {
+          const durationInSeconds = video.duration // duration in seconds
+          const hours = Math.floor(durationInSeconds / 3600)
+          const minutes = Math.floor((durationInSeconds % 3600) / 60)
+          const seconds = Math.floor(durationInSeconds % 60)
+
+          setValue('hours', hours)
+          setValue('minutes', minutes)
+          setValue('seconds', seconds)
+        })
 
         e.target.value = ''
         e.target.files = null
       }
     },
-    [fileUrl]
+    [setValue, fileUrl]
   )
 
   // handle remove image
@@ -200,25 +216,51 @@ function AddLessonPage({ params: { chapterId } }: { params: { chapterId: string 
     [setFile, setFileUrl, sourceType]
   )
 
-  const handlePaste = (e: any) => {
-    const pasteData = e.clipboardData.getData('text/plain')
+  const handlePaste = useCallback(
+    async (e: any) => {
+      const pasteData = e.clipboardData.getData('text/plain')
 
-    if (pasteData.includes('<iframe')) {
-      const match = pasteData.match(/src="([^"]+)"/)
+      let videoId = ''
+      if (pasteData.includes('<iframe')) {
+        const match = pasteData.match(/src="([^"]+)"/)
 
-      if (match) {
-        const fullSrc = match[1]
-        const videoIdMatch = fullSrc.match(/\/embed\/([^?"]+)/)
+        if (match) {
+          const fullSrc = match[1]
+          const videoIdMatch = fullSrc.match(/\/embed\/([^?"]+)/)
+          if (videoIdMatch) {
+            videoId = videoIdMatch[1]
 
-        if (videoIdMatch) {
-          const embedSrc = `https://www.youtube.com/embed/${videoIdMatch[1]}`
-          setTimeout(() => {
-            setEmbedSrc(embedSrc)
-          }, 0)
+            const embedSrc = `https://www.youtube.com/embed/${videoId}`
+            setTimeout(() => {
+              setEmbedSrc(embedSrc)
+            }, 0)
+          }
         }
+      } else if (pasteData.includes('https://www.youtube.com/embed/')) {
+        const match = pasteData.match(/\/embed\/([^?\/]+)/)
+        videoId = match ? match[1] : ''
       }
-    }
-  }
+
+      if (!videoId) {
+        return toast.error('Invalid url')
+      }
+
+      // get video duration
+      const response = await fetch(
+        `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&part=contentDetails&key=AIzaSyDFBEKs8nu0K75SPfeNIInD52qmTP9_FdI`
+      )
+      const data = await response.json()
+      if (data.items.length > 0) {
+        const duration = data.items[0].contentDetails.duration
+        const [hours, minutes, seconds] = formatDurationToHMS(duration)
+
+        setValue('hours', hours)
+        setValue('minutes', minutes)
+        setValue('seconds', seconds)
+      }
+    },
+    [setValue]
+  )
 
   // handle add files when user select files
   const handleAddDocs = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {

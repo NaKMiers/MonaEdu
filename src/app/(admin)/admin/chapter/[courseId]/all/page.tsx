@@ -302,7 +302,7 @@ function AllCourseChaptersPage({
       <Divider />
 
       {/* MARK: Course */}
-      <h2 className='text-center font-semibold text-2xl text-slate-200' title='course'>
+      <h2 className='text-center font-semibold text-2xl text-slate-200' title={course?.title}>
         Course: {course?.title}
       </h2>
 
