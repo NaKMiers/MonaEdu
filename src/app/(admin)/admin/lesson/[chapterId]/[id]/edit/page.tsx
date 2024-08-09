@@ -61,7 +61,7 @@ function EditLessonPage() {
       title: '',
       description: '',
       hours: 0,
-      minutes: 1,
+      minutes: 0,
       seconds: 0,
       active: true,
       status: 'private',
