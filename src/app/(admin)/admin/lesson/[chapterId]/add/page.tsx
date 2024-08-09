@@ -247,7 +247,7 @@ function AddLessonPage({ params: { chapterId } }: { params: { chapterId: string 
 
       // get video duration
       const response = await fetch(
-        `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&part=contentDetails&key=AIzaSyDFBEKs8nu0K75SPfeNIInD52qmTP9_FdI`
+        `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&part=contentDetails&key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}`
       )
       const data = await response.json()
       if (data.items.length > 0) {
@@ -405,7 +405,7 @@ function AddLessonPage({ params: { chapterId } }: { params: { chapterId: string 
               <label
                 htmlFor='sourceType'
                 className={`absolute rounded-md text-sm text-gray-500 trans-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1 cursor-pointer ${
-                  errors.couseId ? 'text-rose-400' : 'text-dark'
+                  errors.courseId ? 'text-rose-400' : 'text-dark'
                 }`}
               >
                 Source Type
