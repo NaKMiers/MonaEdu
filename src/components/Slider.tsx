@@ -57,7 +57,7 @@ function Slider({ time, hideControls, children, thumbs = [], mobile, className =
           }
         }, 350)
       } else {
-        setSlide((prev) => prev + 1)
+        setSlide(prev => prev + 1)
       }
 
       // stop sliding after slided
@@ -90,7 +90,7 @@ function Slider({ time, hideControls, children, thumbs = [], mobile, className =
           }
         }, 350)
       } else {
-        setSlide((prev) => prev - 1)
+        setSlide(prev => prev - 1)
       }
 
       // stop sliding after slided

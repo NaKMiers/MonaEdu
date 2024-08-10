@@ -69,7 +69,7 @@ function Banner({ time, courses, className = '' }: SliderProps) {
 
         setTimeout(() => {
           if (slideTrackRef.current) {
-            slideTrackRef.current.style.transition = 'all 0.3s linear'
+            // slideTrackRef.current.style.transition = 'all 0.3s linear'
           }
         }, 350)
       } else {
@@ -102,7 +102,7 @@ function Banner({ time, courses, className = '' }: SliderProps) {
 
         setTimeout(() => {
           if (slideTrackRef.current) {
-            slideTrackRef.current.style.transition = 'all 0.3s linear'
+            // slideTrackRef.current.style.transition = 'all 0.3s linear'
           }
         }, 350)
       } else {
@@ -185,7 +185,7 @@ function Banner({ time, courses, className = '' }: SliderProps) {
     >
       {/* MARK: Slide Track */}
       <div
-        className={`flex w-full h-full no-scrollbar ease-linear trans-300`}
+        className={`flex w-full h-full no-scrollbar ease-linear`}
         style={{ marginLeft: '-100%' }}
         ref={slideTrackRef}
       >
