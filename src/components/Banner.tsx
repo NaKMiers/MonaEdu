@@ -45,8 +45,6 @@ function Banner({ time, courses, className = '' }: SliderProps) {
         left: (slide - 1) * indicatorRef.current.children[0].clientWidth,
         behavior: 'smooth',
       })
-
-      console.log('indicatorRef.current.children: ', indicatorRef.current.children[0].clientWidth)
     }
   }, [slide])
 

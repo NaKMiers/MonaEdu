@@ -21,7 +21,10 @@ function SuggestedList({ className = '' }: SuggestedListProps) {
   useEffect(() => {
     const getSuggestedCourses = async () => {
       try {
-        const coursesInCart = cartItems.map(cartItem => (cartItem.courseId as ICourse)._id)
+        const coursesInCart = cartItems
+          .filter(Boolean)
+          .map(cartItem => (cartItem.courseId as ICourse)._id)
+
         const query = '?' + coursesInCart.map(courseId => `courses=${courseId}`).join('&')
 
         const { courses } = await getSuggestedCoursesApi(query)

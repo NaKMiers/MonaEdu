@@ -53,14 +53,13 @@ export async function POST(req: NextRequest) {
     }
 
     // add new cart item
-    const newCartItem = new CartItemModel({
+    const newCartItem = await CartItemModel.create({
       userId,
       courseId,
     })
 
     // save new cart item, populate course, and count cart length
-    const [_, cartItem, cartLength] = await Promise.all([
-      newCartItem.save(),
+    const [cartItem, cartLength] = await Promise.all([
       CartItemModel.findById(newCartItem._id).populate('courseId').lean(),
       CartItemModel.countDocuments({ userId }),
     ])

@@ -20,6 +20,19 @@ export async function GET(req: NextRequest) {
     const params: { [key: string]: string[] } = searchParamsToObject(req.nextUrl.searchParams)
     const coursesInCart = params['courses']
 
+    // check if coursesInCart is empty
+    if (!coursesInCart) {
+      const courses = await CourseModel.find({ active: true })
+        .populate({
+          path: 'category',
+          select: 'slug',
+        })
+        .sort({ joined: -1 })
+        .limit(8)
+        .lean()
+      return NextResponse.json({ courses }, { status: 200 })
+    }
+
     // get coursesInCart
     const baseCourses = await CourseModel.find({ _id: { $in: coursesInCart } })
       .populate({

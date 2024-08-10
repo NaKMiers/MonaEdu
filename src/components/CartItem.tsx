@@ -49,7 +49,7 @@ function CartItem({ cartItem, isCheckout, className = '', isOrderDetailCourse }:
       setIsDeleting(false)
       setIsOpenConfirmModal(false)
     }
-  }, [dispatch, cartItem._id])
+  }, [dispatch, cartItem?._id])
 
   return (
     <div

@@ -103,7 +103,7 @@ function CartPage() {
   // auto select cart item
   useEffect(() => {
     const selectedItems = cartItems.filter(item =>
-      queryParams.getAll('course').includes((item.courseId as ICourse)?.slug)
+      queryParams.getAll('course').includes((item?.courseId as ICourse)?.slug)
     )
 
     dispatch(setSelectedItems(selectedItems))

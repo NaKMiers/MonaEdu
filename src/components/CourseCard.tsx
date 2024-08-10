@@ -17,13 +17,11 @@ import { memo, useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
 import { FaCartPlus, FaRegThumbsUp, FaShareAlt } from 'react-icons/fa'
 import { HiDotsVertical } from 'react-icons/hi'
-import { IoTimer } from 'react-icons/io5'
-import { MdVideoLibrary } from 'react-icons/md'
+import { PiStudentBold } from 'react-icons/pi'
 import { RiDonutChartFill } from 'react-icons/ri'
+import { FacebookShareButton } from 'react-share'
 import Divider from './Divider'
 import Price from './Price'
-import { FacebookShareButton } from 'react-share'
-import { PiStudentBold } from 'react-icons/pi'
 
 interface CourseCardProps {
   course: ICourse
@@ -103,6 +101,8 @@ function CourseCard({ course: data, hideBadge, className = '' }: CourseCardProps
     try {
       // send request to add course to cart
       const { cartItem, message } = await addToCartApi(course._id)
+
+      console.log('cartItem', cartItem)
 
       // show toast success
       toast.success(message)
