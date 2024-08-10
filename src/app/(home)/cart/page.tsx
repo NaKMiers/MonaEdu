@@ -446,7 +446,7 @@ function CartPage() {
                   src='/icons/momo-icon.jpg'
                   height={32}
                   width={32}
-                  alt='logo'
+                  alt='Momo'
                 />
                 <span className='font-semibold group-hover:text-white'>Momo</span>
               </button>
@@ -463,7 +463,7 @@ function CartPage() {
                   src='/icons/banking-icon.jpg'
                   height={32}
                   width={32}
-                  alt='logo'
+                  alt='Banking'
                 />
                 <span className='font-semibold group-hover:text-white'>Banking</span>
               </button>

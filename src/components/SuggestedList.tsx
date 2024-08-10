@@ -27,7 +27,7 @@ function SuggestedList({ className = '' }: SuggestedListProps) {
 
         const query = '?' + coursesInCart.map(courseId => `courses=${courseId}`).join('&')
 
-        const { courses } = await getSuggestedCoursesApi(query)
+        const { courses } = await getSuggestedCoursesApi(query, { next: { revalidate: 30 } })
         setCourses(courses)
       } catch (err: any) {
         console.log(err)

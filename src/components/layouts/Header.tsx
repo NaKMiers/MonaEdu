@@ -39,6 +39,7 @@ function Header({ className = '' }: HeaderProps) {
   const [isTransparent, setIsTransparent] = useState<boolean>(pathname === '/')
   const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false)
   const [openCategoryTabs, setOpenCategoryTabs] = useState<boolean>(false)
+  const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null)
 
   // notification states
   const [isOpenNotificationMenu, setIsOpenNotificationMenu] = useState<boolean>(false)
@@ -124,7 +125,7 @@ function Header({ className = '' }: HeaderProps) {
               src='/images/logo.png'
               width={32}
               height={32}
-              alt='logo'
+              alt='Mona-Edu'
             />
           </Link>
           <Link href='/' prefetch={false} className='text-2xl font-bold hidden md:block'>
@@ -136,7 +137,18 @@ function Header({ className = '' }: HeaderProps) {
             <Link
               href='/categories'
               className='flex items-center justify-center gap-2 group text-nowrap bg-primary text-sm md:text-base font-semibold text-dark px-1.5 md:px-3 py-1 rounded-md hover:bg-secondary hover:text-light trans-200'
-              onMouseOver={() => setOpenCategoryTabs(true)}
+              onMouseOver={() => {
+                const timeoutId = setTimeout(() => {
+                  setOpenCategoryTabs(true)
+                }, 100)
+                setHoverTimeout(timeoutId)
+              }}
+              onMouseOut={() => {
+                if (hoverTimeout) {
+                  clearTimeout(hoverTimeout)
+                  setHoverTimeout(null)
+                }
+              }}
             >
               <BiSolidCategory size={20} className='hidden md:block' />
               Danh Mục

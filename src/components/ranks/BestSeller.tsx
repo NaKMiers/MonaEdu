@@ -19,7 +19,7 @@ function BestSeller({ courses, className = '' }: BestSellerProps) {
           src='/icons/award.svg'
           width={200}
           height={200}
-          alt='thumbnail'
+          alt='Best-Seller'
           loading='lazy'
         />
       </div>

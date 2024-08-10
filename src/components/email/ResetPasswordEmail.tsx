@@ -25,7 +25,7 @@ function ResetPasswordEmail({
                     src={`${'https://monaedu.com'}/images/logo.jpg`}
                     width={35}
                     height={35}
-                    alt='logo'
+                    alt='Mona-Edu'
                   />
                 </a>
               </Column>

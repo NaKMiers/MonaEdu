@@ -214,7 +214,7 @@ function BestSellerCard({ course, index, className = '' }: BestSellerCardProps) 
                   src={course.images[0]}
                   width={300}
                   height={300}
-                  alt='thumbnail'
+                  alt={course.title}
                 />
               </Link>
             </CardItem>

@@ -24,17 +24,18 @@ function CategoryRankTab({ className = '' }: CategoryRankTabProps) {
         const query = '?limit=no-limit&sort=createdAt|-1'
         const { courses } = await getAllCoursesApi(query)
 
-        // Category Sold Rank
-        const categorySoldMap: { [key: string]: ICategory & { joined: number } } = {}
+        // Category Joined Rank
+        const categoryJoinedMap: { [key: string]: ICategory & { joined: number } } = {}
         courses.forEach((course: ICourse) => {
           const category: ICategory = course.category as ICategory
           const joined = course.joined
-          if (!categorySoldMap[category.slug]) {
-            categorySoldMap[category.slug] = { ...category, joined: 0 }
+          if (!categoryJoinedMap[category.slug]) {
+            categoryJoinedMap[category.slug] = { ...category, joined: 0 }
           }
-          categorySoldMap[category.slug].joined = (categorySoldMap[category.slug].joined || 0) + joined
+          categoryJoinedMap[category.slug].joined =
+            (categoryJoinedMap[category.slug].joined || 0) + joined
         })
-        const rankCategories = Object.entries(categorySoldMap)
+        const rankCategories = Object.entries(categoryJoinedMap)
           .map(([_, category]) => category)
           .sort((a, b) => b.joined - a.joined)
 
@@ -63,7 +64,7 @@ function CategoryRankTab({ className = '' }: CategoryRankTabProps) {
           >
             <div className='flex-shrink-0 flex items-center gap-2'>
               <div className='flex-shrink-0 p-[2px] bg-white rounded-md'>
-                <Image src={category.image} width={20} height={20} alt='logo' />
+                <Image src={category.image} width={20} height={20} alt='Mona-Edu' />
               </div>
               <span className='font-body text-sm font-semibold tracking-wider text-white bg-dark-100 px-2 rounded-full'>
                 {category.title}

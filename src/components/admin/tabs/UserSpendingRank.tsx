@@ -143,7 +143,7 @@ function UserSpendingRankTab({ className = '' }: UserSpendingRankTabProps) {
                 src={user.avatar || process.env.NEXT_PUBLIC_DEFAULT_AVATAR}
                 width={45}
                 height={45}
-                alt='thumbnail'
+                alt='avatar'
               />
               {index < 10 && (
                 <span

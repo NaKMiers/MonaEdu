@@ -156,7 +156,7 @@ function OrderItem({
                     src={course.images[0] || '/images/not-found.jpg'}
                     height={100}
                     width={100}
-                    alt='thumbnail'
+                    alt={course.title}
                   />
                 </Link>
               ))}

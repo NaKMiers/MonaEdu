@@ -22,7 +22,7 @@ function CategoryCard({ category, className = '' }: CategoryCardProps) {
         width='1000'
         className='h-full bg-white w-full object-cover rounded-xl'
         loading='lazy'
-        alt='thumbnail'
+        alt={category.title}
       />
 
       <div className='absolute z-20 bottom-0 left-0 right-0 w-full border-t-3 p-1.5 rounded-xl border-t-2 border-white bg-neutral-950 bg-opacity-50 text-light'>

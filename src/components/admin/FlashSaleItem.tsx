@@ -94,7 +94,7 @@ function FlashSaleItem({
                 src={course.images[0]}
                 height={80}
                 width={80}
-                alt='thumbnail'
+                alt={course.title}
               />
               <span className='text-ellipsis line-clamp-2' title={course.title}>
                 {course.title}

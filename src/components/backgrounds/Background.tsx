@@ -17,7 +17,7 @@ function Background() {
           src='/backgrounds/glow-1.png'
           width={1000}
           height={1000}
-          alt='glow-1'
+          alt='Mona-Edu-Glow-1'
         />
       </div>
 
@@ -27,7 +27,7 @@ function Background() {
           src='/backgrounds/glow-2.png'
           width={1000}
           height={1000}
-          alt='glow-2'
+          alt='Mona-Edu-Glow-2'
         />
       </div>
 
@@ -37,7 +37,7 @@ function Background() {
           src='/backgrounds/glow-3.png'
           width={1000}
           height={1000}
-          alt='glow-3'
+          alt='Mona-Edu-Glow-3'
         />
       </div>
     </div>

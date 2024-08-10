@@ -155,23 +155,12 @@ function SearchBar() {
               className='flex gap-4 py-2 items-start rounded-lg p-2 hover:bg-slate-200 hover:text-dark text-light trans-200'
             >
               <div className='relative aspect-video flex-shrink-0'>
-                {course.stock <= 0 && (
-                  <div className='absolute top-0 left-0 right-0 flex justify-center items-start aspect-video bg-white rounded-lg bg-opacity-50'>
-                    <Image
-                      className='animate-wiggle -mt-1'
-                      src='/images/sold-out.jpg'
-                      width={28}
-                      height={28}
-                      alt='sold-out'
-                    />
-                  </div>
-                )}
                 <Image
                   className='rounded-md'
                   src={course.images[0]}
                   width={70}
                   height={70}
-                  alt='course'
+                  alt={course.title}
                 />
 
                 {course.flashSale && (

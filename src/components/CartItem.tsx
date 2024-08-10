@@ -83,7 +83,7 @@ function CartItem({ cartItem, isCheckout, className = '', isOrderDetailCourse }:
                 src={src}
                 width={150}
                 height={150}
-                alt={`/${(cartItem.courseId as ICourse)?.slug}`}
+                alt={(cartItem.courseId as ICourse)?.title}
                 key={src}
               />
             ))}

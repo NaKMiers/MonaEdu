@@ -23,7 +23,7 @@ export async function GET() {
         path: 'tags',
         select: 'title',
       })
-      .sort({ sold: -1 })
+      .sort({ joined: -1 })
       .lean()
 
     // return all courses

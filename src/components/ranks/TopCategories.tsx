@@ -30,7 +30,7 @@ function TopCategories({ className }: TopCategoriesProps) {
               height='1000'
               width='1000'
               className='h-full bg-white w-full object-cover rounded-xl'
-              alt='thumbnail'
+              alt={category.title}
               loading='lazy'
             />
 

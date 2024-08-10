@@ -71,7 +71,7 @@ export async function GET(req: NextRequest, { params: { courseId } }: { params: 
           continue
         }
 
-        if (['price', 'sold'].includes(key)) {
+        if (['price', 'joined'].includes(key)) {
           filter[key] = { $lte: +params[key][0] }
           continue
         }

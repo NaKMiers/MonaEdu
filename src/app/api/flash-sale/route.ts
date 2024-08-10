@@ -55,11 +55,6 @@ export async function GET(req: NextRequest) {
           continue
         }
 
-        if (key === 'stock') {
-          filter[key] = { $lte: +params[key][0] }
-          continue
-        }
-
         if (key === 'price') {
           continue
         }

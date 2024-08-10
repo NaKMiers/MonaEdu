@@ -18,7 +18,7 @@ import { IoWarningOutline } from 'react-icons/io5'
 function PersonalSetting() {
   // hook
   const dispatch = useAppDispatch()
-  const openAuthentication = useAppSelector((state) => state.modal.openAuthentication)
+  const openAuthentication = useAppSelector(state => state.modal.openAuthentication)
   const { data: session } = useSession()
   const curUser: any = session?.user
 
@@ -119,7 +119,7 @@ function PersonalSetting() {
       >
         <div
           className='flex flex-col items-center relative rounded-lg shadow-lg max-w-[500px] w-full bg-white p-21'
-          onClick={(e) => e.stopPropagation()}
+          onClick={e => e.stopPropagation()}
         >
           {/* Close Button */}
           <button
@@ -138,7 +138,7 @@ function PersonalSetting() {
           <input
             type='password'
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={e => setPassword(e.target.value)}
             className='rounded-lg shadow-lg w-full px-4 py-1 bg-slate-200 outline-none'
             placeholder='Password...'
           />

@@ -120,7 +120,7 @@ function AllLessons() {
                 src='/images/logo.png'
                 width={32}
                 height={32}
-                alt='logo'
+                alt='Mona-Edu'
               />
             </Link>
 

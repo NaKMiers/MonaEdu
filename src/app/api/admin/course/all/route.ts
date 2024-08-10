@@ -64,7 +64,7 @@ export async function GET(req: NextRequest) {
           continue
         }
 
-        if (key === 'price' || key === 'sold') {
+        if (key === 'price' || key === 'joined') {
           const from = +params[key][0].split('-')[0]
           const to = +params[key][0].split('-')[1]
           if (from >= 0 && to >= 0) {
@@ -113,8 +113,8 @@ export async function GET(req: NextRequest) {
             _id: null,
             minPrice: { $min: '$price' },
             maxPrice: { $max: '$price' },
-            minSold: { $min: '$sold' },
-            maxSold: { $max: '$sold' },
+            minJoined: { $min: '$joined' },
+            maxJoined: { $max: '$joined' },
           },
         },
       ]),

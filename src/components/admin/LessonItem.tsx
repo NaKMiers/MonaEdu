@@ -62,7 +62,7 @@ function LessonItem({
                   src={(data.courseId as ICourse).images[0] || '/images/not-found.jpg'}
                   height={200}
                   width={200}
-                  alt='thumbnail'
+                  alt={(data.courseId as ICourse).title}
                 />
               </div>
             </Link>

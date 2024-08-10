@@ -112,7 +112,7 @@ function CourseItem({
                   src={src}
                   height={200}
                   width={200}
-                  alt='thumbnail'
+                  alt={data.title}
                 />
               ))}
             </div>

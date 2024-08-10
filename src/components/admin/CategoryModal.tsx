@@ -220,7 +220,7 @@ function CategoryModal({
                   src={imageUrl || category?.image || ''}
                   width={200}
                   height={200}
-                  alt='image'
+                  alt={category?.title || 'banner'}
                   loading='lazy'
                 />
               )}

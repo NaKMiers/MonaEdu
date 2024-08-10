@@ -199,8 +199,8 @@ export const newUserStatCalc = (users: any[]) => {
   return newUserStat
 }
 
-// MARK: New Courses Sold
-const calculateNewCoursesSold = (orders: any[], startDate: Date | string, endDate: Date | string) => {
+// MARK: New Courses Joined
+const calculateNewCoursesJoined = (orders: any[], startDate: Date | string, endDate: Date | string) => {
   let newCourses = 0
   orders.forEach(order => {
     if (moment(order.createdAt).isBetween(startDate, endDate, undefined, '[]')) {
@@ -210,7 +210,7 @@ const calculateNewCoursesSold = (orders: any[], startDate: Date | string, endDat
   return newCourses
 }
 
-export const newCoursesSoldStatCalc = (orders: any[]) => {
+export const newCoursesJoinedStatCalc = (orders: any[]) => {
   const currentDate = moment()
 
   // prev day, month, year
@@ -218,64 +218,64 @@ export const newCoursesSoldStatCalc = (orders: any[]) => {
   const lastMonth = moment(currentDate).subtract(1, 'months')
   const lastYear = moment(currentDate).subtract(1, 'years')
 
-  // new courses sold
-  const newCoursesSoldToday = calculateNewCoursesSold(
+  // new courses joined
+  const newCoursesJoinedToday = calculateNewCoursesJoined(
     orders,
     currentDate.startOf('day').toDate(),
     currentDate.endOf('day').toDate()
   )
-  const newCoursesSoldYesterday = calculateNewCoursesSold(
+  const newCoursesJoinedYesterday = calculateNewCoursesJoined(
     orders,
     lastDay.startOf('day').toDate(),
     lastDay.endOf('day').toDate()
   )
-  const newCoursesSoldThisMonth = calculateNewCoursesSold(
+  const newCoursesJoinedThisMonth = calculateNewCoursesJoined(
     orders,
     currentDate.startOf('month').toDate(),
     currentDate.endOf('month').toDate()
   )
-  const newCoursesSoldLastMonth = calculateNewCoursesSold(
+  const newCoursesJoinedLastMonth = calculateNewCoursesJoined(
     orders,
     lastMonth.startOf('month').toDate(),
     lastMonth.endOf('month').toDate()
   )
-  const newCoursesSoldThisYear = calculateNewCoursesSold(
+  const newCoursesJoinedThisYear = calculateNewCoursesJoined(
     orders,
     currentDate.startOf('year').toDate(),
     currentDate.endOf('year').toDate()
   )
-  const newCoursesSoldLastYear = calculateNewCoursesSold(
+  const newCoursesJoinedLastYear = calculateNewCoursesJoined(
     orders,
     lastYear.startOf('year').toDate(),
     lastYear.endOf('year').toDate()
   )
 
-  // build new account sold stat
-  const newCoursesSoldStat = {
+  // build new course joined stat
+  const newCoursesJoinedStat = {
     day: [
-      newCoursesSoldToday,
-      newCoursesSoldYesterday,
-      (((newCoursesSoldToday - newCoursesSoldYesterday) / newCoursesSoldYesterday) * 100 || 0).toFixed(
-        2
-      ),
+      newCoursesJoinedToday,
+      newCoursesJoinedYesterday,
+      (
+        ((newCoursesJoinedToday - newCoursesJoinedYesterday) / newCoursesJoinedYesterday) * 100 || 0
+      ).toFixed(2),
     ],
     month: [
-      newCoursesSoldThisMonth,
-      newCoursesSoldLastMonth,
+      newCoursesJoinedThisMonth,
+      newCoursesJoinedLastMonth,
       (
-        ((newCoursesSoldThisMonth - newCoursesSoldLastMonth) / newCoursesSoldLastMonth) * 100 || 0
+        ((newCoursesJoinedThisMonth - newCoursesJoinedLastMonth) / newCoursesJoinedLastMonth) * 100 || 0
       ).toFixed(2),
     ],
     year: [
-      newCoursesSoldThisYear,
-      newCoursesSoldLastYear,
-      (((newCoursesSoldThisYear - newCoursesSoldLastYear) / newCoursesSoldLastYear) * 100 || 0).toFixed(
-        2
-      ),
+      newCoursesJoinedThisYear,
+      newCoursesJoinedLastYear,
+      (
+        ((newCoursesJoinedThisYear - newCoursesJoinedLastYear) / newCoursesJoinedLastYear) * 100 || 0
+      ).toFixed(2),
     ],
   }
 
-  return newCoursesSoldStat
+  return newCoursesJoinedStat
 }
 
 // MARK: Used Voucher

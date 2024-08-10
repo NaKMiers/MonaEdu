@@ -72,7 +72,7 @@ export async function GET(req: NextRequest) {
           continue
         }
 
-        if (['price', 'sold'].includes(key)) {
+        if (['price', 'joined'].includes(key)) {
           filter[key] = { $lte: +params[key][0] }
           continue
         }
@@ -129,8 +129,8 @@ export async function GET(req: NextRequest) {
             _id: null,
             minPrice: { $min: '$price' },
             maxPrice: { $max: '$price' },
-            minSold: { $min: '$sold' },
-            maxSold: { $max: '$sold' },
+            minJoined: { $min: '$joined' },
+            maxJoined: { $max: '$joined' },
           },
         },
       ]),

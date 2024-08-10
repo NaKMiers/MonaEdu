@@ -49,9 +49,9 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
   const [maxPrice, setMaxPrice] = useState<number>(0)
   const [price, setPrice] = useState<number[]>([0, 0])
 
-  const [minSold, setMinSold] = useState<number>(0)
-  const [maxSold, setMaxSold] = useState<number>(0)
-  const [sold, setSold] = useState<number[]>([0, 0])
+  const [minJoined, setMinJoined] = useState<number>(0)
+  const [maxJoined, setMaxJoined] = useState<number>(0)
+  const [joined, setJoined] = useState<number[]>([0, 0])
 
   // Form
   const defaultValues = useMemo<FieldValues>(
@@ -115,15 +115,15 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
           setPrice([chops?.minPrice || 0, chops?.maxPrice || 0])
         }
 
-        setMinSold(chops?.minSold || 0)
-        setMaxSold(chops?.maxSold || 0)
-        if (searchParams?.sold) {
-          const [from, to] = Array.isArray(searchParams.sold)
-            ? searchParams.sold[0].split('-')
-            : searchParams.sold.split('-')
-          setSold([+from, +to])
+        setMinJoined(chops?.minJoined || 0)
+        setMaxJoined(chops?.maxJoined || 0)
+        if (searchParams?.joined) {
+          const [from, to] = Array.isArray(searchParams.joined)
+            ? searchParams.joined[0].split('-')
+            : searchParams.joined.split('-')
+          setJoined([+from, +to])
         } else {
-          setSold([chops?.minSold || 0, chops?.maxSold || 0])
+          setJoined([chops?.minJoined || 0, chops?.maxJoined || 0])
         }
       } catch (err: any) {
         console.log(err)
@@ -251,7 +251,7 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
       return {
         ...data,
         price: price[0] === minPrice && price[1] === maxPrice ? '' : price.join('-'),
-        sold: sold[0] === minSold && sold[1] === maxSold ? '' : sold.join('-'),
+        joined: joined[0] === minJoined && joined[1] === maxJoined ? '' : joined.join('-'),
         tags: selectedFilterTags.length === tgs.length ? [] : selectedFilterTags,
       }
     },
@@ -260,11 +260,11 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
       defaultValues,
       minPrice,
       maxPrice,
-      minSold,
-      maxSold,
+      minJoined,
+      maxJoined,
       price,
       selectedFilterTags,
-      sold,
+      joined,
       tgs,
     ]
   )
@@ -361,19 +361,19 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
           />
         </div>
 
-        {/* Sold */}
+        {/* Joined */}
         <div className='flex flex-col col-span-12 md:col-span-4'>
-          <label htmlFor='sold'>
-            <span className='font-bold'>Sold: </span>
-            <span>{sold[0]}</span> - <span>{sold[1]}</span>
+          <label htmlFor='joined'>
+            <span className='font-bold'>Joined: </span>
+            <span>{joined[0]}</span> - <span>{joined[1]}</span>
           </label>
           <Slider
-            value={sold}
-            min={minSold}
-            max={maxSold}
+            value={joined}
+            min={minJoined}
+            max={maxJoined}
             step={1}
             className='w-full -mb-1.5'
-            onChange={(_, newValue: number | number[]) => setSold(newValue as number[])}
+            onChange={(_, newValue: number | number[]) => setJoined(newValue as number[])}
             valueLabelDisplay='auto'
             style={{ color: '#333' }}
           />

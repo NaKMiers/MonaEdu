@@ -147,7 +147,7 @@ function RegisterPage() {
   return (
     <div className='relative min-h-screen w-full overflow-hidden'>
       <Link href='/' className='hidden md:block w-[44px] absolute z-30 top-21 left-21 rounded-md'>
-        <Image src='/images/logo.png' width={70} height={70} alt='logo' />
+        <Image src='/images/logo.png' width={70} height={70} alt='Mona-Edu' />
       </Link>
 
       <div className='hidden md:block absolute top-[0%] left-0 w-[32vw]'>
@@ -156,7 +156,7 @@ function RegisterPage() {
           src='/backgrounds/vector-1.png'
           width={600}
           height={600}
-          alt='shape-1'
+          alt='Mona-Edu-Shape-1'
         />
       </div>
 
@@ -166,7 +166,7 @@ function RegisterPage() {
           src='/backgrounds/vector-2.png'
           width={600}
           height={600}
-          alt='shape-2'
+          alt='Mona-Edu-Shape-2'
         />
       </div>
 
@@ -176,7 +176,7 @@ function RegisterPage() {
           src='/backgrounds/vector-3.png'
           width={625}
           height={680}
-          alt='shape-3'
+          alt='Mona-Edu-Shape-3'
         />
       </div>
 
@@ -186,7 +186,7 @@ function RegisterPage() {
           src='/backgrounds/vector-4.png'
           width={600}
           height={600}
-          alt='shape-3'
+          alt='Mona-Edu-Shape-3'
         />
       </div>
 
@@ -201,7 +201,7 @@ function RegisterPage() {
           src='/backgrounds/focus_image.png'
           width={625}
           height={680}
-          alt='vector-5'
+          alt='Mona-Edu-Vector-5'
         />
       </div>
 
@@ -217,7 +217,7 @@ function RegisterPage() {
                 src='/images/logo.png'
                 width={80}
                 height={80}
-                alt='logo'
+                alt='Mona-Edu'
               />
             </div>
             <h1 className='font-semibold text-3xl text-light'>Tạo tài khoản</h1>

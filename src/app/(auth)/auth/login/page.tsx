@@ -99,7 +99,7 @@ function LoginPage() {
           src='/backgrounds/vector-5.png'
           width={1000}
           height={1000}
-          alt='shape-5'
+          alt='Mona-Edu-Shape-5'
         />
       </div>
 
@@ -109,7 +109,7 @@ function LoginPage() {
           src='/backgrounds/vector-6.png'
           width={1000}
           height={1000}
-          alt='shape-6'
+          alt='Mona-Edu-Shape-6'
         />
       </div>
 
@@ -120,7 +120,7 @@ function LoginPage() {
             src='/backgrounds/focus_image.png'
             width={625}
             height={680}
-            alt='vector-5'
+            alt='Mona-Edu-Vector-5'
           />
         </div>
 
@@ -141,7 +141,7 @@ function LoginPage() {
               src='/images/logo.png'
               width={80}
               height={80}
-              alt='logo'
+              alt='Mona-Edu'
             />
           </Link>
           <span className='font-bold text-3xl text-orange-500'>Mona Edu</span>

@@ -210,16 +210,6 @@ function AboutUsPage() {
           <div className='max-w-1200 mx-auto'>
             <p className='text-[48px] text-center mb-8'>Thông tin liên hệ</p>
 
-            {/* <div className='rounded-t-lg overflow-hidden'>
-              <Image
-                className='w-full h-full object-cover'
-                src='/images/quote-3.jpg'
-                width={1280}
-                height={1280}
-                alt='headquarter'
-              />
-            </div> */}
-
             <div className='grid grid-cols-1 sm:grid-cols-3 gap-0.5 mt-0.5'>
               <Link
                 href={process.env.NEXT_PUBLIC_FACEBOOK!}

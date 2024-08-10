@@ -1,7 +1,7 @@
 import { getAllOrdersApi } from '@/requests'
 import { formatPrice } from '@/utils/number'
 import {
-  newCoursesSoldStatCalc,
+  newCoursesJoinedStatCalc,
   newOrderStatCalc,
   newUsedVoucherStatCalc,
   newUserStatCalc,
@@ -24,7 +24,7 @@ function Stats({ by, className = '' }: statsProps) {
   // states
   const [revenueStat, setRevenueStat] = useState<any>(null)
   const [newOrderStat, setNewOrderStat] = useState<any>(null)
-  const [newCourseSoldStat, setNewCourseSoldStat] = useState<any>(null)
+  const [newCourseJoinedStat, setNewCourseJoinedStat] = useState<any>(null)
   const [newUserStat, setNewUserStat] = useState<any>(null)
   const [newUsedVoucherStat, setNewUsedVoucherStat] = useState<any>(null)
 
@@ -49,7 +49,7 @@ function Stats({ by, className = '' }: statsProps) {
 
         setRevenueStat(revenueStatCalc(orders))
         setNewOrderStat(newOrderStatCalc(orders))
-        setNewCourseSoldStat(newCoursesSoldStatCalc(orders))
+        setNewCourseJoinedStat(newCoursesJoinedStatCalc(orders))
         setNewUserStat(newUserStatCalc(orders))
         setNewUsedVoucherStat(newUsedVoucherStatCalc(orders))
       } catch (err: any) {
@@ -130,17 +130,17 @@ function Stats({ by, className = '' }: statsProps) {
           )}
         </div>
 
-        <p className='font-semibold text-3xl mb-3' title={newCourseSoldStat?.[by][0] || 0}>
-          {newCourseSoldStat?.[by][0] || 0}
+        <p className='font-semibold text-3xl mb-3' title={newCourseJoinedStat?.[by][0] || 0}>
+          {newCourseJoinedStat?.[by][0] || 0}
         </p>
         <p
           className='text-slate-500 text-sm'
-          title={`${newCourseSoldStat?.[by][2] > 0 ? '+' : ''}${newCourseSoldStat?.[by][2] || 0}% from ${
-            by === 'day' ? 'yesterday' : `last ${by}`
-          }`}
+          title={`${newCourseJoinedStat?.[by][2] > 0 ? '+' : ''}${
+            newCourseJoinedStat?.[by][2] || 0
+          }% from ${by === 'day' ? 'yesterday' : `last ${by}`}`}
         >
-          {newCourseSoldStat?.[by][2] > 0 ? '+' : ''}
-          {newCourseSoldStat?.[by][2] || 0}% from {by === 'day' ? 'yesterday' : `last ${by}`}
+          {newCourseJoinedStat?.[by][2] > 0 ? '+' : ''}
+          {newCourseJoinedStat?.[by][2] || 0}% from {by === 'day' ? 'yesterday' : `last ${by}`}
         </p>
       </div>
 

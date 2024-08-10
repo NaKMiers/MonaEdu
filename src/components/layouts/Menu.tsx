@@ -19,7 +19,7 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
   const curUser: any = session?.user
 
   // reducer
-  const cartLength = useAppSelector((state) => state.cart.items.length)
+  const cartLength = useAppSelector(state => state.cart.items.length)
 
   // update user session
   useEffect(() => {
@@ -99,7 +99,7 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
                     className='wiggle'
                     width={30}
                     height={30}
-                    alt='icon'
+                    alt='cart'
                   />
                   <span className='font-body text-xl font-semibold tracking-wide'>Giỏ hàng</span>
                   {!!cartLength && (
@@ -120,7 +120,7 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
                     className='wiggle'
                     width={30}
                     height={30}
-                    alt='icon'
+                    alt='info'
                   />
                   <span className='font-body text-xl font-semibold tracking-wide'>Trang cá nhân</span>
                 </Link>
@@ -135,7 +135,7 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
                     className='wiggle'
                     width={30}
                     height={30}
-                    alt='icon'
+                    alt='my-courses'
                   />
                   <span className='font-body text-xl font-semibold tracking-wide'>Khóa học của tôi</span>
                 </Link>
@@ -150,7 +150,7 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
                     className='wiggle'
                     width={30}
                     height={30}
-                    alt='icon'
+                    alt='setting'
                   />
                   <span className='font-body text-xl font-semibold tracking-wide'>Cài đặt</span>
                 </Link>
@@ -170,7 +170,7 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
                       className='wiggle'
                       width={30}
                       height={30}
-                      alt='icon'
+                      alt='order'
                     />
                     <span className='font-body text-xl font-semibold tracking-wide'>
                       {['admin', 'editor'].includes(curUser?.role) ? 'Orders' : 'Collaborator'}
@@ -188,7 +188,7 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
                     className='wiggle'
                     width={30}
                     height={30}
-                    alt='icon'
+                    alt='logout'
                   />
                   <span className='font-body text-xl font-semibold tracking-wide'>Đăng xuất</span>
                 </button>
@@ -208,7 +208,7 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
                   className='wiggle'
                   width={30}
                   height={30}
-                  alt='icon'
+                  alt='sign-in'
                 />
                 <span className='font-body text-xl font-semibold tracking-wide'>Đăng nhập</span>
               </Link>
@@ -218,7 +218,13 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
                 href='/categories'
                 className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white hover:text-dark trans-200'
               >
-                <Image src='/icons/category.png' className='wiggle' width={30} height={30} alt='icon' />
+                <Image
+                  src='/icons/category.png'
+                  className='wiggle'
+                  width={30}
+                  height={30}
+                  alt='categories'
+                />
                 <span className='font-body text-xl font-semibold tracking-wide'>Danh Mục</span>
               </Link>
             </div>

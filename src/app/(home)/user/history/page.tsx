@@ -350,7 +350,7 @@ function HistoryPage({ searchParams }: { searchParams?: { [key: string]: string[
                           src={item.images[0]}
                           width={100}
                           height={80}
-                          alt='thumbnail'
+                          alt={item.title}
                           loading='lazy'
                         />
                       </Link>

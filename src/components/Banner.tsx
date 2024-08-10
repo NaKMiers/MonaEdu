@@ -195,7 +195,7 @@ function Banner({ time, courses, className = '' }: SliderProps) {
                 src={course.images[0]}
                 width={1920}
                 height={1080}
-                alt='item'
+                alt={course.title}
                 loading='lazy'
               />
             </div>
@@ -279,7 +279,7 @@ function Banner({ time, courses, className = '' }: SliderProps) {
                   src={course.images[0]}
                   width={200}
                   height={200}
-                  alt='slide-thumb'
+                  alt={course.title}
                 />
 
                 <div

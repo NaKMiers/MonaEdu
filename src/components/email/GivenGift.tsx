@@ -21,7 +21,7 @@ export function GivenGift({ order = orderSample }: { order?: any }) {
                     src={`${'https://monaedu.com'}/images/logo.jpg`}
                     width={35}
                     height={35}
-                    alt='logo'
+                    alt='Mona-Edu'
                   />
                 </a>
               </Column>

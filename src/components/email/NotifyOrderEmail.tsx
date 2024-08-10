@@ -21,7 +21,7 @@ export function NotifyOrderEmail({ order = orderSample }: { order?: any }) {
                     src={`${'https://monaedu.com'}/images/logo.png`}
                     width={35}
                     height={35}
-                    alt='logo'
+                    alt='Mona-Edu'
                   />
                 </a>
               </Column>

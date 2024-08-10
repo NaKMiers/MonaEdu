@@ -22,17 +22,17 @@ function TagRankTab({ className = '' }: TagRankTabProps) {
         const query = '?limit=no-limit&sort=createdAt|-1'
         const { courses } = await getAllCoursesApi(query)
 
-        // Tag Sold Rank
-        const tagSoldMap: { [key: string]: ITag & { joined: number } } = {}
+        // Tag Joined Rank
+        const tagJoinedMap: { [key: string]: ITag & { joined: number } } = {}
         courses.forEach((course: any) => {
           course.tags.forEach((tag: ITag) => {
-            if (!tagSoldMap[tag.slug]) {
-              tagSoldMap[tag.slug] = { ...tag, joined: 0 }
+            if (!tagJoinedMap[tag.slug]) {
+              tagJoinedMap[tag.slug] = { ...tag, joined: 0 }
             }
-            tagSoldMap[tag.slug].joined += course.joined || 0
+            tagJoinedMap[tag.slug].joined += course.joined || 0
           })
         })
-        const rankTags = Object.values(tagSoldMap).sort((a, b) => b.joined - a.joined)
+        const rankTags = Object.values(tagJoinedMap).sort((a, b) => b.joined - a.joined)
 
         setTags(rankTags)
       } catch (err: any) {

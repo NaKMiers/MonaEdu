@@ -83,7 +83,7 @@ function UserItem({
   // MARK: Handlers
   // validate form
   const handleValidate: SubmitHandler<FieldValues> = useCallback(
-    (formData) => {
+    formData => {
       let isValid = true
 
       // if type if percentage, value must have '%' at the end
@@ -110,7 +110,7 @@ function UserItem({
   )
 
   // submit collaborator form
-  const onSetCollaboratorSubmit: SubmitHandler<FieldValues> = async (formData) => {
+  const onSetCollaboratorSubmit: SubmitHandler<FieldValues> = async formData => {
     // validate form
     if (!handleValidate(formData)) return
 
@@ -225,9 +225,9 @@ function UserItem({
         } ${!isCurUser ? 'cursor-pointer' : ''} ${className}`}
         onClick={() =>
           !isCurUser &&
-          setSelectedUsers((prev) =>
+          setSelectedUsers(prev =>
             prev.includes(userData._id)
-              ? prev.filter((id) => id !== userData._id)
+              ? prev.filter(id => id !== userData._id)
               : [...prev, userData._id]
           )
         }
@@ -238,14 +238,14 @@ function UserItem({
           <Link
             href={`/user/${userData.username || userData.email}`}
             className='block float-start mr-3 rounded-md overflow-hidden'
-            onClick={(e) => e.stopPropagation()}
+            onClick={e => e.stopPropagation()}
           >
             <Image
               className='aspect-square'
               src={userData.avatar}
               height={65}
               width={65}
-              alt='thumbnail'
+              alt='avatar'
               title={userData._id}
             />
           </Link>
@@ -356,7 +356,7 @@ function UserItem({
         {isOpenSetCollaborator && (
           <div
             className='absolute z-20 p-21 top-0 left-0 w-full h-full flex flex-col items-center justify-center gap-2 rounded-md bg-yellow-400 bg-opacity-80'
-            onClick={(e) => {
+            onClick={e => {
               e.stopPropagation()
               setIsOpenSetCollaborator(false)
             }}
@@ -371,7 +371,7 @@ function UserItem({
               icon={RiCheckboxMultipleBlankLine}
               type='select'
               className='w-full'
-              onClick={(e) => e.stopPropagation()}
+              onClick={e => e.stopPropagation()}
               onFocus={() => clearErrors('type')}
               options={[
                 {
@@ -395,13 +395,13 @@ function UserItem({
                 type='text'
                 icon={HiLightningBolt}
                 className='w-full shadow-lg'
-                onClick={(e) => e.stopPropagation()}
+                onClick={e => e.stopPropagation()}
                 onFocus={() => clearErrors('value-' + data._id)}
               />
               <LoadingButton
                 className='px-4 h-[46px] flex items-center justify-center shadow-lg bg-secondary hover:bg-primary text-white rounded-lg font-semibold trans-200'
                 text='Set'
-                onClick={(e) => {
+                onClick={e => {
                   e.stopPropagation()
                   handleSubmit(onSetCollaboratorSubmit)(e)
                 }}
@@ -417,7 +417,7 @@ function UserItem({
             {/* Promote User Button */}
             <button
               className='block group'
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation()
                 userData.role === 'collaborator'
                   ? setIsOpenDemoteCollboratorConfirmationDialog(true)
@@ -441,7 +441,7 @@ function UserItem({
             {/* Block Comment Button */}
             <button
               className='block group'
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation()
                 setIsOpenBlockCommentConfirmationDialog(true)
               }}
@@ -468,7 +468,7 @@ function UserItem({
             {/* Block Add Question Button */}
             <button
               className='block group'
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation()
                 setIsOpenBlockAddQuestionConfirmationDialog(true)
               }}
@@ -495,7 +495,7 @@ function UserItem({
             {/* Delete Button */}
             <button
               className='block group'
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation()
                 setIsOpenConfirmModal(true)
               }}

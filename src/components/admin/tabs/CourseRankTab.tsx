@@ -101,7 +101,7 @@ function CourseRankTab({ className = '' }: CourseRankTabProps) {
                     src={course.images[0]}
                     width={60}
                     height={40}
-                    alt={course.slug}
+                    alt={course.title}
                     loading='lazy'
                   />
                 </Link>
