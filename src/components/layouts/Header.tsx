@@ -171,7 +171,7 @@ function Header({ className = '' }: HeaderProps) {
                 onClick={() => setIsOpenNotificationMenu(prev => !prev)}
               >
                 <FaBell size={24} />
-                {!!notifications.filter((n: any) => n.status === 'unread').length && (
+                {!!notifications.filter(n => n.status === 'unread').length && (
                   <span className='absolute -top-2 right-[-5px] bg-orange-400 rounded-full text-center px-[6px] py-[2px] text-[10px] font-bold flex items-center justify-center min-w-[24px]'>
                     {notifications.filter((n: any) => n.status === 'unread').length}
                   </span>
@@ -222,14 +222,16 @@ function Header({ className = '' }: HeaderProps) {
               </span>
             )}
           </Link>
+
           <button className='relative group' onClick={() => setIsOpenNotificationMenu(prev => !prev)}>
             <FaBell size={22} className='wiggle' />
-            {!!notifications?.length && (
+            {!!notifications?.filter(n => n.status === 'unread').length && (
               <span className='absolute -top-2 right-[-5px] bg-orange-400 rounded-full text-center px-[6px] py-[2px] text-[10px] font-bold'>
-                {notifications.length}
+                {notifications.filter(n => n.status === 'unread').length}
               </span>
             )}
           </button>
+
           <button
             className='flex justify-center items-center w-[40px] h-[40px]'
             onClick={() => setIsOpenMenu(prev => !prev)}

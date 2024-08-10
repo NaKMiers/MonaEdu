@@ -77,6 +77,8 @@ function Chapter({
       >
         {chapter.title}
         <div className='flex items-center gap-2'>
+          <span className='text-xs'>{chapter.lessons?.length} bài giảng</span>
+          {' - '}
           <span className='text-xs'>
             {duration(chapter.lessons?.reduce((total, lesson) => total + lesson.duration, 0) || 0)}
           </span>{' '}

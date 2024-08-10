@@ -46,6 +46,7 @@ export async function GET(req: NextRequest) {
     const suggestedCourses = await CourseModel.find({
       category: { $in: categoryIds },
       _id: { $nin: coursesInCart },
+      active: true,
     })
       .limit(8)
       .lean()
@@ -56,6 +57,7 @@ export async function GET(req: NextRequest) {
         _id: {
           $nin: [...coursesInCart, ...suggestedCourses.map(course => course._id)],
         },
+        active: true,
       })
         .limit(8 - suggestedCourses.length)
         .sort({ joined: -1 })

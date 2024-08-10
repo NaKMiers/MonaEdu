@@ -172,6 +172,11 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
       // get all order without filter
       CourseModel.aggregate([
         {
+          $match: {
+            active: true,
+          },
+        },
+        {
           $group: {
             _id: null,
             minPrice: { $min: '$Price' },

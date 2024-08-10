@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 }
 
 async function Home() {
-  let courses: ICourse[] = []
+  let bannerCourses: ICourse[] = []
   let bestSellers: ICourse[] = []
   let newCourses: ICourse[] = []
   let bootedCourses: {
@@ -28,7 +28,7 @@ async function Home() {
   try {
     const data = await getHomePageApi('', { next: { revalidate: 60 } })
 
-    courses = data.courses
+    bannerCourses = data.bannerCourses
     bestSellers = data.bestSellers
     newCourses = data.newCourses
     bootedCourses = data.groupedBootedCourses
@@ -67,7 +67,7 @@ async function Home() {
       <script type='application/ld+json' dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       {/* Banner */}
-      <Banner courses={courses} />
+      <Banner courses={bannerCourses} />
 
       <Divider size={40} />
 

@@ -51,11 +51,14 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
       })
         .sort({ order: 1 })
         .lean(),
+
       LessonModel.find({
         courseId: course._id,
         active: true,
       }).lean(),
+
       CourseModel.find({
+        active: true,
         category: { $in: categoryIds },
         _id: { $ne: course._id },
       })
@@ -78,6 +81,7 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
         _id: {
           $nin: [course._id, ...relatedCourses.map(course => course._id)],
         },
+        active: true,
       })
         .limit(8 - relatedCourses.length)
         .sort({ joined: -1 })

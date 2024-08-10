@@ -13,7 +13,7 @@ import '@/models/TagModel'
 
 export const dynamic = 'force-dynamic'
 
-// [GET]: /admin/course/all
+// [GET]: /course
 export async function GET(req: NextRequest) {
   console.log('- Get All Courses -')
 
@@ -123,6 +123,7 @@ export async function GET(req: NextRequest) {
 
       // get all order without filter
       CourseModel.aggregate([
+        { $match: { active: true } },
         {
           $group: {
             _id: null,

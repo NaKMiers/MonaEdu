@@ -188,7 +188,7 @@ function FloatingActionButtons({ course: data, className = '' }: FloatingActionB
       )}
 
       {curUser?._id && curUser.courses.map((course: any) => course.course).includes(course._id) && (
-        <div className='text-white relative flex justify-end items-center w-[30px] h-[42px]'>
+        <div className='text-dark relative flex justify-end items-center w-[30px] h-[42px]'>
           <button className='group' onClick={() => setShowActions(prev => !prev)}>
             <HiDotsVertical size={24} className='wiggle' />
           </button>

@@ -36,17 +36,31 @@ export const isToday = (date: Date): boolean => {
 }
 
 export const duration = (seconds: number, type: 'short' | 'long' = 'short') => {
-  const h = Math.floor(seconds / 3600)
-  const m = Math.floor((seconds % 3600) / 60)
+  const duration = moment.duration(seconds, 'seconds')
 
   if (type === 'short') {
-    // format: hh:mm
-    const hh = `${h}h`
-    const mm = `${m}m`
-    return `${h > 0 ? hh : ''}${m > 0 ? mm : ''}`
+    if (duration.hours() === 0) {
+      return moment.utc(seconds * 1000).format('mm:ss')
+    } else {
+      return moment.utc(seconds * 1000).format('HH:mm:ss')
+    }
   } else if (type === 'long') {
-    // format: 1 giờ 2 phút
-    return `${h > 0 ? `${h} giờ` : ''} ${m > 0 ? `${m} phút` : ''}`
+    const hours = duration.hours()
+    const minutes = duration.minutes()
+    const seconds = duration.seconds()
+
+    let formattedTime = ''
+
+    if (hours > 0) {
+      formattedTime += `${hours} giờ `
+    }
+    if (minutes > 0) {
+      formattedTime += `${minutes} phút `
+    }
+    if (seconds > 0) {
+      formattedTime += `${seconds} giây`
+    }
+    return formattedTime
   }
 }
 

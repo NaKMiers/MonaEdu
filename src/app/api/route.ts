@@ -17,7 +17,7 @@ export async function GET() {
     // connect to database
     await connectDatabase()
 
-    const [courses, bestSellers, newCourses, bootedCourses] = await Promise.all([
+    const [bannerCourses, bestSellers, newCourses, bootedCourses] = await Promise.all([
       // get courses
       CourseModel.find({
         active: true,
@@ -30,13 +30,13 @@ export async function GET() {
         .lean(),
 
       // get best sellers
-      CourseModel.find().sort({ joined: -1 }).limit(8).lean(),
+      CourseModel.find({ active: true }).sort({ joined: -1 }).limit(8).lean(),
 
       // get new courses
-      CourseModel.find().sort({ createdAt: -1 }).limit(8).lean(),
+      CourseModel.find({ active: true }).sort({ createdAt: -1 }).limit(8).lean(),
 
       // get booted courses
-      CourseModel.find({ booted: true }).populate({
+      CourseModel.find({ booted: true, active: true }).populate({
         path: 'category',
         select: 'title slug',
       }),
@@ -66,7 +66,10 @@ export async function GET() {
     })
 
     // return response
-    return NextResponse.json({ courses, bestSellers, newCourses, groupedBootedCourses }, { status: 200 })
+    return NextResponse.json(
+      { bannerCourses, bestSellers, newCourses, groupedBootedCourses },
+      { status: 200 }
+    )
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })
   }

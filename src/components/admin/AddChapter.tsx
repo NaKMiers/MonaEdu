@@ -69,7 +69,7 @@ function AddChapter({
 
   // handle add new chapter to course
   const handleAddChapter: SubmitHandler<FieldValues> = useCallback(
-    async (data) => {
+    async data => {
       // start loading
       setLoading(true)
 
@@ -77,7 +77,7 @@ function AddChapter({
         const { newChapter, message } = await addNewChapterApi(courseId, data)
 
         // update states
-        setChapters((prev) => [...prev, newChapter])
+        setChapters(prev => [...prev, newChapter])
 
         // reset form
         reset()
@@ -97,7 +97,7 @@ function AddChapter({
 
   // handle update chapter
   const handleUpdateChapter: SubmitHandler<FieldValues> = useCallback(
-    async (data) => {
+    async data => {
       if (!editingValues?._id) return
 
       // start loading
@@ -107,12 +107,15 @@ function AddChapter({
         const { updatedChapter, message } = await updateChapterApi(editingValues._id, data)
 
         // update states
-        setChapters((prev) =>
-          prev.map((chapter) => (chapter._id === updatedChapter._id ? updatedChapter : chapter))
+        setChapters(prev =>
+          prev.map(chapter => (chapter._id === updatedChapter._id ? updatedChapter : chapter))
         )
 
         // reset form
         reset()
+
+        // reset editing values
+        setEditingValues(null)
 
         // notify success
         toast.success(message)
@@ -124,7 +127,7 @@ function AddChapter({
         setLoading(false)
       }
     },
-    [reset, setChapters, editingValues]
+    [reset, setChapters, setEditingValues, editingValues]
   )
 
   return (
