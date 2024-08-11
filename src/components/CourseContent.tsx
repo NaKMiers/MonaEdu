@@ -4,10 +4,10 @@ import { useAppDispatch } from '@/libs/hooks'
 import { addRecentlyVisitCourses } from '@/libs/reducers/courseReducer'
 import { IChapter } from '@/models/ChapterModel'
 import { ICourse } from '@/models/CourseModel'
+import { duration } from '@/utils/time'
 import { memo, useState } from 'react'
 import Chapter from './Chapter'
 import Divider from './Divider'
-import { duration } from '@/utils/time'
 
 interface CourseContentProps {
   course: ICourse
@@ -28,8 +28,6 @@ function CourseContent({ course, chapters, className = '' }: CourseContentProps)
       total + (chapter.lessons?.reduce((total, lesson) => total + lesson.duration, 0) || 0),
     0
   )
-
-  console.log('totalDuration:', totalDuration)
 
   // add to recently visit courses
   dispatch(addRecentlyVisitCourses([course]))

@@ -32,9 +32,14 @@ export const course = createSlice({
     addRecentlyVisitCourses: (state, action: PayloadAction<ICourse[]>) => {
       const payload = action.payload.map(course => ({ ...course, lastVisit: new Date() }))
       const courses = [...payload, ...state.recentlyVisitCourses]
-      const uniqueCourses = courses.filter(
+      let uniqueCourses = courses.filter(
         (course, index, self) => index === self.findIndex(t => t._id === course._id)
       )
+      // make sure only no more than 16 courses are stored
+      if (uniqueCourses.length > 16) {
+        uniqueCourses = uniqueCourses.slice(0, 16)
+      }
+
       localStorage.setItem('recentlyVisit', JSON.stringify(uniqueCourses))
       return {
         ...state,
