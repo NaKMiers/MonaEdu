@@ -406,13 +406,17 @@ function FilterAndSearch({ searchParams, subs, chops, className = '' }: FilterAn
 
       {/* Mobile */}
       <div className='md:hidden flex justify-between w-full items-center gap-3 border-b border-dark pt-3 pb-5'>
-        <button
-          className='group flex items-center justify-center text-nowrap gap-2 rounded-lg border-b-2 hover:bg-primary border-neutral-700 drop-shadow-lg shadow-md text-md font-body tracking-wider py-1 px-3 trans-300'
-          onClick={() => setOpenSubs(prev => !prev)}
-        >
-          <HiOutlineMenuAlt3 size={16} className='wiggle' />
-          <span>Danh mục con</span>
-        </button>
+        {!!subs.length ? (
+          <button
+            className='group flex items-center justify-center text-nowrap gap-2 rounded-lg border-b-2 hover:bg-primary border-neutral-700 drop-shadow-lg shadow-md text-md font-body tracking-wider py-1 px-3 trans-300'
+            onClick={() => setOpenSubs(prev => !prev)}
+          >
+            <HiOutlineMenuAlt3 size={16} className='wiggle' />
+            <span>Danh mục con</span>
+          </button>
+        ) : (
+          <div />
+        )}
 
         <button
           className='group flex items-center justify-center text-nowrap gap-2 rounded-lg border-b-2 hover:bg-primary border-neutral-700 drop-shadow-lg shadow-md text-md font-body tracking-wider py-1 px-3 trans-300'

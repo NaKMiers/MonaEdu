@@ -101,7 +101,7 @@ async function CategoryPage({ searchParams }: { searchParams?: { [key: string]: 
 
       {/* Body */}
       <div className='md:px-21 md:mt-10'>
-        <div className='flex flex-col md:flex-row bg-white rounded-b-lg md:rounded-lg gap-21 p-3 md:p-21 shadow-lg'>
+        <div className='flex flex-col md:flex-row bg-white rounded-b-lg md:rounded-lg gap-x-21 p-3 md:p-21 shadow-lg'>
           {/* Filter & Search */}
           <div className='flex justify-between md:max-w-[200px] lg:max-w-[250px] w-full flex-shrink-0'>
             <FilterAndSearch searchParams={searchParams} subs={subs} chops={chops} />
