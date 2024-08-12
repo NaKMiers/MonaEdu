@@ -1,5 +1,7 @@
+import AllCourses from '@/components/AllCourses'
 import Banner from '@/components/Banner'
 import Divider from '@/components/Divider'
+import Pagination from '@/components/layouts/Pagination'
 import BestSeller from '@/components/ranks/BestSeller'
 import FeatureCourses from '@/components/ranks/FeatureCourses'
 import RecentlyVisit from '@/components/ranks/RecentlyVisit'
@@ -8,6 +10,7 @@ import TopNewCourses from '@/components/ranks/TopNewCourses'
 import { ICategory } from '@/models/CategoryModel'
 import { ICourse } from '@/models/CourseModel'
 import { getHomePageApi } from '@/requests'
+import { handleQuery } from '@/utils/handleQuery'
 import { Metadata } from 'next'
 import Image from 'next/image'
 
@@ -16,7 +19,7 @@ export const metadata: Metadata = {
   description: 'Mona Edu - Học trực tuyến mọi lúc, mọi nơi',
 }
 
-async function Home() {
+async function Home({ searchParams }: { searchParams?: { [key: string]: string[] } }) {
   let bannerCourses: ICourse[] = []
   let bestSellers: ICourse[] = []
   let newCourses: ICourse[] = []
@@ -24,16 +27,38 @@ async function Home() {
     category: ICategory
     courses: ICourse[]
   }[] = []
+  let courses: ICourse[] = []
+  let amount: number = 0
 
   try {
-    const data = await getHomePageApi('', { next: { revalidate: 60 } })
+    const query = handleQuery(searchParams)
+    const data = await getHomePageApi(query, { next: { revalidate: 60 } })
 
     bannerCourses = data.bannerCourses
     bestSellers = data.bestSellers
     newCourses = data.newCourses
     bootedCourses = data.groupedBootedCourses
+    courses = data.courses
+    amount = data.amount
   } catch (err: any) {
     console.log(err)
+  }
+
+  const courseList = (courses: ICourse[]) => {
+    return courses.map(course => ({
+      '@type': 'Course',
+      name: course.title,
+      description: course.description,
+      url: `${process.env.NEXT_PUBLIC_APP_URL}/${course.slug}`,
+      provider: {
+        '@type': 'Organization',
+        name: 'Mona Edu',
+        logo: {
+          '@type': 'ImageObject',
+          url: `${process.env.NEXT_PUBLIC_APP_URL}/images/logo.png`,
+        },
+      },
+    }))
   }
 
   // jsonLD
@@ -55,10 +80,21 @@ async function Home() {
       },
     },
     sameAs: [
-      'https://www.facebook.com/anphashop',
-      'https://www.twitter.com/anphashop',
-      'https://www.twitter.com/anphashop',
+      'https://www.facebook.com/mona.education',
+      'https://www.instagram.com/mona.education',
+      'https://www.messenger.com/t/337011316169917',
     ],
+    hasPart: {
+      ...courseList(bannerCourses),
+      ...courseList(bestSellers),
+      ...courseList(newCourses),
+      ...bootedCourses.map(group => ({
+        '@type': 'ItemList',
+        name: group.category.title,
+        itemListElement: courseList(group.courses),
+      })),
+      ...courseList(courses),
+    },
   }
 
   return (
@@ -91,10 +127,16 @@ async function Home() {
 
       <Divider size={40} />
 
+      {/* All Courses */}
+      <AllCourses courses={courses} />
+      <Pagination searchParams={searchParams} amount={amount} itemsPerPage={12} />
+
+      <Divider size={30} />
+
       {/* Recently Visit */}
       <RecentlyVisit />
 
-      <Divider size={30} />
+      <Divider size={40} />
 
       {/* Let Buy Courses Of Author Banner */}
       <Image

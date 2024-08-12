@@ -1,44 +1,33 @@
-import BreadcrumbBanner from '@/components/BreadcrumbBanner'
+import BeamsBackground from '@/components/backgrounds/BeamsBackground'
 import CourseCard from '@/components/CourseCard'
 import Divider from '@/components/Divider'
 import FilterAndSearch from '@/components/FilterAndSearch'
 import Pagination from '@/components/layouts/Pagination'
-import QuickSortTabs from '@/components/QuickSortTabs'
-import { ICategory } from '@/models/CategoryModel'
+import ShortPagination from '@/components/layouts/ShortPagination'
 import { ICourse } from '@/models/CourseModel'
-import { getCategoryPageApi } from '@/requests'
+import { getCoursesPageApi } from '@/requests'
 import { handleQuery } from '@/utils/handleQuery'
 import { Metadata } from 'next'
-import { headers } from 'next/headers'
-import { notFound } from 'next/navigation'
+import Link from 'next/link'
+import { FaAngleRight } from 'react-icons/fa'
 
 export const metadata: Metadata = {
-  title: 'Danh mục khóa học - Mona Edu',
+  title: 'Tất cả khóa học - Mona Edu',
   description: 'Mona Edu - Học trực tuyến mọi lúc, mọi nơi',
 }
 
-async function CategoryPage({ searchParams }: { searchParams?: { [key: string]: string[] } }) {
-  const headerList = headers()
-  const pathname = headerList.get('x-current-path')
-  const slug = pathname?.split('/categories/').pop()
-
+async function CoursesPage({ searchParams }: { searchParams?: { [key: string]: string[] } }) {
   // data
-  let category: ICategory | null = null
-  let subs: ICategory[] = []
   let courses: ICourse[] = []
   let amount: number = 0
   let chops: any = null
 
   // get data
   try {
-    if (!slug) throw new Error('Không tìm thấy danh mục')
-
     const query = handleQuery(searchParams)
 
     // get data
-    const data = await getCategoryPageApi(slug, query, { next: { revalidate: 60 } })
-    category = data.category
-    subs = data.subs
+    const data = await getCoursesPageApi(query, { next: { revalidate: 60 } })
     courses = data.courses
     amount = data.amount
     chops = data.chops
@@ -72,18 +61,6 @@ async function CategoryPage({ searchParams }: { searchParams?: { [key: string]: 
         },
       },
     })),
-    about: {
-      '@type': 'Category',
-      name: category?.title,
-      description: category?.description,
-      url: `${process.env.NEXT_PUBLIC_APP_URL}/categories/${category?.slug}`,
-    },
-    hasPart: subs.map(sub => ({
-      '@type': 'Category',
-      name: sub.title,
-      description: sub.description,
-      url: `${process.env.NEXT_PUBLIC_APP_URL}/categories/${sub.slug}`,
-    })),
   }
 
   return (
@@ -92,26 +69,49 @@ async function CategoryPage({ searchParams }: { searchParams?: { [key: string]: 
       <script type='application/ld+json' dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       {/* Banner */}
-      <BreadcrumbBanner
-        background={category?.image}
-        title={category?.title || 'Danh Mục'}
-        description={category?.description || 'Danh sách các khóa học trong danh mục này'}
-        className='md:shadow-medium md:rounded-b-lg rounded-none h-[calc(300px+72px)] -mt-[72px] pt-[72px]'
-      />
+      <div className='relative flex flex-col justify-center items-center p-3 overflow-y-auto bg-neutral-950 bg-opacity-50 mx-auto overflow-hidden md:shadow-medium md:rounded-b-lg rounded-none h-[calc(300px+72px)] -mt-[72px] pt-[72px]'>
+        <div className='absolute inset-0 w-full h-full bg-slate-900 z-20 [mask-image:radial-gradient(transparent,white)] pointer-events-none' />
+        <BeamsBackground />
+
+        <div className='flex items-center flex-wrap justify-center gap-x-3 gap-y-1 relative z-20 text-slate-400 text-nowrap'>
+          <Link href='/' className='hover:text-primary trans-200 hover:drop-shadow-md'>
+            trang-chu
+          </Link>
+          <FaAngleRight size={14} />
+          <Link href='/courses' className='hover:text-primary trans-200 hover:drop-shadow-md'>
+            tat-ca-khoa-hoc
+          </Link>
+        </div>
+
+        <Divider size={3} />
+
+        <h2 className='text-white text-2xl md:text-6xl font-bold text-center relative z-20'>
+          Tất Cả Khóa Học
+        </h2>
+        <p className='text-white text-sm md:text-base max-w-xl mt-6 text-center relative z-20'>
+          Mona Edu - Học trực tuyến mọi lúc, mọi nơi
+        </p>
+      </div>
 
       {/* Body */}
       <div className='md:px-21 md:mt-10'>
         <div className='flex flex-col md:flex-row bg-white rounded-b-lg md:rounded-lg gap-21 p-3 md:p-21 shadow-lg'>
           {/* Filter & Search */}
           <div className='flex justify-between md:max-w-[200px] lg:max-w-[250px] w-full flex-shrink-0'>
-            <FilterAndSearch searchParams={searchParams} subs={subs} chops={chops} />
+            <FilterAndSearch searchParams={searchParams} subs={[]} chops={chops} />
           </div>
 
           {/* Main */}
           <div className='flex-1 w-full'>
-            {/* Top */}
-            <QuickSortTabs searchParams={searchParams} amount={amount} />
-
+            <div className='flex flex-wrap gap-2 w-full'>
+              {/* Mini Pagination */}
+              <ShortPagination
+                searchParams={searchParams}
+                amount={amount}
+                itemsPerPage={16}
+                className='justify-end hidden md:flex flex-1'
+              />
+            </div>
             <Divider size={8} />
 
             {/* List */}
@@ -140,4 +140,4 @@ async function CategoryPage({ searchParams }: { searchParams?: { [key: string]: 
   )
 }
 
-export default CategoryPage
+export default CoursesPage

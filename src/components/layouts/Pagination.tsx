@@ -71,12 +71,12 @@ function Pagination({
     const handleKeydown = (e: KeyboardEvent) => {
       // left arrow
       if (e.key === 'ArrowLeft' && currentPage > 1) {
-        router.push(getPageLink(currentPage - 1))
+        router.push(getPageLink(currentPage - 1), { scroll: false })
       }
 
       // right arrow
       if (e.key === 'ArrowRight' && currentPage < pageAmount) {
-        router.push(getPageLink(currentPage + 1))
+        router.push(getPageLink(currentPage + 1), { scroll: false })
       }
     }
 
@@ -96,6 +96,7 @@ function Pagination({
             href={getPageLink(currentPage <= 1 ? 1 : currentPage - 1)}
             className='rounded-lg border-2 border-transparent py-[6px] px-2 bg-white hover:bg-secondary hover:border-white text-dark hover:text-white trans-200 border-slate-200'
             title={`👈 Trang ${currentPage <= 1 ? 1 : currentPage - 1}`}
+            scroll={false}
           >
             Trước
           </Link>
@@ -107,6 +108,7 @@ function Pagination({
             <Link
               href={getPageLink(page || 0)}
               onClick={e => page || e.preventDefault()}
+              scroll={false}
               className={`rounded-lg border-2 py-[6px] px-4 hover:bg-secondary hover:text-white hover:border-white ${
                 dark ? 'text-dark' : 'text-white'
               } ${!page ? 'pointer-events-none' : ''} trans-200 ${
@@ -125,6 +127,7 @@ function Pagination({
             href={getPageLink(currentPage >= pageAmount ? pageAmount : currentPage + 1)}
             className='rounded-lg border-2 border-transparent py-[6px] px-2 bg-white hover:bg-secondary hover:border-white text-dark hover:text-white trans-200 border-slate-200'
             title={`👉 Trang ${currentPage >= pageAmount ? pageAmount : currentPage + 1}`}
+            scroll={false}
           >
             Sau
           </Link>

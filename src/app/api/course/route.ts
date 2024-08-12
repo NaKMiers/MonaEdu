@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
     // get query params
     const params: { [key: string]: string[] } = searchParamsToObject(req.nextUrl.searchParams)
 
-    // // options
+    // options
     let skip = 0
     let itemPerPage = 16
     const filter: { [key: string]: any } = { active: true }
@@ -108,7 +108,7 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    // get amount of courses | get all courses from database | get all order without filter
+    // get amount of courses | get all courses from database
     const [amount, courses, chops] = await Promise.all([
       // get amount of courses
       CourseModel.countDocuments(filter),
@@ -121,7 +121,7 @@ export async function GET(req: NextRequest) {
         .limit(itemPerPage)
         .lean(),
 
-      // get all order without filter
+      // get chops
       CourseModel.aggregate([
         { $match: { active: true } },
         {

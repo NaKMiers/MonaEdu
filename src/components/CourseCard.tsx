@@ -256,7 +256,7 @@ function CourseCard({ course: data, hideBadge, className = '' }: CourseCardProps
               <Link
                 href={`/${course.slug}`}
                 prefetch={false}
-                className='font-body text-[14px] md:text-[21px] tracking-wider leading-[18px] md:leading-[24px] mb-1 md:mb-2 text-ellipsis line-clamp-2'
+                className='font-body text-[14px] md:text-[21px] tracking-wider leading-[20px] md:leading-[28px] mb-1 md:mb-2 text-ellipsis line-clamp-2'
                 title={course.title}
               >
                 {course.title}

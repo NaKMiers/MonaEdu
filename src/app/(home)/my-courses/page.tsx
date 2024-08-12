@@ -63,7 +63,7 @@ function MyCoursesPage({ searchParams }: { searchParams?: { [key: string]: strin
       {/* MAIN List */}
       {!!courses.length ? (
         <div className='grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-21'>
-          {courses.map((course) => (
+          {courses.map(course => (
             <CourseCard course={course} key={course._id} hideBadge />
           ))}
         </div>

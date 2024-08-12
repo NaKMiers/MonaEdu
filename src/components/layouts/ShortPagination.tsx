@@ -48,12 +48,12 @@ function ShortPagination({
     const handleKeydown = (e: KeyboardEvent) => {
       // left arrow
       if (e.key === 'ArrowLeft' && currentPage > 1) {
-        router.push(getPageLink(currentPage - 1))
+        router.push(getPageLink(currentPage - 1), { scroll: false })
       }
 
       // right arrow
       if (e.key === 'ArrowRight' && currentPage < pageAmount) {
-        router.push(getPageLink(currentPage + 1))
+        router.push(getPageLink(currentPage + 1), { scroll: false })
       }
     }
 
@@ -73,6 +73,7 @@ function ShortPagination({
             href={getPageLink(currentPage <= 1 ? 1 : currentPage - 1)}
             className='min-w-[70px] flex items-center justify-center rounded-full border-2 h-full border-primary px-2 hover:bg-secondary hover:border-secondary shadow-lg drop-shadow-lg text-dark hover:text-white trans-200'
             title={`👈 Trang ${currentPage <= 1 ? 1 : currentPage - 1}`}
+            scroll={false}
           >
             Trước
           </Link>
@@ -91,6 +92,7 @@ function ShortPagination({
             href={getPageLink(currentPage >= pageAmount ? pageAmount : currentPage + 1)}
             className='min-w-[70px] flex items-center justify-center rounded-full border-2 h-full border-primary px-2 hover:bg-secondary hover:border-secondary shadow-lg drop-shadow-lg text-dark hover:text-white trans-200'
             title={`👉 Trang ${currentPage >= pageAmount ? pageAmount : currentPage + 1}`}
+            scroll={false}
           >
             Sau
           </Link>

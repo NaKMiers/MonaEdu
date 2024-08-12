@@ -165,7 +165,7 @@ function AllCourseChaptersPage({
       })
 
       // push to router
-      router.push(pathname + query)
+      router.push(pathname + query, { scroll: false })
     },
     [handleOptimizeFilter, router, searchParams, pathname]
   )
@@ -173,7 +173,7 @@ function AllCourseChaptersPage({
   // handle reset filter
   const handleResetFilter = useCallback(() => {
     reset()
-    router.push(pathname)
+    router.push(pathname, { scroll: false })
   }, [reset, router, pathname])
 
   // keyboard event

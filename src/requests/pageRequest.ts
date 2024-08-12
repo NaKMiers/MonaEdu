@@ -35,6 +35,24 @@ export const getCoursePageApi = async (
   return await res.json()
 }
 
+// [GET]: /courses/all
+export const getCoursesPageApi = async (
+  query: string = '',
+  option: RequestInit = {
+    cache: 'no-store',
+  }
+) => {
+  // no cache
+  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/course/all${query}`, option)
+
+  // check status
+  if (!res.ok) {
+    throw new Error((await res.json()).message)
+  }
+
+  return await res.json()
+}
+
 // [GET]: /tag
 export const getTagsPageApi = async (
   query: string = '',

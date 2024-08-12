@@ -35,7 +35,7 @@ function QuickSortTabs({ searchParams, amount, className = '' }: QuickSortTabsPr
         ...searchParams,
       })
 
-      router.push(pathname + query)
+      router.push(pathname + query, { scroll: false })
     },
     [searchParams, router, pathname]
   )

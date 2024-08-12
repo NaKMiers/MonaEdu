@@ -88,6 +88,7 @@ const CourseSchema = new Schema(
     },
     duration: {
       type: Number, // seconds
+      default: 0,
     },
     booted: {
       type: Boolean,

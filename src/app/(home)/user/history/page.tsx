@@ -138,7 +138,7 @@ function HistoryPage({ searchParams }: { searchParams?: { [key: string]: string[
     })
 
     // push to router
-    router.push(pathname + query)
+    router.push(pathname + query, { scroll: false })
   }, [pathname, router, searchParams, search, total, sort, from, to])
 
   // auto filter after timeout (part-1): prevent filter when pathname change

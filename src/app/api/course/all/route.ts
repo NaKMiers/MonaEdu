@@ -1,37 +1,20 @@
 import { connectDatabase } from '@/config/database'
-import CategoryModel, { ICategory } from '@/models/CategoryModel'
 import CourseModel from '@/models/CourseModel'
 import { searchParamsToObject } from '@/utils/handleQuery'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Models: Category, Course
-import '@/models/CategoryModel'
+// Models: Course
 import '@/models/CourseModel'
 
 export const dynamic = 'force-dynamic'
 
-// [GET]: /api/category/[slug]
-export async function GET(req: NextRequest, { params: { slug } }: { params: { slug: string[] } }) {
-  console.log('- Get Category By Slug -')
+// [GET]: /admin/course/all
+export async function GET(req: NextRequest) {
+  console.log('- Get All Courses -')
 
   try {
-    // connect database
+    // connect to database
     await connectDatabase()
-
-    // get category by slug
-    const category: ICategory | null = await CategoryModel.findOne({
-      slug: slug.join('/'),
-    }).lean()
-
-    // check if category not found
-    if (!category) {
-      return NextResponse.json({ message: 'Không tìm thấy danh mục' }, { status: 404 })
-    }
-
-    // get category ids
-    const categoryIds: any = await CategoryModel.find({
-      slug: { $regex: category.slug, $options: 'i' },
-    }).select('_id')
 
     // get query params
     const params: { [key: string]: string[] } = searchParamsToObject(req.nextUrl.searchParams)
@@ -39,13 +22,10 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
     // options
     let skip = 0
     let itemPerPage = 16
-    const filter: { [key: string]: any } = {
-      category: { $in: categoryIds },
-      active: true,
-    }
+    const filter: { [key: string]: any } = {}
     let sort: { [key: string]: any } = { updatedAt: -1 } // default sort
 
-    // build filter & sort
+    // build filter
     for (const key in params) {
       if (params.hasOwnProperty(key)) {
         // Special Cases ---------------------
@@ -120,54 +100,18 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
           continue
         }
 
-        // Special Sort Cases ---------------------
-        if (key === 'sort') {
-          delete sort.updatedAt
-
-          if (params[key][0] === 'popular') {
-            sort.joined = -1
-            continue
-          }
-
-          if (params[key][0] === 'newest') {
-            sort.createdAt = -1
-            continue
-          }
-
-          if (params[key][0] === 'oldest') {
-            sort.createdAt = 1
-            continue
-          }
-
-          if (params[key][0] === 'most-favorite') {
-            sort = { likesCount: -1 }
-            continue
-          }
-
-          continue
-        }
-
         // Normal Cases ---------------------
         filter[key] = params[key].length === 1 ? params[key][0] : { $in: params[key] }
       }
     }
 
-    // get subs categories,  get all courses of current categories, get chops
-    const [subs, courses, amount, chops] = await Promise.all([
-      // get all sub categories
-      CategoryModel.find({ parentId: category._id }).lean(),
+    // count amount, get all courses, get all tags and categories, get all order
+    const [amount, courses, chops] = await Promise.all([
+      // get amount of course
+      CourseModel.countDocuments(filter),
 
-      // get all courses of current categories
-      CourseModel.aggregate([
-        { $match: filter },
-        { $addFields: { likesCount: { $size: '$likes' } } },
-        { $sort: sort },
-        { $skip: skip },
-        { $limit: itemPerPage },
-      ]).exec(),
-
-      // get amount of courses
-      await CourseModel.countDocuments(filter),
+      // get all courses from database
+      CourseModel.find(filter).sort(sort).skip(skip).limit(itemPerPage).lean(),
 
       // get chops
       CourseModel.aggregate([
@@ -186,8 +130,8 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
       ]),
     ])
 
-    // return response
-    return NextResponse.json({ category, subs, courses, amount, chops: chops[0] }, { status: 200 })
+    // return all courses
+    return NextResponse.json({ courses, amount, chops: chops[0] }, { status: 200 })
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })
   }

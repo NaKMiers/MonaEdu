@@ -17,10 +17,11 @@ import BottomGradient from './gradients/BottomGradient'
 interface FilterAndSearchProps {
   searchParams: { [key: string]: string[] | string } | undefined
   subs: ICategory[]
+  chops?: any
   className?: string
 }
 
-function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearchProps) {
+function FilterAndSearch({ searchParams, subs, chops, className = '' }: FilterAndSearchProps) {
   // hook
   const pathname = usePathname()
   const router = useRouter()
@@ -38,7 +39,7 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
   const preventFilter = useRef<boolean>(true)
   const [search, setSearch] = useState<string>('')
 
-  const [price, setPrice] = useState<number[]>([0, 1000000])
+  const [price, setPrice] = useState<number[]>([chops?.minPrice || 0, chops?.maxPrice || 1000000])
   const [duration, setDuration] = useState<number[]>([0, 30])
 
   const [showSortPrice, setShowSortPrice] = useState(false)
@@ -258,8 +259,8 @@ function FilterAndSearch({ searchParams, subs, className = '' }: FilterAndSearch
 
             <Slider
               value={price}
-              min={0}
-              max={1000000}
+              min={chops?.minPrice || 0}
+              max={chops?.maxPrice || 1000000}
               step={10000}
               className='w-full -mb-1.5'
               onChange={(_, newValue: number | number[]) => setPrice(newValue as number[])}

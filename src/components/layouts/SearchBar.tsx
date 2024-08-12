@@ -111,7 +111,7 @@ function SearchBar() {
 
         <input
           type='text'
-          placeholder='Search...'
+          placeholder='Bạn muốn học gì?...'
           className={`${
             searchValue.trim() ? '' : 'pl-[20px]'
           } trans-500 appearance-none w-full h-full font-body tracking-wider pb-0.5 outline-none rounded-0 bg-white`}
@@ -144,7 +144,7 @@ function SearchBar() {
       {/* Search Results */}
       <ul
         className={`${
-          searchResults && openResults ? 'max-h-[500px] p-2 shadow-medium' : 'max-h-0 p-0'
+          searchResults && openResults ? 'max-h-[calc(100vh-100px)] p-2 shadow-medium' : 'max-h-0 p-0'
         } absolute z-20 bottom-full md:bottom-auto md:top-full left-0 w-full rounded-lg bg-neutral-800 text-light gap-2 overflow-y-auto transition-all duration-300`}
       >
         {searchResults?.length ? (

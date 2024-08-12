@@ -1,7 +1,9 @@
 import Divider from '@/components/Divider'
+import AllCoursesX from '@/components/loading/AllCoursesX'
 import BannerX from '@/components/loading/BannerX'
 import BestSellerX from '@/components/loading/BestSellerX'
 import FeatureCoursesX from '@/components/loading/FeatureCoursesX'
+import PaginationX from '@/components/loading/PaginationX'
 import TopCategoriesX from '@/components/loading/TopCategoriesX'
 import TopNewCoursesX from '@/components/loading/TopNewCoursesX'
 import RecentlyVisit from '@/components/ranks/RecentlyVisit'
@@ -31,10 +33,18 @@ async function HomeX() {
 
       {/* Top 8 Categories */}
       <TopCategoriesX />
-      <Divider size={24} />
+
+      <Divider size={40} />
+
+      {/* All Courses */}
+      <AllCoursesX />
+      <PaginationX />
+
+      <Divider size={30} />
 
       {/* Recently Visit */}
       <RecentlyVisit />
+      <Divider size={40} />
 
       <Divider size={54} />
     </div>

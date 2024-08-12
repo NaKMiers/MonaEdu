@@ -9,7 +9,7 @@ import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
+import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 
@@ -37,82 +37,71 @@ function Banner({ time, courses, className = '' }: SliderProps) {
   const indicatorRef = useRef<HTMLDivElement>(null)
 
   // MARK: Slide Functions
-  // change slide main function
-  useEffect(() => {
+  const changeSlide = useCallback((value: number) => {
     if (slideTrackRef.current && indicatorRef.current) {
-      slideTrackRef.current.style.marginLeft = `calc(-100% * ${slide})`
-      indicatorRef.current.scrollTo({
-        left: (slide - 1) * indicatorRef.current.children[0].clientWidth,
+      const slideWidth = slideTrackRef.current.children[0].clientWidth
+
+      slideTrackRef.current.scrollTo({
+        left: slideWidth * (value - 1),
         behavior: 'smooth',
       })
+
+      console.log('value', value)
+
+      setSlide(value)
     }
-  }, [slide])
-
-  // to next slide
-  const nextSlide = useCallback(() => {
-    // not sliding
-    if (!isSliding) {
-      // start sliding
-      setIsSliding(true)
-
-      if (slide === courses.length) {
-        setSlide(courses.length + 1)
-
-        setTimeout(() => {
-          if (slideTrackRef.current) {
-            slideTrackRef.current.style.transition = 'none'
-            setSlide(1)
-          }
-        }, 310)
-
-        setTimeout(() => {
-          if (slideTrackRef.current) {
-            // slideTrackRef.current.style.transition = 'all 0.3s linear'
-          }
-        }, 350)
-      } else {
-        setSlide(prev => prev + 1)
-      }
-
-      // stop sliding after slided
-      setTimeout(() => {
-        setIsSliding(false)
-      }, 350)
-    }
-  }, [courses.length, isSliding, slide])
+  }, [])
 
   // to previous slide
   const prevSlide = useCallback(() => {
-    // if not sliding
-    if (!isSliding) {
-      // start sliding
-      setIsSliding(true)
-
-      if (slide === 1) {
-        setSlide(0)
-
-        setTimeout(() => {
-          if (slideTrackRef.current) {
-            slideTrackRef.current.style.transition = 'none'
-            setSlide(courses.length)
-          }
-        }, 310)
-
-        setTimeout(() => {
-          if (slideTrackRef.current) {
-            // slideTrackRef.current.style.transition = 'all 0.3s linear'
-          }
-        }, 350)
-      } else {
-        setSlide(prev => prev - 1)
-      }
-
-      // stop sliding after slided
-      setTimeout(() => {
-        setIsSliding(false)
-      }, 350)
+    if (slideTrackRef.current) {
+      slideTrackRef.current.scrollTo({
+        left: slideTrackRef.current.scrollLeft - slideTrackRef.current.children[0].clientWidth,
+        behavior: 'smooth',
+      })
     }
-  }, [courses.length, isSliding, slide])
+  }, [])
+
+  // to next slide
+  const nextSlide = useCallback(() => {
+    if (slideTrackRef.current) {
+      slideTrackRef.current.scrollTo({
+        left: slideTrackRef.current.scrollLeft + slideTrackRef.current.children[0].clientWidth,
+        behavior: 'smooth',
+      })
+    }
+  }, [])
+
+  // catch event scroll slider to set current slide
+  useEffect(() => {
+    const slideTrack = slideTrackRef.current
+    const indicator = indicatorRef.current
+
+    if (!slideTrack || !indicator) return
+
+    const handleSetSlide = () => {
+      const slideWidth = slideTrack.children[0].clientWidth
+      const slideIndex = Math.round(slideTrack.scrollLeft / slideWidth) + 1
+
+      console.log('slideIndex', slideIndex)
+
+      setSlide(slideIndex)
+
+      // set scroll left for indicatorRef
+      if (indicator) {
+        indicator.scrollTo({
+          left: indicator.children[0].clientWidth * (slideIndex - 1),
+          behavior: 'smooth',
+        })
+      }
+    }
+
+    slideTrackRef.current.addEventListener('scroll', handleSetSlide)
+
+    return () => {
+      slideTrack.removeEventListener('scroll', handleSetSlide)
+    }
+  }, [])
 
   // next slide by time
   useEffect(() => {
@@ -124,24 +113,6 @@ function Banner({ time, courses, className = '' }: SliderProps) {
       return () => clearInterval(interval)
     }
   }, [time, nextSlide])
-
-  // MARK: Touch Events
-  const handleTouchStart = (event: React.TouchEvent) => {
-    setTouchStartX(event.touches[0].clientX)
-  }
-
-  const handleTouchMove = (event: React.TouchEvent) => {
-    setTouchEndX(event.touches[0].clientX)
-  }
-
-  const handleTouchEnd = () => {
-    const touchDiff = touchStartX - touchEndX
-    if (touchDiff > 0 && touchDiff > 50) {
-      nextSlide() // Swiped left
-    } else if (touchDiff < 0 && touchDiff < -50) {
-      prevSlide() // Swiped right
-    }
-  }
 
   // MARK: Buy
   // handle buy now (add to cart and move to cart page)
@@ -175,20 +146,14 @@ function Banner({ time, courses, className = '' }: SliderProps) {
   )
 
   return (
-    <div
-      className={`relative w-full h-screen overflow-hidden group mt-[-72px] ${className}`}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-    >
+    <div className={`relative w-full h-screen overflow-hidden group mt-[-72px] ${className}`}>
       {/* MARK: Slide Track */}
       <div
-        className={`flex w-full h-full no-scrollbar ease-linear`}
-        style={{ marginLeft: '-100%' }}
+        className={`flex w-full h-full no-scrollbar ease-linear overflow-x-auto snap-x snap-mandatory`}
         ref={slideTrackRef}
       >
-        {[courses[courses.length - 1], ...courses, courses[0]].map(course => (
-          <div className='relative flex-shrink-0 w-full h-full' key={course._id}>
+        {courses.map(course => (
+          <div className='relative flex-shrink-0 w-full h-full snap-center' key={course._id}>
             <div className='w-full h-full'>
               <Image
                 className='img w-full h-full object-cover object-right brightness-[0.8]'
@@ -271,7 +236,7 @@ function Banner({ time, courses, className = '' }: SliderProps) {
                 className={`relative max-w-[200px] aspect-video rounded-lg border-2 ${
                   slide === index + 1 ? 'shadow-primary shadow-lg' : 'border-white shadow-md'
                 } trans-300 hover:opacity-100 hover:scale-105 hover:-translate-y-1 overflow-hidden`}
-                onClick={() => setSlide(index + 1)}
+                onClick={() => changeSlide(index + 1)}
                 key={course._id}
               >
                 <Image

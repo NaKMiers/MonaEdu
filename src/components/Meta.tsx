@@ -39,13 +39,11 @@ function Meta({
 
   // states
   const [selectedFilterCategories, setSelectedFilterCategories] = useState<string[]>(
-    []
-      .concat((searchParams?.ctg || categories.map((category) => category.slug)) as [])
-      .map((type) => type)
+    [].concat((searchParams?.ctg || categories.map(category => category.slug)) as []).map(type => type)
   )
   // states
   const [selectedFilterTags, setSelectedFilterTags] = useState<string[]>(
-    [].concat((searchParams?.tag || tags.map((tag) => tag.slug)) as []).map((type) => type)
+    [].concat((searchParams?.tag || tags.map(tag => tag.slug)) as []).map(type => type)
   )
   const [search, setSearch] = useState<string>(searchParams?.search as string)
   const [openFilterCategory, setOpenFilterCategory] = useState<boolean>(false)
@@ -131,7 +129,7 @@ function Meta({
       })
 
       // push to router
-      router.push(pathname + query)
+      router.push(pathname + query, { scroll: false })
     },
     [handleOptimizeFilter, router, searchParams, pathname]
   )
@@ -139,7 +137,7 @@ function Meta({
   // handle reset filter
   const handleResetFilter = useCallback(() => {
     reset()
-    router.push(pathname)
+    router.push(pathname, { scroll: false })
   }, [reset, router, pathname])
 
   // handle select filter item
@@ -147,13 +145,13 @@ function Meta({
     (item: string) => {
       clearTimeout(timeoutCtg.current)
       const newSelectedCates = selectedFilterCategories.includes(item)
-        ? selectedFilterCategories.filter((id) => id !== item)
+        ? selectedFilterCategories.filter(id => id !== item)
         : [...selectedFilterCategories, item]
 
       setSelectedFilterCategories(newSelectedCates)
 
       timeoutCtg.current = setTimeout(() => {
-        handleSubmit((data) => handleFilter({ data, newSelectedCates }))()
+        handleSubmit(data => handleFilter({ data, newSelectedCates }))()
       }, 500)
     },
     [setSelectedFilterCategories, handleSubmit, handleFilter, selectedFilterCategories]
@@ -164,13 +162,13 @@ function Meta({
     (item: string) => {
       clearTimeout(timeoutTg.current)
       const newSelectedTgs = selectedFilterTags.includes(item)
-        ? selectedFilterTags.filter((id) => id !== item)
+        ? selectedFilterTags.filter(id => id !== item)
         : [...selectedFilterTags, item]
 
       setSelectedFilterTags(newSelectedTgs)
 
       timeoutTg.current = setTimeout(() => {
-        handleSubmit((data) => handleFilter({ data, newSelectedTgs }))()
+        handleSubmit(data => handleFilter({ data, newSelectedTgs }))()
       }, 500)
     },
     [setSelectedFilterTags, handleSubmit, handleFilter, selectedFilterTags]
@@ -218,8 +216,8 @@ function Meta({
           </div>
           {selectedFilterCategories.length !== categories.length &&
             categories
-              .filter((item) => selectedFilterCategories.includes(item.slug))
-              .map((item) => (
+              .filter(item => selectedFilterCategories.includes(item.slug))
+              .map(item => (
                 <div
                   className={`group flex items-center justify-center gap-1 overflow-hidden text-ellipsis text-nowrap h-[34px] leading-[34px] px-2 rounded-md border cursor-pointer select-none trans-200 ${
                     selectedFilterCategories.includes(item.slug)
@@ -262,22 +260,22 @@ function Meta({
                 setSelectedFilterCategories(
                   categories.length === selectedFilterCategories.length
                     ? []
-                    : categories.map((tag) => tag.slug)
+                    : categories.map(tag => tag.slug)
                 )
-                handleSubmit((data) =>
+                handleSubmit(data =>
                   handleFilter({
                     data,
                     newSelectedCates:
                       categories.length === selectedFilterCategories.length
                         ? []
-                        : categories.map((tag) => tag.slug),
+                        : categories.map(tag => tag.slug),
                   })
                 )()
               }}
             >
               All
             </li>
-            {categories.map((item) => (
+            {categories.map(item => (
               <li
                 className={`overflow-hidden max-w-60 text-ellipsis text-nowrap h-[34px] leading-[34px] px-2 rounded-md border cursor-pointer select-none trans-200 ${
                   selectedFilterCategories.includes(item.slug)
@@ -307,8 +305,8 @@ function Meta({
           </div>
           {selectedFilterTags.length !== tags.length &&
             tags
-              .filter((item) => selectedFilterTags.includes(item.slug))
-              .map((item) => (
+              .filter(item => selectedFilterTags.includes(item.slug))
+              .map(item => (
                 <div
                   className={`group flex items-center justify-center gap-1 overflow-hidden text-ellipsis text-nowrap h-[34px] leading-[34px] px-2 rounded-md border cursor-pointer select-none trans-200 ${
                     selectedFilterTags.includes(item.slug)
@@ -349,20 +347,20 @@ function Meta({
               title='All Types'
               onClick={() => {
                 setSelectedFilterTags(
-                  tags.length === selectedFilterTags.length ? [] : tags.map((tag) => tag.slug)
+                  tags.length === selectedFilterTags.length ? [] : tags.map(tag => tag.slug)
                 )
-                handleSubmit((data) =>
+                handleSubmit(data =>
                   handleFilter({
                     data,
                     newSelectedTgs:
-                      tags.length === selectedFilterTags.length ? [] : tags.map((tag) => tag.slug),
+                      tags.length === selectedFilterTags.length ? [] : tags.map(tag => tag.slug),
                   })
                 )()
               }}
             >
               All
             </li>
-            {tags.map((item) => (
+            {tags.map(item => (
               <li
                 className={`overflow-hidden max-w-60 text-ellipsis text-nowrap h-[34px] leading-[34px] px-2 rounded-md border cursor-pointer select-none trans-200 ${
                   selectedFilterTags.includes(item.slug)
@@ -407,7 +405,7 @@ function Meta({
                   className='block h-[42px] px-2.5 pb-2.5 pt-4 w-full text-sm text-dark bg-transparent focus:outline-none focus:ring-0 peer number-input'
                   disabled={false}
                   type='text'
-                  onChange={(e) => setSearch(e.target.value)}
+                  onChange={e => setSearch(e.target.value)}
                   placeholder=''
                 />
 
