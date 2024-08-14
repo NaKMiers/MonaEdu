@@ -97,7 +97,7 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
     courseMode: 'online',
     typicalAgeRange: 'Adult',
     timeRequired: `PT${totalTime.hours}H${totalTime.minutes}M`,
-    numberOfCredits: '3',
+    numberOfCredits: '4',
     about: relatedCourses.map(course => ({
       '@type': 'Course',
       name: course.title,
@@ -130,6 +130,7 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
           name: 'Online',
         },
         url: `${process.env.NEXT_PUBLIC_APP_URL}/${course?.slug}`,
+        courseWorkload: `${totalTime.hours} hours ${totalTime.minutes} minutes`,
       },
     ],
   }
