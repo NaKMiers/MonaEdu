@@ -23,6 +23,7 @@ import { ImUser } from 'react-icons/im'
 import { IoIosPhonePortrait } from 'react-icons/io'
 import { IoTimer } from 'react-icons/io5'
 import { MdLanguage, MdVideoLibrary } from 'react-icons/md'
+import { PiStudentBold } from 'react-icons/pi'
 
 export const metadata: Metadata = {
   title: 'Khóa học - Mona Edu',
@@ -231,6 +232,12 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
                   {index < course?.languages.length - 1 ? ', ' : ''}
                 </span>
               ))}
+            </p>
+
+            {/* Joined */}
+            <p className='flex flex-wrap items-center gap-2 font-body tracking-wider'>
+              <PiStudentBold size={16} />
+              Học viên: <span>{course?.joined}</span>
             </p>
 
             {/* Tags */}
