@@ -1,6 +1,7 @@
 'use client'
 
 import { useAppSelector } from '@/libs/hooks'
+import { memo } from 'react'
 import CourseCard from '../CourseCard'
 import Divider from '../Divider'
 import GroupCourses from '../GroupCourses'
@@ -27,4 +28,4 @@ function RecentlyVisit() {
   )
 }
 
-export default RecentlyVisit
+export default memo(RecentlyVisit)
