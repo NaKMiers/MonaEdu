@@ -3,15 +3,15 @@ import FloatingButtons from '@/components/floatings/FloatingButtons'
 import Footer from '@/components/layouts/Footer'
 import Header from '@/components/layouts/Header'
 import PageLoading from '@/components/PageLoading'
+import UseDetectDevTools from '@/libs/hooks/useDetectDevTools'
 import StoreProvider from '@/libs/StoreProvider'
 import type { Metadata } from 'next'
 import { getServerSession } from 'next-auth'
+import NextTopLoader from 'nextjs-toploader'
 import { ReactNode } from 'react'
 import { Toaster } from 'react-hot-toast'
 import authOptions from '../api/auth/[...nextauth]/authOptions'
 import '../globals.scss'
-import NextTopLoader from 'nextjs-toploader'
-import UseDetectDevTools from '@/libs/hooks/useDetectDevTools'
 
 export const metadata: Metadata = {
   title: 'Mona Edu',
@@ -33,7 +33,7 @@ export default async function RootLayout({
 
   return (
     <html lang='vi'>
-      <body className='' suppressHydrationWarning={true}>
+      <body suppressHydrationWarning={true}>
         <StoreProvider session={session}>
           {/* Toast */}
           <Toaster
@@ -44,6 +44,9 @@ export default async function RootLayout({
               },
             }}
           />
+
+          {/* Detect Dev Tools */}
+          <UseDetectDevTools />
 
           {/* Top Loader */}
           <NextTopLoader
@@ -70,7 +73,7 @@ export default async function RootLayout({
           <FloatingButtons />
 
           {/* Main */}
-          <main className='md:mb-auto md:mt-[72px]'>{children}</main>
+          <main className='md:mb-auto md:mt-[72px] min-h-21'>{children}</main>
 
           {/* Background */}
           <Background />

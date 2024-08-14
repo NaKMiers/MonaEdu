@@ -46,34 +46,7 @@ function LessonPage({
   // report states
   const [isOpenReportDialog, setIsOpenReportDialog] = useState<boolean>(false)
   const [selectedContent, setSelectedContent] = useState<string>('')
-
-  // MARK: update lesson progress
-  const handleUpdateLessonProgress = useCallback(async () => {
-    try {
-      const isEnrolled = curUser?.courses
-        ?.map((course: any) => course.course)
-        .includes((lesson?.courseId as ICourse)._id)
-      if (!lesson || lesson?.progress?.status === 'completed' || !isEnrolled) return
-
-      const { progress } = await updateProgressApi(
-        (lesson.progress as IProgress)._id,
-        (lesson.courseId as ICourse)._id,
-        'completed',
-        100
-      )
-
-      // update states
-      dispatch(setLearningLesson({ ...lesson, progress }))
-
-      // update course's progress
-      if (progress.status === 'completed') {
-        await update()
-      }
-    } catch (err: any) {
-      console.log(err)
-      toast.error(err.message)
-    }
-  }, [dispatch, update, lesson, curUser?.courses])
+  const [isEnrolled, setIsEnrolled] = useState<boolean>(false)
 
   // MARK: get lesson
   useEffect(() => {
@@ -94,15 +67,18 @@ function LessonPage({
         // set states
         setComments(comments)
 
+        const isEnrolled = curUser?.courses
+          ?.map((course: any) => course.course)
+          .includes((lesson?.courseId as ICourse)._id)
+
+        setIsEnrolled(isEnrolled)
+
         // check if lesson is "doc only" or not
         if (!lesson.source && lesson.docs.length > 0) {
           setTab(2)
           console.log('doc only')
 
           setTimeout(async () => {
-            const isEnrolled = curUser?.courses
-              ?.map((course: any) => course.course)
-              .includes((lesson?.courseId as ICourse)._id)
             if (!lesson || lesson?.progress?.status === 'completed' || !isEnrolled) return
 
             const { progress } = await updateProgressApi(
@@ -422,16 +398,16 @@ function LessonPage({
             </div>
           </div>
 
-          <Divider size={12} />
-
           {/* MARK: Comments */}
-          <div className=''>
-            <h3 className='font-semibold text-xl mb-2 text-slate-800'>Bình luận</h3>
+          {isEnrolled && (
+            <div className='mt-12'>
+              <h3 className='font-semibold text-xl mb-2 text-slate-800'>Bình luận</h3>
 
-            <Comment comments={comments} lessonId={lesson._id} />
-          </div>
+              <Comment comments={comments} lessonId={lesson._id} />
+            </div>
+          )}
 
-          <Divider size={8} />
+          <Divider size={20} />
         </>
       ) : (
         <p className='font-body tracking-wider font-semibold text-2xl italic text-slate-400 text-center mt-4'>

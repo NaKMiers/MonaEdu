@@ -1,3 +1,4 @@
+import { IComment } from './../../../../models/CommentModel'
 import { connectDatabase } from '@/config/database'
 import CommentModel from '@/models/CommentModel'
 import { ICourse } from '@/models/CourseModel'
@@ -59,15 +60,16 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
       lesson.progress = progress
     }
 
+    let isEnrolled = false
+
     // check if lesson is public
     if (lesson.status !== 'public') {
       // if user is not enrolled in this course
-      const userCourses = user.courses.map((course: any) => course.course)
-      if (
-        !user.courses
-          .map((course: any) => course.course)
-          .includes((lesson.courseId as ICourse)._id.toString())
-      ) {
+      isEnrolled = user.courses
+        .map((course: any) => course.course)
+        .includes((lesson.courseId as ICourse)._id.toString())
+
+      if (!isEnrolled) {
         return NextResponse.json(
           { message: 'Bạn không được phép truy cập bài giảng này' },
           { status: 403 }
@@ -80,32 +82,36 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
       lesson.source = await getFileUrl(lesson.source)
     }
 
-    // get comment of the current lesson
-    let comments = await CommentModel.find({
-      lessonId: lesson._id,
-    })
-      .populate('userId')
-      .populate({
-        path: 'replied',
-        populate: {
-          path: 'userId',
-        },
-        options: { sort: { likes: -1, createdAt: -1 }, limit: 6 },
-      })
-      .sort({ likes: -1, createdAt: -1 })
-      .limit(8)
-      .lean()
+    let comments: any[] = []
 
-    comments = comments.map(comment => ({
-      ...comment,
-      userId: comment.userId._id,
-      user: comment.userId,
-      replied: comment.replied.map((reply: any) => ({
-        ...reply,
-        userId: reply.userId._id,
-        user: reply.userId,
-      })),
-    }))
+    if (isEnrolled) {
+      // get comment of the current lesson
+      comments = await CommentModel.find({
+        lessonId: lesson._id,
+      })
+        .populate('userId')
+        .populate({
+          path: 'replied',
+          populate: {
+            path: 'userId',
+          },
+          options: { sort: { likes: -1, createdAt: -1 }, limit: 6 },
+        })
+        .sort({ likes: -1, createdAt: -1 })
+        .limit(8)
+        .lean()
+
+      comments = comments.map(comment => ({
+        ...comment,
+        userId: comment.userId._id,
+        user: comment.userId,
+        replied: comment.replied.map((reply: any) => ({
+          ...reply,
+          userId: reply.userId._id,
+          user: reply.userId,
+        })),
+      }))
+    }
 
     // return lesson
     return NextResponse.json({ lesson, comments }, { status: 200 })

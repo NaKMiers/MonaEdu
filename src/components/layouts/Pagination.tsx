@@ -89,7 +89,9 @@ function Pagination({
 
   return (
     pageAmount > 1 && (
-      <div className={`flex font-semibold gap-2 justify-center w-full mx-auto ${className}`}>
+      <div
+        className={`flex font-semibold gap-2 justify-center w-full text-xs sm:text-base flex-wrap mx-auto ${className}`}
+      >
         {/* MARK: Prev */}
         {currentPage != 1 && (
           <Link
@@ -109,7 +111,7 @@ function Pagination({
               href={getPageLink(page || 0)}
               onClick={e => page || e.preventDefault()}
               scroll={false}
-              className={`rounded-lg border-2 py-[6px] px-4 hover:bg-secondary hover:text-white hover:border-white ${
+              className={`rounded-lg border-2 py-[6px] px-2.5 sm:px-4 hover:bg-secondary hover:text-white hover:border-white ${
                 dark ? 'text-dark' : 'text-white'
               } ${!page ? 'pointer-events-none' : ''} trans-200 ${
                 currentPage === page ? 'bg-primary border-white' : 'border-transparent'

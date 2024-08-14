@@ -28,9 +28,7 @@ function Banner({ time, courses, className = '' }: SliderProps) {
 
   // states
   const [slide, setSlide] = useState<number>(1)
-  const [isSliding, setIsSliding] = useState<boolean>(false)
-  const [touchStartX, setTouchStartX] = useState<number>(0)
-  const [touchEndX, setTouchEndX] = useState<number>(0)
+  const [isChanging, setIsChanging] = useState<boolean>(false)
 
   // refs
   const slideTrackRef = useRef<HTMLDivElement>(null)
@@ -38,17 +36,32 @@ function Banner({ time, courses, className = '' }: SliderProps) {
 
   // MARK: Slide Functions
   const changeSlide = useCallback((value: number) => {
-    if (slideTrackRef.current && indicatorRef.current) {
-      const slideWidth = slideTrackRef.current.children[0].clientWidth
+    const slideTrack = slideTrackRef.current
+    const indicator = indicatorRef.current
 
-      slideTrackRef.current.scrollTo({
+    if (slideTrack && indicator) {
+      setIsChanging(true)
+      const slideWidth = slideTrack.children[0].clientWidth
+
+      slideTrack.scrollTo({
         left: slideWidth * (value - 1),
         behavior: 'smooth',
       })
 
+      if (indicator) {
+        indicator.scrollTo({
+          left: indicator.children[0].clientWidth * (value - 1),
+          behavior: 'smooth',
+        })
+      }
+
       console.log('value', value)
 
       setSlide(value)
+
+      setTimeout(() => {
+        setIsChanging(false)
+      }, 500)
     }
   }, [])
 
@@ -80,6 +93,8 @@ function Banner({ time, courses, className = '' }: SliderProps) {
     if (!slideTrack || !indicator) return
 
     const handleSetSlide = () => {
+      if (isChanging) return
+
       const slideWidth = slideTrack.children[0].clientWidth
       const slideIndex = Math.round(slideTrack.scrollLeft / slideWidth) + 1
 
@@ -101,7 +116,7 @@ function Banner({ time, courses, className = '' }: SliderProps) {
     return () => {
       slideTrack.removeEventListener('scroll', handleSetSlide)
     }
-  }, [])
+  }, [isChanging])
 
   // next slide by time
   useEffect(() => {
