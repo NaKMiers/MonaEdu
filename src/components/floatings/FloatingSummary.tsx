@@ -111,7 +111,11 @@ function FloatingSummary({ course: data, chapters, totalTime, className = '' }: 
 
   // like course
   const handleLike = useCallback(async () => {
-    if (!curUser?._id) return
+    if (!curUser?._id) {
+      toast.error('Vui lòng đăng nhập để like khóa học')
+      return
+    }
+
     const value = !course.likes.includes(curUser?._id) ? 'y' : 'n'
 
     try {

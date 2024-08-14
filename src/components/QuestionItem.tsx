@@ -37,6 +37,11 @@ function QuestionItem({ question, className = '' }: QuestionItemProps) {
 
   // handle like / dislike
   const handleLike = useCallback(async () => {
+    if (!curUser?._id) {
+      toast.error('Vui lòng đăng nhập để like câu hỏi')
+      return
+    }
+
     try {
       const { updatedQuestion } = await likeQuestionsApi(data._id, likes.includes(curUser?._id))
 
