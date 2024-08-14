@@ -90,12 +90,12 @@ export async function POST(req: NextRequest) {
         paymentMethod,
       }),
 
-      // notify user
+      // notify buyer
       NotificationModel.create({
         userId,
-        title: 'Cảm ơn bạn đã tham gia khóa học của chúng tôi, chúc bạn học tốt!',
+        title: 'Cảm ơn bạn đã mua khóa học của chúng tôi, đơn hàng của bạn đang được xử lí!',
         image: '/images/logo.png',
-        link: '/my-courses',
+        link: '/user/history',
         type: 'create-order',
       }),
     ])

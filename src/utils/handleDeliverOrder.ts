@@ -131,7 +131,7 @@ export default async function handleDeliverOrder(id: string, message: string = '
     // notify receiver after buying courseO
     await NotificationModel.create({
       userId: receiver._id,
-      title: `Bạn đươc tặng khóa học bởi ${getUserName(buyer as IUser)}`,
+      title: `Bạn đươc tặng khóa học bởi ${getUserName(buyer as IUser)}, học ngay thôi!`,
       image: '/images/logo.png',
       link: '/my-courses',
       type: 'given-course',
@@ -154,7 +154,7 @@ export default async function handleDeliverOrder(id: string, message: string = '
     // notify buyer after buying course
     await NotificationModel.create({
       userId: buyer._id,
-      title: 'Tham gia khóa học thành công',
+      title: 'Tham gia khóa học thành công, học ngay thôi!',
       image: '/images/logo.png',
       link: '/my-courses',
       type: 'delivered-order',

@@ -146,14 +146,17 @@ function CheckoutPage({ params }: { params: { type: string } }) {
         </p>
 
         <p className=''>
-          Tài khoản sẽ được gửi cho bạn qua email:{' '}
+          Đơn hàng sẽ được gửi cho bạn qua email:{' '}
           <span
             className='text-green-500 underline cursor-pointer'
             onClick={() => handleCopy(checkout?.email)}
           >
             {checkout?.email}
           </span>{' '}
-          sau khi đã thanh toán.
+          sau khi đã thanh toán. Và bạn có thể truy cập khóa học ngay ở trang{' '}
+          <Link href='/my-courses' className='text-sky-500 underline underline-offset-1'>
+            Khóa học của tôi
+          </Link>
         </p>
 
         <div className='flex justify-center mt-6'>
