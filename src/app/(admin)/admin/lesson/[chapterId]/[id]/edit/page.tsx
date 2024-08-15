@@ -5,7 +5,7 @@ import LoadingButton from '@/components/LoadingButton'
 import { useAppDispatch, useAppSelector } from '@/libs/hooks'
 import { useCallback, useEffect, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
-import { FaCheck, FaFile } from 'react-icons/fa'
+import { FaCheck, FaFile, FaPlusSquare } from 'react-icons/fa'
 
 import Divider from '@/components/Divider'
 import TextEditor from '@/components/Tiptap'
@@ -23,6 +23,7 @@ import { FaX } from 'react-icons/fa6'
 import { MdCategory, MdOutlinePublic } from 'react-icons/md'
 import { RiCharacterRecognitionLine } from 'react-icons/ri'
 import { SiFramer } from 'react-icons/si'
+import CustomDocModal from '@/components/admin/CustomDocModal'
 
 export type GroupTypes = {
   [key: string]: ICourse[]
@@ -45,6 +46,8 @@ function EditLessonPage() {
 
   const [originalDocs, setOriginalDocs] = useState<IDoc[]>([])
   const [docs, setDocs] = useState<File[]>([])
+  const [customDocs, setCustomDocs] = useState<IDoc[]>([])
+  const [openCustomDocModal, setOpenCustomDocModal] = useState<boolean>(false)
 
   // form
   const {
@@ -148,7 +151,7 @@ function EditLessonPage() {
   const onSubmit: SubmitHandler<FieldValues> = async data => {
     if (!handleValidate(data)) return
 
-    if (!file && !fileUrl && !embedSrc && !originalDocs.length && !docs.length) {
+    if (!file && !fileUrl && !embedSrc && !originalDocs.length && !docs.length && !customDocs.length) {
       return toast.error('Please embed an url OR upload a video OR add a document')
     }
 
@@ -170,6 +173,7 @@ function EditLessonPage() {
       }
       formData.append('originalDocs', JSON.stringify(originalDocs))
       docs.forEach(doc => formData.append('docs', doc))
+      formData.append('customDocs', JSON.stringify(customDocs))
 
       // add new category here
       const { message } = await updateLessonApi(chapterId, id, formData)
@@ -593,11 +597,26 @@ function EditLessonPage() {
               >
                 Docs
               </label>
+
+              {/* Add Custom Docs Button */}
+              <button
+                className='absolute top-1/2 right-2 -translate-y-1/2 rounded-full bg-dark-100 w-9 h-9 flex items-center justify-center group hover:bg-sky-500 trans-200 shadow-lg border-2 border-sky-500'
+                onClick={() => setOpenCustomDocModal(prev => !prev)}
+              >
+                <FaPlusSquare size={14} className='wiggle' />
+              </button>
             </div>
           </div>
+
+          {/* Add Custom Docs Modal */}
+          <CustomDocModal
+            open={openCustomDocModal}
+            setOpen={setOpenCustomDocModal}
+            setCustomDocs={setCustomDocs}
+          />
         </div>
 
-        {(!!docs.length || !!originalDocs.length) && (
+        {(!!docs.length || !!originalDocs.length || !!customDocs.length) && (
           <div className='flex flex-wrap gap-3 rounded-lg bg-white p-3 mb-5'>
             {originalDocs.map((doc, index) => (
               <div
@@ -644,6 +663,33 @@ function EditLessonPage() {
                 </button>
               </div>
             ))}
+
+            {customDocs.map((doc, index) => {
+              return (
+                <div
+                  className='flex items-center gap-3 max-w-[250px] rounded-md shadow-md px-2 py-1'
+                  key={index}
+                >
+                  <FaFile size={20} className='text-secondary flex-shrink-0' />
+
+                  <div className='flex flex-col w-full max-w-[160px] font-body tracking-wider'>
+                    <p className='text-dark text-sm text-ellipsis line-clamp-2 overflow-hidden'>
+                      {doc.name}
+                    </p>
+                    <p className='text-slate-500 text-xs'>{formatFileSize(doc.size)}</p>
+                  </div>
+
+                  <button
+                    onClick={() => {
+                      setCustomDocs(prev => prev.filter(d => d !== doc))
+                    }}
+                    className='bg-slate-300 p-2 group hover:bg-dark-100 rounded-lg flex-shrink-0'
+                  >
+                    <FaX size={16} className='text-dark group-hover:text-white trans-200' />
+                  </button>
+                </div>
+              )
+            })}
           </div>
         )}
 

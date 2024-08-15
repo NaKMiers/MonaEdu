@@ -10,6 +10,7 @@ import nodeMailer from 'nodemailer'
 // Models: User
 import GivenGift from '@/components/email/GivenGift'
 import '@/models/UserModel'
+import { formatPrice } from './number'
 
 // SEND MAIL CORE
 const transporter = nodeMailer.createTransport({
@@ -25,7 +26,7 @@ export async function sendMail(to: string | string[], subject: string, html: str
   console.log('- Send Mail -')
 
   await transporter.sendMail({
-    from: 'MonaEdu <no-reply@monaedu.com>',
+    from: 'Mona Edu <no-reply@monaedu.com>',
     to: to,
     subject: subject,
     html: html,
@@ -44,7 +45,11 @@ export async function notifyNewOrderToAdmin(newOrder: any) {
     let emails: string[] = [...admins.map(admin => admin.email), process.env.NEXT_PUBLIC_MAIL]
 
     const html = render(NotifyOrderEmail({ order: newOrder }))
-    await sendMail(emails, 'New Order', html)
+    await sendMail(
+      emails,
+      `New - ${newOrder.code} - ${formatPrice(newOrder.total)} - ${newOrder.paymentMethod}`,
+      html
+    )
   } catch (err: any) {
     console.log(err)
   }
@@ -81,7 +86,7 @@ export async function summaryNotification(email: string, summary: any) {
   try {
     // Render template với dữ liệu
     const html = render(SummaryEmail({ summary }))
-    await sendMail(email, `Monthly Summary ${new Date().getMonth() + 1}`, html)
+    await sendMail(email, `Báo cáo tháng ${new Date().getMonth() + 1}`, html)
   } catch (err: any) {
     console.log(err)
   }
@@ -95,7 +100,7 @@ export async function sendResetPasswordEmail(email: string, name: string, link: 
     // Render template với dữ liệu
     const html = render(ResetPasswordEmail({ name, link }))
 
-    await sendMail(email, 'Reset Password', html)
+    await sendMail(email, 'Khôi phục mật khẩu', html)
   } catch (err: any) {
     console.log(err)
   }
@@ -108,7 +113,7 @@ export async function sendVerifyEmail(email: string, name: string, link: string)
   try {
     // Render template với dữ liệu
     const html = render(VerifyEmailEmail({ name, link }))
-    await sendMail(email, 'Verify Email', html)
+    await sendMail(email, 'Xác thực Email', html)
   } catch (err: any) {
     console.log(err)
   }

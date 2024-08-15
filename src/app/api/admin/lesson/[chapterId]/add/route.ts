@@ -31,8 +31,9 @@ export async function POST(
     const { courseId, title, description, duration, active, status, embedUrl } = data
     let file = formData.get('file')
     let docs: any[] = formData.getAll('docs')
+    let customDocs: any[] = JSON.parse(data.customDocs as string)
 
-    if (!file && !embedUrl && !docs.length) {
+    if (!file && !embedUrl && !docs.length && !customDocs.length) {
       return NextResponse.json({ message: 'Source or Embed or Document is required' }, { status: 400 })
     }
 
@@ -53,6 +54,12 @@ export async function POST(
         })
       )
     }
+
+    if (customDocs.length) {
+      docs = [...docs, ...customDocs]
+    }
+
+    console.log('docs', docs)
 
     // get all users who joined the course | course slug
     const [newLesson, userIds, courseSlug] = await Promise.all([

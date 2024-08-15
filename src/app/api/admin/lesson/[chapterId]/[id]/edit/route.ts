@@ -24,6 +24,7 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
     let file = formData.get('file')
     const originalDocs = JSON.parse(data.originalDocs as string)
     let docs: any[] = formData.getAll('docs')
+    let customDocs: any[] = JSON.parse(data.customDocs as string)
 
     // get lesson from database to edit
     const lesson: ILesson | null = await LessonModel.findById(id).lean()
@@ -72,7 +73,7 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
     }
 
     // merge the available docs and new upload docs
-    const newDocs = Array.from(new Set([...stayDocs, ...docs]))
+    const newDocs = Array.from(new Set([...stayDocs, ...docs, ...customDocs]))
 
     await Promise.all([
       // update lesson in database

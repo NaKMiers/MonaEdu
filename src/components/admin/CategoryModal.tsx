@@ -66,8 +66,8 @@ function CategoryModal({
     [imageUrl]
   )
 
-  // cancel changing avatar
-  const handleCancelAvatar = useCallback(async () => {
+  // cancel changing image
+  const handleCancelImage = useCallback(async () => {
     setFile(null)
     setImageUrl('')
 
@@ -243,7 +243,7 @@ function CategoryModal({
               {imageUrl && (
                 <button
                   className='absolute top-0 left-0 right-0 bottom-0 tracking-wider drop-shadow-sm bg-slate-200 bg-opacity-50 opacity-0 group-hover:opacity-100 trans-300'
-                  onClick={handleCancelAvatar}
+                  onClick={handleCancelImage}
                 >
                   Remove
                 </button>

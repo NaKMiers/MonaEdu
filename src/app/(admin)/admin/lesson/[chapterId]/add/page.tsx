@@ -1,23 +1,24 @@
 'use client'
 
+import Divider from '@/components/Divider'
 import Input from '@/components/Input'
 import LoadingButton from '@/components/LoadingButton'
-import { useAppDispatch, useAppSelector } from '@/libs/hooks'
-import { useCallback, useEffect, useState } from 'react'
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
-import { FaCheck, FaFile } from 'react-icons/fa'
-
-import Divider from '@/components/Divider'
 import TextEditor from '@/components/Tiptap'
 import AdminHeader from '@/components/admin/AdminHeader'
+import CustomDocModal from '@/components/admin/CustomDocModal'
+import { useAppDispatch, useAppSelector } from '@/libs/hooks'
 import { setLoading } from '@/libs/reducers/modalReducer'
 import { IChapter } from '@/models/ChapterModel'
 import { ICourse } from '@/models/CourseModel'
+import { IDoc } from '@/models/LessonModel'
 import { addLessonApi } from '@/requests'
 import { getChapterApi } from '@/requests/chapterRequest'
 import { formatFileSize } from '@/utils/number'
 import { formatDurationToHMS } from '@/utils/time'
+import { useCallback, useEffect, useState } from 'react'
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
+import { FaCheck, FaFile, FaPlusSquare } from 'react-icons/fa'
 import { FaX } from 'react-icons/fa6'
 import { MdCategory, MdOutlinePublic } from 'react-icons/md'
 import { RiCharacterRecognitionLine } from 'react-icons/ri'
@@ -40,6 +41,8 @@ function AddLessonPage({ params: { chapterId } }: { params: { chapterId: string 
   const [file, setFile] = useState<File | null>(null)
 
   const [docs, setDocs] = useState<File[]>([])
+  const [customDocs, setCustomDocs] = useState<IDoc[]>([])
+  const [openCustomDocModal, setOpenCustomDocModal] = useState<boolean>(false)
 
   // form
   const {
@@ -110,54 +113,71 @@ function AddLessonPage({ params: { chapterId } }: { params: { chapterId: string 
 
   // MARK: Submit
   // send request to server to add lesson
-  const onSubmit: SubmitHandler<FieldValues> = async data => {
-    if (!handleValidate(data)) return
+  const onSubmit: SubmitHandler<FieldValues> = useCallback(
+    async data => {
+      if (!handleValidate(data)) return
 
-    if (!file && !fileUrl && !embedSrc && !docs.length) {
-      return toast.error('Please embed an url OR upload a video OR add a document')
-    }
-
-    dispatch(setLoading(true))
-
-    try {
-      const formData = new FormData()
-      formData.append('courseId', data.courseId)
-      formData.append('chapterId', data.chapterId)
-      formData.append('title', data.title)
-      formData.append('textHook', data.textHook)
-      formData.append('description', data.description)
-      formData.append('duration', String(+data.hours * 3600 + +data.minutes * 60 + +data.seconds))
-      formData.append('active', data.active)
-      formData.append('status', data.status)
-      if (sourceType === 'file' && file) {
-        formData.append('file', file)
-      } else if (sourceType === 'embed' && embedSrc) {
-        formData.append('embedUrl', embedSrc)
+      if (!file && !fileUrl && !embedSrc && !docs.length && !customDocs.length) {
+        return toast.error('Please embed an url OR upload a video OR add a document')
       }
-      docs.forEach(doc => formData.append('docs', doc))
 
-      // add new category here
-      const { message } = await addLessonApi(chapterId, formData)
+      dispatch(setLoading(true))
 
-      // show success message
-      toast.success(message)
+      try {
+        const formData = new FormData()
+        formData.append('courseId', data.courseId)
+        formData.append('chapterId', data.chapterId)
+        formData.append('title', data.title)
+        formData.append('textHook', data.textHook)
+        formData.append('description', data.description)
+        formData.append('duration', String(+data.hours * 3600 + +data.minutes * 60 + +data.seconds))
+        formData.append('active', data.active)
+        formData.append('status', data.status)
+        if (sourceType === 'file' && file) {
+          formData.append('file', file)
+        } else if (sourceType === 'embed' && embedSrc) {
+          formData.append('embedUrl', embedSrc)
+        }
+        docs.forEach(doc => formData.append('docs', doc))
+        formData.append('customDocs', JSON.stringify(customDocs))
 
-      // clear form
-      reset()
-      setValue('courseId', data.courseId)
-      setFile(null)
-      setFileUrl('')
-      setEmbedSrc('')
-      setDocs([])
-      URL.revokeObjectURL(fileUrl)
-    } catch (err: any) {
-      console.log(err)
-      toast.error(err.message)
-    } finally {
-      // stop loading
-      dispatch(setLoading(false))
-    }
-  }
+        // add new category here
+        const { message } = await addLessonApi(chapterId, formData)
+
+        // show success message
+        toast.success(message)
+
+        // clear form
+        reset()
+        setValue('courseId', data.courseId)
+        setFile(null)
+        setFileUrl('')
+        setEmbedSrc('')
+        setDocs([])
+        setCustomDocs([])
+        URL.revokeObjectURL(fileUrl)
+      } catch (err: any) {
+        console.log(err)
+        toast.error(err.message)
+      } finally {
+        // stop loading
+        dispatch(setLoading(false))
+      }
+    },
+    [
+      handleValidate,
+      reset,
+      setValue,
+      dispatch,
+      chapterId,
+      customDocs,
+      docs,
+      embedSrc,
+      file,
+      fileUrl,
+      sourceType,
+    ]
+  )
 
   // handle add files when user select files
   const handleAddFile = useCallback(
@@ -561,11 +581,26 @@ function AddLessonPage({ params: { chapterId } }: { params: { chapterId: string 
               >
                 Docs
               </label>
+
+              {/* Add Custom Docs Button */}
+              <button
+                className='absolute top-1/2 right-2 -translate-y-1/2 rounded-full bg-dark-100 w-9 h-9 flex items-center justify-center group hover:bg-sky-500 trans-200 shadow-lg border-2 border-sky-500'
+                onClick={() => setOpenCustomDocModal(prev => !prev)}
+              >
+                <FaPlusSquare size={14} className='wiggle' />
+              </button>
             </div>
           </div>
+
+          {/* Add Custom Docs Modal */}
+          <CustomDocModal
+            open={openCustomDocModal}
+            setOpen={setOpenCustomDocModal}
+            setCustomDocs={setCustomDocs}
+          />
         </div>
 
-        {!!docs.length && (
+        {(!!docs.length || !!customDocs.length) && (
           <div className='flex flex-wrap gap-3 rounded-lg bg-white p-3 mb-5'>
             {docs.map((doc, index) => {
               return (
@@ -584,6 +619,33 @@ function AddLessonPage({ params: { chapterId } }: { params: { chapterId: string 
 
                   <button
                     onClick={() => handleRemoveDoc(doc)}
+                    className='bg-slate-300 p-2 group hover:bg-dark-100 rounded-lg flex-shrink-0'
+                  >
+                    <FaX size={16} className='text-dark group-hover:text-white trans-200' />
+                  </button>
+                </div>
+              )
+            })}
+
+            {customDocs.map((doc, index) => {
+              return (
+                <div
+                  className='flex items-center gap-3 max-w-[250px] rounded-md shadow-md px-2 py-1'
+                  key={index}
+                >
+                  <FaFile size={20} className='text-secondary flex-shrink-0' />
+
+                  <div className='flex flex-col w-full max-w-[160px] font-body tracking-wider'>
+                    <p className='text-dark text-sm text-ellipsis line-clamp-2 overflow-hidden'>
+                      {doc.name}
+                    </p>
+                    <p className='text-slate-500 text-xs'>{formatFileSize(doc.size)}</p>
+                  </div>
+
+                  <button
+                    onClick={() => {
+                      setCustomDocs(prev => prev.filter(d => d !== doc))
+                    }}
                     className='bg-slate-300 p-2 group hover:bg-dark-100 rounded-lg flex-shrink-0'
                   >
                     <FaX size={16} className='text-dark group-hover:text-white trans-200' />

@@ -15,22 +15,21 @@ export function GivenGift({ order = orderSample }: { order?: any }) {
           <Section className='inline-block mx-auto'>
             <Row className='mb-3 w-full'>
               <Column>
-                <a href='https://monaedu.com'>
+                <a href={process.env.NEXT_PUBLIC_APP_URL}>
                   <Img
                     className='aspect-square rounded-md'
-                    src={`${'https://monaedu.com'}/images/logo.jpg`}
+                    src={`${process.env.NEXT_PUBLIC_APP_URL}/images/logo.png`}
                     width={35}
                     height={35}
-                    alt='Mona-Edu'
                   />
                 </a>
               </Column>
               <Column>
                 <a
-                  href='https://monaedu.com'
+                  href={process.env.NEXT_PUBLIC_APP_URL}
                   className='text-2xl font-bold tracking-[0.3px] no-underline text-dark pl-2'
                 >
-                  MonaEdu
+                  Mona Edu
                 </a>
               </Column>
             </Row>
@@ -44,7 +43,7 @@ export function GivenGift({ order = orderSample }: { order?: any }) {
           >
             <div>
               <Img
-                src='https://monaedu.com/backgrounds/brand-banner.jpg'
+                src={`${process.env.NEXT_PUBLIC_APP_URL}/backgrounds/brand-banner.jpg`}
                 className='w-full object-cover'
               />
             </div>
@@ -59,11 +58,13 @@ export function GivenGift({ order = orderSample }: { order?: any }) {
                 <div className='text-sm mt-8'>
                   <p>
                     <b>Received Date: </b>
-                    {new Intl.DateTimeFormat('en', {
+                    {new Intl.DateTimeFormat('vi', {
                       dateStyle: 'full',
                       timeStyle: 'medium',
                       timeZone: 'Asia/Ho_Chi_Minh',
-                    }).format(new Date(order.createdAt))}
+                    })
+                      .format(new Date(order.createdAt))
+                      .replace('lúc', '')}
                   </p>
                   <p>
                     <b>Trạng thái: </b>
@@ -99,7 +100,7 @@ export function GivenGift({ order = orderSample }: { order?: any }) {
                   <b className='text-[24px]'>Khóa học: </b>
 
                   <a
-                    href={`https://monaedu.com/${order.item.slug}`}
+                    href={`${process.env.NEXT_PUBLIC_APP_URL}/${order.item.slug}`}
                     className='block h-full text-dark tracking-wider no-underline mt-2'
                   >
                     <Section>
@@ -124,7 +125,7 @@ export function GivenGift({ order = orderSample }: { order?: any }) {
             {order.userId && (
               <div className='text-center p-3 mb-8'>
                 <a
-                  href={`https://monaedu.com/learning/${order.item._id}/start`}
+                  href={`${process.env.NEXT_PUBLIC_APP_URL}/learning/${order.item._id}/start`}
                   className='inline bg-sky-500 no-underline rounded-lg text-white font-semibold cursor-pointer py-3 px-7 border-0'
                 >
                   Học ngay
@@ -133,35 +134,54 @@ export function GivenGift({ order = orderSample }: { order?: any }) {
             )}
           </Section>
 
+          {/* MARK: Footer */}
           <div className='flex justify-center pt-[45px]'>
             <Img
               className='max-w-full'
               width={620}
-              src={`${'https://monaedu.com'}/backgrounds/footer-banner.jpg`}
+              src={`${process.env.NEXT_PUBLIC_APP_URL}/backgrounds/footer-banner.jpg`}
             />
           </div>
 
           <p className='text-center text-xs text-slate-600'>
-            © 2023 | MonaEdu - Developed by Nguyen Anh Khoa, All rights reserved.
+            © 2024 | Mona Edu - Developed by Nguyen Anh Khoa, All rights reserved.
           </p>
 
           <div className='text-center'>
             <a
-              href='https://zalo.me/0899320427'
+              href={process.env.NEXT_PUBLIC_MESSENGER!}
               target='_blank'
               rel='noreferrer'
               className='inline-block'
             >
-              <Img src={`${'https://monaedu.com'}/icons/zalo.jpg`} width={35} height={35} alt='zalo' />
+              <Img
+                src={`${process.env.NEXT_PUBLIC_APP_URL}/icons/messenger.jpg`}
+                width={35}
+                height={35}
+                alt='zalo'
+              />
             </a>
             <a
-              href='https://www.messenger.com/t/170660996137305'
+              href={process.env.NEXT_PUBLIC_FACEBOOK!}
               target='_blank'
               rel='noreferrer'
-              className='inline-block ml-2'
+              className='inline-block ml-4'
             >
               <Img
-                src={`${'https://monaedu.com'}/icons/messenger.jpg`}
+                src={`${process.env.NEXT_PUBLIC_APP_URL}/icons/facebook.png`}
+                width={35}
+                height={35}
+                alt='messenger'
+              />
+            </a>
+            <a
+              href={process.env.NEXT_PUBLIC_INSTAGRAM!}
+              target='_blank'
+              rel='noreferrer'
+              className='inline-block ml-4'
+            >
+              <Img
+                src={`${process.env.NEXT_PUBLIC_APP_URL}/icons/instagram.png`}
                 width={35}
                 height={35}
                 alt='messenger'

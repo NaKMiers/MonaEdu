@@ -146,7 +146,7 @@ function CheckoutPage({ params }: { params: { type: string } }) {
         </p>
 
         <p className=''>
-          Đơn hàng sẽ được gửi cho bạn qua email:{' '}
+          Đơn hàng sẽ được gửi cho bạn qua email{' '}
           <span
             className='text-green-500 underline cursor-pointer'
             onClick={() => handleCopy(checkout?.email)}
@@ -157,6 +157,11 @@ function CheckoutPage({ params }: { params: { type: string } }) {
           <Link href='/my-courses' className='text-sky-500 underline underline-offset-1'>
             Khóa học của tôi
           </Link>
+        </p>
+
+        <p className='text-secondary font-semibold mt-1 mb-2'>
+          * Lưu ý: Thời gian xử lý có thể mất từ 5 - 10 phút. Vui lòng liên hệ để được hỗ trợ sau thời
+          gian chờ.{' '}
         </p>
 
         <div className='flex justify-center mt-6'>
@@ -171,18 +176,18 @@ function CheckoutPage({ params }: { params: { type: string } }) {
                   width={350}
                   alt='momo-qr'
                 />
-                <Image
-                  className='bg-[#333] absolute top-[56%] left-1/2 -translate-x-1/2 -translate-y-[50%] rounded-md p-1 w-[12%]'
-                  src='/icons/momo-icon.jpg'
+                {/* <Image
+                  className='bg-black absolute top-[56%] left-1/2 -translate-x-1/2 -translate-y-[50%] rounded-md p-0.5 w-[12%]'
+                  src='/images/logo.png'
                   height={42}
                   width={42}
                   alt='momo-qr'
-                />
+                /> */}
               </>
             ) : (
               <>
                 <Image src={admin.banking.image} height={700} width={350} alt='banking-qr' />
-                <Image
+                {/* <Image
                   className='absolute top-[41%] left-1/2 -translate-x-1/2 -translate-y-[50%] w-[47%]'
                   src={`https://img.vietqr.io/image/970436-1040587211-eeua38J.jpg?amount=${
                     checkout?.total
@@ -190,7 +195,7 @@ function CheckoutPage({ params }: { params: { type: string } }) {
                   height={700}
                   width={350}
                   alt='banking-qr'
-                />
+                /> */}
               </>
             )}
           </div>

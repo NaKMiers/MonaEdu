@@ -3,6 +3,7 @@
 import Comment from '@/components/Comment'
 import Divider from '@/components/Divider'
 import IframePlayer from '@/components/IframePlayer'
+import VideoPlayer from '@/components/VideoPlayer'
 import ReportDialog from '@/components/dialogs/ReportDigalog'
 import { reportContents } from '@/constants'
 import { useAppDispatch, useAppSelector } from '@/libs/hooks'
@@ -273,11 +274,7 @@ function LessonPage({
               {lesson.sourceType === 'embed' ? (
                 <IframePlayer lesson={lesson} />
               ) : (
-                <video
-                  className='rounded-lg w-full h-full object-contain'
-                  src={lesson.source}
-                  controls
-                />
+                <VideoPlayer lesson={lesson} />
               )}
             </div>
           ) : (

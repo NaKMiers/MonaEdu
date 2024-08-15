@@ -85,7 +85,6 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
       '@type': 'Offer',
       priceCurrency: 'VND',
       price: course?.price,
-      priceValidUntil: moment().add(30, 'days').toISOString(),
       availability: 'https://schema.org/InStock',
       url: `${process.env.NEXT_PUBLIC_APP_URL}/${course?.slug}`,
       seller: {
@@ -130,7 +129,7 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
           name: 'Online',
         },
         url: `${process.env.NEXT_PUBLIC_APP_URL}/${course?.slug}`,
-        courseWorkload: `${totalTime.hours} hours ${totalTime.minutes} minutes`,
+        courseWorkload: `PT${totalTime.hours}H${totalTime.minutes}M`,
       },
     ],
   }

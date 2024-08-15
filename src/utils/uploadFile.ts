@@ -86,7 +86,7 @@ async function uploadFile(
     const command = new PutObjectCommand(params)
     s3.send(command)
 
-    return `${process.env.CLOUDFRONT_URL}/${pathname}`
+    return `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/${pathname}`
   } catch (error) {
     console.error(error)
     throw error
@@ -96,7 +96,7 @@ async function uploadFile(
 async function deleteFile(url: string) {
   try {
     if (url.startsWith('http')) {
-      url = url.split(`${process.env.CLOUDFRONT_URL}/`)[1]
+      url = url.split(`${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/`)[1]
     }
 
     const params = {

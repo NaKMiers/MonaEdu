@@ -3,7 +3,7 @@ import { theme } from '../../../tailwind.config'
 
 function VerifyPhoneEmail({
   name = 'Nguyễn Pi Pi',
-  link = 'https://monaedu.com?token=1234567890',
+  link = `${process.env.NEXT_PUBLIC_APP_URL}?token=1234567890`,
 }: {
   name?: string
   link?: string
@@ -19,22 +19,21 @@ function VerifyPhoneEmail({
           <Section className='inline-block mx-auto'>
             <Row className='mb-3 w-full'>
               <Column>
-                <a href='https://monaedu.com'>
+                <a href={process.env.NEXT_PUBLIC_APP_URL}>
                   <Img
                     className='aspect-square rounded-md'
-                    src={`${'https://monaedu.com'}/images/logo.jpg`}
+                    src={`${process.env.NEXT_PUBLIC_APP_URL}/images/logo.jpg`}
                     width={35}
                     height={35}
-                    alt='Mona-Edu'
                   />
                 </a>
               </Column>
               <Column>
                 <a
-                  href='https://monaedu.com'
+                  href={process.env.NEXT_PUBLIC_APP_URL}
                   className='text-2xl font-bold tracking-[0.3px] no-underline text-dark pl-2'
                 >
-                  MonaEdu
+                  Mona Edu
                 </a>
               </Column>
             </Row>
@@ -52,18 +51,20 @@ function VerifyPhoneEmail({
             <p>
               Bạn đã yêu cầu gửi mã xác thực tại{' '}
               <span className='font-semibold'>&quot;MonaEdu&quot;</span> lúc{' '}
-              {new Intl.DateTimeFormat('en', {
+              {new Intl.DateTimeFormat('vi', {
                 dateStyle: 'full',
                 timeStyle: 'medium',
                 timeZone: 'Asia/Ho_Chi_Minh',
-              }).format(new Date())}
+              })
+                .format(new Date())
+                .replace('lúc', '')}
               .
             </p>
 
             <p>Nếu đây không phải bạn, hãy bỏ qua email này.</p>
 
             <p>
-              Người lại, nếu đây là bạn, hãy ấn vào nút bên dưới để{' '}
+              Ngược lại, nếu đây là bạn, hãy ấn vào nút bên dưới để{' '}
               <a href={link} className='text-blue-500'>
                 xác thực số điện thoại của bạn
               </a>{' '}
@@ -83,7 +84,7 @@ function VerifyPhoneEmail({
             <p>Để giữ cho tải khoản của bạn được an toàn, không chia sẻ email này với bất kỳ ai!</p>
             <p>
               Nếu bạn có thắc mắc gì? Vui lòng liên hệ để được hỗ trợ với sự tận tình và nhanh chống:{' '}
-              <a href='https://www.messenger.com/t/170660996137305' className='text-blue-500'>
+              <a href={process.env.NEXT_PUBLIC_MESSENGER!} className='text-blue-500'>
                 Liên hệ
               </a>
             </p>
@@ -94,36 +95,54 @@ function VerifyPhoneEmail({
             </p>
           </Section>
 
-          {/* Footer */}
+          {/* MARK: Footer */}
           <div className='flex justify-center pt-[45px]'>
             <Img
               className='max-w-full'
               width={620}
-              src={`${'https://monaedu.com'}/backgrounds/footer-banner.jpg`}
+              src={`${process.env.NEXT_PUBLIC_APP_URL}/backgrounds/footer-banner.jpg`}
             />
           </div>
 
           <p className='text-center text-xs text-slate-600'>
-            © 2023 | MonaEdu - Developed by Nguyen Anh Khoa, All rights reserved.
+            © 2024 | Mona Edu - Developed by Nguyen Anh Khoa, All rights reserved.
           </p>
 
           <div className='text-center'>
             <a
-              href='https://zalo.me/0899320427'
+              href={process.env.NEXT_PUBLIC_MESSENGER!}
               target='_blank'
               rel='noreferrer'
               className='inline-block'
             >
-              <Img src={`${'https://monaedu.com'}/icons/zalo.jpg`} width={35} height={35} alt='zalo' />
+              <Img
+                src={`${process.env.NEXT_PUBLIC_APP_URL}/icons/messenger.jpg`}
+                width={35}
+                height={35}
+                alt='zalo'
+              />
             </a>
             <a
-              href='https://www.messenger.com/t/170660996137305'
+              href={process.env.NEXT_PUBLIC_FACEBOOK!}
               target='_blank'
               rel='noreferrer'
-              className='inline-block ml-2'
+              className='inline-block ml-4'
             >
               <Img
-                src={`${'https://monaedu.com'}/icons/messenger.jpg`}
+                src={`${process.env.NEXT_PUBLIC_APP_URL}/icons/facebook.png`}
+                width={35}
+                height={35}
+                alt='messenger'
+              />
+            </a>
+            <a
+              href={process.env.NEXT_PUBLIC_INSTAGRAM!}
+              target='_blank'
+              rel='noreferrer'
+              className='inline-block ml-4'
+            >
+              <Img
+                src={`${process.env.NEXT_PUBLIC_APP_URL}/icons/instagram.png`}
                 width={35}
                 height={35}
                 alt='messenger'
