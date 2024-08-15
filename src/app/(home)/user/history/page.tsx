@@ -24,7 +24,8 @@ import { BsLayoutSidebarInset, BsLayoutSidebarInsetReverse } from 'react-icons/b
 import { FaCalendar, FaDollarSign, FaGift, FaSlackHash, FaSort } from 'react-icons/fa'
 import { FaDeleteLeft } from 'react-icons/fa6'
 import { MdDateRange } from 'react-icons/md'
-import { TbRosetteDiscountCheckFilled } from 'react-icons/tb'
+import { SiStatuspage } from 'react-icons/si'
+import { TbRosetteDiscountCheckFilled, TbStatusChange } from 'react-icons/tb'
 
 function HistoryPage({ searchParams }: { searchParams?: { [key: string]: string[] | string } }) {
   // hook
@@ -297,33 +298,52 @@ function HistoryPage({ searchParams }: { searchParams?: { [key: string]: string[
 
               {orders.map(order => (
                 <div className='p-4 border-b border-dark' key={order._id}>
-                  <div className='flex justify-between flex-wrap gap-3 text-sm'>
-                    <p className='flex items-center gap-1.5 text-yellow-500'>
+                  <div className='flex justify-between flex-wrap gap-x-3 text-sm'>
+                    <p className='flex items-center gap-1.5 leading-7 text-yellow-500'>
                       <FaSlackHash size={16} className='-mr-1' />
                       <span className='font-semibold'>Mã đơn hàng: </span>
                       <span className='text-slate-700'>{order.code}</span>
                     </p>
+                    <p className='flex items-center gap-1.5 leading-7'>
+                      <TbStatusChange size={16} className='-mr-1' />
+                      <span className='font-semibold'>Trạng thái: </span>
+                      <span
+                        className={`${
+                          order.status === 'pending'
+                            ? 'text-yellow-500'
+                            : order.status === 'done'
+                            ? 'text-green-500'
+                            : 'text-slate-300'
+                        }`}
+                      >
+                        {order.status === 'pending'
+                          ? 'Đang xử lí'
+                          : order.status === 'done'
+                          ? 'Hoàn tất'
+                          : 'Đã hủy'}
+                      </span>
+                    </p>
                   </div>
-                  <div className='flex justify-between flex-wrap gap-3 text-sm'>
-                    <p className='flex items-center gap-1.5 text-sky-500'>
+                  <div className='flex justify-between flex-wrap gap-x-3 text-sm'>
+                    <p className='flex items-center gap-1.5 leading-7 text-sky-500'>
                       <FaDollarSign size={16} className='-mr-1' />
                       <span className='font-semibold'>Tổng: </span>
                       <span className='text-slate-700'>{formatPrice(order.total)}</span>
                     </p>
-                    <p className='flex items-center gap-1.5 text-slate-500'>
+                    <p className='flex items-center gap-1.5 leading-7 text-slate-500'>
                       <MdDateRange size={16} />
                       <span className='font-semibold'>Ngày mua hàng: </span>
                       <span>{moment(order.createdAt).format('DD/MM/YYYY HH:mm')}</span>
                     </p>
                   </div>
                   {order.voucher && order.discount && (
-                    <div className='flex justify-between flex-wrap gap-3 text-sm mt-2'>
-                      <p className='flex items-center gap-1.5 text-green-500'>
+                    <div className='flex justify-between flex-wrap gap-x-3 text-sm mt-2'>
+                      <p className='flex items-center gap-1.5 leading-7 text-green-500'>
                         <TbRosetteDiscountCheckFilled size={16} />
                         <span className='font-semibold'>Giảm giá: </span>
                         <span className='text-slate-700'>{formatPrice(order.discount)}</span>
                       </p>
-                      <p className='flex items-center gap-1.5 text-purple-500'>
+                      <p className='flex items-center gap-1.5 leading-7 text-purple-500'>
                         <BiSolidDiscount size={16} />
                         <span className='font-semibold'>Voucher: </span>
                         <span>{(order.voucher as IVoucher)?.code}</span>
@@ -331,8 +351,8 @@ function HistoryPage({ searchParams }: { searchParams?: { [key: string]: string[
                     </div>
                   )}
                   {curUser && curUser.email !== order.email && (
-                    <div className='flex justify-between flex-wrap gap-3 text-sm mt-2'>
-                      <p className='flex items-center gap-1.5 text-rose-400'>
+                    <div className='flex justify-between flex-wrap gap-x-3 text-sm mt-2'>
+                      <p className='flex items-center gap-1.5 leading-7 text-rose-400'>
                         <FaGift size={16} />
                         <span className='font-semibold'>Tặng: </span>
                         <span className='text-slate-700'>{order.email}</span>
@@ -359,12 +379,6 @@ function HistoryPage({ searchParams }: { searchParams?: { [key: string]: string[
                           {item.title}
                         </p>
                       </div>
-                      <Link
-                        href={`/user/history/${order.code}`}
-                        className='text-sm rounded-md shadow-lg bg-dark-100 text-light px-3 py-1.5 border border-dark hover:bg-primary hover:text-dark trans-200'
-                      >
-                        Chi tiết
-                      </Link>
                     </div>
                   ))}
                 </div>

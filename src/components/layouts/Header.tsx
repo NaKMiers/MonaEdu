@@ -206,15 +206,15 @@ function Header({ className = '' }: HeaderProps) {
             <div className='flex items-center gap-3'>
               <Link
                 href='/auth/login'
-                className='bg-dark text-white hover:bg-primary hover:text-dark border border-white text-nowrap trans-200 px-4 py-1.5 rounded-3xl font-body font-semibold tracking-wider cursor-pointer'
+                className='bg-dark text-white hover:bg-primary bg-dark-100 hover:text-dark border border-white text-nowrap trans-200 px-4 py-1.5 rounded-3xl font-body font-semibold tracking-wider cursor-pointer'
               >
-                Sign In
+                Đăng nhập
               </Link>
               <Link
                 href='/auth/register'
                 className='bg-sky-500 hover:bg-primary hover:text-dark text-white border border-dark text-nowrap trans-200 px-4 py-1.5 rounded-3xl font-body font-semibold tracking-wider cursor-pointer'
               >
-                Sign Up
+                Đăng ký
               </Link>
             </div>
           )}
