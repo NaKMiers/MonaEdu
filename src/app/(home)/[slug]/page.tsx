@@ -91,6 +91,7 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
         '@type': 'Organization',
         name: 'Mona Edu',
       },
+      category: (course?.category as ICategory)?.title,
     },
     educationalCredentialAwarded: 'Certificate of Completion',
     courseMode: 'online',
