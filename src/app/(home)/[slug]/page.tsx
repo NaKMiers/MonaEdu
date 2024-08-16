@@ -11,6 +11,7 @@ import { ICourse } from '@/models/CourseModel'
 import { IFlashSale } from '@/models/FlashSaleModel'
 import { ITag } from '@/models/TagModel'
 import { getCoursePageApi } from '@/requests'
+import { stripHTML } from '@/utils/string'
 import moment from 'moment-timezone'
 import { Metadata } from 'next'
 import Image from 'next/image'
@@ -69,7 +70,7 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
     '@context': 'https://schema.org/',
     '@type': 'Course',
     name: course?.title,
-    description: course?.description,
+    description: stripHTML(course?.description),
     provider: {
       '@type': 'Organization',
       name: 'Mona Edu',
@@ -101,7 +102,7 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
     about: relatedCourses.map(course => ({
       '@type': 'Course',
       name: course.title,
-      description: course.description,
+      description: stripHTML(course.description),
       url: `${process.env.NEXT_PUBLIC_APP_URL}/${course.slug}`,
       provider: {
         '@type': 'Organization',

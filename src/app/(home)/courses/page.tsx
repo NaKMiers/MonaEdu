@@ -7,6 +7,7 @@ import ShortPagination from '@/components/layouts/ShortPagination'
 import { ICourse } from '@/models/CourseModel'
 import { getCoursesPageApi } from '@/requests'
 import { handleQuery } from '@/utils/handleQuery'
+import { stripHTML } from '@/utils/string'
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { FaAngleRight } from 'react-icons/fa'
@@ -45,7 +46,7 @@ async function CoursesPage({ searchParams }: { searchParams?: { [key: string]: s
       item: {
         '@type': 'Course',
         name: course.title,
-        description: course.description,
+        description: stripHTML(course.description),
         url: `${process.env.NEXT_PUBLIC_APP_URL}/${course.slug}`,
         provider: {
           '@type': 'Organization',

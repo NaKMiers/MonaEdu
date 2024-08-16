@@ -27,3 +27,5 @@ export const getUserName = (user?: IUser, exclude?: string) => {
     return user.username
   }
 }
+
+export const stripHTML = (html: string = '') => html.replace(/<[^>]*>?/gm, '')

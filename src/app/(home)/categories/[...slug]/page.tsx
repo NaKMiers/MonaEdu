@@ -8,6 +8,7 @@ import { ICategory } from '@/models/CategoryModel'
 import { ICourse } from '@/models/CourseModel'
 import { getCategoryPageApi } from '@/requests'
 import { handleQuery } from '@/utils/handleQuery'
+import { stripHTML } from '@/utils/string'
 import { Metadata } from 'next'
 import { headers } from 'next/headers'
 import { notFound } from 'next/navigation'
@@ -56,7 +57,7 @@ async function CategoryPage({ searchParams }: { searchParams?: { [key: string]: 
       item: {
         '@type': 'Course',
         name: course.title,
-        description: course.description,
+        description: stripHTML(course.description),
         url: `${process.env.NEXT_PUBLIC_APP_URL}/${course.slug}`,
         provider: {
           '@type': 'Organization',

@@ -4,6 +4,7 @@ import Pagination from '@/components/layouts/Pagination'
 import { ICourse } from '@/models/CourseModel'
 import { getSearchPageApi } from '@/requests'
 import { handleQuery } from '@/utils/handleQuery'
+import { stripHTML } from '@/utils/string'
 import { Metadata } from 'next'
 import Link from 'next/link'
 
@@ -45,7 +46,7 @@ async function SearchPage({ searchParams }: { searchParams?: { [key: string]: st
       item: {
         '@type': 'Course',
         name: course.title,
-        description: course.description,
+        description: stripHTML(course.description),
         provider: {
           '@type': 'Organization',
           name: 'Mona Edu',

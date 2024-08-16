@@ -40,7 +40,7 @@ function FilterAndSearch({ searchParams, subs, chops, className = '' }: FilterAn
   const [search, setSearch] = useState<string>('')
 
   const [price, setPrice] = useState<number[]>([chops?.minPrice || 0, chops?.maxPrice || 1000000])
-  const [duration, setDuration] = useState<number[]>([0, 30])
+  const [duration, setDuration] = useState<number[]>([0, 40])
 
   const [showSortPrice, setShowSortPrice] = useState(false)
   const [sortPrice, setSortPrice] = useState<'asc' | 'desc' | 'none'>('none')
@@ -283,7 +283,7 @@ function FilterAndSearch({ searchParams, subs, chops, className = '' }: FilterAn
             <Slider
               value={duration}
               min={0}
-              max={30}
+              max={40}
               className='w-full -mb-1.5'
               onChange={(_, newValue: number | number[]) => setDuration(newValue as number[])}
               valueLabelDisplay='auto'
@@ -505,7 +505,7 @@ function FilterAndSearch({ searchParams, subs, chops, className = '' }: FilterAn
               <Slider
                 value={duration}
                 min={0}
-                max={30}
+                max={40}
                 className='w-full -mb-1.5'
                 onChange={(_, newValue: number | number[]) => setDuration(newValue as number[])}
                 valueLabelDisplay='auto'

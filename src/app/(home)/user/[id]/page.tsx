@@ -8,7 +8,7 @@ import { ICourse } from '@/models/CourseModel'
 import { IQuestion } from '@/models/QuestionModel'
 import { IUser } from '@/models/UserModel'
 import { getUsersApi } from '@/requests'
-import { getUserName } from '@/utils/string'
+import { getUserName, stripHTML } from '@/utils/string'
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
@@ -70,7 +70,7 @@ async function ProfilePage({ params: { id } }: { params: { id: string } }) {
         itemOffered: {
           '@type': 'Course',
           name: course.title,
-          description: course.description,
+          description: stripHTML(course.description),
           provider: {
             '@type': 'Organization',
             name: 'Mona Edu',
