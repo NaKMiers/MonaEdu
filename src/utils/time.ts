@@ -39,20 +39,24 @@ export const duration = (seconds: number, type: 'short' | 'long' = 'short') => {
   const duration = moment.duration(seconds, 'seconds')
 
   if (type === 'short') {
-    if (duration.hours() === 0) {
+    const totalHours = Math.floor(duration.asHours())
+    const minutes = duration.minutes()
+    const seconds = duration.seconds()
+
+    if (totalHours === 0) {
       return moment.utc(seconds * 1000).format('mm:ss')
     } else {
-      return moment.utc(seconds * 1000).format('HH:mm:ss')
+      return `${totalHours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
     }
   } else if (type === 'long') {
-    const hours = duration.hours()
+    const totalHours = Math.floor(duration.asHours())
     const minutes = duration.minutes()
     const seconds = duration.seconds()
 
     let formattedTime = ''
 
-    if (hours > 0) {
-      formattedTime += `${hours} giờ `
+    if (totalHours > 0) {
+      formattedTime += `${totalHours} giờ `
     }
     if (minutes > 0) {
       formattedTime += `${minutes} phút `
@@ -60,7 +64,7 @@ export const duration = (seconds: number, type: 'short' | 'long' = 'short') => {
     if (seconds > 0) {
       formattedTime += `${seconds} giây`
     }
-    return formattedTime
+    return formattedTime.trim()
   }
 }
 
