@@ -62,6 +62,7 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
         category: { $in: categoryIds },
         _id: { $ne: course._id },
       })
+        .populate('category')
         .limit(8)
         .lean(),
     ])
