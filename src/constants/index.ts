@@ -1,8 +1,8 @@
-import { FaTicketAlt } from 'react-icons/fa';
-import { FaBoltLightning, FaListCheck, FaTags, FaUser } from 'react-icons/fa6';
-import { MdCategory, MdReportOff, MdSpaceDashboard } from 'react-icons/md';
-import { RiBillFill } from 'react-icons/ri';
-import { SiCoursera } from 'react-icons/si';
+import { FaTicketAlt } from 'react-icons/fa'
+import { FaBoltLightning, FaListCheck, FaTags, FaUser } from 'react-icons/fa6'
+import { MdCategory, MdReportOff, MdSpaceDashboard } from 'react-icons/md'
+import { RiBillFill } from 'react-icons/ri'
+import { SiCoursera } from 'react-icons/si'
 
 // MARK: Admin Links
 export const adminLinks = [
@@ -123,7 +123,7 @@ export const adminLinks = [
       },
     ],
   },
-];
+]
 
 // MARK: Admin List
 export const admins = {
@@ -143,11 +143,10 @@ export const admins = {
     zalo: 'https://zalo.me/0899320427',
     messenger: 'https://www.messenger.com/t/170660996137305',
   },
-};
+}
 
 // MARK: Report Contents
 export const reportContents = {
-  question: ['Violence', '18+', 'Spam', 'Fake', 'Duplicate', 'Offensive'],
   comment: ['Violence', '18+', 'Spam', 'Fake', 'Duplicate', 'Offensive', 'Harassment', 'Hate Speech'],
   lesson: [
     'Violence',
@@ -171,4 +170,4 @@ export const reportContents = {
     'Hate Speech',
     'Wrong Information',
   ],
-};
+}

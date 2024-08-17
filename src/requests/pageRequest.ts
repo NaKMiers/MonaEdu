@@ -161,38 +161,3 @@ export const getSearchPageApi = async (
 
   return await res.json()
 }
-
-// [GET]: /question
-export const getForumPageApi = async (query: string = '') => {
-  // no cache for filter
-  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/question${query}`, {
-    cache: 'no-store',
-  })
-
-  // check status
-  if (!res.ok) {
-    throw new Error((await res.json()).message)
-  }
-
-  return await res.json()
-}
-
-// [GET]: /question/:slug/detail
-export const getQuestionDetailPage = async (
-  slug: string,
-  query: string = '',
-  option: RequestInit = { cache: 'no-store' }
-) => {
-  // no cache for filter
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_APP_URL}/api/question/${slug}/detail${query}`,
-    option
-  )
-
-  // check status
-  if (!res.ok) {
-    throw new Error((await res.json()).message)
-  }
-
-  return await res.json()
-}

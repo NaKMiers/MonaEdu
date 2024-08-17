@@ -4,15 +4,7 @@ import { signOut } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { memo } from 'react'
-import {
-  FaCheck,
-  FaHistory,
-  FaInfoCircle,
-  FaQuestion,
-  FaShoppingCart,
-  FaSignOutAlt,
-} from 'react-icons/fa'
-import { MdForum } from 'react-icons/md'
+import { FaCheck, FaHistory, FaInfoCircle, FaShoppingCart, FaSignOutAlt } from 'react-icons/fa'
 import { SiCoursera } from 'react-icons/si'
 import Divider from '../Divider'
 import Quote from '../Quote'
@@ -190,13 +182,6 @@ function Footer() {
                 Về chúng tôi
               </Link>
               <Link
-                href='/forum'
-                className='flex justify-center items-center gap-1.5 hover:tracking-wider trans-200 underline underline-offset-2 font-body tracking-wide group'
-              >
-                <MdForum size={14} className='wiggle-0 flex-shrink-0' />
-                Diễn đàn
-              </Link>
-              <Link
                 href='/cart'
                 className='flex justify-center items-center gap-1.5 hover:tracking-wider trans-200 underline underline-offset-2 font-body tracking-wide group'
               >
@@ -216,13 +201,6 @@ function Footer() {
               >
                 <SiCoursera size={14} className='wiggle-0 flex-shrink-0' />
                 Khóa học của tôi
-              </Link>
-              <Link
-                href='/my-questions'
-                className='flex justify-center items-center gap-1.5 hover:tracking-wider trans-200 underline underline-offset-2 font-body tracking-wide group'
-              >
-                <FaQuestion size={13} className='wiggle-0 flex-shrink-0' />
-                Câu hỏi của tôi
               </Link>
               <button
                 className='flex items-center justify-center gap-1 md:text-left lg:text-center text-yellow-400 hover:tracking-wider trans-200 font-body tracking-wide group'

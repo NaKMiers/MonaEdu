@@ -1,11 +1,9 @@
 import { connectDatabase } from '@/config/database'
-import QuestionModel from '@/models/QuestionModel'
 import UserModel, { IUser } from '@/models/UserModel'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Models: User, Course, Question
+// Models: User, Course
 import '@/models/CourseModel'
-import '@/models/QuestionModel'
 import '@/models/UserModel'
 
 export const dynamic = 'force-dynamic'
@@ -33,16 +31,8 @@ export async function GET(req: NextRequest, { params: { id } }: { params: { id: 
       return NextResponse.json({ message: 'Không tìm thấy người dùng' }, { status: 404 })
     }
 
-    // get user questions
-    const questions = await QuestionModel.find({
-      userId: user._id,
-      status: 'open',
-    })
-      .limit(6)
-      .lean()
-
     // return user
-    return NextResponse.json({ user, questions, message: 'Lấy người dùng thành công' }, { status: 200 })
+    return NextResponse.json({ user, message: 'Lấy người dùng thành công' }, { status: 200 })
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })
   }

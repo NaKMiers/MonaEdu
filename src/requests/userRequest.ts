@@ -243,21 +243,6 @@ export const blockCommentApi = async (userId: string, value: boolean) => {
   return await res.json()
 }
 
-// [PATCH]: /admin/user/:userId/block-add-question
-export const blockAddQuestionApi = async (userId: string, value: boolean) => {
-  const res = await fetch(`/api/admin/user/${userId}/block-add-question`, {
-    method: 'PATCH',
-    body: JSON.stringify({ value }),
-  })
-
-  // check status
-  if (!res.ok) {
-    throw new Error((await res.json()).message)
-  }
-
-  return await res.json()
-}
-
 // [PATCH]: /user/change-notification-setting
 export const changeNotificationSettingApi = async (type: string, value: boolean) => {
   const res = await fetch(`/api/user/change-notification-setting`, {

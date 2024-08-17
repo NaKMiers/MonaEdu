@@ -1,18 +1,14 @@
 import { connectDatabase } from '@/config/database'
 import CommentModel from '@/models/CommentModel'
 import LessonModel from '@/models/LessonModel'
-import NotificationModel from '@/models/NotificationModel'
-import QuestionModel, { IQuestion } from '@/models/QuestionModel'
 import UserModel, { IUser } from '@/models/UserModel'
-import { getUserName } from '@/utils/string'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Models: Comment, Question, User, Lesson, Notification
+// Models: Comment, User, Lesson, Notification
 import '@/models/CommentModel'
 import '@/models/LessonModel'
 import '@/models/NotificationModel'
-import '@/models/QuestionModel'
 import '@/models/UserModel'
 
 // [POST]: /comment/add
@@ -31,7 +27,7 @@ export async function POST(req: NextRequest) {
     const userId = token?._id
 
     // get product id and content to add comment
-    const { questionId, lessonId, content } = await req.json()
+    const { lessonId, content } = await req.json()
 
     // get user commented
     const user: IUser | null = await UserModel.findById(userId).lean()
@@ -47,7 +43,7 @@ export async function POST(req: NextRequest) {
     }
 
     // check if productId or content is empty
-    if ((!questionId && !lessonId) || !content) {
+    if (!lessonId || !content) {
       // return error
       return NextResponse.json({ message: 'Nội dung không hợp lệ' }, { status: 400 })
     }
@@ -55,34 +51,9 @@ export async function POST(req: NextRequest) {
     // create new comment
     const comment = await CommentModel.create({
       userId,
-      questionId,
       lessonId,
       content: content.trim(),
     })
-
-    // if user comment on question
-    if (questionId) {
-      const [_, question] = await Promise.all([
-        // increase comment amount in question
-        QuestionModel.findByIdAndUpdate(questionId, {
-          $inc: { commentAmount: 1 },
-        }),
-        QuestionModel.findById(questionId).select('userId slug').lean(),
-      ])
-
-      if (!question) {
-        return NextResponse.json({ message: 'Không tìm thấy câu hỏi' }, { status: 404 })
-      }
-
-      // notify user
-      await NotificationModel.create({
-        userId: (question as IQuestion).userId,
-        title: getUserName(user) + ' đã trả lời câu hỏi của bạn',
-        image: user.avatar,
-        link: `/forum/${(question as IQuestion).slug}`,
-        type: 'comment-question',
-      })
-    }
 
     // if user comment on lesson
     if (lessonId) {

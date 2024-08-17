@@ -5,7 +5,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { memo, useState } from 'react'
 import { AiFillMessage } from 'react-icons/ai'
-import { FaQuestionCircle } from 'react-icons/fa'
 import { FaBoltLightning } from 'react-icons/fa6'
 import Divider from '../Divider'
 
@@ -28,14 +27,6 @@ function FloatingButtons({ className = '' }: FloatingButtonsProps) {
           title='Flash Sale'
         >
           <FaBoltLightning size={20} className={`text-white wiggle trans-200`} />
-        </Link>
-
-        <Link
-          href='/forum'
-          className='group flex items-center justify-center h-[44px] w-[44px] border-2 bg-dark-100 border-light rounded-xl'
-          title='Diễn Đàn'
-        >
-          <FaQuestionCircle size={20} className={`text-white wiggle trans-200`} />
         </Link>
 
         <button

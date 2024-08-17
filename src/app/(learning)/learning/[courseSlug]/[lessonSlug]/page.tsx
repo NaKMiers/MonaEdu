@@ -22,7 +22,7 @@ import { useRouter } from 'next/navigation'
 import { Fragment, useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { BsLayoutSidebarInsetReverse } from 'react-icons/bs'
-import { FaAngleRight, FaChevronLeft, FaFile, FaHeart, FaQuestion, FaRegHeart } from 'react-icons/fa'
+import { FaAngleRight, FaChevronLeft, FaFile, FaHeart, FaRegHeart } from 'react-icons/fa'
 import { HiDotsHorizontal } from 'react-icons/hi'
 
 function LessonPage({
@@ -222,7 +222,7 @@ function LessonPage({
         <ReportDialog
           open={isOpenReportDialog}
           setOpen={setIsOpenReportDialog}
-          title='Report Question'
+          title='Report Lesson'
           contents={reportContents.lesson}
           selectedContent={selectedContent}
           setSelectedContent={setSelectedContent}
@@ -302,14 +302,6 @@ function LessonPage({
               )}{' '}
               <span>{lesson.likes.length}</span>
             </div>
-
-            <Link
-              href='/forum'
-              className='px-2 py-1 bg-slate-200 flex items-center rounded-lg hover:bg-dark-100 hover:text-white trans-200 shadow-lg'
-            >
-              <span className='font-semibold text-lg'>Đặt câu hỏi </span>
-              <FaQuestion size={18} />
-            </Link>
           </div>
 
           <Divider size={2} />

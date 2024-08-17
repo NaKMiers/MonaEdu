@@ -1,20 +1,11 @@
 // Comment -------------------------------------
 
 // [POST]: /comment/add
-export const addCommentApi = async ({
-  lessonId,
-  questionId,
-  content,
-}: {
-  lessonId?: string
-  questionId?: string
-  content: string
-}) => {
+export const addCommentApi = async ({ lessonId, content }: { lessonId?: string; content: string }) => {
   const res = await fetch(`/api/comment/add`, {
     method: 'POST',
     body: JSON.stringify({
       lessonId,
-      questionId,
       content,
     }),
   })

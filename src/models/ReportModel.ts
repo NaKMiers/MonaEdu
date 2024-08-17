@@ -11,7 +11,7 @@ const ReportSchema = new Schema(
     },
     type: {
       type: String,
-      enum: ['question', 'comment', 'lesson', 'course'],
+      enum: ['comment', 'lesson', 'course'],
       required: true,
     },
     link: {

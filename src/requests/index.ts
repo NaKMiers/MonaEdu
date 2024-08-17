@@ -31,9 +31,6 @@ export * from './voucherRequest'
 // Flash Sale
 export * from './flashSaleRequest'
 
-// Question
-export * from './questionRequest'
-
 // Report
 export * from './reportRequest'
 

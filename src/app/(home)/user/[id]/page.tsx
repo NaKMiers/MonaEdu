@@ -1,11 +1,8 @@
 import Avatar from '@/components/Avatar'
 import CourseCard from '@/components/CourseCard'
 import Divider from '@/components/Divider'
-import MyLink from '@/components/MyLink'
-import QuestionItem from '@/components/QuestionItem'
 import UserBanner from '@/components/UserBanner'
 import { ICourse } from '@/models/CourseModel'
-import { IQuestion } from '@/models/QuestionModel'
 import { IUser } from '@/models/UserModel'
 import { getUsersApi } from '@/requests'
 import { getUserName, stripHTML } from '@/utils/string'
@@ -24,7 +21,6 @@ export const generateMetadata = ({ params }: any): Metadata => {
 async function ProfilePage({ params: { id } }: { params: { id: string } }) {
   let user: IUser | null = null
   let courses: ICourse[] = []
-  let questions: IQuestion[] = []
 
   try {
     // get user profile
@@ -32,10 +28,6 @@ async function ProfilePage({ params: { id } }: { params: { id: string } }) {
 
     user = data.user
     courses = data.user.courses.map((course: any) => course.course)
-    questions = data.questions.map((question: any) => ({
-      ...question,
-      userId: user,
-    }))
   } catch (err: any) {
     console.error(err)
     return notFound()
@@ -167,36 +159,7 @@ async function ProfilePage({ params: { id } }: { params: { id: string } }) {
           {/* Personal Info */}
           <div className='relative col-span-12 md:col-span-4 order-1 md:order-2 font-body tracking-wider'>
             <div className='sticky top-[93px] left-0 right-0 w-full rounded-medium shadow-lg p-4 bg-white'>
-              {/* Achievements */}
-              {/* <div>
-                <h4 className='font-semibold text-slate-700 font-body tracking-wider drop-shadow-md text-center mb-3'>
-                  Các danh hiệu đạt được (3)
-                </h4>
-                <div className='flex snap-mandatory snap-x overflow-x-auto -mx-2'>
-                  {Array.from({ length: 10 }).map((_, index) => (
-                    <div
-                      className='flex flex-col items-center w-1/5 flex-shrink-0 snap-start px-2'
-                      key={index}
-                    >
-                      <div className='rounded-lg aspect-square w-full overflow-hidden'>
-                        <Image
-                          className='w-full h-full object-cover shadow-md'
-                          src='/images/logo.png'
-                          width={80}
-                          height={80}
-                          alt='achievement'
-                        />
-                      </div>
-                      <p className='text-xs mt-1 text-ellipsis line-clamp-1' title={`Title ${index}`}>
-                        Title {index}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div> */}
-
               {/* Email */}
-
               <h4 className='font-semibold text-slate-700 font-body tracking-wider drop-shadow-md text-center mb-2'>
                 Thông tin cá nhân
               </h4>
@@ -231,31 +194,6 @@ async function ProfilePage({ params: { id } }: { params: { id: string } }) {
               </div>
             </div>
           </div>
-        </div>
-
-        <Divider size={18} />
-
-        {/* Questions */}
-        <div className='max-w-1200 mx-auto px-21'>
-          <h2 className='font-semibold text-3xl flex gap-3 justify-between items-end'>
-            Các câu hỏi gần đây của {user && getUserName(user)}
-            <MyLink user={user}>
-              <Link
-                href='/my-questions'
-                className='font-normal underline underline-offset-1 text-sky-500 text-base'
-              >
-                (Tất cả câu hỏi của tôi)
-              </Link>
-            </MyLink>
-          </h2>
-
-          <Divider size={8} />
-
-          <ul className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-21 text-dark'>
-            {questions.map(question => (
-              <QuestionItem question={question} key={question._id} />
-            ))}
-          </ul>
         </div>
 
         <Divider size={28} />

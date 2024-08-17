@@ -1,10 +1,5 @@
 import { IUser } from '@/models/UserModel'
-import {
-  blockAddQuestionApi,
-  blockCommentApi,
-  demoteCollaboratorApi,
-  setCollaboratorApi,
-} from '@/requests'
+import { blockCommentApi, demoteCollaboratorApi, setCollaboratorApi } from '@/requests'
 import { formatPrice } from '@/utils/number'
 import { formatDate, formatTime } from '@/utils/time'
 import { useSession } from 'next-auth/react'
@@ -53,11 +48,8 @@ function UserItem({
   const [isLoadingSetCollaborator, setIsLoadingSetCollaborator] = useState<boolean>(false)
   const [isDemoting, setIsDemoting] = useState<boolean>(false)
   const [isBlockingComment, setIsBlockingComment] = useState<boolean>(false)
-  const [isBlockingAddQuestion, setIsBlockingAddQuestion] = useState<boolean>(false)
   const [isOpenConfirmModal, setIsOpenConfirmModal] = useState<boolean>(false)
   const [isOpenBlockCommentConfirmationDialog, setIsOpenBlockCommentConfirmationDialog] =
-    useState<boolean>(false)
-  const [isOpenBlockAddQuestionConfirmationDialog, setIsOpenBlockAddQuestionConfirmationDialog] =
     useState<boolean>(false)
   const [isOpenDemoteCollboratorConfirmationDialog, setIsOpenDemoteCollboratorConfirmationDialog] =
     useState<boolean>(false)
@@ -190,32 +182,6 @@ function UserItem({
       setIsBlockingComment(false)
     }
   }, [data._id, userData.blockStatuses.blockedComment])
-
-  // handle block / unblock adding question
-  const handleBlockAddingQuestion = useCallback(async () => {
-    // start loading
-    setIsBlockingAddQuestion(true)
-
-    try {
-      // send request to server
-      const { updatedUser, message } = await blockAddQuestionApi(
-        data._id,
-        !userData.blockStatuses.blockedAddingQuestion
-      )
-
-      // update user data
-      setUserData(updatedUser)
-
-      // show success message
-      toast.success(message)
-    } catch (err: any) {
-      console.log(err)
-      toast.error(err.message)
-    } finally {
-      // stop loading
-      setIsBlockingAddQuestion(false)
-    }
-  }, [data._id, userData.blockStatuses.blockedAddingQuestion])
 
   return (
     <>
@@ -445,12 +411,7 @@ function UserItem({
                 e.stopPropagation()
                 setIsOpenBlockCommentConfirmationDialog(true)
               }}
-              disabled={
-                loadingUsers.includes(userData._id) ||
-                isBlockingComment ||
-                isBlockingAddQuestion ||
-                isDemoting
-              }
+              disabled={loadingUsers.includes(userData._id) || isBlockingComment || isDemoting}
               title='Block Comment'
             >
               {isBlockingComment ? (
@@ -465,33 +426,6 @@ function UserItem({
               )}
             </button>
 
-            {/* Block Add Question Button */}
-            <button
-              className='block group'
-              onClick={e => {
-                e.stopPropagation()
-                setIsOpenBlockAddQuestionConfirmationDialog(true)
-              }}
-              disabled={
-                loadingUsers.includes(userData._id) ||
-                isBlockingComment ||
-                isBlockingAddQuestion ||
-                isDemoting
-              }
-              title='Block Add Question'
-            >
-              {isBlockingAddQuestion ? (
-                <RiDonutChartFill size={18} className='animate-spin text-slate-300' />
-              ) : (
-                <ImBlocked
-                  size={18}
-                  className={`wiggle ${
-                    userData.blockStatuses.blockedAddingQuestion ? 'text-rose-500' : 'text-green-500'
-                  }`}
-                />
-              )}
-            </button>
-
             {/* Delete Button */}
             <button
               className='block group'
@@ -499,12 +433,7 @@ function UserItem({
                 e.stopPropagation()
                 setIsOpenConfirmModal(true)
               }}
-              disabled={
-                loadingUsers.includes(userData._id) ||
-                isBlockingComment ||
-                isBlockingAddQuestion ||
-                isDemoting
-              }
+              disabled={loadingUsers.includes(userData._id) || isBlockingComment || isDemoting}
               title='Delete'
             >
               {loadingUsers.includes(userData._id) ? (
@@ -535,16 +464,6 @@ function UserItem({
         content='Are you sure that you want to block comment this user?'
         onAccept={handleBlockComment}
         isLoading={isBlockingComment}
-      />
-
-      {/* Confirm Block Add Question Dialog */}
-      <ConfirmDialog
-        open={isOpenBlockAddQuestionConfirmationDialog}
-        setOpen={setIsOpenBlockAddQuestionConfirmationDialog}
-        title='Block Adding Question'
-        content='Are you sure that you want to block adding question this user?'
-        onAccept={handleBlockAddingQuestion}
-        isLoading={isBlockingAddQuestion}
       />
 
       {/* Confirm Demote Collaborator Dialog */}

@@ -1,7 +1,6 @@
 import mongoose from 'mongoose'
-import { IUser } from './UserModel'
 import { ILesson } from './LessonModel'
-import { IQuestion } from './QuestionModel'
+import { IUser } from './UserModel'
 const Schema = mongoose.Schema
 
 const CommentSchema = new Schema(
@@ -14,10 +13,6 @@ const CommentSchema = new Schema(
     lessonId: {
       type: Schema.Types.ObjectId,
       ref: 'lesson',
-    },
-    questionId: {
-      type: Schema.Types.ObjectId,
-      ref: 'question',
     },
     content: {
       type: String,
@@ -50,7 +45,6 @@ export interface IComment {
   _id: string
   userId: string | IUser
   lessonId: string | ILesson
-  questionId: string | IQuestion
   content: string
   replied: string[] | IComment[]
   likes: string[] | IUser[]

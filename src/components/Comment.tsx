@@ -13,12 +13,11 @@ import LoadingButton from './LoadingButton'
 
 interface CommentProps {
   comments: IComment[]
-  questionId?: string
   lessonId?: string
   className?: string
 }
 
-function Comment({ comments, questionId, lessonId, className = '' }: CommentProps) {
+function Comment({ comments, lessonId, className = '' }: CommentProps) {
   // hooks
   const { data: session } = useSession()
   const curUser: any = session?.user
@@ -52,13 +51,12 @@ function Comment({ comments, questionId, lessonId, className = '' }: CommentProp
       if (!curUser) return toast.error('Hãy đăng nhập để bình luận')
 
       // check if comment is valid
-      if (questionId || lessonId) {
+      if (lessonId) {
         setIsLoading(true)
 
         try {
           // send request to add comment
           const { newComment } = await addCommentApi({
-            questionId,
             lessonId,
             content: data.comment,
           })
@@ -78,7 +76,7 @@ function Comment({ comments, questionId, lessonId, className = '' }: CommentProp
         }
       }
     },
-    [reset, questionId, lessonId, curUser]
+    [reset, lessonId, curUser]
   )
 
   return (

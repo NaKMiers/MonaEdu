@@ -165,8 +165,6 @@ const UserSchema = new Schema(
             'unset',
             'create-order',
             'delivered-order',
-            'comment-question',
-            'emotion-question',
             'replied-comment',
             'emotion-comment',
             'new-lesson',
@@ -192,14 +190,6 @@ const UserSchema = new Schema(
         type: Boolean,
         default: true,
       },
-      repliedQuestion: {
-        type: Boolean,
-        default: true,
-      },
-      emotionQuestion: {
-        type: Boolean,
-        default: true,
-      },
       repliedComment: {
         type: Boolean,
         default: true,
@@ -211,10 +201,6 @@ const UserSchema = new Schema(
     },
     blockStatuses: {
       blockedComment: {
-        type: Boolean,
-        default: false,
-      },
-      blockedAddingQuestion: {
         type: Boolean,
         default: false,
       },
@@ -272,14 +258,11 @@ export interface IUser {
   gifts: string[] | ICourse[]
   notificationSettings: {
     newLesson: boolean
-    repliedQuestion: boolean
-    emotionQuestion: boolean
     repliedComment: boolean
     emotionComment: boolean
   }
   blockStatuses: {
     blockedComment: boolean
-    blockedAddingQuestion: boolean
   }
   createdAt: string
   updatedAt: string

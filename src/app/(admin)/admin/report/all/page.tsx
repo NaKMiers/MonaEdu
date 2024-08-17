@@ -248,10 +248,6 @@ function AllReportsPage({ searchParams }: { searchParams?: { [key: string]: stri
                 selected: true,
               },
               {
-                value: 'question',
-                label: 'Question',
-              },
-              {
                 value: 'comment',
                 label: 'Comment',
               },

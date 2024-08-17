@@ -1,8 +1,7 @@
 import Divider from '@/components/Divider'
 import CourseCardX from '@/components/loading/CourseCardX'
-import QuestionItemX from '@/components/loading/QuestionItemX'
 
-async function ProfilePage() {
+async function ProfilePageX() {
   return (
     <div>
       {/* Head */}
@@ -13,7 +12,7 @@ async function ProfilePage() {
           <div className='w-full aspect-[7/3] md:aspect-[3/1] lg:aspect-[9/2] rounded-b-3xl md:rounded-t-3xl bg-slate-700 animate-pulse' />
 
           <div className='relative -mt-[84px] md:mt-0 md:h-[104px]'>
-            <div className='md:absolute sm:right-6 md:right-12 md:top-0 z-10 flex flex-col-reverse md:flex-row justify-center items-center md:items-end md:justify-end gap-3'>
+            <div className='md:absolute sm:right-6 md:right-12 md:top-0 z-10 flex flex-col-reverse md:flex-row justify-center items-center md:items-end md:justify-end gap-3 md:-translate-y-1/2'>
               <div className='flex flex-col items-center md:items-end justify-end pb-4 gap-1.5'>
                 <div className='h-8 max-w-full w-[300px] rounded-md bg-slate-300 animate-pulse' />
                 <div className='h-5 max-w-full w-[100px] rounded-md bg-slate-500 animate-pulse' />
@@ -83,25 +82,10 @@ async function ProfilePage() {
           </div>
         </div>
 
-        <Divider size={18} />
-
-        {/* Questions */}
-        <div className='max-w-1200 mx-auto px-21'>
-          <div className='h-8 my-0.5 max-w-full w-[300px] rounded-md bg-slate-300 animate-pulse' />
-
-          <Divider size={8} />
-
-          <ul className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-21'>
-            {Array.from({ length: 6 }).map((_, index) => (
-              <QuestionItemX key={index} />
-            ))}
-          </ul>
-        </div>
-
         <Divider size={28} />
       </div>
     </div>
   )
 }
 
-export default ProfilePage
+export default ProfilePageX

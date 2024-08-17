@@ -35,22 +35,12 @@
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://monaedu.com/forum</loc>
-    <lastmod>2024-08-17T16:09:50+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
     <loc>https://monaedu.com/about-us</loc>
     <lastmod>2024-08-17T16:09:50+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://monaedu.com/my-courses</loc>
-    <lastmod>2024-08-17T16:09:50+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://monaedu.com/my-questions</loc>
     <lastmod>2024-08-17T16:09:50+00:00</lastmod>
     <priority>0.80</priority>
   </url>
@@ -106,16 +96,6 @@
   </url>
   <url>
     <loc>https://monaedu.com/user/nakmiers</loc>
-    <lastmod>2024-08-17T16:09:50+00:00</lastmod>
-    <priority>0.64</priority>
-  </url>
-  <url>
-    <loc>https://monaedu.com/forum/hi-there</loc>
-    <lastmod>2024-08-17T16:09:50+00:00</lastmod>
-    <priority>0.64</priority>
-  </url>
-  <url>
-    <loc>https://monaedu.com/forum/hello</loc>
     <lastmod>2024-08-17T16:09:50+00:00</lastmod>
     <priority>0.64</priority>
   </url>

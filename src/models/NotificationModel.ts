@@ -24,8 +24,6 @@ const NotificationSchema = new Schema(
         'unset',
         'create-order',
         'delivered-order',
-        'comment-question',
-        'emotion-question',
         'replied-comment',
         'emotion-comment',
         'new-lesson',

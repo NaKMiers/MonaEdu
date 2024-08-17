@@ -122,7 +122,7 @@ function CommentItem({ comment, setCmts, className = '' }: CommentItemProps) {
         const { comment: cmt } = await likeCommentApi(comment._id, value)
 
         // like / dislike comment / replied comment
-        if (!cmt.lessonId && !cmt.questionId) {
+        if (!cmt.lessonId) {
           // replied comment
 
           setCmts(prev =>
@@ -155,7 +155,7 @@ function CommentItem({ comment, setCmts, className = '' }: CommentItemProps) {
         const { comment: cmt } = await hideCommentApi(id, value)
 
         // hide / show comment / replied comment
-        if (!cmt.lessonId && !cmt.questionId) {
+        if (!cmt.lessonId) {
           // replied comment
 
           setCmts(prev =>
@@ -244,7 +244,7 @@ function CommentItem({ comment, setCmts, className = '' }: CommentItemProps) {
           <ReportDialog
             open={isOpenReportDialog}
             setOpen={setIsOpenReportDialog}
-            title='Report Question'
+            title='Report Comment'
             contents={reportContents.comment}
             selectedContent={selectedContent}
             setSelectedContent={setSelectedContent}
@@ -275,7 +275,7 @@ function CommentItem({ comment, setCmts, className = '' }: CommentItemProps) {
             <span>{comment.likes.length}</span>
           </div>
 
-          {(comment.questionId || comment.lessonId) && (
+          {comment.lessonId && (
             <div
               className='flex font-semibold text-primary gap-1 cursor-pointer select-none'
               onClick={() => setIsOpenReply(prev => !prev)}
