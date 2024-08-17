@@ -114,8 +114,26 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
         price: course.price,
         availability: 'https://schema.org/InStock',
         url: `${process.env.NEXT_PUBLIC_APP_URL}/${course.slug}`,
+        category: (course?.category as ICategory)?.title,
       },
       category: (course.category as ICategory)?.title,
+      hasCourseInstance: [
+        {
+          '@type': 'CourseInstance',
+          courseMode: 'online',
+          instructor: {
+            '@type': 'Person',
+            name: course.author,
+          },
+          startDate: moment(course.createdAt).toISOString(),
+          location: {
+            '@type': 'Place',
+            name: 'Online',
+          },
+          url: `${process.env.NEXT_PUBLIC_APP_URL}/${course.slug}`,
+          courseWorkload: `PT${totalTime.hours}H${totalTime.minutes}M`,
+        },
+      ],
     })),
     hasCourseInstance: [
       {

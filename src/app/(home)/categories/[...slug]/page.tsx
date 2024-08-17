@@ -9,6 +9,7 @@ import { ICourse } from '@/models/CourseModel'
 import { getCategoryPageApi } from '@/requests'
 import { handleQuery } from '@/utils/handleQuery'
 import { stripHTML } from '@/utils/string'
+import moment from 'moment-timezone'
 import { Metadata } from 'next'
 import { headers } from 'next/headers'
 import { notFound } from 'next/navigation'
@@ -66,11 +67,33 @@ async function CategoryPage({ searchParams }: { searchParams?: { [key: string]: 
         },
         offers: {
           '@type': 'Offer',
-          url: `${process.env.NEXT_PUBLIC_APP_URL}/${course.slug}`,
           priceCurrency: 'VND',
-          price: course.price,
-          availability: 'InStock',
+          price: course?.price,
+          availability: 'https://schema.org/InStock',
+          url: `${process.env.NEXT_PUBLIC_APP_URL}/${course?.slug}`,
+          seller: {
+            '@type': 'Organization',
+            name: 'Mona Edu',
+          },
+          category: (course?.category as ICategory)?.title,
         },
+        hasCourseInstance: [
+          {
+            '@type': 'CourseInstance',
+            courseMode: 'online',
+            instructor: {
+              '@type': 'Person',
+              name: course.author,
+            },
+            startDate: moment(course.createdAt).toISOString(),
+            location: {
+              '@type': 'Place',
+              name: 'Online',
+            },
+            url: `${process.env.NEXT_PUBLIC_APP_URL}/${course.slug}`,
+            courseWorkload: `PT${course.duration % 3600}H${(course.duration % 3600) % 60}M`,
+          },
+        ],
       },
     })),
     about: {

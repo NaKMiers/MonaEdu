@@ -4,10 +4,12 @@ import Divider from '@/components/Divider'
 import FilterAndSearch from '@/components/FilterAndSearch'
 import Pagination from '@/components/layouts/Pagination'
 import ShortPagination from '@/components/layouts/ShortPagination'
+import { ICategory } from '@/models/CategoryModel'
 import { ICourse } from '@/models/CourseModel'
 import { getCoursesPageApi } from '@/requests'
 import { handleQuery } from '@/utils/handleQuery'
 import { stripHTML } from '@/utils/string'
+import moment from 'moment-timezone'
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { FaAngleRight } from 'react-icons/fa'
@@ -55,11 +57,33 @@ async function CoursesPage({ searchParams }: { searchParams?: { [key: string]: s
         },
         offers: {
           '@type': 'Offer',
-          url: `${process.env.NEXT_PUBLIC_APP_URL}/${course.slug}`,
           priceCurrency: 'VND',
-          price: course.price,
-          availability: 'InStock',
+          price: course?.price,
+          availability: 'https://schema.org/InStock',
+          url: `${process.env.NEXT_PUBLIC_APP_URL}/${course?.slug}`,
+          seller: {
+            '@type': 'Organization',
+            name: 'Mona Edu',
+          },
+          category: (course?.category as ICategory)?.title,
         },
+        hasCourseInstance: [
+          {
+            '@type': 'CourseInstance',
+            courseMode: 'online',
+            instructor: {
+              '@type': 'Person',
+              name: course.author,
+            },
+            startDate: moment(course.createdAt).toISOString(),
+            location: {
+              '@type': 'Place',
+              name: 'Online',
+            },
+            url: `${process.env.NEXT_PUBLIC_APP_URL}/${course.slug}`,
+            courseWorkload: `PT${course.duration % 3600}H${(course.duration % 3600) % 60}M`,
+          },
+        ],
       },
     })),
   }

@@ -76,7 +76,7 @@ function Chapter({
         onClick={() => setOpen(!open)}
       >
         {chapter.title}
-        <div className='flex items-center gap-2'>
+        <div className='flex items-center gap-2 text-nowrap'>
           <span className='text-xs'>{chapter.lessons?.length} bài giảng</span>
           {' - '}
           <span className='text-xs'>

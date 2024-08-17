@@ -9,6 +9,7 @@ import { IQuestion } from '@/models/QuestionModel'
 import { IUser } from '@/models/UserModel'
 import { getUsersApi } from '@/requests'
 import { getUserName, stripHTML } from '@/utils/string'
+import moment from 'moment-timezone'
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
@@ -79,6 +80,23 @@ async function ProfilePage({ params: { id } }: { params: { id: string } }) {
         url: `${process.env.NEXT_PUBLIC_APP_URL}/${course.slug}`,
         priceCurrency: 'VND',
         price: course.price,
+        hasCourseInstance: [
+          {
+            '@type': 'CourseInstance',
+            courseMode: 'online',
+            instructor: {
+              '@type': 'Person',
+              name: course.author,
+            },
+            startDate: moment(course.createdAt).toISOString(),
+            location: {
+              '@type': 'Place',
+              name: 'Online',
+            },
+            url: `${process.env.NEXT_PUBLIC_APP_URL}/${course.slug}`,
+            courseWorkload: `PT${course.duration % 3600}H${(course.duration % 3600) % 60}M`,
+          },
+        ],
       })),
     },
   }

@@ -1,10 +1,12 @@
 import CourseCard from '@/components/CourseCard'
 import Divider from '@/components/Divider'
 import Pagination from '@/components/layouts/Pagination'
+import { ICategory } from '@/models/CategoryModel'
 import { ICourse } from '@/models/CourseModel'
 import { getSearchPageApi } from '@/requests'
 import { handleQuery } from '@/utils/handleQuery'
 import { stripHTML } from '@/utils/string'
+import moment from 'moment-timezone'
 import { Metadata } from 'next'
 import Link from 'next/link'
 
@@ -54,10 +56,33 @@ async function SearchPage({ searchParams }: { searchParams?: { [key: string]: st
         },
         offers: {
           '@type': 'Offer',
-          price: course.price,
           priceCurrency: 'VND',
+          price: course?.price,
           availability: 'https://schema.org/InStock',
+          url: `${process.env.NEXT_PUBLIC_APP_URL}/${course?.slug}`,
+          seller: {
+            '@type': 'Organization',
+            name: 'Mona Edu',
+          },
+          category: (course?.category as ICategory)?.title,
         },
+        hasCourseInstance: [
+          {
+            '@type': 'CourseInstance',
+            courseMode: 'online',
+            instructor: {
+              '@type': 'Person',
+              name: course.author,
+            },
+            startDate: moment(course.createdAt).toISOString(),
+            location: {
+              '@type': 'Place',
+              name: 'Online',
+            },
+            url: `${process.env.NEXT_PUBLIC_APP_URL}/${course.slug}`,
+            courseWorkload: `PT${course.duration % 3600}H${(course.duration % 3600) % 60}M`,
+          },
+        ],
       },
     })),
   }
