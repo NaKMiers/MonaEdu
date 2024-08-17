@@ -47,7 +47,7 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
   // MARK: Get Data
   try {
     // revalidate every 1 minute
-    const data = await getCoursePageApi(slug, '', { next: { revalidate: 0 } })
+    const data = await getCoursePageApi(slug, '', { next: { revalidate: 60 } })
 
     course = data.course
     chapters = data.chapters

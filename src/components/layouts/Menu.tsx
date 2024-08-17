@@ -60,7 +60,7 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
       <div
         className={`${
           open
-            ? 'max-h-[358px] sm:max-w-full sm:w-[300px] sm:max-h-[358px] p-2 sm:border-2 opacity-1'
+            ? 'max-h-[358px] sm:max-w-full sm:w-[300px] sm:max-h-[358px] p-2 sm:border-2 opacity-1 xs-h:max-h-[calc(100vh-72px)] xs-h:overflow-y-auto'
             : 'max-h-0 sm:max-h-0 p-0 border-0 sm:max-w-0 sm:w-0 opacity-0'
         } ${
           curUser && !curUser?._id ? 'hidden' : ''

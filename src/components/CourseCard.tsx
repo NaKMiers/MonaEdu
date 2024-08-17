@@ -149,6 +149,7 @@ function CourseCard({ course: data, hideBadge, className = '' }: CourseCardProps
     <HtmlTooltip
       placement='right-start'
       arrow
+      enterDelay={120}
       title={
         <div className='p-21/2 border border-slate-600 rounded-xl bg-white text-dark'>
           <h1 className='font-semibold text-xl leading-6'>{course?.title}</h1>

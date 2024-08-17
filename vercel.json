@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/increase-joined?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiJtb25hZWR1and0c2VjcmV0IiwiaWF0IjoxNzIzOTE3Mzc4fQ.9Ne22mZZAJ-AGl_IXZgIwTOJYtm1yYOxi8ZNSpEhAlY",
+      "schedule": "0 0 * * *"
+    }
+  ]
+}

@@ -141,9 +141,9 @@ function BestSellerCard({ course: data, index, className = '' }: BestSellerCardP
 
   return (
     <HtmlTooltip
-      key={course._id}
       placement='right-start'
       arrow
+      enterDelay={120}
       title={
         <div className='p-21/2 border border-slate-600 rounded-xl bg-white text-dark'>
           <h1 className='font-semibold text-xl leading-6'>{course?.title}</h1>
@@ -234,7 +234,7 @@ function BestSellerCard({ course: data, index, className = '' }: BestSellerCardP
       }
     >
       <div className='w-full'>
-        <CardContainer className='inter-var w-full' key={course._id}>
+        <CardContainer className='inter-var w-full'>
           <CardBody className='w-full flex flex-col relative group/card dark:hover:shadow-2xl rounded-xl'>
             <CardItem className='w-full' translateZ={100} rotateX={20} rotateZ={-10}>
               <Link
