@@ -80,10 +80,8 @@ function FloatingButtons({ className = '' }: FloatingButtonsProps) {
                       width={55}
                       height={55}
                       alt='messenger'
-                      loading='lazy'
                       className='max-w-[55px] absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 trans-300 group-hover:top-[-10%]'
                     />
-
                     <span className='text-xs text-light'>Messenger</span>
                   </Link>
                 </div>
@@ -99,10 +97,8 @@ function FloatingButtons({ className = '' }: FloatingButtonsProps) {
                       width={55}
                       height={55}
                       alt='facebook'
-                      loading='lazy'
                       className='max-w-[55px] absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 trans-300 group-hover:top-[-10%]'
                     />
-
                     <span className='text-xs text-light'>Facebook</span>
                   </Link>
                 </div>
@@ -118,10 +114,8 @@ function FloatingButtons({ className = '' }: FloatingButtonsProps) {
                       width={55}
                       height={55}
                       alt='instagram'
-                      loading='lazy'
                       className='max-w-[55px] absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 trans-300 group-hover:top-[-10%]'
                     />
-
                     <span className='text-xs text-light'>Instagram</span>
                   </Link>
                 </div>
@@ -137,10 +131,8 @@ function FloatingButtons({ className = '' }: FloatingButtonsProps) {
                       width={55}
                       height={55}
                       alt='gmail'
-                      loading='lazy'
                       className='max-w-[55px] absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 trans-300 group-hover:top-[-10%]'
                     />
-
                     <span className='text-xs text-light'>Gmail</span>
                   </Link>
                 </div>
