@@ -100,6 +100,10 @@ export async function GET(req: NextRequest) {
         active: true,
         booted: true,
       })
+        .populate({
+          path: 'category',
+          select: 'title slug',
+        })
         .sort({
           joined: -1,
         })
@@ -107,19 +111,43 @@ export async function GET(req: NextRequest) {
         .lean(),
 
       // get best sellers
-      CourseModel.find({ active: true }).sort({ joined: -1 }).limit(8).lean(),
+      CourseModel.find({ active: true })
+        .populate({
+          path: 'category',
+          select: 'title slug',
+        })
+        .sort({ joined: -1 })
+        .limit(8)
+        .lean(),
 
       // get new courses
-      CourseModel.find({ active: true }).sort({ createdAt: -1 }).limit(8).lean(),
+      CourseModel.find({ active: true })
+        .populate({
+          path: 'category',
+          select: 'title slug',
+        })
+        .sort({ createdAt: -1 })
+        .limit(8)
+        .lean(),
 
       // get booted courses
-      CourseModel.find({ booted: true, active: true }).populate({
-        path: 'category',
-        select: 'title slug',
-      }),
+      CourseModel.find({ booted: true, active: true })
+        .populate({
+          path: 'category',
+          select: 'title slug',
+        })
+        .lean(),
 
       // get some courses
-      CourseModel.find(filter).sort(sort).skip(skip).limit(itemPerPage).lean(),
+      CourseModel.find(filter)
+        .populate({
+          path: 'category',
+          select: 'title slug',
+        })
+        .sort(sort)
+        .skip(skip)
+        .limit(itemPerPage)
+        .lean(),
 
       // count total courses
       CourseModel.countDocuments(filter),

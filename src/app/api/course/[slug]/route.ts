@@ -84,6 +84,10 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
         },
         active: true,
       })
+        .populate({
+          path: 'category',
+          select: 'title slug',
+        })
         .limit(8 - relatedCourses.length)
         .sort({ joined: -1 })
         .lean()
