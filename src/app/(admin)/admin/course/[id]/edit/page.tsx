@@ -337,6 +337,7 @@ function AddCoursePage() {
           disabled={isLoading}
           register={register}
           errors={errors}
+          required
           type='textarea'
           rows={3}
           icon={MdNumbers}

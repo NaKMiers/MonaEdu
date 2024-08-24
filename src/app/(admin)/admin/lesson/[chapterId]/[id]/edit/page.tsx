@@ -302,8 +302,8 @@ function EditLessonPage() {
 
       // validate files's type and size
       newFiles = newFiles.filter(file => {
-        if (file.size > 100 * 1024 * 1024) {
-          toast.error(`File ${file.name} is too large. Only accept images under 100MB`)
+        if (file.size > 1024 * 1024 * 1024) {
+          toast.error(`File ${file.name} is too large. Only accept images under 1Gb`)
           return false
         }
         return true
