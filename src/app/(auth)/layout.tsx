@@ -40,9 +40,6 @@ export default async function RootLayout({
             }}
           />
 
-          {/* Detect Dev Tools */}
-          <UseDetectDevTools />
-
           {/* Top Loader */}
           <NextTopLoader
             color='#F7E360'
