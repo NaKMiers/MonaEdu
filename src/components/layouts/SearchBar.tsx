@@ -26,6 +26,11 @@ function SearchBar() {
 
   // handle search
   const handleSearch = useCallback(async () => {
+    // search value not empty
+    if (!searchValue) {
+      return
+    }
+
     // start loading
     setSearchLoading(true)
 
