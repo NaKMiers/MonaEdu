@@ -14,11 +14,12 @@ import toast from 'react-hot-toast'
 function MyCoursesPage({ searchParams }: { searchParams?: { [key: string]: string[] } }) {
   // hooks
   const dispatch = useAppDispatch()
-  const { data: session } = useSession()
+  const { data: session, update } = useSession()
   const curUser: any = session?.user
 
   // states
   const [courses, setCourses] = useState<ICourse[]>([])
+  const [updatedSession, setUpdatedSession] = useState<boolean>(false)
 
   // get my courses
   useEffect(() => {
@@ -39,10 +40,20 @@ function MyCoursesPage({ searchParams }: { searchParams?: { [key: string]: strin
       }
     }
 
-    if (curUser?._id) {
+    // only get courses if user is logged in and session is updated
+    if (curUser?._id && updatedSession) {
       getMyCourses()
     }
-  }, [dispatch, curUser?._id])
+
+    const updateSession = async () => {
+      await update()
+      setUpdatedSession(true)
+    }
+
+    if (!updatedSession) {
+      updateSession()
+    }
+  }, [dispatch, update, curUser?._id, updatedSession])
 
   // set page title
   useEffect(() => {

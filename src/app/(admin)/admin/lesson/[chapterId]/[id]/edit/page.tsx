@@ -24,6 +24,7 @@ import { MdCategory, MdOutlinePublic } from 'react-icons/md'
 import { RiCharacterRecognitionLine } from 'react-icons/ri'
 import { SiFramer } from 'react-icons/si'
 import CustomDocModal from '@/components/admin/CustomDocModal'
+import Link from 'next/link'
 
 export type GroupTypes = {
   [key: string]: ICourse[]
@@ -619,8 +620,11 @@ function EditLessonPage() {
         {(!!docs.length || !!originalDocs.length || !!customDocs.length) && (
           <div className='flex flex-wrap gap-3 rounded-lg bg-white p-3 mb-5'>
             {originalDocs.map((doc, index) => (
-              <div
+              <Link
+                href={doc.url}
                 className='flex items-center gap-3 max-w-[250px] rounded-md shadow-md px-2 py-1'
+                target='_blank'
+                rel='noreferrer'
                 key={index}
               >
                 <FaFile size={20} className='text-secondary flex-shrink-0' />
@@ -638,7 +642,7 @@ function EditLessonPage() {
                 >
                   <FaX size={16} className='text-dark group-hover:text-white trans-200' />
                 </button>
-              </div>
+              </Link>
             ))}
 
             {docs.map((doc, index) => (
