@@ -60,6 +60,7 @@ const LessonSchema = new Schema(
       {
         type: Schema.Types.ObjectId,
         ref: 'user',
+        default: [],
       },
     ],
     commentAmount: {

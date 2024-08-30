@@ -23,7 +23,7 @@ export async function GET(req: NextRequest, { params: { email } }: { params: { e
     // check if curUserEmail = email
     if (curUserEmail === email) {
       return NextResponse.json(
-        { message: 'Bạn không thể tặng khóa học cho bản thân mình' },
+        { message: 'Bạn không thể tặng khóa học cho chính mình' },
         { status: 401 }
       )
     }

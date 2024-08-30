@@ -1,16 +1,18 @@
 import { connectDatabase } from '@/config/database'
 import CourseModel from '@/models/CourseModel'
+import LessonModel from '@/models/LessonModel'
 import jwt, { JwtPayload } from 'jsonwebtoken'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Models: Course
+// Models: Course, Lesson
 import '@/models/CourseModel'
+import '@/models/LessonModel'
 
 export const dynamic = 'force-dynamic'
 
 // [GET]: /cron/increase-joined
 export async function GET(req: NextRequest) {
-  console.log('- Increased Joined -')
+  console.log('- Fake Increment -')
 
   try {
     // connect to database
@@ -31,14 +33,28 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
     }
 
-    // Increase the joined
-    const courses = await Promise.all(
+    // Increase "joined" of 50 random courses
+    const courses: any[] = await Promise.all(
       Array.from({ length: 50 }).map(() =>
         CourseModel.aggregate([{ $sample: { size: 1 } }, { $project: { _id: 1 } }])
       )
     )
-
     await Promise.all(courses.map(c => CourseModel.findByIdAndUpdate(c[0]._id, { $inc: { joined: 1 } })))
+    console.log('Increased Course Joined')
+
+    // Increase "likes" of 500 random lessons
+    const lessons: any[] = await Promise.all(
+      Array.from({ length: 500 }).map(() =>
+        LessonModel.aggregate([{ $sample: { size: 1 } }, { $project: { _id: 1 } }])
+      )
+    )
+
+    await Promise.all(
+      lessons.map(l => LessonModel.findByIdAndUpdate(l[0]._id, { $push: { likes: null } }))
+    )
+    console.log('Increased Lesson Likes')
+
+    // ------------------------------
 
     // // create token
     // const newToken = jwt.sign({ key: process.env.JWT_SECRET! }, process.env.JWT_SECRET!)
