@@ -220,7 +220,11 @@ function CartPage() {
         // move to checkout page
         router.push(`/checkout/${type}`)
       } catch (err: any) {
+        toast.error(err.message)
         console.log(err)
+      } finally {
+        // stop page loading
+        dispatch(setPageLoading(false))
       }
     },
     [

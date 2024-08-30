@@ -49,7 +49,12 @@ export async function POST(req: NextRequest) {
 
     let joinedCourses: any = []
     const userCoursesIds = userCourses?.courses.map((course: any) => course.course.toString())
-    const itemsIds = items.map((item: any) => item.courseId)
+
+    console.log('userCoursesIds', userCoursesIds)
+
+    const itemsIds = items.map((item: any) => item.courseId._id.toString())
+    console.log('itemsIds', itemsIds)
+
     const isUserJoinedCourse = itemsIds.some((id: any) => {
       if (userCoursesIds.includes(id)) {
         joinedCourses.push(id)
@@ -57,14 +62,15 @@ export async function POST(req: NextRequest) {
       }
       return false
     })
+
+    console.log('isUserJoinedCourse', isUserJoinedCourse)
+
     if (isUserJoinedCourse) {
       const joinedCoursesTitles = await CourseModel.find({
         _id: { $in: joinedCourses },
-      }).select('title')
+      }).distinct('title')
       return NextResponse.json(
-        {
-          message: `Học viên đã tham gia khóa học "${joinedCoursesTitles.join(', ')}"`,
-        },
+        { message: `Học viên đã tham gia khóa học "${joinedCoursesTitles.join(', ')}"` },
         { status: 400 }
       )
     }
