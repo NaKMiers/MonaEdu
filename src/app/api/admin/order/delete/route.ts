@@ -6,6 +6,8 @@ import { NextRequest, NextResponse } from 'next/server'
 // Models: Order, User
 import '@/models/OrderModel'
 import '@/models/UserModel'
+import { ICourse } from '@/models/CourseModel'
+import mongoose from 'mongoose'
 
 // [DELETE]: /admin/order/delete
 export async function DELETE(req: NextRequest) {
@@ -28,13 +30,20 @@ export async function DELETE(req: NextRequest) {
 
     // take the courses out of the user's course list
     await Promise.all(
-      deletedOrders.map(async (order: any) => {
-        const { userId, item } = order
-
-        await UserModel.findByIdAndUpdate(userId, {
-          $pull: { courses: { course: item._id } },
-        })
-      })
+      deletedOrders.map(order =>
+        UserModel.updateOne(
+          { email: order.email },
+          {
+            $pull: {
+              courses: {
+                course: {
+                  $in: order.items.map((course: ICourse) => new mongoose.Types.ObjectId(course._id)),
+                },
+              },
+            },
+          }
+        )
+      )
     )
 
     return NextResponse.json(
