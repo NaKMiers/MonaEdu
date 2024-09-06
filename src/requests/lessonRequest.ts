@@ -102,6 +102,21 @@ export const activateLessonsApi = async (ids: string[], value: boolean) => {
   return await res.json()
 }
 
+// [PATCH]: /admin/lesson/status
+export const changeLessonStatusApi = async (ids: string[], status: 'public' | 'private') => {
+  const res = await fetch(`/api/admin/lesson/status`, {
+    method: 'PATCH',
+    body: JSON.stringify({ ids, status }),
+  })
+
+  // check status
+  if (!res.ok) {
+    throw new Error((await res.json()).message)
+  }
+
+  return await res.json()
+}
+
 // [PATCH]: /lesson/:id/like
 export const likeLessonApi = async (id: string, value: 'y' | 'n') => {
   const res = await fetch(`/api/lesson/${id}/like`, {

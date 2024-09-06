@@ -11,7 +11,12 @@ import { useAppDispatch } from '@/libs/hooks'
 import { setPageLoading } from '@/libs/reducers/modalReducer'
 import { IChapter } from '@/models/ChapterModel'
 import { ILesson } from '@/models/LessonModel'
-import { activateLessonsApi, deleteLessonsApi, getAllChapterLessonsApi } from '@/requests'
+import {
+  activateLessonsApi,
+  changeLessonStatusApi,
+  deleteLessonsApi,
+  getAllChapterLessonsApi,
+} from '@/requests'
 import { handleQuery } from '@/utils/handleQuery'
 import { usePathname, useRouter } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -48,7 +53,7 @@ function AllLessonsPage({
   const defaultValues = useMemo<FieldValues>(() => {
     return {
       search: '',
-      sort: 'updatedAt|-1',
+      sort: 'createdAt|-1',
       active: 'true',
       expire: '',
       renew: '',
@@ -114,6 +119,29 @@ function AllLessonsPage({
         prev.map(lesson =>
           updatedLessons.map((lesson: ILesson) => lesson._id).includes(lesson._id)
             ? { ...lesson, active: value }
+            : lesson
+        )
+      )
+
+      // show success message
+      toast.success(message)
+    } catch (err: any) {
+      console.log(err)
+      toast.error(err.message)
+    }
+  }, [])
+
+  // change lesson status
+  const handleChangeLessonStatus = useCallback(async (ids: string[], status: 'public' | 'private') => {
+    try {
+      // send request to server
+      const { updatedLessons, message } = await changeLessonStatusApi(ids, status)
+
+      // update lessons from state
+      setLessons(prev =>
+        prev.map(lesson =>
+          updatedLessons.map((lesson: ILesson) => lesson._id).includes(lesson._id)
+            ? { ...lesson, status }
             : lesson
         )
       )
@@ -204,6 +232,12 @@ function AllLessonsPage({
     reset()
     router.push(pathname, { scroll: false })
   }, [reset, router, pathname])
+
+  // handle copy
+  const handleCopy = useCallback((text: string = '') => {
+    navigator.clipboard.writeText(text)
+    toast.success('Copied: ' + text)
+  }, [])
 
   // keyboard event
   useEffect(() => {
@@ -350,6 +384,30 @@ function AllLessonsPage({
             </button>
           )}
 
+          {/* Public Many Button */}
+          {selectedLessons.some(
+            id => lessons.find(lesson => lesson._id === id)?.status !== 'public'
+          ) && (
+            <button
+              className='border border-yellow-500 text-yellow-500 rounded-lg px-3 py-2 hover:bg-yellow-500 hover:text-white trans-200'
+              onClick={() => handleChangeLessonStatus(selectedLessons, 'public')}
+            >
+              Public
+            </button>
+          )}
+
+          {/* Public Many Button */}
+          {selectedLessons.some(
+            id => lessons.find(lesson => lesson._id === id)?.status !== 'private'
+          ) && (
+            <button
+              className='border border-dark text-dark-0 rounded-lg px-3 py-2 hover:bg-dark-0 hover:text-white trans-200'
+              onClick={() => handleChangeLessonStatus(selectedLessons, 'private')}
+            >
+              Private
+            </button>
+          )}
+
           {/* Delete Many Button */}
           {!!selectedLessons.length && (
             <button
@@ -376,7 +434,12 @@ function AllLessonsPage({
       <Divider size={8} />
 
       {/* Chapter */}
-      <p className='font-semibold text-center text-3xl'>Chapter: {chapter?.title}</p>
+      <p className='font-semibold text-center text-3xl'>
+        Chapter:{' '}
+        <span className='cursor-copy hover:opacity-75' onClick={() => handleCopy(chapter?.title)}>
+          {chapter?.title}
+        </span>
+      </p>
 
       {/* MARK: Amount */}
       <div className='p-3 text-sm text-right text-white font-semibold'>
@@ -384,7 +447,7 @@ function AllLessonsPage({
       </div>
 
       {/* MARK: MAIN LIST */}
-      <div className='grid gap-21 grid-cols-1 md:grid-cols-2'>
+      <div className='flex flex-col gap-21'>
         {lessons.map(lesson => (
           <LessonItem
             data={lesson}
@@ -394,6 +457,7 @@ function AllLessonsPage({
             setSelectedLessons={setSelectedLessons}
             // functions
             handleActivateLessons={handleActivateLessons}
+            handleChangeLessonStatus={handleChangeLessonStatus}
             handleDeleteLessons={handleDeleteLessons}
             key={lesson._id}
           />

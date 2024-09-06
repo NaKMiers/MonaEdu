@@ -204,6 +204,12 @@ function AllCourseChaptersPage({
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [chapters, selectedChapters, handleDeleteChapters, handleFilter, handleSubmit, handleResetFilter])
 
+  // handle copy
+  const handleCopy = useCallback((text: string = '') => {
+    navigator.clipboard.writeText(text)
+    toast.success('Copied: ' + text)
+  }, [])
+
   return (
     <div className='w-full'>
       {/* MARK: Top & Pagination */}
@@ -303,7 +309,10 @@ function AllCourseChaptersPage({
 
       {/* MARK: Course */}
       <h2 className='text-center font-semibold text-2xl text-slate-200' title={course?.title}>
-        Course: {course?.title}
+        Course:{' '}
+        <span className='cursor-copy hover:opacity-75' onClick={() => handleCopy(course?.title)}>
+          {course?.title}
+        </span>
       </h2>
 
       {/* MARK: Amount */}
@@ -323,7 +332,7 @@ function AllCourseChaptersPage({
       <Divider />
 
       {/* MARK: MAIN LIST */}
-      <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-21'>
+      <div className='flex flex-col gap-21'>
         {chapters.map(chapter => (
           <ChapterItem
             data={chapter}
@@ -336,6 +345,8 @@ function AllCourseChaptersPage({
           />
         ))}
       </div>
+
+      <Divider size={28} />
     </div>
   )
 }

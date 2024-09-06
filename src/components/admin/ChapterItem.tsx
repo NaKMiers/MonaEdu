@@ -36,28 +36,31 @@ function ChapterItem({
   return (
     <>
       <div
-        className={`flex flex-col p-4 rounded-lg shadow-lg text-dark cursor-pointer trans-200 ${
+        className={`relative flex px-4 py-2 rounded-lg shadow-lg text-dark cursor-pointer trans-200 ${
           selectedChapters.includes(data._id) ? 'bg-violet-50 -translate-y-1' : 'bg-white'
         } ${className}`}
         key={data._id}
         onClick={() =>
-          setSelectedChapters((prev) =>
-            prev.includes(data._id) ? prev.filter((id) => id !== data._id) : [...prev, data._id]
+          setSelectedChapters(prev =>
+            prev.includes(data._id) ? prev.filter(id => id !== data._id) : [...prev, data._id]
           )
         }
       >
-        {/* Chapter Title */}
-        <p className='font-semibold'>{data.title}</p>
+        <div className='flex items-center gap-3 flex-1'>
+          {/* Chapter Title */}
+          <p className='font-semibold'>{data.title}</p>
 
-        {/* Course Quantity */}
-        <p className='font-semibold mb-2' title={`Course Quantity: ${data.lessonQuantity}`}>
-          <span>Ls.Q:</span> <span className='text-primary'>{data.lessonQuantity}</span>
-        </p>
-
-        {/* Order */}
-        <p className='font-semibold mb-2' title={`Order: ${data.order}`}>
-          <span>Order:</span> <span className='text-primary'>{data.order}</span>
-        </p>
+          {/* Order */}
+          <p
+            className='absolute top-0 left-2 -translate-y-1/2 rounded-full px-3 py-1 min-w-6 text-center bg-primary font-semibold text-xs'
+            title={`Order: ${data.order}`}
+          >
+            {data.order}:{' '}
+            <span className='text-sky-500 font-semibold'>
+              {data.lessonQuantity} lesson{data.lessonQuantity != 1 ? 's' : ''}
+            </span>
+          </p>
+        </div>
 
         {/* MARK: Action Buttons */}
         <div className='flex self-end border border-dark rounded-lg px-3 py-2 gap-4'>
@@ -65,7 +68,7 @@ function ChapterItem({
           <Link
             href={`/admin/lesson/${data._id}/all`}
             className='block group'
-            onClick={(e) => e.stopPropagation()}
+            onClick={e => e.stopPropagation()}
             title='View Lessons'
           >
             <FaEye size={18} className='wiggle' />
@@ -75,7 +78,7 @@ function ChapterItem({
           <Link
             href={`/admin/lesson/${data._id}/add`}
             className='block group'
-            onClick={(e) => e.stopPropagation()}
+            onClick={e => e.stopPropagation()}
             title='Add Lesson'
           >
             <FaPlusCircle size={18} className='wiggle' />
@@ -85,7 +88,7 @@ function ChapterItem({
           <button
             className='block group'
             title='Edit'
-            onClick={(e) => {
+            onClick={e => {
               e.stopPropagation()
 
               setEditingValues({
@@ -102,7 +105,7 @@ function ChapterItem({
           {/* Delete Button */}
           <button
             className='block group'
-            onClick={(e) => {
+            onClick={e => {
               e.stopPropagation()
               setIsOpenConfirmModal(true)
             }}

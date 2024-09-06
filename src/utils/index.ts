@@ -1,5 +1,6 @@
 import OrderModel from '@/models/OrderModel'
 import crypto from 'crypto'
+import toast from 'react-hot-toast'
 import slugify from 'slugify'
 import unidecode from 'unidecode'
 
