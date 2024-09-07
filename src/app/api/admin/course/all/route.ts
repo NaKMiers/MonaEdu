@@ -1,6 +1,5 @@
 import { connectDatabase } from '@/config/database'
 import CourseModel from '@/models/CourseModel'
-import TagModel from '@/models/TagModel'
 import { searchParamsToObject } from '@/utils/handleQuery'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -96,15 +95,12 @@ export async function GET(req: NextRequest) {
     }
 
     // count amount, get all courses, get all tags and categories, get all order
-    const [amount, courses, tgs, chops] = await Promise.all([
+    const [amount, courses, chops] = await Promise.all([
       // get amount of course
       CourseModel.countDocuments(filter),
 
       // get all courses from database
       CourseModel.find(filter).populate('tags category').sort(sort).skip(skip).limit(itemPerPage).lean(),
-
-      // get tags and categories
-      TagModel.find().select('title').lean(),
 
       // get all order without filter
       CourseModel.aggregate([
@@ -121,7 +117,7 @@ export async function GET(req: NextRequest) {
     ])
 
     // return all courses
-    return NextResponse.json({ courses, amount, tgs, chops: chops[0] }, { status: 200 })
+    return NextResponse.json({ courses, amount, chops: chops[0] }, { status: 200 })
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })
   }

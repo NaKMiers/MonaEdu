@@ -143,6 +143,14 @@ function NotificationMenu({
           </button>
         </li>
 
+        {notifications.length <= 0 && (
+          <li>
+            <p className='italic text-slate-500 font-body tracking-wider text-center'>
+              Không có thông báo.
+            </p>
+          </li>
+        )}
+
         {notifications
           .sort((a, b) => +new Date(b.createdAt) - +new Date(a.createdAt))
           .map((noti: INotification) => (

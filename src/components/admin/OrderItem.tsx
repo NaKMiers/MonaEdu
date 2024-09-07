@@ -218,10 +218,22 @@ function OrderItem({
 
           {/* Received User */}
           {data.receivedUser && (
-            <p className='font-body tracking-wider'>
+            <div className='font-body tracking-wider'>
               <span className='font-semibold text-orange-500'>Received User:</span>{' '}
-              <span className='underline underline-offset-1'>{data?.receivedUser}</span>
-            </p>
+              <span className='underline underline-offset-1'>{data.receivedUser}</span>{' '}
+              <div className='inline-flex items-center gap-1.5 border border-secondary rounded-md px-1.5 py-1'>
+                <span
+                  className='text-secondary group'
+                  onClick={e => {
+                    e.stopPropagation()
+                    setValue('search', data.receivedUser)
+                    handleFilter()
+                  }}
+                >
+                  <FaSearch size={14} className='wiggle' />
+                </span>
+              </div>
+            </div>
           )}
 
           {/* Total */}

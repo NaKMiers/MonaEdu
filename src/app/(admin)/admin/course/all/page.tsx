@@ -9,7 +9,6 @@ import Pagination from '@/components/layouts/Pagination'
 import { useAppDispatch } from '@/libs/hooks'
 import { setPageLoading } from '@/libs/reducers/modalReducer'
 import { ICourse } from '@/models/CourseModel'
-import { ITag } from '@/models/TagModel'
 import {
   activateCoursesApi,
   bootCoursesApi,
@@ -36,8 +35,6 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
   const [courses, setCourses] = useState<ICourse[]>([])
   const [amount, setAmount] = useState<number>(0)
   const [selectedCourses, setSelectedCourses] = useState<string[]>([])
-  const [tgs, setTgs] = useState<ITag[]>([])
-  const [selectedFilterTags, setSelectedFilterTags] = useState<string[]>([])
 
   // loading and confirming
   const [loadingCourses, setLoadingCourses] = useState<string[]>([])
@@ -86,16 +83,11 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
 
       try {
         // send request to server to get all courses
-        const { courses, amount, tgs, chops } = await getAllCoursesApi(query)
+        const { courses, amount, chops } = await getAllCoursesApi(query)
 
         // set courses to state
         setCourses(courses)
         setAmount(amount)
-        setTgs(tgs)
-
-        setSelectedFilterTags(
-          [].concat((searchParams?.tags || tgs.map((tag: ITag) => tag._id)) as []).map(type => type)
-        )
 
         // sync search params with states
         setValue('search', searchParams?.search || getValues('search'))
@@ -252,21 +244,9 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
         ...data,
         price: price[0] === minPrice && price[1] === maxPrice ? '' : price.join('-'),
         joined: joined[0] === minJoined && joined[1] === maxJoined ? '' : joined.join('-'),
-        tags: selectedFilterTags.length === tgs.length ? [] : selectedFilterTags,
       }
     },
-    [
-      searchParams,
-      defaultValues,
-      minPrice,
-      maxPrice,
-      minJoined,
-      maxJoined,
-      price,
-      selectedFilterTags,
-      joined,
-      tgs,
-    ]
+    [searchParams, defaultValues, minPrice, maxPrice, minJoined, maxJoined, price, joined]
   )
 
   // handle submit filter
@@ -377,43 +357,6 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
             valueLabelDisplay='auto'
             style={{ color: '#333' }}
           />
-        </div>
-
-        {/* Tag Selection */}
-        <div className='flex justify-end items-end gap-1 flex-wrap max-h-[228px] md:max-h-[152px] lg:max-h-[152px] overflow-auto col-span-12'>
-          <div
-            className={`overflow-hidden max-w-60 text-ellipsis text-nowrap h-[34px] leading-[34px] px-2 rounded-md border cursor-pointer select-none trans-200 ${
-              tgs.length === selectedFilterTags.length
-                ? 'bg-dark-100 text-white border-dark-100'
-                : 'border-slate-300'
-            }`}
-            title='All Types'
-            onClick={() =>
-              setSelectedFilterTags(
-                tgs.length === selectedFilterTags.length ? [] : tgs.map(tag => tag._id)
-              )
-            }
-          >
-            All
-          </div>
-          {tgs.map(tag => (
-            <div
-              className={`overflow-hidden max-w-60 text-ellipsis text-nowrap h-[34px] leading-[34px] px-2 rounded-md border cursor-pointer select-none trans-200 ${
-                selectedFilterTags.includes(tag._id)
-                  ? 'bg-secondary text-white border-secondary'
-                  : 'border-slate-300'
-              }`}
-              title={tag.title}
-              key={tag._id}
-              onClick={
-                selectedFilterTags.includes(tag._id)
-                  ? () => setSelectedFilterTags(prev => prev.filter(id => id !== tag._id))
-                  : () => setSelectedFilterTags(prev => [...prev, tag._id])
-              }
-            >
-              {tag.title}
-            </div>
-          ))}
         </div>
 
         {/* Select Filter */}
