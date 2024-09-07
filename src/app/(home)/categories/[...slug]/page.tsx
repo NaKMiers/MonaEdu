@@ -136,7 +136,7 @@ async function CategoryPage({ searchParams }: { searchParams?: { [key: string]: 
           </div>
 
           {/* Main */}
-          <div className='flex-1 w-full'>
+          <div className='flex-1 w-full mt-4 md:mt-0'>
             {/* Top */}
             <QuickSortTabs searchParams={searchParams} amount={amount} />
 

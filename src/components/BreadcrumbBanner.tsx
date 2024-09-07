@@ -55,7 +55,13 @@ function BreadcrumbBanner({ title, description, preLink = [], className = '' }: 
 
       <Divider size={3} />
 
-      <h2 className='text-white text-2xl md:text-6xl font-bold text-center relative z-20'>{title}</h2>
+      <h2
+        className={`text-white ${
+          description ? 'text-2xl' : 'text-4xl'
+        } md:text-6xl mt-2 font-bold text-center relative z-20`}
+      >
+        {title}
+      </h2>
       <p className='text-white text-sm md:text-base max-w-xl mt-6 text-center relative z-20'>
         {description}
       </p>

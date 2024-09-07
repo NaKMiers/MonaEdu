@@ -1,6 +1,6 @@
 import Divider from '../Divider'
 
-function FilterAndSearchX() {
+function FilterAndSearchX({ subs = true }: { subs?: boolean }) {
   return (
     <>
       {/* Desktop */}
@@ -8,20 +8,20 @@ function FilterAndSearchX() {
         {/* Search */}
         <div className='relative w-full h-[42px] rounded-3xl bg-slate-700 animate-pulse' />
 
-        <Divider size={2} />
-
         {/* Sub Categories */}
-        <div>
-          <div className='h-6 w-full max-w-[150px] my-0.5 rounded-md bg-slate-700 animate-pulse' />
+        {subs && (
+          <div>
+            <div className='mt-2 h-6 w-full max-w-[150px] my-0.5 rounded-md bg-slate-700 animate-pulse' />
 
-          <Divider size={4} />
+            <Divider size={4} />
 
-          <div className='flex flex-col gap-2.5'>
-            {Array.from({ length: 5 }).map((_, index) => (
-              <div className='rounded-lg bg-slate-500 w-full h-[30px] animate-pulse' key={index} />
-            ))}
+            <div className='flex flex-col gap-2.5'>
+              {Array.from({ length: 5 }).map((_, index) => (
+                <div className='rounded-lg bg-slate-500 w-full h-[30px] animate-pulse' key={index} />
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         <Divider size={1} border />
 
