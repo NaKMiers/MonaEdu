@@ -1,37 +1,31 @@
 import { connectDatabase } from '@/config/database'
-import CategoryModel, { ICategory } from '@/models/CategoryModel'
 import CourseModel from '@/models/CourseModel'
+import TagModel, { ITag } from '@/models/TagModel'
 import { searchParamsToObject } from '@/utils/handleQuery'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Models: Category, Course
+// Models: Tag, Course, Category
 import '@/models/CategoryModel'
 import '@/models/CourseModel'
+import '@/models/TagModel'
 
 export const dynamic = 'force-dynamic'
 
-// [GET]: /api/category/[slug]
-export async function GET(req: NextRequest, { params: { slug } }: { params: { slug: string[] } }) {
-  console.log('- Get Category By Slug -')
+// [GET]: /tag/:slug
+export async function GET(req: NextRequest, { params: { slug } }: { params: { slug: string } }) {
+  console.log('- Get Tag By Slug -')
 
   try {
     // connect database
     await connectDatabase()
 
-    // get category by slug
-    const category: ICategory | null = await CategoryModel.findOne({
-      slug: slug.join('/'),
-    }).lean()
+    // get tag by slug
+    const tag: ITag | null = await TagModel.findOne({ slug }).lean()
 
-    // check if category not found
-    if (!category) {
-      return NextResponse.json({ message: 'Không tìm thấy danh mục' }, { status: 404 })
+    // check if tag not found
+    if (!tag) {
+      return NextResponse.json({ message: 'Không tìm thấy thẻ' }, { status: 404 })
     }
-
-    // get category ids
-    const categoryIds: any = await CategoryModel.find({
-      slug: { $regex: category.slug, $options: 'i' },
-    }).select('_id')
 
     // get query params
     const params: { [key: string]: string[] } = searchParamsToObject(req.nextUrl.searchParams)
@@ -40,7 +34,7 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
     let skip = 0
     let itemPerPage = 16
     const filter: { [key: string]: any } = {
-      category: { $in: categoryIds },
+      tags: { $in: tag._id },
       active: true,
     }
     let sort: { [key: string]: any } = { updatedAt: -1 } // default sort
@@ -115,8 +109,15 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
         }
 
         if (['sortPrice', 'sortDuration'].includes(key)) {
+          // remove updatedAt sort then add again to reduce priority
+          delete sort.updatedAt
+
           const newKey = key.split('sort')[1].toLowerCase()
           sort[newKey] = params[key][0] === 'asc' ? 1 : -1
+
+          // sort by updatedAt - default sort
+          sort.updatedAt = -1
+
           continue
         }
 
@@ -152,11 +153,11 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
       }
     }
 
-    // get subs categories,  get all courses of current categories, get chops
-    const [subs, courses, amount, chops] = await Promise.all([
-      // get all sub categories
-      CategoryModel.find({ parentId: category._id }).lean(),
+    console.log('Filter:', filter)
+    console.log('Sort:', sort)
 
+    // get, get all courses of current tag, get chops
+    const [courses, amount, chops] = await Promise.all([
       // get all courses of current categories
       CourseModel.aggregate([
         { $match: filter },
@@ -218,7 +219,7 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
     ])
 
     // return response
-    return NextResponse.json({ category, subs, courses, amount, chops: chops[0] }, { status: 200 })
+    return NextResponse.json({ tag, courses, amount, chops: chops[0] }, { status: 200 })
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })
   }

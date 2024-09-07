@@ -267,7 +267,7 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
                 {(course.tags as ITag[]).map((tag, index) => (
                   <Fragment key={tag._id}>
                     <Link
-                      href={`/tags?tag=${tag.slug}`}
+                      href={`/tags/${tag.slug}`}
                       key={tag._id}
                       className='text-sky-300 hover:underline underline-offset-1'
                     >

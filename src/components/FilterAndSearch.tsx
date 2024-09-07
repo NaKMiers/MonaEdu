@@ -213,11 +213,9 @@ function FilterAndSearch({ searchParams, subs, chops, className = '' }: FilterAn
           </button>
         </div>
 
-        <Divider size={2} />
-
         {/* Sub Categories */}
         {!!subs.length && (
-          <div>
+          <div className='mt-2'>
             <h3 className='px-2 font-semibold font-body tracking-wide hover:tracking-widest trans-200 text-lg'>
               Danh Mục Con
             </h3>

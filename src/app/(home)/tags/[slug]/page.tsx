@@ -6,41 +6,40 @@ import Pagination from '@/components/layouts/Pagination'
 import QuickSortTabs from '@/components/QuickSortTabs'
 import { ICategory } from '@/models/CategoryModel'
 import { ICourse } from '@/models/CourseModel'
-import { getCategoryPageApi } from '@/requests'
+import { ITag } from '@/models/TagModel'
+import { getTagPageApi } from '@/requests'
 import { handleQuery } from '@/utils/handleQuery'
 import { stripHTML } from '@/utils/string'
 import moment from 'moment-timezone'
 import { Metadata } from 'next'
-import { headers } from 'next/headers'
-import { notFound } from 'next/navigation'
 
 export const metadata: Metadata = {
   title: 'Danh mục khóa học - Mona Edu',
   description: 'Mona Edu - Học trực tuyến mọi lúc, mọi nơi',
 }
 
-async function CategoryPage({ searchParams }: { searchParams?: { [key: string]: string[] } }) {
-  const headerList = headers()
-  const pathname = headerList.get('x-current-path')
-  const slug = pathname?.split('/categories/').pop()
-
+async function TagPage({
+  searchParams,
+  params: { slug },
+}: {
+  searchParams?: { [key: string]: string[] }
+  params: { slug: string }
+}) {
   // data
-  let category: ICategory | null = null
-  let subs: ICategory[] = []
+  let tag: ITag | null = null
   let courses: ICourse[] = []
   let amount: number = 0
   let chops: any = null
 
   // get data
   try {
-    if (!slug) throw new Error('Không tìm thấy danh mục')
+    if (!slug) throw new Error('Không tìm thấy thẻ')
 
     const query = handleQuery(searchParams)
 
     // get data
-    const data = await getCategoryPageApi(slug, query, { next: { revalidate: 60 } })
-    category = data.category
-    subs = data.subs
+    const data = await getTagPageApi(slug, query, { next: { revalidate: 0 } })
+    tag = data.tag
     courses = data.courses
     amount = data.amount
     chops = data.chops
@@ -97,17 +96,11 @@ async function CategoryPage({ searchParams }: { searchParams?: { [key: string]: 
       },
     })),
     about: {
-      '@type': 'Category',
-      name: category?.title,
-      description: category?.description,
-      url: `${process.env.NEXT_PUBLIC_APP_URL}/categories/${category?.slug}`,
+      '@type': 'Tag',
+      name: tag?.title,
+      description: 'No description for this tag',
+      url: `${process.env.NEXT_PUBLIC_APP_URL}/tags/${tag?.slug}`,
     },
-    hasPart: subs.map(sub => ({
-      '@type': 'Category',
-      name: sub.title,
-      description: sub.description,
-      url: `${process.env.NEXT_PUBLIC_APP_URL}/categories/${sub.slug}`,
-    })),
   }
 
   return (
@@ -117,14 +110,13 @@ async function CategoryPage({ searchParams }: { searchParams?: { [key: string]: 
 
       {/* Banner */}
       <BreadcrumbBanner
-        background={category?.image}
-        title={category?.title || 'Danh Mục'}
-        description={category?.description || 'Danh sách các khóa học trong danh mục này'}
+        title={tag?.title || 'Tag'}
+        description=''
+        className='md:shadow-medium md:rounded-b-lg rounded-none h-[calc(300px+72px)] -mt-[72px] pt-[72px]'
         preLink={[
           { label: 'trang-chu', href: '/' },
-          { label: 'danh-muc', href: '/categories' },
+          { label: 'tags', href: '' },
         ]}
-        className='md:shadow-medium md:rounded-b-lg rounded-none h-[calc(300px+72px)] -mt-[72px] pt-[72px]'
       />
 
       {/* Body */}
@@ -132,7 +124,7 @@ async function CategoryPage({ searchParams }: { searchParams?: { [key: string]: 
         <div className='flex flex-col md:flex-row bg-white rounded-b-lg md:rounded-lg gap-x-21 p-3 md:p-21 shadow-lg'>
           {/* Filter & Search */}
           <div className='flex justify-between md:max-w-[200px] lg:max-w-[250px] w-full flex-shrink-0'>
-            <FilterAndSearch searchParams={searchParams} subs={subs} chops={chops} />
+            <FilterAndSearch searchParams={searchParams} subs={[]} chops={chops} />
           </div>
 
           {/* Main */}
@@ -168,4 +160,4 @@ async function CategoryPage({ searchParams }: { searchParams?: { [key: string]: 
   )
 }
 
-export default CategoryPage
+export default TagPage

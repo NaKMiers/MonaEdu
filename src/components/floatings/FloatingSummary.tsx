@@ -239,7 +239,7 @@ function FloatingSummary({ course: data, chapters, totalTime, className = '' }: 
           </div>
 
           <div className='flex justify-center items-center w-full'>
-            <FacebookShareButton url={`https://monaedu.com/${course.slug}`} hashtag='#mona'>
+            <FacebookShareButton url={`https://monaedu.com/${course.slug}`} hashtag='#monaedu'>
               <FaShareAlt size={16} />
             </FacebookShareButton>
           </div>
@@ -253,7 +253,7 @@ function FloatingSummary({ course: data, chapters, totalTime, className = '' }: 
           {(course.tags as ITag[]).map((tag, index) => (
             <Fragment key={tag._id}>
               <Link
-                href={`/tags?tag=${tag.slug}`}
+                href={`/tags/${tag.slug}`}
                 key={tag._id}
                 className='text-sky-500 hover:underline underline-offset-1'
               >

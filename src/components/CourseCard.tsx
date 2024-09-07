@@ -22,6 +22,7 @@ import { RiDonutChartFill } from 'react-icons/ri'
 import { FacebookShareButton } from 'react-share'
 import Divider from './Divider'
 import Price from './Price'
+import { duration } from '@/utils/time'
 
 interface CourseCardProps {
   course: ICourse
@@ -156,6 +157,7 @@ function CourseCard({ course: data, hideBadge, className = '' }: CourseCardProps
 
           <Divider size={2} />
 
+          {/* Likes - Joined - Share */}
           <div className='flex items-center flex-wrap gap-3'>
             <button className='flex justify-center items-center gap-1.5 group'>
               <FaRegThumbsUp
@@ -185,6 +187,10 @@ function CourseCard({ course: data, hideBadge, className = '' }: CourseCardProps
               </FacebookShareButton>
             </div>
           </div>
+
+          <Divider size={2} />
+
+          <p className='text-xs text-slate-600'>{duration(course.duration, 'long')} tổng thời lượng</p>
 
           <Divider size={2} />
 

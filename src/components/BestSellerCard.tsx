@@ -19,6 +19,7 @@ import { RiDonutChartFill } from 'react-icons/ri'
 import { FacebookShareButton } from 'react-share'
 import { CardBody, CardContainer, CardItem } from './3dCard'
 import Divider from './Divider'
+import { duration } from '@/utils/time'
 
 const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -179,6 +180,10 @@ function BestSellerCard({ course: data, index, className = '' }: BestSellerCardP
               </FacebookShareButton>
             </div>
           </div>
+
+          <Divider size={2} />
+
+          <p className='text-xs text-slate-600'>{duration(course.duration, 'long')} tổng thời lượng</p>
 
           <Divider size={2} />
 

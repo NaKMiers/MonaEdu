@@ -11,10 +11,11 @@ interface BreadcrumbBannerProps {
   title: string
   description: string
   background?: string
+  preLink?: { label: string; href: string }[]
   className?: string
 }
 
-function BreadcrumbBanner({ title, description, className = '' }: BreadcrumbBannerProps) {
+function BreadcrumbBanner({ title, description, preLink = [], className = '' }: BreadcrumbBannerProps) {
   // hooks
   const pathname = usePathname()
   const breadcrumbs = pathname
@@ -30,13 +31,14 @@ function BreadcrumbBanner({ title, description, className = '' }: BreadcrumbBann
       <BeamsBackground />
 
       <div className='flex items-center flex-wrap justify-center gap-x-3 gap-y-1 relative z-20 text-slate-400 text-nowrap'>
-        <Link href='/' className='hover:text-primary trans-200 hover:drop-shadow-md'>
-          trang-chu
-        </Link>
-        <FaAngleRight size={14} />
-        <Link href='/categories' className='hover:text-primary trans-200 hover:drop-shadow-md'>
-          danh-muc
-        </Link>
+        {preLink.map((link, index) => (
+          <Fragment key={index}>
+            <Link href={link.href} className='hover:text-primary trans-200 hover:drop-shadow-md'>
+              {link.label}
+            </Link>
+            {index < preLink.length - 1 && <FaAngleRight size={14} />}
+          </Fragment>
+        ))}
         {breadcrumbs.map((breadcrumb, index) => (
           <Fragment key={index}>
             {index === 0 && <FaAngleRight size={14} />}
