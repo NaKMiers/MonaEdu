@@ -31,7 +31,7 @@ function CategoryItem({
 
   const [subCategories, setSubCategories] = useState<ICategory[]>(category.subs?.data || []) // subs
 
-  // delete
+  // modals
   const [deleting, setDeleting] = useState<boolean>(false)
   const [isOpenConfirmModal, setIsOpenConfirmModal] = useState<boolean>(false) // delete
   const [openAddCategoryModal, setOpenAddCategoryModal] = useState<boolean>(false) // add
@@ -71,7 +71,7 @@ function CategoryItem({
       const { category, message } = await deleteCategoryApi(data._id)
 
       // remove deleted categories from state
-      setCategories((prev) => prev.filter((ctg) => ctg._id !== category._id))
+      setCategories(prev => prev.filter(ctg => ctg._id !== category._id))
 
       // show success message
       toast.success(message)
@@ -102,7 +102,7 @@ function CategoryItem({
         {!selectMode ? (
           <div className='flex items-center gap-2'>
             <button
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation()
                 setOpenAddCategoryModal(true)
               }}
@@ -111,7 +111,7 @@ function CategoryItem({
               <MdOutlineAddCircle size={16} className='wiggle' />
             </button>
             <button
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation()
                 setOpenEditCategoryModal(true)
               }}
@@ -120,7 +120,7 @@ function CategoryItem({
               <MdEdit size={15} className='wiggle' />
             </button>
             <button
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation()
                 handleBootCategory()
               }}
@@ -133,7 +133,7 @@ function CategoryItem({
               <IoRocketSharp size={14} className='wiggle' />
             </button>
             <button
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation()
                 setIsOpenConfirmModal(true)
               }}

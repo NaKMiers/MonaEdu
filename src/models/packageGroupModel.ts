@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import { IPackage } from './PackageModel'
 const Schema = mongoose.Schema
 
 const PackageGroupSchema = new Schema(
@@ -29,4 +30,7 @@ export interface IPackageGroup {
   packageAmount: number
   createdAt: string
   updatedAt: string
+
+  // subs
+  packages?: IPackage[]
 }
