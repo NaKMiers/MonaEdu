@@ -53,8 +53,8 @@ function TagItem({
         } ${className}`}
         key={data._id}
         onClick={() =>
-          setSelectedTags((prev) =>
-            prev.includes(data._id) ? prev.filter((id) => id !== data._id) : [...prev, data._id]
+          setSelectedTags(prev =>
+            prev.includes(data._id) ? prev.filter(id => id !== data._id) : [...prev, data._id]
           )
         }
       >
@@ -64,12 +64,12 @@ function TagItem({
           <input
             className='w-full mb-2 rounded-lg py-2 px-4 text-dark outline-none border border-slate-300'
             type='text'
-            value={editingValues.find((t) => t._id === data._id)?.title}
-            onClick={(e) => e.stopPropagation()}
+            value={editingValues.find(t => t._id === data._id)?.title}
+            onClick={e => e.stopPropagation()}
             disabled={loadingTags.includes(data._id)}
-            onChange={(e) =>
-              setEditingValues((prev) =>
-                prev.map((t) => (t._id === data._id ? { _id: data._id, title: e.target.value } : t))
+            onChange={e =>
+              setEditingValues(prev =>
+                prev.map(t => (t._id === data._id ? { _id: data._id, title: e.target.value } : t))
               )
             }
           />
@@ -82,7 +82,7 @@ function TagItem({
 
         {/* Course Quantity */}
         <p className='font-semibold mb-2' title={`Course Quantity: ${data.courseQuantity}`}>
-          <span>Pr.Q:</span> <span className='text-primary'>{data.courseQuantity}</span>
+          <span>Ls.Q:</span> <span className='text-primary'>{data.courseQuantity}</span>
         </p>
 
         {/* MARK: Action Buttons */}
@@ -91,7 +91,7 @@ function TagItem({
           {!editingTags.includes(data._id) && (
             <button
               className='block group'
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation()
                 handleBootTags([data._id], !data.booted)
               }}
@@ -109,11 +109,11 @@ function TagItem({
           {!editingTags.includes(data._id) && (
             <button
               className='block group'
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation()
-                setEditingTags((prev) => (!prev.includes(data._id) ? [...prev, data._id] : prev))
-                setEditingValues((prev) =>
-                  !prev.some((cate) => cate._id === data._id)
+                setEditingTags(prev => (!prev.includes(data._id) ? [...prev, data._id] : prev))
+                setEditingValues(prev =>
+                  !prev.some(cate => cate._id === data._id)
                     ? [...prev, { _id: data._id, title: data.title }]
                     : prev
                 )
@@ -128,9 +128,9 @@ function TagItem({
           {editingTags.includes(data._id) && (
             <button
               className='block group'
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation()
-                handleSaveEditingTags([editingValues.find((cate) => cate._id === data._id)] as any[])
+                handleSaveEditingTags([editingValues.find(cate => cate._id === data._id)] as any[])
               }}
               disabled={loadingTags.includes(data._id)}
               title='Save'
@@ -147,12 +147,12 @@ function TagItem({
           {editingTags.includes(data._id) && !loadingTags.includes(data._id) && (
             <button
               className='block group'
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation()
-                setEditingTags((prev) =>
-                  prev.includes(data._id) ? prev.filter((id) => id !== data._id) : prev
+                setEditingTags(prev =>
+                  prev.includes(data._id) ? prev.filter(id => id !== data._id) : prev
                 )
-                setEditingValues((prev) => prev.filter((cate) => cate._id !== data._id))
+                setEditingValues(prev => prev.filter(cate => cate._id !== data._id))
               }}
               title='Cancel'
             >
@@ -164,7 +164,7 @@ function TagItem({
           {!editingTags.includes(data._id) && (
             <button
               className='block group'
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation()
                 setIsOpenConfirmModal(true)
               }}

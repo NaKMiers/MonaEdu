@@ -20,17 +20,6 @@ interface IframePlayerProps {
   className?: string
 }
 
-// videoId: cYX3xoHnzeg
-// autoplay: 0
-// mute: 0
-// controls: 0
-// origin: https://monaedu.com
-// playsinline: 1
-// rel: 0
-// iv_load_policy: 3
-// enablejsapi: 1
-// widgetid: 1
-
 function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
   // hooks
   const dispatch = useAppDispatch()
@@ -50,6 +39,7 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
   const [buffered, setBuffered] = useState<number>(0)
 
   // refs
+  const playerRef = useRef<any>(null)
   const iframeRef = useRef<HTMLIFrameElement>(null)
   const playerContainerRef = useRef<any>(null)
   const progressBarRef = useRef<HTMLDivElement>(null)
@@ -70,9 +60,10 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
   // load youtube iframe api
   useEffect(() => {
     const wd: any = window
+
     const onYouTubeIframeAPIReady = () => {
       if (iframeRef.current) {
-        new wd.YT.Player(iframeRef.current, {
+        playerRef.current = new wd.YT.Player(iframeRef.current, {
           videoId: videoId,
           playerVars: {
             autoplay: 0,
@@ -87,7 +78,6 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
           },
           events: {
             onReady: onPlayerReady,
-            onStateChange: onStateChange,
           },
         })
       }
@@ -105,7 +95,16 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
 
     // set volume from local storage
     setVolume(+(localStorage.getItem('volume') || '100'))
-  }, [videoId, onPlayerReady])
+
+    // Cleanup function to destroy the player instance
+    return () => {
+      console.log('1') // This runs when the component unmounts or dependencies change
+      if (playerRef.current && playerRef.current.destroy) {
+        console.log('2') // This ensures the player is destroyed
+        playerRef.current.destroy()
+      }
+    }
+  }, [onPlayerReady])
 
   // update current time and buffered
   useEffect(() => {
@@ -207,9 +206,9 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
       wd.player.playVideo()
       setIsPlaying(true)
 
-      handleUpdateLessonProgress()
+      // handleUpdateLessonProgress()
     }
-  }, [handleUpdateLessonProgress])
+  }, [])
 
   const pause = useCallback(() => {
     const wd: any = window

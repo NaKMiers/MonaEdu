@@ -34,8 +34,8 @@ export const isToday = (date: Date): boolean => {
   return isSameDate(date, new Date())
 }
 
-export const duration = (seconds: number, type: 'short' | 'long' = 'short') => {
-  const duration = moment.duration(seconds, 'seconds')
+export const duration = (sec: number, type: 'short' | 'long' = 'short') => {
+  const duration = moment.duration(sec, 'seconds')
 
   if (type === 'short') {
     const totalHours = Math.floor(duration.asHours())
@@ -43,7 +43,8 @@ export const duration = (seconds: number, type: 'short' | 'long' = 'short') => {
     const seconds = duration.seconds()
 
     if (totalHours === 0) {
-      return moment.utc(seconds * 1000).format('mm:ss')
+      const duration = moment.duration(sec, 'seconds')
+      return moment.utc(duration.asMilliseconds()).format('mm:ss')
     } else {
       return `${totalHours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
     }
