@@ -324,8 +324,8 @@ function CourseCard({ course: data, hideBadge, className = '' }: CourseCardProps
             <div className='flex flex-1 items-end justify-between'>
               <CardItem translateZ={80} className='flex items-center gap-1 w-full'>
                 <button
-                  className='font-semibold h-[42px] flex w-full items-center justify-center rounded-lg shadow-lg bg-dark-100 text-white border-2 border-dark hover:bg-white hover:text-dark trans-300 hover:-translate-y-1 px-2'
-                  onClick={e => {
+                  className='relative font-semibold h-[42px] flex w-full items-center justify-center rounded-lg shadow-lg bg-dark-100 text-white border-2 border-dark hover:bg-white hover:text-dark trans-300 hover:-translate-y-1 px-2 overflow-hidden'
+                  onClick={() => {
                     if (curUser?.courses.map((course: any) => course.course).includes(course._id)) {
                       router.push(`/learning/${course?.slug}/continue`)
                     } else {
@@ -333,7 +333,25 @@ function CourseCard({ course: data, hideBadge, className = '' }: CourseCardProps
                     }
                   }}
                 >
-                  <span className='block sm:text-sm md:text-base text-ellipsis text-nowrap line-clamp-1 sm:max-w-max'>
+                  {curUser?._id &&
+                    curUser?.courses.map((course: any) => course.course).includes(course._id) && (
+                      <div
+                        className='absolute top-0 left-0 h-full bg-orange-500'
+                        style={{
+                          width: `${
+                            curUser?.courses.find((course: any) => course.course === data._id)
+                              ?.progress || 0
+                          }%`,
+                        }}
+                      >
+                        <span className='absolute top-1 left-1 text-xs rounded-full font-semibold'>
+                          {curUser?.courses.find((course: any) => course.course === data._id)?.progress +
+                            '%'}
+                        </span>
+                      </div>
+                    )}
+
+                  <span className='relative z-10 block sm:text-sm md:text-base text-ellipsis text-nowrap line-clamp-1 sm:max-w-max'>
                     {curUser?._id &&
                     curUser?.courses.map((course: any) => course.course).includes(course._id)
                       ? 'Học tiếp'

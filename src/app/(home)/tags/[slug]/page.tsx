@@ -38,7 +38,7 @@ async function TagPage({
     const query = handleQuery(searchParams)
 
     // get data
-    const data = await getTagPageApi(slug, query, { next: { revalidate: 0 } })
+    const data = await getTagPageApi(slug, query, { next: { revalidate: 60 } })
     tag = data.tag
     courses = data.courses
     amount = data.amount

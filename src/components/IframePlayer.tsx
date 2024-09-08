@@ -98,9 +98,7 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
 
     // Cleanup function to destroy the player instance
     return () => {
-      console.log('1') // This runs when the component unmounts or dependencies change
       if (playerRef.current && playerRef.current.destroy) {
-        console.log('2') // This ensures the player is destroyed
         playerRef.current.destroy()
       }
     }

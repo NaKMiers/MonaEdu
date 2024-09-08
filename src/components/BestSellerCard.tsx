@@ -5,6 +5,7 @@ import { addCartItem } from '@/libs/reducers/cartReducer'
 import { setPageLoading } from '@/libs/reducers/modalReducer'
 import { ICourse } from '@/models/CourseModel'
 import { addToCartApi, likeCourseApi } from '@/requests'
+import { duration } from '@/utils/time'
 import { styled, Tooltip, tooltipClasses, TooltipProps } from '@mui/material'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
@@ -19,7 +20,6 @@ import { RiDonutChartFill } from 'react-icons/ri'
 import { FacebookShareButton } from 'react-share'
 import { CardBody, CardContainer, CardItem } from './3dCard'
 import Divider from './Divider'
-import { duration } from '@/utils/time'
 
 const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -260,13 +260,13 @@ function BestSellerCard({ course: data, index, className = '' }: BestSellerCardP
               translateZ={120}
               className='relative w-full rounded-lg px-21 pt-4 pb-4 gap-21 bg-white'
             >
-              <p className='text-sm text-slate-400'>Học viên {course.joined}</p>
-              <p className='font-semibold text-lg text-ellipsis line-clamp-1'>{course.title}</p>
+              <p className='text-xs text-slate-400'>Học viên: {course.joined}</p>
+              <p className='font-semibold text-sm text-ellipsis line-clamp-2 mt-1'>{course.title}</p>
 
               {index <= 2 && (
                 <CardItem
                   translateZ={50}
-                  className='hidden xs:block absolute w-[60px] h-[60px] right-8 -top-5'
+                  className='hidden xs:block absolute w-[50px] h-[50px] right-8 -top-5'
                 >
                   <Image
                     className='w-full h-full object-cover'

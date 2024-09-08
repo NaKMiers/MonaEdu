@@ -98,15 +98,13 @@ export async function GET(req: NextRequest) {
       // get courses
       CourseModel.find({
         active: true,
-        booted: true,
       })
         .populate({
           path: 'category',
           select: 'title slug',
         })
-        .sort({
-          joined: -1,
-        })
+        .sort({ joined: -1 })
+        .skip(Math.floor(Math.random() * (40 - 8 + 1)) + 8)
         .limit(8)
         .lean(),
 
