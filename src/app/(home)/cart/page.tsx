@@ -112,6 +112,11 @@ function CartPage() {
   // send request to server to check voucher
   const handleApplyVoucher: SubmitHandler<FieldValues> = useCallback(
     async data => {
+      if (!data.code) {
+        toast.error('Mã giảm giá không được để trống!')
+        return
+      }
+
       // check user
       if (!curUser?._id) {
         toast.error('User not found!')
