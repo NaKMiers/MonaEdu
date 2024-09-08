@@ -174,12 +174,12 @@ async function ProfilePage({ params: { id } }: { params: { id: string } }) {
               </p>
 
               {/* Gender */}
-              <p className='flex gap-2 text-slate-500 text-sm'>
+              {user?.gender && <p className='flex gap-2 text-slate-500 text-sm'>
                 Giới tính:{' '}
                 <span className='text-dark'>
                   {user?.gender === 'male' ? 'Nam' : user?.gender === 'female' ? 'Nữ' : 'Khác'}
                 </span>
-              </p>
+              </p>}
 
               {/* Job */}
               <p className='flex gap-2 text-slate-500 text-sm'>
