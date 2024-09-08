@@ -36,8 +36,6 @@ function PackageAllPage({ searchParams }: { searchParams?: { [key: string]: stri
         // sent request to server
         const { packageGroups } = await getAllPackagesApi(query)
 
-        console.log('packageGroups', packageGroups)
-
         // set to states
         setPackageGroups(packageGroups)
       } catch (err: any) {
@@ -69,21 +67,10 @@ function PackageAllPage({ searchParams }: { searchParams?: { [key: string]: stri
 
         <button
           className='flex items-center gap-1 bg-slate-200 text-dark py-2 px-3 rounded-lg trans-200 hover:bg-yellow-300 hover:text-secondary'
-          // onClick={() => setOpenAddPackageGroupModal(true)}
-        >
-          <FaPlus />
-          Add
-        </button>
-      </div>
-
-      <div className='flex justify-center'>
-        <button
-          className='min-w-[200px] flex items-center justify-center gap-3 bg-slate-200 text-dark py-0.5 px-3 rounded-lg trans-200 hover:bg-yellow-300 hover:text-secondary'
           onClick={() => setOpenAddPackageGroupModal(true)}
         >
           <FaPlus />
           Group
-          <FaPlus />
         </button>
       </div>
 
@@ -92,7 +79,11 @@ function PackageAllPage({ searchParams }: { searchParams?: { [key: string]: stri
       {/* MARK: MAIN LIST */}
       <div className='flex flex-col gap-4'>
         {packageGroups.map((packageGroup, index) => (
-          <PackageGroupItem key={index} packageGroup={packageGroup} />
+          <PackageGroupItem
+            packageGroup={packageGroup}
+            setPackageGroups={setPackageGroups}
+            key={index}
+          />
         ))}
       </div>
 

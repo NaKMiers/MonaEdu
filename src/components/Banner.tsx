@@ -55,8 +55,6 @@ function Banner({ time, courses, className = '' }: SliderProps) {
         })
       }
 
-      console.log('value', value)
-
       setSlide(value)
 
       setTimeout(() => {
@@ -97,8 +95,6 @@ function Banner({ time, courses, className = '' }: SliderProps) {
 
       const slideWidth = slideTrack.children[0].clientWidth
       const slideIndex = Math.round(slideTrack.scrollLeft / slideWidth) + 1
-
-      console.log('slideIndex', slideIndex)
 
       setSlide(slideIndex)
 

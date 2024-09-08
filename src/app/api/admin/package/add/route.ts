@@ -16,14 +16,6 @@ export async function POST(req: NextRequest) {
     // get data to add package
     const { title, oldPrice, price, description, packageGroup, active, features } = await req.json()
 
-    console.log('title', title)
-    console.log('oldPrice', oldPrice)
-    console.log('price', price)
-    console.log('description', description)
-    console.log('packageGroup', packageGroup)
-    console.log('active', active)
-    console.log('features', features)
-
     const set: any = {
       title,
       oldPrice,

@@ -50,10 +50,7 @@ export async function POST(req: NextRequest) {
     let joinedCourses: any = []
     const userCoursesIds = userCourses?.courses.map((course: any) => course.course.toString())
 
-    console.log('userCoursesIds', userCoursesIds)
-
     const itemsIds = items.map((item: any) => item.courseId._id.toString())
-    console.log('itemsIds', itemsIds)
 
     const isUserJoinedCourse = itemsIds.some((id: any) => {
       if (userCoursesIds.includes(id)) {
@@ -62,8 +59,6 @@ export async function POST(req: NextRequest) {
       }
       return false
     })
-
-    console.log('isUserJoinedCourse', isUserJoinedCourse)
 
     if (isUserJoinedCourse) {
       const joinedCoursesTitles = await CourseModel.find({

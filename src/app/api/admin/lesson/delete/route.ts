@@ -23,7 +23,7 @@ export async function DELETE(req: NextRequest) {
     const lessons: ILesson[] = await LessonModel.find({ _id: { $in: ids } }).lean()
 
     // delete lessons from database
-    await LessonModel.deleteMany({ _id: { $in: ids } }), console.log('lessons', lessons)
+    await LessonModel.deleteMany({ _id: { $in: ids } })
 
     // delete all video and document files of lessons
     await Promise.all(

@@ -1,5 +1,5 @@
 import { IPackage } from '@/models/PackageModel'
-import { addPackageApi } from '@/requests'
+import { addPackageApi, updatePackageApi } from '@/requests'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Dispatch, memo, SetStateAction, useCallback, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
@@ -57,45 +57,46 @@ function PackageModal({
   })
 
   // add new packageGroup
-  const onAddSubmit: SubmitHandler<FieldValues> = useCallback(async data => {
-    if (!setPackages) {
-      toast.error('Package not found')
-      return
-    }
+  const onAddSubmit: SubmitHandler<FieldValues> = useCallback(
+    async data => {
+      if (!setPackages) {
+        toast.error('Package not found')
+        return
+      }
 
-    // start loading
-    setIsLoading(true)
+      // start loading
+      setIsLoading(true)
 
-    try {
-      // add new packageGroup login here
-      const { package: pack, message } = await addPackageApi({
-        ...data,
-        packageGroup: packageGroupId,
-        features,
-        active: isActiveChecked,
-      })
+      try {
+        // add new packageGroup login here
+        const { package: pack, message } = await addPackageApi({
+          ...data,
+          packageGroup: packageGroupId,
+          features,
+          active: isActiveChecked,
+        })
 
-      console.log('pack', pack)
+        // update packages from state
+        setPackages(prev => [...prev, pack])
 
-      // update packages from state
-      setPackages(prev => [...prev, pack])
+        // show success message
+        toast.success(message)
 
-      // show success message
-      toast.success(message)
+        // clear form
+        reset()
 
-      // clear form
-      reset()
-
-      // close modal
-      setOpen(false)
-    } catch (err: any) {
-      toast.error(err.message)
-      console.log(err)
-    } finally {
-      // stop loading
-      setIsLoading(false)
-    }
-  }, [])
+        // close modal
+        setOpen(false)
+      } catch (err: any) {
+        toast.error(err.message)
+        console.log(err)
+      } finally {
+        // stop loading
+        setIsLoading(false)
+      }
+    },
+    [features, isActiveChecked, packageGroupId, reset, setOpen, setPackages]
+  )
 
   const onEditSubmit: SubmitHandler<FieldValues> = useCallback(
     async data => {
@@ -107,31 +108,31 @@ function PackageModal({
       // start loading
       setIsLoading(true)
 
-      // try {
-      //   // send request to server
-      //   const { packageGroup: pG, message } = await updatePackageGroupApi(
-      //     packageGroup._id,
-      //     data.title,
-      //     data.description
-      //   )
+      try {
+        // send request to server
+        const { updatedPackage: pG, message } = await updatePackageApi(pkg?._id, {
+          ...data,
+          features,
+          active: isActiveChecked,
+        })
 
-      //   // update package group from state
-      //   setPackageGroups(prev => prev.map(p => (p._id === pG._id ? pG : p)))
+        // update packages from state
+        setPackages(prev => prev.map(p => (p._id === pkg._id ? pG : p)))
 
-      //   // show success message
-      //   toast.success(message)
+        // show success message
+        toast.success(message)
 
-      //   // close modal
-      //   setOpen(false)
-      // } catch (err: any) {
-      //   console.log(err)
-      //   toast.error(err.message)
-      // } finally {
-      //   // stop loading
-      //   setIsLoading(false)
-      // }
+        // close modal
+        setOpen(false)
+      } catch (err: any) {
+        console.log(err)
+        toast.error(err.message)
+      } finally {
+        // stop loading
+        setIsLoading(false)
+      }
     },
-    [pkg, setPackages]
+    [pkg, setPackages, features, isActiveChecked, setOpen]
   )
 
   return (
@@ -141,7 +142,7 @@ function PackageModal({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className={`fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex items-center justify-center ${className}`}
+          className={`fixed z-10 top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex items-center justify-center ${className}`}
           onClick={() => setOpen(false)}
         >
           <motion.div
@@ -239,7 +240,7 @@ function PackageModal({
                 value={featureValue}
                 onChange={e => setFeatureValue(e.target.value)}
                 onKeyUp={e => {
-                  if (e.key === 'Enter') {
+                  if (e.key === 'Enter' && featureValue.trim()) {
                     setFeatures(prev => [...prev, featureValue])
                     setFeatureValue('')
                   }
@@ -248,8 +249,10 @@ function PackageModal({
               <button
                 className='bg-primary text-dark px-2 trans-200 hover:text-white hover:bg-secondary'
                 onClick={() => {
-                  setFeatures(prev => [...prev, featureValue])
-                  setFeatureValue('')
+                  if (featureValue.trim()) {
+                    setFeatures(prev => [...prev, featureValue])
+                    setFeatureValue('')
+                  }
                 }}
               >
                 <FaPlusCircle />

@@ -52,7 +52,6 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
     const player = videoRef.current
     if (player) {
       player.onloadedmetadata = () => {
-        console.log('player.duration', player.duration)
         setDuration(player.duration)
       }
     }

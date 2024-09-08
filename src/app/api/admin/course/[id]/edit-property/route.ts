@@ -15,9 +15,6 @@ export async function PATCH(req: NextRequest, { params: { id } }: { params: { id
 
     // get data to update course property
     const { property, value } = await req.json()
-    console.log('id:', id)
-    console.log('property:', property)
-    console.log('value:', value)
 
     // check if course exists
     const course: ICourse | null = await CourseModel.findById(id)

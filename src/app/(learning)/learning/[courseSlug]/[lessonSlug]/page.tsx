@@ -77,7 +77,6 @@ function LessonPage({
         // check if lesson is "doc only" or not
         if (!lesson.source && lesson.docs.length > 0) {
           setTab(2)
-          console.log('doc only')
 
           setTimeout(async () => {
             if (!lesson || lesson?.progress?.status === 'completed' || !isEnrolled) return

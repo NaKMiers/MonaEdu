@@ -11,7 +11,6 @@ export const formatDate = (time: string): string => {
 
 export const formatDurationToHMS = (duration: string) => {
   const match = duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/)
-  console.log('match', match)
   if (match) {
     const hours = match[1] ? parseInt(match[1], 10) : 0
     const minutes = match[2] ? parseInt(match[2], 10) : 0

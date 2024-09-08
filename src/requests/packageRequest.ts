@@ -47,7 +47,6 @@ export const updatePackageGroupApi = async (id: string, title: string, descripti
 
 // [POST]: /admin/package/add
 export const addPackageApi = async (data: any) => {
-  console.log('data', data)
   const res = await fetch('/api/admin/package/add', {
     method: 'POST',
     body: JSON.stringify(data),
@@ -66,6 +65,21 @@ export const updatePackageApi = async (id: string, data: any) => {
   const res = await fetch(`/api/admin/package/${id}/edit`, {
     method: 'PUT',
     body: JSON.stringify(data),
+  })
+
+  // check status
+  if (!res.ok) {
+    throw new Error((await res.json()).message)
+  }
+
+  return await res.json()
+}
+
+// [DELETE]: /admin/package-group/delete
+export const deletePackageGroupApi = async (ids: string[]) => {
+  const res = await fetch(`/api/admin/package-group/delete`, {
+    method: 'DELETE',
+    body: JSON.stringify({ ids }),
   })
 
   // check status

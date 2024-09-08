@@ -62,7 +62,7 @@ function PackageGroupModal({
         const { packageGroup, message } = await addPackageGroupApi(data.title, data.description)
 
         // update packageGroups from state
-        setPackageGroups(prev => [...prev, ...packageGroup])
+        setPackageGroups(prev => [...prev, packageGroup])
 
         // show success message
         toast.success(message)
@@ -127,7 +127,7 @@ function PackageGroupModal({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className={`fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex items-center justify-center ${className}`}
+          className={`fixed z-10 top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex items-center justify-center ${className}`}
           onClick={() => setOpen(false)}
         >
           <motion.div

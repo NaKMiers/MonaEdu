@@ -20,7 +20,10 @@ export async function POST(req: NextRequest) {
     const packageGroup = await PackageGroupModel.create({ title, description })
 
     // return response
-    return NextResponse.json({ packageGroup }, { status: 200 })
+    return NextResponse.json(
+      { packageGroup, message: 'Add Package Group Successfully' },
+      { status: 200 }
+    )
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })
   }

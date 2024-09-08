@@ -153,9 +153,6 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
       }
     }
 
-    console.log('Filter:', filter)
-    console.log('Sort:', sort)
-
     // get, get all courses of current tag, get chops
     const [courses, amount, chops] = await Promise.all([
       // get all courses of current categories
