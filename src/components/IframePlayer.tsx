@@ -172,6 +172,32 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
     }
   }, [dispatch, update, duration, lesson, curUser])
 
+  // MARK: Show/Hide Controls
+  const showControlsHandler = useCallback(() => {
+    if (currentTime === 0 || isDragging) return
+
+    setShowControls(true)
+    if (controlsTimeoutRef.current) {
+      clearTimeout(controlsTimeoutRef.current)
+    }
+    controlsTimeoutRef.current = setTimeout(() => {
+      setShowControls(false)
+    }, 1000)
+  }, [currentTime, isDragging])
+
+  // useEffect to handle mouse move for showing/hiding controls
+  useEffect(() => {
+    const playerContainer = playerContainerRef.current
+
+    if (playerContainer) {
+      playerContainer.addEventListener('mousemove', showControlsHandler)
+
+      return () => {
+        playerContainer.removeEventListener('mousemove', showControlsHandler)
+      }
+    }
+  }, [showControlsHandler])
+
   // MARK: Play/Pause
   const play = useCallback(() => {
     // play if player is ready
@@ -206,6 +232,10 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
         play()
       }
     }
+
+    setTimeout(() => {
+      setShowControls(false)
+    }, 1000)
   }, [play, pause, isPlaying])
 
   // MARK: Seek
@@ -341,32 +371,6 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
       setIsFullscreen(false)
     }
   }, [isFullscreen])
-
-  // MARK: Show/Hide Controls
-  const showControlsHandler = useCallback(() => {
-    if (currentTime === 0 || isDragging) return
-
-    setShowControls(true)
-    if (controlsTimeoutRef.current) {
-      clearTimeout(controlsTimeoutRef.current)
-    }
-    controlsTimeoutRef.current = setTimeout(() => {
-      setShowControls(false)
-    }, 1000)
-  }, [currentTime, isDragging])
-
-  // useEffect to handle mouse move for showing/hiding controls
-  useEffect(() => {
-    const playerContainer = playerContainerRef.current
-
-    if (playerContainer) {
-      playerContainer.addEventListener('mousemove', showControlsHandler)
-
-      return () => {
-        playerContainer.removeEventListener('mousemove', showControlsHandler)
-      }
-    }
-  }, [showControlsHandler])
 
   // useEffect to show/hide controls
   useEffect(() => {
