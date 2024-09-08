@@ -86,7 +86,7 @@ export async function POST(req: NextRequest, { params: { code } }: { params: { c
         break
       }
       case 'percentage': {
-        message = `Bạn được giảm ${voucher.value}, tối đa ${Intl.NumberFormat('en-US', {
+        message = `Bạn được giảm ${voucher.value}, tối đa ${Intl.NumberFormat('vi-VN', {
           style: 'currency',
           currency: 'USD',
         }).format(voucher.maxReduce)}`
