@@ -62,7 +62,7 @@ function LessonItemOfChapter({
   }, [learningLesson, lesson._id])
 
   return (
-    <Link
+    <a
       href={`/learning/${courseSlug}/${lesson.slug}`}
       className={`relative bg-white rounded-md py-2 px-3 gap-4 hover:bg-primary trans-200 flex items-center overflow-hidden ${
         lesson.slug === lessonSlug ? 'font-semibold text-orange-500' : ''
@@ -91,7 +91,7 @@ function LessonItemOfChapter({
           {duration(lesson.duration)}
         </span>
       </div>
-    </Link>
+    </a>
   )
 }
 
