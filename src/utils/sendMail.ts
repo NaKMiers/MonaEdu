@@ -47,7 +47,9 @@ export async function notifyNewOrderToAdmin(newOrder: any) {
     const html = render(NotifyOrderEmail({ order: newOrder }))
     await sendMail(
       emails,
-      `New - ${newOrder.code} - ${formatPrice(newOrder.total)} - ${newOrder.paymentMethod}`,
+      `${newOrder.isPackage ? 'Package -' : ''} ${newOrder.code} - ${formatPrice(newOrder.total)} - ${
+        newOrder.paymentMethod
+      }`,
       html
     )
   } catch (err: any) {

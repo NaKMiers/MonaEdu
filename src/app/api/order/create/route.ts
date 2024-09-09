@@ -8,14 +8,16 @@ import handleDeliverOrder from '@/utils/handleDeliverOrder'
 import { notifyNewOrderToAdmin } from '@/utils/sendMail'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
+import PackageModel from '@/models/PackageModel'
 
-// Models: User, Order, Course, Category, Tag, Notification
+// Models: User, Order, Course, Category, Tag, Notification, Package
 import '@/models/CategoryModel'
 import '@/models/CourseModel'
 import '@/models/NotificationModel'
 import '@/models/OrderModel'
 import '@/models/TagModel'
 import '@/models/UserModel'
+import '@/models/PackageModel'
 
 // [POST]: /order/create
 export async function POST(req: NextRequest) {
@@ -26,7 +28,7 @@ export async function POST(req: NextRequest) {
     await connectDatabase()
 
     // get data to create order
-    const { total, receivedUser, voucher, discount, items, paymentMethod } = await req.json()
+    const { total, receivedUser, voucher, discount, items, paymentMethod, isPackage } = await req.json()
 
     // get user id
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
@@ -38,42 +40,78 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: 'Người dùng không hợp lệ' }, { status: 404 })
     }
 
-    // check if user has already joined course
-    let userCourses: any = []
-
-    if (receivedUser) {
-      userCourses = await UserModel.findOne({ email: receivedUser }).select('courses').lean()
-    } else {
-      userCourses = await UserModel.findById(userId).select('courses').lean()
+    const newOrderSet: any = {
+      // code: string
+      userId,
+      email,
+      receivedUser,
+      voucher,
+      discount,
+      total,
+      paymentMethod,
+      isPackage,
+      // items: any[]
     }
 
-    let joinedCourses: any = []
-    const userCoursesIds = userCourses?.courses.map((course: any) => course.course.toString())
+    if (!isPackage) {
+      let userCourses: any = []
 
-    const itemsIds = items.map((item: any) => item.courseId._id.toString())
-
-    const isUserJoinedCourse = itemsIds.some((id: any) => {
-      if (userCoursesIds.includes(id)) {
-        joinedCourses.push(id)
-        return true
+      if (receivedUser) {
+        userCourses = await UserModel.findOne({ email: receivedUser }).select('courses').lean()
+      } else {
+        userCourses = await UserModel.findById(userId).select('courses').lean()
       }
-      return false
-    })
 
-    if (isUserJoinedCourse) {
-      const joinedCoursesTitles = await CourseModel.find({
-        _id: { $in: joinedCourses },
-      }).distinct('title')
-      return NextResponse.json(
-        { message: `Học viên đã tham gia khóa học "${joinedCoursesTitles.join(', ')}"` },
-        { status: 400 }
-      )
+      let joinedCourses: any = []
+      const userCoursesIds = userCourses?.courses.map((course: any) => course.course.toString())
+
+      const itemsIds = items.map((item: any) => item.courseId._id.toString())
+
+      const isUserJoinedCourse = itemsIds.some((id: any) => {
+        if (userCoursesIds.includes(id)) {
+          joinedCourses.push(id)
+          return true
+        }
+        return false
+      })
+
+      if (isUserJoinedCourse) {
+        const joinedCoursesTitles = await CourseModel.find({
+          _id: { $in: joinedCourses },
+        }).distinct('title')
+        return NextResponse.json(
+          { message: `Học viên đã tham gia khóa học "${joinedCoursesTitles.join(', ')}"` },
+          { status: 400 }
+        )
+      }
+
+      // get courses to create order
+      const courses = await CourseModel.find({ _id: { $in: itemsIds } })
+        .populate('tags category')
+        .lean()
+
+      // check if courses exist or not
+      if (courses.length !== items.length) {
+        return NextResponse.json({ message: 'Khóa học không hợp lệ' }, { status: 404 })
+      }
+
+      // add courses to new order set
+      newOrderSet.items = courses
+    } else {
+      // get package to create order
+      const packages = await PackageModel.find({
+        _id: { $in: items.map((item: any) => item.packageId._id.toString()) },
+      }).lean()
+
+      // check if packages exist or not
+      if (packages.length !== items.length) {
+        return NextResponse.json({ message: 'Gói học viên không hợp lệ' }, { status: 404 })
+      }
+
+      // add packages to new order set
+      newOrderSet.items = packages
     }
 
-    // get courses to create order
-    const courses = await CourseModel.find({ _id: { $in: itemsIds } })
-      .populate('tags category')
-      .lean()
     const code = await generateOrderCode(5)
 
     // create new order
@@ -81,20 +119,17 @@ export async function POST(req: NextRequest) {
       // save new order
       OrderModel.create({
         code,
-        userId,
-        email,
-        receivedUser,
-        voucher,
-        discount,
-        total,
-        items: courses,
-        paymentMethod,
+        ...newOrderSet,
       }),
 
       // notify buyer
       NotificationModel.create({
         userId,
-        title: 'Cảm ơn bạn đã mua khóa học của chúng tôi, đơn hàng của bạn đang được xử lí!',
+        title: `Cảm ơn bạn đã ${
+          isPackage
+            ? 'đăng ký trở thành hội viên cùng chúng tôi, yêu của bạn đang được xử lí!'
+            : 'mua khóa học của chúng tôi, đơn hàng của bạn đang được xử lí!'
+        }`,
         image: '/images/logo.png',
         link: '/user/history',
         type: 'create-order',

@@ -1,6 +1,6 @@
 'use client'
 
-import { CardBody, CardContainer, CardItem } from '@/components/3dCard'
+import { CardBody, CardContainer, CardItem } from '@/components/effects/3dCard'
 import { useAppDispatch } from '@/libs/hooks'
 import { addCartItem } from '@/libs/reducers/cartReducer'
 import { setPageLoading } from '@/libs/reducers/modalReducer'

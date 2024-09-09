@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import { IFlashSale } from './FlashSaleModel'
 const Schema = mongoose.Schema
 
 const PackageSchema = new Schema(
@@ -60,6 +61,7 @@ export interface IPackage {
   oldPrice: number
   price: number
   description: string
+  flashSale: string | IFlashSale
   packageGroup: string
   joined: number
   active: boolean

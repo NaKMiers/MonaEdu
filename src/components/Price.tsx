@@ -9,9 +9,9 @@ import CounterItem from './CounterItem'
 interface PriceProps {
   price: number
   oldPrice?: number
-  className?: string
   big?: boolean
   flashSale: IFlashSale | undefined
+  className?: string
 }
 
 function Price({ price, oldPrice, flashSale, big, className = '' }: PriceProps) {

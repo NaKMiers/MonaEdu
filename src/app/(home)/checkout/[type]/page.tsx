@@ -153,10 +153,17 @@ function CheckoutPage({ params }: { params: { type: string } }) {
           >
             {checkout?.email}
           </span>{' '}
-          sau khi đã thanh toán. Và bạn có thể truy cập khóa học ngay ở trang{' '}
-          <Link href='/my-courses' className='text-sky-500 underline underline-offset-1'>
-            Khóa học của tôi
-          </Link>
+          sau khi đã thanh toán.{' '}
+          {checkout?.isPackage ? (
+            <>Và gói học viên của bạn sẽ được áp dụng ngay sau đó. </>
+          ) : (
+            <>
+              Và bạn có thể truy cập khóa học ngay ở trang{' '}
+              <Link href='/my-courses' className='text-sky-500 underline underline-offset-1'>
+                Khóa học của tôi
+              </Link>
+            </>
+          )}
         </p>
 
         <p className='text-secondary font-semibold mt-1 mb-2'>
@@ -236,7 +243,9 @@ function CheckoutPage({ params }: { params: { type: string } }) {
       {/* MARK: Cart items */}
       <div className='col-span-1 lg:col-span-5'>
         <div className='sticky top-24 left-0 bg-white bg-opacity-95 rounded-medium shadow-medium p-21'>
-          <h1 className='text-center font-semibold text-3xl'>Khóa học</h1>
+          <h1 className='text-center font-semibold text-3xl'>
+            {checkout?.isPackage ? 'Gói học viên' : 'Khóa học'}
+          </h1>
 
           <Divider size={5} />
 
@@ -244,7 +253,7 @@ function CheckoutPage({ params }: { params: { type: string } }) {
             {checkout?.items.map((cartItem: ICartItem, index: number) => (
               <CartItem
                 cartItem={cartItem}
-                className={index != 0 ? 'mt-4' : ''}
+                className={`${index != 0 ? 'mt-4' : ''} bg-dark-100 text-light`}
                 key={cartItem._id}
                 isCheckout
               />

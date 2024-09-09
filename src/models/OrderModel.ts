@@ -47,6 +47,10 @@ const OrderSchema = new Schema(
       type: String,
       enum: ['momo', 'banking'],
     },
+    isPackage: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
@@ -69,6 +73,7 @@ export interface IOrder {
   items: any
   status: string
   paymentMethod: string
+  isPackage: boolean
   createdAt: string
   updatedAt: string
 }

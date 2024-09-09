@@ -139,29 +139,37 @@ function OrderItem({
           )
         }
       >
+        {data.isPackage && (
+          <div className='absolute top-0 left-1/2 -translate-y-1/2 -translate-x-1/2 rounded-3xl px-3 py-1 text-xs font-semibold text-white bg-neutral-950 shadow-lg border-2 border-light'>
+            Package
+          </div>
+        )}
+
         <div className='w-[calc(100%_-_44px)]'>
           {/* MARK: Thumbnails */}
-          <div className='w-full h-full flex items-center flex-wrap gap-2 mb-2 max-h-[145px]'>
-            <div className='flex gap-2 flex-wrap'>
-              {data.items.map((course: any) => (
-                <Link
-                  href={`/${course.slug}`}
-                  prefetch={false}
-                  className='relative rounded-lg shadow-md overflow-hidden flex-shrink-0'
-                  onClick={e => e.stopPropagation()}
-                  key={course._id}
-                >
-                  <Image
-                    className='aspect-video h-auto w-auto'
-                    src={course.images[0] || '/images/not-found.jpg'}
-                    height={100}
-                    width={100}
-                    alt={course.title}
-                  />
-                </Link>
-              ))}
+          {!data.isPackage && (
+            <div className='w-full h-full flex items-center flex-wrap gap-2 mb-2 max-h-[145px]'>
+              <div className='flex gap-2 flex-wrap'>
+                {data.items.map((course: any) => (
+                  <Link
+                    href={`/${course.slug}`}
+                    prefetch={false}
+                    className='relative rounded-lg shadow-md overflow-hidden flex-shrink-0'
+                    onClick={e => e.stopPropagation()}
+                    key={course._id}
+                  >
+                    <Image
+                      className='aspect-video h-auto w-auto'
+                      src={course.images[0] || '/images/not-found.jpg'}
+                      height={100}
+                      width={100}
+                      alt={course.title}
+                    />
+                  </Link>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* MARK: Information */}
           <div className='flex gap-2 flex-wrap items-center'>
