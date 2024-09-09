@@ -1,9 +1,9 @@
 import { connectDatabase } from '@/config/database'
-import PackageGroupModel from '@/models/PackageGroupModel'
+import PackageGroupModel from '@/models/asdPackageGroupModel'
 import { NextRequest, NextResponse } from 'next/server'
 
 // Models: Package Group
-import '@/models/PackageGroupModel'
+import '@/models/asdPackageGroupModel'
 
 // [POST]: /admin/package-group/add
 export async function POST(req: NextRequest) {

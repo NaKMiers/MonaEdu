@@ -1,4 +1,4 @@
-import { IPackageGroup } from '@/models/PackageGroupModel'
+import { IPackageGroup } from '@/models/asdPackageGroupModel'
 import Divider from './Divider'
 
 interface SubscriptionsProps {

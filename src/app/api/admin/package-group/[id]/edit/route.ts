@@ -1,5 +1,5 @@
 import { connectDatabase } from '@/config/database'
-import PackageGroupModel from '@/models/PackageGroupModel'
+import PackageGroupModel from '@/models/asdPackageGroupModel'
 import { NextRequest, NextResponse } from 'next/server'
 
 // [PUT]: /admin/package-group/:id/edit
