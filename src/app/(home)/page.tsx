@@ -137,9 +137,45 @@ async function Home({ searchParams }: { searchParams?: { [key: string]: string[]
       {/* MARK: Add JSON-LD */}
       <script type='application/ld+json' dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
+      {/* Banner */}
+      <Banner courses={bannerCourses} />
+
+      <Divider size={40} />
+
+      {/* Top 8 Courses */}
+      <BestSeller courses={bestSellers} />
+
+      <Divider size={40} />
+
+      {/* Top 8 (max) New Courses */}
+      <TopNewCourses courses={newCourses} />
+
+      <Divider size={30} />
+
+      {/* Feature Courses */}
+      <FeatureCourses courses={bootedCourses} />
+
+      <Divider size={40} />
+
+      {/* Top 8 Categories */}
+      <TopCategories />
+
+      <Divider size={40} />
+
+      {/* All Courses */}
+      <AllCourses courses={courses} />
+      <Pagination searchParams={searchParams} amount={amount} itemsPerPage={12} />
+
+      <Divider size={30} />
+
+      {/* Recently Visit */}
+      <RecentlyVisit />
+
+      <Divider size={30} />
+
       <Subscriptions packageGroups={packageGroups} />
 
-      {/* <Divider size={31} /> */}
+      <Divider size={30} />
 
       <Divider size={40} />
 
