@@ -19,7 +19,6 @@ function PackageAllPage({ searchParams }: { searchParams?: { [key: string]: stri
 
   // states
   const [openAddPackageGroupModal, setOpenAddPackageGroupModal] = useState<boolean>(false)
-  const [openAddPackageModal, setOpenAddPackageModal] = useState<boolean>(false)
   const [packageGroups, setPackageGroups] = useState<IPackageGroup[]>([])
 
   // MARK: Get Data

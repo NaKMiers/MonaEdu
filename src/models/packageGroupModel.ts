@@ -19,6 +19,7 @@ const PackageGroupSchema = new Schema(
   { timestamps: true }
 )
 
+// create model from schema
 const PackageGroupModel =
   mongoose.models.packageGroup || mongoose.model('packageGroup', PackageGroupSchema)
 export default PackageGroupModel

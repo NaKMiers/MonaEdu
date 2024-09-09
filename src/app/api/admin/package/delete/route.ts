@@ -3,6 +3,10 @@ import PackageGroupModel from '@/models/PackageGroupModel'
 import PackageModel from '@/models/PackageModel'
 import { NextRequest, NextResponse } from 'next/server'
 
+// Models: Package Group, Package
+import '@/models/PackageGroupModel'
+import '@/models/PackageModel'
+
 // [DELETE]: /admin/package/delete
 export async function DELETE(req: NextRequest) {
   console.log('- Delete Packages -')
