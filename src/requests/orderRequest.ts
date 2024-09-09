@@ -59,7 +59,7 @@ export const createOrderApi = async ({
   discount,
   items,
   paymentMethod,
-  isPackage,
+  isPackage = false,
 }: {
   total: number
   receivedUser: string | undefined
@@ -67,7 +67,7 @@ export const createOrderApi = async ({
   discount: number | undefined
   items: any
   paymentMethod: string
-  isPackage: boolean
+  isPackage?: boolean
 }) => {
   const res = await fetch('/api/order/create', {
     method: 'POST',
