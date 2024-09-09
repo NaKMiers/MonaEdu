@@ -3,8 +3,8 @@ import PackageModel from '@/models/PackageModel'
 import { NextRequest, NextResponse } from 'next/server'
 
 // Models: Package Group, Package
-import '@/models/asdPackageGroupModel'
-import PackageGroupModel from '@/models/asdPackageGroupModel'
+import '@/models/PackageGroupModel'
+import PackageGroupModel from '@/models/PackageGroupModel'
 import '@/models/PackageModel'
 
 // [DELETE]: /admin/package-group/delete

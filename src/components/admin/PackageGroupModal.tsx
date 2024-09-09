@@ -1,4 +1,4 @@
-import { IPackageGroup } from '@/models/asdPackageGroupModel'
+import { IPackageGroup } from '@/models/PackageGroupModel'
 import { addPackageGroupApi, updatePackageGroupApi } from '@/requests/packageRequest'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Dispatch, memo, SetStateAction, useCallback, useState } from 'react'

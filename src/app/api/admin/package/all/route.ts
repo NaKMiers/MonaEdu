@@ -1,5 +1,5 @@
 import { connectDatabase } from '@/config/database'
-import PackageGroupModel, { IPackageGroup } from '@/models/asdPackageGroupModel'
+import PackageGroupModel, { IPackageGroup } from '@/models/PackageGroupModel'
 import PackageModel from '@/models/PackageModel'
 import { NextRequest, NextResponse } from 'next/server'
 
