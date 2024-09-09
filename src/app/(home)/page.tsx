@@ -173,7 +173,7 @@ async function Home({ searchParams }: { searchParams?: { [key: string]: string[]
 
       {/* <Subscriptions packageGroups={packageGroups} /> */}
 
-      {/* <Divider size={30} /> */}
+      {/* <Divider size={31} /> */}
 
       <Divider size={40} />
 
