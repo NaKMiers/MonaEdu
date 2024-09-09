@@ -132,6 +132,10 @@ async function Home({ searchParams }: { searchParams?: { [key: string]: string[]
     },
   }
 
+  //
+  //
+  //
+
   return (
     <div className='min-h-screen'>
       {/* MARK: Add JSON-LD */}
