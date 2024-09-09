@@ -1,10 +1,10 @@
 import { connectDatabase } from '@/config/database'
-import PackageGroupModel from '@/models/asdPackageGroupModel'
+import PackageGroupModel from '@/models/PackageGroupModel'
 import PackageModel from '@/models/PackageModel'
 import { NextRequest, NextResponse } from 'next/server'
 
 // Models: Package Group, Package
-import '@/models/asdPackageGroupModel'
+import '@/models/PackageGroupModel'
 import '@/models/PackageModel'
 
 // [DELETE]: /admin/package-group/delete

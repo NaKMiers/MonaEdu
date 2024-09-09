@@ -1,4 +1,4 @@
-import { IPackageGroup } from '@/models/asdPackageGroupModel'
+import { IPackageGroup } from '@/models/PackageGroupModel'
 import { IPackage } from '@/models/PackageModel'
 import { deletePackageGroupApi } from '@/requests'
 import { Dispatch, SetStateAction, useCallback, useState } from 'react'

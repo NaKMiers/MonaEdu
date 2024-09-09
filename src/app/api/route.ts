@@ -1,14 +1,14 @@
 import { connectDatabase } from '@/config/database'
 import CategoryModel from '@/models/CategoryModel'
 import CourseModel from '@/models/CourseModel'
-import PackageGroupModel, { IPackageGroup } from '@/models/asdPackageGroupModel'
+import PackageGroupModel, { IPackageGroup } from '@/models/PackageGroupModel'
 import { searchParamsToObject } from '@/utils/handleQuery'
 import { NextRequest, NextResponse } from 'next/server'
 
 // Models: Course, Category, Package Group, Package
 import '@/models/CategoryModel'
 import '@/models/CourseModel'
-import '@/models/asdPackageGroupModel'
+import '@/models/PackageGroupModel'
 import '@/models/PackageModel'
 import PackageModel from '@/models/PackageModel'
 
