@@ -1,5 +1,5 @@
 import { connectDatabase } from '@/config/database'
-import PackageGroupModel, { IPackageGroup } from '@/models/packageGroupModel'
+import PackageGroupModel, { IPackageGroup } from '@/models/PackageGroupModel'
 import PackageModel from '@/models/PackageModel'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -18,9 +18,6 @@ export async function GET(req: NextRequest) {
 
     // get all packages
     const packages = await PackageModel.find().lean()
-
-    console.log('packageGroups', packageGroups)
-    console.log('packages', packages)
 
     // group packages by package group
     packageGroups = packageGroups.map((pg: IPackageGroup) => {

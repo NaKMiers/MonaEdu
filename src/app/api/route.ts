@@ -1,12 +1,16 @@
 import { connectDatabase } from '@/config/database'
 import CategoryModel from '@/models/CategoryModel'
 import CourseModel from '@/models/CourseModel'
-import { NextRequest, NextResponse } from 'next/server'
+import PackageGroupModel, { IPackageGroup } from '@/models/PackageGroupModel'
 import { searchParamsToObject } from '@/utils/handleQuery'
+import { NextRequest, NextResponse } from 'next/server'
 
-// Models: Course, Category
+// Models: Course, Category, Package Group, Package
 import '@/models/CategoryModel'
 import '@/models/CourseModel'
+import '@/models/PackageGroupModel'
+import '@/models/PackageModel'
+import PackageModel from '@/models/PackageModel'
 
 export const dynamic = 'force-dynamic'
 
@@ -94,7 +98,16 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    const [bannerCourses, bestSellers, newCourses, bootedCourses, courses, amount] = await Promise.all([
+    let [
+      bannerCourses,
+      bestSellers,
+      newCourses,
+      bootedCourses,
+      courses,
+      amount,
+      packageGroups,
+      packages,
+    ] = await Promise.all([
       // get courses
       CourseModel.find({
         active: true,
@@ -149,6 +162,12 @@ export async function GET(req: NextRequest) {
 
       // count total courses
       CourseModel.countDocuments(filter),
+
+      // get all package groups
+      PackageGroupModel.find().lean(),
+
+      // get all packages
+      PackageModel.find().lean(),
     ])
 
     // categories's slugs from booted courses
@@ -174,9 +193,21 @@ export async function GET(req: NextRequest) {
       }
     })
 
+    // group packages by package group
+    packageGroups = packageGroups
+      .map((pg: any) => {
+        const pkgs = packages.filter(p => p.packageGroup.toString() === pg._id.toString())
+
+        return {
+          ...pg,
+          packages: pkgs,
+        }
+      })
+      .filter((pg: any) => Boolean(pg.packages)) as IPackageGroup[]
+
     // return response
     return NextResponse.json(
-      { bannerCourses, bestSellers, newCourses, groupedBootedCourses, courses, amount },
+      { bannerCourses, bestSellers, newCourses, groupedBootedCourses, packageGroups, courses, amount },
       { status: 200 }
     )
   } catch (err: any) {

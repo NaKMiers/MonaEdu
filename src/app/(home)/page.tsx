@@ -7,8 +7,10 @@ import FeatureCourses from '@/components/ranks/FeatureCourses'
 import RecentlyVisit from '@/components/ranks/RecentlyVisit'
 import TopCategories from '@/components/ranks/TopCategories'
 import TopNewCourses from '@/components/ranks/TopNewCourses'
+import Subscriptions from '@/components/Subscriptions'
 import { ICategory } from '@/models/CategoryModel'
 import { ICourse } from '@/models/CourseModel'
+import { IPackageGroup } from '@/models/PackageGroupModel'
 import { getHomePageApi } from '@/requests'
 import { handleQuery } from '@/utils/handleQuery'
 import { stripHTML } from '@/utils/string'
@@ -29,6 +31,7 @@ async function Home({ searchParams }: { searchParams?: { [key: string]: string[]
     category: ICategory
     courses: ICourse[]
   }[] = []
+  let packageGroups: IPackageGroup[] = []
   let courses: ICourse[] = []
   let amount: number = 0
 
@@ -41,6 +44,7 @@ async function Home({ searchParams }: { searchParams?: { [key: string]: string[]
     newCourses = data.newCourses
     bootedCourses = data.groupedBootedCourses
     courses = data.courses
+    packageGroups = data.packageGroups
     amount = data.amount
   } catch (err: any) {
     console.log(err)
@@ -166,6 +170,10 @@ async function Home({ searchParams }: { searchParams?: { [key: string]: string[]
 
       {/* Recently Visit */}
       <RecentlyVisit />
+
+      {/* <Subscriptions packageGroups={packageGroups} /> */}
+
+      {/* <Divider size={30} /> */}
 
       <Divider size={40} />
 

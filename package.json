@@ -46,6 +46,7 @@
     "clsx": "^2.1.1",
     "framer-motion": "^11.2.12",
     "jsonwebtoken": "^9.0.2",
+    "mini-svg-data-uri": "^1.4.4",
     "moment-duration-format": "^2.3.2",
     "moment-timezone": "^0.5.45",
     "mongoose": "^8.3.4",
