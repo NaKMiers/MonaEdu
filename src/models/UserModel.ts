@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt'
 import mongoose from 'mongoose'
 import { ICourse } from './CourseModel'
+import { IPackage } from './PackageModel'
 import { IVoucher } from './VoucherModel'
 const Schema = mongoose.Schema
 
@@ -205,6 +206,11 @@ const UserSchema = new Schema(
         default: false,
       },
     },
+
+    // package
+    package: {
+      type: Schema.Types.Mixed,
+    },
   },
   {
     timestamps: true,
@@ -264,6 +270,7 @@ export interface IUser {
   blockStatuses: {
     blockedComment: boolean
   }
+  package: any
   createdAt: string
   updatedAt: string
 

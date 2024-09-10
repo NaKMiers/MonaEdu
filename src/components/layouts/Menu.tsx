@@ -133,21 +133,6 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
 
               <div className='group' onClick={() => setOpen(false)}>
                 <Link
-                  href={`/user/${curUser?.username || curUser?.email}`}
-                  className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white hover:text-dark trans-200'
-                >
-                  <Image
-                    src='/icons/info-icon.png'
-                    className='wiggle'
-                    width={30}
-                    height={30}
-                    alt='info'
-                  />
-                  <span className='font-body text-xl font-semibold tracking-wide'>Trang cá nhân</span>
-                </Link>
-              </div>
-              <div className='group' onClick={() => setOpen(false)}>
-                <Link
                   href={`/my-courses`}
                   className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white hover:text-dark trans-200'
                 >
@@ -159,6 +144,21 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
                     alt='my-courses'
                   />
                   <span className='font-body text-xl font-semibold tracking-wide'>Khóa học của tôi</span>
+                </Link>
+              </div>
+              <div className='group' onClick={() => setOpen(false)}>
+                <Link
+                  href={`/subscription`}
+                  className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white hover:text-dark trans-200'
+                >
+                  <Image
+                    src='/icons/crown-icon.png'
+                    className='wiggle'
+                    width={30}
+                    height={30}
+                    alt='subscription'
+                  />
+                  <span className='font-body text-xl font-semibold tracking-wide'>Gói học viên</span>
                 </Link>
               </div>
               <div className='group' onClick={() => setOpen(false)}>

@@ -1,8 +1,10 @@
 import { connectDatabase } from '@/config/database'
+import PackageGroupModel from '@/models/PackageGroupModel'
 import PackageModel from '@/models/PackageModel'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Models: Package
+// Models: Package, Package Group
+import '@/models/PackageGroupModel'
 import '@/models/PackageModel'
 
 // [POST]: /admin/package/add
@@ -14,26 +16,24 @@ export async function POST(req: NextRequest) {
     await connectDatabase()
 
     // get data to add package
-    const { title, oldPrice, price, description, packageGroup, active, features } = await req.json()
+    const { title, oldPrice, price, description, packageGroup, active, features, credit, days } =
+      await req.json()
 
-    const set: any = {
+    // create new package
+    const newPackage = await PackageModel.create({
       title,
       oldPrice,
       price,
       description,
+      packageGroup,
       active,
       features,
-    }
+      credit,
+      days,
+    })
 
-    if (packageGroup) {
-      set.packageGroup = packageGroup
-    }
-
-    // create new package
-    const newPackage = await PackageModel.create(set)
-
-    // increase package amount
-    await PackageModel.updateOne({ _id: packageGroup }, { $inc: { amount: 1 } })
+    // increase package group - package amount
+    await PackageGroupModel.updateOne({ _id: packageGroup }, { $inc: { packageAmount: 1 } })
 
     // return new package
     return NextResponse.json(

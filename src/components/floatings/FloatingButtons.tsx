@@ -7,6 +7,7 @@ import { memo, useState } from 'react'
 import { AiFillMessage } from 'react-icons/ai'
 import { FaBoltLightning } from 'react-icons/fa6'
 import Divider from '../Divider'
+import { RiVipCrown2Fill } from 'react-icons/ri'
 
 interface FloatingButtonsProps {
   className?: string
@@ -22,6 +23,14 @@ function FloatingButtons({ className = '' }: FloatingButtonsProps) {
         className={`fixed z-30 right-3 bottom-[140px] flex flex-col gap-2 items-center rounded-xl trans-300 overflow-hidden select-none ${className}`}
       >
         <Link
+          href='/subscription'
+          className='group flex items-center justify-center h-[44px] w-[44px] border-2 bg-dark-100 border-light rounded-xl'
+          title='Gói học viên'
+        >
+          <RiVipCrown2Fill size={20} className={`text-white wiggle trans-200`} />
+        </Link>
+
+        <Link
           href='/flash-sale'
           className='group flex items-center justify-center h-[44px] w-[44px] border-2 bg-dark-100 border-light rounded-xl'
           title='Flash Sale'
@@ -31,7 +40,7 @@ function FloatingButtons({ className = '' }: FloatingButtonsProps) {
 
         <button
           className='group flex items-center justify-center h-[44px] w-[44px] border-2 bg-dark-100 border-light rounded-xl'
-          title='Liên Hệ'
+          title='Liên hệ'
           onClick={() => setOpen(true)}
         >
           <AiFillMessage size={20} className={`text-white wiggle trans-200`} />

@@ -141,7 +141,7 @@ function OrderItem({
       >
         {data.isPackage && (
           <div className='absolute top-0 left-1/2 -translate-y-1/2 -translate-x-1/2 rounded-3xl px-3 py-1 text-xs font-semibold text-white bg-neutral-950 shadow-lg border-2 border-light'>
-            Package
+            {data.items[0].title}
           </div>
         )}
 

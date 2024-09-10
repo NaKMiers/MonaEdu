@@ -127,7 +127,7 @@ export async function POST(req: NextRequest) {
         userId,
         title: `Cảm ơn bạn đã ${
           isPackage
-            ? 'đăng ký trở thành hội viên cùng chúng tôi, yêu của bạn đang được xử lí!'
+            ? 'đăng ký gói học viên của chúng tôi, yêu của bạn đang được xử lí!'
             : 'mua khóa học của chúng tôi, đơn hàng của bạn đang được xử lí!'
         }`,
         image: '/images/logo.png',

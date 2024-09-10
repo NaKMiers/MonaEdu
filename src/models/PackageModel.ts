@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import { IFlashSale } from './FlashSaleModel'
+import { IPackageGroup } from './PackageGroupModel'
 const Schema = mongoose.Schema
 
 const PackageSchema = new Schema(
@@ -33,6 +34,7 @@ const PackageSchema = new Schema(
     packageGroup: {
       type: Schema.Types.ObjectId,
       ref: 'packageGroup',
+      required: true,
     },
     joined: {
       type: Number,
@@ -46,6 +48,12 @@ const PackageSchema = new Schema(
     features: {
       type: [String],
       default: [],
+    },
+    credit: {
+      type: Number,
+    },
+    days: {
+      type: Number,
     },
   },
   { timestamps: true }
@@ -66,6 +74,8 @@ export interface IPackage {
   joined: number
   active: boolean
   features: string[]
+  credit: number
+  days: number
   createdAt: string
   updatedAt: string
 }

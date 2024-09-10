@@ -4,10 +4,11 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { Dispatch, memo, SetStateAction, useCallback, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
-import { FaCircleNotch, FaMoneyBillAlt, FaPlay, FaPlusCircle } from 'react-icons/fa'
-import { FaDeleteLeft } from 'react-icons/fa6'
+import { FaCircleNotch, FaMinus, FaMoneyBillAlt, FaPause, FaPlay, FaPlusCircle } from 'react-icons/fa'
+import { FaCalendarDays, FaDeleteLeft } from 'react-icons/fa6'
 import Divider from '../Divider'
 import Input from '../Input'
+import { MdNumbers } from 'react-icons/md'
 
 interface PackageModalProps {
   title: string
@@ -49,10 +50,12 @@ function PackageModal({
   } = useForm<FieldValues>({
     defaultValues: {
       title: pkg?.title || '',
-      oldPrice: pkg?.oldPrice || 0,
-      price: pkg?.price || 0,
+      oldPrice: pkg?.oldPrice || '',
+      price: pkg?.price || '',
       description: pkg?.description || '',
       packageGroup: pkg?.packageGroup || '',
+      credit: pkg?.credit || '',
+      days: pkg?.days || '',
     },
   })
 
@@ -149,7 +152,7 @@ function PackageModal({
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             exit={{ scale: 0 }}
-            className='w-full max-w-[500px] rounded-medium shadow-medium bg-white p-21'
+            className='max-h-[calc(100vh-2*80px)] overflow-y-auto w-full max-w-[500px] rounded-medium shadow-medium bg-white p-21'
             onClick={e => e.stopPropagation()}
           >
             <h1 className='text-dark text-center font-semibold text-xl'>{title}</h1>
@@ -176,6 +179,7 @@ function PackageModal({
               register={register}
               errors={errors}
               type='textarea'
+              rows={2}
               labelBg='bg-white'
               className='min-w-[40%] mt-3'
               onFocus={() => clearErrors('description')}
@@ -207,6 +211,37 @@ function PackageModal({
                 type='number'
                 icon={FaMoneyBillAlt}
                 onFocus={() => clearErrors('oldPrice')}
+              />
+            </div>
+
+            <Divider size={3} />
+
+            {/* MARK: Credit - Expire */}
+            <div className='grid grid-cols-1 lg:grid-cols-2 gap-5'>
+              {/* Credit */}
+              <Input
+                id='credit'
+                label='Credit'
+                disabled={isLoading}
+                register={register}
+                errors={errors}
+                min={0}
+                max={10}
+                type='number'
+                icon={MdNumbers}
+                onFocus={() => clearErrors('credit')}
+              />
+
+              {/* Days */}
+              <Input
+                id='days'
+                label='Days'
+                disabled={isLoading}
+                register={register}
+                errors={errors}
+                type='number'
+                icon={FaCalendarDays}
+                onFocus={() => clearErrors('days')}
               />
             </div>
 

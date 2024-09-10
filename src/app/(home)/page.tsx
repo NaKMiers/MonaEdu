@@ -1,6 +1,7 @@
 import AllCourses from '@/components/AllCourses'
 import Banner from '@/components/Banner'
 import Divider from '@/components/Divider'
+import Heading from '@/components/Heading'
 import Pagination from '@/components/layouts/Pagination'
 import BestSeller from '@/components/ranks/BestSeller'
 import FeatureCourses from '@/components/ranks/FeatureCourses'
@@ -172,6 +173,13 @@ async function Home({ searchParams }: { searchParams?: { [key: string]: string[]
       <RecentlyVisit />
 
       <Divider size={30} />
+
+      <Heading className='text-dark' title='Gói học viên' />
+      <p className='text-center text-[18px] text-neutral-300 mt-8'>
+        Chọn cơ hội để tối ưu hiệu quả học tập của bạn
+      </p>
+
+      <Divider size={10} />
 
       <Subscriptions packageGroups={packageGroups} />
 

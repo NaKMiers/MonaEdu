@@ -7,6 +7,7 @@ import PrivateInfo from '@/components/setting/PrivateInfo'
 import { useAppDispatch, useAppSelector } from '@/libs/hooks'
 import { setAuthenticated, setOpenAuthentication } from '@/libs/reducers/modalReducer'
 import { checkAuthenticationApi } from '@/requests'
+import { getTimeRemaining } from '@/utils/time'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { useCallback, useEffect, useState } from 'react'
@@ -71,7 +72,7 @@ function PersonalSetting() {
       <Divider size={8} />
 
       {/* MARK: Account Information */}
-      <div className='relative rounded-lg border border-dark shadow-lg p-4 overflow-x-scroll bg-slate-300 bg-opacity-95'>
+      <div className='relative flex justify-between gap-21 rounded-lg border border-dark shadow-lg p-4 overflow-x-scroll bg-slate-300 bg-opacity-95'>
         <div className='flex gap-2'>
           {curUser?.avatar && (
             <div className='flex-shrink-0 w-[50px] h-[50px] rounded-full shadow-lg overflow-hidden'>
@@ -94,6 +95,28 @@ function PersonalSetting() {
             <p>{curUser?.address}</p>
           </div>
         </div>
+
+        {curUser.package && (
+          <div className='flex flex-col items-end'>
+            <p className='inline-block rounded-3xl text-center border border-neutral-800 bg-neutral-950 text-light font-semibold px-4 py-1 shadow-lg'>
+              {curUser.package.title}
+            </p>
+            <Divider size={2} />
+            {curUser.package.credit !== null && (
+              <p className='text-sm font-semibold'>
+                Còn lại: <span className='text-violet-800'>{curUser.package.credit} credits</span>
+              </p>
+            )}
+            {curUser.package.expire !== null && (
+              <p className='text-sm font-semibold'>
+                Còn lại:{' '}
+                <span className={`text-violet-800 underline`}>
+                  {getTimeRemaining(curUser.package.expire).toString()}
+                </span>
+              </p>
+            )}
+          </div>
+        )}
       </div>
 
       <Divider size={8} />

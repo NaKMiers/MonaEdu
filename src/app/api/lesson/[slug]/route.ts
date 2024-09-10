@@ -60,21 +60,17 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
       lesson.progress = progress
     }
 
-    let isEnrolled = false
+    // if user is not enrolled in this course
+    let isEnrolled = user.courses
+      .map((course: any) => course.course)
+      .includes((lesson.courseId as ICourse)._id.toString())
 
     // check if lesson is public
-    if (lesson.status !== 'public') {
-      // if user is not enrolled in this course
-      isEnrolled = user.courses
-        .map((course: any) => course.course)
-        .includes((lesson.courseId as ICourse)._id.toString())
-
-      if (!isEnrolled) {
-        return NextResponse.json(
-          { message: 'Bạn không được phép truy cập bài giảng này' },
-          { status: 403 }
-        )
-      }
+    if (lesson.status !== 'public' && !isEnrolled) {
+      return NextResponse.json(
+        { message: 'Bạn không được phép truy cập bài giảng này' },
+        { status: 403 }
+      )
     }
 
     // get file url if lesson's source type is file
@@ -89,11 +85,15 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
       comments = await CommentModel.find({
         lessonId: lesson._id,
       })
-        .populate('userId')
+        .populate({
+          path: 'userId',
+          select: 'avatar firstName lastName email nickname package',
+        })
         .populate({
           path: 'replied',
           populate: {
             path: 'userId',
+            select: 'avatar firstName lastName email nickname package',
           },
           options: { sort: { likes: -1, createdAt: -1 }, limit: 6 },
         })

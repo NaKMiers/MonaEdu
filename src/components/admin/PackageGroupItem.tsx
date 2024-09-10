@@ -58,7 +58,7 @@ function PackageGroupItem({ packageGroup, setPackageGroups, className = '' }: Pa
   return (
     <>
       <div className={`rounded-lg shadow-lg border-2 bg-white text-dark ${className}`}>
-        <div className='relative flex items-center justify-between py-2.5 px-4'>
+        <div className='relative flex items-center justify-between pt-2.5 px-4'>
           <p className='font-semibold'>{data.title}</p>
           <div className='flex items-center gap-2'>
             {/* Add Package Button */}
@@ -116,7 +116,7 @@ function PackageGroupItem({ packageGroup, setPackageGroups, className = '' }: Pa
         )}
         {packages.length > 0 && (
           <div
-            className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 trans-300 ${
+            className={`grid grid-cols-1 md:grid-cols-3 gap-2 trans-300 ${
               collapse ? 'max-h-[500px] pt-2 overflow-y-auto' : 'max-h-0 p-0 overflow-hidden'
             }`}
           >

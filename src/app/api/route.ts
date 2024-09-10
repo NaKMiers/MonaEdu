@@ -168,7 +168,7 @@ export async function GET(req: NextRequest) {
       PackageGroupModel.find().lean(),
 
       // get all packages
-      PackageModel.find().populate('flashSale').lean(),
+      PackageModel.find({ active: true }).populate('flashSale').sort({ createdAt: 1 }).lean(),
     ])
 
     // categories's slugs from booted courses

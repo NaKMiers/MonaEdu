@@ -20,9 +20,10 @@ import { CardSpotlight } from './effects/CartSpotlight'
 interface PackageItemProps {
   pkg: IPackage
   className?: string
+  popular?: boolean
 }
 
-function PackageItem({ pkg, className = '' }: PackageItemProps) {
+function PackageItem({ pkg, popular = false, className = '' }: PackageItemProps) {
   // hooks
   const dispatch = useAppDispatch()
   const router = useRouter()
@@ -100,7 +101,13 @@ function PackageItem({ pkg, className = '' }: PackageItemProps) {
   )
 
   return (
-    <div className={`max-w-[400px] w-1/2 md:w-1/3 ${className}`}>
+    <div className={`relative lg:min-w-[400px] w-1/2 md:w-1/3 ${className}`}>
+      {popular && (
+        <div className='absolute z-20 top-0 right-0 pl-4 pr-3 pt-0.5 pb-1.5 text-sm rounded-bl-2xl bg-white text-dark font-semibold'>
+          Phổ biến
+        </div>
+      )}
+
       <CardSpotlight className='flex flex-col min-h-[500px] w-full max-sm:p-21 bg-neutral-950 border rounded-none overflow-hidden'>
         <p className='text-xl font-bold relative z-20 mt-2 text-white'>{pkg.title}</p>
 
@@ -120,9 +127,11 @@ function PackageItem({ pkg, className = '' }: PackageItemProps) {
 
         <Divider className='relative z-20' size={3} border />
 
-        <p className='relative z-20'>Chỉ với {formatPrice(pkg.price)}</p>
+        <p className='relative z-20'>
+          Chỉ với <span className='font-semibold'>{formatPrice(pkg.price)}</span>
+        </p>
 
-        <div className='flex-1 flex items-end relative z-20 overflow-hidden'>
+        <div className='flex-1 flex items-end relative z-20 overflow-hidden py-21'>
           <AnimatePresence>
             {step === 1 && (
               <motion.button
@@ -134,7 +143,7 @@ function PackageItem({ pkg, className = '' }: PackageItemProps) {
                   setStep(2)
                   timeoutRef.current = setTimeout(() => {
                     setStep(1)
-                  }, 3000)
+                  }, 5000)
                 }}
               >
                 <span className='text-sm font-body tracking-widest'>Đăng ký ngay</span>
@@ -148,15 +157,15 @@ function PackageItem({ pkg, className = '' }: PackageItemProps) {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className='flex-shrink-0 w-full min-h-10 px-4 py-2 rounded-xl border border-neutral-700 bg-neutral-900 text-light font-semibold hover:bg-neutral-800 trans-300 group'
+                className='flex-shrink-0 w-full min-h-10 px-2 md:px-4 py-2 rounded-xl border border-neutral-700 bg-neutral-900 text-light font-semibold hover:bg-neutral-800 trans-300 group'
               >
                 <p className='text-neutral-300 text-center font-body tracking-wider mb-1'>
                   Thanh toán với
                 </p>
 
-                <div className='flex justify-center gap-3 select-none'>
+                <div className='flex flex-wrap justify-evenly gap-3 select-none'>
                   <button
-                    className='w-full flex items-center justify-center rounded-xl gap-2 border border-dark py-2 px-3 group hover:bg-dark-0 trans-200'
+                    className='flex items-center justify-center rounded-lg gap-2 border border-dark py-2 px-3 group hover:bg-dark-0 trans-200'
                     onClick={() => {
                       clearTimeout(timeoutRef.current!)
                       handleCheckout('momo')
@@ -165,15 +174,15 @@ function PackageItem({ pkg, className = '' }: PackageItemProps) {
                     <Image
                       className='group-hover:border-white rounded-md border-2 wiggle-0'
                       src='/icons/momo-icon.jpg'
-                      height={32}
-                      width={32}
+                      height={28}
+                      width={28}
                       alt='Momo'
                     />
-                    <span className='font-semibold group-hover:text-white'>Momo</span>
+                    <span className='font-semibold group-hover:text-white text-xs'>Momo</span>
                   </button>
 
                   <button
-                    className='w-full flex items-center justify-center rounded-xl gap-2 border border-dark py-2 px-3 group hover:bg-dark-0 trans-200'
+                    className='flex items-center justify-center rounded-lg gap-2 border border-dark py-2 px-3 group hover:bg-dark-0 trans-200'
                     onClick={() => {
                       clearTimeout(timeoutRef.current!)
                       handleCheckout('banking')
@@ -182,11 +191,11 @@ function PackageItem({ pkg, className = '' }: PackageItemProps) {
                     <Image
                       className='wiggle-0'
                       src='/icons/banking-icon.jpg'
-                      height={32}
-                      width={32}
+                      height={28}
+                      width={28}
                       alt='Banking'
                     />
-                    <span className='font-semibold group-hover:text-white'>Banking</span>
+                    <span className='font-semibold group-hover:text-white text-xs'>Banking</span>
                   </button>
                 </div>
               </motion.div>
