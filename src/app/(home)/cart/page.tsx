@@ -1,6 +1,7 @@
 'use client'
 
 import CartItem from '@/components/CartItem'
+import ConfirmDialog from '@/components/dialogs/ConfirmDialog'
 import Divider from '@/components/Divider'
 import Input from '@/components/Input'
 import SuggestedList from '@/components/SuggestedList'
@@ -29,7 +30,7 @@ function CartPage() {
   // hooks
   const router = useRouter()
   const queryParams = useSearchParams()
-  const { data: session } = useSession()
+  const { data: session, update } = useSession()
   const curUser: any = session?.user
 
   // reducers
@@ -38,25 +39,25 @@ function CartPage() {
   let cartItems = useAppSelector(state => state.cart.items)
   const selectedItems = useAppSelector(state => state.cart.selectedItems)
 
-  // states
+  // MARK: states
   const [subTotal, setSubTotal] = useState<number>(0)
   const [discount, setDiscount] = useState<number>(0)
   const [total, setTotal] = useState<number>(0)
 
-  // voucher states
-  const [isShowVoucher, setIsShowVoucher] = useState<boolean>(false)
+  // MARK: Voucher states
   const [voucher, setVoucher] = useState<IVoucher | null>(null)
   const [voucherMessage, setVoucherMessage] = useState<string>('')
   const [applyingVoucher, setApplyingVoucher] = useState<boolean>(false)
 
-  // gift states
+  // MARK: Gift states
   const [isShowGift, setIsShowGift] = useState<boolean>(false)
   const [findingUser, setFindingUser] = useState<boolean>(false)
   const [buyAsGiftMessage, setBuyAsGiftMessage] = useState<string>('')
   const [foundUser, setFoundUser] = useState<IUser | null>(null)
 
-  // loading and showing
+  // MARK: loading and showing states
   const [isBuying, setIsBuying] = useState<boolean>(false)
+  const [isOpenConfirmBuyOnCreditDialog, setIsOpenConfirmBuyOnCreditDialog] = useState<boolean>(false)
 
   // form
   const {
@@ -186,7 +187,7 @@ function CartPage() {
   // MARK: Checkout
   // handle checkout
   const handleCheckout = useCallback(
-    async (type: string) => {
+    async (type: 'momo' | 'banking' | 'credit-point' | 'subscription') => {
       // validate before checkout
       if (!handleValidateBeforeCheckout()) return
 
@@ -201,7 +202,7 @@ function CartPage() {
         }))
 
         // send request to server to create order
-        const { code } = await createOrderApi({
+        const { code, message } = await createOrderApi({
           total,
           voucher: voucher?._id,
           receivedUser: foundUser?.email,
@@ -209,6 +210,21 @@ function CartPage() {
           items,
           paymentMethod: type,
         })
+
+        // type = credit-point
+        if (type === 'credit-point') {
+          // update user session to update credit point
+          await update()
+
+          // show success message
+          toast.success(message)
+
+          // move to history page
+          router.push('/user/history')
+
+          // stop page loading
+          return dispatch(setPageLoading(false))
+        }
 
         // create checkout
         const checkout = {
@@ -233,6 +249,7 @@ function CartPage() {
       }
     },
     [
+      update,
       dispatch,
       handleValidateBeforeCheckout,
       router,
@@ -319,7 +336,7 @@ function CartPage() {
         <div className='col-span-3 lg:col-span-1 text-dark'>
           <div className='border-2 border-primary rounded-medium shadow-lg p-4 sticky lg:mt-[40px] top-[93px] bg-white overflow-auto'>
             {/* Voucher */}
-            <div className='flex items-center gap-2 mb-2 overflow-hidden trans-200'>
+            <div className='flex items-center gap-2 mb-2 overflow-hidden trans-200 pt-2 -mt-2'>
               <Input
                 id='code'
                 label='Mã giảm giá'
@@ -368,7 +385,7 @@ function CartPage() {
 
             <div
               className={`flex items-center gap-2 overflow-hidden trans-200 ${
-                isShowGift ? 'max-h-[200px] mt-2 mb-2' : 'max-h-0'
+                isShowGift ? 'max-h-[200px] mb-2 pt-2' : 'max-h-0 p-0'
               }`}
             >
               <Input
@@ -442,9 +459,9 @@ function CartPage() {
             <Divider border size={4} />
 
             {/* MARK: Payment Methods */}
-            <div className='flex justify-center gap-3 select-none'>
+            <div className='flex flex-wrap justify-center gap-3 select-none'>
               <button
-                className={`w-full flex items-center justify-center rounded-xl gap-2 border border-dark py-2 px-3 group hover:bg-dark-0 trans-200 ${
+                className={`flex-1 flex items-center justify-center rounded-xl gap-2 border border-dark py-2 px-4 group hover:bg-dark-0 trans-200 ${
                   isBuying || isLoading ? 'pointer-events-none' : ''
                 }`}
                 onClick={() => handleCheckout('momo')}
@@ -461,7 +478,7 @@ function CartPage() {
               </button>
 
               <button
-                className={`w-full flex items-center justify-center rounded-xl gap-2 border border-dark py-2 px-3 group hover:bg-dark-0 trans-200 ${
+                className={`flex-1 flex items-center justify-center rounded-xl gap-2 border border-dark py-2 px-4 group hover:bg-dark-0 trans-200 ${
                   isBuying || isLoading ? 'pointer-events-none' : ''
                 }`}
                 onClick={() => handleCheckout('banking')}
@@ -476,6 +493,35 @@ function CartPage() {
                 />
                 <span className='font-semibold group-hover:text-white'>Banking</span>
               </button>
+
+              {curUser.package &&
+                curUser.package.credit !== null &&
+                curUser.package.credit > 0 &&
+                !isShowGift && (
+                  <button
+                    className={`w-full flex items-center justify-center rounded-xl gap-2 border border-dark py-2 px-4 group hover:bg-dark-0 trans-200 ${
+                      isBuying || isLoading ? 'pointer-events-none' : ''
+                    }`}
+                    onClick={() => setIsOpenConfirmBuyOnCreditDialog(true)}
+                    disabled={isBuying || isLoading}
+                  >
+                    <Image
+                      className='wiggle-0'
+                      src='/icons/mona-point.png'
+                      height={32}
+                      width={32}
+                      alt='Banking'
+                    />
+                    <span className='font-semibold'>
+                      <span className='text-violet-500 group-hover:text-violet-300 trans-200'>
+                        -1 credit
+                      </span>{' '}
+                      <span className='text-sm font-normal text-slate-400 group-hover:text-slate-200 trans-200'>
+                        (hiện có {curUser.package.credit})
+                      </span>
+                    </span>
+                  </button>
+                )}
             </div>
           </div>
         </div>
@@ -484,6 +530,17 @@ function CartPage() {
         <div className='col-span-3 mt-12'>
           <SuggestedList />
         </div>
+
+        {/* Confirm Dialog */}
+        <ConfirmDialog
+          open={isOpenConfirmBuyOnCreditDialog}
+          setOpen={setIsOpenConfirmBuyOnCreditDialog}
+          title='Tham gia khóa học bằng điểm credit'
+          content='Bạn có chắc muốn muốn tham gia khóa học này không?'
+          onAccept={() => handleCheckout('credit-point')}
+          isLoading={isBuying || isLoading}
+          color='green'
+        />
       </div>
     </div>
   )

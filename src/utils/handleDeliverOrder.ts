@@ -1,20 +1,21 @@
 import CourseModel, { ICourse } from '@/models/CourseModel'
 import NotificationModel from '@/models/NotificationModel'
 import OrderModel, { IOrder } from '@/models/OrderModel'
+import PackageModel from '@/models/PackageModel'
 import UserModel, { IUser } from '@/models/UserModel'
 import VoucherModel, { IVoucher } from '@/models/VoucherModel'
+import moment from 'moment-timezone'
+import { applyFlashSalePrice } from './number'
 import { notifyDeliveryOrder, notifyGivenCourse } from './sendMail'
 import { getUserName } from './string'
 
-// Models: Order, Voucher, User, Course, Notification
+// Models: Order, Voucher, User, Course, Notification, Package
 import '@/models/CourseModel'
 import '@/models/NotificationModel'
 import '@/models/OrderModel'
-import PackageModel from '@/models/PackageModel'
+import '@/models/PackageModel'
 import '@/models/UserModel'
 import '@/models/VoucherModel'
-import moment from 'moment-timezone'
-import { applyFlashSalePrice } from './number'
 
 export default async function handleDeliverOrder(id: string, message: string = '') {
   console.log('- Handle Deliver Order -')

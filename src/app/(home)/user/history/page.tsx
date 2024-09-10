@@ -1,5 +1,6 @@
 'use client'
 
+import Divider from '@/components/Divider'
 import BottomGradient from '@/components/gradients/BottomGradient'
 import Input from '@/components/Input'
 import Pagination from '@/components/layouts/Pagination'
@@ -395,7 +396,11 @@ function HistoryPage({ searchParams }: { searchParams?: { [key: string]: string[
                 </div>
               ))}
 
-              <Pagination searchParams={searchParams} amount={amount} itemsPerPage={itemPerPage} />
+              <Divider size={10} />
+
+              <Pagination dark searchParams={searchParams} amount={amount} itemsPerPage={itemPerPage} />
+
+              <Divider size={10} />
             </div>
           </div>
         </div>

@@ -2,22 +2,22 @@ import { connectDatabase } from '@/config/database'
 import CourseModel from '@/models/CourseModel'
 import NotificationModel from '@/models/NotificationModel'
 import OrderModel from '@/models/OrderModel'
+import PackageModel from '@/models/PackageModel'
 import UserModel from '@/models/UserModel'
 import { generateOrderCode } from '@/utils'
 import handleDeliverOrder from '@/utils/handleDeliverOrder'
 import { notifyNewOrderToAdmin } from '@/utils/sendMail'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
-import PackageModel from '@/models/PackageModel'
 
 // Models: User, Order, Course, Category, Tag, Notification, Package
 import '@/models/CategoryModel'
 import '@/models/CourseModel'
 import '@/models/NotificationModel'
 import '@/models/OrderModel'
+import '@/models/PackageModel'
 import '@/models/TagModel'
 import '@/models/UserModel'
-import '@/models/PackageModel'
 
 // [POST]: /order/create
 export async function POST(req: NextRequest) {
@@ -138,7 +138,50 @@ export async function POST(req: NextRequest) {
 
     // auto deliver order
     let response: any = null
-    if (process.env.IS_AUTO_DELIVER === 'YES') {
+
+    // auto deliver order when: payment method is momo / banking, and is auto deliver
+    if (process.env.IS_AUTO_DELIVER === 'YES' && paymentMethod !== 'credit-point') {
+      handleDeliverOrder(newOrder._id)
+    }
+
+    // auto deliver order when: payment method is credit point, and buyer has enough credit point, no matter is auto deliver or not
+    if (paymentMethod === 'credit-point') {
+      if (receivedUser) {
+        return NextResponse.json(
+          { message: 'Không thể sử dụng điểm credit để tặng khóa học cho người khác' },
+          { status: 400 }
+        )
+      }
+
+      // get buyer package to check credit point
+      const buyerPackage: any = await UserModel.findById(userId).distinct('package').lean()
+
+      // check if buyer has package or not
+      if (!buyerPackage) {
+        return NextResponse.json({ message: 'Người dùng chưa tham gia gói thành viên' }, { status: 404 })
+      }
+
+      // check if package has credit point or not
+      if (buyerPackage.credit === null) {
+        return NextResponse.json(
+          { message: 'Gói thành viên không phù hợp với tính năng này' },
+          { status: 404 }
+        )
+      }
+
+      // check if credit point is enough or not
+      if (buyerPackage.credit <= 0) {
+        return NextResponse.json(
+          { message: 'Điểm credit không đủ, vui lòng đăng ký lại gói thành viên' },
+          { status: 400 }
+        )
+      }
+
+      // -1 buyer credit point
+      await UserModel.findByIdAndUpdate(userId, {
+        $inc: { 'package.credit': -1 },
+      })
+
       handleDeliverOrder(newOrder._id)
     }
 

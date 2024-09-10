@@ -127,7 +127,7 @@ function PackageItem({ pkg, popular = false, className = '' }: PackageItemProps)
 
         <Divider className='relative z-20' size={3} border />
 
-        <p className='relative z-20'>
+        <p className='relative z-20 text-light'>
           Chỉ với <span className='font-semibold'>{formatPrice(pkg.price)}</span>
         </p>
 

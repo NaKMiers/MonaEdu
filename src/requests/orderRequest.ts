@@ -66,7 +66,7 @@ export const createOrderApi = async ({
   voucher: string | undefined
   discount: number | undefined
   items: any
-  paymentMethod: string
+  paymentMethod: 'momo' | 'banking' | 'credit-point' | 'subscription'
   isPackage?: boolean
 }) => {
   const res = await fetch('/api/order/create', {
