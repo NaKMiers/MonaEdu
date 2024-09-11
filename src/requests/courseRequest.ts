@@ -171,6 +171,24 @@ export const addCourseApi = async (data: FormData) => {
   return await res.json()
 }
 
+// [POST]: /course/:id/join
+export const joinCourseOnSubscriptionApi = async (
+  slug: string,
+  type: 'credit' | 'lifetime' | 'monthly'
+) => {
+  const res = await fetch(`/api/course/${slug}/join-on-subscription`, {
+    method: 'POST',
+    body: JSON.stringify({ type }),
+  })
+
+  // check status
+  if (!res.ok) {
+    throw new Error((await res.json()).message)
+  }
+
+  return await res.json()
+}
+
 // [PATCH]: /admin/course/activate
 export const activateCoursesApi = async (ids: string[], value: boolean) => {
   const res = await fetch('/api/admin/course/activate', {

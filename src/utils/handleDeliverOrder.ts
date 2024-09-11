@@ -136,7 +136,7 @@ export default async function handleDeliverOrder(id: string, message: string = '
         }
       )
 
-      // notify receiver after buying courseO
+      // notify receiver after buying course
       await NotificationModel.create({
         userId: receiver._id,
         title: `Bạn đươc tặng khóa học bởi ${getUserName(buyer as IUser)}, học ngay thôi!`,

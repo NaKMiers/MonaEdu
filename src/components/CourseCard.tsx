@@ -8,6 +8,7 @@ import { ICourse } from '@/models/CourseModel'
 import { IFlashSale } from '@/models/FlashSaleModel'
 import { addToCartApi, likeCourseApi } from '@/requests'
 import { applyFlashSalePrice, countPercent } from '@/utils/number'
+import { duration } from '@/utils/time'
 import { styled, Tooltip, tooltipClasses, TooltipProps } from '@mui/material'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
@@ -22,7 +23,7 @@ import { RiDonutChartFill } from 'react-icons/ri'
 import { FacebookShareButton } from 'react-share'
 import Divider from './Divider'
 import Price from './Price'
-import { duration } from '@/utils/time'
+import BuyNowButton from './admin/BuyNowButton'
 
 interface CourseCardProps {
   course: ICourse
@@ -35,10 +36,6 @@ const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
 ))(({ theme }) => ({
   [`& .${tooltipClasses.tooltip}`]: {
     backgroundColor: 'transparent',
-    // color: 'rgba(0, 0, 0, 0.87)',
-    // maxWidth: 220,
-    // fontSize: theme.typography.pxToRem(12),
-    // border: '1px solid #dadde9',
   },
 }))
 
@@ -198,14 +195,7 @@ function CourseCard({ course: data, hideBadge, className = '' }: CourseCardProps
 
           <Divider size={4} />
           <div className='flex items-center gap-1 w-full'>
-            <button
-              className='font-semibold h-[42px] flex w-full items-center justify-center rounded-lg shadow-lg bg-dark-100 text-white border-2 border-dark hover:bg-white hover:text-dark trans-300 hover:-translate-y-1 px-2'
-              onClick={buyNow}
-            >
-              <span className='block sm:text-sm md:text-base text-ellipsis text-nowrap line-clamp-1 sm:max-w-max'>
-                Mua ngay
-              </span>
-            </button>
+            <BuyNowButton course={course} />
 
             <button
               className={`group font-semibold h-[42px] px-3 flex items-center justify-center rounded-lg shadow-lg bg-dark-100 border-2 border-dark hover:bg-white trans-300 hover:-translate-y-1 ${
@@ -323,42 +313,10 @@ function CourseCard({ course: data, hideBadge, className = '' }: CourseCardProps
 
             <div className='flex flex-1 items-end justify-between'>
               <CardItem translateZ={80} className='flex items-center gap-1 w-full'>
-                <button
-                  className='relative font-semibold h-[42px] flex w-full items-center justify-center rounded-lg shadow-lg bg-dark-100 text-white border-2 border-dark hover:bg-white hover:text-dark trans-300 hover:-translate-y-1 px-2 overflow-hidden'
-                  onClick={() => {
-                    if (curUser?.courses.map((course: any) => course.course).includes(course._id)) {
-                      router.push(`/learning/${course?.slug}/continue`)
-                    } else {
-                      buyNow()
-                    }
-                  }}
-                >
-                  {curUser?._id &&
-                    curUser?.courses.map((course: any) => course.course).includes(course._id) && (
-                      <div
-                        className='absolute top-0 left-0 h-full bg-orange-500'
-                        style={{
-                          width: `${
-                            curUser?.courses.find((course: any) => course.course === data._id)
-                              ?.progress || 0
-                          }%`,
-                        }}
-                      >
-                        <span className='absolute top-1 left-1 text-xs rounded-full font-semibold'>
-                          {curUser?.courses.find((course: any) => course.course === data._id)?.progress +
-                            '%'}
-                        </span>
-                      </div>
-                    )}
+                {/* Buy Now Button */}
+                <BuyNowButton course={course} />
 
-                  <span className='relative z-10 block sm:text-sm md:text-base text-ellipsis text-nowrap line-clamp-1 sm:max-w-max'>
-                    {curUser?._id &&
-                    curUser?.courses.map((course: any) => course.course).includes(course._id)
-                      ? 'Học tiếp'
-                      : 'Mua ngay'}
-                  </span>
-                </button>
-
+                {/* Add To Cart Button */}
                 {(!curUser ||
                   !curUser.courses?.map((course: any) => course.course).includes(course._id)) && (
                   <button
@@ -376,6 +334,7 @@ function CourseCard({ course: data, hideBadge, className = '' }: CourseCardProps
                   </button>
                 )}
 
+                {/* Buy As Gift Button */}
                 {curUser?._id &&
                   curUser.courses.map((course: any) => course.course).includes(course._id) && (
                     <div className='text-white relative flex justify-end items-center w-[30px] h-[42px]'>

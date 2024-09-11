@@ -131,6 +131,7 @@ const UserSchema = new Schema(
           min: 0,
           max: 100,
         },
+        expire: Date,
       },
     ],
     gifts: [
@@ -260,7 +261,7 @@ export interface IUser {
   job: string
   expended: number
   commission: { type: string; value: string }
-  courses: { course: ICourse; progress: number }[]
+  courses: { course: ICourse; progress: number; expire?: Date }[]
   gifts: string[] | ICourse[]
   notificationSettings: {
     newLesson: boolean
