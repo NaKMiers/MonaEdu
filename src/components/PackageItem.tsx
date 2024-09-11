@@ -45,7 +45,7 @@ function PackageItem({ pkg, popular = false, className = '' }: PackageItemProps)
 
   // handle checkout
   const handleCheckout = useCallback(
-    async (paymentMethod: string) => {
+    async (paymentMethod: 'momo' | 'banking') => {
       // validate before checkout
       if (!handleValidateBeforeCheckout()) return
 
