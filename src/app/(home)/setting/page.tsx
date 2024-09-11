@@ -7,9 +7,11 @@ import PrivateInfo from '@/components/setting/PrivateInfo'
 import { useAppDispatch, useAppSelector } from '@/libs/hooks'
 import { setAuthenticated, setOpenAuthentication } from '@/libs/reducers/modalReducer'
 import { checkAuthenticationApi } from '@/requests'
+import { formatPrice } from '@/utils/number'
 import { getTimeRemaining } from '@/utils/time'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { FaCircleNotch } from 'react-icons/fa'
@@ -102,17 +104,32 @@ function PersonalSetting() {
               {curUser.package.title}
             </p>
             <Divider size={2} />
-            {curUser.package.credit !== null && (
+            {curUser.package.credit && (
               <p className='text-sm font-semibold'>
                 Còn lại: <span className='text-violet-800'>{curUser.package.credit} credits</span>
               </p>
             )}
-            {curUser.package.expire !== null && (
+            {curUser.package.expire &&
+              (new Date(curUser.package.expire) > new Date() ? (
+                <p className='text-sm font-semibold'>
+                  Còn lại:{' '}
+                  <span className={`text-violet-800 underline`}>
+                    {getTimeRemaining(curUser.package.expire).toString()}
+                  </span>
+                </p>
+              ) : (
+                <p className='text-right text-sm font-semibold text-slate-500'>
+                  Đã hết hạn.
+                  <br />
+                  <Link href='/subscription' className='underline text-violet-600'>
+                    (Gia hạn ngay)
+                  </Link>
+                </p>
+              ))}
+            {curUser.package.maxPrice && (
               <p className='text-sm font-semibold'>
-                Còn lại:{' '}
-                <span className={`text-violet-800 underline`}>
-                  {getTimeRemaining(curUser.package.expire).toString()}
-                </span>
+                Tham gia khóa học tối đa:{' '}
+                <span className='text-rose-500'>{formatPrice(curUser.package.maxPrice)}</span>
               </p>
             )}
           </div>

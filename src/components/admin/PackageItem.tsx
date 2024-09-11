@@ -79,6 +79,11 @@ function PackageItem({ pkg, packages, setPackages, className = '' }: PackageItem
               Days: <span className='font-semibold text-orange-500'>{pkg.days}</span>
             </p>
           )}
+          {pkg.maxPrice && (
+            <p className='text-xs' title='Credit'>
+              Max Price: <span className='font-semibold text-rose-500'>{formatPrice(pkg.maxPrice)}</span>
+            </p>
+          )}
 
           <Divider size={1} border />
 

@@ -1,6 +1,5 @@
 import OrderModel from '@/models/OrderModel'
 import crypto from 'crypto'
-import toast from 'react-hot-toast'
 import slugify from 'slugify'
 import unidecode from 'unidecode'
 
@@ -27,7 +26,7 @@ export const generateCode = (length: number): string => {
 }
 
 // generate order code
-export const generateOrderCode = async (length: number) => {
+export const generateOrderCode = async (length: number, prefix: string = '') => {
   let isUnique: boolean = false
   let code: string = ''
 
@@ -41,5 +40,5 @@ export const generateOrderCode = async (length: number) => {
     }
   }
 
-  return code
+  return prefix + code
 }

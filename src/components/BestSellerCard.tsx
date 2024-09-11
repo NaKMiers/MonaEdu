@@ -192,7 +192,14 @@ function BestSellerCard({ course: data, index, className = '' }: BestSellerCardP
 
           <Divider size={4} />
           <div className='flex items-center gap-1 w-full'>
-            <BuyNowButton course={course} />
+            <button
+              className='font-semibold h-[42px] flex w-full items-center justify-center rounded-lg shadow-lg bg-dark-100 text-white border-2 border-dark hover:bg-white hover:text-dark trans-300 hover:-translate-y-1 px-2'
+              onClick={buyNow}
+            >
+              <span className='block sm:text-sm md:text-base text-ellipsis text-nowrap line-clamp-1 sm:max-w-max'>
+                Mua ngay
+              </span>
+            </button>
 
             <button
               className={`group font-semibold h-[42px] px-3 flex items-center justify-center rounded-lg shadow-lg bg-dark-100 border-2 border-dark hover:bg-white trans-300 hover:-translate-y-1 ${

@@ -1,4 +1,3 @@
-import { IComment } from './../../../../models/CommentModel'
 import { connectDatabase } from '@/config/database'
 import CommentModel from '@/models/CommentModel'
 import { ICourse } from '@/models/CourseModel'
@@ -7,6 +6,7 @@ import ProgressModel, { IProgress } from '@/models/ProgressModel'
 import { getFileUrl } from '@/utils/uploadFile'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
+import UserModel, { IUser } from '@/models/UserModel'
 
 // Models: Lesson, Comment, User, Category, Progress, Course
 import '@/models/CategoryModel'
@@ -28,10 +28,19 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
 
     // get user to check if user is allow to access this lesson
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
-    const user: any = token
+    const userId = token?._id
 
-    if (!user?._id) {
+    // check if user is logged in
+    if (!userId) {
       return NextResponse.json({ message: 'Bạn cần đăng nhập để xem bài giảng này' }, { status: 401 })
+    }
+
+    // get user
+    const user: IUser | null = await UserModel.findById(userId).lean()
+
+    // check if user exists or not
+    if (!user) {
+      return NextResponse.json({ message: 'Người dùng không tồn tại' }, { status: 404 })
     }
 
     // get lesson from database
@@ -62,13 +71,30 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
 
     // if user is not enrolled in this course
     let isEnrolled = user.courses
-      .map((course: any) => course.course)
+      .map((course: any) => course.course.toString())
       .includes((lesson.courseId as ICourse)._id.toString())
 
     // check if lesson is public
     if (lesson.status !== 'public' && !isEnrolled) {
       return NextResponse.json(
         { message: 'Bạn không được phép truy cập bài giảng này' },
+        { status: 403 }
+      )
+    }
+
+    // if user joined the course by subscription and subscription expired -> not allow
+    const userCourse = user.courses.find(
+      (course: any) => course.course.toString() === (lesson.courseId as ICourse)._id.toString()
+    )
+    if (
+      userCourse &&
+      userCourse.expire &&
+      userCourse.expire !== null &&
+      new Date(userCourse.expire) < new Date() &&
+      lesson.status !== 'public'
+    ) {
+      return NextResponse.json(
+        { message: 'Gói học viên của bạn đã hết hạn, vui lòng gia hạn hoặc mua khóa học để tiếp tục' },
         { status: 403 }
       )
     }

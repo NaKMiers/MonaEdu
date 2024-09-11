@@ -9,6 +9,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import '@/models/CourseModel'
 import '@/models/NotificationModel'
 import '@/models/UserModel'
+import { formatPrice } from '@/utils/number'
+import { checkPackageType } from '@/utils/string'
 
 // [POST]: /course/:slug/join-on-subscription
 export async function POST(req: NextRequest, { params: { slug } }: { params: { slug: string } }) {
@@ -22,6 +24,7 @@ export async function POST(req: NextRequest, { params: { slug } }: { params: { s
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
     const userId = token?._id
     const userPackage: any = token?.package
+    let userCourses: any = token?.courses
 
     // check if user is logged in
     if (!userId) {
@@ -37,18 +40,10 @@ export async function POST(req: NextRequest, { params: { slug } }: { params: { s
     }
 
     // get package type from user package
-    let packageType: 'lifetime' | 'credit' | 'monthly' | '' = ''
-    if (userPackage) {
-      const { credit, expire } = userPackage
-
-      if (credit === null && expire === null) {
-        packageType = 'lifetime'
-      } else if (typeof credit === 'number' && credit > 0 && expire === null) {
-        packageType = 'credit'
-      } else if (credit === null && expire !== null && new Date(expire) > new Date()) {
-        packageType = 'monthly'
-      }
-    }
+    let packageType: 'lifetime' | 'credit' | 'monthly' | '' = checkPackageType(
+      userPackage.credit,
+      userPackage.expire
+    ) as any
 
     // get package type from request
     const { type } = await req.json()
@@ -59,7 +54,7 @@ export async function POST(req: NextRequest, { params: { slug } }: { params: { s
     }
 
     // get course by slug
-    const course: any = await CourseModel.findOne({ slug }).select('_id')
+    const course: any = await CourseModel.findOne({ slug }).select('_id price')
 
     // check if course exists
     if (!course) {
@@ -72,13 +67,56 @@ export async function POST(req: NextRequest, { params: { slug } }: { params: { s
       progress: 0,
     }
 
+    // check monthly package
     if (packageType === 'monthly') {
+      // user package expired
+      if (new Date(userPackage.expire) < new Date()) {
+        return NextResponse.json({ message: 'Gói học viên đã hết hạn' }, { status: 400 })
+      }
+
+      // add expire date to new course set
       newCourseSet.expire = userPackage.expire
     }
 
+    // check lifetime package
+    if (packageType === 'lifetime') {
+      // check max price of package lifetime
+      if (course.price > userPackage.maxPrice) {
+        return NextResponse.json(
+          {
+            message: `Gói học viên của bạn chỉ cho phép tham gia khóa học dưới ${formatPrice(
+              userPackage.maxPrice
+            )}`,
+          },
+          { status: 400 }
+        )
+      }
+    }
+
+    // merge new course to old course in case that user has already joined this course
+    let isDuplicate = false
+    let updatedUserCourses = userCourses.map((course: any) => {
+      // duplicate
+      if (course.course.toString() === newCourseSet.course.toString()) {
+        isDuplicate = true
+
+        return {
+          ...newCourseSet,
+          progress: course.progress,
+        }
+      }
+      // not duplicate
+      return course
+    })
+
+    // add new course to user courses in case that user has not joined this course
+    if (!isDuplicate) {
+      updatedUserCourses.push(newCourseSet)
+    }
+
     const userUpdateData: any = {
-      $push: {
-        courses: newCourseSet,
+      $set: {
+        courses: updatedUserCourses,
       },
     }
 

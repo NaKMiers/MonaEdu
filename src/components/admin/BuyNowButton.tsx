@@ -5,6 +5,7 @@ import { addCartItem } from '@/libs/reducers/cartReducer'
 import { setPageLoading } from '@/libs/reducers/modalReducer'
 import { ICourse } from '@/models/CourseModel'
 import { addToCartApi, joinCourseOnSubscriptionApi } from '@/requests'
+import { checkPackageType } from '@/utils/string'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { memo, ReactNode, useCallback } from 'react'
@@ -23,28 +24,60 @@ function BuyNowButton({ course, className }: BuyNowButtonProps) {
   const router = useRouter()
 
   // values
-  const isJoined: boolean =
-    curUser?._id && curUser?.courses.map((course: any) => course.course).includes(course._id)
-
+  const joinedCourse = curUser?.courses.find((c: any) => c.course === course._id)
   let packageType: 'lifetime' | 'credit' | 'monthly' | 'no-subscription' = 'no-subscription'
   let actionText: ReactNode = 'Mua ngay'
+  let action: 'join' | 'buy' = 'buy'
+  let isRedirect: boolean =
+    joinedCourse && (!joinedCourse.expire || new Date(joinedCourse.expire) > new Date())
 
   if (curUser?.package) {
     const { credit, expire } = curUser.package
 
-    if (credit === null && expire === null) {
-      packageType = 'lifetime'
-      actionText = 'Tham gia'
-    } else if (typeof credit === 'number' && credit > 0 && expire === null) {
-      packageType = 'credit'
+    switch (checkPackageType(credit, joinedCourse?.expire || expire)) {
+      case 'lifetime': {
+        packageType = 'lifetime'
+        actionText = 'Tham gia'
+        action = 'join'
+        break
+      }
+      case 'credit': {
+        packageType = 'credit'
+        actionText = (
+          <>
+            Tham gia <span className='text-xs text-violet-400'>(-1 credit)</span>
+          </>
+        )
+        action = 'join'
+        break
+      }
+      case 'monthly': {
+        packageType = 'monthly'
+        actionText = 'Tham gia'
+        action = 'join'
+        break
+      }
+    }
+
+    // if user has joined course by monthly package and package expired
+    if (joinedCourse && packageType === 'credit' && new Date(joinedCourse.expire) < new Date()) {
       actionText = (
         <>
-          Tham gia <span className='text-xs text-violet-400'>(-1 credit)</span>
+          Học tiếp <span className='text-xs text-violet-400'>(-1 credit)</span>
         </>
       )
-    } else if (credit === null && expire !== null && new Date(expire) > new Date()) {
-      packageType = 'monthly'
-      actionText = 'Tham gia'
+      action = 'join'
+    }
+
+    // if user hasn't joined the course yet, package type === 'lifetime' and course price > user max price
+    if (
+      !joinedCourse &&
+      packageType === 'lifetime' &&
+      curUser.package.maxPrice !== null &&
+      course.price > curUser.package.maxPrice
+    ) {
+      actionText = 'Mua ngay'
+      action = 'buy'
     }
   }
 
@@ -117,16 +150,16 @@ function BuyNowButton({ course, className }: BuyNowButtonProps) {
 
   return (
     <button
-      className='relative font-semibold h-[42px] flex w-full items-center justify-center rounded-lg shadow-lg bg-dark-100 text-white border-2 border-dark hover:bg-white hover:text-dark trans-300 hover:-translate-y-1 px-2 overflow-hidden'
+      className={`relative font-semibold h-[42px] flex w-full items-center justify-center rounded-lg shadow-lg bg-dark-100 text-white border-2 border-dark hover:bg-white hover:text-dark trans-300 hover:-translate-y-1 px-2 overflow-hidden ${className}`}
       onClick={() => {
-        if (curUser?.courses.map((course: any) => course.course).includes(course._id)) {
+        if (isRedirect) {
           router.push(`/learning/${course?.slug}/continue`)
         } else {
-          packageType === 'no-subscription' ? buyNow() : joinOnSubscription()
+          action === 'buy' ? buyNow() : joinOnSubscription()
         }
       }}
     >
-      {isJoined && (
+      {!!joinedCourse && (
         <div
           className='absolute top-0 left-0 h-full bg-orange-500'
           style={{
@@ -140,7 +173,7 @@ function BuyNowButton({ course, className }: BuyNowButtonProps) {
       )}
 
       <p className='relative z-10 flex items-center gap-1 sm:text-sm md:text-base text-ellipsis text-nowrap line-clamp-1 sm:max-w-max'>
-        {isJoined ? 'Học tiếp' : actionText}
+        {isRedirect ? 'Học tiếp' : actionText}
       </p>
     </button>
   )

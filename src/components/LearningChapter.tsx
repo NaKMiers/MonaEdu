@@ -29,7 +29,9 @@ function LearningChapter({
   const curUser: any = session?.user
 
   // check if user is enrolled in this course
-  const isEnrolled = curUser?.courses?.map((course: any) => course.course).includes(courseId)
+  const joinedCourse = curUser?.courses.find((c: any) => c.course === courseId)
+  let isRedirect: boolean =
+    joinedCourse && (!joinedCourse.expire || new Date(joinedCourse.expire) > new Date())
 
   // states
   const [open, setOpen] = useState<boolean>(
@@ -84,12 +86,12 @@ function LearningChapter({
         ref={chapterRef}
       >
         {chapter.lessons?.map(lesson =>
-          lesson.status === 'public' || isEnrolled ? (
+          lesson.status === 'public' || isRedirect ? (
             <LessonItemOfChapter
               lesson={lesson}
               lessonSlug={lessonSlug}
               courseSlug={courseSlug}
-              isEnrolled={isEnrolled}
+              isEnrolled={!!joinedCourse}
               key={lesson._id}
             />
           ) : (
@@ -100,7 +102,7 @@ function LearningChapter({
               title={lesson.title}
               key={lesson._id}
             >
-              {!isEnrolled && <TiLockClosed size={16} className='flex-shrink-0' />}
+              {!isRedirect && <TiLockClosed size={16} className='flex-shrink-0' />}
               <span className='text-ellipsis line-clamp-1'>{lesson.title}</span>
               <span className='text-xs font-semibold text-nowrap text-slate-500 ml-auto'>
                 {duration(lesson.duration)}

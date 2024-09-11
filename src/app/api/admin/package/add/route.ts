@@ -16,8 +16,18 @@ export async function POST(req: NextRequest) {
     await connectDatabase()
 
     // get data to add package
-    const { title, oldPrice, price, description, packageGroup, active, features, credit, days } =
-      await req.json()
+    const {
+      title,
+      oldPrice,
+      price,
+      description,
+      packageGroup,
+      active,
+      features,
+      credit,
+      days,
+      maxPrice,
+    } = await req.json()
 
     // create new package
     const newPackage = await PackageModel.create({
@@ -30,6 +40,7 @@ export async function POST(req: NextRequest) {
       features,
       credit,
       days,
+      maxPrice,
     })
 
     // increase package group - package amount

@@ -30,7 +30,7 @@ function BestSeller({ courses, className = '' }: BestSellerProps) {
 
       <Divider size={16} />
 
-      <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-21'>
+      <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 items-start gap-21'>
         {courses.map((course, index) => (
           <BestSellerCard course={course} index={index} key={course._id} />
         ))}

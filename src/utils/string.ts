@@ -29,3 +29,18 @@ export const getUserName = (user?: IUser, exclude?: string) => {
 }
 
 export const stripHTML = (html: string = '') => html.replace(/<[^>]*>?/gm, ' ')
+
+export const checkPackageType = (
+  credit: any,
+  expire: any
+): 'lifetime' | 'credit' | 'monthly' | 'no-subscription' => {
+  if (credit === null && expire === null) {
+    return 'lifetime'
+  } else if (typeof credit === 'number' && credit > 0 && expire === null) {
+    return 'credit'
+  } else if (credit === null && expire !== null && new Date(expire) > new Date()) {
+    return 'monthly'
+  }
+
+  return 'no-subscription'
+}

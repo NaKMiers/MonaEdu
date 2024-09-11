@@ -3,7 +3,7 @@ import CourseModel from '@/models/CourseModel'
 import NotificationModel from '@/models/NotificationModel'
 import OrderModel from '@/models/OrderModel'
 import PackageModel from '@/models/PackageModel'
-import UserModel from '@/models/UserModel'
+import UserModel, { IUser } from '@/models/UserModel'
 import { generateOrderCode } from '@/utils'
 import handleDeliverOrder from '@/utils/handleDeliverOrder'
 import { notifyNewOrderToAdmin } from '@/utils/sendMail'
@@ -18,6 +18,7 @@ import '@/models/OrderModel'
 import '@/models/PackageModel'
 import '@/models/TagModel'
 import '@/models/UserModel'
+import { checkPackageType } from '@/utils/string'
 
 // [POST]: /order/create
 export async function POST(req: NextRequest) {
@@ -53,32 +54,39 @@ export async function POST(req: NextRequest) {
       // items: any[]
     }
 
+    // Buying Courses
     if (!isPackage) {
       let userCourses: any = []
 
+      // buy as a gift
       if (receivedUser) {
         userCourses = await UserModel.findOne({ email: receivedUser }).select('courses').lean()
-      } else {
+        userCourses = userCourses?.courses
+      }
+      // buy for themselves
+      else {
         userCourses = await UserModel.findById(userId).select('courses').lean()
+        userCourses = userCourses?.courses
       }
 
-      let joinedCourses: any = []
-      const userCoursesIds = userCourses?.courses.map((course: any) => course.course.toString())
-
-      const itemsIds = items.map((item: any) => item.courseId._id.toString())
-
-      const isUserJoinedCourse = itemsIds.some((id: any) => {
-        if (userCoursesIds.includes(id)) {
-          joinedCourses.push(id)
-          return true
-        }
-        return false
+      // list of duplicates courses that user has joined - forever (expire !== null)
+      let duplicateCourseIds: any = []
+      userCourses.forEach((course: any) => {
+        items.forEach((item: any) => {
+          if (
+            course.course.toString() === item.courseId._id.toString() &&
+            (!course.expire || course.expire === null) // expire undefined or null -> forever
+          ) {
+            duplicateCourseIds.push(course.course.toString())
+          }
+        })
       })
 
-      if (isUserJoinedCourse) {
+      if (duplicateCourseIds.length > 0) {
         const joinedCoursesTitles = await CourseModel.find({
-          _id: { $in: joinedCourses },
+          _id: { $in: duplicateCourseIds },
         }).distinct('title')
+
         return NextResponse.json(
           { message: `Học viên đã tham gia khóa học "${joinedCoursesTitles.join(', ')}"` },
           { status: 400 }
@@ -86,7 +94,9 @@ export async function POST(req: NextRequest) {
       }
 
       // get courses to create order
-      const courses = await CourseModel.find({ _id: { $in: itemsIds } })
+      const courses = await CourseModel.find({
+        _id: { $in: items.map((item: any) => item.courseId._id.toString()) },
+      })
         .populate('tags category')
         .lean()
 
@@ -97,22 +107,42 @@ export async function POST(req: NextRequest) {
 
       // add courses to new order set
       newOrderSet.items = courses
-    } else {
+    }
+    // Buying Package
+    else {
       // get package to create order
-      const packages = await PackageModel.find({
-        _id: { $in: items.map((item: any) => item.packageId._id.toString()) },
-      }).lean()
+      const pkg = await PackageModel.findById(items[0].packageId._id.toString()).lean()
 
       // check if packages exist or not
-      if (packages.length !== items.length) {
+      if (!pkg) {
         return NextResponse.json({ message: 'Gói học viên không hợp lệ' }, { status: 404 })
       }
 
+      // get buyer to check if user has already joined package
+      const buyer: IUser | null = await UserModel.findById(userId).select('package').lean()
+
+      // check if user exists or not
+      if (!buyer) {
+        return NextResponse.json({ message: 'Người dùng không hợp lệ' }, { status: 404 })
+      }
+
+      // prevent downgrade with lifetime advanced
+      if (
+        checkPackageType(buyer?.package?.credit, buyer?.package?.expire) === 'lifetime' &&
+        !buyer?.package.maxPrice
+      ) {
+        return NextResponse.json(
+          { message: 'Không thể thay đổi gói học viên hiện tại của bạn' },
+          { status: 400 }
+        )
+      }
+
       // add packages to new order set
-      newOrderSet.items = packages
+      newOrderSet.items = [pkg]
     }
 
-    const code = await generateOrderCode(5)
+    // generate new code
+    const code = await generateOrderCode(5, '#')
 
     // create new order
     const [newOrder] = await Promise.all([
