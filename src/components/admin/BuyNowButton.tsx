@@ -97,8 +97,6 @@ function BuyNowButton({ course, className }: BuyNowButtonProps) {
       // send request to add course to cart
       const { cartItem, message } = await addToCartApi(course._id)
 
-      console.log('cartItem', cartItem)
-
       // show toast success
       toast.success(message)
 

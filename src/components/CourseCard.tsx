@@ -100,8 +100,6 @@ function CourseCard({ course: data, hideBadge, className = '' }: CourseCardProps
       // send request to add course to cart
       const { cartItem, message } = await addToCartApi(course._id)
 
-      console.log('cartItem', cartItem)
-
       // show toast success
       toast.success(message)
 

@@ -1,33 +1,33 @@
-'use client';
+'use client'
 
-import Input from '@/components/Input';
-import LoadingButton from '@/components/LoadingButton';
-import AdminHeader from '@/components/admin/AdminHeader';
-import { useAppDispatch, useAppSelector } from '@/libs/hooks';
-import { setLoading, setPageLoading } from '@/libs/reducers/modalReducer';
-import { IUser } from '@/models/UserModel';
-import { IVoucher } from '@/models/VoucherModel';
-import { getRoleUsersApi, getVoucherApi, updateVoucherApi } from '@/requests';
-import { useParams, useRouter } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
-import { FaArrowCircleLeft, FaMinus, FaQuoteRight, FaUserEdit, FaWindowMaximize } from 'react-icons/fa';
-import { FaPause, FaPlay } from 'react-icons/fa6';
+import Input from '@/components/Input'
+import LoadingButton from '@/components/LoadingButton'
+import AdminHeader from '@/components/admin/AdminHeader'
+import { useAppDispatch, useAppSelector } from '@/libs/hooks'
+import { setLoading, setPageLoading } from '@/libs/reducers/modalReducer'
+import { IUser } from '@/models/UserModel'
+import { IVoucher } from '@/models/VoucherModel'
+import { getRoleUsersApi, getVoucherApi, updateVoucherApi } from '@/requests'
+import { useParams, useRouter } from 'next/navigation'
+import { useCallback, useEffect, useState } from 'react'
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
+import { FaArrowCircleLeft, FaMinus, FaQuoteRight, FaUserEdit, FaWindowMaximize } from 'react-icons/fa'
+import { FaPause, FaPlay } from 'react-icons/fa6'
 
-import { MdNumbers } from 'react-icons/md';
-import { RiCharacterRecognitionLine, RiCheckboxMultipleBlankLine } from 'react-icons/ri';
+import { MdNumbers } from 'react-icons/md'
+import { RiCharacterRecognitionLine, RiCheckboxMultipleBlankLine } from 'react-icons/ri'
 
 function EditVoucherPage() {
   // hooks
-  const dispatch = useAppDispatch();
-  const isLoading = useAppSelector((state) => state.modal.isLoading);
-  const { code } = useParams<{ code: string }>();
-  const router = useRouter();
+  const dispatch = useAppDispatch()
+  const isLoading = useAppSelector(state => state.modal.isLoading)
+  const { code } = useParams<{ code: string }>()
+  const router = useRouter()
 
   // states
-  const [voucher, setVoucher] = useState<IVoucher | null>(null);
-  const [roleUsers, setRoleUsers] = useState<IUser[]>([]);
+  const [voucher, setVoucher] = useState<IVoucher | null>(null)
+  const [roleUsers, setRoleUsers] = useState<IUser[]>([])
 
   // form
   const {
@@ -52,7 +52,7 @@ function EditVoucherPage() {
       owner: '',
       active: true,
     },
-  });
+  })
 
   // MARK: Get Data
   // get voucher by id
@@ -60,61 +60,61 @@ function EditVoucherPage() {
     const getVoucher = async () => {
       try {
         // send request to server to get voucher
-        const { voucher } = await getVoucherApi(code); // no cache
+        const { voucher } = await getVoucherApi(code) // no cache
 
         // set voucher to state
-        setVoucher(voucher);
+        setVoucher(voucher)
 
         // set value to form
-        setValue('code', voucher.code);
-        setValue('desc', voucher.desc);
-        setValue('begin', new Date(voucher.begin).toISOString().split('T')[0]);
+        setValue('code', voucher.code)
+        setValue('desc', voucher.desc)
+        setValue('begin', new Date(voucher.begin).toISOString().split('T')[0])
         if (voucher.expire) {
-          setValue('expire', new Date(voucher.expire).toISOString().split('T')[0]);
+          setValue('expire', new Date(voucher.expire).toISOString().split('T')[0])
         }
-        setValue('minTotal', voucher.minTotal);
-        setValue('maxReduce', voucher.maxReduce);
-        setValue('type', voucher.type);
-        setValue('value', voucher.value);
-        setValue('timesLeft', voucher.timesLeft);
-        setValue('owner', voucher.owner._id);
-        setValue('active', voucher.active);
+        setValue('minTotal', voucher.minTotal)
+        setValue('maxReduce', voucher.maxReduce)
+        setValue('type', voucher.type)
+        setValue('value', voucher.value)
+        setValue('timesLeft', voucher.timesLeft)
+        setValue('owner', voucher.owner._id)
+        setValue('active', voucher.active)
       } catch (err: any) {
-        console.log(err);
-        toast.error(err.message);
+        console.log(err)
+        toast.error(err.message)
       }
-    };
-    getVoucher();
-  }, [code, setValue]);
+    }
+    getVoucher()
+  }, [code, setValue])
 
   // get roleUsers, admins, editors
   useEffect(() => {
     const getRoleUsers = async () => {
       try {
         // send request to server to get role-users
-        const { roleUsers } = await getRoleUsersApi(); // cache: no-store
+        const { roleUsers } = await getRoleUsersApi() // cache: no-store
 
         // set roleUsers to state
-        setRoleUsers(roleUsers);
-        setValue('owner', roleUsers.find((user: IUser) => user.role === 'admin')._id);
+        setRoleUsers(roleUsers)
+        setValue('owner', roleUsers.find((user: IUser) => user.role === 'admin')._id)
       } catch (err: any) {
-        console.log(err);
+        console.log(err)
       }
-    };
-    getRoleUsers();
-  }, [setValue]);
+    }
+    getRoleUsers()
+  }, [setValue])
 
   // validate form
   const handleValidate: SubmitHandler<FieldValues> = useCallback(
-    (data) => {
-      let isValid = true;
+    data => {
+      let isValid = true
       // code >= 5
       if (data.code.length < 5) {
         setError('code', {
           type: 'manual',
           message: 'Code must be at least 5 characters',
-        });
-        isValid = false;
+        })
+        isValid = false
       }
 
       // code < 10
@@ -122,8 +122,8 @@ function EditVoucherPage() {
         setError('code', {
           type: 'manual',
           message: 'Code must be at most 10 characters',
-        });
-        isValid = false;
+        })
+        isValid = false
       }
 
       // begin < expire when expire is not empty
@@ -131,8 +131,8 @@ function EditVoucherPage() {
         setError('expire', {
           type: 'manual',
           message: 'Expire must be greater than begin',
-        });
-        isValid = false;
+        })
+        isValid = false
       }
 
       // minTotal >= 0
@@ -140,8 +140,8 @@ function EditVoucherPage() {
         setError('minTotal', {
           type: 'manual',
           message: 'Min total must be >= 0',
-        });
-        isValid = false;
+        })
+        isValid = false
       }
 
       // maxReduce >= 0
@@ -149,8 +149,8 @@ function EditVoucherPage() {
         setError('maxReduce', {
           type: 'manual',
           message: 'Max reduce must be >= 0',
-        });
-        isValid = false;
+        })
+        isValid = false
       }
 
       // timesLeft >= 0
@@ -158,59 +158,59 @@ function EditVoucherPage() {
         setError('timesLeft', {
           type: 'manual',
           message: 'Times left must be >= 0',
-        });
-        isValid = false;
+        })
+        isValid = false
       }
 
-      return isValid;
+      return isValid
     },
     [setError]
-  );
+  )
 
   // MARK: Submit
   // handle send request to server to add voucher
   const onSubmit: SubmitHandler<FieldValues> = useCallback(
-    async (data) => {
+    async data => {
       // validate form
-      if (!handleValidate(data)) return;
+      if (!handleValidate(data)) return
 
-      dispatch(setLoading(true));
+      dispatch(setLoading(true))
 
       try {
         // send request to server to add voucher
-        const { message } = await updateVoucherApi(code, data);
+        const { message } = await updateVoucherApi(code, data)
 
         // show success message
-        toast.success(message);
+        toast.success(message)
 
         // reset form
-        reset();
-        dispatch(setPageLoading(false));
+        reset()
+        dispatch(setPageLoading(false))
 
         // redirect back
-        router.back();
+        router.back()
       } catch (err: any) {
-        console.log(err);
-        toast.error(err.message);
+        console.log(err)
+        toast.error(err.message)
       } finally {
-        dispatch(setLoading(false));
+        dispatch(setLoading(false))
       }
     },
     [handleValidate, reset, dispatch, code, router]
-  );
+  )
 
   // Enter key to submit
   useEffect(() => {
     // page title
-    document.title = 'Edit Voucher - Mona Edu';
+    document.title = 'Edit Voucher - Mona Edu'
 
     const handleEnter = (e: KeyboardEvent) => {
-      if (e.key === 'Enter') handleSubmit(onSubmit)();
-    };
+      if (e.key === 'Enter') handleSubmit(onSubmit)()
+    }
 
-    window.addEventListener('keydown', handleEnter);
-    return () => window.removeEventListener('keydown', handleEnter);
-  }, [handleSubmit, onSubmit]);
+    window.addEventListener('keydown', handleEnter)
+    return () => window.removeEventListener('keydown', handleEnter)
+  }, [handleSubmit, onSubmit])
 
   return (
     <div className='max-w-1200 mx-auto'>
@@ -242,7 +242,7 @@ function EditVoucherPage() {
             required
             type='select'
             onFocus={() => clearErrors('owner')}
-            options={roleUsers.map((user) => ({
+            options={roleUsers.map(user => ({
               value: user._id,
               label: `${user.firstName} ${user.lastName} - (${
                 user.role.charAt(0).toUpperCase() + user.role.slice(1)
@@ -412,7 +412,7 @@ function EditVoucherPage() {
         />
       </div>
     </div>
-  );
+  )
 }
 
-export default EditVoucherPage;
+export default EditVoucherPage

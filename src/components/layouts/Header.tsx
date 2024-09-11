@@ -136,7 +136,7 @@ function Header({ className = '' }: HeaderProps) {
     }
 
     return () => clearInterval(intervalId)
-  }, [session])
+  }, [update, session])
 
   return (
     <header

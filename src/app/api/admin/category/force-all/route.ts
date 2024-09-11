@@ -20,7 +20,6 @@ export async function GET(req: NextRequest) {
 
     // check query if it has "pure"
     if (req.nextUrl.searchParams.get('pure') === 'true') {
-      console.log('- Get Pure Categories -')
       return NextResponse.json({ categories }, { status: 200 })
     }
 

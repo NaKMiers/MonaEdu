@@ -52,8 +52,6 @@ export async function POST(req: NextRequest, { params: { slug } }: { params: { s
 
     // get package type from request
     const { type } = await req.json()
-    console.log('packageType:', packageType)
-    console.log('type:', type)
 
     // check package type from user package and package type from request
     if (packageType !== type) {
@@ -89,8 +87,6 @@ export async function POST(req: NextRequest, { params: { slug } }: { params: { s
         'package.credit': -1,
       }
     }
-
-    console.log('userUpdateData:', userUpdateData)
 
     // update user courses & package, update course joined, notify buyer after buying course
     await Promise.all([
