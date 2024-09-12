@@ -28,9 +28,10 @@ export async function DELETE(req: NextRequest) {
       OrderModel.deleteMany({ _id: { $in: ids } }),
     ])
 
-    // take the courses out of the user's course list
+    // if order is not package -> take the courses out of the user's course list
+    const deletedOrderOfCourses = deletedOrders.filter(order => !order.isPackage)
     await Promise.all(
-      deletedOrders.map(order =>
+      deletedOrderOfCourses.map(order =>
         UserModel.updateOne(
           { email: order.email },
           {

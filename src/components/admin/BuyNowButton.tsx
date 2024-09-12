@@ -74,7 +74,7 @@ function BuyNowButton({ course, className }: BuyNowButtonProps) {
       !joinedCourse &&
       packageType === 'lifetime' &&
       curUser.package.maxPrice !== null &&
-      course.price > curUser.package.maxPrice
+      course.price >= curUser.package.maxPrice
     ) {
       actionText = 'Mua ngay'
       action = 'buy'

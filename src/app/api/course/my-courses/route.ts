@@ -37,10 +37,17 @@ export async function GET(req: NextRequest) {
     const userCourses = user.courses.map((course: any) => course.course)
 
     // get user's courses
-    let courses = await CourseModel.find({ _id: { $in: userCourses } })
+    let courses: any = await CourseModel.find({ _id: { $in: userCourses } })
       .populate('tags')
-      .sort({ createdAt: -1 })
       .lean()
+
+    // sort courses by user's course ids
+    courses = userCourses
+      .map((courseId: string) =>
+        courses.find((course: any) => course._id.toString() == courseId.toString())
+      )
+      .filter(Boolean)
+      .reverse()
 
     // return user's courses
     return NextResponse.json({ courses }, { status: 200 })

@@ -1,6 +1,6 @@
 import { connectDatabase } from '@/config/database'
 import CommentModel from '@/models/CommentModel'
-import { ICourse } from '@/models/CourseModel'
+import CourseModel, { ICourse } from '@/models/CourseModel'
 import LessonModel, { ILesson } from '@/models/LessonModel'
 import ProgressModel, { IProgress } from '@/models/ProgressModel'
 import { getFileUrl } from '@/utils/uploadFile'
@@ -21,6 +21,8 @@ export const dynamic = 'force-dynamic'
 // [GET]: /admin/lesson/:slug
 export async function GET(req: NextRequest, { params: { slug } }: { params: { slug: string } }) {
   console.log('- Get Lesson -')
+
+  console.log('slug:', slug)
 
   try {
     // connect to database
@@ -43,8 +45,23 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
       return NextResponse.json({ message: 'Người dùng không tồn tại' }, { status: 404 })
     }
 
+    // split lesson slug and course slug
+    const [courseSlug, lessonSlug] = slug.split('---')
+
+    // get course to use course's id to find lesson
+    const course: ICourse | null = await CourseModel.findOne({ slug: courseSlug }).select('slug').lean()
+
+    // if course not found
+    if (!course) {
+      return NextResponse.json({ message: 'Không tìm thấy khóa học' }, { status: 404 })
+    }
+
     // get lesson from database
-    const lesson: ILesson | null = await LessonModel.findOne({ slug, active: true })
+    const lesson: ILesson | null = await LessonModel.findOne({
+      slug: lessonSlug,
+      courseId: course._id,
+      active: true,
+    })
       .populate({
         path: 'courseId',
         populate: {
@@ -70,11 +87,11 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
     }
 
     // if user is not enrolled in this course
-    let isEnrolled = user.courses
-      .map((course: any) => course.course.toString())
-      .includes((lesson.courseId as ICourse)._id.toString())
+    let isEnrolled = user.courses.find(
+      course => course.course.toString() === (lesson.courseId as ICourse)._id.toString()
+    )
 
-    // check if lesson is public
+    // lesson if private and user is not enrolled -> not allow
     if (lesson.status !== 'public' && !isEnrolled) {
       return NextResponse.json(
         { message: 'Bạn không được phép truy cập bài giảng này' },

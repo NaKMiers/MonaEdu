@@ -57,7 +57,9 @@ function LessonPage({
 
       // get lesson for learning
       try {
-        const { lesson, comments } = await getLessonApi(lessonSlug, '', { next: { revalidate: 300 } })
+        const { lesson, comments } = await getLessonApi(`${courseSlug}---${lessonSlug}`, '', {
+          next: { revalidate: 300 },
+        })
 
         // set learning lesson
         dispatch(setLearningLesson(lesson))
@@ -113,7 +115,7 @@ function LessonPage({
     if (lessonSlug !== 'continue') {
       getLesson()
     }
-  }, [dispatch, router, lessonSlug, curUser?.courses, update])
+  }, [dispatch, update, lessonSlug, router, curUser?.courses])
 
   const handleReport = useCallback(async () => {
     // check if content is selected or not
