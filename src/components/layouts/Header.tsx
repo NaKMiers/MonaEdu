@@ -18,6 +18,7 @@ import NotificationMenu from '../NotificationMenu'
 import CategoryTabs from './CategoryTabs'
 import Menu from './Menu'
 import SearchBar from './SearchBar'
+import { checkCrown } from '@/utils/string'
 
 interface HeaderProps {
   className?: string
@@ -47,9 +48,7 @@ function Header({ className = '' }: HeaderProps) {
   const isUpdatedSession = useRef<boolean>(false)
 
   // values
-  const isShowCrown =
-    curUser?.package &&
-    (curUser.package.expire === null || new Date(curUser.package.expire) > new Date())
+  const isShowCrown = checkCrown(curUser?.package)
 
   // get user's cart
   useEffect(() => {

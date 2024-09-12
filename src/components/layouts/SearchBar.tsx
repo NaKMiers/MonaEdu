@@ -10,6 +10,7 @@ import { IoChevronDown, IoChevronUp } from 'react-icons/io5'
 import { PiLightningFill } from 'react-icons/pi'
 import { RiDonutChartFill } from 'react-icons/ri'
 import { TiDelete } from 'react-icons/ti'
+import SearchResultItem from './SearchResultItem'
 
 function SearchBar() {
   // hook
@@ -153,34 +154,7 @@ function SearchBar() {
         } absolute z-20 bottom-full md:bottom-auto md:top-full left-0 w-full rounded-lg bg-neutral-800 text-light gap-2 overflow-y-auto transition-all duration-300`}
       >
         {searchResults?.length ? (
-          searchResults.map(course => (
-            <Link
-              href={`/${course.slug}`}
-              key={course._id}
-              className='flex gap-4 py-2 items-start rounded-lg p-2 hover:bg-slate-200 hover:text-dark text-light trans-200'
-            >
-              <div className='relative aspect-video flex-shrink-0'>
-                <Image
-                  className='rounded-md'
-                  src={course.images[0]}
-                  width={70}
-                  height={70}
-                  alt={course.title}
-                />
-
-                {course.flashSale && (
-                  <PiLightningFill
-                    className='absolute -top-1.5 left-1 text-yellow-400 animate-bounce'
-                    size={16}
-                  />
-                )}
-              </div>
-
-              <p className='w-full text-ellipsis line-clamp-2 font-body text-sm tracking-wide leading-5 -mt-0.5 trans-200'>
-                {course.title}
-              </p>
-            </Link>
-          ))
+          searchResults.map(course => <SearchResultItem course={course} key={course._id} />)
         ) : (
           <p className='text-sm text-center'>0 kết quả tìm thấy</p>
         )}

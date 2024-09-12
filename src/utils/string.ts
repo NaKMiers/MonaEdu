@@ -44,3 +44,19 @@ export const checkPackageType = (
 
   return 'no-subscription'
 }
+
+export const checkCrown = (pkg: any) => {
+  if (!pkg) return false
+
+  const type = checkPackageType(pkg.credit, pkg.expire)
+
+  if (type === 'credit') {
+    return false
+  } else if (type === 'lifetime') {
+    return true
+  } else if (type === 'monthly') {
+    return new Date(pkg.expire) > new Date()
+  } else {
+    return false
+  }
+}

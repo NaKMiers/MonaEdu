@@ -258,7 +258,7 @@ function CartPage() {
     <div className='md:-mt-[72px] md:pt-[72px] -mb-20 pb-20 px-21 bg-neutral-800 bg-opacity-75 text-light'>
       <Divider size={8} />
 
-      <div className='max-w-1200 mx-auto flex items-center justify-between flex-wrap sm:flex-nowrap gap-3 px-1.5'>
+      <div className='max-w-1200 mx-auto flex items-center justify-between flex-wrap sm:flex-nowrap gap-x-3 gap-y-1 px-1.5'>
         <h1 className='flex items-center gap-2 font-semibold font-body text-xl md:text-2xl lg:text-3xl mb-2'>
           <FaShoppingCart className='sm:w-[18px] lg:w-[30px] wiggle flex-shrink-0' />
           <span>Giỏ hàng</span>
@@ -271,7 +271,7 @@ function CartPage() {
           href='/user/history'
           className='group flex items-center gap-2 font-semibold font-body text-xl md:text-2xl lg:text-3xl mb-2'
         >
-          <FaHistory className='text-primary sm:w-[19px] lg:w-[26px] wiggle -mb-0.5 flex-shrink-0' />
+          <FaHistory className='text-primary w-[18px] sm:w-[19px] lg:w-[26px] wiggle -mb-0.5 flex-shrink-0' />
           <span>Lịch sử mua hàng</span>
         </Link>
       </div>
@@ -406,7 +406,7 @@ function CartPage() {
               </button>
             </div>
             {buyAsGiftMessage && (
-              <p className={`${foundUser ? 'text-green-500' : 'text-rose-500'} mb-2`}>
+              <p className={`text-sm ${foundUser ? 'text-green-500' : 'text-rose-500'} mb-2`}>
                 {buyAsGiftMessage}
               </p>
             )}

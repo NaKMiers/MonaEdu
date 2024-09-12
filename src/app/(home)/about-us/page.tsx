@@ -119,7 +119,7 @@ function AboutUsPage() {
                 <span>3</span>
               </div>
               <div className='flex flex-col'>
-                <p className='text-orange-500'>Họi mọi lúc mọi nơi</p>
+                <p className='text-orange-500'>Học mọi lúc mọi nơi</p>
                 <p
                   className='text-sm font-body tracking-wider leading-[22px] text-ellipsis line-clamp-3'
                   title='Học trên Mona Edu bất kể bạn ở đâu, chỉ cần có Internet'

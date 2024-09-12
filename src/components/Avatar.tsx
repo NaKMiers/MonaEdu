@@ -2,6 +2,7 @@
 
 import { IUser } from '@/models/UserModel'
 import { changeAvatarApi } from '@/requests'
+import { checkCrown } from '@/utils/string'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
@@ -25,8 +26,7 @@ function Avatar({ user, className = '' }: AvatarProps) {
   const [isChangingAvatar, setIsChangingAvatar] = useState<boolean>(false)
 
   // values
-  const isShowCrown =
-    user?.package && (user.package.expire === null || new Date(user.package.expire) > new Date())
+  let isShowCrown = true
 
   // refs
   const avatarInputRef = useRef<HTMLInputElement>(null)

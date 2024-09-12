@@ -55,7 +55,6 @@ export default async function handleDeliverOrder(id: string, message: string = '
   if (!buyer) {
     throw new Error('User not found')
   }
-
   // Buy Courses
   if (!isPackage) {
     // buy for themselves
@@ -76,7 +75,7 @@ export default async function handleDeliverOrder(id: string, message: string = '
       })
 
       if (isJoined) {
-        throw new Error('Học viên đã tham gia khóa học này')
+        throw new Error('Tồn tại khóa học đã được học viên tham gia')
       }
     }
 
@@ -110,7 +109,6 @@ export default async function handleDeliverOrder(id: string, message: string = '
 
     // VOUCHER
     const voucher: IVoucher = order.voucher as IVoucher
-
     if (voucher) {
       const commission: any = (voucher.owner as IUser).commission
       let extraAccumulated = 0
@@ -140,8 +138,9 @@ export default async function handleDeliverOrder(id: string, message: string = '
     // buy as a gift
     if (receivedUser) {
       // get receiver courses
-      let receiver: IUser | null = await UserModel.findOneAndUpdate({ email: receivedUser }).lean()
+      let receiver: IUser | null = await UserModel.findOne({ email: receivedUser }).lean()
 
+      console.log('receiver111', receiver)
       // check if receiver exists or not
       if (!receiver) {
         throw new Error('Receiver not found')
@@ -149,23 +148,41 @@ export default async function handleDeliverOrder(id: string, message: string = '
 
       // merge new course to old course in case that user has already joined this course
       const itemIds = items.map((course: any) => course._id.toString())
-      const updatedUserCourses = receiver?.courses.map(
-        (course: any) =>
-          itemIds.includes(course.course.toString())
-            ? {
-                // duplicate
-                course: course.course,
-                progress: course.progress,
-                // expire will be exclude if exist
-              }
-            : course // not duplicate
-      )
+      const duplicatedCourseIds: string[] = []
+      const updatedCourses = receiver?.courses.map((course: any) => {
+        if (itemIds.includes(course.course.toString())) {
+          // duplicate
+          duplicatedCourseIds.push(course.course.toString())
+
+          return {
+            course: course.course,
+            progress: course.progress,
+            // expire will be exclude if exist
+          }
+        } else {
+          // not duplicate
+          return course
+        }
+      })
+
+      console.log('updatedCourses111', updatedCourses)
+
+      const newCourses = items.map((course: any) => {
+        if (!duplicatedCourseIds.includes(course._id.toString())) {
+          return {
+            course: course._id,
+            progress: 0,
+          }
+        }
+      })
+
+      console.log('newCourses111', newCourses)
 
       // buy as a gift
       await UserModel.updateOne(
         { email: receivedUser },
         {
-          $set: { courses: updatedUserCourses },
+          $set: { courses: [...updatedCourses, ...newCourses] },
           $addToSet: {
             gifts: items.map((item: any) => ({
               course: item._id,
@@ -188,24 +205,38 @@ export default async function handleDeliverOrder(id: string, message: string = '
     else {
       // merge new course to old course in case that user has already joined this course
       const itemIds = items.map((course: any) => course._id.toString())
-      const updatedUserCourses = buyer?.courses.map(
-        (course: any) =>
-          itemIds.includes(course.course.toString())
-            ? {
-                // duplicate
-                course: course.course,
-                progress: course.progress,
-                // expire will be exclude if exist
-              }
-            : course // not duplicate
-      )
+      const duplicatedCourseIds: string[] = []
+      const updatedCourses = buyer?.courses.map((course: any) => {
+        if (itemIds.includes(course.course.toString())) {
+          // duplicate
+          duplicatedCourseIds.push(course.course.toString())
+
+          return {
+            course: course.course,
+            progress: course.progress,
+            // expire will be exclude if exist
+          }
+        } else {
+          // not duplicate
+          return course
+        }
+      })
+
+      const newCourses = items.map((course: any) => {
+        if (!duplicatedCourseIds.includes(course._id.toString())) {
+          return {
+            course: course._id,
+            progress: 0,
+          }
+        }
+      })
 
       // update user courses, increase expended
       await UserModel.findOneAndUpdate(
         { email },
         {
           $inc: { expended: total },
-          $set: { courses: updatedUserCourses },
+          $set: { courses: [...updatedCourses, ...newCourses] },
         }
       )
 

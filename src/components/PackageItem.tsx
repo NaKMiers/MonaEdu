@@ -122,7 +122,7 @@ function PackageItem({ pkg, popular = false, className = '' }: PackageItemProps)
             <ul className='list-none mt-2'>
               {pkg.features.map((feature, index) => (
                 <li className='flex gap-2 items-start' key={index}>
-                  <FaCheckSquare />
+                  <FaCheckSquare className='flex-shrink-0' />
                   <p className='text-white'>{feature}</p>
                 </li>
               ))}

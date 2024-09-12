@@ -148,7 +148,7 @@ function OrderItem({
         <div className='w-[calc(100%_-_44px)]'>
           {/* MARK: Thumbnails */}
           {!data.isPackage && (
-            <div className='w-full h-full flex items-center flex-wrap gap-2 mb-2 max-h-[145px]'>
+            <div className='w-full h-full flex items-center flex-wrap gap-2 mb-2 max-h-[152px] overflow-y-auto'>
               <div className='flex gap-2 flex-wrap'>
                 {data.items.map((course: any) => (
                   <Link
@@ -200,9 +200,11 @@ function OrderItem({
           </div>
 
           {/* Email */}
-          <div className='block underline text-ellipsis line-clamp-1' title={'Email: ' + data.email}>
+          <div
+            className='font-body tracking-wider underline text-ellipsis line-clamp-1 flex gap-1 items-center'
+            title={'Email: ' + data.email}
+          >
             <span
-              className='mr-1'
               onClick={e => {
                 e.stopPropagation()
                 handleCopy(data.email)
@@ -226,9 +228,10 @@ function OrderItem({
 
           {/* Received User */}
           {data.receivedUser && (
-            <div className='font-body tracking-wider'>
-              <span className='font-semibold text-orange-500'>Received User:</span>{' '}
-              <span className='underline underline-offset-1'>{data.receivedUser}</span>{' '}
+            <div className='font-body tracking-wider mt-2 flex gap-1 items-center border-t border-slate-600 pt-1.5'>
+              <span className='underline underline-offset-1 text-ellipsis line-clamp-1 text-orange-500'>
+                {data.receivedUser}
+              </span>{' '}
               <div className='inline-flex items-center gap-1.5 border border-secondary rounded-md px-1.5 py-1'>
                 <span
                   className='text-secondary group'

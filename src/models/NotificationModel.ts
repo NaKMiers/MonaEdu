@@ -28,6 +28,7 @@ const NotificationSchema = new Schema(
         'emotion-comment',
         'new-lesson',
         'new-event',
+        'given-course',
       ],
       default: 'unset',
     },
