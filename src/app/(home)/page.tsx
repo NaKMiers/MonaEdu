@@ -174,13 +174,16 @@ async function Home({ searchParams }: { searchParams?: { [key: string]: string[]
 
       <Divider size={30} />
 
-      <Heading className='text-dark' title='Gói học viên' />
-      <p className='text-center text-[18px] text-neutral-300 mt-8'>
-        Chọn cơ hội để tối ưu hiệu quả học tập của bạn
-      </p>
+      <div className='max-w-1200 mx-auto w-full px-21'>
+        <Heading className='text-dark' title='Gói học viên' />
+        <p className='text-center text-[18px] text-neutral-300 mt-8'>
+          Chọn cơ hội để tối ưu hiệu quả học tập của bạn
+        </p>
+      </div>
 
       <Divider size={10} />
 
+      {/* Subscription */}
       <Subscriptions packageGroups={packageGroups} />
 
       <Divider size={30} />

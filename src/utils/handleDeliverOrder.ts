@@ -231,6 +231,7 @@ export default async function handleDeliverOrder(id: string, message: string = '
       credit: credit || null,
       expire: days ? moment(order.createdAt).add(days, 'days').toDate() : null,
       maxPrice: maxPrice || null,
+      createdAt: order.createdAt,
     }
 
     await Promise.all([

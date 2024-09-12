@@ -224,10 +224,14 @@ function CartPage() {
 
         // move to checkout page
         router.push(`/checkout/${type}`)
+
+        setTimeout(() => {
+          // stop page loading
+          dispatch(setPageLoading(false))
+        }, 1000)
       } catch (err: any) {
         toast.error(err.message)
         console.log(err)
-      } finally {
         // stop page loading
         dispatch(setPageLoading(false))
       }

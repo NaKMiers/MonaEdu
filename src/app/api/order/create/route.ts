@@ -142,7 +142,7 @@ export async function POST(req: NextRequest) {
     }
 
     // generate new code
-    const code = await generateOrderCode(5, '#')
+    const code = await generateOrderCode(5)
 
     // create new order
     const [newOrder] = await Promise.all([

@@ -1,5 +1,6 @@
-import GivenGift from '@/components/email/GivenGift'
+import GivenGiftEmail from '@/components/email/GivenGiftEmail'
 import NotifyCommentEmail from '@/components/email/NotifyCommentEmail'
+import NotifyExpiredPackageEmail from '@/components/email/NotifyExpiredPackageEmail'
 import NotifyOrderEmail from '@/components/email/NotifyOrderEmail'
 import OrderEmail from '@/components/email/OrderEmail'
 import ResetPasswordEmail from '@/components/email/ResetPasswordEmail'
@@ -22,7 +23,9 @@ function EmailTemplatePage({ params: { type } }: { params: { type: string } }) {
       case 'notify-comment':
         return <NotifyCommentEmail />
       case 'given-gift':
-        return <GivenGift />
+        return <GivenGiftEmail />
+      case 'notify-expired-package':
+        return <NotifyExpiredPackageEmail />
       default:
         return null
     }

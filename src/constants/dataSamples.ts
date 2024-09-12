@@ -8,31 +8,6 @@ export const commentData = {
   slug: 'https://monaedu.com/netflix-premium-1-tuan-sieu-net-sieu-tien-loi',
 }
 
-export const expiredData = {
-  _id: '6622afa213c9a6df523bac88',
-  type: {
-    _id: '6616c4a9cfdc10598ab611bb',
-    title: 'AK2',
-    slug: 'ak2',
-  },
-  info: '        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Earum quibusdam voluptate beatae aut in quia, illo accusantium fugiat eligendi nostrum aspernatur debitis suscipit ad quas ipsam nobis aliquid magni saepe similique quasi velit quo? Dignissimos molestias amet minus nesciunt id corrupti, dolorem ducimus quod nisi alias, accusantium, at nemo doloribus?',
-  active: true,
-  renew: '2024-06-20T00:00:00.000Z',
-  times: {
-    days: 100,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-    _id: '66236a83faf0d2df956fc1f6',
-  },
-  createdAt: '2024-04-19T17:53:38.420Z',
-  updatedAt: '2024-04-21T08:42:15.246Z',
-  __v: 0,
-  begin: '2024-04-20T07:10:14.022Z',
-  expire: '2024-07-29T07:10:14.000Z',
-  remainingTime: '2 giờ',
-}
-
 export const order = {
   _id: '66236a39faf0d2df956fc1be',
   code: '0D317',
@@ -236,4 +211,24 @@ export const updateInfoData = {
       '\n' +
       '- 💀 Lưu ý: Đề phòng trường hợp những shop "lừa đảo" khác giả vờ mua hàng sau đó bán lại. Tài khoản của bạn sẽ được đổi pass từ 6 - 15 ngày 1 lần, và pass mới sẽ được gửi qua mail cho bạn. Hãy kiểm tra mail khi không thể đăng nhập. Xin chân thành cảm ơn🫡',
   },
+}
+
+export const expiredPackageData = {
+  _id: '667c82e6d6af82565bb627cb',
+  username: 'nakmiers',
+  email: 'diwas118151@gmail.com',
+  firstName: 'Anh Khoa',
+  nickname: '',
+  lastName: 'Nguyễn',
+  package: {
+    title: 'Lifetime Advanced',
+    price: 2499,
+    packageGroup: '66ddbc1979f8e0ca031d5d11',
+    joined: 2223,
+    credit: null,
+    expire: '2024-09-13T01:06:46.927Z',
+    maxPrice: 100000,
+    createdAt: '2024-09-11T13:06:46.927Z',
+  },
+  remainingTime: 'trong 21 giờ',
 }

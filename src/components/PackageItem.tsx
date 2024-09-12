@@ -89,19 +89,24 @@ function PackageItem({ pkg, popular = false, className = '' }: PackageItemProps)
 
         // move to checkout page
         router.push(`/checkout/${paymentMethod}`)
+
+        setTimeout(() => {
+          // stop page loading
+          dispatch(setPageLoading(false))
+        }, 1000)
       } catch (err: any) {
         toast.error(err.message)
         console.log(err)
-      } finally {
         // stop page loading
         dispatch(setPageLoading(false))
+      } finally {
       }
     },
     [dispatch, handleValidateBeforeCheckout, curUser?.email, pkg, router]
   )
 
   return (
-    <div className={`relative lg:min-w-[400px] w-1/2 md:w-1/3 ${className}`}>
+    <div className={`relative xl:min-w-[400px] w-1/2 md:w-1/3 ${className}`}>
       {popular && (
         <div className='absolute z-20 top-0 right-0 pl-4 pr-3 pt-0.5 pb-1.5 text-sm rounded-bl-2xl bg-white text-dark font-semibold'>
           Phổ biến

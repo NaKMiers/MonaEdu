@@ -1,4 +1,3 @@
-import { BackgroundBeamsWithCollision } from '@/components/backgrounds/BackgroundBeamsWithCollision'
 import Divider from '@/components/Divider'
 import Subscriptions from '@/components/Subscriptions'
 import { IPackageGroup } from '@/models/PackageGroupModel'
@@ -37,7 +36,9 @@ async function SubscriptionPage() {
 
       <Subscriptions packageGroups={packageGroups} />
 
-      <Divider size={40} />
+      <div className='px-21 w-full max-w-1200 mx-auto'>
+        <Divider size={40} border className='w-full' />
+      </div>
     </div>
   )
 }

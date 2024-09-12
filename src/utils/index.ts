@@ -26,7 +26,7 @@ export const generateCode = (length: number): string => {
 }
 
 // generate order code
-export const generateOrderCode = async (length: number, prefix: string = '') => {
+export const generateOrderCode = async (length: number, prefix: string = 'M') => {
   let isUnique: boolean = false
   let code: string = ''
 

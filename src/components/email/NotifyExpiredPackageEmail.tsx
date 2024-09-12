@@ -1,9 +1,9 @@
-import { order as orderSample } from '@/constants/dataSamples'
-import { formatPrice } from '@/utils/number'
+import { expiredPackageData } from '@/constants/dataSamples'
+import { getUserName } from '@/utils/string'
 import { Body, Column, Container, Img, Row, Section, Tailwind } from '@react-email/components'
 import { theme } from '../../../tailwind.config'
 
-export function GivenGift({ order = orderSample }: { order?: any }) {
+export function NotifyExpiredPackageEmail({ data = expiredPackageData }: { data?: any }) {
   return (
     <Tailwind
       config={{
@@ -15,7 +15,7 @@ export function GivenGift({ order = orderSample }: { order?: any }) {
           <Section className='inline-block mx-auto'>
             <Row className='mb-3 w-full'>
               <Column>
-                <a href={process.env.NEXT_PUBLIC_APP_URL}>
+                <a href={process.env.NEXT_PUBLIC_APP_URL} className=''>
                   <Img
                     className='aspect-square rounded-md'
                     src={`${process.env.NEXT_PUBLIC_APP_URL}/images/logo.png`}
@@ -50,88 +50,77 @@ export function GivenGift({ order = orderSample }: { order?: any }) {
 
             <Row className='p-4'>
               <Column className='font'>
-                <h1 className='text-2xl font-bold text-center'>Hi👋 </h1>
+                <h1 className='text-2xl font-bold text-center'>Hi, {getUserName(data)}👋</h1>
                 <h2 className='text-xl font-semibold text-center'>
-                  Bạn được tặng khóa học từ <span className='text-orange-500'>{order.sender}</span>
+                  Gói hội của bạn sẽ hết hạn{' '}
+                  <span className='text-orange-500'>{data.remainingTime}</span> 😥
                 </h2>
 
                 <div className='text-sm mt-8'>
                   <p>
-                    <b>Received Date: </b>
+                    <span>Email: </span>
+                    <span className='text-sky-500 underline tracking-wider'>{data.email}</span>{' '}
+                  </p>
+                  <p>
+                    <span>Thời gian tham gia: </span>
                     {new Intl.DateTimeFormat('vi', {
                       dateStyle: 'full',
-                      timeStyle: 'medium',
+                      timeStyle: 'short',
                       timeZone: 'Asia/Ho_Chi_Minh',
                     })
-                      .format(new Date(order.createdAt))
+                      .format(new Date(data.package.createdAt))
                       .replace('lúc', '')}
                   </p>
                   <p>
-                    <b>Trạng thái: </b>
-                    <span className='text-[#50C878]'>Done</span>
+                    <span>Gói: </span>
+                    <span className='text-violet-500'>{data.package.title}</span>
                   </p>
                   <p>
-                    <b>Tổng tiền: </b>
-                    <b>{formatPrice(order.total)}</b>
+                    <span>Thời gian còn lại: </span>
+                    <span className='text-orange-500'>{data.remainingTime.replace('trong', '')}</span>
                   </p>
-                  <p>
-                    <b>Người tặng: </b>
-                    <span className='text-[#0a82ed]'>{order.email}</span>
-                  </p>
-                </div>
-
-                {/* Message From Admin */}
-                {order.message && typeof order.message === 'string' && order.message.trim() && (
-                  <div
-                    className='px-21 py-21/2 rounded-lg'
-                    style={{
-                      border: '1px solid rgb(0, 0, 0, 0.1)',
-                    }}
-                  >
-                    <p className='font-semibold underline tracking-wider text-sm text-slate-400 text-center m-0 mb-3'>
-                      Lời nhắn từ quản trị viên
-                    </p>
-                    <p className='text-sm m-0'>{order.message}</p>
-                  </div>
-                )}
-
-                {/* Course */}
-                <div className='mt-8'>
-                  <b className='text-[24px]'>Khóa học: </b>
-
-                  <a
-                    href={`${process.env.NEXT_PUBLIC_APP_URL}/${order.item.slug}`}
-                    className='block h-full text-dark tracking-wider no-underline mt-2'
-                  >
-                    <Section>
-                      <Row>
-                        <Column className='w-[130px]'>
-                          <Img
-                            src={order.item.images[0]}
-                            width={120}
-                            className='inline aspect-video rounded-lg object-cover'
-                          />
-                        </Column>
-                        <Column>
-                          <p className='font-semibold text-slate-600'>{order.item.title}</p>
-                        </Column>
-                      </Row>
-                    </Section>
-                  </a>
                 </div>
               </Column>
             </Row>
 
-            {order.userId && (
-              <div className='text-center p-3 mb-8'>
+            <div className='px-4'>
+              <div className='px-4 bg-slate-300 h-px' />
+            </div>
+
+            <Row className='p-4'>
+              <p className='font-body tracking-wider text-sm'>
+                Cảm ơn bạn đã đồng hành cùng Mona Edu trong thời gian qua.
+              </p>
+              <p className='font-body tracking-wider text-sm'>
+                Hãy{' '}
                 <a
-                  href={`${process.env.NEXT_PUBLIC_APP_URL}/learning/${order.item._id}/start`}
-                  className='inline bg-sky-500 no-underline rounded-lg text-white font-semibold cursor-pointer py-3 px-7 border-0'
+                  href={`${process.env.NEXT_PUBLIC_APP_URL}/subscription`}
+                  className='text-violet-500 underline'
                 >
-                  Học ngay
-                </a>
-              </div>
-            )}
+                  gia hạn
+                </a>{' '}
+                hoặc{' '}
+                <a
+                  href={`${process.env.NEXT_PUBLIC_APP_URL}/subscription`}
+                  className='text-violet-500 underline'
+                >
+                  nâng cấp
+                </a>{' '}
+                gói học viên của bạn để tiếp tục hành trình học tập của bạn nhé 🥳
+              </p>
+            </Row>
+
+            <div className='text-center p-3 mb-10'>
+              <a
+                href={`${process.env.NEXT_PUBLIC_APP_URL}/subscription`}
+                className='inline no-underline rounded-lg font-semibold cursor-pointer py-3 px-7 text-light bg-neutral-900 border border-light'
+                style={{
+                  border: '1px solid rgba(0, 0, 0, 0.1)',
+                }}
+              >
+                Gia hạn ngay
+              </a>
+            </div>
           </Section>
 
           {/* MARK: Footer */}
@@ -194,4 +183,4 @@ export function GivenGift({ order = orderSample }: { order?: any }) {
   )
 }
 
-export default GivenGift
+export default NotifyExpiredPackageEmail

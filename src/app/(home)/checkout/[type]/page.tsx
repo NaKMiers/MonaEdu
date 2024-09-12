@@ -177,14 +177,14 @@ function CheckoutPage({ params }: { params: { type: string } }) {
               <>
                 <Image src={admin.momo.image} height={700} width={350} alt='momo-qr' />
                 <Image
-                  className='absolute top-[56%] left-1/2 -translate-x-1/2 -translate-y-[50%] w-[58%]'
+                  className='absolute z-10 top-[56%] left-1/2 -translate-x-1/2 -translate-y-[50%] w-[58%]'
                   src={`https://api.qrserver.com/v1/create-qr-code/?size=350x350&data=2|99|${admin.momo.account}|||0|0|${checkout?.total}|${checkout?.code}|transfer_p2p`}
                   height={700}
                   width={350}
                   alt='momo-qr'
                 />
                 {/* <Image
-                  className='bg-black absolute top-[56%] left-1/2 -translate-x-1/2 -translate-y-[50%] rounded-md p-0.5 w-[12%]'
+                  className='bg-black absolute z-10 top-[56%] left-1/2 -translate-x-1/2 -translate-y-[50%] rounded-md p-0.5 w-[12%]'
                   src='/images/logo.png'
                   height={42}
                   width={42}
@@ -194,15 +194,15 @@ function CheckoutPage({ params }: { params: { type: string } }) {
             ) : (
               <>
                 <Image src={admin.banking.image} height={700} width={350} alt='banking-qr' />
-                {/* <Image
-                  className='absolute top-[41%] left-1/2 -translate-x-1/2 -translate-y-[50%] w-[47%]'
-                  src={`https://img.vietqr.io/image/970436-1040587211-eeua38J.jpg?amount=${
+                <Image
+                  className='absolute z-10 top-[41%] left-1/2 -translate-x-1/2 -translate-y-[50%] w-[47%]'
+                  src={`https://img.vietqr.io/image/970436-1040587211-XiXOLfB.jpg?amount=${
                     checkout?.total
                   }&addInfo=${encodeURI(checkout?.code)}&accountName=${admin.banking.receiver}`}
                   height={700}
                   width={350}
                   alt='banking-qr'
-                /> */}
+                />
               </>
             )}
           </div>
