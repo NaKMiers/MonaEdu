@@ -174,12 +174,14 @@ async function ProfilePage({ params: { id } }: { params: { id: string } }) {
               </p>
 
               {/* Gender */}
-              {user?.gender && <p className='flex gap-2 text-slate-500 text-sm'>
-                Giới tính:{' '}
-                <span className='text-dark'>
-                  {user?.gender === 'male' ? 'Nam' : user?.gender === 'female' ? 'Nữ' : 'Khác'}
-                </span>
-              </p>}
+              {user?.gender && (
+                <p className='flex gap-2 text-slate-500 text-sm'>
+                  Giới tính:{' '}
+                  <span className='text-dark'>
+                    {user?.gender === 'male' ? 'Nam' : user?.gender === 'female' ? 'Nữ' : 'Khác'}
+                  </span>
+                </p>
+              )}
 
               {/* Job */}
               <p className='flex gap-2 text-slate-500 text-sm'>
@@ -188,7 +190,7 @@ async function ProfilePage({ params: { id } }: { params: { id: string } }) {
 
               {/* Bio */}
               <div className='text-slate-500 text-sm'>
-                <span>Bio</span>
+                <span>Bio: </span>
 
                 <p className='text-dark'>{user?.bio}</p>
               </div>

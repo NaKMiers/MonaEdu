@@ -1,16 +1,27 @@
 'use client'
 
-import { signOut } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { memo } from 'react'
-import { FaCheck, FaHistory, FaInfoCircle, FaShoppingCart, FaSignOutAlt } from 'react-icons/fa'
+import {
+  FaCheck,
+  FaHistory,
+  FaInfoCircle,
+  FaShoppingCart,
+  FaSignInAlt,
+  FaSignOutAlt,
+} from 'react-icons/fa'
 import { SiCoursera } from 'react-icons/si'
 import Divider from '../Divider'
 import Quote from '../Quote'
 import { RiVipCrown2Fill } from 'react-icons/ri'
 
 function Footer() {
+  // hooks
+  const { data: session } = useSession()
+  const curUser: any = session?.user
+
   return (
     <footer className='mb-[72px] md:mb-0 bg-dark-100 text-light border-t-2 rounded-t-[40px] border-slate-300 px-21 pt-3 overflow-hidden'>
       <div className='max-w-1200 mx-auto'>
@@ -210,13 +221,23 @@ function Footer() {
                 <SiCoursera size={14} className='wiggle-0 flex-shrink-0' />
                 Khóa học của tôi
               </Link>
-              <button
-                className='flex items-center justify-center gap-1 md:text-left lg:text-center text-yellow-400 hover:tracking-wider trans-200 font-body tracking-wide group'
-                onClick={() => signOut()}
-              >
-                <FaSignOutAlt size={15} className='wiggle-0 flex-shrink-0' />
-                Đăng xuất
-              </button>
+              {curUser ? (
+                <button
+                  className='flex items-center justify-center gap-1 md:text-left lg:text-center text-yellow-400 hover:tracking-wider trans-200 font-body tracking-wide group'
+                  onClick={() => signOut()}
+                >
+                  <FaSignOutAlt size={15} className='wiggle-0 flex-shrink-0' />
+                  Đăng xuất
+                </button>
+              ) : (
+                <Link
+                  href='/auth/login'
+                  className='flex items-center justify-center gap-1 md:text-left lg:text-center text-sky-400 hover:tracking-wider trans-200 font-body tracking-wide group'
+                >
+                  <FaSignInAlt size={15} className='wiggle-0 flex-shrink-0' />
+                  Đăng nhập
+                </Link>
+              )}
             </div>
           </div>
         </div>

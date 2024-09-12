@@ -26,8 +26,7 @@ function Avatar({ user, className = '' }: AvatarProps) {
 
   // values
   const isShowCrown =
-    curUser?.package &&
-    (curUser.package.expire === null || new Date(curUser.package.expire) > new Date())
+    user?.package && (user.package.expire === null || new Date(user.package.expire) > new Date())
 
   // refs
   const avatarInputRef = useRef<HTMLInputElement>(null)
@@ -113,10 +112,11 @@ function Avatar({ user, className = '' }: AvatarProps) {
           alt='ring'
         />
       )}
-
       {(imageUrl || user?.avatar) && (
         <Image
-          className='w-full h-full object-cover rounded-full overflow-hidden aspect-square p-2.5'
+          className={`w-full h-full object-cover rounded-full overflow-hidden aspect-square ${
+            isShowCrown ? 'p-2.5' : ''
+          }`}
           src={imageUrl || user?.avatar || process.env.NEXT_PUBLIC_DEFAULT_AVATAR!}
           width={200}
           height={200}
