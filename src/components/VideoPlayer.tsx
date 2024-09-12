@@ -78,7 +78,7 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
     return () => clearInterval(interval)
   }, [isPlaying, duration])
 
-  // MARK: update lesson progress
+  // MARK: Update lesson progress
   const handleUpdateLessonProgress = useCallback(async () => {
     try {
       const isEnrolled = curUser?.courses
@@ -113,16 +113,23 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
       console.log(err)
       toast.error(err.message)
     } finally {
-      let interval = 0
-      if (duration > 600) {
-        interval = 120000
-      } else if (duration <= 600 && duration > 300) {
-        interval = 60000
-      } else {
-        interval = 30000
+      let interval = 120000 // default 2m/time
+      if (duration < 60) {
+        // < 1min
+        interval = 6000 // 6s/time -> 10 times
+      } else if (duration < 300) {
+        // < 5min
+        interval = 20000 // 30s/time -> 10 times
+      } else if (duration < 600) {
+        // < 10min
+        interval = 30000 // 1min/time -> 10 times
+      } else if (duration < 1800) {
+        // < 30min
+        interval = 90000 // 1.5min/time -> 20 times
+      } else if (duration < 3600) {
+        // < 1h
+        interval = 120000 // 2min/time -> 30 times
       }
-
-      interval = 5000 // need to remove
       progressTimeoutRef.current = setTimeout(() => {
         if (progressTimeoutRef.current) {
           handleUpdateLessonProgress()
