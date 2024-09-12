@@ -201,7 +201,7 @@ function AllLessons() {
             <div className='flex flex-1 items-end pb-2'>
               <div className='py-2 w-full bg-slate-700 flex items-center justify-between px-3 gap-21 rounded-lg border-b-2 border-slate-300'>
                 {prevLesson && (
-                  <Link
+                  <a
                     href={`/learning/${courseSlug}/${prevLesson}`}
                     className={`group flex items-center gap-2 rounded-lg px-2 py-1 bg-slate-200 border-2 border-dark hover:bg-white trans-200  ${
                       !nextLesson ? 'flex-1 justify-center' : ''
@@ -209,10 +209,10 @@ function AllLessons() {
                   >
                     <FaChevronCircleLeft size={20} className='wiggle text-dark' />
                     <span className='font-semibold text-dark'>Trước</span>
-                  </Link>
+                  </a>
                 )}
                 {nextLesson && (
-                  <Link
+                  <a
                     href={`/learning/${courseSlug}/${nextLesson}`}
                     className={`group flex items-center gap-2 rounded-lg px-2 py-1 bg-slate-200 border-2 border-dark hover:bg-white trans-200 ${
                       !prevLesson ? 'flex-1 justify-center' : ''
@@ -220,7 +220,7 @@ function AllLessons() {
                   >
                     <span className='font-semibold text-dark'>Sau</span>
                     <FaChevronCircleRight size={20} className='wiggle text-dark' />
-                  </Link>
+                  </a>
                 )}
               </div>
             </div>
