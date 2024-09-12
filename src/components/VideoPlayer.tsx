@@ -425,12 +425,12 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
     duration,
   ])
 
-  // MARK: Before Unload
-  useEffect(() => {
-    window.addEventListener('beforeunload', e => {
-      e.preventDefault()
-    })
-  }, [])
+  // // MARK: Before Unload
+  // useEffect(() => {
+  //   window.addEventListener('beforeunload', e => {
+  //     e.preventDefault()
+  //   })
+  // }, [])
 
   return (
     <div
@@ -530,7 +530,7 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
                 <div className='w-0 h-full items-center peer-hover:flex peer-hover:w-[135px] peer-hover:px-4 hover:flex hover:w-[135px] hover:px-4 hover:overflow-visible overflow-hidden hover:mr-1 peer-hover:mr-1 mr-3 flex trans-300'>
                   <Slider
                     value={volume}
-                    onChange={(_, newValue) => handleChangeVolume(newValue as number)}
+                    onChange={(_: any, newValue: any) => handleChangeVolume(newValue as number)}
                     color='warning'
                   />
                 </div>
