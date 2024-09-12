@@ -44,9 +44,9 @@ function BuyNowButton({ course, className }: BuyNowButtonProps) {
       case 'credit': {
         packageType = 'credit'
         actionText = (
-          <>
-            Tham gia <span className='text-xs text-violet-400'>(-1 credit)</span>
-          </>
+          <span title={`Tham gia (-1 credit})`}>
+            Mua <span className='text-[10px] text-violet-400'>(-1 credit)</span>
+          </span>
         )
         action = 'join'
         break
@@ -172,7 +172,7 @@ function BuyNowButton({ course, className }: BuyNowButtonProps) {
         </div>
       )}
 
-      <p className='relative z-10 flex items-center gap-1 sm:text-sm md:text-base text-ellipsis text-nowrap line-clamp-1 sm:max-w-max'>
+      <p className='relative z-10 flex items-center gap-1 text-sm sm:text-base text-ellipsis text-nowrap line-clamp-1 sm:max-w-max'>
         {isRedirect ? 'Học tiếp' : actionText}
       </p>
     </button>
