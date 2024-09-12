@@ -34,21 +34,23 @@ function Chapter({
   const router = useRouter()
 
   // check if user is enrolled in this course
-  const isEnrolled = curUser?.courses?.map((course: any) => course.course).includes(courseId)
+  const joinedCourse = curUser?.courses.find((c: any) => c.course === courseId)
+  let isRedirect: boolean =
+    joinedCourse && (!joinedCourse.expire || new Date(joinedCourse.expire) > new Date())
 
   // states
   const [open, setOpen] = useState<boolean>(
     collapseAll ||
-      ((chapter.lessons?.some(lesson => lesson.status === 'public') || false) && !isEnrolled)
+      ((chapter.lessons?.some(lesson => lesson.status === 'public') || false) && !joinedCourse)
   )
 
   // refs
   const chapterRef = useRef<HTMLUListElement>(null)
 
   useEffect(() => {
-    if ((chapter.lessons?.some(lesson => lesson.status === 'public') || false) && !isEnrolled) return
+    if ((chapter.lessons?.some(lesson => lesson.status === 'public') || false) && !joinedCourse) return
     setOpen(!!collapseAll)
-  }, [collapseAll, chapter.lessons, isEnrolled])
+  }, [collapseAll, chapter.lessons, joinedCourse])
 
   useEffect(() => {
     if (open) {
@@ -91,9 +93,9 @@ function Chapter({
         ref={chapterRef}
       >
         {chapter.lessons?.map(lesson =>
-          lesson.status === 'public' || isEnrolled ? (
+          lesson.status === 'public' || isRedirect ? (
             <Tooltip
-              title={isEnrolled ? 'Học ngay' : `Học thử ngay`}
+              title={isRedirect ? 'Học ngay' : `Học thử ngay`}
               placement='top'
               arrow
               key={lesson._id}
@@ -111,7 +113,7 @@ function Chapter({
                   }
                 }}
               >
-                {!isEnrolled && <TiLockOpen size={16} className='flex-shrink-0' />}
+                {!isRedirect && <TiLockOpen size={16} className='flex-shrink-0' />}
                 <span className='text-ellipsis line-clamp-1'>{lesson.title}</span>
                 <span className='text-xs font-semibold text-nowrap text-slate-500 ml-auto'>
                   {duration(lesson.duration)}
@@ -126,7 +128,7 @@ function Chapter({
               title={lesson.title}
               key={lesson._id}
             >
-              {!isEnrolled && <TiLockClosed size={16} className='flex-shrink-0' />}
+              {!isRedirect && <TiLockClosed size={16} className='flex-shrink-0' />}
               <span className='text-ellipsis line-clamp-1'>{lesson.title}</span>
               <span className='text-xs font-semibold text-nowrap text-slate-500 ml-auto'>
                 {duration(lesson.duration)}

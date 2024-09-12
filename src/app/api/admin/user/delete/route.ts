@@ -1,8 +1,10 @@
 import { connectDatabase } from '@/config/database'
+import OrderModel from '@/models/OrderModel'
 import UserModel from '@/models/UserModel'
 import { NextResponse } from 'next/server'
 
-// Models: User
+// Models: User, Order
+import '@/models/OrderModel'
 import '@/models/UserModel'
 
 // [DELETE]: /admin/user/delete
@@ -16,6 +18,15 @@ export async function DELETE(req: Request) {
     // get user ids to delete
     const { ids } = await req.json()
 
+    // only allow to delete user if user has not buy any orders
+    const orderExists = await OrderModel.exists({ userId: { $in: ids } })
+
+    // check if user has bought any orders
+    if (orderExists) {
+      return NextResponse.json({ message: 'Không thể xóa người dùng đã mua khóa học' }, { status: 400 })
+    }
+
+    // get deleted users and delete users from database
     const [deletedUsers] = await Promise.all([
       // get deleted users
       UserModel.find({ _id: { $in: ids } }).lean(),

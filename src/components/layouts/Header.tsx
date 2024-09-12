@@ -9,7 +9,7 @@ import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import { BiSolidCategory } from 'react-icons/bi'
 import { FaBell, FaSearch, FaShoppingCart } from 'react-icons/fa'
@@ -26,9 +26,8 @@ interface HeaderProps {
 function Header({ className = '' }: HeaderProps) {
   // hooks
   const dispatch = useAppDispatch()
-  const { data: session } = useSession()
+  const { data: session, update } = useSession()
   const curUser: any = session?.user
-
   const pathname = usePathname()
 
   // reducer
@@ -43,6 +42,14 @@ function Header({ className = '' }: HeaderProps) {
 
   // notification states
   const [isOpenNotificationMenu, setIsOpenNotificationMenu] = useState<boolean>(false)
+
+  // refs
+  const isUpdatedSession = useRef<boolean>(false)
+
+  // values
+  const isShowCrown =
+    curUser?.package &&
+    (curUser.package.expire === null || new Date(curUser.package.expire) > new Date())
 
   // get user's cart
   useEffect(() => {
@@ -104,6 +111,32 @@ function Header({ className = '' }: HeaderProps) {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [pathname])
+
+  // update user session after load page and every 60s
+  useEffect(() => {
+    // update session after load page
+    const updateSession = async () => {
+      console.log('Updating session...', isUpdatedSession)
+      await update()
+
+      isUpdatedSession.current = true
+    }
+
+    if (!isUpdatedSession.current) {
+      updateSession()
+    }
+
+    // update every 60s
+    let intervalId: NodeJS.Timeout
+    if (isUpdatedSession.current) {
+      intervalId = setInterval(async () => {
+        console.log('Updating session...')
+        await update()
+      }, 60000)
+    }
+
+    return () => clearInterval(intervalId)
+  }, [update, session])
 
   return (
     <header
@@ -190,16 +223,36 @@ function Header({ className = '' }: HeaderProps) {
                 )}
               </button>
               <div
-                className='flex items-center gap-2 cursor-pointer'
+                className='relative flex items-center gap-2 cursor-pointer'
                 onClick={() => setIsOpenMenu(prev => !prev)}
               >
+                {isShowCrown && (
+                  <Image
+                    className='absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 aspect-square rounded-full overflow-hidden'
+                    src='/icons/ring-circle.png'
+                    width={40}
+                    height={40}
+                    alt='ring'
+                  />
+                )}
                 <Image
-                  className='aspect-square rounded-full wiggle-0 shadow-lg'
+                  className={`relative z-10 aspect-square rounded-full wiggle-0 shadow-lg ${
+                    isShowCrown ? 'p-1' : ''
+                  }`}
                   src={curUser?.avatar || process.env.NEXT_PUBLIC_DEFAULT_AVATAR!}
                   width={40}
                   height={40}
                   alt='avatar'
                 />
+                {isShowCrown && (
+                  <Image
+                    className='absolute z-20 -top-[11px] right-[3px] rotate-[18deg]'
+                    src='/icons/crown-icon-2.png'
+                    width={24}
+                    height={24}
+                    alt='crown'
+                  />
+                )}
               </div>
             </>
           ) : (

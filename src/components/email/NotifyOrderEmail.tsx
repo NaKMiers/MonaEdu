@@ -84,7 +84,7 @@ export function NotifyOrderEmail({ order = orderSample }: { order?: any }) {
 
                 {/* Course */}
                 <div className='mt-8'>
-                  <b className='text-[24px]'>Khóa học: </b>
+                  <b className='text-[24px]'>{order.isPackage ? 'Gói học viên:' : 'Khóa học:'} </b>
 
                   <ul className='list-none p-0'>
                     {order.items.map((course: any) => (
@@ -95,13 +95,15 @@ export function NotifyOrderEmail({ order = orderSample }: { order?: any }) {
                         >
                           <Section>
                             <Row>
-                              <Column className='w-[130px]'>
-                                <Img
-                                  src={course.images[0]}
-                                  width={120}
-                                  className='inline aspect-video rounded-lg object-cover'
-                                />
-                              </Column>
+                              {course.images && course.images[0] && (
+                                <Column className='w-[130px]'>
+                                  <Img
+                                    src={course.images[0]}
+                                    width={120}
+                                    className='inline aspect-video rounded-lg object-cover'
+                                  />
+                                </Column>
+                              )}
                               <Column>
                                 <p className='font-semibold text-slate-600'>{course.title}</p>
                               </Column>

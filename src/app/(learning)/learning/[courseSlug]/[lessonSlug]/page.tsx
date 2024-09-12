@@ -99,8 +99,11 @@ function LessonPage({
         }
       } catch (err: any) {
         console.log(err)
-        router.back()
+        toast.error(err.message)
         dispatch(setPageLoading(true))
+        setTimeout(() => {
+          router.push('/my-courses')
+        }, 2000)
       } finally {
         // stop page loading
         dispatch(setPageLoading(false))

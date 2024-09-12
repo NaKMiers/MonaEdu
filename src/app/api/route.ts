@@ -2,15 +2,16 @@ import { connectDatabase } from '@/config/database'
 import CategoryModel from '@/models/CategoryModel'
 import CourseModel from '@/models/CourseModel'
 import PackageGroupModel, { IPackageGroup } from '@/models/PackageGroupModel'
+import PackageModel from '@/models/PackageModel'
 import { searchParamsToObject } from '@/utils/handleQuery'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Models: Course, Category, Package Group, Package
+// Models: Course, Category, Package Group, Package, Flash Sale
 import '@/models/CategoryModel'
 import '@/models/CourseModel'
+import '@/models/FlashSaleModel'
 import '@/models/PackageGroupModel'
 import '@/models/PackageModel'
-import PackageModel from '@/models/PackageModel'
 
 export const dynamic = 'force-dynamic'
 
@@ -167,7 +168,7 @@ export async function GET(req: NextRequest) {
       PackageGroupModel.find().lean(),
 
       // get all packages
-      PackageModel.find().lean(),
+      PackageModel.find({ active: true }).populate('flashSale').sort({ createdAt: 1 }).lean(),
     ])
 
     // categories's slugs from booted courses
@@ -203,7 +204,7 @@ export async function GET(req: NextRequest) {
           packages: pkgs,
         }
       })
-      .filter((pg: any) => Boolean(pg.packages)) as IPackageGroup[]
+      .filter((pg: any) => pg.packages.length > 0) as IPackageGroup[]
 
     // return response
     return NextResponse.json(

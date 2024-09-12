@@ -127,6 +127,24 @@ export const getTagPageApi = async (
   return await res.json()
 }
 
+// [GET]: /package
+export const getSubscriptionPageApi = async (
+  query: string = '',
+  option: RequestInit = {
+    cache: 'no-store',
+  }
+) => {
+  // no cache for filter
+  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/subscription${query}`, option)
+
+  // check status
+  if (!res.ok) {
+    throw new Error((await res.json()).message)
+  }
+
+  return await res.json()
+}
+
 // [GET]: /flash-sale
 export const getFlashSalePageApi = async (
   query: string = '',

@@ -26,6 +26,11 @@ function Comment({ comments, lessonId, className = '' }: CommentProps) {
   const [cmts, setCmts] = useState<IComment[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
+  // values
+  const isShowCrown =
+    curUser?.package &&
+    (curUser.package.expire === null || new Date(curUser.package.expire) > new Date())
+
   // forms
   const {
     register,
@@ -83,14 +88,32 @@ function Comment({ comments, lessonId, className = '' }: CommentProps) {
     <div>
       {/* MARK: Input */}
       <div className={`flex items-center justify-between gap-3 ${className}`}>
-        <Link href={`/user/${curUser?.username || curUser?.email}`}>
+        <Link className='relative' href={`/user/${curUser?.username || curUser?.email}`}>
+          {isShowCrown && (
+            <Image
+              className='absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 aspect-square rounded-full overflow-hidden'
+              src='/icons/ring-circle.png'
+              width={46}
+              height={46}
+              alt='ring'
+            />
+          )}
           <Image
-            className='rounded-full shadow-lg'
-            src={curUser?.avatar || process.env.NEXT_PUBLIC_DEFAULT_AVATAR}
-            width={40}
-            height={40}
+            className={`relative z-10 aspect-square rounded-full shadow-lg ${isShowCrown ? 'p-1' : ''}`}
+            src={curUser?.avatar || process.env.NEXT_PUBLIC_DEFAULT_AVATAR!}
+            width={46}
+            height={46}
             alt='avatar'
           />
+          {isShowCrown && (
+            <Image
+              className='absolute z-20 -top-[11px] right-[3px] rotate-[18deg]'
+              src='/icons/crown-icon-2.png'
+              width={24}
+              height={24}
+              alt='crown'
+            />
+          )}
         </Link>
         <div
           className={`relative w-full rounded-lg border-[2px] bg-white ${

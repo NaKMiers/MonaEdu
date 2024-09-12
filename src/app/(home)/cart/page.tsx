@@ -29,7 +29,7 @@ function CartPage() {
   // hooks
   const router = useRouter()
   const queryParams = useSearchParams()
-  const { data: session } = useSession()
+  const { data: session, update } = useSession()
   const curUser: any = session?.user
 
   // reducers
@@ -38,25 +38,25 @@ function CartPage() {
   let cartItems = useAppSelector(state => state.cart.items)
   const selectedItems = useAppSelector(state => state.cart.selectedItems)
 
-  // states
+  // MARK: states
   const [subTotal, setSubTotal] = useState<number>(0)
   const [discount, setDiscount] = useState<number>(0)
   const [total, setTotal] = useState<number>(0)
 
-  // voucher states
-  const [isShowVoucher, setIsShowVoucher] = useState<boolean>(false)
+  // MARK: Voucher states
   const [voucher, setVoucher] = useState<IVoucher | null>(null)
   const [voucherMessage, setVoucherMessage] = useState<string>('')
   const [applyingVoucher, setApplyingVoucher] = useState<boolean>(false)
 
-  // gift states
+  // MARK: Gift states
   const [isShowGift, setIsShowGift] = useState<boolean>(false)
   const [findingUser, setFindingUser] = useState<boolean>(false)
   const [buyAsGiftMessage, setBuyAsGiftMessage] = useState<string>('')
   const [foundUser, setFoundUser] = useState<IUser | null>(null)
 
-  // loading and showing
+  // MARK: loading and showing states
   const [isBuying, setIsBuying] = useState<boolean>(false)
+  const [isOpenConfirmBuyOnCreditDialog, setIsOpenConfirmBuyOnCreditDialog] = useState<boolean>(false)
 
   // form
   const {
@@ -186,7 +186,7 @@ function CartPage() {
   // MARK: Checkout
   // handle checkout
   const handleCheckout = useCallback(
-    async (type: string) => {
+    async (type: 'momo' | 'banking') => {
       // validate before checkout
       if (!handleValidateBeforeCheckout()) return
 
@@ -201,7 +201,7 @@ function CartPage() {
         }))
 
         // send request to server to create order
-        const { code } = await createOrderApi({
+        const { code, message } = await createOrderApi({
           total,
           voucher: voucher?._id,
           receivedUser: foundUser?.email,
@@ -224,10 +224,14 @@ function CartPage() {
 
         // move to checkout page
         router.push(`/checkout/${type}`)
+
+        setTimeout(() => {
+          // stop page loading
+          dispatch(setPageLoading(false))
+        }, 1000)
       } catch (err: any) {
         toast.error(err.message)
         console.log(err)
-      } finally {
         // stop page loading
         dispatch(setPageLoading(false))
       }
@@ -319,7 +323,7 @@ function CartPage() {
         <div className='col-span-3 lg:col-span-1 text-dark'>
           <div className='border-2 border-primary rounded-medium shadow-lg p-4 sticky lg:mt-[40px] top-[93px] bg-white overflow-auto'>
             {/* Voucher */}
-            <div className='flex items-center gap-2 mb-2 overflow-hidden trans-200'>
+            <div className='flex items-center gap-2 mb-2 overflow-hidden trans-200 pt-2 -mt-2'>
               <Input
                 id='code'
                 label='Mã giảm giá'
@@ -368,7 +372,7 @@ function CartPage() {
 
             <div
               className={`flex items-center gap-2 overflow-hidden trans-200 ${
-                isShowGift ? 'max-h-[200px] mt-2 mb-2' : 'max-h-0'
+                isShowGift ? 'max-h-[200px] mb-2 pt-2' : 'max-h-0 p-0'
               }`}
             >
               <Input
@@ -442,9 +446,9 @@ function CartPage() {
             <Divider border size={4} />
 
             {/* MARK: Payment Methods */}
-            <div className='flex justify-center gap-3 select-none'>
+            <div className='flex flex-wrap justify-center gap-3 select-none'>
               <button
-                className={`w-full flex items-center justify-center rounded-xl gap-2 border border-dark py-2 px-3 group hover:bg-dark-0 trans-200 ${
+                className={`flex-1 flex items-center justify-center rounded-xl gap-2 border border-dark py-2 px-4 group hover:bg-dark-0 trans-200 ${
                   isBuying || isLoading ? 'pointer-events-none' : ''
                 }`}
                 onClick={() => handleCheckout('momo')}
@@ -461,7 +465,7 @@ function CartPage() {
               </button>
 
               <button
-                className={`w-full flex items-center justify-center rounded-xl gap-2 border border-dark py-2 px-3 group hover:bg-dark-0 trans-200 ${
+                className={`flex-1 flex items-center justify-center rounded-xl gap-2 border border-dark py-2 px-4 group hover:bg-dark-0 trans-200 ${
                   isBuying || isLoading ? 'pointer-events-none' : ''
                 }`}
                 onClick={() => handleCheckout('banking')}

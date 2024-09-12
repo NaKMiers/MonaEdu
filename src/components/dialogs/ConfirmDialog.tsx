@@ -6,7 +6,7 @@ interface ConfirmDialogProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>
   title: string
   content: string
-  acceeptLabel?: string
+  acceptLabel?: string
   cancelLabel?: string
   onAccept: () => void
   isLoading?: boolean
@@ -19,7 +19,7 @@ function ConfirmDialog({
   setOpen,
   title,
   content,
-  acceeptLabel,
+  acceptLabel,
   cancelLabel,
   onAccept,
   isLoading = false,
@@ -91,9 +91,9 @@ function ConfirmDialog({
       <div
         className={`relative z-50 rounded-medium shadow-medium-light bg-white p-21 max-w-[500px] w-full max-h-[500px] opacity-0 trans-300 translate-y-8 ${className}`}
         ref={modalBodyRef}
-        onClick={(e) => e.stopPropagation()}
+        onClick={e => e.stopPropagation()}
       >
-        <h2 className='text-2xl font-semibold tracking-wide'>{title}</h2>
+        <h2 className='text-xl font-semibold tracking-wide'>{title}</h2>
         <hr className='my-2' />
 
         <p className='font-body tracking-wide'>{content}</p>
@@ -123,7 +123,7 @@ function ConfirmDialog({
             {isLoading ? (
               <RiDonutChartFill size={24} className='animate-spin text-slate-300' />
             ) : (
-              acceeptLabel || 'Chấp nhận'
+              acceptLabel || 'Chấp nhận'
             )}
           </button>
         </div>

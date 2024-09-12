@@ -11,7 +11,10 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
     await connectDatabase()
 
     // get data to add package
-    const { title, oldPrice, price, description, active, features } = await req.json()
+    const { title, oldPrice, price, description, active, features, credit, days, maxPrice } =
+      await req.json()
+
+    console.log('maxPrice', maxPrice)
 
     // update package
     const updatedPackage = await PackageModel.findByIdAndUpdate(
@@ -24,6 +27,9 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
           description,
           active,
           features,
+          credit,
+          days,
+          maxPrice,
         },
       },
       { new: true }

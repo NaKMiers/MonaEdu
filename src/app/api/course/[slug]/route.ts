@@ -77,7 +77,6 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
 
     // check if suggestedCourses less than 8
     if (relatedCourses.length < 8) {
-      console.log('moreCourses')
       const moreCourses: ICourse[] = await CourseModel.find({
         _id: {
           $nin: [course._id, ...relatedCourses.map(course => course._id)],

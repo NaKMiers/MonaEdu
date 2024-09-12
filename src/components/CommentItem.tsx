@@ -9,10 +9,11 @@ import React, { memo, useCallback, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { FaEye, FaEyeSlash, FaHeart, FaRegHeart, FaSortDown } from 'react-icons/fa'
-import { format } from 'timeago.js'
+import { HiDotsHorizontal } from 'react-icons/hi'
+import { format, register as timeAgoRegister } from 'timeago.js'
+import vi from 'timeago.js/lib/lang/vi'
 import LoadingButton from './LoadingButton'
 import ReportDialog from './dialogs/ReportDigalog'
-import { HiDotsHorizontal, HiDotsVertical } from 'react-icons/hi'
 
 interface CommentItemProps {
   comment: IComment
@@ -36,14 +37,12 @@ function CommentItem({ comment, setCmts, className = '' }: CommentItemProps) {
 
   // values
   const user = comment.user
+  const isShowCrown =
+    user?.package && (user.package.expire === null || new Date(user.package.expire) > new Date())
+  timeAgoRegister('vi', vi)
 
   // form
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm<FieldValues>({
+  const { register, handleSubmit, reset } = useForm<FieldValues>({
     defaultValues: {
       comment: '',
     },
@@ -183,14 +182,32 @@ function CommentItem({ comment, setCmts, className = '' }: CommentItemProps) {
   return (
     <div className={`w-full flex items-start gap-3 ${className}`}>
       {/* Avatar */}
-      <Link href={`/user/${curUser?.username || curUser?.email}`}>
+      <Link className='relative' href={`/user/${curUser?.username || curUser?.email}`}>
+        {isShowCrown && (
+          <Image
+            className='absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 aspect-square rounded-full overflow-hidden'
+            src='/icons/ring-circle.png'
+            width={40}
+            height={40}
+            alt='ring'
+          />
+        )}
         <Image
-          className='rounded-full shadow-lg'
-          src={user?.avatar || process.env.NEXT_PUBLIC_DEFAULT_AVATAR!}
+          className={`relative z-10 aspect-square rounded-full shadow-lg ${isShowCrown ? 'p-1' : ''}`}
+          src={curUser?.avatar || process.env.NEXT_PUBLIC_DEFAULT_AVATAR!}
           width={40}
           height={40}
           alt='avatar'
         />
+        {isShowCrown && (
+          <Image
+            className='absolute z-20 -top-[11px] right-[3px] rotate-[18deg]'
+            src='/icons/crown-icon-2.png'
+            width={24}
+            height={24}
+            alt='crown'
+          />
+        )}
       </Link>
 
       <div className='w-full'>
@@ -199,7 +216,7 @@ function CommentItem({ comment, setCmts, className = '' }: CommentItemProps) {
           <span className='font-semibold'>
             {user?.firstName && user?.lastName ? `${user?.firstName} ${user?.lastName}` : user?.username}
           </span>{' '}
-          - <span className='text-slate-500 text-sm'>{format(comment.createdAt)}</span>{' '}
+          - <span className='text-slate-500 text-sm'>{format(comment.createdAt, 'vi')}</span>{' '}
           {/* Action Buttons */}
           {curUser?._id && (
             <div className='relative flex justify-end items-center'>
@@ -314,15 +331,15 @@ function CommentItem({ comment, setCmts, className = '' }: CommentItemProps) {
               />
               <div className='flex gap-2 mt-2 justify-end'>
                 <button
-                  className='h-[30px] text-sm px-3 rounded-lg hover:bg-slate-200 trans-200'
+                  className='h-[30px] text-sm px-3 rounded-lg border border-slate-200 hover:bg-slate-200 trans-200 ml-2'
                   onClick={() => setIsOpenReply(false)}
                 >
-                  Cancel
+                  Hủy
                 </button>
                 <LoadingButton
-                  className='h-[30px] flex items-center text-sm px-3 border border-primary hover:bg-primary text-primary hover:text-white rounded-lg trans-200'
+                  className='h-[30px] flex items-center text-sm px-3 border border-dark hover:bg-dark-100 text-dark hover:text-white rounded-lg trans-200'
                   onClick={handleSubmit(replyComment)}
-                  text='Send'
+                  text='Gửi'
                   isLoading={isLoading}
                 />
               </div>

@@ -18,8 +18,9 @@ import { HiDotsVertical } from 'react-icons/hi'
 import { PiStudentBold } from 'react-icons/pi'
 import { RiDonutChartFill } from 'react-icons/ri'
 import { FacebookShareButton } from 'react-share'
-import { CardBody, CardContainer, CardItem } from './3dCard'
+import { CardBody, CardContainer, CardItem } from './effects/3dCard'
 import Divider from './Divider'
+import BuyNowButton from './admin/BuyNowButton'
 
 const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />

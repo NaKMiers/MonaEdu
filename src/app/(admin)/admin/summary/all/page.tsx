@@ -1,103 +1,103 @@
-'use client';
+'use client'
 
-import AdminHeader from '@/components/admin/AdminHeader';
-import AdminMeta from '@/components/admin/AdminMeta';
-import SummaryItem from '@/components/admin/SummaryItem';
-import Pagination from '@/components/layouts/Pagination';
-import { useAppDispatch } from '@/libs/hooks';
-import { setPageLoading } from '@/libs/reducers/modalReducer';
-import { IUser } from '@/models/UserModel';
-import { getAllCollaboratorsApi, sendSummaryApi } from '@/requests/summaryRequest';
-import { handleQuery } from '@/utils/handleQuery';
-import { useCallback, useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
+import AdminHeader from '@/components/admin/AdminHeader'
+import AdminMeta from '@/components/admin/AdminMeta'
+import SummaryItem from '@/components/admin/SummaryItem'
+import Pagination from '@/components/layouts/Pagination'
+import { useAppDispatch } from '@/libs/hooks'
+import { setPageLoading } from '@/libs/reducers/modalReducer'
+import { IUser } from '@/models/UserModel'
+import { getAllCollaboratorsApi, sendSummaryApi } from '@/requests/summaryRequest'
+import { handleQuery } from '@/utils/handleQuery'
+import { useCallback, useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 
 function AllSummariesPage({ searchParams }: { searchParams?: { [key: string]: string[] } }) {
   // hooks
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
 
   // states
-  const [summaries, setSummaries] = useState<IUser[]>([]);
-  const [amount, setAmount] = useState<number>(0);
-  const [selectedSummaries, setSelectedSummaries] = useState<string[]>([]);
+  const [summaries, setSummaries] = useState<IUser[]>([])
+  const [amount, setAmount] = useState<number>(0)
+  const [selectedSummaries, setSelectedSummaries] = useState<string[]>([])
 
   // loading
-  const [loadingSummaries, setLoadingSummaries] = useState<string[]>([]);
+  const [loadingSummaries, setLoadingSummaries] = useState<string[]>([])
 
   // values
-  const itemPerPage = 9;
+  const itemPerPage = 9
 
   // MARK: Get Data
   // get all summaries
   useEffect(() => {
     // get all summaries
     const getAllSummaries = async () => {
-      const query = handleQuery(searchParams);
+      const query = handleQuery(searchParams)
 
       // start page loading
-      dispatch(setPageLoading(true));
+      dispatch(setPageLoading(true))
 
       try {
         // send request to server to get all courses
-        const { collaborators, amount } = await getAllCollaboratorsApi(query);
+        const { collaborators, amount } = await getAllCollaboratorsApi(query)
 
         // set courses to state
-        setSummaries(collaborators);
-        setAmount(amount);
+        setSummaries(collaborators)
+        setAmount(amount)
       } catch (err: any) {
-        console.log(err);
-        toast.error(err.message);
+        console.log(err)
+        toast.error(err.message)
       } finally {
         // stop page loading
-        dispatch(setPageLoading(false));
+        dispatch(setPageLoading(false))
       }
-    };
-    getAllSummaries();
-  }, [dispatch, searchParams]);
+    }
+    getAllSummaries()
+  }, [dispatch, searchParams])
 
   // MARK: Handlers
   // sent summaries
   const handleSendSummaries = useCallback(async (ids: string[]) => {
     // set loading
-    setLoadingSummaries(ids);
+    setLoadingSummaries(ids)
 
     try {
       // send request to server
-      const { message } = await sendSummaryApi(ids);
+      const { message } = await sendSummaryApi(ids)
 
       // show success message
-      toast.success(message);
+      toast.success(message)
     } catch (err: any) {
-      console.log(err);
-      toast.error(err.message);
+      console.log(err)
+      toast.error(err.message)
     } finally {
       // stop loading
-      setLoadingSummaries([]);
-      setSelectedSummaries([]);
+      setLoadingSummaries([])
+      setSelectedSummaries([])
     }
-  }, []);
+  }, [])
 
   // keyboard event
   useEffect(() => {
     // page title
-    document.title = 'Summary - Mona Edu';
+    document.title = 'Summary - Mona Edu'
 
     const handleKeyDown = (e: KeyboardEvent) => {
       // Alt + A (Select All)
       if (e.altKey && e.key === 'a') {
-        e.preventDefault();
-        setSelectedSummaries((prev) =>
-          prev.length === summaries.length ? [] : summaries.map((summary) => summary._id)
-        );
+        e.preventDefault()
+        setSelectedSummaries(prev =>
+          prev.length === summaries.length ? [] : summaries.map(summary => summary._id)
+        )
       }
-    };
+    }
 
     // Add the event listener
-    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown)
 
     // Remove the event listener on cleanup
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [summaries]);
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [summaries])
 
   return (
     <div className='w-full'>
@@ -118,7 +118,7 @@ function AllSummariesPage({ searchParams }: { searchParams?: { [key: string]: st
             title='Alt + A'
             onClick={() =>
               setSelectedSummaries(
-                selectedSummaries.length > 0 ? [] : summaries.map((summary) => summary._id)
+                selectedSummaries.length > 0 ? [] : summaries.map(summary => summary._id)
               )
             }
           >
@@ -146,7 +146,7 @@ function AllSummariesPage({ searchParams }: { searchParams?: { [key: string]: st
 
       {/* MARK: MAIN LIST */}
       <div className='grid grid-cols-1 md:grid-cols-2 gap-21 lg:grid-cols-3'>
-        {summaries.map((user) => (
+        {summaries.map(user => (
           <SummaryItem
             data={user}
             loadingSummaries={loadingSummaries}
@@ -160,7 +160,7 @@ function AllSummariesPage({ searchParams }: { searchParams?: { [key: string]: st
         ))}
       </div>
     </div>
-  );
+  )
 }
 
-export default AllSummariesPage;
+export default AllSummariesPage

@@ -2,6 +2,7 @@
 
 import CourseCard from '@/components/CourseCard'
 import Input from '@/components/Input'
+import PackageItem from '@/components/PackageItem'
 import { useAppDispatch } from '@/libs/hooks'
 import { setPageLoading } from '@/libs/reducers/modalReducer'
 import { IOrder } from '@/models/OrderModel'
@@ -321,21 +322,25 @@ function AdminOrderDetailPage({ params: { code } }: { params: { code: string } }
       </h3>
 
       {/* MARK: Items */}
-      <div className='grid grid-cols-2 md:grid-cols-4 gap-21'>
-        {order?.items.map((course: any, index: number) => (
-          <div className='relative' key={index}>
+      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-21'>
+        {order?.items.map((item: any, index: number) => (
+          <div className='relative rounded-lg overflow-hidden shadow-lg' key={index}>
             {editMode && (
               <div className='flex gap-2 absolute z-10 top-2 right-2'>
                 {/* Remove Button */}
                 <button
                   className='group rounded-md h-7 w-7 flex items-center justify-center border-2 border-rose-500 text-rose-500 hover:bg-rose-500 hover:text-white trans-200'
-                  onClick={() => handleRemoveItem(course)}
+                  onClick={() => handleRemoveItem(item)}
                 >
                   <FaTrash size={12} className='wiggle' />
                 </button>
               </div>
             )}
-            <CourseCard course={course} />
+            {order.isPackage ? (
+              <PackageItem className='!min-w-0 !w-full' pkg={item} />
+            ) : (
+              <CourseCard course={item} />
+            )}
           </div>
         ))}
       </div>

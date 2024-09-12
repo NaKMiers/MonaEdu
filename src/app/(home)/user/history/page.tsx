@@ -1,5 +1,6 @@
 'use client'
 
+import Divider from '@/components/Divider'
 import BottomGradient from '@/components/gradients/BottomGradient'
 import Input from '@/components/Input'
 import Pagination from '@/components/layouts/Pagination'
@@ -219,7 +220,7 @@ function HistoryPage({ searchParams }: { searchParams?: { [key: string]: string[
                     max={maxTotal}
                     step={1}
                     className='w-full -mb-1.5'
-                    onChange={(_, newValue: number | number[]) => setTotal(newValue as number[])}
+                    onChange={(_: any, newValue: number | number[]) => setTotal(newValue as number[])}
                     valueLabelDisplay='auto'
                     style={{ color: '#333' }}
                   />
@@ -361,22 +362,33 @@ function HistoryPage({ searchParams }: { searchParams?: { [key: string]: string[
                   )}
                   {order.items.map((item: any, index: number) => (
                     <div className='flex gap-3 items-start mt-3' key={index}>
-                      <Link
-                        href={`/${item.slug}`}
-                        className='aspect-video w-full max-w-[100px] rounded-lg shadow-lg overflow-hidden'
-                      >
-                        <Image
-                          className='w-full h-full object-cover'
-                          src={item.images[0]}
-                          width={100}
-                          height={80}
-                          alt={item.title}
-                          loading='lazy'
-                        />
-                      </Link>
+                      {!order.isPackage && (
+                        <Link
+                          href={`/${item.slug}`}
+                          className='aspect-video w-full max-w-[100px] rounded-lg shadow-lg overflow-hidden'
+                        >
+                          <Image
+                            className='w-full h-full object-cover'
+                            src={item.images[0]}
+                            width={100}
+                            height={80}
+                            alt={item.title}
+                            loading='lazy'
+                          />
+                        </Link>
+                      )}
                       <div className='flex-1 gap-0.5'>
                         <p className='font-body tracking-wider font-semibold text-lg -mt-1 leading-6'>
-                          {item.title}
+                          {order.isPackage ? (
+                            <>
+                              <span>Gói học viên</span>:{' '}
+                              <Link href='/subscription' className='underline'>
+                                {item.title}
+                              </Link>
+                            </>
+                          ) : (
+                            item.title
+                          )}
                         </p>
                       </div>
                     </div>
@@ -384,7 +396,11 @@ function HistoryPage({ searchParams }: { searchParams?: { [key: string]: string[
                 </div>
               ))}
 
-              <Pagination searchParams={searchParams} amount={amount} itemsPerPage={itemPerPage} />
+              <Divider size={10} />
+
+              <Pagination dark searchParams={searchParams} amount={amount} itemsPerPage={itemPerPage} />
+
+              <Divider size={10} />
             </div>
           </div>
         </div>

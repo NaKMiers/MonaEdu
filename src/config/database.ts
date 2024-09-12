@@ -4,10 +4,9 @@ let cachedConnection: any = null
 
 export async function connectDatabase() {
   if (cachedConnection) {
-    //
-    console.log('Returning cached database connection') //
+    console.log('Returning cached database connection')
     return cachedConnection
-  } //
+  }
 
   try {
     await mongoose.connect(process.env.MONGODB!)

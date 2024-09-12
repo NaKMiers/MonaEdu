@@ -1,17 +1,21 @@
 import CourseModel, { ICourse } from '@/models/CourseModel'
+import NotificationModel from '@/models/NotificationModel'
 import OrderModel, { IOrder } from '@/models/OrderModel'
+import PackageModel from '@/models/PackageModel'
 import UserModel, { IUser } from '@/models/UserModel'
 import VoucherModel, { IVoucher } from '@/models/VoucherModel'
+import moment from 'moment-timezone'
+import { applyFlashSalePrice } from './number'
 import { notifyDeliveryOrder, notifyGivenCourse } from './sendMail'
-import NotificationModel from '@/models/NotificationModel'
-import { getUserName } from './string'
+import { checkPackageType, getUserName } from './string'
 
-// Models: Order, Voucher, User, Course, Notification
+// Models: Order, Voucher, User, Course, Notification, Package
 import '@/models/CourseModel'
+import '@/models/NotificationModel'
 import '@/models/OrderModel'
+import '@/models/PackageModel'
 import '@/models/UserModel'
 import '@/models/VoucherModel'
-import '@/models/NotificationModel'
 
 export default async function handleDeliverOrder(id: string, message: string = '') {
   console.log('- Handle Deliver Order -')
@@ -43,136 +47,232 @@ export default async function handleDeliverOrder(id: string, message: string = '
   }
 
   // get items and applied voucher
-  const { items, email, total, userId, receivedUser } = order
+  const { items, email, total, userId, receivedUser, isPackage } = order
 
-  const buyer: IUser | null = await UserModel.findById(userId).lean()
+  let buyer: IUser | null = await UserModel.findById(userId).lean()
 
-  // buy for themselves
-  if (!receivedUser) {
-    console.log('- Buy For Themselves -')
-    // get user to check if user has already joined course
-    const userCourses: any = buyer?.courses
-
-    const userCourseIds = userCourses.map((course: any) => course.course.toString())
-    const itemIds = items.map((item: any) => item._id.toString())
-
-    if (itemIds.some((id: string) => userCourseIds.includes(id))) {
-      throw new Error('Học viên đã tham gia khóa học này')
-    }
+  // check if user exists or not
+  if (!buyer) {
+    throw new Error('User not found')
   }
 
-  // buy as a gift
-  else {
-    console.log('- Buy As A Gift -')
-
-    const receiver: IUser | null = await UserModel.findOne({
-      email: receivedUser,
-    }).lean()
-    if (!receiver) {
-      throw new Error('Receiver not found')
-    }
-
-    const userCourses: any = receiver?.courses
-    const userCourseIds = userCourses.map((course: any) => course.course.toString())
-    const itemIds = items.map((item: any) => item._id.toString())
-
-    if (itemIds.some((id: string) => userCourseIds.includes(id))) {
-      throw new Error('Học viên đã tham gia khóa học này')
-    }
-  }
-
-  // VOUCHER
-  const voucher: IVoucher = order.voucher as IVoucher
-
-  if (voucher) {
-    const commission: any = (voucher.owner as IUser).commission
-    let extraAccumulated = 0
-
-    switch (commission.type) {
-      case 'fixed': {
-        extraAccumulated = commission.value
-        break
-      }
-      case 'percentage': {
-        extraAccumulated = (order.total * parseFloat(commission.value)) / 100
-        break
-      }
-    }
-
-    // update voucher
-    await VoucherModel.findByIdAndUpdate(voucher._id, {
-      $addToSet: { usedUsers: email },
-      $inc: {
-        accumulated: extraAccumulated,
-        timesLeft: -1,
-      },
-    })
-  }
-
-  // USER
-  if (receivedUser) {
-    // buy as a gift
-    const receiver = await UserModel.findOneAndUpdate(
-      { email: receivedUser },
-      {
-        $addToSet: {
-          courses: items.map((item: any) => ({
-            course: item._id,
-            progress: 0,
-          })),
-          gifts: items.map((item: any) => ({
-            course: item._id,
-            giver: email,
-          })),
-        },
-      }
-    )
-
-    // notify receiver after buying courseO
-    await NotificationModel.create({
-      userId: receiver._id,
-      title: `Bạn đươc tặng khóa học bởi ${getUserName(buyer as IUser)}, học ngay thôi!`,
-      image: '/images/logo.png',
-      link: '/my-courses',
-      type: 'given-course',
-    })
-  } else {
+  // Buy Courses
+  if (!isPackage) {
     // buy for themselves
-    const buyer = await UserModel.findOneAndUpdate(
-      { email },
-      {
-        $inc: { expended: total },
-        $addToSet: {
-          courses: items.map((item: any) => ({
-            course: item._id,
-            progress: 0,
-          })),
-        },
+    if (!receivedUser) {
+      console.log('- Buy For Themselves -')
+      // get user to check if user has already joined course
+      const userCourses: any = buyer?.courses
+
+      const userCourseIds = userCourses.map((course: any) => course.course.toString())
+      const itemIds = items.map((item: any) => item._id.toString())
+
+      if (itemIds.some((id: string) => userCourseIds.includes(id))) {
+        throw new Error('Học viên đã tham gia khóa học này')
       }
+    }
+
+    // buy as a gift
+    else {
+      const receiver: IUser | null = await UserModel.findOne({
+        email: receivedUser,
+      }).lean()
+      if (!receiver) {
+        throw new Error('Receiver not found')
+      }
+
+      const userCourses: any = receiver?.courses
+      const userCourseIds = userCourses.map((course: any) => course.course.toString())
+      const itemIds = items.map((item: any) => item._id.toString())
+
+      if (itemIds.some((id: string) => userCourseIds.includes(id))) {
+        throw new Error('Học viên đã tham gia khóa học này')
+      }
+    }
+
+    // VOUCHER
+    const voucher: IVoucher = order.voucher as IVoucher
+
+    if (voucher) {
+      const commission: any = (voucher.owner as IUser).commission
+      let extraAccumulated = 0
+
+      switch (commission.type) {
+        case 'fixed': {
+          extraAccumulated = commission.value
+          break
+        }
+        case 'percentage': {
+          extraAccumulated = (order.total * parseFloat(commission.value)) / 100
+          break
+        }
+      }
+
+      // update voucher
+      await VoucherModel.findByIdAndUpdate(voucher._id, {
+        $addToSet: { usedUsers: email },
+        $inc: {
+          accumulated: extraAccumulated,
+          timesLeft: -1,
+        },
+      })
+    }
+
+    // USER
+    // buy as a gift
+    if (receivedUser) {
+      // get receiver courses
+      let receiver: IUser | null = await UserModel.findOneAndUpdate({ email: receivedUser }).lean()
+
+      // check if receiver exists or not
+      if (!receiver) {
+        throw new Error('Receiver not found')
+      }
+
+      // merge new course to old course in case that user has already joined this course
+      const itemIds = items.map((course: any) => course._id.toString())
+      const updatedUserCourses = receiver?.courses.map(
+        (course: any) =>
+          itemIds.includes(course.course.toString())
+            ? {
+                // duplicate
+                course: course.course,
+                progress: course.progress,
+                // expire will be exclude if exist
+              }
+            : course // not duplicate
+      )
+
+      // buy as a gift
+      await UserModel.updateOne(
+        { email: receivedUser },
+        {
+          $set: { courses: updatedUserCourses },
+          $addToSet: {
+            gifts: items.map((item: any) => ({
+              course: item._id,
+              giver: email,
+            })),
+          },
+        }
+      )
+
+      // notify receiver after buying course
+      await NotificationModel.create({
+        userId: receiver._id,
+        title: `Bạn đươc tặng khóa học bởi ${getUserName(buyer as IUser)}, học ngay thôi!`,
+        image: '/images/logo.png',
+        link: '/my-courses',
+        type: 'given-course',
+      })
+    }
+    // buy for themselves
+    else {
+      // merge new course to old course in case that user has already joined this course
+      const itemIds = items.map((course: any) => course._id.toString())
+      const updatedUserCourses = buyer?.courses.map(
+        (course: any) =>
+          itemIds.includes(course.course.toString())
+            ? {
+                // duplicate
+                course: course.course,
+                progress: course.progress,
+                // expire will be exclude if exist
+              }
+            : course // not duplicate
+      )
+
+      // update user courses, increase expended
+      await UserModel.findOneAndUpdate(
+        { email },
+        {
+          $inc: { expended: total },
+          $set: { courses: updatedUserCourses },
+        }
+      )
+
+      // notify buyer after buying course
+      await NotificationModel.create({
+        userId: buyer._id,
+        title: 'Tham gia khóa học thành công, học ngay thôi!',
+        image: '/images/logo.png',
+        link: '/my-courses',
+        type: 'delivered-order',
+      })
+    }
+
+    // COURSE
+    await CourseModel.updateMany(
+      { _id: { $in: order.items.map((item: ICourse) => item._id) } },
+      { $inc: { joined: 1 } }
     )
-
-    // notify buyer after buying course
-    await NotificationModel.create({
-      userId: buyer._id,
-      title: 'Tham gia khóa học thành công, học ngay thôi!',
-      image: '/images/logo.png',
-      link: '/my-courses',
-      type: 'delivered-order',
-    })
   }
+  // Buy Package
+  else {
+    // get current package of user if exist to prevent downgrade
+    const userPackage = buyer?.package
 
-  // COURSE
-  await CourseModel.updateMany(
-    { _id: { $in: order.items.map((item: ICourse) => item._id) } },
-    { $inc: { joined: 1 } }
-  )
+    // prevent downgrade with lifetime advanced
+    if (
+      checkPackageType(userPackage?.credit, userPackage?.expire) === 'lifetime' &&
+      !userPackage.maxPrice
+    ) {
+      throw new Error('Không thể thay đổi gói học viên hiện tại của học viên')
+    }
+
+    // USER
+    const { _id, title, price, joined, credit, days, maxPrice, packageGroup, flashSale } = items[0]
+
+    const userPackageData = {
+      title,
+      price: flashSale ? applyFlashSalePrice(price, flashSale) : price,
+      packageGroup: typeof packageGroup === 'string' ? packageGroup : packageGroup._id,
+      joined,
+      credit: credit || null,
+      expire: days ? moment(order.createdAt).add(days, 'days').toDate() : null,
+      maxPrice: maxPrice || null,
+      createdAt: order.createdAt,
+    }
+
+    await Promise.all([
+      // update package field of user
+      UserModel.findByIdAndUpdate(userId, { $set: { package: userPackageData } }),
+
+      // notify buyer after buying package
+      NotificationModel.create({
+        userId,
+        title: 'Đăng ký gói học viên thành công!',
+        image: '/images/logo.png',
+        link: '/my-courses',
+        type: 'delivered-order',
+      }),
+
+      // PACKAGE
+      // increase joined of package
+      PackageModel.findByIdAndUpdate(_id, { $inc: { joined: 1 } }),
+
+      // update all user courses that joined by monthly package
+      UserModel.findByIdAndUpdate(userId, {
+        $set: {
+          courses: buyer?.courses.map((course: any) =>
+            course.expire &&
+            course.expire !== null &&
+            checkPackageType(userPackageData.credit, userPackageData.expire) === 'monthly'
+              ? {
+                  ...course,
+                  expire: userPackageData.expire, // update new expire date when course buy monthly package again
+                }
+              : course
+          ),
+        },
+      }),
+    ])
+  }
 
   // ORDER
   const updatedOrder: IOrder | null = await OrderModel.findByIdAndUpdate(
     order._id.toString(),
-    {
-      $set: { status: 'done' },
-    },
+    { $set: { status: 'done' } },
     { new: true }
   ).lean()
 
@@ -184,10 +284,11 @@ export default async function handleDeliverOrder(id: string, message: string = '
   }
 
   // EMAIL
+  // notify delivery order
   await notifyDeliveryOrder(email, orderData)
 
   // notify given course
-  if (receivedUser) {
+  if (receivedUser && !isPackage) {
     await notifyGivenCourse(
       receivedUser,
       `${

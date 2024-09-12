@@ -5,7 +5,8 @@ import { Dispatch, memo, SetStateAction, useCallback, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { FaCircleNotch, FaMoneyBillAlt, FaPlay, FaPlusCircle } from 'react-icons/fa'
-import { FaDeleteLeft } from 'react-icons/fa6'
+import { FaCalendarDays, FaDeleteLeft } from 'react-icons/fa6'
+import { MdNumbers } from 'react-icons/md'
 import Divider from '../Divider'
 import Input from '../Input'
 
@@ -46,23 +47,61 @@ function PackageModal({
     formState: { errors },
     reset,
     clearErrors,
+    setError,
   } = useForm<FieldValues>({
     defaultValues: {
       title: pkg?.title || '',
-      oldPrice: pkg?.oldPrice || 0,
-      price: pkg?.price || 0,
+      oldPrice: pkg?.oldPrice || '',
+      price: pkg?.price || '',
       description: pkg?.description || '',
       packageGroup: pkg?.packageGroup || '',
+      credit: pkg?.credit || '',
+      days: pkg?.days || '',
+      maxPrice: pkg?.maxPrice || '',
     },
   })
+
+  // validate form before submit
+  const handleValidate: SubmitHandler<FieldValues> = useCallback(
+    data => {
+      let isValid = true
+
+      // +credit -> -days, -maxPrice
+      // +days -> -credit, -maxPrice
+      // +maxPrice -> -credit, -days
+      // -> -maxPrice, -credit, -days
+
+      let count = 0
+
+      const keys = ['credit', 'days', 'maxPrice']
+      keys.forEach((key: string, index: number) => (data[key] ? count++ : count))
+
+      if (count > 1) {
+        setError('credit', {
+          type: 'manual',
+          message: '(Credit or Days or Max Price or Nothing) is required',
+        })
+        setError('days', {
+          type: 'manual',
+          message: '(Credit or Days or Max Price or Nothing) is required',
+        })
+        setError('maxPrice', {
+          type: 'manual',
+          message: '(Credit or Days or Max Price or Nothing) is required',
+        })
+
+        isValid = false
+      }
+
+      return isValid
+    },
+    [setError]
+  )
 
   // add new packageGroup
   const onAddSubmit: SubmitHandler<FieldValues> = useCallback(
     async data => {
-      if (!setPackages) {
-        toast.error('Package not found')
-        return
-      }
+      if (!setPackages || !handleValidate(data)) return
 
       // start loading
       setIsLoading(true)
@@ -95,15 +134,12 @@ function PackageModal({
         setIsLoading(false)
       }
     },
-    [features, isActiveChecked, packageGroupId, reset, setOpen, setPackages]
+    [reset, setOpen, setPackages, handleValidate, packageGroupId, features, isActiveChecked, ,]
   )
 
   const onEditSubmit: SubmitHandler<FieldValues> = useCallback(
     async data => {
-      if (!pkg || !setPackages) {
-        toast.error('Package not found')
-        return
-      }
+      if (!pkg || !setPackages || !handleValidate(data)) return
 
       // start loading
       setIsLoading(true)
@@ -132,7 +168,7 @@ function PackageModal({
         setIsLoading(false)
       }
     },
-    [pkg, setPackages, features, isActiveChecked, setOpen]
+    [setOpen, handleValidate, setPackages, pkg, features, isActiveChecked]
   )
 
   return (
@@ -149,7 +185,7 @@ function PackageModal({
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             exit={{ scale: 0 }}
-            className='w-full max-w-[500px] rounded-medium shadow-medium bg-white p-21'
+            className='max-h-[calc(100vh-2*80px)] overflow-y-auto w-full max-w-[600px] rounded-medium shadow-medium bg-white p-21'
             onClick={e => e.stopPropagation()}
           >
             <h1 className='text-dark text-center font-semibold text-xl'>{title}</h1>
@@ -176,6 +212,7 @@ function PackageModal({
               register={register}
               errors={errors}
               type='textarea'
+              rows={2}
               labelBg='bg-white'
               className='min-w-[40%] mt-3'
               onFocus={() => clearErrors('description')}
@@ -183,7 +220,7 @@ function PackageModal({
 
             <Divider size={3} />
 
-            <div className='grid grid-cols-1 lg:grid-cols-2 gap-3 '>
+            <div className='grid grid-cols-1 lg:grid-cols-2 gap-3'>
               {/* Price */}
               <Input
                 id='price'
@@ -207,6 +244,49 @@ function PackageModal({
                 type='number'
                 icon={FaMoneyBillAlt}
                 onFocus={() => clearErrors('oldPrice')}
+              />
+            </div>
+
+            <Divider size={3} />
+
+            {/* MARK: Credit - Expire - Max Price */}
+            <div className='grid grid-cols-1 lg:grid-cols-3 gap-3'>
+              {/* Credit */}
+              <Input
+                id='credit'
+                label='Credit'
+                disabled={isLoading}
+                register={register}
+                errors={errors}
+                min={0}
+                max={10}
+                type='number'
+                icon={MdNumbers}
+                onFocus={() => clearErrors(['credit', 'days', 'maxPrice'])}
+              />
+
+              {/* Days */}
+              <Input
+                id='days'
+                label='Days'
+                disabled={isLoading}
+                register={register}
+                errors={errors}
+                type='number'
+                icon={FaCalendarDays}
+                onFocus={() => clearErrors(['credit', 'days', 'maxPrice'])}
+              />
+
+              {/* Max Price */}
+              <Input
+                id='maxPrice'
+                label='Max Price'
+                disabled={isLoading}
+                register={register}
+                errors={errors}
+                type='number'
+                icon={FaMoneyBillAlt}
+                onFocus={() => clearErrors(['credit', 'days', 'maxPrice'])}
               />
             </div>
 

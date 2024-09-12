@@ -34,7 +34,6 @@ function LessonItemOfChapter({
   useEffect(() => {
     // create new progress if not exists
     const initProgress = async () => {
-      console.log('initProgress')
       try {
         let courseId = lesson.courseId
         if (typeof courseId !== 'string') {

@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt'
 import mongoose from 'mongoose'
 import { ICourse } from './CourseModel'
 import { IVoucher } from './VoucherModel'
+
 const Schema = mongoose.Schema
 
 const UserSchema = new Schema(
@@ -130,6 +131,7 @@ const UserSchema = new Schema(
           min: 0,
           max: 100,
         },
+        expire: Date,
       },
     ],
     gifts: [
@@ -205,6 +207,11 @@ const UserSchema = new Schema(
         default: false,
       },
     },
+
+    // package
+    package: {
+      type: Schema.Types.Mixed,
+    },
   },
   {
     timestamps: true,
@@ -254,7 +261,7 @@ export interface IUser {
   job: string
   expended: number
   commission: { type: string; value: string }
-  courses: { course: ICourse; progress: number }[]
+  courses: { course: ICourse; progress: number; expire?: Date }[]
   gifts: string[] | ICourse[]
   notificationSettings: {
     newLesson: boolean
@@ -264,6 +271,7 @@ export interface IUser {
   blockStatuses: {
     blockedComment: boolean
   }
+  package: any
   createdAt: string
   updatedAt: string
 

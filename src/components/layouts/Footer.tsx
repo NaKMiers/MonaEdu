@@ -8,6 +8,7 @@ import { FaCheck, FaHistory, FaInfoCircle, FaShoppingCart, FaSignOutAlt } from '
 import { SiCoursera } from 'react-icons/si'
 import Divider from '../Divider'
 import Quote from '../Quote'
+import { RiVipCrown2Fill } from 'react-icons/ri'
 
 function Footer() {
   return (
@@ -180,6 +181,13 @@ function Footer() {
               >
                 <FaInfoCircle size={14} className='wiggle-0 flex-shrink-0' />
                 Về chúng tôi
+              </Link>
+              <Link
+                href='/subscription'
+                className='flex justify-center items-center gap-1.5 hover:tracking-wider trans-200 underline underline-offset-2 font-body tracking-wide group'
+              >
+                <RiVipCrown2Fill size={14} className='wiggle-0 flex-shrink-0' />
+                Gói học viên
               </Link>
               <Link
                 href='/cart'

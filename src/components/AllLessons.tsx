@@ -9,7 +9,7 @@ import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
-import { memo, useEffect, useState } from 'react'
+import { memo, useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import { BsLayoutSidebarInset } from 'react-icons/bs'
 import { FaChevronCircleLeft, FaChevronCircleRight } from 'react-icons/fa'
@@ -19,20 +19,26 @@ import LearningChapter from './LearningChapter'
 function AllLessons() {
   // hooks
   const dispatch = useAppDispatch()
-  const openSidebar = useAppSelector(state => state.modal.openSidebar)
   const router = useRouter()
   const params = useParams()
   const courseSlug = params.courseSlug as string
   const lessonSlug = params.lessonSlug as string
-  const { data: session } = useSession()
+  const { data: session, update } = useSession()
   const curUser: any = session?.user
+
+  // reducers
+  const openSidebar = useAppSelector(state => state.modal.openSidebar)
 
   // states
   const [courseId, setCourseId] = useState<string>('')
   const [chapters, setChapters] = useState<IChapter[]>([])
   const [nextLesson, setNextLesson] = useState<string>('')
   const [prevLesson, setPrevLesson] = useState<string>('')
-  const [isEnrolled, setIsEnrolled] = useState<boolean>(false)
+  const [joinedCourse, setJoinedCourse] = useState<any>(null)
+  const [isRedirect, setIsRedirect] = useState<boolean>(false)
+
+  // refs
+  const isUpdatedSession = useRef<boolean>(false)
 
   // get all chapters with lessons
   useEffect(() => {
@@ -44,8 +50,13 @@ function AllLessons() {
         })
 
         // check if user is enrolled in this course
-        const isEnrolled = curUser?.courses?.map((course: any) => course.course).includes(courseId)
-        setIsEnrolled(isEnrolled)
+        const joinedCourse = curUser?.courses.find((c: any) => c.course === courseId)
+        let isRedirect: boolean =
+          joinedCourse && (!joinedCourse.expire || new Date(joinedCourse.expire) > new Date())
+
+        // set states
+        setJoinedCourse(joinedCourse)
+        setIsRedirect(isRedirect)
 
         // set states
         setChapters(chapters)
@@ -65,7 +76,6 @@ function AllLessons() {
           if (inProgressLessons.length > 0) {
             lesson = inProgressLessons[0]
           }
-
           router.push(`/learning/${courseSlug}/${lesson.slug}`)
         }
       } catch (err: any) {
@@ -79,25 +89,37 @@ function AllLessons() {
   // find next and prev lesson
   useEffect(() => {
     let lessons: ILesson[] = chapters.map(chapter => chapter.lessons).flat() as ILesson[]
-    if (!isEnrolled) {
-      lessons = lessons.filter(lesson => lesson.status === 'public') // public lesson
+    if (!isRedirect) {
+      lessons = lessons.filter(lesson => lesson.status === 'public') // public lesson || subscription expired
     }
 
     const curLessonIndex = lessons.findIndex(lesson => lesson.slug === lessonSlug)
 
-    setPrevLesson(curLessonIndex > 0 ? lessons[curLessonIndex - 1].slug : '')
-    setNextLesson(curLessonIndex < lessons.length - 1 ? lessons[curLessonIndex + 1].slug : '')
-
     // user is enrolled in this course
-    if (isEnrolled) {
+    if (isRedirect) {
       setPrevLesson(curLessonIndex > 0 ? lessons[curLessonIndex - 1].slug : '')
       setNextLesson(curLessonIndex < lessons.length - 1 ? lessons[curLessonIndex + 1].slug : '')
     } else {
-      // user is not enrolled in this course
+      // user is not enrolled this course || enrolled but subscription expired
       setPrevLesson(curLessonIndex > 0 ? lessons[curLessonIndex - 1].slug : '')
       setNextLesson(curLessonIndex < lessons.length - 1 ? lessons[curLessonIndex + 1].slug : '')
     }
-  }, [chapters, lessonSlug, isEnrolled])
+  }, [chapters, lessonSlug, isRedirect])
+
+  // update user session after load page
+  useEffect(() => {
+    // update session after load page
+    const updateSession = async () => {
+      console.log('Updating session...', isUpdatedSession)
+      await update()
+
+      isUpdatedSession.current = true
+    }
+
+    if (!isUpdatedSession.current) {
+      updateSession()
+    }
+  }, [update, session])
 
   return (
     <>
@@ -110,8 +132,6 @@ function AllLessons() {
           openSidebar ? 'translate-x-0' : '-translate-x-full'
         } pt-[18px] border-r-2 border-primary sm:rounded-r-lg shadow-md shadow-primary`}
       >
-        {/* <BeamsBackground /> */}
-
         <div className='flex flex-col h-full relative z-10'>
           <div className='flex items-center gap-4'>
             <Link href='/' className='shrink-0 trans-200'>
@@ -124,7 +144,7 @@ function AllLessons() {
               />
             </Link>
 
-            {isEnrolled ? (
+            {joinedCourse ? (
               <div className='relative overflow-hidden rounded-md w-full h-6 shadow-sm shadow-primary'>
                 <div
                   className='h-full bg-primary flex items-center'

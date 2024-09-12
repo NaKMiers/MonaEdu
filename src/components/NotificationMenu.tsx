@@ -8,8 +8,8 @@ import { useRouter } from 'next/navigation'
 import { Dispatch, memo, SetStateAction, useCallback, useEffect, useRef } from 'react'
 import toast from 'react-hot-toast'
 import { IoCloseCircleOutline, IoMail, IoMailOpen } from 'react-icons/io5'
-import { format } from 'timeago.js'
-import { AnimatePresence, motion } from 'framer-motion'
+import vi from 'timeago.js/lib/lang/vi'
+import { format, register as timeAgoRegister } from 'timeago.js'
 
 interface NotificationMenuProps {
   open: boolean
@@ -33,6 +33,9 @@ function NotificationMenu({
 
   // refs
   const menuRef = useRef<HTMLUListElement>(null)
+
+  // values
+  timeAgoRegister('vi', vi)
 
   // handle remove notifications
   const handleRemoveNotifications = useCallback(
@@ -176,7 +179,7 @@ function NotificationMenu({
                 <div className='flex gap-1 font-body tracking-wider -mt-1 w-full'>
                   <div className='font-semibold text-xs flex-1'>
                     <span>{noti.title}</span>
-                    <p className='text-xs text-slate-500 font-normal'>{format(noti.createdAt)}</p>
+                    <p className='text-xs text-slate-500 font-normal'>{format(noti.createdAt, 'vi')}</p>
                   </div>
                   <div className='flex flex-col gap-0.5 items-center'>
                     <IoCloseCircleOutline

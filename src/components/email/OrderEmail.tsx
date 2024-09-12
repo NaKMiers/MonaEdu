@@ -1,8 +1,8 @@
 import { order as orderSample } from '@/constants/dataSamples'
 import { formatPrice } from '@/utils/number'
+import { capitalize } from '@/utils/string'
 import { Body, Column, Container, Img, Row, Section, Tailwind } from '@react-email/components'
 import { theme } from '../../../tailwind.config'
-import { capitalize } from '@/utils/string'
 
 export function OrderEmail({ order = orderSample }: { order?: any }) {
   return (
@@ -53,7 +53,9 @@ export function OrderEmail({ order = orderSample }: { order?: any }) {
               <Column className='font'>
                 <h1 className='text-2xl font-bold text-center'>Hi👋 </h1>
                 <h2 className='text-xl font-semibold text-center'>
-                  Cảm ơn bạn đã tham gia khóa học của Mona Edu, chúc bạn học tốt!
+                  {order.isPackage
+                    ? 'Cảm ơn bạn đã đăng ký gói học viên của chúng tôi, chúc bạn thành công!'
+                    : 'Cảm ơn bạn đã tham gia khóa học của Mona Edu, chúc bạn học tốt!'}
                 </h2>
 
                 <div className='text-sm mt-8'>
@@ -106,7 +108,7 @@ export function OrderEmail({ order = orderSample }: { order?: any }) {
 
                 {/* Course */}
                 <div className='mt-8'>
-                  <b className='text-[24px]'>Khóa học: </b>
+                  <b className='text-[24px]'>{order.isPackage ? 'Gói học viên:' : 'Khóa học:'} </b>
 
                   <ul className='list-none p-0'>
                     {order.items.map((course: any) => (
@@ -117,13 +119,15 @@ export function OrderEmail({ order = orderSample }: { order?: any }) {
                         >
                           <Section>
                             <Row>
-                              <Column className='w-[130px]'>
-                                <Img
-                                  src={course.images[0]}
-                                  width={120}
-                                  className='inline aspect-video rounded-lg object-cover'
-                                />
-                              </Column>
+                              {course.images && course.images[0] && (
+                                <Column className='w-[130px]'>
+                                  <Img
+                                    src={course.images[0]}
+                                    width={120}
+                                    className='inline aspect-video rounded-lg object-cover'
+                                  />
+                                </Column>
+                              )}
                               <Column>
                                 <p className='font-semibold text-slate-600'>{course.title}</p>
                               </Column>

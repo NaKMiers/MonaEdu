@@ -153,10 +153,17 @@ function CheckoutPage({ params }: { params: { type: string } }) {
           >
             {checkout?.email}
           </span>{' '}
-          sau khi đã thanh toán. Và bạn có thể truy cập khóa học ngay ở trang{' '}
-          <Link href='/my-courses' className='text-sky-500 underline underline-offset-1'>
-            Khóa học của tôi
-          </Link>
+          sau khi đã thanh toán.{' '}
+          {checkout?.isPackage ? (
+            <>Và gói học viên của bạn sẽ được áp dụng ngay sau đó. </>
+          ) : (
+            <>
+              Và bạn có thể truy cập khóa học ngay ở trang{' '}
+              <Link href='/my-courses' className='text-sky-500 underline underline-offset-1'>
+                Khóa học của tôi
+              </Link>
+            </>
+          )}
         </p>
 
         <p className='text-secondary font-semibold mt-1 mb-2'>
@@ -170,14 +177,14 @@ function CheckoutPage({ params }: { params: { type: string } }) {
               <>
                 <Image src={admin.momo.image} height={700} width={350} alt='momo-qr' />
                 <Image
-                  className='absolute top-[56%] left-1/2 -translate-x-1/2 -translate-y-[50%] w-[58%]'
+                  className='absolute z-10 top-[56%] left-1/2 -translate-x-1/2 -translate-y-[50%] w-[58%]'
                   src={`https://api.qrserver.com/v1/create-qr-code/?size=350x350&data=2|99|${admin.momo.account}|||0|0|${checkout?.total}|${checkout?.code}|transfer_p2p`}
                   height={700}
                   width={350}
                   alt='momo-qr'
                 />
                 {/* <Image
-                  className='bg-black absolute top-[56%] left-1/2 -translate-x-1/2 -translate-y-[50%] rounded-md p-0.5 w-[12%]'
+                  className='bg-black absolute z-10 top-[56%] left-1/2 -translate-x-1/2 -translate-y-[50%] rounded-md p-0.5 w-[12%]'
                   src='/images/logo.png'
                   height={42}
                   width={42}
@@ -187,15 +194,15 @@ function CheckoutPage({ params }: { params: { type: string } }) {
             ) : (
               <>
                 <Image src={admin.banking.image} height={700} width={350} alt='banking-qr' />
-                {/* <Image
-                  className='absolute top-[41%] left-1/2 -translate-x-1/2 -translate-y-[50%] w-[47%]'
-                  src={`https://img.vietqr.io/image/970436-1040587211-eeua38J.jpg?amount=${
+                <Image
+                  className='absolute z-10 top-[41%] left-1/2 -translate-x-1/2 -translate-y-[50%] w-[47%]'
+                  src={`https://img.vietqr.io/image/970436-1040587211-XiXOLfB.jpg?amount=${
                     checkout?.total
                   }&addInfo=${encodeURI(checkout?.code)}&accountName=${admin.banking.receiver}`}
                   height={700}
                   width={350}
                   alt='banking-qr'
-                /> */}
+                />
               </>
             )}
           </div>
@@ -236,7 +243,9 @@ function CheckoutPage({ params }: { params: { type: string } }) {
       {/* MARK: Cart items */}
       <div className='col-span-1 lg:col-span-5'>
         <div className='sticky top-24 left-0 bg-white bg-opacity-95 rounded-medium shadow-medium p-21'>
-          <h1 className='text-center font-semibold text-3xl'>Khóa học</h1>
+          <h1 className='text-center font-semibold text-3xl'>
+            {checkout?.isPackage ? 'Gói học viên' : 'Khóa học'}
+          </h1>
 
           <Divider size={5} />
 
@@ -244,7 +253,7 @@ function CheckoutPage({ params }: { params: { type: string } }) {
             {checkout?.items.map((cartItem: ICartItem, index: number) => (
               <CartItem
                 cartItem={cartItem}
-                className={index != 0 ? 'mt-4' : ''}
+                className={`${index != 0 ? 'mt-4' : ''} bg-dark-100 text-light`}
                 key={cartItem._id}
                 isCheckout
               />

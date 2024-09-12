@@ -59,8 +59,6 @@ export async function POST(
       docs = [...docs, ...customDocs]
     }
 
-    console.log('docs', docs)
-
     // get all users who joined the course | course slug
     const [newLesson, userIds, courseSlug] = await Promise.all([
       // create new lesson

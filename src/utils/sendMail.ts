@@ -6,11 +6,12 @@ import VerifyEmailEmail from '@/components/email/VerifyEmailEmail'
 import UserModel from '@/models/UserModel'
 import { render } from '@react-email/render'
 import nodeMailer from 'nodemailer'
+import GivenGiftEmail from '@/components/email/GivenGiftEmail'
+import { formatPrice } from './number'
 
 // Models: User
-import GivenGift from '@/components/email/GivenGift'
 import '@/models/UserModel'
-import { formatPrice } from './number'
+import NotifyExpiredPackageEmail from '@/components/email/NotifyExpiredPackageEmail'
 
 // SEND MAIL CORE
 const transporter = nodeMailer.createTransport({
@@ -22,6 +23,7 @@ const transporter = nodeMailer.createTransport({
   },
 })
 
+// Send Mail Core
 export async function sendMail(to: string | string[], subject: string, html: string) {
   console.log('- Send Mail -')
 
@@ -47,7 +49,9 @@ export async function notifyNewOrderToAdmin(newOrder: any) {
     const html = render(NotifyOrderEmail({ order: newOrder }))
     await sendMail(
       emails,
-      `New - ${newOrder.code} - ${formatPrice(newOrder.total)} - ${newOrder.paymentMethod}`,
+      `${newOrder.isPackage ? 'Package -' : ''} ${newOrder.code} - ${formatPrice(newOrder.total)} - ${
+        newOrder.paymentMethod
+      }`,
       html
     )
   } catch (err: any) {
@@ -72,7 +76,7 @@ export async function notifyGivenCourse(receiveEmail: string, sender: string, or
   console.log('- Notify Given Course To Receiver -')
 
   try {
-    const html = render(GivenGift({ order: { ...orderData, sender } }))
+    const html = render(GivenGiftEmail({ order: { ...orderData, sender } }))
     await sendMail(receiveEmail, `Bạn được tặng khóa học trên Mona Edu từ ${sender}`, html)
   } catch (err: any) {
     console.log(err)
@@ -84,7 +88,7 @@ export async function summaryNotification(email: string, summary: any) {
   console.log('- Summary Notification -')
 
   try {
-    // Render template với dữ liệu
+    // Render template
     const html = render(SummaryEmail({ summary }))
     await sendMail(email, `Báo cáo tháng ${new Date().getMonth() + 1}`, html)
   } catch (err: any) {
@@ -97,7 +101,7 @@ export async function sendResetPasswordEmail(email: string, name: string, link: 
   console.log('- Send Reset Password Email -')
 
   try {
-    // Render template với dữ liệu
+    // Render template
     const html = render(ResetPasswordEmail({ name, link }))
 
     await sendMail(email, 'Khôi phục mật khẩu', html)
@@ -111,9 +115,22 @@ export async function sendVerifyEmail(email: string, name: string, link: string)
   console.log('- Send Verify Email -')
 
   try {
-    // Render template với dữ liệu
+    // Render template
     const html = render(VerifyEmailEmail({ name, link }))
     await sendMail(email, 'Xác thực Email', html)
+  } catch (err: any) {
+    console.log(err)
+  }
+}
+
+// notify expired package
+export async function notifyExpiredPackage(email: string, data: any) {
+  console.log('- Notify Expired Email -')
+
+  try {
+    // Render template
+    const html = render(NotifyExpiredPackageEmail({ data }))
+    await sendMail(email, `Gói học viên của bạn sẽ hết hạn ${data.remainingTime} nữa 😱`, html)
   } catch (err: any) {
     console.log(err)
   }

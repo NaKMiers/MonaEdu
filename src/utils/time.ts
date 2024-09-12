@@ -78,9 +78,9 @@ export const getTimeRemaining = (
 
   const diff = moment.duration(expirationDate.diff(now))
 
-  const days = diff.days()
-  const hours = diff.hours()
-  const minutes = diff.minutes()
+  const days = Math.floor(diff.asDays())
+  const hours = Math.floor(diff.asHours()) % 24
+  const minutes = Math.floor(diff.asMinutes()) % 60
 
   let timeRemaining = ''
 

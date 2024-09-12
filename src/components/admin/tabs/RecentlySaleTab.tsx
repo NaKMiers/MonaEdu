@@ -17,11 +17,11 @@ interface RecentlySaleTab {
 
 function RecentlySaleTab({ className = '' }: RecentlySaleTab) {
   // states
-  const [courses, setCourses] = useState<any[]>([])
+  const [items, setItems] = useState<any[]>([])
   const [loading, setLoading] = useState<boolean>(false)
   const [page, setPage] = useState<number>(1)
 
-  // get recently sale courses
+  // get recently sale courses | packages
   const getCourses = useCallback(async (page: number) => {
     // start loading
     setLoading(true)
@@ -30,13 +30,13 @@ function RecentlySaleTab({ className = '' }: RecentlySaleTab) {
       const query = `?limit=15&sort=createdAt|-1&page=${page}`
       const { orders } = await getAllOrdersApi(query)
 
-      const courses = orders
+      const items = orders
         .map((order: IOrder) =>
-          order.items.map((course: ICourse) => ({ ...course, saleTime: order.createdAt }))
+          order.items.map((item: ICourse) => ({ ...item, saleTime: order.createdAt }))
         )
         .flat()
 
-      return courses
+      return items
     } catch (err: any) {
       console.log(err)
       toast.error(err.message)
@@ -46,12 +46,12 @@ function RecentlySaleTab({ className = '' }: RecentlySaleTab) {
     }
   }, [])
 
-  // get recently sale courses (on mount)
+  // get recently sale courses | packages (on mount)
   useEffect(() => {
-    // get courses on mount
+    // get (courses & packages) on mount
     const initialGetCourses = async () => {
-      const courses = await getCourses(1)
-      setCourses(courses)
+      const items = await getCourses(1)
+      setItems(items)
     }
 
     initialGetCourses()
@@ -61,14 +61,14 @@ function RecentlySaleTab({ className = '' }: RecentlySaleTab) {
   const handleLoadMore = useCallback(async () => {
     const newCourses = await getCourses(page + 1)
     setPage(page + 1)
-    setCourses(prev => [...prev, ...newCourses])
-  }, [getCourses, setCourses, page])
+    setItems(prev => [...prev, ...newCourses])
+  }, [getCourses, setItems, page])
 
   return (
     <div className={`${className}`}>
       <div className='flex flex-col gap-2 mb-2'>
-        {courses.map((course, index) => {
-          const minutesAgo = moment().diff(moment(course.saleTime), 'minutes')
+        {items.map((item, index) => {
+          const minutesAgo = moment().diff(moment(item.saleTime), 'minutes')
 
           let color
           if (minutesAgo <= 30) {
@@ -87,29 +87,31 @@ function RecentlySaleTab({ className = '' }: RecentlySaleTab) {
               key={index}
             >
               <div className='flex items-start gap-2.5'>
-                <Link
-                  href={`/${course.slug}`}
-                  className='aspect-video rounded-sm overflow-hidden flex-shrink-0 w-full max-w-[60px]'
-                >
-                  <Image
-                    className='w-full h-full object-cover'
-                    src={course.images[0]}
-                    width={60}
-                    height={40}
-                    alt={course.title}
-                    loading='lazy'
-                  />
-                </Link>
+                {item?.images?.[0] && (
+                  <Link
+                    href={`/${item.slug}`}
+                    className='aspect-video rounded-md shadow-lg overflow-hidden flex-shrink-0 w-full max-w-[60px]'
+                  >
+                    <Image
+                      className='w-full h-full object-cover'
+                      src={item.images[0]}
+                      width={60}
+                      height={40}
+                      alt={item.title}
+                      loading='lazy'
+                    />
+                  </Link>
+                )}
                 <div className='flex flex-col'>
-                  <p className='font-body tracking-wider font-semibold -mt-1'>{course.title}</p>
+                  <p className='font-body tracking-wider font-semibold -mt-1'>{item.title}</p>
                   <p>
                     <span className='text-xs'>Revenue</span>:{' '}
-                    <span className='font-semibold'>{formatPrice(course.revenue)}</span>
+                    <span className='font-semibold'>{formatPrice(item.revenue)}</span>
                   </p>
                 </div>
               </div>
               <p className={`text-ellipsis line-clamp-1 text-sm text-${color}`}>
-                {moment(course.begin).format('DD/MM/YYYY HH:mm:ss')}
+                {moment(item.begin).format('DD/MM/YYYY HH:mm:ss')}
               </p>
             </div>
           )
@@ -126,7 +128,7 @@ function RecentlySaleTab({ className = '' }: RecentlySaleTab) {
           {loading ? (
             <FaCircleNotch size={18} className='animate-spin text-slate-400' />
           ) : (
-            <span>({courses.length}) Load more...</span>
+            <span>({items.length}) Load more...</span>
           )}
         </button>
       </div>

@@ -9,6 +9,7 @@ import { RiDonutChartFill } from 'react-icons/ri'
 import ConfirmDialog from '../dialogs/ConfirmDialog'
 import PackageModal from './PackageModal'
 import Divider from '../Divider'
+import { formatTime } from '@/utils/time'
 
 interface PackageItemProps {
   pkg: IPackage
@@ -62,9 +63,27 @@ function PackageItem({ pkg, packages, setPackages, className = '' }: PackageItem
           </p>
           <p className='text-xs text-ellipsis line-clamp-2 max-w-full'>{pkg.description}</p>
           <div className='flex items-center flex-wrap gap-2'>
-            <p className='font-semibold text-xl text-primary'>{formatPrice(pkg.price)}</p>
+            <p className='font-semibold text-xl text-green-500'>{formatPrice(pkg.price)}</p>
             <p className='line-through text-slate-500 text-sm'>{formatPrice(pkg.oldPrice)}</p>
           </div>
+          <p className='text-xs' title='Credit'>
+            Joined: <span className='font-semibold text-sky-500'>{pkg.joined}</span>
+          </p>
+          {pkg.credit && (
+            <p className='text-xs' title='Credit'>
+              Credit: <span className='font-semibold text-violet-500'>{pkg.credit}</span>
+            </p>
+          )}
+          {pkg.days && (
+            <p className='text-xs' title='Credit'>
+              Days: <span className='font-semibold text-orange-500'>{pkg.days}</span>
+            </p>
+          )}
+          {pkg.maxPrice && (
+            <p className='text-xs' title='Credit'>
+              Max Price: <span className='font-semibold text-rose-500'>{formatPrice(pkg.maxPrice)}</span>
+            </p>
+          )}
 
           <Divider size={1} border />
 

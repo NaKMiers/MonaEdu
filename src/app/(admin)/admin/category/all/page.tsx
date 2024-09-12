@@ -44,8 +44,6 @@ function AllCategoriesPage({ searchParams }: { searchParams?: { [key: string]: s
         // sent request to server
         const { categories, amount } = await getAllCategoriesApi(query)
 
-        console.log('categories', categories)
-
         // set to states
         setCategories(categories)
         setAmount(amount)

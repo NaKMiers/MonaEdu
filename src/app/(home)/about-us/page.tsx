@@ -1,4 +1,4 @@
-import { AnimatedTooltip } from '@/components/AnimatedTooltip'
+import { AnimatedTooltip } from '@/components/effects/AnimatedTooltip'
 import Slider from '@/components/Slider'
 import Link from 'next/link'
 import { FaFacebook, FaInstagram } from 'react-icons/fa'

@@ -24,6 +24,11 @@ function Avatar({ user, className = '' }: AvatarProps) {
   const [file, setFile] = useState<File | null>(null)
   const [isChangingAvatar, setIsChangingAvatar] = useState<boolean>(false)
 
+  // values
+  const isShowCrown =
+    curUser?.package &&
+    (curUser.package.expire === null || new Date(curUser.package.expire) > new Date())
+
   // refs
   const avatarInputRef = useRef<HTMLInputElement>(null)
 
@@ -98,14 +103,33 @@ function Avatar({ user, className = '' }: AvatarProps) {
   }, [imageUrl])
 
   return (
-    <div className={`group relative w-full rounded-full aspect-square overflow-hidden ${className}`}>
+    <div className={`group relative w-full rounded-full aspect-square ${className}`}>
+      {isShowCrown && (
+        <Image
+          className='absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 aspect-square rounded-full overflow-hidden'
+          src='/icons/ring-circle.png'
+          width={200}
+          height={200}
+          alt='ring'
+        />
+      )}
+
       {(imageUrl || user?.avatar) && (
         <Image
-          className='w-full h-full object-cover'
+          className='w-full h-full object-cover rounded-full overflow-hidden aspect-square p-2.5'
           src={imageUrl || user?.avatar || process.env.NEXT_PUBLIC_DEFAULT_AVATAR!}
           width={200}
           height={200}
           alt='avatar'
+        />
+      )}
+      {isShowCrown && (
+        <Image
+          className='absolute z-20 -top-[30px] right-[24px] rotate-[18deg]'
+          src='/icons/crown-icon-2.png'
+          width={60}
+          height={60}
+          alt='crown'
         />
       )}
 
@@ -121,7 +145,7 @@ function Avatar({ user, className = '' }: AvatarProps) {
       />
       {!isChangingAvatar && curUser?._id === user?._id && (
         <div
-          className='absolute top-0 left-0 flex opacity-0 group-hover:opacity-100 items-center justify-center bg-dark-0 w-full h-full bg-opacity-20 trans-200 cursor-pointer drop-shadow-lg'
+          className='absolute top-0 left-0 flex rounded-full aspect-square overflow-hidden opacity-0 group-hover:opacity-100 items-center justify-center bg-dark-0 w-full h-full bg-opacity-20 trans-200 cursor-pointer drop-shadow-lg'
           onClick={() => !file && avatarInputRef.current?.click()}
         >
           {file ? (
@@ -139,7 +163,7 @@ function Avatar({ user, className = '' }: AvatarProps) {
         </div>
       )}
       {isChangingAvatar && (
-        <div className='absolute top-0 left-0 w-full h-full bg-white bg-opacity-20'>
+        <div className='absolute top-0 left-0 rounded-full aspect-square overflow-hidden w-full h-full bg-white bg-opacity-20'>
           <Image
             className='animate-spin'
             src='/icons/loading.png'
