@@ -34,7 +34,7 @@ function BuyNowButton({ course, className }: BuyNowButtonProps) {
   if (curUser?.package) {
     const { credit, expire } = curUser.package
 
-    switch (checkPackageType(credit, joinedCourse?.expire || expire)) {
+    switch (checkPackageType(credit, expire)) {
       case 'lifetime': {
         packageType = 'lifetime'
         actionText = 'Tham gia'
