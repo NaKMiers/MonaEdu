@@ -81,7 +81,7 @@ export async function POST(req: NextRequest, { params: { slug } }: { params: { s
     // check lifetime package
     if (packageType === 'lifetime') {
       // check max price of package lifetime
-      if (course.price > userPackage.maxPrice) {
+      if (course.price >= userPackage.maxPrice) {
         return NextResponse.json(
           {
             message: `Gói học viên của bạn chỉ cho phép tham gia khóa học dưới ${formatPrice(

@@ -163,6 +163,7 @@ function PackageGroupModal({
               type='textarea'
               labelBg='bg-white'
               className='min-w-[40%] mt-6'
+              rows={2}
               onFocus={() => clearErrors('description')}
             />
 
