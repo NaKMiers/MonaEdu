@@ -60,14 +60,22 @@ export default async function handleDeliverOrder(id: string, message: string = '
   if (!isPackage) {
     // buy for themselves
     if (!receivedUser) {
-      console.log('- Buy For Themselves -')
       // get user to check if user has already joined course
       const userCourses: any = buyer?.courses
 
-      const userCourseIds = userCourses.map((course: any) => course.course.toString())
-      const itemIds = items.map((item: any) => item._id.toString())
+      let isJoined = false
+      userCourses.forEach((course: any) => {
+        items.forEach((item: any) => {
+          if (
+            item._id.toString() === course.course.toString() &&
+            (!course.expire || course.expire === null)
+          ) {
+            isJoined = true
+          }
+        })
+      })
 
-      if (itemIds.some((id: string) => userCourseIds.includes(id))) {
+      if (isJoined) {
         throw new Error('Học viên đã tham gia khóa học này')
       }
     }
@@ -82,10 +90,20 @@ export default async function handleDeliverOrder(id: string, message: string = '
       }
 
       const userCourses: any = receiver?.courses
-      const userCourseIds = userCourses.map((course: any) => course.course.toString())
-      const itemIds = items.map((item: any) => item._id.toString())
 
-      if (itemIds.some((id: string) => userCourseIds.includes(id))) {
+      let isJoined = false
+      userCourses.forEach((course: any) => {
+        items.forEach((item: any) => {
+          if (
+            item._id.toString() === course.course.toString() &&
+            (!course.expire || course.expire === null)
+          ) {
+            isJoined = true
+          }
+        })
+      })
+
+      if (isJoined) {
         throw new Error('Học viên đã tham gia khóa học này')
       }
     }
