@@ -261,7 +261,7 @@ function CommentItem({ comment, setCmts, className = '' }: CommentItemProps) {
           <ReportDialog
             open={isOpenReportDialog}
             setOpen={setIsOpenReportDialog}
-            title='Report Comment'
+            title='Báo cáo bình luận'
             contents={reportContents.comment}
             selectedContent={selectedContent}
             setSelectedContent={setSelectedContent}

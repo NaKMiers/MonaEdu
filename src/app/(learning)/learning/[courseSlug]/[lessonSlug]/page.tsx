@@ -226,7 +226,7 @@ function LessonPage({
         <ReportDialog
           open={isOpenReportDialog}
           setOpen={setIsOpenReportDialog}
-          title='Report Lesson'
+          title='Báo cáo bài giảng'
           contents={reportContents.lesson}
           selectedContent={selectedContent}
           setSelectedContent={setSelectedContent}
