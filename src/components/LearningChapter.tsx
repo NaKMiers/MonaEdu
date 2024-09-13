@@ -69,7 +69,7 @@ function LearningChapter({
       <div
         className={`${
           chapter.lessons?.some(lesson => lesson.slug === lessonSlug) ? 'text-orange-500' : 'text-white'
-        } font-semibold flex justify-between items-center gap-2 py-2 px-3 cursor-pointer`}
+        } font-semibold flex justify-between items-start gap-2 py-2 px-3 cursor-pointer`}
         onClick={() => setOpen(!open)}
       >
         {chapter.title}
