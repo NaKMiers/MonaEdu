@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
     let sort: { [key: string]: any } = { updatedAt: -1 } // default sort
 
     // create $or array for text fields
-    const orArray: any[] = ['title', 'citing', 'author', 'slug'].map(field => ({
+    const orArray: any[] = ['title', 'titleNoDiacritics', 'citing', 'author', 'slug'].map(field => ({
       [field]: { $regex: search, $options: 'i' },
     }))
 

@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
     let sort: { [key: string]: any } = { updatedAt: -1 } // default sort
 
     // build filter
-    const searchFields = ['title', 'citing', 'author', 'slug']
+    const searchFields = ['title', 'titleNoDiacritics', 'citing', 'author', 'slug']
 
     // create $or array for text fields
     const orArray: any[] = searchFields.map(field => ({
@@ -43,7 +43,7 @@ export async function GET(req: NextRequest) {
     }
 
     // search by category
-    const categoryFields = ['title', 'slug'].map(field => ({
+    const categoryFields = ['title', 'titleNoDiacritics', 'slug'].map(field => ({
       [field]: { $regex: search, $options: 'i' },
     }))
 

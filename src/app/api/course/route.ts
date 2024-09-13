@@ -57,7 +57,7 @@ export async function GET(req: NextRequest) {
         }
 
         if (key === 'search') {
-          const searchFields = ['title', 'description', 'slug']
+          const searchFields = ['title', 'titleNoDiacritics', 'description', 'slug']
 
           filter.$or = searchFields.map(field => ({
             [field]: { $regex: params[key][0], $options: 'i' },

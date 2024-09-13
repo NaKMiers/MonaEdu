@@ -1,8 +1,8 @@
 import { connectDatabase } from '@/config/database'
 import CategoryModel, { ICategory } from '@/models/CategoryModel'
-import { generateSlug } from '@/utils'
-import { NextRequest, NextResponse } from 'next/server'
+import { generateSlug, removeDiacritics } from '@/utils'
 import { deleteFile, uploadFile } from '@/utils/uploadFile'
+import { NextRequest, NextResponse } from 'next/server'
 
 // Models: Category
 import '@/models/CategoryModel'
@@ -39,6 +39,7 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
     // update category
     const set: any = {
       title: (title as string).trim(),
+      titleNoDiacritics: removeDiacritics(title as string),
       description: (description as string).trim(),
       slug,
     }

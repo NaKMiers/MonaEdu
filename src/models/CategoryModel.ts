@@ -1,3 +1,4 @@
+import { removeDiacritics } from '@/utils'
 import mongoose from 'mongoose'
 const Schema = mongoose.Schema
 
@@ -10,6 +11,9 @@ const CategorySchema = new Schema(
     title: {
       type: String,
       required: true,
+    },
+    titleNoDiacritics: {
+      type: String,
     },
     description: {
       type: String,
@@ -35,6 +39,15 @@ const CategorySchema = new Schema(
   { timestamps: true }
 )
 
+// pre-save hook
+CategorySchema.pre('save', function (next) {
+  if (this.isModified('title')) {
+    this.titleNoDiacritics = removeDiacritics(this.title)
+  }
+
+  next()
+})
+
 const CategoryModel = mongoose.models.category || mongoose.model('category', CategorySchema)
 export default CategoryModel
 
@@ -42,6 +55,7 @@ export interface ICategory {
   _id: string
   parentId: string | ICategory
   title: string
+  titleNoDiacritics: string
   description: string
   image: string
   slug: string

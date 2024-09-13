@@ -2,7 +2,7 @@ import { connectDatabase } from '@/config/database'
 import CategoryModel from '@/models/CategoryModel'
 import CourseModel, { ICourse } from '@/models/CourseModel'
 import TagModel from '@/models/TagModel'
-import { generateSlug } from '@/utils'
+import { generateSlug, removeDiacritics } from '@/utils'
 import { deleteFile, uploadFile } from '@/utils/uploadFile'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -54,7 +54,8 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
     // update course in database
     await CourseModel.findByIdAndUpdate(id, {
       $set: {
-        title: title,
+        title,
+        titleNoDiacritics: removeDiacritics(title as string),
         price,
         oldPrice: oldPrice === 'null' ? null : oldPrice,
         citing,

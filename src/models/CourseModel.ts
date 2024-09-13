@@ -1,4 +1,4 @@
-import { generateSlug } from '@/utils'
+import { generateSlug, removeDiacritics } from '@/utils'
 import mongoose from 'mongoose'
 import { ICategory } from './CategoryModel'
 import { IChapter } from './ChapterModel'
@@ -6,6 +6,7 @@ import { IFlashSale } from './FlashSaleModel'
 import { ILesson } from './LessonModel'
 import { ITag } from './TagModel'
 import { IUser } from './UserModel'
+
 const Schema = mongoose.Schema
 
 const CourseSchema = new Schema(
@@ -13,6 +14,9 @@ const CourseSchema = new Schema(
     title: {
       type: String,
       required: true,
+    },
+    titleNoDiacritics: {
+      type: String,
     },
     oldPrice: {
       type: Number,
@@ -100,10 +104,11 @@ const CourseSchema = new Schema(
   }
 )
 
-// pre-save hook to generate slug from title
+// pre-save hook
 CourseSchema.pre('save', function (next) {
   if (this.isModified('title')) {
     this.slug = generateSlug(this.title)
+    this.titleNoDiacritics = removeDiacritics(this.title)
   }
 
   next()
@@ -116,6 +121,7 @@ export default CourseModel
 export interface ICourse {
   _id: string
   title: string
+  titleNoDiacritics: string
   oldPrice: number
   price: number
   citing: string

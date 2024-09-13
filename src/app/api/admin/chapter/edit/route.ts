@@ -1,5 +1,6 @@
 import { connectDatabase } from '@/config/database'
 import ChapterModel from '@/models/ChapterModel'
+import { removeDiacritics } from '@/utils'
 import { NextRequest, NextResponse } from 'next/server'
 
 // Models: Chapter
@@ -22,6 +23,7 @@ export async function PUT(req: NextRequest) {
       {
         $set: {
           title,
+          titleNoDiacritics: removeDiacritics(title),
           content,
           order,
         },

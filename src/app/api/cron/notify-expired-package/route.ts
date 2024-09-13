@@ -8,7 +8,12 @@ import vi from 'timeago.js/lib/lang/vi'
 register('vi', vi)
 
 // Models: User
+import CategoryModel from '@/models/CategoryModel'
+import ChapterModel from '@/models/ChapterModel'
+import CourseModel from '@/models/CourseModel'
+import LessonModel from '@/models/LessonModel'
 import '@/models/UserModel'
+import { removeDiacritics } from '@/utils'
 import { notifyExpiredPackage } from '@/utils/sendMail'
 
 export const dynamic = 'force-dynamic'
@@ -20,6 +25,47 @@ export async function GET(req: NextRequest) {
   try {
     // connect to database
     await connectDatabase()
+
+    const categories = await CategoryModel.find().select('title').lean()
+    const courses = await CourseModel.find().select('title').lean()
+    const chapters = await ChapterModel.find().select('title').lean()
+    const lessons = await LessonModel.find().select('title').lean()
+
+    await Promise.all(
+      categories.map(async (item: any) => {
+        await CategoryModel.updateOne(
+          { _id: item._id },
+          { $set: { titleNoDiacritics: removeDiacritics(item.title) } }
+        )
+      })
+    )
+
+    await Promise.all(
+      courses.map(async (item: any) => {
+        await CourseModel.updateOne(
+          { _id: item._id },
+          { $set: { titleNoDiacritics: removeDiacritics(item.title) } }
+        )
+      })
+    )
+
+    await Promise.all(
+      chapters.map(async (item: any) => {
+        await ChapterModel.updateOne(
+          { _id: item._id },
+          { $set: { titleNoDiacritics: removeDiacritics(item.title) } }
+        )
+      })
+    )
+
+    await Promise.all(
+      lessons.map(async (item: any) => {
+        await LessonModel.updateOne(
+          { _id: item._id },
+          { $set: { titleNoDiacritics: removeDiacritics(item.title) } }
+        )
+      })
+    )
 
     // get token from query
     const searchParams = req.nextUrl.searchParams
@@ -37,8 +83,8 @@ export async function GET(req: NextRequest) {
     }
 
     const now = momentTZ.tz(new Date(), 'Asia/Ho_Chi_Minh').toDate()
-    const twelveHoursAgo = momentTZ.tz(new Date(), 'Asia/Ho_Chi_Minh').add(12, 'hours').toDate()
-    const twentyFourHoursAgo = momentTZ.tz(new Date(), 'Asia/Ho_Chi_Minh').add(24, 'hours').toDate()
+    const twelveHoursAgo = momentTZ.tz(now, 'Asia/Ho_Chi_Minh').add(12, 'hours').toDate()
+    const twentyFourHoursAgo = momentTZ.tz(now, 'Asia/Ho_Chi_Minh').add(24, 'hours').toDate()
 
     console.log('twentyFourHoursAgo:', twentyFourHoursAgo)
     console.log('twelveHoursAgo:', twelveHoursAgo)

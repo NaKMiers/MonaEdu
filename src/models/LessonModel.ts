@@ -1,4 +1,4 @@
-import { generateSlug } from '@/utils'
+import { generateSlug, removeDiacritics } from '@/utils'
 import mongoose from 'mongoose'
 import { IChapter } from './ChapterModel'
 import { ICourse } from './CourseModel'
@@ -21,6 +21,9 @@ const LessonSchema = new Schema(
     title: {
       type: String,
       required: true,
+    },
+    titleNoDiacritics: {
+      type: String,
     },
     slug: {
       type: String,
@@ -70,12 +73,13 @@ const LessonSchema = new Schema(
   { timestamps: true }
 )
 
-// pre-save hook to generate slug from title
+// pre-save hook
 LessonSchema.pre('save', function (next) {
   console.log('- Pre-Save Lesson -')
 
   if (this.isModified('title')) {
     this.slug = generateSlug(this.title)
+    this.titleNoDiacritics = removeDiacritics(this.title)
   }
   next()
 })
@@ -88,6 +92,7 @@ export interface ILesson {
   courseId: string | ICourse
   chapterId: string | IChapter
   title: string
+  titleNoDiacritics: string
   sourceType: 'embed' | 'file'
   docs: IDoc[]
   slug: string

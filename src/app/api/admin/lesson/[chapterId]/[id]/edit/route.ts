@@ -1,7 +1,7 @@
 import { connectDatabase } from '@/config/database'
 import CourseModel from '@/models/CourseModel'
 import LessonModel, { ILesson } from '@/models/LessonModel'
-import { generateSlug } from '@/utils'
+import { generateSlug, removeDiacritics } from '@/utils'
 import { deleteFile, uploadFile } from '@/utils/uploadFile'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -82,6 +82,7 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
           courseId,
           chapterId,
           title,
+          titleNoDiacritics: removeDiacritics(title as string),
           duration,
           sourceType: embedUrl ? 'embed' : file ? 'file' : lesson.sourceType,
           source: newSource,

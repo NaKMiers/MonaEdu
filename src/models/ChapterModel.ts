@@ -1,3 +1,4 @@
+import { removeDiacritics } from '@/utils'
 import mongoose from 'mongoose'
 import { ICourse } from './CourseModel'
 import { ILesson } from './LessonModel'
@@ -13,6 +14,9 @@ const ChapterSchema = new Schema(
     title: {
       type: String,
       required: true,
+    },
+    titleNoDiacritics: {
+      type: String,
     },
     content: {
       type: String,
@@ -30,6 +34,15 @@ const ChapterSchema = new Schema(
   { timestamps: true }
 )
 
+// pre-save hook
+ChapterSchema.pre('save', function (next) {
+  if (this.isModified('title')) {
+    this.titleNoDiacritics = removeDiacritics(this.title)
+  }
+
+  next()
+})
+
 const ChapterModel = mongoose.models.chapter || mongoose.model('chapter', ChapterSchema)
 export default ChapterModel
 
@@ -37,6 +50,7 @@ export interface IChapter {
   _id: string
   courseId: string | ICourse
   title: string
+  titleNoDiacritics: string
   content: string
   lessonQuantity: number
   order: number

@@ -16,6 +16,11 @@ export const generateSlug = (value: string): string => {
   return encodeURIComponent(cleanSlug)
 }
 
+// remove diacritics
+export const removeDiacritics = (str: string) => {
+  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+}
+
 // generate random code
 export const generateCode = (length: number): string => {
   return crypto

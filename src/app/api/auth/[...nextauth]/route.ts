@@ -1,7 +1,5 @@
 import NextAuth from 'next-auth'
 
-// Providers
-
 // Models: User
 import '@/models/UserModel'
 import authOptions from './authOptions'

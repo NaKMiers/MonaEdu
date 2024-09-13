@@ -1,3 +1,4 @@
+import PageLoading from '@/components/PageLoading'
 import '../globals.scss'
 
 export default async function RootLayout({
@@ -7,6 +8,9 @@ export default async function RootLayout({
 }>) {
   return (
     <>
+      {/* Loading */}
+      <PageLoading />
+
       {/* Main */}
       <main className=''>{children}</main>
     </>

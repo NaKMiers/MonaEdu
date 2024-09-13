@@ -2,6 +2,7 @@ import AllLessons from '@/components/AllLessons'
 import UseDetectDevTools from '@/libs/hooks/useDetectDevTools'
 import type { Metadata } from 'next'
 import '../globals.scss'
+import PageLoading from '@/components/PageLoading'
 
 export const metadata: Metadata = {
   title: 'Tiến trình - Mona Edu',
@@ -23,6 +24,9 @@ export default async function RootLayout({
     <>
       {/* Detect Dev Tools */}
       <UseDetectDevTools />
+
+      {/* Loading */}
+      <PageLoading />
 
       {/* Main */}
       <main className='flex gap-y-4'>
