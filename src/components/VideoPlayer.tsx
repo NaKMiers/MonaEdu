@@ -120,11 +120,11 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
         console.log('6 sec/time', duration)
       } else if (duration < 300) {
         // < 5min
-        interval = 20000 // 30s/time -> 10 times
+        interval = 30000 // 30s/time -> 10 times
         console.log('30 sec/time', duration)
       } else if (duration < 600) {
         // < 10min
-        interval = 30000 // 1min/time -> 10 times
+        interval = 60000 // 1min/time -> 10 times
         console.log('1 min/time', duration)
       } else if (duration < 1800) {
         // < 30min
@@ -135,6 +135,13 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
         interval = 120000 // 2min/time -> 30 times
         console.log('2 min/time', duration)
       }
+
+      // clear previous timeout
+      if (progressTimeoutRef.current) {
+        clearTimeout(progressTimeoutRef.current)
+      }
+
+      // set new timeout to keep auto update progress
       progressTimeoutRef.current = setTimeout(() => {
         if (progressTimeoutRef.current) {
           handleUpdateLessonProgress()
@@ -160,10 +167,6 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
     if (player) {
       player.pause()
       setIsPlaying(false)
-
-      if (progressTimeoutRef.current) {
-        clearTimeout(progressTimeoutRef.current)
-      }
     }
   }, [])
 
@@ -172,6 +175,10 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
     if (player) {
       if (isPlaying) {
         pause()
+
+        if (progressTimeoutRef.current) {
+          clearTimeout(progressTimeoutRef.current)
+        }
       } else {
         play()
 

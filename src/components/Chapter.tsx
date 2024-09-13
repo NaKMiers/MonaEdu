@@ -101,7 +101,7 @@ function Chapter({
               key={lesson._id}
             >
               <div
-                className={`bg-white rounded-md py-2 px-3 gap-4 hover:bg-primary trans-200 flex items-center cursor-pointer ${
+                className={`bg-white rounded-md py-2 px-3 gap-4 hover:bg-primary trans-200 flex items-start cursor-pointer ${
                   lesson.slug === lessonSlug ? 'font-semibold text-orange-500' : ''
                 }`}
                 onClick={e => {
@@ -122,7 +122,7 @@ function Chapter({
             </Tooltip>
           ) : (
             <div
-              className={`bg-white rounded-md py-2 px-3 gap-4 flex items-center ${
+              className={`bg-white rounded-md py-2 px-3 gap-4 flex items-start ${
                 lesson.slug === lessonSlug ? 'font-semibold text-orange-500' : ''
               }`}
               title={lesson.title}

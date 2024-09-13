@@ -75,7 +75,7 @@ function LessonItemOfChapter({
         }}
       />
 
-      <div className='w-full flex items-center relative z-10'>
+      <div className='w-full flex items-start relative z-10'>
         {!isEnrolled && <TiLockOpen size={16} className='flex-shrink-0 mr-1.5' />}
         {isEnrolled && lesson.progress?.status === 'completed' && (
           <TiTick size={18} className='text-green-400 flex-shrink-0' />

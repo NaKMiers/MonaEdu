@@ -167,7 +167,7 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
         console.log('30 sec/time', duration)
       } else if (duration < 600) {
         // < 10min
-        interval = 30000 // 1min/time -> 10 times
+        interval = 60000 // 1min/time -> 10 times
         console.log('1 min/time', duration)
       } else if (duration < 1800) {
         // < 30min
@@ -178,6 +178,13 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
         interval = 120000 // 2min/time -> 30 times
         console.log('2 min/time', duration)
       }
+
+      // clear previous timeout
+      if (progressTimeoutRef.current) {
+        clearTimeout(progressTimeoutRef.current)
+      }
+
+      // set new timeout to keep auto update progress
       progressTimeoutRef.current = setTimeout(() => {
         if (progressTimeoutRef.current) {
           handleUpdateLessonProgress()
@@ -228,10 +235,6 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
     if (wd.player) {
       wd.player.pauseVideo()
       setIsPlaying(false)
-
-      if (progressTimeoutRef.current) {
-        clearTimeout(progressTimeoutRef.current)
-      }
     }
   }, [])
 
@@ -240,6 +243,10 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
     if (wd.player) {
       if (isPlaying) {
         pause()
+
+        if (progressTimeoutRef.current) {
+          clearTimeout(progressTimeoutRef.current)
+        }
       } else {
         play()
 
