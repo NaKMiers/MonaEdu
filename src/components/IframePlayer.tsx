@@ -55,8 +55,6 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
     setDuration(e.target.getDuration())
   }, [])
 
-  const onStateChange = (e: any) => {}
-
   // load youtube iframe api
   useEffect(() => {
     const wd: any = window
@@ -120,34 +118,39 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
 
   // MARK: Update lesson progress
   const handleUpdateLessonProgress = useCallback(async () => {
-    try {
-      const isEnrolled = curUser?.courses
-        ?.map((course: any) => course.course)
-        .includes((lesson?.courseId as ICourse)._id)
-      if (!lesson?.progress || !isEnrolled || !duration) return
+    console.log('duration:', duration)
 
+    const isEnrolled = curUser?.courses
+      ?.map((course: any) => course.course)
+      .includes((lesson?.courseId as ICourse)._id)
+    if (!lesson?.progress || !isEnrolled || !duration) return
+
+    try {
       const wd: any = window
       const curTime = wd.player.getCurrentTime()
 
-      console.log('update progress - curTime:', curTime)
+      console.log('1')
 
       const invalidProgress =
         Math.floor((curTime / duration) * 100 * 100) / 100 <= lesson.progress.progress
-      if (invalidProgress) return
 
-      const { progress } = await updateProgressApi(
-        (lesson.progress as IProgress)._id,
-        (lesson.courseId as ICourse)._id,
-        curTime > 0.8 * duration ? 'completed' : 'in-progress',
-        curTime > 0.8 * duration ? 100 : Math.floor((curTime / duration) * 100 * 100) / 100
-      )
+      if (!invalidProgress) {
+        console.log('update progress - curTime:', curTime, duration, lesson.progress.progress)
 
-      // update states
-      dispatch(setLearningLesson({ ...lesson, progress }))
+        const { progress } = await updateProgressApi(
+          (lesson.progress as IProgress)._id,
+          (lesson.courseId as ICourse)._id,
+          curTime > 0.8 * duration ? 'completed' : 'in-progress',
+          curTime > 0.8 * duration ? 100 : Math.floor((curTime / duration) * 100 * 100) / 100
+        )
 
-      // update course's progress
-      if (progress.status === 'completed') {
-        await update()
+        // update states
+        dispatch(setLearningLesson({ ...lesson, progress }))
+
+        // update course's progress
+        if (progress.status === 'completed') {
+          await update()
+        }
       }
     } catch (err: any) {
       console.log(err)
@@ -157,23 +160,23 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
       if (duration < 60) {
         // < 1min
         interval = 6000 // 6s/time -> 10 times
-        console.log('6 sec/time')
+        console.log('6 sec/time', duration)
       } else if (duration < 300) {
         // < 5min
-        interval = 20000 // 30s/time -> 10 times
-        console.log('30 sec/time')
+        interval = 30000 // 30s/time -> 10 times
+        console.log('30 sec/time', duration)
       } else if (duration < 600) {
         // < 10min
         interval = 30000 // 1min/time -> 10 times
-        console.log('1 min/time')
+        console.log('1 min/time', duration)
       } else if (duration < 1800) {
         // < 30min
         interval = 90000 // 1.5min/time -> 20 times
-        console.log('1.5 min/time')
+        console.log('1.5 min/time', duration)
       } else if (duration < 3600) {
         // < 1h
         interval = 120000 // 2min/time -> 30 times
-        console.log('2 min/time')
+        console.log('2 min/time', duration)
       }
       progressTimeoutRef.current = setTimeout(() => {
         if (progressTimeoutRef.current) {
@@ -239,13 +242,16 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
         pause()
       } else {
         play()
+
+        // update lesson progress every play
+        handleUpdateLessonProgress()
       }
     }
 
     setTimeout(() => {
       setShowControls(false)
     }, 1000)
-  }, [play, pause, isPlaying])
+  }, [handleUpdateLessonProgress, play, pause, isPlaying])
 
   // MARK: Seek
   const handleSeek = useCallback((seconds: number) => {
