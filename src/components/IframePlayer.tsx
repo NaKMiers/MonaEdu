@@ -129,6 +129,8 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
       const wd: any = window
       const curTime = wd.player.getCurrentTime()
 
+      console.log('update progress - curTime:', curTime)
+
       const invalidProgress =
         Math.floor((curTime / duration) * 100 * 100) / 100 <= lesson.progress.progress
       if (invalidProgress) return
@@ -155,18 +157,23 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
       if (duration < 60) {
         // < 1min
         interval = 6000 // 6s/time -> 10 times
+        console.log('6 sec/time')
       } else if (duration < 300) {
         // < 5min
         interval = 20000 // 30s/time -> 10 times
+        console.log('30 sec/time')
       } else if (duration < 600) {
         // < 10min
         interval = 30000 // 1min/time -> 10 times
+        console.log('1 min/time')
       } else if (duration < 1800) {
         // < 30min
         interval = 90000 // 1.5min/time -> 20 times
+        console.log('1.5 min/time')
       } else if (duration < 3600) {
         // < 1h
         interval = 120000 // 2min/time -> 30 times
+        console.log('2 min/time')
       }
       progressTimeoutRef.current = setTimeout(() => {
         if (progressTimeoutRef.current) {
