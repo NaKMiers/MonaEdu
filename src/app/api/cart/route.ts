@@ -20,11 +20,17 @@ export async function GET(req: NextRequest) {
 
     // get userId to get user's cart
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
-    const userId = token?._id
+    let userId = token?._id
 
     // check if user logged in
     if (!userId) {
       return NextResponse.json({ message: 'Xác thực thất bại' }, { status: 401 })
+    }
+
+    // get userId from query to get user cart
+    const uId = req.nextUrl.searchParams.get('userId')
+    if (uId) {
+      userId = uId
     }
 
     // get cart from database

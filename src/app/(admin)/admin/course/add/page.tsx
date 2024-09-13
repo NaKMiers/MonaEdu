@@ -376,7 +376,7 @@ function AddCoursePage() {
         <div className='mb-5'>
           <p className='text-dark font-semibold text-xl mb-1'>Select Tags</p>
 
-          <div className='p-2 rounded-lg flex flex-wrap items-center bg-white gap-2'>
+          <div className='p-2 rounded-lg flex flex-wrap items-center bg-white gap-2 max-h-[196px] overflow-y-auto'>
             {tags.map(tag => (
               <Fragment key={tag._id}>
                 <input
@@ -390,7 +390,7 @@ function AddCoursePage() {
                   id={tag._id}
                 />
                 <label
-                  className={`cursor-pointer select-none rounded-lg border border-green-500 text-green-500 py-[6px] px-3 trans-200 ${
+                  className={`cursor-pointer select-none text-sm rounded-lg border border-green-500 text-green-500 py-1 px-3 trans-200 ${
                     selectedTags.some(t => t === tag._id) ? 'bg-green-500 text-white' : ''
                   }`}
                   htmlFor={tag._id}

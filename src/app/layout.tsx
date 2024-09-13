@@ -3,10 +3,10 @@ import type { Metadata } from 'next'
 import { getServerSession } from 'next-auth'
 import { ReactNode } from 'react'
 import './globals.scss'
-import authOptions from './api/auth/[...nextauth]/authOptions'
 import { Toaster } from 'react-hot-toast'
 import NextTopLoader from 'nextjs-toploader'
 import PageLoading from '@/components/PageLoading'
+import authOptions from './api/auth/[...nextauth]/authOptions'
 
 export const metadata: Metadata = {
   title: 'Mona Edu',

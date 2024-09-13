@@ -260,7 +260,7 @@ function AddCoursePage() {
 
       <div className='mt-5 bg-slate-200 rounded-lg p-21 shadow-lg'>
         <div className='mb-5 grid grid-cols-1 lg:grid-cols-3 gap-5'>
-          {/* Title */}
+          {/* MARK: Title */}
           <Input
             id='title'
             label='Title'
@@ -273,7 +273,7 @@ function AddCoursePage() {
             onFocus={() => clearErrors('title')}
           />
 
-          {/* Author */}
+          {/* MARK: Author */}
           <Input
             id='author'
             label='Author'
@@ -287,7 +287,7 @@ function AddCoursePage() {
             onFocus={() => clearErrors('author')}
           />
 
-          {/* Citing */}
+          {/* MARK: Citing */}
           <Input
             id='citing'
             label='Citing'
@@ -302,7 +302,7 @@ function AddCoursePage() {
           />
         </div>
 
-        {/* Prices */}
+        {/* MARK: Price - Old Price */}
         <div className='mb-5 grid grid-cols-1 lg:grid-cols-2 gap-5'>
           {/* Price */}
           <Input
@@ -330,7 +330,7 @@ function AddCoursePage() {
           />
         </div>
 
-        {/* Text Hook */}
+        {/* MARK: Text Hook */}
         <Input
           id='textHook'
           label='Hook'
@@ -345,7 +345,7 @@ function AddCoursePage() {
           onFocus={() => clearErrors('textHook')}
         />
 
-        {/* Description */}
+        {/* MARK: Description */}
         <p className='text-dark font-semibold text-xl mb-1'>Description</p>
         {getValues('description') && (
           <TextEditor
@@ -355,7 +355,7 @@ function AddCoursePage() {
           />
         )}
 
-        {/* Languages */}
+        {/* MARK: Languages */}
         <Input
           id='languages'
           label='Languages'
@@ -370,7 +370,7 @@ function AddCoursePage() {
           onFocus={() => clearErrors('languages')}
         />
 
-        {/* Active */}
+        {/* MARK: Active */}
         <div className='flex mb-4'>
           <div className='bg-white rounded-lg px-3 flex items-center'>
             <FaPlay size={16} className='text-secondary' />
@@ -391,6 +391,7 @@ function AddCoursePage() {
           </label>
         </div>
 
+        {/* MARK: Boot */}
         <div className='flex mb-4'>
           <div className='bg-white rounded-lg px-3 flex items-center'>
             <FaPlay size={16} className='text-secondary' />
@@ -411,11 +412,11 @@ function AddCoursePage() {
           </label>
         </div>
 
-        {/* Tags */}
+        {/* MARK: Tags */}
         <div className='mb-5'>
           <p className='text-dark font-semibold text-xl mb-1'>Select Tags</p>
 
-          <div className='p-2 rounded-lg flex flex-wrap items-center bg-white gap-2'>
+          <div className='p-2 rounded-lg flex flex-wrap items-center bg-white gap-2 max-h-[196px] overflow-y-auto'>
             {tags.map(tag => (
               <Fragment key={tag._id}>
                 <input
@@ -430,7 +431,7 @@ function AddCoursePage() {
                   id={tag._id}
                 />
                 <label
-                  className={`cursor-pointer select-none rounded-lg border border-green-500 text-green-500 py-[6px] px-3 trans-200 ${
+                  className={`cursor-pointer select-none text-sm rounded-lg border border-green-500 text-green-500 py-1 px-3 trans-200 ${
                     selectedTags.some(t => t === tag._id) ? 'bg-green-500 text-white' : ''
                   }`}
                   htmlFor={tag._id}
@@ -442,7 +443,7 @@ function AddCoursePage() {
           </div>
         </div>
 
-        {/* Categories */}
+        {/* MARK: Categories */}
         <div className='mb-5'>
           <p className='text-dark font-semibold text-xl mb-1'>Select Categories</p>
 
@@ -489,7 +490,7 @@ function AddCoursePage() {
           </div>
         </div>
 
-        {/* Image Urls */}
+        {/* MARK: Image Urls */}
         {(!!imageUrls.length || !!originalImages.length) && (
           <div className='flex flex-wrap gap-3 rounded-lg bg-white p-3 mb-5'>
             {originalImages.map(url => (

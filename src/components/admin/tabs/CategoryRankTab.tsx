@@ -24,6 +24,11 @@ function CategoryRankTab({ className = '' }: CategoryRankTabProps) {
         const query = '?limit=no-limit&sort=createdAt|-1'
         const { courses } = await getAllCoursesApi(query)
 
+        console.log(
+          'courses',
+          courses.filter((course: any) => !course.category?._id)
+        )
+
         // Category Joined Rank
         const categoryJoinedMap: { [key: string]: ICategory & { joined: number } } = {}
         courses.forEach((course: ICourse) => {
@@ -58,7 +63,7 @@ function CategoryRankTab({ className = '' }: CategoryRankTabProps) {
           <div
             className={`flex items-center justify-between gap-2 px-3 py-1 mb-4 rounded-xl shadow-md overflow-x-auto no-scrollbar`}
             style={{
-              width: `calc(100% - ${index * 6 < 40 ? index * 6 : 40}%)`,
+              width: `calc(100% - ${index * 4 < 30 ? index * 4 : 30}%)`,
             }}
             key={category._id}
           >

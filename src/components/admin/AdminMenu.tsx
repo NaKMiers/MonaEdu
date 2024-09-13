@@ -1,7 +1,7 @@
 'use client'
 
 import { adminLinks } from '@/constants'
-import { getSession, useSession } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { memo, useEffect, useState } from 'react'
@@ -43,7 +43,7 @@ function AdminMenu() {
 
       {/* MARK: Open Button */}
       <button
-        className={`fixed top-[15%] z-20 right-0 p-[5px] pl-2 bg-dark-100 text-white rounded-tl-md rounded-bl-md shadow-md trans-200 hover:bg-primary ${
+        className={`fixed top-[100px] z-20 right-0 p-[5px] pl-2 bg-dark-100 text-white rounded-tl-md rounded-bl-md shadow-md trans-200 hover:bg-primary ${
           !open ? 'translate-x-0' : 'translate-x-full'
         }`}
         onClick={() => setOpen(!open)}
@@ -53,7 +53,7 @@ function AdminMenu() {
 
       {/* MARK: Main */}
       <div
-        className={`fixed top-[15%] max-h-[600px] overflow-auto z-${
+        className={`fixed top-[100px] max-h-[calc(100vh-72px-121px)] overflow-auto z-${
           open ? 30 : 20
         } right-0 p-4 bg-dark-100 text-white rounded-tl-medium rounded-bl-medium shadow-primary shadow-md max-w-[300px] w-full trans-200 ${
           open ? 'translate-x-0 opacity-1' : 'translate-x-full opacity-10'

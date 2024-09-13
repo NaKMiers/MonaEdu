@@ -1,18 +1,21 @@
+import { ICartItem } from '@/models/CartItemModel'
 import { IUser } from '@/models/UserModel'
-import { blockCommentApi, demoteCollaboratorApi, setCollaboratorApi } from '@/requests'
+import { blockCommentApi, demoteCollaboratorApi, getCartApi, setCollaboratorApi } from '@/requests'
 import { formatPrice } from '@/utils/number'
+import { getUserName } from '@/utils/string'
 import { formatDate, formatTime } from '@/utils/time'
+import { AnimatePresence, motion } from 'framer-motion'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { memo, useCallback, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
-import { FaCommentSlash, FaTrash } from 'react-icons/fa'
+import { FaCartArrowDown, FaCommentSlash, FaTrash } from 'react-icons/fa'
 import { GrUpgrade } from 'react-icons/gr'
 import { HiLightningBolt } from 'react-icons/hi'
-import { ImBlocked } from 'react-icons/im'
 import { RiCheckboxMultipleBlankLine, RiDonutChartFill } from 'react-icons/ri'
+import Divider from '../Divider'
 import Input from '../Input'
 import LoadingButton from '../LoadingButton'
 import ConfirmDialog from '../dialogs/ConfirmDialog'
@@ -44,15 +47,22 @@ function UserItem({
 
   // states
   const [userData, setUserData] = useState<IUser>(data)
+  const [userCart, setUserCart] = useState<ICartItem[]>([])
+
+  // open states
   const [isOpenSetCollaborator, setIsOpenSetCollaborator] = useState<boolean>(false)
-  const [isLoadingSetCollaborator, setIsLoadingSetCollaborator] = useState<boolean>(false)
-  const [isDemoting, setIsDemoting] = useState<boolean>(false)
-  const [isBlockingComment, setIsBlockingComment] = useState<boolean>(false)
   const [isOpenConfirmModal, setIsOpenConfirmModal] = useState<boolean>(false)
   const [isOpenBlockCommentConfirmationDialog, setIsOpenBlockCommentConfirmationDialog] =
     useState<boolean>(false)
   const [isOpenDemoteCollboratorConfirmationDialog, setIsOpenDemoteCollboratorConfirmationDialog] =
     useState<boolean>(false)
+  const [isOpenCartList, setIsOpenCartList] = useState<boolean>(false)
+
+  // loading states
+  const [isLoadingSetCollaborator, setIsLoadingSetCollaborator] = useState<boolean>(false)
+  const [isDemoting, setIsDemoting] = useState<boolean>(false)
+  const [isBlockingComment, setIsBlockingComment] = useState<boolean>(false)
+  const [isGettingCart, setIsGettingCart] = useState<boolean>(false)
 
   // values
   const isCurUser = data._id === curUser?._id
@@ -72,8 +82,7 @@ function UserItem({
     },
   })
 
-  // MARK: Handlers
-  // validate form
+  // MARK: Validate form
   const handleValidate: SubmitHandler<FieldValues> = useCallback(
     formData => {
       let isValid = true
@@ -101,7 +110,7 @@ function UserItem({
     [setError, data._id]
   )
 
-  // submit collaborator form
+  // MARK: Submit collaborator form
   const onSetCollaboratorSubmit: SubmitHandler<FieldValues> = async formData => {
     // validate form
     if (!handleValidate(formData)) return
@@ -133,7 +142,7 @@ function UserItem({
     }
   }
 
-  // handle demote collaborator
+  // MARK: Handle demote collaborator
   const handleDemoteCollaborator = useCallback(async () => {
     setIsDemoting(true)
 
@@ -157,7 +166,7 @@ function UserItem({
     }
   }, [data._id, reset])
 
-  // handle block / unblock comment
+  // MARK: handle block / unblock comment
   const handleBlockComment = useCallback(async () => {
     // start loading
     setIsBlockingComment(true)
@@ -182,6 +191,30 @@ function UserItem({
       setIsBlockingComment(false)
     }
   }, [data._id, userData.blockStatuses.blockedComment])
+
+  // MARK: handle get user cart
+  const handleGetUserCart = useCallback(async () => {
+    // start loading
+    setIsGettingCart(true)
+
+    try {
+      // send request to get user's cart
+      const { cart } = await getCartApi(`?userId=${data._id}`) // cache: no-store
+      console.log('cart', cart)
+
+      // set cart states
+      setUserCart(cart)
+
+      // open cart list modal
+      setIsOpenCartList(true)
+    } catch (err: any) {
+      console.log(err)
+      toast.error(err.message)
+    } finally {
+      // stop loading
+      setIsGettingCart(false)
+    }
+  }, [data])
 
   return (
     <>
@@ -442,9 +475,71 @@ function UserItem({
                 <FaTrash size={18} className='wiggle' />
               )}
             </button>
+
+            {/* View Cart */}
+            <button
+              className='block group'
+              onClick={e => {
+                e.stopPropagation()
+                handleGetUserCart()
+              }}
+              disabled={
+                loadingUsers.includes(userData._id) || isBlockingComment || isDemoting || isGettingCart
+              }
+              title='View Cart'
+            >
+              {isGettingCart ? (
+                <RiDonutChartFill size={18} className='animate-spin text-slate-300' />
+              ) : (
+                <FaCartArrowDown size={18} className='wiggle text-yellow-500' />
+              )}
+            </button>
           </div>
         )}
       </div>
+
+      {/* List Cart Modal */}
+      <AnimatePresence>
+        {isOpenCartList && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className={`fixed z-40 top-0 left-0 right-0 bottom-0 text-dark bg-black bg-opacity-50 flex items-center justify-center ${className}`}
+            onClick={() => setIsOpenCartList(false)}
+          >
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0 }}
+              className='w-full max-w-[500px] max-h-[500px] overflow-y-auto rounded-medium shadow-medium bg-white p-21'
+              onClick={e => e.stopPropagation()}
+            >
+              <h1 className='font-semibold'>{getUserName(data)}&apos;s Cart</h1>
+              <Divider border size={4} />
+
+              {userCart.length > 0 ? (
+                <div className='text-sm font-body tracking-wider flex flex-col gap-1'>
+                  {userCart.map((item: any, index) => (
+                    <Link
+                      href={`/${item.courseId.slug}`}
+                      className='flex items-start gap-2 hover:text-sky-500 trans-200 hover:underline'
+                      key={item._id}
+                    >
+                      <span className='rounded-full min-w-6 text-center border border-dark-100 px-0.5 text-[10px]'>
+                        {index + 1}
+                      </span>
+                      <span>{item.courseId.title}</span>
+                    </Link>
+                  ))}
+                </div>
+              ) : (
+                <p className='italic text-slate-400 text-sm'>User cart is empty.</p>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Confirm Delete Dialog */}
       <ConfirmDialog

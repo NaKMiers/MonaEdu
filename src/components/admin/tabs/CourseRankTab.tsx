@@ -16,7 +16,7 @@ interface CourseRankTabProps {
 function CourseRankTab({ className = '' }: CourseRankTabProps) {
   // states
   const [loading, setLoading] = useState<boolean>(false)
-  const [courses, setCourses] = useState<any[]>([])
+  const [items, setItems] = useState<any[]>([])
   const [by, setBy] = useState<'day' | 'month' | 'year'>('day')
 
   useEffect(() => {
@@ -41,8 +41,8 @@ function CourseRankTab({ className = '' }: CourseRankTabProps) {
           getForceAllCategoriesApi('?pure=true'),
         ])
 
-        const courses = rankCourseRevenue(orders, categories)
-        setCourses(courses)
+        const items = rankCourseRevenue(orders, categories)
+        setItems(items)
       } catch (err: any) {
         console.log(err)
         toast.error(err.message)
@@ -87,29 +87,31 @@ function CourseRankTab({ className = '' }: CourseRankTabProps) {
           <Divider size={4} />
 
           <div className='flex flex-col gap-2'>
-            {courses.map((course, index) => (
+            {items.map((item, index) => (
               <div
-                className='flex items-start gap-2.5 bg-slate-700 rounded-lg shadow-lg p-2 text-light'
+                className='flex items-start gap-2.5 bg-slate-900 rounded-lg shadow-lg p-2 text-light'
                 key={index}
               >
-                <Link
-                  href={`/${course.slug}`}
-                  className='aspect-video rounded-sm overflow-hidden flex-shrink-0 w-full max-w-[60px]'
-                >
-                  <Image
-                    className='w-full h-full object-cover'
-                    src={course.images[0]}
-                    width={60}
-                    height={40}
-                    alt={course.title}
-                    loading='lazy'
-                  />
-                </Link>
+                {item?.images?.[0] && (
+                  <Link
+                    href={`/${item.slug}`}
+                    className='aspect-video rounded-sm overflow-hidden flex-shrink-0 w-full max-w-[60px]'
+                  >
+                    <Image
+                      className='w-full h-full object-cover'
+                      src={item.images[0]}
+                      width={60}
+                      height={40}
+                      alt={item.title}
+                      loading='lazy'
+                    />
+                  </Link>
+                )}
                 <div className='flex flex-col'>
-                  <p className='font-body tracking-wider font-semibold -mt-1'>{course.title}</p>
+                  <p className='font-body tracking-wider font-semibold -mt-1'>{item.title}</p>
                   <p>
                     <span className='text-xs'>Revenue</span>:{' '}
-                    <span className='font-semibold'>{formatPrice(course.revenue)}</span>
+                    <span className='font-semibold'>{formatPrice(item.revenue)}</span>
                   </p>
                 </div>
               </div>
