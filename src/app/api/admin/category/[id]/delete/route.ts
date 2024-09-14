@@ -30,7 +30,7 @@ export async function DELETE(_: NextRequest, { params: { id } }: { params: { id:
     }
 
     // check if category is a parent of any course
-    const courseExists = await CourseModel.exists({ categoryId: id })
+    const courseExists = await CourseModel.exists({ category: id })
     if (courseExists) {
       return NextResponse.json(
         { message: `Cannot delete this category, please delete all related courses first!` },
