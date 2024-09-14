@@ -49,6 +49,7 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
   const videoBarRef = useRef<HTMLDivElement>(null)
   const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const progressTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const isSetInitProgress = useRef<boolean>(false)
 
   const onPlayerReady = useCallback(
     (e: any) => {
@@ -60,8 +61,10 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
       setDuration(duration)
 
       // set init current at previous progress
-      if (lesson.progress?.progress) {
+      if (lesson.progress?.progress && !isSetInitProgress.current) {
         if (wd.player) {
+          isSetInitProgress.current = true
+
           // calculate seconds
           const seconds = (lesson.progress.progress / 100) * duration
 
@@ -181,23 +184,23 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
       toast.error(err.message)
     } finally {
       let interval = 120000 // default 2m/time
-      if (duration < 60) {
+      if (duration <= 60) {
         // < 1min
         interval = 6000 // 6s/time -> 10 times
         console.log('6 sec/time', duration)
-      } else if (duration < 300) {
+      } else if (duration <= 300) {
         // < 5min
         interval = 30000 // 30s/time -> 10 times
         console.log('30 sec/time', duration)
-      } else if (duration < 600) {
+      } else if (duration <= 600) {
         // < 10min
         interval = 60000 // 1min/time -> 10 times
         console.log('1 min/time', duration)
-      } else if (duration < 1800) {
+      } else if (duration <= 1800) {
         // < 30min
         interval = 90000 // 1.5min/time -> 20 times
         console.log('1.5 min/time', duration)
-      } else if (duration < 3600) {
+      } else if (duration <= 3600) {
         // < 1h
         interval = 120000 // 2min/time -> 30 times
         console.log('2 min/time', duration)

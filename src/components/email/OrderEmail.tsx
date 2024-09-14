@@ -54,7 +54,7 @@ export function OrderEmail({ order = orderSample }: { order?: any }) {
                 <h1 className='text-2xl font-bold text-center'>Hi👋 </h1>
                 <h2 className='text-xl font-semibold text-center'>
                   {order.isPackage
-                    ? 'Cảm ơn bạn đã đăng ký gói học viên của chúng tôi, chúc bạn thành công!'
+                    ? 'Cảm ơn bạn đã đăng ký gói học viên của chúng tôi, chúc bạn thành công. Ấn vào đây!'
                     : 'Cảm ơn bạn đã tham gia khóa học của Mona Edu, chúc bạn học tốt!'}
                 </h2>
 
