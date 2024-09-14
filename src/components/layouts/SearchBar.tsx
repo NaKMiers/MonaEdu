@@ -1,13 +1,11 @@
 import { useAppDispatch, useAppSelector } from '@/libs/hooks'
 import { setOpenSearchBar } from '@/libs/reducers/modalReducer'
 import { getCoursesApi, searchCoursesApi } from '@/requests'
-import Image from 'next/image'
 import Link from 'next/link'
 import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import { FaSearch } from 'react-icons/fa'
 import { IoChevronDown, IoChevronUp } from 'react-icons/io5'
-import { PiLightningFill } from 'react-icons/pi'
 import { RiDonutChartFill } from 'react-icons/ri'
 import { TiDelete } from 'react-icons/ti'
 import SearchResultItem from './SearchResultItem'
@@ -17,13 +15,16 @@ function SearchBar() {
   const dispatch = useAppDispatch()
   const open = useAppSelector(state => state.modal.openSearchBar)
 
-  // search
+  // search state
   const [searchValue, setSearchValue] = useState<string>('')
   const [searchLoading, setSearchLoading] = useState<boolean>(false)
   const [initResults, setInitResults] = useState<any[] | null>([])
   const [searchResults, setSearchResults] = useState<any[] | null>(null)
   const searchTimeout = useRef<any>(null)
   const [openResults, setOpenResults] = useState<boolean>(false)
+
+  // refs
+  const searchResultsRef = useRef<HTMLUListElement>(null)
 
   // handle search
   const handleSearch = useCallback(async () => {
@@ -80,6 +81,27 @@ function SearchBar() {
 
     getSuggestedCourses()
   }, [])
+
+  // handle open transition
+  useEffect(() => {
+    const ref = searchResultsRef.current
+    if (!ref) return
+
+    if (searchResults && openResults) {
+      ref.classList.remove('hidden')
+      setTimeout(() => {
+        ref?.classList.remove('opacity-0')
+        ref?.classList.add('opacity-100')
+      }, 0)
+    } else {
+      ref.classList.remove('opacity-100')
+      ref?.classList.add('opacity-0')
+      setTimeout(() => {
+        if (!ref) return
+        ref.classList.add('hidden')
+      }, 300)
+    }
+  }, [searchResults, openResults])
 
   return (
     <div
@@ -150,8 +172,9 @@ function SearchBar() {
       {/* Search Results */}
       <ul
         className={`${
-          searchResults && openResults ? 'max-h-[calc(100vh-100px)] p-2 shadow-medium' : 'max-h-0 p-0'
-        } absolute z-20 bottom-full md:bottom-auto md:top-full left-0 w-full rounded-lg bg-neutral-800 text-light gap-2 overflow-y-auto transition-all duration-300`}
+          searchResults && openResults ? '' : ''
+        } hidden opacity-0 max-h-[calc(100vh-100px)] p-2 shadow-medium absolute z-20 bottom-full md:bottom-auto md:top-full left-0 w-full rounded-lg bg-neutral-800 text-light gap-2 overflow-y-auto transition-all duration-300`}
+        ref={searchResultsRef}
       >
         {searchResults?.length ? (
           searchResults.map(course => <SearchResultItem course={course} key={course._id} />)

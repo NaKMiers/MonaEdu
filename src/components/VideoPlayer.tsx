@@ -481,6 +481,7 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
           <button
             className='relative text-light trans-200 hover:text-primary shadow-lg rounded-full'
             onClick={() => handleSeek(currentTime - 5)}
+            onDoubleClick={e => e.stopPropagation()}
           >
             <GrRotateLeft className='w-[40px] sm:w-[50px] h-[40px] sm:h-[50px]' />
             <span className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 mt-0.5 text-xs sm:text-base font-semibold'>
@@ -491,6 +492,7 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
           <button
             className='rounded-full bg-orange-400 w-[80px] h-[80px] flex items-center justify-center shadow-lg hover:shadow-orange-400 trans-300'
             onClick={handlePlay}
+            onDoubleClick={e => e.stopPropagation()}
           >
             {isPlaying ? (
               <FaCirclePause size={40} className='text-light' />
@@ -502,6 +504,7 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
           <button
             className='relative text-light trans-200 hover:text-primary shadow-lg rounded-full'
             onClick={() => handleSeek(currentTime + 5)}
+            onDoubleClick={e => e.stopPropagation()}
           >
             <GrRotateRight className='w-[40px] sm:w-[50px] h-[40px] sm:h-[50px]' />
             <span className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 mt-0.5 text-xs sm:text-base font-semibold'>

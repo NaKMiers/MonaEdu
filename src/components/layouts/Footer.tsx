@@ -152,30 +152,30 @@ function Footer() {
           </div>
 
           <div className='flex flex-col col-span-12 sm:col-span-6 md:col-span-3'>
-            <h3 className='font-bold text-xl'>ƯU ĐIỂM</h3>
+            <h3 className='font-bold text-xl text-left'>ƯU ĐIỂM</h3>
 
             <div className='flex flex-col gap-3 mt-1.5'>
-              <div className='flex gap-2 items-center justify-center md:justify-start lg:justify-center hover:tracking-wider trans-200 font-body tracking-wide'>
+              <div className='flex gap-2 items-center hover:tracking-wider trans-200 font-body tracking-wide'>
                 <FaCheck className='text-green-400' />
                 Đa dạng khóa học
               </div>
-              <div className='flex gap-2 items-center justify-center md:justify-start lg:justify-center hover:tracking-wider trans-200 font-body tracking-wide'>
+              <div className='flex gap-2 items-center hover:tracking-wider trans-200 font-body tracking-wide'>
                 <FaCheck className='text-green-400' />
                 Giá thành hợp lí
               </div>
-              <div className='flex gap-2 items-center justify-center md:justify-start lg:justify-center hover:tracking-wider trans-200 font-body tracking-wide'>
+              <div className='flex gap-2 items-center hover:tracking-wider trans-200 font-body tracking-wide'>
                 <FaCheck className='text-green-400' />
                 Giao diện thân thiện
               </div>
-              <div className='flex gap-2 items-center justify-center md:justify-start lg:justify-center hover:tracking-wider trans-200 font-body tracking-wide'>
+              <div className='flex gap-2 items-center hover:tracking-wider trans-200 font-body tracking-wide'>
                 <FaCheck className='text-green-400' />
                 Thường xuyên cập nhật
               </div>
-              <div className='flex gap-2 items-center justify-center md:justify-start lg:justify-center hover:tracking-wider trans-200 font-body tracking-wide'>
+              <div className='flex gap-2 items-center hover:tracking-wider trans-200 font-body tracking-wide'>
                 <FaCheck className='text-green-400' />
                 Hỗ trợ nhanh chóng
               </div>
-              <div className='flex gap-2 items-center justify-center md:justify-start lg:justify-center hover:tracking-wider trans-200 font-body tracking-wide'>
+              <div className='flex gap-2 items-center hover:tracking-wider trans-200 font-body tracking-wide'>
                 <FaCheck className='text-green-400' />
                 Thanh toán an toàn
               </div>
@@ -183,47 +183,47 @@ function Footer() {
           </div>
 
           <div className='flex flex-col col-span-12 sm:col-span-6 md:col-span-2'>
-            <h3 className='font-bold text-xl'>LIÊN KẾT</h3>
+            <h3 className='font-bold text-xl text-left'>LIÊN KẾT</h3>
 
             <div className='flex flex-col gap-3 text-center md:text-left lg:text-center mt-1.5'>
               <Link
                 href='/about-us'
-                className='flex justify-center items-center gap-1.5 hover:tracking-wider trans-200 underline underline-offset-2 font-body tracking-wide group'
+                className='flex items-center gap-1.5 hover:tracking-wider trans-200 underline underline-offset-2 font-body tracking-wide group'
               >
                 <FaInfoCircle size={14} className='wiggle-0 flex-shrink-0' />
                 Về chúng tôi
               </Link>
               <Link
                 href='/subscription'
-                className='flex justify-center items-center gap-1.5 hover:tracking-wider trans-200 underline underline-offset-2 font-body tracking-wide group'
+                className='flex items-center gap-1.5 hover:tracking-wider trans-200 underline underline-offset-2 font-body tracking-wide group'
               >
                 <RiVipCrown2Fill size={14} className='wiggle-0 flex-shrink-0' />
                 Gói học viên
               </Link>
               <Link
                 href='/cart'
-                className='flex justify-center items-center gap-1.5 hover:tracking-wider trans-200 underline underline-offset-2 font-body tracking-wide group'
+                className='flex items-center gap-1.5 hover:tracking-wider trans-200 underline underline-offset-2 font-body tracking-wide group'
               >
                 <FaShoppingCart size={14} className='wiggle-0 flex-shrink-0' />
                 Giỏ hàng
               </Link>
               <Link
                 href='/user/history'
-                className='flex justify-center items-center gap-1.5 hover:tracking-wider trans-200 underline underline-offset-2 font-body tracking-wide group'
+                className='flex items-center gap-1.5 hover:tracking-wider trans-200 underline underline-offset-2 font-body tracking-wide group'
               >
                 <FaHistory size={14} className='wiggle-0 flex-shrink-0' />
                 Lịch sử mua hàng
               </Link>
               <Link
                 href='/my-courses'
-                className='flex justify-center items-center gap-1.5 hover:tracking-wider trans-200 underline underline-offset-2 font-body tracking-wide group'
+                className='flex items-center gap-1.5 hover:tracking-wider trans-200 underline underline-offset-2 font-body tracking-wide group'
               >
                 <SiCoursera size={14} className='wiggle-0 flex-shrink-0' />
                 Khóa học của tôi
               </Link>
               {curUser ? (
                 <button
-                  className='flex items-center justify-center gap-1 md:text-left lg:text-center text-yellow-400 hover:tracking-wider trans-200 font-body tracking-wide group'
+                  className='flex items-center gap-1 md:text-left lg:text-center text-yellow-400 hover:tracking-wider trans-200 font-body tracking-wide group'
                   onClick={() => signOut()}
                 >
                   <FaSignOutAlt size={15} className='wiggle-0 flex-shrink-0' />
@@ -232,7 +232,7 @@ function Footer() {
               ) : (
                 <Link
                   href='/auth/login'
-                  className='flex items-center justify-center gap-1 md:text-left lg:text-center text-sky-400 hover:tracking-wider trans-200 font-body tracking-wide group'
+                  className='flex items-center gap-1 md:text-left lg:text-center text-sky-400 hover:tracking-wider trans-200 font-body tracking-wide group'
                 >
                   <FaSignInAlt size={15} className='wiggle-0 flex-shrink-0' />
                   Đăng nhập

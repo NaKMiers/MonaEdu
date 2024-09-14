@@ -5,6 +5,7 @@ import { setCartItems } from '@/libs/reducers/cartReducer'
 import { setOpenSearchBar } from '@/libs/reducers/modalReducer'
 import { INotification } from '@/models/NotificationModel'
 import { getCartApi, getUserNotificationsApi } from '@/requests'
+import { checkCrown } from '@/utils/string'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -18,7 +19,6 @@ import NotificationMenu from '../NotificationMenu'
 import CategoryTabs from './CategoryTabs'
 import Menu from './Menu'
 import SearchBar from './SearchBar'
-import { checkCrown } from '@/utils/string'
 
 interface HeaderProps {
   className?: string
@@ -43,6 +43,9 @@ function Header({ className = '' }: HeaderProps) {
 
   // notification states
   const [isOpenNotificationMenu, setIsOpenNotificationMenu] = useState<boolean>(false)
+
+  // refs
+  const isUpdatedSession = useRef<boolean>(false)
 
   // values
   const isShowCrown = checkCrown(curUser?.package)
@@ -109,32 +112,19 @@ function Header({ className = '' }: HeaderProps) {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [pathname])
 
-  // // update user session after load page and every 60s
-  // useEffect(() => {
-  //   // update session after load page
-  //   const updateSession = async () => {
-  //   console.log('Session - load-page...');
-  //     await update()
+  // update user session after load page and every 60s
+  useEffect(() => {
+    // update session after load page
+    const updateSession = async () => {
+      console.log('Session - load-page...')
+      await update()
+      isUpdatedSession.current = true
+    }
 
-  //     isUpdatedSession.current = true
-  //   }
-
-  //   if (!isUpdatedSession.current) {
-  //     updateSession()
-  //   }
-
-  //   // update every 60s
-  //   let intervalId: NodeJS.Timeout
-  //   if (isUpdatedSession.current) {
-  //     intervalId = setInterval(async () => {
-  //       console.log('Updating session...')
-  //       console.log('Session - 60s/time...');
-  //       await update()
-  //     }, 60000)
-  //   }
-
-  //   return () => clearInterval(intervalId)
-  // }, [update, session])
+    if (!isUpdatedSession.current) {
+      updateSession()
+    }
+  }, [update, session])
 
   return (
     <header

@@ -1,6 +1,8 @@
 import crypto from 'crypto'
 import { NextRequest, NextResponse } from 'next/server'
 
+// PAY2S_API_ENDPOINT
+
 // Function to create HMAC_SHA256 signature
 const createSignature = (data: string, secret: string) => {
   return crypto.createHmac('sha256', secret).update(data).digest('hex')
@@ -8,38 +10,33 @@ const createSignature = (data: string, secret: string) => {
 
 // Function to create the data string sorted alphabetically
 const createDataString = (params: Record<string, any>) => {
-  const sortedKeys = Object.keys(params).sort()
-  return sortedKeys.map(key => `${key}=${params[key]}`).join('&')
+  const sortedKeys = Object.keys(params)
+  console.log('sortedKeys', sortedKeys)
+  const a = sortedKeys.map(key => `${key}=${encodeURIComponent(params[key])}`).join('&')
+  console.log(a)
+  return a
 }
 
 export async function GET(req: NextRequest) {
-  console.log('- TEST PAY2S GATEWAY -')
-
   const requestData: any = {
-    partnerCode: process.env.PAY2S_PARNER_CODE,
-    partnerName: 'Mona Edu',
+    partnerCode: process.env.PAY2S_PARTNER_CODE!,
+    partnerName: 'Test',
     requestType: 'PAY2S',
-    ipnUrl: 'https://pay2s.vn',
-    redirectUrl: 'http://localhost:3000/api/test',
-    orderId: `MONAEDU${new Date().getTime()}`,
-    amount: 10000,
-    orderInfo: 'Test Pay2s Gateway...',
+    ipnUrl: 'https://monaedu.com/api/ipn',
+    redirectUrl: 'https://monaedu.com/api/test',
+    orderId: 'MM1540456472575',
+    amount: 150000,
+    orderInfo: 'SDK team.',
     bankAccounts: [
       {
         account_number: '737478888',
         bank_id: 'ACB',
       },
-      {
-        account_number: '222629219',
-        bank_id: 'ACB',
-      },
     ],
-    requestId: `1540456472575${new Date().getTime()}`,
+    requestId: '1540456472575',
   }
-
-  // Create the data string sorted alphabetically
   const dataString = createDataString({
-    accessKey: process.env.PAY2S_ACCESS_KEY, // Replace with your actual access key
+    accessKey: process.env.PAY2S_ACCESS_KEY!,
     amount: requestData.amount,
     accountNumber: requestData.bankAccounts[0].account_number, // Assuming you want to use the first account number
     ipnUrl: requestData.ipnUrl,
@@ -51,40 +48,31 @@ export async function GET(req: NextRequest) {
     requestType: requestData.requestType,
   })
 
-  // Create the signature
-  const signature = createSignature(dataString, process.env.PAY2S_SECRET_KEY!)
+  requestData.signature = createSignature(dataString, process.env.PAY2S_SECRET_KEY!)
 
-  // Add the signature to the request data
-  requestData.signature = signature
-
-  console.log('requestData', requestData)
-
-  // try {
-
-  //   // const res = await fetch('https://payment.pay2s.vn/v1/gateway/api/create', {
-  //   //   method: 'POST',
-  //   //   headers: {
-  //   //     'Content-Type': 'application/json',
-  //   //   },
-  //   //   body: JSON.stringify(requestData),
-  //   // })
-  //   // console.log('res', res)
-  // } catch (err: any) {
-  //   console.log('err', err)
-  // }
+  // accessKey=$accessKey
+  // &amount=$amount
+  // &accountNumber=$accountNumber
+  // &ipnUrl=$ipnUrl
+  // &orderId=$orderId
+  // &orderInfo=$orderInfo
+  // &partnerCode=$partnerCode
+  // &redirectUrl=$redirectUrl
+  // &requestId=$requestId
+  // &requestType=$requestType
 
   // post request to pay2s
   const res = await fetch(process.env.PAY2S_API_ENDPOINT!, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json; charset=UTF-8',
     },
     body: JSON.stringify(requestData),
   })
 
   const data = await res.json()
 
-  return NextResponse.json({ data, message: 'GET' })
+  return NextResponse.json({ data, requestData })
 }
 
 export async function POST(req: NextRequest) {

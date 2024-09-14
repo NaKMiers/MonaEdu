@@ -1,7 +1,7 @@
 'use client'
 
 import { useAppSelector } from '@/libs/hooks'
-import { getUserName } from '@/utils/string'
+import { checkCrown, checkPackageType, getUserName } from '@/utils/string'
 import { AnimatePresence, motion } from 'framer-motion'
 import { signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
@@ -24,6 +24,9 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
 
   // refs
   const menuRef = useRef<HTMLDivElement>(null)
+
+  // values
+  let isShowCrown = checkCrown(curUser?.package)
 
   // handle open transition
   useEffect(() => {
@@ -85,13 +88,35 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
                 href={`/user/${curUser?.username || curUser?.email}`}
                 className='flex items-center gap-2 py-2 px-3 rounded-lg group hover:bg-white hover:text-dark trans-200'
               >
-                <Image
-                  className='aspect-square rounded-full wiggle-0 shadow-lg'
-                  src={curUser?.avatar || process.env.NEXT_PUBLIC_DEFAULT_AVATAR!}
-                  height={40}
-                  width={40}
-                  alt='avatar'
-                />
+                <div className='relative'>
+                  {isShowCrown && (
+                    <Image
+                      className='absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 aspect-square rounded-full overflow-hidden'
+                      src='/icons/ring-circle.png'
+                      width={40}
+                      height={40}
+                      alt='ring'
+                    />
+                  )}
+                  <Image
+                    className={`relative z-10 aspect-square rounded-full wiggle-0 shadow-lg ${
+                      isShowCrown ? 'p-1' : ''
+                    }`}
+                    src={curUser?.avatar || process.env.NEXT_PUBLIC_DEFAULT_AVATAR!}
+                    height={40}
+                    width={40}
+                    alt='avatar'
+                  />
+                  {isShowCrown && (
+                    <Image
+                      className='absolute z-20 -top-[11px] right-[3px] rotate-[18deg]'
+                      src='/icons/crown-icon-2.png'
+                      width={24}
+                      height={24}
+                      alt='crown'
+                    />
+                  )}
+                </div>
                 <div className='flex flex-col'>
                   <p className='font-semibold text-xl leading-6 mb-1 text-ellipsis line-clamp-1'>
                     {getUserName(curUser)}
@@ -148,7 +173,24 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
                     height={30}
                     alt='subscription'
                   />
-                  <span className='font-body text-xl font-semibold tracking-wide'>Gói học viên</span>
+                  {curUser?.package ? (
+                    <p className='inline-block rounded-3xl text-center border border-slate-300 bg-neutral-950 font-semibold px-4 py-1 shadow-sm'>
+                      <span className='bg-clip-text text-transparent bg-gradient-to-r from-purple-500 via-pink-500 to-red-500'>
+                        {checkPackageType(curUser.package.credit, curUser.package.type) === 'credit' ? (
+                          <span>
+                            {curUser.package.title}{' '}
+                            <span className='text-sm text-slate-500'>
+                              ({curUser.package.credit} credit{curUser.package.credit === 1 ? '' : 's'})
+                            </span>
+                          </span>
+                        ) : (
+                          curUser.package.title
+                        )}
+                      </span>
+                    </p>
+                  ) : (
+                    <span className='font-body text-xl font-semibold tracking-wide'>Gói học viên</span>
+                  )}
                 </Link>
               </div>
               <div className='group' onClick={() => setOpen(false)}>
