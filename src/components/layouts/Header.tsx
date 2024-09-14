@@ -112,19 +112,19 @@ function Header({ className = '' }: HeaderProps) {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [pathname])
 
-  // update user session after load page and every 60s
-  useEffect(() => {
-    // update session after load page
-    const updateSession = async () => {
-      console.log('Session - load-page...')
-      await update()
-      isUpdatedSession.current = true
-    }
+  // // update user session after load page and every 60s
+  // useEffect(() => {
+  //   // update session after load page
+  //   const updateSession = async () => {
+  //     console.log('Session - load-page...')
+  //     await update()
+  //     isUpdatedSession.current = true
+  //   }
 
-    if (!isUpdatedSession.current) {
-      updateSession()
-    }
-  }, [update, session])
+  //   if (!isUpdatedSession.current) {
+  //     updateSession()
+  //   }
+  // }, [update, session])
 
   return (
     <header
