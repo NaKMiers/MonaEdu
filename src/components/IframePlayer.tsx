@@ -9,7 +9,7 @@ import { updateProgressApi } from '@/requests'
 import { Slider } from '@mui/material'
 import moment from 'moment-timezone'
 import { useSession } from 'next-auth/react'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import { FaCirclePause, FaCirclePlay } from 'react-icons/fa6'
 import { GrRotateLeft, GrRotateRight } from 'react-icons/gr'
@@ -34,8 +34,11 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
   const [prevVolume, setPrevVolume] = useState<number>(100)
   const [isPlaying, setIsPlaying] = useState<boolean>(false)
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false)
-  const [currentTime, setCurrentTime] = useState<number>(0)
-  const [duration, setDuration] = useState<number>(0)
+
+  const [currentTime, setCurrentTime] = useState<number>(
+    lesson.progress?.progress ? (lesson.progress.progress / 100) * lesson.duration : 0
+  ) // sec
+  const [duration, setDuration] = useState<number>(0) // sec
   const [isDragging, setIsDragging] = useState<boolean>(false)
   const [buffered, setBuffered] = useState<number>(0)
 
@@ -49,32 +52,19 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
   const videoBarRef = useRef<HTMLDivElement>(null)
   const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const progressTimeoutRef = useRef<NodeJS.Timeout | null>(null)
-  const isSetInitProgress = useRef<boolean>(false)
+  const isFirstPlayed = useRef<boolean>(false)
 
-  const onPlayerReady = useCallback(
-    (e: any) => {
-      const wd: any = window
-      wd.player = e.target
+  const onPlayerReady = useCallback((e: any) => {
+    const wd: any = window
+    wd.player = e.target
 
-      // set duration
-      const duration = wd.player.getDuration()
-      setDuration(duration)
+    // set duration
+    const duration = wd.player.getDuration()
+    setDuration(duration)
 
-      // set init current time from prev progress
-      if (lesson.progress?.progress && !isSetInitProgress.current) {
-        isSetInitProgress.current = true
-
-        // calculate seconds
-        const seconds = (lesson.progress.progress / 100) * duration
-        setCurrentTime(seconds)
-
-        // pause for default
-        wd.player.pause()
-        setIsPlaying(false)
-      }
-    },
-    [lesson.progress?.progress]
-  )
+    // set init current time from prev progress
+    wd.player.seekTo(currentTime, true)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   // load youtube iframe api
   useEffect(() => {
@@ -140,9 +130,6 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
   // MARK: Update lesson progress
   const handleUpdateLessonProgress = useCallback(async () => {
     console.log('duration:', duration)
-
-    console.log('user:', curUser.courses)
-    console.log('lesson:', (lesson.courseId as any)._id)
 
     const joinedCourse = curUser?.courses.find(
       (c: any) => c.course === (lesson?.courseId as ICourse)._id.toString()
@@ -223,7 +210,7 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
 
   // MARK: Show/Hide Controls
   const showControlsHandler = useCallback(() => {
-    if (currentTime === 0 || isDragging) return
+    if (!isFirstPlayed.current || isDragging) return
 
     setShowControls(true)
     if (controlsTimeoutRef.current) {
@@ -231,8 +218,8 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
     }
     controlsTimeoutRef.current = setTimeout(() => {
       setShowControls(false)
-    }, 1000)
-  }, [currentTime, isDragging])
+    }, 2500)
+  }, [isDragging])
 
   // useEffect to handle mouse move for showing/hiding controls
   useEffect(() => {
@@ -276,6 +263,7 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
           clearTimeout(progressTimeoutRef.current)
         }
       } else {
+        isFirstPlayed.current = true
         play()
 
         // update lesson progress every play
@@ -525,15 +513,15 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
   ])
 
   // MARK: Before Unload
-  // useEffect(() => {
-  //   window.addEventListener('beforeunload', e => {
-  //     const wd: any = window
-  //     const curTime = wd.player.getCurrentTime()
-  //     if (curTime <= 0.8 * duration) {
-  //       e.preventDefault()
-  //     }
-  //   })
-  // }, [duration])
+  useEffect(() => {
+    window.addEventListener('beforeunload', e => {
+      const wd: any = window
+      const curTime = wd.player.getCurrentTime()
+      if (curTime <= 0.8 * duration) {
+        e.preventDefault()
+      }
+    })
+  }, [duration])
 
   return (
     <div
@@ -695,4 +683,4 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
   )
 }
 
-export default IframePlayer
+export default memo(IframePlayer)
