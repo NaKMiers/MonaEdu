@@ -124,10 +124,16 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
   const handleUpdateLessonProgress = useCallback(async () => {
     console.log('duration:', duration)
 
-    const isEnrolled = curUser?.courses
-      ?.map((course: any) => course.course)
-      .includes((lesson?.courseId as ICourse)._id)
-    if (!lesson?.progress || !isEnrolled || !duration) return
+    console.log('user:', curUser.courses)
+    console.log('lesson:', (lesson.courseId as any)._id)
+
+    const joinedCourse = curUser?.courses.find(
+      (c: any) => c.course === (lesson?.courseId as ICourse)._id.toString()
+    )
+
+    console.log('isEnrolled:', joinedCourse)
+
+    if (!lesson?.progress || !joinedCourse || !duration) return
 
     try {
       const wd: any = window

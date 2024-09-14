@@ -37,7 +37,6 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
 
     // get data to add progress
     const { courseId, status, progress: value } = await req.json()
-    // check if user has joined the course
 
     // check if user has joined the course
     const isEnrolled = courses.courses.some((course: any) => course.course.toString() === courseId)

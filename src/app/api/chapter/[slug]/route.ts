@@ -10,6 +10,7 @@ import '@/models/ChapterModel'
 import '@/models/CourseModel'
 import '@/models/LessonModel'
 import '@/models/ProgressModel'
+import { getToken } from 'next-auth/jwt'
 
 export const dynamic = 'force-dynamic'
 
@@ -20,6 +21,15 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
   try {
     // connect to database
     await connectDatabase()
+
+    // get userId from token
+    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
+    const userId = token?._id
+
+    // check userId
+    if (!userId) {
+      return NextResponse.json({ message: 'Không tìm thấy người dùng' }, { status: 404 })
+    }
 
     // get course from database
     const course: ICourse | null = await CourseModel.findOne({ slug }).lean()
@@ -41,6 +51,7 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
         active: true,
       }).lean(),
       ProgressModel.find({
+        userId,
         courseId: course._id,
       }),
     ])
