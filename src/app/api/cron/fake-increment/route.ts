@@ -34,25 +34,12 @@ export async function GET(req: NextRequest) {
     }
 
     // Increase "joined" of 50 random courses
-    const courses: any[] = await Promise.all(
-      Array.from({ length: 50 }).map(() =>
-        CourseModel.aggregate([{ $sample: { size: 1 } }, { $project: { _id: 1 } }])
-      )
-    )
-    await Promise.all(courses.map(c => CourseModel.findByIdAndUpdate(c[0]._id, { $inc: { joined: 1 } })))
-    console.log('Increased Course Joined')
+    const courses = await CourseModel.aggregate([{ $sample: { size: 50 } }, { $project: { _id: 1 } }])
+    await CourseModel.updateMany({ _id: { $in: courses.map(c => c._id) } }, { $inc: { joined: 1 } })
 
     // Increase "likes" of 500 random lessons
-    const lessons: any[] = await Promise.all(
-      Array.from({ length: 500 }).map(() =>
-        LessonModel.aggregate([{ $sample: { size: 1 } }, { $project: { _id: 1 } }])
-      )
-    )
-
-    await Promise.all(
-      lessons.map(l => LessonModel.findByIdAndUpdate(l[0]._id, { $push: { likes: null } }))
-    )
-    console.log('Increased Lesson Likes')
+    const lessons = await LessonModel.aggregate([{ $sample: { size: 500 } }, { $project: { _id: 1 } }])
+    await LessonModel.updateMany({ _id: { $in: lessons.map(l => l._id) } }, { $push: { likes: null } })
 
     // ------------------------------
 
@@ -66,7 +53,7 @@ export async function GET(req: NextRequest) {
     // console.log(decode)
 
     // return response
-    return NextResponse.json({ message: 'Increased' }, { status: 200 })
+    return NextResponse.json({ message: 'Increased', courses, lessons }, { status: 200 })
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })
   }
