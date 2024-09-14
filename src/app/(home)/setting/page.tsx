@@ -132,6 +132,11 @@ function PersonalSetting() {
                 <span className='text-rose-500'>{formatPrice(curUser.package.maxPrice)}</span>
               </p>
             )}
+            {!curUser.package.maxPrice && !curUser.package.credit && !curUser.package.expire && (
+              <p className='text-sm font-semibold text-center w-full bg-clip-text text-transparent bg-gradient-to-r from-purple-500 via-pink-500 to-red-500'>
+                Thời hạn vĩnh viễn
+              </p>
+            )}
           </div>
         )}
       </div>

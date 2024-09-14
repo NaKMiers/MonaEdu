@@ -10,6 +10,11 @@
   }
 }
 
+*::selection {
+  @apply bg-secondary;
+  @apply text-light;
+}
+
 // max-height
 @media (max-height: 360px) {
   .max-h-360 {

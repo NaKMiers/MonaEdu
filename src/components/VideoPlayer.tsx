@@ -11,7 +11,8 @@ import moment from 'moment-timezone'
 import { useSession } from 'next-auth/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
-import { FaCirclePause, FaCirclePlay } from 'react-icons/fa6'
+import { FaArrowRotateLeft, FaCirclePause, FaCirclePlay } from 'react-icons/fa6'
+import { GrRotateLeft, GrRotateRight } from 'react-icons/gr'
 import { HiSpeakerWave, HiSpeakerXMark } from 'react-icons/hi2'
 import { RiFullscreenFill } from 'react-icons/ri'
 
@@ -329,7 +330,7 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
     }
     controlsTimeoutRef.current = setTimeout(() => {
       setShowControls(false)
-    }, 1000)
+    }, 2500)
   }, [currentTime, isDragging])
 
   // useEffect to handle mouse move for showing/hiding controls
@@ -468,24 +469,44 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
       {/* Controls */}
       <div
         className='flex items-end absolute top-0 left-0 right-0 bottom-0 w-full h-full bg-neutral-950 bg-opacity-50 select-none trans-300'
-        onClick={handlePlay}
+        onClick={() => setShowControls(prev => !prev)}
         ref={controlsRef}
       >
-        {/* Play Button */}
+        {/* Play - Back - Next Button */}
         <div
-          className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center trans-300'
+          className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-5 sm:gap-8 justify-center trans-300'
           onClick={e => e.stopPropagation()}
           ref={playRef}
         >
+          <button
+            className='relative text-light trans-200 hover:text-primary shadow-lg rounded-full'
+            onClick={() => handleSeek(currentTime - 5)}
+          >
+            <GrRotateLeft className='w-[40px] sm:w-[50px] h-[40px] sm:h-[50px]' />
+            <span className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 mt-0.5 text-xs sm:text-base font-semibold'>
+              5
+            </span>
+          </button>
+
           <button
             className='rounded-full bg-orange-400 w-[80px] h-[80px] flex items-center justify-center shadow-lg hover:shadow-orange-400 trans-300'
             onClick={handlePlay}
           >
             {isPlaying ? (
-              <FaCirclePause size={40} className='text-white' />
+              <FaCirclePause size={40} className='text-light' />
             ) : (
-              <FaCirclePlay size={40} className='text-white' />
+              <FaCirclePlay size={40} className='text-light' />
             )}
+          </button>
+
+          <button
+            className='relative text-light trans-200 hover:text-primary shadow-lg rounded-full'
+            onClick={() => handleSeek(currentTime + 5)}
+          >
+            <GrRotateRight className='w-[40px] sm:w-[50px] h-[40px] sm:h-[50px]' />
+            <span className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 mt-0.5 text-xs sm:text-base font-semibold'>
+              5
+            </span>
           </button>
         </div>
 
