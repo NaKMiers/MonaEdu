@@ -49,15 +49,32 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
   const videoBarRef = useRef<HTMLDivElement>(null)
   const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const progressTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const isSetInitProgress = useRef<boolean>(false)
 
-  const onPlayerReady = useCallback((e: any) => {
-    const wd: any = window
-    wd.player = e.target
+  const onPlayerReady = useCallback(
+    (e: any) => {
+      const wd: any = window
+      wd.player = e.target
 
-    // set duration
-    const duration = wd.player.getDuration()
-    setDuration(duration)
-  }, [])
+      // set duration
+      const duration = wd.player.getDuration()
+      setDuration(duration)
+
+      // set init current time from prev progress
+      if (lesson.progress?.progress && !isSetInitProgress.current) {
+        isSetInitProgress.current = true
+
+        // calculate seconds
+        const seconds = (lesson.progress.progress / 100) * duration
+        setCurrentTime(seconds)
+
+        // pause for default
+        wd.player.pause()
+        setIsPlaying(false)
+      }
+    },
+    [lesson.progress?.progress]
+  )
 
   // load youtube iframe api
   useEffect(() => {
