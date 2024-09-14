@@ -1,5 +1,6 @@
 import { connectDatabase } from '@/config/database'
 import UserModel, { IUser } from '@/models/UserModel'
+import { notifyExpiredPackage } from '@/utils/sendMail'
 import jwt, { JwtPayload } from 'jsonwebtoken'
 import momentTZ from 'moment-timezone'
 import { NextRequest, NextResponse } from 'next/server'
@@ -8,13 +9,7 @@ import vi from 'timeago.js/lib/lang/vi'
 register('vi', vi)
 
 // Models: User
-import CategoryModel from '@/models/CategoryModel'
-import ChapterModel from '@/models/ChapterModel'
-import CourseModel from '@/models/CourseModel'
-import LessonModel from '@/models/LessonModel'
 import '@/models/UserModel'
-import { removeDiacritics } from '@/utils'
-import { notifyExpiredPackage } from '@/utils/sendMail'
 
 export const dynamic = 'force-dynamic'
 
@@ -25,47 +20,6 @@ export async function GET(req: NextRequest) {
   try {
     // connect to database
     await connectDatabase()
-
-    const categories = await CategoryModel.find().select('title').lean()
-    const courses = await CourseModel.find().select('title').lean()
-    const chapters = await ChapterModel.find().select('title').lean()
-    const lessons = await LessonModel.find().select('title').lean()
-
-    await Promise.all(
-      categories.map(async (item: any) => {
-        await CategoryModel.updateOne(
-          { _id: item._id },
-          { $set: { titleNoDiacritics: removeDiacritics(item.title) } }
-        )
-      })
-    )
-
-    await Promise.all(
-      courses.map(async (item: any) => {
-        await CourseModel.updateOne(
-          { _id: item._id },
-          { $set: { titleNoDiacritics: removeDiacritics(item.title) } }
-        )
-      })
-    )
-
-    await Promise.all(
-      chapters.map(async (item: any) => {
-        await ChapterModel.updateOne(
-          { _id: item._id },
-          { $set: { titleNoDiacritics: removeDiacritics(item.title) } }
-        )
-      })
-    )
-
-    await Promise.all(
-      lessons.map(async (item: any) => {
-        await LessonModel.updateOne(
-          { _id: item._id },
-          { $set: { titleNoDiacritics: removeDiacritics(item.title) } }
-        )
-      })
-    )
 
     // get token from query
     const searchParams = req.nextUrl.searchParams

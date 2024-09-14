@@ -96,7 +96,9 @@ const authOptions = {
         console.log('- Update Token -')
         const userDB: IUser | null = await UserModel.findById(token._id).lean()
         if (userDB) {
-          return { ...token, ...userDB }
+          // exclude password
+          const { password, ...userDBWithoutPassword } = userDB
+          return { ...token, ...userDBWithoutPassword }
         }
       }
 
@@ -106,7 +108,8 @@ const authOptions = {
         }).lean()
 
         if (userDB) {
-          token = { ...token, ...userDB }
+          const { password, ...userDBWithoutPassword } = userDB
+          token = { ...token, ...userDBWithoutPassword }
         }
       }
 

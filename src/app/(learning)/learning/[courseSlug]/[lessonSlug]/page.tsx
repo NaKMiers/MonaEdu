@@ -95,6 +95,7 @@ function LessonPage({
 
             // update course's progress
             if (progress.status === 'completed') {
+              console.log('Session - docs-completed...')
               await update()
             }
           }, 3000)

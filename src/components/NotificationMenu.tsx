@@ -8,8 +8,8 @@ import { useRouter } from 'next/navigation'
 import { Dispatch, memo, SetStateAction, useCallback, useEffect, useRef } from 'react'
 import toast from 'react-hot-toast'
 import { IoCloseCircleOutline, IoMail, IoMailOpen } from 'react-icons/io5'
-import vi from 'timeago.js/lib/lang/vi'
 import { format, register as timeAgoRegister } from 'timeago.js'
+import vi from 'timeago.js/lib/lang/vi'
 
 interface NotificationMenuProps {
   open: boolean
@@ -27,7 +27,7 @@ function NotificationMenu({
   className = '',
 }: NotificationMenuProps) {
   // hooks
-  const { data: session, update } = useSession()
+  const { data: session } = useSession()
   const router = useRouter()
   const curUser: any = session?.user
 
@@ -49,15 +49,12 @@ function NotificationMenu({
         if (newNotifications.length === 0) {
           setOpen(false)
         }
-
-        // update user
-        await update()
       } catch (err: any) {
         console.log(err)
         toast.error(err.message)
       }
     },
-    [update, setNotifications, setOpen, notifications]
+    [setNotifications, setOpen, notifications]
   )
 
   // handle read notifications
@@ -67,17 +64,13 @@ function NotificationMenu({
         const { message } = await readNotificationsApi(ids, status)
 
         // read / unread notifications
-
         setNotifications(prev => prev.map(noti => (ids.includes(noti._id) ? { ...noti, status } : noti)))
-
-        // update user
-        await update()
       } catch (err: any) {
         console.log(err)
         toast.error(err.message)
       }
     },
-    [update, setNotifications]
+    [setNotifications]
   )
 
   // handle open transition

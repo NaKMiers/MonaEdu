@@ -49,6 +49,7 @@ function NotificationSettings({ className = '' }: NotificationSettingsProps) {
         toast.success(message)
 
         // update user session
+        console.log('Session - notification-setting...')
         await update()
       } catch (err: any) {
         console.log(err)

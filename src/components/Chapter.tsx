@@ -74,11 +74,11 @@ function Chapter({
       <div
         className={`${
           chapter.lessons?.some(lesson => lesson.slug === lessonSlug) ? 'text-orange-500' : 'text-white'
-        } font-semibold flex justify-between items-center gap-2 py-2 px-3 cursor-pointer`}
+        } font-semibold flex justify-between items-start gap-3 py-2 px-3 cursor-pointer`}
         onClick={() => setOpen(!open)}
       >
-        {chapter.title}
-        <div className='flex items-center gap-2 text-nowrap'>
+        <p className='text-sm sm:text-base'>{chapter.title}</p>
+        <div className='flex flex-wrap sm:flex-nowrap justify-end items-center gap-x-2 text-nowrap'>
           <span className='text-xs'>{chapter.lessons?.length} bài giảng</span>
           {' - '}
           <span className='text-xs'>

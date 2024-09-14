@@ -149,6 +149,7 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
 
         // update course's progress
         if (progress.status === 'completed') {
+          console.log('Session - iframe-completed...')
           await update()
         }
       }

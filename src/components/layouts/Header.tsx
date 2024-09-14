@@ -44,9 +44,6 @@ function Header({ className = '' }: HeaderProps) {
   // notification states
   const [isOpenNotificationMenu, setIsOpenNotificationMenu] = useState<boolean>(false)
 
-  // refs
-  const isUpdatedSession = useRef<boolean>(false)
-
   // values
   const isShowCrown = checkCrown(curUser?.package)
 
@@ -73,6 +70,7 @@ function Header({ className = '' }: HeaderProps) {
   useEffect(() => {
     const getUserNotifications = async () => {
       try {
+        console.log('Getting user notifications...')
         // send request to get user's notifications
         const { notifications } = await getUserNotificationsApi() // cache: no-store
 
@@ -111,31 +109,32 @@ function Header({ className = '' }: HeaderProps) {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [pathname])
 
-  // update user session after load page and every 60s
-  useEffect(() => {
-    // update session after load page
-    const updateSession = async () => {
-      console.log('Updating session...', isUpdatedSession)
-      await update()
+  // // update user session after load page and every 60s
+  // useEffect(() => {
+  //   // update session after load page
+  //   const updateSession = async () => {
+  //   console.log('Session - load-page...');
+  //     await update()
 
-      isUpdatedSession.current = true
-    }
+  //     isUpdatedSession.current = true
+  //   }
 
-    if (!isUpdatedSession.current) {
-      updateSession()
-    }
+  //   if (!isUpdatedSession.current) {
+  //     updateSession()
+  //   }
 
-    // update every 60s
-    let intervalId: NodeJS.Timeout
-    if (isUpdatedSession.current) {
-      intervalId = setInterval(async () => {
-        console.log('Updating session...')
-        await update()
-      }, 60000)
-    }
+  //   // update every 60s
+  //   let intervalId: NodeJS.Timeout
+  //   if (isUpdatedSession.current) {
+  //     intervalId = setInterval(async () => {
+  //       console.log('Updating session...')
+  //       console.log('Session - 60s/time...');
+  //       await update()
+  //     }, 60000)
+  //   }
 
-    return () => clearInterval(intervalId)
-  }, [update, session])
+  //   return () => clearInterval(intervalId)
+  // }, [update, session])
 
   return (
     <header

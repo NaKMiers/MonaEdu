@@ -8,7 +8,7 @@ import { ICourse } from '@/models/CourseModel'
 import { getMyCoursesApi } from '@/requests'
 import { Link } from '@react-email/components'
 import { useSession } from 'next-auth/react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 
 function MyCoursesPage({ searchParams }: { searchParams?: { [key: string]: string[] } }) {
@@ -19,7 +19,9 @@ function MyCoursesPage({ searchParams }: { searchParams?: { [key: string]: strin
 
   // states
   const [courses, setCourses] = useState<ICourse[]>([])
-  const [updatedSession, setUpdatedSession] = useState<boolean>(false)
+
+  // refs
+  const isUpdatedSession = useRef<boolean>(false)
 
   // get my courses
   useEffect(() => {
@@ -41,19 +43,20 @@ function MyCoursesPage({ searchParams }: { searchParams?: { [key: string]: strin
     }
 
     // only get courses if user is logged in and session is updated
-    if (curUser?._id && updatedSession) {
+    if (curUser?._id && !isUpdatedSession.current) {
       getMyCourses()
     }
 
     const updateSession = async () => {
+      console.log('Session my-courses...')
+      isUpdatedSession.current = true
       await update()
-      setUpdatedSession(true)
     }
 
-    if (!updatedSession) {
+    if (!isUpdatedSession.current) {
       updateSession()
     }
-  }, [dispatch, update, curUser?._id, updatedSession])
+  }, [dispatch, update, curUser?._id])
 
   // set page title
   useEffect(() => {

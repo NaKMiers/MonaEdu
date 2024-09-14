@@ -69,6 +69,7 @@ function UserBanner({ user, className = '' }: UserBannerProps) {
       const { message } = await changeBannerApi(formData)
 
       // update user session
+      console.log('Session - banner...')
       await update()
 
       // show success message

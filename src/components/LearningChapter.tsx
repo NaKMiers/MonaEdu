@@ -72,7 +72,7 @@ function LearningChapter({
         } font-semibold flex justify-between items-start gap-2 py-2 px-3 cursor-pointer`}
         onClick={() => setOpen(!open)}
       >
-        {chapter.title}
+        <p className='text-sm'>{chapter.title}</p>
         <div className='flex items-center gap-2'>
           <span className='text-xs'>
             {duration(chapter.lessons?.reduce((total, lesson) => total + lesson.duration, 0) || 0)}

@@ -73,6 +73,7 @@ function Avatar({ user, className = '' }: AvatarProps) {
       const { message } = await changeAvatarApi(formData)
 
       // update user session
+      console.log('Session - avatar...')
       await update()
 
       // show success message

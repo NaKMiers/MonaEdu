@@ -22,7 +22,7 @@ function PrivateInfo({ className = '' }: PrivateInfoProps) {
   // hook
   const dispatch = useAppDispatch()
   const { data: session, update } = useSession()
-  const authenticated = useAppSelector((state) => state.modal.authenticated)
+  const authenticated = useAppSelector(state => state.modal.authenticated)
   const curUser: any = session?.user
 
   // states
@@ -60,7 +60,7 @@ function PrivateInfo({ className = '' }: PrivateInfoProps) {
 
   // validate form
   const handleValidate: SubmitHandler<FieldValues> = useCallback(
-    (data) => {
+    data => {
       let isValid = true
 
       // username must be at least 5 characters
@@ -80,7 +80,7 @@ function PrivateInfo({ className = '' }: PrivateInfoProps) {
         })
         isValid = false
       } else {
-        if (commonEmailMistakes.some((mistake) => data.email.toLowerCase().includes(mistake))) {
+        if (commonEmailMistakes.some(mistake => data.email.toLowerCase().includes(mistake))) {
           setError('email', { message: 'Email không hợp lệ' })
           isValid = false
         }
@@ -106,7 +106,7 @@ function PrivateInfo({ className = '' }: PrivateInfoProps) {
 
   // update personal info
   const onSubmit: SubmitHandler<FieldValues> = useCallback(
-    async (data) => {
+    async data => {
       // validate form
       if (!handleValidate(data)) return
 
@@ -123,6 +123,7 @@ function PrivateInfo({ className = '' }: PrivateInfoProps) {
         setEditMode(false)
 
         // update user session
+        console.log('Session - private-info...')
         await update()
       } catch (err: any) {
         toast.error(err.message)

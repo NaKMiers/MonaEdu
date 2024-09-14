@@ -21,7 +21,7 @@ function PersonalInfo({ className = '' }: PersonalInfoProps) {
   // hook
   const dispatch = useAppDispatch()
   const { data: session, update } = useSession()
-  const authenticated = useAppSelector((state) => state.modal.authenticated)
+  const authenticated = useAppSelector(state => state.modal.authenticated)
   const curUser: any = session?.user
 
   // states
@@ -64,7 +64,7 @@ function PersonalInfo({ className = '' }: PersonalInfoProps) {
 
   // update personal info
   const onSubmit: SubmitHandler<FieldValues> = useCallback(
-    async (data) => {
+    async data => {
       // start loading
       setLoading(true)
 
@@ -78,6 +78,7 @@ function PersonalInfo({ className = '' }: PersonalInfoProps) {
         setEditMode(false)
 
         // update user session
+        console.log('Session - personal-info...')
         await update()
       } catch (err: any) {
         toast.error(err.message)

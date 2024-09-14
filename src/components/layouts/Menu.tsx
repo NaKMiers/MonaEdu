@@ -45,16 +45,6 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
     }
   }, [open])
 
-  // update user session
-  useEffect(() => {
-    const updateUser = async () => {
-      await update()
-    }
-    if (!curUser?._id) {
-      updateUser()
-    }
-  }, [update, curUser?._id])
-
   // key board event
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
