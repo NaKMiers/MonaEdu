@@ -317,7 +317,13 @@ function RegisterPage() {
           </div>
 
           <div className='flex flex-wrap md:flex-nowrap justify-center gap-x-6 gap-y-4'>
-            <button className='relative group/btn flex items-center gap-2 group rounded-2xl border bg-neutral-800 text-light border-dark px-2.5 py-3'>
+            <button
+              className='relative group/btn flex items-center gap-2 group rounded-2xl border bg-neutral-800 text-light border-dark px-2.5 py-3'
+              onClick={() => {
+                dispatch(setPageLoading(true))
+                signIn('github')
+              }}
+            >
               <div className='aspect-square rounded-full wiggle flex-shrink-0'>
                 <Image
                   className='w-full h-full object-cover bg-white rounded-full'
@@ -327,19 +333,17 @@ function RegisterPage() {
                   alt='github'
                 />
               </div>
-              <span
-                className='font-semibold text-sm'
-                onClick={() => {
-                  dispatch(setPageLoading(true))
-                  signIn('github')
-                }}
-              >
-                Đăng ký với GitHub
-              </span>
+              <span className='font-semibold text-sm'>Đăng ký với GitHub</span>
               <BottomGradient />
             </button>
 
-            <button className='relative group/btn flex items-center gap-2 group rounded-2xl border bg-neutral-800 text-light border-dark px-2.5 py-3'>
+            <button
+              className='relative group/btn flex items-center gap-2 group rounded-2xl border bg-neutral-800 text-light border-dark px-2.5 py-3'
+              onClick={() => {
+                dispatch(setPageLoading(true))
+                signIn('google')
+              }}
+            >
               <div className='aspect-square rounded-full wiggle flex-shrink-0'>
                 <Image
                   className='w-full h-full object-cover'
@@ -349,15 +353,7 @@ function RegisterPage() {
                   alt='github'
                 />
               </div>
-              <span
-                className='font-semibold text-sm'
-                onClick={() => {
-                  dispatch(setPageLoading(true))
-                  signIn('google')
-                }}
-              >
-                Đăng ký với Google
-              </span>
+              <span className='font-semibold text-sm'>Đăng ký với Google</span>
               <BottomGradient />
             </button>
           </div>
