@@ -11,7 +11,7 @@ import moment from 'moment-timezone'
 import { useSession } from 'next-auth/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
-import { FaCirclePause, FaCirclePlay, FaRotateLeft } from 'react-icons/fa6'
+import { FaCirclePause, FaCirclePlay } from 'react-icons/fa6'
 import { GrRotateLeft, GrRotateRight } from 'react-icons/gr'
 import { HiSpeakerWave, HiSpeakerXMark } from 'react-icons/hi2'
 import { RiFullscreenFill } from 'react-icons/ri'
@@ -50,11 +50,33 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
   const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const progressTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
-  const onPlayerReady = useCallback((e: any) => {
-    const wd: any = window
-    wd.player = e.target
-    setDuration(e.target.getDuration())
-  }, [])
+  const onPlayerReady = useCallback(
+    (e: any) => {
+      const wd: any = window
+      wd.player = e.target
+
+      // set duration
+      const duration = wd.player.getDuration()
+      setDuration(duration)
+
+      // set init current at previous progress
+      if (lesson.progress?.progress) {
+        if (wd.player) {
+          // calculate seconds
+          const seconds = (lesson.progress.progress / 100) * duration
+
+          // seek to seconds
+          wd.player.seekTo(seconds, true)
+          setCurrentTime(seconds)
+
+          // pause for default
+          wd.player.pauseVideo()
+          setIsPlaying(false)
+        }
+      }
+    },
+    [lesson.progress?.progress]
+  )
 
   // load youtube iframe api
   useEffect(() => {

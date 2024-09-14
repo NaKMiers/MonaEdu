@@ -11,7 +11,7 @@ import moment from 'moment-timezone'
 import { useSession } from 'next-auth/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
-import { FaArrowRotateLeft, FaCirclePause, FaCirclePlay } from 'react-icons/fa6'
+import { FaCirclePause, FaCirclePlay } from 'react-icons/fa6'
 import { GrRotateLeft, GrRotateRight } from 'react-icons/gr'
 import { HiSpeakerWave, HiSpeakerXMark } from 'react-icons/hi2'
 import { RiFullscreenFill } from 'react-icons/ri'
@@ -53,13 +53,25 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
     const player = videoRef.current
     if (player) {
       player.onloadedmetadata = () => {
-        setDuration(player.duration)
+        const duration = player.duration
+        setDuration(duration)
+
+        // set init current time from prev progress
+        if (lesson.progress?.progress && lesson.progress?.progress > 0) {
+          // calculate seconds
+          const seconds = (lesson.progress.progress / 100) * duration
+          setCurrentTime(seconds)
+
+          // pause for default
+          player.pause()
+          setIsPlaying(false)
+        }
       }
     }
 
     // set volume from local storage
     setVolume(+(localStorage.getItem('volume') || '100'))
-  }, [])
+  }, [lesson.progress?.progress])
 
   // update current time and buffered
   useEffect(() => {

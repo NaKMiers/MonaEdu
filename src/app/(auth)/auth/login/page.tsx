@@ -243,7 +243,7 @@ function LoginPage() {
                 signIn('github')
               }}
             >
-              Đăng ký với GitHub
+              Đăng nhập với GitHub
             </span>
             <BottomGradient />
           </button>
@@ -265,7 +265,7 @@ function LoginPage() {
                 signIn('google')
               }}
             >
-              Đăng ký với Google
+              Đăng nhập với Google
             </span>
             <BottomGradient />
           </button>
