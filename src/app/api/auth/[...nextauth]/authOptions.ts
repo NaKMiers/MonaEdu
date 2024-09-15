@@ -9,16 +9,15 @@ import '@/models/UserModel'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import GitHubProvider from 'next-auth/providers/github'
 import GoogleProvider from 'next-auth/providers/google'
+import { SessionStrategy } from 'next-auth'
 
 const authOptions = {
   secret: process.env.NEXTAUTH_SECRET!,
-  jwt: {
-    secret: process.env.NEXTAUTH_SECRET!,
-    maxAge: 30 * 24 * 60 * 60, // 30 days
-  },
   session: {
+    strategy: 'jwt' as SessionStrategy,
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
+  debug: process.env.NODE_ENV === 'development',
   providers: [
     // GOOGLE
     GoogleProvider({
@@ -90,18 +89,9 @@ const authOptions = {
   ],
   callbacks: {
     async jwt({ token, user, trigger, session }: any) {
-      console.log('- JWT -')
+      console.log('- JWT -', { token, user, trigger, session })
 
-      if (trigger === 'update' && token._id) {
-        console.log('- Update Token -')
-        const userDB: IUser | null = await UserModel.findById(token._id).lean()
-        if (userDB) {
-          // exclude password
-          const { password, ...userDBWithoutPassword } = userDB
-          return { ...token, ...userDBWithoutPassword }
-        }
-      }
-
+      // New Login
       if (user) {
         const userDB: IUser | null = await UserModel.findOne({
           email: user.email,
@@ -110,6 +100,16 @@ const authOptions = {
         if (userDB) {
           const { password, ...userDBWithoutPassword } = userDB
           token = { ...token, ...userDBWithoutPassword }
+        }
+      }
+
+      if (trigger === 'update' && token._id) {
+        console.log('- Update Token -')
+        const userDB: IUser | null = await UserModel.findById(token._id).lean()
+        if (userDB) {
+          // exclude password
+          const { password, ...userDBWithoutPassword } = userDB
+          return { ...token, ...userDBWithoutPassword }
         }
       }
 

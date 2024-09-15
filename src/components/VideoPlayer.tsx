@@ -9,6 +9,7 @@ import { updateProgressApi } from '@/requests'
 import { Slider } from '@mui/material'
 import moment from 'moment-timezone'
 import { useSession } from 'next-auth/react'
+import Image from 'next/image'
 import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import { FaCirclePause, FaCirclePlay } from 'react-icons/fa6'
@@ -20,6 +21,8 @@ interface VideoPlayerProps {
   lesson: ILesson
   className?: string
 }
+
+const seekTime = 5
 
 function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
   // hooks
@@ -478,19 +481,37 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
 
       {/* Controls */}
       <div
-        className='flex items-end absolute top-0 left-0 right-0 bottom-0 w-full h-full bg-neutral-950 bg-opacity-50 select-none trans-300'
-        onClick={() => setShowControls(prev => !prev)}
+        className='flex flex-col justify-end absolute top-0 left-0 right-0 bottom-0 w-full h-full bg-neutral-950 bg-opacity-50 select-none trans-300'
+        onClick={() => isFirstPlayed.current && setShowControls(!showControls)}
         ref={controlsRef}
       >
+        <div className='flex flex-1 justify-between'>
+          <div // back to 5s
+            className='max-w-[300px] w-1/4 h-full'
+            onDoubleClick={e => {
+              e.stopPropagation()
+              handleSeek(currentTime - seekTime < 0 ? 0 : currentTime - seekTime)
+            }}
+          />
+          <div // next to 5s
+            className='max-w-[300px] w-1/4 h-full'
+            onDoubleClick={e => {
+              e.stopPropagation()
+              handleSeek(currentTime + seekTime > duration ? duration : currentTime + seekTime)
+            }}
+          />
+        </div>
+
         {/* Play - Back - Next Button */}
         <div
           className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-5 sm:gap-8 justify-center trans-300'
           onClick={e => e.stopPropagation()}
           ref={playRef}
         >
+          {/* Back */}
           <button
-            className='relative text-light trans-200 hover:text-primary shadow-lg rounded-full'
-            onClick={() => handleSeek(currentTime - 5)}
+            className='absolute -top-4 -left-8 -translate-x-1/2 -translate-y-1/2 text-light trans-200 hover:text-orange-400 shadow-lg rounded-full'
+            onClick={() => handleSeek(currentTime - seekTime < 0 ? 0 : currentTime - seekTime)}
             onDoubleClick={e => e.stopPropagation()}
           >
             <GrRotateLeft className='w-[40px] sm:w-[50px] h-[40px] sm:h-[50px]' />
@@ -499,6 +520,21 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
             </span>
           </button>
 
+          {/* Next */}
+          <button
+            className='absolute -top-4 -right-8 translate-x-1/2 -translate-y-1/2 text-light trans-200 hover:text-orange-400 shadow-lg rounded-full'
+            onClick={() =>
+              handleSeek(currentTime + seekTime > duration ? duration : currentTime + seekTime)
+            }
+            onDoubleClick={e => e.stopPropagation()}
+          >
+            <GrRotateRight className='w-[40px] sm:w-[50px] h-[40px] sm:h-[50px]' />
+            <span className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 mt-0.5 text-xs sm:text-base font-semibold'>
+              5
+            </span>
+          </button>
+
+          {/* Play/Pause */}
           <button
             className='rounded-full bg-orange-400 w-[80px] h-[80px] flex items-center justify-center shadow-lg hover:shadow-orange-400 trans-300'
             onClick={handlePlay}
@@ -511,18 +547,19 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
             )}
           </button>
 
-          <button
-            className='relative text-light trans-200 hover:text-primary shadow-lg rounded-full'
-            onClick={() => handleSeek(currentTime + 5)}
-            onDoubleClick={e => e.stopPropagation()}
-          >
-            <GrRotateRight className='w-[40px] sm:w-[50px] h-[40px] sm:h-[50px]' />
-            <span className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 mt-0.5 text-xs sm:text-base font-semibold'>
-              5
-            </span>
-          </button>
+          {/* Smile */}
+          <div className='absolute -bottom-12 -translate-y-1/2 w-[110px]'>
+            <Image
+              width={150}
+              height={100}
+              className='w-full h-full object-contain'
+              src='/icons/smile-line.png'
+              alt='mona-edu'
+            />
+          </div>
         </div>
 
+        {/* Seek & Controls */}
         <div
           className='flex flex-col w-full px-4 trans-300 overflow-hidden'
           onClick={e => e.stopPropagation()}
@@ -530,7 +567,7 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
         >
           {/* Seek */}
           <div
-            className='relative w-full h-1 bg-slate-400 bg-opacity-50 cursor-pointer hover:h-2 trans-200'
+            className='relative w-full h-1 bg-slate-400 bg-opacity-50 cursor-pointer hover:h-3 trans-200'
             ref={progressBarRef}
             onMouseDown={handleSeekMouseDown}
             onMouseMove={handleSeekMouseMove}
@@ -565,21 +602,21 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
                 {isPlaying ? (
                   <FaCirclePause
                     size={22}
-                    className='text-white wiggle group-hover:shadow-orange-400 shadow-md rounded-full trans-200'
+                    className='text-white group-hover:shadow-orange-400 shadow-md rounded-full trans-200'
                   />
                 ) : (
                   <FaCirclePlay
                     size={22}
-                    className='text-white wiggle group-hover:shadow-orange-400 shadow-md rounded-full trans-200'
+                    className='text-white group-hover:shadow-orange-400 shadow-md rounded-full trans-200'
                   />
                 )}
               </button>
               <div className='flex h-[50px] items-center cursor-pointer'>
                 <button className='flex items-center justify-center group peer' onClick={handleMute}>
                   {volume > 0 ? (
-                    <HiSpeakerWave size={23} className='text-white wiggle flex-shrink-0' />
+                    <HiSpeakerWave size={23} className='text-white flex-shrink-0' />
                   ) : (
-                    <HiSpeakerXMark size={23} className='text-white wiggle flex-shrink-0' />
+                    <HiSpeakerXMark size={23} className='text-white flex-shrink-0' />
                   )}
                 </button>
 
@@ -610,7 +647,7 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
                 className='group w-12 h-[50px] flex items-center justify-center'
                 onClick={handleFullscreen}
               >
-                <RiFullscreenFill size={24} className='text-white wiggle' />
+                <RiFullscreenFill size={24} className='text-white' />
               </button>
             </div>
           </div>

@@ -118,7 +118,7 @@ async function ProfilePage({ params: { id } }: { params: { id: string } }) {
                   </h1>
                   {!user.nickname && (
                     <p className='font-semibold font-body tracking-wider text-center md:text-right'>
-                      {user.nickname || 'nakmiers'}
+                      {user.nickname}
                     </p>
                   )}
                 </div>

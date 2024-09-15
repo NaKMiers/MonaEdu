@@ -98,11 +98,11 @@ function BuyNowButton({ course, className }: BuyNowButtonProps) {
       // show success message
       toast.success(message)
 
-      // update user session
-      await update()
-
       // move to learning page
       router.push(`/learning/${course.slug}/continue`)
+
+      // update user session
+      await update()
 
       // stop page loading
       dispatch(setPageLoading(false))

@@ -106,21 +106,6 @@ function AllLessons() {
     }
   }, [chapters, lessonSlug, isRedirect])
 
-  // // update user session after load page
-  // useEffect(() => {
-  //   // update session after load page
-  //   const updateSession = async () => {
-  //     console.log('Session - load page...', isUpdatedSession)
-  //     await update()
-
-  //     isUpdatedSession.current = true
-  //   }
-
-  //   if (!isUpdatedSession.current) {
-  //     updateSession()
-  //   }
-  // }, [update, session])
-
   return (
     <>
       {/* Pusher */}
