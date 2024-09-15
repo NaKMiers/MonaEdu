@@ -515,16 +515,16 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
     duration,
   ])
 
-  // MARK: Before Unload
-  useEffect(() => {
-    window.addEventListener('beforeunload', e => {
-      const wd: any = window
-      const curTime = wd.player.getCurrentTime()
-      if (curTime <= 0.8 * duration) {
-        e.preventDefault()
-      }
-    })
-  }, [duration])
+  // // MARK: Before Unload
+  // useEffect(() => {
+  //   window.addEventListener('beforeunload', e => {
+  //     const wd: any = window
+  //     const curTime = wd.player.getCurrentTime()
+  //     if (curTime <= 0.8 * duration) {
+  //       e.preventDefault()
+  //     }
+  //   })
+  // }, [duration])
 
   return (
     <div
