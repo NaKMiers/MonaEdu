@@ -67,15 +67,18 @@ function AllLessons() {
             (acc: ILesson[], chapter: any) => [...acc, ...chapter.lessons],
             []
           )
+          // first lesson
           let lesson = lessons[0]
 
-          const inProgressLessons = lessons.filter(
-            (lesson: any) => lesson?.progress?.status === 'in-progress'
+          // find next lesson
+          const nextLesson = lessons.find(
+            lesson => !lesson.progress || lesson.progress.status !== 'completed'
           )
-
-          if (inProgressLessons.length > 0) {
-            lesson = inProgressLessons[0]
+          if (nextLesson) {
+            lesson = nextLesson
           }
+
+          // push to next lesson
           router.push(`/learning/${courseSlug}/${lesson.slug}`)
         }
       } catch (err: any) {

@@ -61,6 +61,8 @@ function LessonPage({
           next: { revalidate: 300 },
         })
 
+        console.log('Lesson:', lesson)
+
         // set learning lesson
         dispatch(setLearningLesson(lesson))
 
@@ -98,7 +100,7 @@ function LessonPage({
               console.log('Session - docs-completed...')
               await update()
             }
-          }, 3000)
+          }, 5000)
         }
       } catch (err: any) {
         console.log(err)
@@ -116,7 +118,7 @@ function LessonPage({
     if (lessonSlug !== 'continue') {
       getLesson()
     }
-  }, [dispatch, update, lessonSlug, router, curUser?.courses])
+  }, [dispatch, update, lessonSlug, router, curUser?.courses, courseSlug])
 
   const handleReport = useCallback(async () => {
     // check if content is selected or not

@@ -1,6 +1,6 @@
 import { connectDatabase } from '@/config/database'
 import ProgressModel from '@/models/ProgressModel'
-import UserModel from '@/models/UserModel'
+import UserModel, { IUser } from '@/models/UserModel'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -26,18 +26,20 @@ export async function POST(req: NextRequest) {
     }
 
     // get user's courses to check if user has joined the course
-    const courses: any = await UserModel.findById(userId).select('courses').lean()
+    const user: IUser | null = await UserModel.findById(userId).select('courses').lean()
 
-    // courses not found
-    if (!courses) {
+    // user not found
+    if (!user) {
       return NextResponse.json({ message: 'Không tìm thấy khóa học' }, { status: 404 })
     }
 
+    const userCourses = user.courses
+
     // get data to add progress
-    const { courseId, lessonId } = await req.json()
+    const { courseId, lessonId, status } = await req.json()
 
     // check if user has joined the course
-    const isEnrolled = courses.courses.some((course: any) => course.course.toString() === courseId)
+    const isEnrolled = userCourses.some((course: any) => course.course.toString() === courseId)
     if (!isEnrolled) {
       return NextResponse.json({ message: 'Bạn chưa tham gia khóa học' }, { status: 403 })
     }
@@ -47,8 +49,8 @@ export async function POST(req: NextRequest) {
       userId,
       courseId,
       lessonId,
-      status: 'in-progress',
-      progress: 0,
+      status,
+      progress: status === 'completed' ? 100 : 0,
     })
 
     // return response

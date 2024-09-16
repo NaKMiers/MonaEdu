@@ -1,10 +1,14 @@
 // Progress -------------------------------------
 
 // [POST]
-export const addProgressApi = async (courseId: string, lessonId: string) => {
+export const addProgressApi = async (
+  courseId: string,
+  lessonId: string,
+  status: 'not-started' | 'in-progress' | 'completed' = 'in-progress'
+) => {
   const res = await fetch(`/api/progress/add`, {
     method: 'POST',
-    body: JSON.stringify({ courseId, lessonId }),
+    body: JSON.stringify({ courseId, lessonId, status }),
   })
 
   // check status

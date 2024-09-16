@@ -515,16 +515,22 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
     duration,
   ])
 
-  // // MARK: Before Unload
-  // useEffect(() => {
-  //   window.addEventListener('beforeunload', e => {
-  //     const wd: any = window
-  //     const curTime = wd.player.getCurrentTime()
-  //     if (curTime <= 0.8 * duration) {
-  //       e.preventDefault()
-  //     }
-  //   })
-  // }, [duration])
+  // MARK: Before Unload
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      const wd: any = window
+      const curTime = wd.player.getCurrentTime()
+      if (curTime <= 0.8 * duration) {
+        e.preventDefault()
+      }
+    }
+
+    window.addEventListener('beforeunload', handleBeforeUnload)
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload)
+    }
+  }, [duration])
 
   return (
     <div
@@ -534,9 +540,10 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
     >
       {/* Video */}
       <iframe
+        key={videoId}
         className='w-full h-full object-contain'
         src={`https://www.youtube.com/embed/${videoId}?enablejsapi=1&autoplay=0&mute=0&controls=0&rel=0&playsinline=1&iv_load_policy=3&origin=${process.env.NEXT_PUBLIC_APP_URL}`}
-        allow='fullscreen; accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+        allow='fullscreen; accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture;'
         referrerPolicy='strict-origin-when-cross-origin'
         sandbox='allow-same-origin allow-scripts'
         allowFullScreen

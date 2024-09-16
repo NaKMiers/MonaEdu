@@ -1,11 +1,5 @@
-import { useAppDispatch, useAppSelector } from '@/libs/hooks'
-import { setLearningLesson } from '@/libs/reducers/learningReducer'
-import { ICourse } from '@/models/CourseModel'
 import { ILesson } from '@/models/LessonModel'
-import { addProgressApi } from '@/requests'
 import { duration } from '@/utils/time'
-import { useEffect, useState } from 'react'
-import toast from 'react-hot-toast'
 import { TiLockOpen, TiTick } from 'react-icons/ti'
 
 interface LessonItemOfChapterProps {
@@ -17,49 +11,12 @@ interface LessonItemOfChapterProps {
 }
 
 function LessonItemOfChapter({
-  lesson: data,
+  lesson,
   lessonSlug,
   courseSlug,
   isEnrolled,
   className = '',
 }: LessonItemOfChapterProps) {
-  // hooks
-  const dispatch = useAppDispatch()
-  const learningLesson = useAppSelector(state => state.learning.learningLesson)
-
-  // states
-  const [lesson, setLesson] = useState<ILesson>(data)
-
-  useEffect(() => {
-    // create new progress if not exists
-    const initProgress = async () => {
-      try {
-        let courseId = lesson.courseId
-        if (typeof courseId !== 'string') {
-          courseId = (courseId as ICourse)._id
-        }
-        const { progress } = await addProgressApi(courseId as string, lesson._id)
-
-        // update states
-        dispatch(setLearningLesson({ ...lesson, progress }))
-      } catch (err: any) {
-        console.log(err)
-        toast.error(err.message)
-      }
-    }
-
-    if (lesson && !lesson.progress?._id && lessonSlug === lesson.slug && isEnrolled) {
-      initProgress()
-    }
-  }, [dispatch, lessonSlug, isEnrolled, lesson])
-
-  // using learning lesson instead of data from parent component when current lesson is learning
-  useEffect(() => {
-    if (learningLesson && learningLesson._id === lesson._id) {
-      setLesson(learningLesson)
-    }
-  }, [learningLesson, lesson._id])
-
   return (
     <a
       href={`/learning/${courseSlug}/${lesson.slug}`}

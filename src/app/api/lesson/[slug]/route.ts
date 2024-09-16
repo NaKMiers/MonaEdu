@@ -82,8 +82,19 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
       lessonId: lesson?._id,
     }).lean()
 
+    // if progress not found, create new progress
     if (progress) {
       lesson.progress = progress
+    } else {
+      const newProgress = await ProgressModel.create({
+        userId: user._id,
+        courseId: lesson.courseId,
+        lessonId: lesson._id,
+        status: 'in-progress',
+        progress: 0,
+      })
+
+      lesson.progress = newProgress
     }
 
     // if user is not enrolled in this course

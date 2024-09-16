@@ -457,16 +457,22 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
     duration,
   ])
 
-  // // MARK: Before Unload
-  // useEffect(() => {
-  //   window.addEventListener('beforeunload', e => {
-  //     const wd: any = window
-  //     const curTime = wd.player.getCurrentTime()
-  //     if (curTime <= 0.8 * duration) {
-  //       e.preventDefault()
-  //     }
-  //   })
-  // }, [duration])
+  // MARK: Before Unload
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      const wd: any = window
+      const curTime = wd.player.getCurrentTime()
+      if (curTime <= 0.8 * duration) {
+        e.preventDefault()
+      }
+    }
+
+    window.addEventListener('beforeunload', handleBeforeUnload)
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload)
+    }
+  }, [duration])
 
   return (
     <div
