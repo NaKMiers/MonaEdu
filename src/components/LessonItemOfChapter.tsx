@@ -1,5 +1,7 @@
+import { useAppSelector } from '@/libs/hooks'
 import { ILesson } from '@/models/LessonModel'
 import { duration } from '@/utils/time'
+import { useEffect, useState } from 'react'
 import { TiLockOpen, TiTick } from 'react-icons/ti'
 
 interface LessonItemOfChapterProps {
@@ -11,12 +13,24 @@ interface LessonItemOfChapterProps {
 }
 
 function LessonItemOfChapter({
-  lesson,
+  lesson: data,
   lessonSlug,
   courseSlug,
   isEnrolled,
   className = '',
 }: LessonItemOfChapterProps) {
+  // hooks
+  const learningLesson = useAppSelector(state => state.learning.learningLesson)
+
+  // // states
+  const [lesson, setLesson] = useState<ILesson>(data)
+
+  useEffect(() => {
+    if (learningLesson && learningLesson._id === lesson._id) {
+      setLesson(learningLesson)
+    }
+  }, [learningLesson, lesson._id])
+
   return (
     <a
       href={`/learning/${courseSlug}/${lesson.slug}`}

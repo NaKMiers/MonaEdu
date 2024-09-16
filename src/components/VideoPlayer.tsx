@@ -98,13 +98,15 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
 
     try {
       const player = videoRef.current
-
       if (!player) return
+
       const curTime = player.currentTime
 
       const invalidProgress =
         Math.floor((curTime / duration) * 100 * 100) / 100 <= lesson.progress.progress
       if (!invalidProgress) {
+        console.log('update progress - curTime:', curTime, duration, lesson.progress.progress)
+
         const { progress } = await updateProgressApi(
           (lesson.progress as IProgress)._id,
           (lesson.courseId as ICourse)._id,
@@ -114,6 +116,7 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
 
         // update states
         dispatch(setLearningLesson({ ...lesson, progress }))
+        console.log('updated')
 
         // update course's progress
         if (progress.status === 'completed') {
@@ -462,7 +465,7 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       const wd: any = window
       const curTime = wd.player.getCurrentTime()
-      if (curTime <= 0.8 * duration) {
+      if (curTime <= 0.8 * duration && curTime > 0) {
         e.preventDefault()
       }
     }

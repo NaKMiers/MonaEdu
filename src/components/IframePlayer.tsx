@@ -520,7 +520,7 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       const wd: any = window
       const curTime = wd.player.getCurrentTime()
-      if (curTime <= 0.8 * duration) {
+      if (curTime <= 0.8 * duration && curTime > 0) {
         e.preventDefault()
       }
     }
@@ -543,7 +543,7 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
         key={videoId}
         className='w-full h-full object-contain'
         src={`https://www.youtube.com/embed/${videoId}?enablejsapi=1&autoplay=0&mute=0&controls=0&rel=0&playsinline=1&iv_load_policy=3&origin=${process.env.NEXT_PUBLIC_APP_URL}`}
-        allow='fullscreen; accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture;'
+        allow='fullscreen; accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; autoplay'
         referrerPolicy='strict-origin-when-cross-origin'
         sandbox='allow-same-origin allow-scripts'
         allowFullScreen
