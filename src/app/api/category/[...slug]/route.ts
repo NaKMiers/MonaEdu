@@ -115,8 +115,15 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
         }
 
         if (['sortPrice', 'sortDuration'].includes(key)) {
+          // remove updatedAt sort then add again to reduce priority
+          delete sort.updatedAt
+
           const newKey = key.split('sort')[1].toLowerCase()
           sort[newKey] = params[key][0] === 'asc' ? 1 : -1
+
+          // sort by updatedAt - default sort
+          sort.updatedAt = -1
+
           continue
         }
 

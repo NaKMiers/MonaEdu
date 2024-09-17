@@ -95,8 +95,15 @@ export async function GET(req: NextRequest) {
         }
 
         if (['sortPrice', 'sortDuration'].includes(key)) {
+          // remove updatedAt sort then add again to reduce priority
+          delete sort.updatedAt
+
           const newKey = key.split('sort')[1].toLowerCase()
           sort[newKey] = params[key][0] === 'asc' ? 1 : -1
+
+          // sort by updatedAt - default sort
+          sort.updatedAt = -1
+
           continue
         }
 
@@ -104,6 +111,9 @@ export async function GET(req: NextRequest) {
         filter[key] = params[key].length === 1 ? params[key][0] : { $in: params[key] }
       }
     }
+
+    console.log('filter:', filter)
+    console.log('sort:', sort)
 
     // count amount, get all courses, get all tags and categories, get all order
     const [amount, courses, chops] = await Promise.all([

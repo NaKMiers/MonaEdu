@@ -1,6 +1,18 @@
 import { JWT, getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 
+// Require UnAuth
+const requireUnAuth = async (req: NextRequest, token: JWT | null) => {
+  console.log('- Require UnAuth -')
+
+  // check auth
+  if (token) {
+    return NextResponse.redirect(new URL('/', req.url))
+  }
+
+  return NextResponse.next()
+}
+
 // Require Auth
 const requireAuth = async (req: NextRequest, token: JWT | null) => {
   console.log('- Require Auth -')
@@ -13,12 +25,12 @@ const requireAuth = async (req: NextRequest, token: JWT | null) => {
   return NextResponse.next()
 }
 
-// Require UnAuth
-const requireUnAuth = async (req: NextRequest, token: JWT | null) => {
-  console.log('- Require UnAuth -')
+// Require Collaborator
+const requiredCollaborator = async (req: NextRequest, token: JWT | null) => {
+  console.log('- Require Collaborator -')
 
   // check auth
-  if (token) {
+  if (!['collaborator', 'admin', 'editor'].includes(token?.role as string)) {
     return NextResponse.redirect(new URL('/', req.url))
   }
 
@@ -42,42 +54,42 @@ export default async function middleware(req: NextRequest) {
   console.log('- Middleware -')
 
   const token = await getToken({ req })
+  const pathname = req.nextUrl.pathname
 
   // require admin
   if (
-    req.nextUrl.pathname.startsWith('/admin') ||
-    req.nextUrl.pathname.startsWith('/api/admin') ||
-    req.nextUrl.pathname.startsWith('/email')
+    pathname.startsWith('/admin') ||
+    pathname.startsWith('/api/admin') ||
+    pathname.startsWith('/email')
   ) {
+    if (pathname.startsWith('/admin/blog') || pathname.startsWith('/admin/summary')) {
+      return requiredCollaborator(req, token)
+    }
+
     return requireAdmin(req, token)
   }
 
   // require auth
-  else if (
-    req.nextUrl.pathname.startsWith('/setting') ||
-    req.nextUrl.pathname.startsWith('/checkout') ||
-    req.nextUrl.pathname.startsWith('/cart') ||
-    req.nextUrl.pathname.startsWith('/learning') ||
-    req.nextUrl.pathname.startsWith('/user/history')
+  if (
+    pathname.startsWith('/setting') ||
+    pathname.startsWith('/checkout') ||
+    pathname.startsWith('/cart') ||
+    pathname.startsWith('/learning') ||
+    pathname.startsWith('/user/history')
   ) {
     return requireAuth(req, token)
   }
 
   // require unAuth
-  else if (req.nextUrl.pathname.startsWith('/auth')) {
+  if (pathname.startsWith('/auth')) {
     return requireUnAuth(req, token)
   }
 
-  // require joined
-  // else if (req.nextUrl.pathname.startsWith('/learning')) {
-  //   return requiredJoined(req, token)
-  // }
-
   // need pathname
-  else if (req.nextUrl.pathname.startsWith('/categories')) {
+  if (pathname.startsWith('/categories')) {
     // Add a new header x-current-path which passes the path to downstream components
     const headers = new Headers(req.headers)
-    headers.set('x-current-path', req.nextUrl.pathname)
+    headers.set('x-current-path', pathname)
 
     return NextResponse.next({ headers })
   }
