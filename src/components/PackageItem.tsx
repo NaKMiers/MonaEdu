@@ -106,7 +106,7 @@ function PackageItem({ pkg, popular = false, className = '' }: PackageItemProps)
   )
 
   return (
-    <div className={`relative xl:min-w-[400px] w-1/2 md:w-1/3 ${className}`}>
+    <div className={`relative ${className}`}>
       {popular && (
         <div className='absolute z-20 top-0 right-0 pl-4 pr-3 pt-0.5 pb-1.5 text-sm rounded-bl-2xl bg-white text-dark font-semibold'>
           Phổ biến
