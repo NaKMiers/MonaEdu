@@ -167,12 +167,12 @@ async function Home({ searchParams }: { searchParams?: { [key: string]: string[]
       <AllCourses courses={courses} />
       <Pagination searchParams={searchParams} amount={amount} itemsPerPage={12} />
 
-      <Divider size={30} />
+      <Divider size={40} />
 
       {/* Recently Visit */}
-      <RecentlyVisit />
+      {/* <RecentlyVisit /> */}
 
-      <Divider size={30} />
+      {/* <Divider size={30} /> */}
 
       <div className='max-w-1200 mx-auto w-full px-21'>
         <Heading className='text-dark' title='Gói học viên' />

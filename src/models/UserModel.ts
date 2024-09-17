@@ -145,46 +145,6 @@ const UserSchema = new Schema(
         },
       },
     ],
-    notifications: [
-      {
-        _id: {
-          type: String,
-          required: true,
-        },
-        image: {
-          type: String,
-          default: '/images/logo.png',
-        },
-        title: {
-          type: String,
-          required: true,
-        },
-        content: String,
-        link: String,
-        type: {
-          type: String,
-          enum: [
-            'unset',
-            'create-order',
-            'delivered-order',
-            'replied-comment',
-            'emotion-comment',
-            'new-lesson',
-            'new-event',
-          ],
-          default: 'unset',
-        },
-        status: {
-          type: String,
-          enum: ['read', 'unread'],
-          default: 'unread',
-        },
-        createdAt: {
-          type: Date,
-          default: Date.now,
-        },
-      },
-    ],
 
     // settings
     notificationSettings: {

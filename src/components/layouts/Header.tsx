@@ -10,7 +10,7 @@ import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { BiSolidCategory } from 'react-icons/bi'
 import { FaBell, FaSearch, FaShoppingCart } from 'react-icons/fa'
@@ -29,7 +29,6 @@ function Header({ className = '' }: HeaderProps) {
   const dispatch = useAppDispatch()
   const { data: session } = useSession()
   const curUser: any = session?.user
-  console.log('session', session)
   const pathname = usePathname()
 
   // reducer
@@ -44,9 +43,6 @@ function Header({ className = '' }: HeaderProps) {
 
   // notification states
   const [isOpenNotificationMenu, setIsOpenNotificationMenu] = useState<boolean>(false)
-
-  // refs
-  const isUpdatedSession = useRef<boolean>(false)
 
   // values
   const isShowCrown = checkCrown(curUser?.package)
