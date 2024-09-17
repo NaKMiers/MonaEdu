@@ -118,10 +118,10 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
         dispatch(setLearningLesson({ ...lesson, progress }))
         console.log('updated')
 
-        // update course's progress
-        if (progress.status === 'completed') {
-          await update()
-        }
+        // // update course's progress
+        // if (progress.status === 'completed') {
+        //   await update()
+        // }
       }
     } catch (err: any) {
       console.log(err)
@@ -162,7 +162,7 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
         }
       }, interval)
     }
-  }, [dispatch, update, duration, lesson, curUser])
+  }, [dispatch, duration, lesson, curUser])
 
   // MARK: Play/Pause
   const play = useCallback(() => {

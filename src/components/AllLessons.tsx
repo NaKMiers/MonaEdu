@@ -132,7 +132,7 @@ function AllLessons() {
               />
             </Link>
 
-            {joinedCourse ? (
+            {/* {joinedCourse ? (
               <div className='relative overflow-hidden rounded-md w-full h-6 shadow-sm shadow-primary'>
                 <div
                   className='h-full bg-primary flex items-center'
@@ -152,7 +152,11 @@ function AllLessons() {
               <Link href='/' className='text-2xl font-bold text-orange-500 drop-shadow-md -ml-1.5'>
                 MonaEdu
               </Link>
-            )}
+            )} */}
+
+            <Link href='/' className='text-2xl font-bold text-orange-500 drop-shadow-md -ml-1.5'>
+              MonaEdu
+            </Link>
           </div>
 
           <Divider size={3} />

@@ -164,11 +164,11 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
         // update states
         dispatch(setLearningLesson({ ...lesson, progress }))
 
-        // update course's progress
-        if (progress.status === 'completed') {
-          console.log('Session - iframe-completed...')
-          await update()
-        }
+        // // update course's progress
+        // if (progress.status === 'completed') {
+        //   console.log('Session - iframe-completed...')
+        //   await update()
+        // }
       }
     } catch (err: any) {
       console.log(err)
@@ -209,7 +209,7 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
         }
       }, interval)
     }
-  }, [dispatch, update, duration, lesson, curUser])
+  }, [dispatch, duration, lesson, curUser])
 
   // MARK: Show/Hide Controls
   const showControlsHandler = useCallback(() => {

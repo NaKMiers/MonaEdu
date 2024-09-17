@@ -95,11 +95,11 @@ function LessonPage({
             // update states
             dispatch(setLearningLesson({ ...lesson, progress }))
 
-            // update course's progress
-            if (progress.status === 'completed') {
-              console.log('Session - docs-completed...')
-              await update()
-            }
+            // // update course's progress
+            // if (progress.status === 'completed') {
+            //   console.log('Session - docs-completed...')
+            //   await update()
+            // }
           }, 5000)
         }
       } catch (err: any) {
@@ -118,7 +118,7 @@ function LessonPage({
     if (lessonSlug !== 'continue') {
       getLesson()
     }
-  }, [dispatch, update, lessonSlug, router, curUser?.courses, courseSlug])
+  }, [dispatch, lessonSlug, router, curUser?.courses, courseSlug])
 
   const handleReport = useCallback(async () => {
     // check if content is selected or not
