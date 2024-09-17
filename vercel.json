@@ -1,11 +1,11 @@
 {
   "crons": [
     {
-      "path": "/api/cron/fake-increment?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiJtb25hZWR1and0c2VjcmV0IiwiaWF0IjoxNzIzOTE3Mzc4fQ.9Ne22mZZAJ-AGl_IXZgIwTOJYtm1yYOxi8ZNSpEhAlY",
+      "path": "/api/cron/fake-increment?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiJtb25hZWR1bmV4dGF1dGhzZWNyZXQiLCJpYXQiOjE3MjY1NTAxMTN9.-V0XuxTuWsIpfMj9TQgGWO-HeUPPvXx3DXRtNhPlepE",
       "schedule": "0 0 * * *"
     },
     {
-      "path": "/api/cron/notify-expired-package?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiJtb25hZWR1and0c2VjcmV0IiwiaWF0IjoxNzIzOTE3Mzc4fQ.9Ne22mZZAJ-AGl_IXZgIwTOJYtm1yYOxi8ZNSpEhAlY",
+      "path": "/api/cron/notify-expired-package?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiJtb25hZWR1bmV4dGF1dGhzZWNyZXQiLCJpYXQiOjE3MjY1NTAxMTN9.-V0XuxTuWsIpfMj9TQgGWO-HeUPPvXx3DXRtNhPlepE",
       "schedule": "0 */12 * * *"
     }
   ]
