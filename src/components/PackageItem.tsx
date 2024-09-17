@@ -113,7 +113,7 @@ function PackageItem({ pkg, popular = false, className = '' }: PackageItemProps)
         </div>
       )}
 
-      <CardSpotlight className='flex flex-col min-h-[500px] w-full max-sm:p-21 bg-neutral-950 border rounded-none overflow-hidden'>
+      <CardSpotlight className='h-full flex flex-col min-h-[500px] w-full max-sm:p-21 bg-neutral-950 border rounded-none overflow-hidden'>
         <p className='text-xl font-bold relative z-20 mt-2 text-white'>{pkg.title}</p>
 
         <div className='text-neutral-200 mt-4 relative z-20'>

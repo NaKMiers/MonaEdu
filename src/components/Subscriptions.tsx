@@ -25,7 +25,7 @@ function Subscriptions({ packageGroups, className }: SubscriptionsProps) {
             >
               {pG.packages?.map((pkg, index) => (
                 <PackageItem
-                  className={`h-full min-w-full ${index >= 2 ? 'xs:col-span-2' : ''} md:col-span-1`}
+                  className={`${index >= 2 ? 'xs:col-span-2' : ''} md:col-span-1`}
                   pkg={pkg}
                   key={index}
                   popular={

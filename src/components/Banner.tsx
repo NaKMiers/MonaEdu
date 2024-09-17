@@ -1,17 +1,13 @@
 'use client'
 
 import { useAppDispatch } from '@/libs/hooks'
-import { addCartItem } from '@/libs/reducers/cartReducer'
-import { setPageLoading } from '@/libs/reducers/modalReducer'
 import { ICourse } from '@/models/CourseModel'
-import { addToCartApi } from '@/requests'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { memo, useCallback, useEffect, useRef, useState } from 'react'
-import toast from 'react-hot-toast'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
+import BannerItem from './BannerItem'
 
 interface SliderProps {
   courses: ICourse[]
@@ -125,37 +121,6 @@ function Banner({ time, courses, className = '' }: SliderProps) {
     }
   }, [time, nextSlide])
 
-  // MARK: Buy
-  // handle buy now (add to cart and move to cart page)
-  const buyNow = useCallback(
-    async (course: ICourse) => {
-      // start page loading
-      dispatch(setPageLoading(true))
-
-      try {
-        // send request to add course to cart
-        const { cartItem, message } = await addToCartApi(course._id)
-
-        // show toast success
-        toast.success(message)
-
-        // add cart items to state
-        dispatch(addCartItem(cartItem))
-
-        // move to cart page
-        router.push(`/cart?course=${course.slug}`)
-      } catch (err: any) {
-        console.log(err)
-        toast.error(err.message)
-        router.push(`/cart?course=${course.slug}`)
-      } finally {
-        // stop page loading
-        dispatch(setPageLoading(false))
-      }
-    },
-    [dispatch, router]
-  )
-
   return (
     <div className={`relative w-full h-screen overflow-hidden group mt-[-72px] ${className}`}>
       {/* MARK: Slide Track */}
@@ -164,58 +129,7 @@ function Banner({ time, courses, className = '' }: SliderProps) {
         ref={slideTrackRef}
       >
         {courses.map(course => (
-          <div className='relative flex-shrink-0 w-full h-full snap-center' key={course._id}>
-            <div className='w-full h-full'>
-              <Image
-                className='img w-full h-full object-cover object-right brightness-[0.8]'
-                src={course.images[0]}
-                width={1920}
-                height={1080}
-                alt={course.title}
-                loading='lazy'
-              />
-            </div>
-            <div className='content absolute top-[20%] md:top-[15%] left-1/2 -translate-x-1/2 max-w-[1200px] px-21 w-full drop-shadow-2xl text-white'>
-              <div className='max-w-[700px] w-full'>
-                <div className='author font-bold tracking-[10px] drop-shadow-lg uppercase'>
-                  {course.author}
-                </div>
-                <div
-                  className='title font-bold text-[30px] md:text-[3em] leading-[1.3em] drop-shadow-md stroke-neutral-950 stroke-2 text-ellipsis line-clamp-2'
-                  title={course.title}
-                >
-                  {course.title}
-                </div>
-
-                <div className='desc drop-shadow-md font-body tracking-wider pr-[20%] text-ellipsis line-clamp-4'>
-                  {course.textHook}
-                </div>
-                <div className='buttons flex flex-wrap gap-1.5 mt-5'>
-                  <Link
-                    href={`/${course.slug}`}
-                    className='h-10 flex items-center justify-center px-2 shadow-md text-dark bg-slate-100 font-semibold font-body tracking-wider rounded-md hover:bg-dark-0 hover:text-white trans-200'
-                  >
-                    CHI TIẾT
-                  </Link>
-                  <button
-                    onClick={e => {
-                      if (curUser?.courses.map((course: any) => course.course).includes(course._id)) {
-                        router.push(`/learning/${course?.slug}/continue`)
-                      } else {
-                        buyNow(course)
-                      }
-                    }}
-                    className='h-10 flex items-center justify-center px-2 shadow-md text-white border-2 border-white font-semibold font-body tracking-wider rounded-md hover:bg-white hover:text-dark trans-200 uppercase'
-                  >
-                    {curUser?._id &&
-                    curUser?.courses.map((course: any) => course.course).includes(course._id)
-                      ? 'Học tiếp'
-                      : 'Mua ngay'}
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+          <BannerItem course={course} key={course._id} />
         ))}
       </div>
 
