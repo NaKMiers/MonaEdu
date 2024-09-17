@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
     await connectDatabase()
 
     // get user id to add progress
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
+    const token = await getToken({ req })
     const userId = token?._id
 
     // check if userId exists

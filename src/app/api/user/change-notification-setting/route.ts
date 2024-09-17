@@ -15,7 +15,7 @@ export async function PATCH(req: NextRequest) {
     await connectDatabase()
 
     // get user to update
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
+    const token = await getToken({ req })
     const userId = token?._id
 
     // check userId

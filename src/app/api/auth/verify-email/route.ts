@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
     // if token is not exist => SEND verify email
     if (!token) {
       // send verification email
-      const sendToken = jwt.sign({ email }, process.env.JWT_SECRET!, {
+      const sendToken = jwt.sign({ email }, process.env.NEXTAUTH_SECRET!, {
         expiresIn: '2h',
       })
       const link = `${process.env.NEXT_PUBLIC_APP_URL}/user?token=${sendToken}`
@@ -58,7 +58,7 @@ export async function POST(req: NextRequest) {
     }
 
     // token is exist => verify email
-    const decode = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload
+    const decode = jwt.verify(token, process.env.NEXTAUTH_SECRET!) as JwtPayload
 
     // check edcode is exist
     if (!decode) {

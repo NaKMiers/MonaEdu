@@ -16,7 +16,7 @@ export async function PATCH(req: NextRequest) {
     await connectDatabase()
 
     // get userId to update user
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET! })
+    const token = await getToken({ req })
     const userId = token?._id
     const oldBanner: string = token?.banner as string
 

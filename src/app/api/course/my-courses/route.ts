@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
     await connectDatabase()
 
     // get user to check authentication
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
+    const token = await getToken({ req })
     const userId = token?._id
 
     // get user to get course id list

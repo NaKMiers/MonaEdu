@@ -29,7 +29,7 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
     await connectDatabase()
 
     // get user to check if user is allow to access this lesson
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
+    const token = await getToken({ req })
     const userId = token?._id
 
     // check if user is logged in

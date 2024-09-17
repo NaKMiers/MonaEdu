@@ -18,7 +18,7 @@ export async function POST(req: NextRequest, { params: { code } }: { params: { c
     await connectDatabase()
 
     // get userId to check if user used this voucher
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
+    const token = await getToken({ req })
     const userEmail = token?.email
 
     // get data to check voucher

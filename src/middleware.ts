@@ -41,7 +41,7 @@ const requireAdmin = async (req: NextRequest, token: JWT | null) => {
 export default async function middleware(req: NextRequest) {
   console.log('- Middleware -')
 
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
+  const token = await getToken({ req })
 
   // require admin
   if (

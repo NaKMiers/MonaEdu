@@ -8,7 +8,7 @@ import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { ReactNode, useCallback } from 'react'
+import { memo, ReactNode, useCallback } from 'react'
 import toast from 'react-hot-toast'
 
 interface BannerItemProps {
@@ -220,4 +220,4 @@ function BannerItem({ course, className }: BannerItemProps) {
   )
 }
 
-export default BannerItem
+export default memo(BannerItem)

@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
     await connectDatabase()
 
     // get userId to get notifications
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
+    const token = await getToken({ req })
     const userId = token?._id
 
     // check if userId exists or not

@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
     await connectDatabase()
 
     // get userId to get user's cart
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
+    const token = await getToken({ req })
     let userId = token?._id
 
     // check if user logged in

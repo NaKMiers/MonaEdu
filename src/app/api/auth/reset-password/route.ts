@@ -28,7 +28,7 @@ export async function PATCH(req: NextRequest) {
     }
 
     // verify the token
-    const decode = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload
+    const decode = jwt.verify(token, process.env.NEXTAUTH_SECRET!) as JwtPayload
 
     // check decode is exist
     if (!decode) {

@@ -14,6 +14,7 @@ export async function POST(req: NextRequest) {
     await connectDatabase()
 
     let { firstName, lastName, username, email, password } = await req.json()
+    username = username.toLowerCase()
     email = email.toLowerCase()
 
     // check if user is already exist in database

@@ -17,7 +17,7 @@ export async function GET(req: NextRequest, { params: { email } }: { params: { e
     await connectDatabase()
 
     // get current user
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET! })
+    const token = await getToken({ req })
     const curUserEmail = token?.email
 
     // check if curUserEmail = email

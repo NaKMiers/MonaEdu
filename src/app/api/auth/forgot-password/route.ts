@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
     }
 
     // ready for sending email
-    const token = jwt.sign({ email }, process.env.JWT_SECRET!, {
+    const token = jwt.sign({ email }, process.env.NEXTAUTH_SECRET!, {
       expiresIn: '2h',
     })
     const link = `${process.env.NEXT_PUBLIC_APP_URL}/auth/reset-password?token=${token}`

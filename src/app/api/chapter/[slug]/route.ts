@@ -23,7 +23,7 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
     await connectDatabase()
 
     // get userId from token
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
+    const token = await getToken({ req })
     const userId = token?._id
 
     // check userId

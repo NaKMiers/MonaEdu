@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
     await connectDatabase()
 
     // get user id to get order history
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
+    const token = await getToken({ req })
     const userId = token?._id
 
     // check if user id is not found

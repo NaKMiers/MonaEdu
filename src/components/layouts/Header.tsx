@@ -27,8 +27,9 @@ interface HeaderProps {
 function Header({ className = '' }: HeaderProps) {
   // hooks
   const dispatch = useAppDispatch()
-  const { data: session, update } = useSession()
+  const { data: session } = useSession()
   const curUser: any = session?.user
+  console.log('session', session)
   const pathname = usePathname()
 
   // reducer

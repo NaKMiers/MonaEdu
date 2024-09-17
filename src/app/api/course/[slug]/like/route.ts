@@ -15,7 +15,7 @@ export async function PATCH(req: NextRequest, { params: { slug } }: { params: { 
     await connectDatabase()
 
     // get current user id
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET! })
+    const token = await getToken({ req })
     const userId = token?._id
 
     // get id and value to like to dislike

@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
 
     // Get course data to add to cart
     const { courseId } = await req.json()
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
+    const token = await getToken({ req })
     const userId: any = token?._id
 
     // Check if user logged in

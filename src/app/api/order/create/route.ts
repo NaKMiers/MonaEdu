@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
     const { total, receivedUser, voucher, discount, items, paymentMethod, isPackage } = await req.json()
 
     // get user id
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
+    const token = await getToken({ req })
     const userId = token?._id
     const email = token?.email
 

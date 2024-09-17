@@ -38,7 +38,7 @@ const authOptions = {
         usernameOrEmail: { label: 'Tên người dùng hoặc Email', type: 'text' },
         password: { label: 'Password', type: 'password' },
       },
-      async authorize(credentials: any) {
+      async authorize(credentials: Record<'usernameOrEmail' | 'password', string> | undefined) {
         console.log('- Credentials -')
 
         // connect to database
@@ -54,7 +54,7 @@ const authOptions = {
 
         // find user from database
         const user: any = await UserModel.findOne({
-          $or: [{ email: usernameOrEmail }, { username: usernameOrEmail }],
+          $or: [{ email: usernameOrEmail.toLowerCase() }, { username: usernameOrEmail }],
         }).lean()
 
         // check user exists or not in database

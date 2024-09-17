@@ -27,9 +27,9 @@ export async function GET(req: NextRequest) {
     }
 
     // Verify the token
-    const decode = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload
+    const decode = jwt.verify(token, process.env.NEXTAUTH_SECRET!) as JwtPayload
 
-    if (!decode || decode.key !== process.env.JWT_SECRET) {
+    if (!decode || decode.key !== process.env.NEXTAUTH_SECRET) {
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
     }
 
@@ -44,10 +44,10 @@ export async function GET(req: NextRequest) {
     // ------------------------------
 
     // // create token
-    // const newToken = jwt.sign({ key: process.env.JWT_SECRET! }, process.env.JWT_SECRET!)
+    // const newToken = jwt.sign({ key: process.env.NEXTAUTH_SECRET! }, process.env.NEXTAUTH_SECRET!)
 
     // // decode token
-    // const decode = jwt.verify(newToken, process.env.JWT_SECRET!) as JwtPayload
+    // const decode = jwt.verify(newToken, process.env.NEXTAUTH_SECRET!) as JwtPayload
 
     // console.log(newToken)
     // console.log(decode)

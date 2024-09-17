@@ -20,7 +20,7 @@ export async function POST(req: NextRequest, { params: { id } }: { params: { id:
     await connectDatabase()
 
     // get user id to add comment
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
+    const token = await getToken({ req })
     const userId = token?._id
 
     // get content to add comment

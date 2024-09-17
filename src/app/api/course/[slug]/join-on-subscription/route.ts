@@ -21,7 +21,7 @@ export async function POST(req: NextRequest, { params: { slug } }: { params: { s
     await connectDatabase()
 
     // get user id and user package from token
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
+    const token = await getToken({ req })
     const userId = token?._id
     const userPackage: any = token?.package
     let userCourses: any = token?.courses

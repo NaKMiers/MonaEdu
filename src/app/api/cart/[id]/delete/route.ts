@@ -16,7 +16,7 @@ export async function DELETE(req: NextRequest, { params: { id } }: { params: { i
     await connectDatabase()
 
     // get user id
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
+    const token = await getToken({ req })
     const userId = token?._id
 
     // check if user is authenticated
