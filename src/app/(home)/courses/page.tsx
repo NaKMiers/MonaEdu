@@ -30,7 +30,7 @@ async function CoursesPage({ searchParams }: { searchParams?: { [key: string]: s
     const query = handleQuery(searchParams)
 
     // get data
-    const data = await getCoursesPageApi(query, { next: { revalidate: 0 } })
+    const data = await getCoursesPageApi(query, { next: { revalidate: 60 } })
     courses = data.courses
     amount = data.amount
     chops = data.chops

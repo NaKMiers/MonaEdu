@@ -5,7 +5,7 @@ export const getHomePageApi = async (
   query: string = '',
   option: RequestInit = { next: { revalidate: 60 } }
 ) => {
-  // revalidate every 0.5 minute
+  // revalidate every minute
   const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api${query}`, option)
 
   // check status

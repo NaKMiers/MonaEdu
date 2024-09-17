@@ -110,7 +110,6 @@ export const getBestSellerCoursesApi = async (
     cache: 'no-store',
   }
 ) => {
-  // revalidate every 1 hour
   const res = await fetch(`/api/course/best-seller${query}`, option)
 
   // check status
