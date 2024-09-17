@@ -335,7 +335,7 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
             max={maxPrice}
             step={1}
             className='w-full -mb-1.5'
-            onChange={(_, newValue: number | number[]) => setPrice(newValue as number[])}
+            onChange={(_: any, newValue: number | number[]) => setPrice(newValue as number[])}
             valueLabelDisplay='auto'
             style={{ color: '#333' }}
           />
@@ -353,7 +353,7 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
             max={maxJoined}
             step={1}
             className='w-full -mb-1.5'
-            onChange={(_, newValue: number | number[]) => setJoined(newValue as number[])}
+            onChange={(_: any, newValue: number | number[]) => setJoined(newValue as number[])}
             valueLabelDisplay='auto'
             style={{ color: '#333' }}
           />

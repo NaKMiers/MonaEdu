@@ -1,4 +1,4 @@
-import { FaTicketAlt } from 'react-icons/fa'
+import { FaBlog, FaTicketAlt } from 'react-icons/fa'
 import { FaBoltLightning, FaListCheck, FaTags, FaUser } from 'react-icons/fa6'
 import { MdCategory, MdReportOff, MdSpaceDashboard } from 'react-icons/md'
 import { RiBillFill, RiVipCrown2Fill } from 'react-icons/ri'
@@ -120,6 +120,20 @@ export const adminLinks = [
       {
         title: 'Packages',
         href: '/admin/package/all',
+      },
+    ],
+  },
+  {
+    title: 'Blog',
+    Icon: FaBlog,
+    links: [
+      {
+        title: 'All Blogs',
+        href: '/admin/blog/all',
+      },
+      {
+        title: 'Add Blog',
+        href: '/admin/blog/add',
       },
     ],
   },

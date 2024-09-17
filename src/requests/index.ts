@@ -43,5 +43,8 @@ export * from './notificationRequest'
 // Package
 export * from './packageRequest'
 
+// Blog
+export * from './blogRequest'
+
 // Admin
 export * from './adminRequest'

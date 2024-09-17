@@ -1,16 +1,14 @@
 'use client'
 
-import { EditorContent, useEditor } from '@tiptap/react'
-import { useCallback, useState } from 'react'
-
+import Blockquote from '@tiptap/extension-blockquote'
 import Bold from '@tiptap/extension-bold'
+import BulletList from '@tiptap/extension-bullet-list'
 import CharacterCount from '@tiptap/extension-character-count'
 import Code from '@tiptap/extension-code'
 import { Color } from '@tiptap/extension-color'
 import Document from '@tiptap/extension-document'
-import Blockquote from '@tiptap/extension-blockquote'
-import BulletList from '@tiptap/extension-bullet-list'
 import GapCursor from '@tiptap/extension-gapcursor'
+import HardBreak from '@tiptap/extension-hard-break'
 import Heading from '@tiptap/extension-heading'
 import Highlight from '@tiptap/extension-highlight'
 import History from '@tiptap/extension-history'
@@ -30,15 +28,17 @@ import TableHeader from '@tiptap/extension-table-header'
 import TableRow from '@tiptap/extension-table-row'
 import Text from '@tiptap/extension-text'
 import TextAlign from '@tiptap/extension-text-align'
+import TextStyle from '@tiptap/extension-text-style'
 import Underline from '@tiptap/extension-underline'
 import Youtube from '@tiptap/extension-youtube'
+import { EditorContent, useEditor } from '@tiptap/react'
+import { useCallback, useState } from 'react'
 import {
   FaAlignCenter,
   FaAlignJustify,
   FaAlignLeft,
   FaAlignRight,
   FaBold,
-  FaChevronDown,
   FaChevronUp,
   FaCode,
   FaHighlighter,
@@ -65,6 +65,7 @@ interface TextEditorProps {
 
 const limit = 5000
 
+// MARK: Customer Nodes
 const CustomHeading = Heading.extend({
   addOptions() {
     return {
@@ -77,25 +78,25 @@ const CustomHeading = Heading.extend({
   renderHTML({ node, HTMLAttributes }) {
     // Apply custom classes based on the heading level
     const level = node.attrs.level
-    let customClass = HTMLAttributes.class
+    let customClass = ''
     switch (level) {
       case 1:
-        customClass += ' text-4xl font-bold'
+        customClass += 'text-4xl font-bold'
         break
       case 2:
-        customClass += ' text-3xl font-semibold'
+        customClass += 'text-3xl font-semibold'
         break
       case 3:
-        customClass += ' text-2xl font-semibold'
+        customClass += 'text-2xl font-semibold'
         break
       case 4:
-        customClass += ' text-xl font-semibold'
+        customClass += 'text-xl font-semibold'
         break
       case 5:
-        customClass += ' text-lg font-semibold'
+        customClass += 'text-lg font-semibold'
         break
       case 6:
-        customClass += ' text-base font-semibold'
+        customClass += 'text-base font-semibold'
         break
     }
 
@@ -103,87 +104,168 @@ const CustomHeading = Heading.extend({
   },
 })
 
+const CustomImage = Image.extend({
+  addOptions() {
+    return {
+      ...this.parent?.(),
+      HTMLAttributes: {
+        class: 'rounded-lg shadow-md',
+      },
+    }
+  },
+
+  addAttributes() {
+    return {
+      ...this.parent?.(),
+      width: {
+        default: 'auto',
+        parseHTML: element => element.getAttribute('width') || 'auto',
+        renderHTML: attributes => {
+          if (attributes.width) {
+            return { width: attributes.width }
+          }
+          return {}
+        },
+      },
+      height: {
+        default: 'auto',
+        parseHTML: element => element.getAttribute('height') || 'auto',
+        renderHTML: attributes => {
+          if (attributes.height) {
+            return { height: attributes.height }
+          }
+          return {}
+        },
+      },
+      align: {
+        default: 'left',
+      },
+    }
+  },
+
+  renderHTML({ node, HTMLAttributes }) {
+    const { align } = node.attrs
+    let customClass = 'rounded-lg shadow-md'
+
+    if (align === 'left') {
+      customClass += ' mr-auto'
+    } else if (align === 'right') {
+      customClass += ' ml-auto'
+    } else if (align === 'center') {
+      customClass += ' mx-auto'
+    }
+
+    return ['img', { ...HTMLAttributes, class: customClass }, 0]
+  },
+})
+
 const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps) => {
   const [openTableControls, setOpenTableControls] = useState<boolean>(false)
+  const [youtubeHeight, setYoutubeHeight] = useState<number>(480)
+  const [youtubeWidth, setYoutubeWidth] = useState<number>(640)
+  const [imageHeight, setImageHeight] = useState<number>(480)
+  const [imageWidth, setImageWidth] = useState<number>(640)
 
+  // MARK: Marks
+  const marks = [
+    Bold,
+    Italic,
+    Underline,
+    Strike,
+    Code.configure({
+      HTMLAttributes: {
+        class: 'text-[0.85rem] px-[0.3em] py-[0.25em] bg-[#333] text-white rounded-md',
+      },
+    }),
+    Link.configure({
+      openOnClick: false,
+      autolink: true,
+      defaultProtocol: 'https',
+      HTMLAttributes: {
+        class: 'text-sky-500 underline underline-offset-1',
+      },
+    }),
+    Subscript,
+    Superscript,
+    Highlight.configure({ multicolor: true }),
+    CharacterCount.configure({
+      limit,
+    }),
+    TextStyle,
+    Color,
+  ]
+
+  // MARK: Headings
+  const headings = [CustomHeading]
+
+  // MARK: Nodes
+  const nodes = [
+    Blockquote.configure({
+      HTMLAttributes: {
+        class: 'border-l-[3px] border-slate-300 pl-4',
+      },
+    }),
+    BulletList.configure({
+      HTMLAttributes: {
+        class: 'list-disc px-[1rem] mr-[1rem] ml-[0.4rem]',
+      },
+    }),
+    OrderedList.configure({
+      HTMLAttributes: {
+        class: 'list-decimal px-[1rem] mr-[1rem] ml-[0.4rem]',
+      },
+    }),
+    ListItem.configure({
+      HTMLAttributes: {
+        class: 'my-[0.25em]',
+      },
+    }),
+    HorizontalRule.configure({
+      HTMLAttributes: {
+        class: 'my-8 border-t border-slate-200',
+      },
+    }),
+    CustomImage,
+    Youtube.configure({
+      controls: true,
+      nocookie: true,
+      HTMLAttributes: {
+        class: 'aspect-video rounded-lg shadow-md',
+      },
+    }),
+  ]
+
+  // MARK: Tables
+  const tables = [
+    Table.configure({
+      resizable: true,
+    }),
+    TableRow,
+    TableHeader,
+    TableCell,
+  ]
+
+  // MARK: Alignments
+  const alignments = [
+    TextAlign.configure({
+      types: ['heading', 'paragraph', 'youtube'],
+    }),
+  ]
+
+  // MARK: Editor
   const editor = useEditor({
     extensions: [
       Document,
       Paragraph,
       Text,
-      Bold,
-      Italic,
-      Underline,
-      Strike,
-      Code.configure({
-        HTMLAttributes: {
-          class: 'text-[0.85rem] px-[0.3em] py-[0.25em] bg-[#333] text-white rounded-md',
-        },
-      }),
-      Link.configure({
-        openOnClick: false,
-        autolink: true,
-        defaultProtocol: 'https',
-        HTMLAttributes: {
-          class: 'text-sky-500 underline underline-offset-1',
-        },
-      }),
-      Subscript,
-      Superscript,
-      Highlight.configure({ multicolor: true }),
-      CharacterCount.configure({
-        limit,
-      }),
-      Color,
-      CustomHeading,
-      Blockquote.configure({
-        HTMLAttributes: {
-          class: 'border-l-[3px] border-slate-300 pl-4',
-        },
-      }),
-      BulletList.configure({
-        HTMLAttributes: {
-          class: 'list-disc px-[1rem] mr-[1rem] ml-[0.4rem]',
-        },
-      }),
-      OrderedList.configure({
-        HTMLAttributes: {
-          class: 'list-decimal px-[1rem] mr-[1rem] ml-[0.4rem]',
-        },
-      }),
-      ListItem.configure({
-        HTMLAttributes: {
-          class: 'my-[0.25em]',
-        },
-      }),
-      HorizontalRule.configure({
-        HTMLAttributes: {
-          class: 'my-8 border-t border-slate-200',
-        },
-      }),
-      Image.configure({
-        HTMLAttributes: {
-          class: 'w-full h-auto rounded-lg shadow-md max-w-[640px]',
-        },
-      }),
-      Youtube.configure({
-        controls: true,
-        nocookie: true,
-        HTMLAttributes: {
-          class: 'aspect-video w-full h-auto rounded-lg shadow-md max-w-[640px]',
-        },
-      }),
-      TextAlign.configure({
-        types: ['heading', 'paragraph'],
-      }),
+      ...marks,
+      ...headings,
+      ...nodes,
+      ...alignments,
       History,
       GapCursor,
-      Table.configure({
-        resizable: true,
-      }),
-      TableRow,
-      TableHeader,
-      TableCell,
+      ...tables,
+      HardBreak,
     ],
     editorProps: {
       attributes: {
@@ -196,6 +278,7 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
     onUpdate: ({ editor }) => onChange(editor.getHTML()),
   })
 
+  // Link
   const setLink = useCallback(() => {
     if (!editor) return
 
@@ -218,25 +301,35 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
     editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run()
   }, [editor])
 
+  // Image
   const addImage = useCallback(() => {
     const url = window.prompt('URL')
 
-    if (url) {
+    if (url?.trim()) {
       if (!editor) return
-      editor.chain().focus().setImage({ src: url }).run()
-    }
-  }, [editor])
 
+      const imageAttributes = {
+        src: url,
+        width: `${imageWidth}px`,
+        height: `${imageHeight}px`,
+      }
+      editor.chain().focus().setImage(imageAttributes).run()
+    }
+  }, [editor, imageWidth, imageHeight])
+
+  // Youtube
   const addYoutubeVideo = useCallback(() => {
     if (!editor) return
     const url = prompt('Enter YouTube URL')
 
-    if (url) {
+    if (url?.trim()) {
       editor.commands.setYoutubeVideo({
         src: url,
+        width: youtubeWidth,
+        height: youtubeHeight,
       })
     }
-  }, [editor])
+  }, [editor, youtubeHeight, youtubeWidth])
 
   if (!editor) {
     return null
@@ -246,7 +339,7 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
 
   return (
     <div className={`${className}`}>
-      <div className='flex flex-col gap-2 mb-5'>
+      <div className='flex flex-col gap-2 mb-5 select-none'>
         {/* Marks & Headings */}
         <div className='flex justify-between gap-4'>
           {/* Marks */}
@@ -350,11 +443,23 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
               <FaHighlighter />
             </button>
 
+            {/* Hard Break */}
+            <button
+              onClick={() => editor.commands.setHardBreak()}
+              className={`${
+                editor.isActive('highlight') ? 'bg-dark-100 text-white' : ''
+              } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
+              title='Hard Break'
+            >
+              <span className='font-semibold'>Br</span>
+            </button>
+
             {/* Color */}
             <input
               type='color'
               className='rounded-md shadow-lg h-[32px] p-1.5 border border-dark bg-transparent cursor-pointer'
               onInput={(e: any) => editor.commands.setColor(e.target.value)}
+              value={editor.getAttributes('textStyle').color}
               title='Color'
             />
           </div>
@@ -425,22 +530,52 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
             </button>
 
             {/* Image */}
-            <button
-              onClick={addImage}
-              className={`border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
-              title='Image'
-            >
-              <FaImage />
-            </button>
-
-            {/* Youtube */}
-            <button
-              onClick={addYoutubeVideo}
-              className={`border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
+            <div
+              className={`border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center`}
               title='Youtube'
             >
-              <FaYoutube />
-            </button>
+              <button className='px-2' onClick={addImage}>
+                <FaImage />
+              </button>
+              <input
+                id='width'
+                type='number'
+                className='w-14 h-full bg-transparent text-xs font-semibold border-l-2 border-dark rounded-sm px-1.5 outline-none'
+                value={imageWidth}
+                onChange={(e: any) => setImageWidth(e.target.value)}
+              />
+              <input
+                id='width'
+                type='number'
+                className='w-14 h-full bg-transparent text-xs font-semibold border-l-2 border-dark rounded-sm px-1.5 outline-none'
+                value={imageHeight}
+                onChange={(e: any) => setImageHeight(e.target.value)}
+              />
+            </div>
+
+            {/* Youtube */}
+            <div
+              className={`border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center`}
+              title='Youtube'
+            >
+              <button className='px-2' onClick={addYoutubeVideo}>
+                <FaYoutube />
+              </button>
+              <input
+                id='width'
+                type='number'
+                className='w-14 h-full bg-transparent text-xs font-semibold border-l-2 border-dark rounded-sm px-1.5 outline-none'
+                value={youtubeWidth}
+                onChange={(e: any) => setYoutubeWidth(e.target.value)}
+              />
+              <input
+                id='width'
+                type='number'
+                className='w-14 h-full bg-transparent text-xs font-semibold border-l-2 border-dark rounded-sm px-1.5 outline-none'
+                value={youtubeHeight}
+                onChange={(e: any) => setYoutubeHeight(e.target.value)}
+              />
+            </div>
           </div>
 
           {/* Alignment */}

@@ -72,7 +72,8 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
         }),
         LessonModel.countDocuments({ courseId, active: true }),
       ])
-      const percent = Math.round((completedProgresses / totalLessons) * 100)
+      let percent = Math.round((completedProgresses / totalLessons) * 100)
+      if (percent > 100) percent = 100
 
       const userCourses = courses.courses.map((course: any) =>
         course.course.toString() === courseId ? { ...course, progress: percent } : course
