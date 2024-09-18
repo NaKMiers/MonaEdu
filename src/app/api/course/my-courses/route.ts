@@ -1,7 +1,7 @@
 // Models:
 
 import { connectDatabase } from '@/config/database'
-import CourseModel, { ICourse } from '@/models/CourseModel'
+import CourseModel from '@/models/CourseModel'
 import UserModel, { IUser } from '@/models/UserModel'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
@@ -36,7 +36,15 @@ export async function GET(req: NextRequest) {
     const userCourses = user.courses.map((course: any) => course.course)
 
     // get user's courses
-    const courses: ICourse[] = await CourseModel.find({ _id: { $in: userCourses } }).lean()
+    let courses: any = await CourseModel.find({ _id: { $in: userCourses } }).lean()
+
+    // sort courses by user's course ids
+    courses = userCourses
+      .map((courseId: string) =>
+        courses.find((course: any) => course._id.toString() == courseId.toString())
+      )
+      .filter(Boolean)
+      .reverse()
 
     // return user's courses
     return NextResponse.json({ courses }, { status: 200 })
