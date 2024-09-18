@@ -185,7 +185,7 @@ function BannerItem({ course, className }: BannerItemProps) {
 
             {/* Buy Now */}
             <button
-              className='h-10 flex items-center justify-center px-2 shadow-md text-white border-2 border-white font-semibold font-body tracking-wider rounded-md hover:bg-white hover:text-dark trans-200 uppercase'
+              className='relative h-10 flex items-center justify-center px-2 shadow-md text-white border-2 border-white font-semibold font-body tracking-wider rounded-md hover:bg-white hover:text-dark trans-200 uppercase'
               onClick={() => {
                 if (isRedirect) {
                   router.push(`/learning/${course?.slug}/continue`)
