@@ -53,7 +53,7 @@ function FilterAndSearch({ searchParams, subs, chops, className = '' }: FilterAn
 
   // handle submit filter
   const handleFilter = useCallback(async () => {
-    const params: any = {
+    let params: any = {
       search: search.trim(),
       price: price.join('-'),
       duration: duration.join('-'),
@@ -62,11 +62,17 @@ function FilterAndSearch({ searchParams, subs, chops, className = '' }: FilterAn
     if (sortPrice !== 'none') {
       params.sortPrice = sortPrice
     } else {
-      delete params.sortPrice
+      if (searchParams) {
+        delete searchParams.sortPrice
+      }
+      delete params.sortDuration
     }
     if (sortDuration !== 'none') {
       params.sortDuration = sortDuration
     } else {
+      if (searchParams) {
+        delete searchParams.sortDuration
+      }
       delete params.sortDuration
     }
 
@@ -261,7 +267,7 @@ function FilterAndSearch({ searchParams, subs, chops, className = '' }: FilterAn
               max={chops?.maxPrice || 1000000}
               step={10000}
               className='w-full -mb-1.5'
-              onChange={(_, newValue: number | number[]) => setPrice(newValue as number[])}
+              onChange={(_: any, newValue: number | number[]) => setPrice(newValue as number[])}
               valueLabelDisplay='auto'
               style={{ color: '#333' }}
             />
@@ -283,7 +289,7 @@ function FilterAndSearch({ searchParams, subs, chops, className = '' }: FilterAn
               min={0}
               max={40}
               className='w-full -mb-1.5'
-              onChange={(_, newValue: number | number[]) => setDuration(newValue as number[])}
+              onChange={(_: any, newValue: number | number[]) => setDuration(newValue as number[])}
               valueLabelDisplay='auto'
               style={{ color: '#333' }}
             />
@@ -483,7 +489,7 @@ function FilterAndSearch({ searchParams, subs, chops, className = '' }: FilterAn
                 max={1000000}
                 step={10000}
                 className='w-full -mb-1.5'
-                onChange={(_, newValue: number | number[]) => setPrice(newValue as number[])}
+                onChange={(_: any, newValue: number | number[]) => setPrice(newValue as number[])}
                 valueLabelDisplay='auto'
                 style={{ color: '#333' }}
               />
@@ -505,7 +511,7 @@ function FilterAndSearch({ searchParams, subs, chops, className = '' }: FilterAn
                 min={0}
                 max={40}
                 className='w-full -mb-1.5'
-                onChange={(_, newValue: number | number[]) => setDuration(newValue as number[])}
+                onChange={(_: any, newValue: number | number[]) => setDuration(newValue as number[])}
                 valueLabelDisplay='auto'
                 style={{ color: '#333' }}
               />

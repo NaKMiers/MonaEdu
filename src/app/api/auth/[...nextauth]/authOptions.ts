@@ -17,7 +17,7 @@ const authOptions = {
     strategy: 'jwt' as SessionStrategy,
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
-  // debug: process.env.NODE_ENV === 'development',
+  debug: process.env.NODE_ENV === 'development',
   providers: [
     // GOOGLE
     GoogleProvider({

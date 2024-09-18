@@ -18,7 +18,7 @@ export async function GET(req: NextRequest, { params: { id } }: { params: { id: 
 
     // get user by id
     let user: IUser | null = await UserModel.findOne({
-      $or: [{ username: id }, { email: id }],
+      $or: [{ _id: id }, { username: id }, { email: id }],
     })
       .populate({
         path: 'courses.course',

@@ -684,7 +684,8 @@ function EditLessonPage() {
                   </div>
 
                   <button
-                    onClick={() => {
+                    onClick={e => {
+                      e.stopPropagation()
                       setCustomDocs(prev => prev.filter(d => d !== doc))
                     }}
                     className='bg-slate-300 p-2 group hover:bg-dark-100 rounded-lg flex-shrink-0'

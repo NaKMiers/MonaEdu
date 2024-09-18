@@ -24,7 +24,7 @@ async function ProfilePage({ params: { id } }: { params: { id: string } }) {
 
   try {
     // get user profile
-    const data = await getUsersApi(id)
+    const data = await getUsersApi(id, '', { next: { revalidate: 60 } })
 
     user = data.user
     courses = data.user.courses.map((course: any) => course.course)

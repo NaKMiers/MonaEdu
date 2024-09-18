@@ -1,14 +1,13 @@
 // Models:
 
 import { connectDatabase } from '@/config/database'
-import CourseModel from '@/models/CourseModel'
+import CourseModel, { ICourse } from '@/models/CourseModel'
 import UserModel, { IUser } from '@/models/UserModel'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Models: Course, Tag, User
+// Models: Course, User
 import '@/models/CourseModel'
-import '@/models/TagModel'
 import '@/models/UserModel'
 
 export const dynamic = 'force-dynamic'
@@ -37,17 +36,7 @@ export async function GET(req: NextRequest) {
     const userCourses = user.courses.map((course: any) => course.course)
 
     // get user's courses
-    let courses: any = await CourseModel.find({ _id: { $in: userCourses } })
-      .populate('tags')
-      .lean()
-
-    // sort courses by user's course ids
-    courses = userCourses
-      .map((courseId: string) =>
-        courses.find((course: any) => course._id.toString() == courseId.toString())
-      )
-      .filter(Boolean)
-      .reverse()
+    const courses: ICourse[] = await CourseModel.find({ _id: { $in: userCourses } }).lean()
 
     // return user's courses
     return NextResponse.json({ courses }, { status: 200 })
