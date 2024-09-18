@@ -149,7 +149,7 @@ function BannerItem({ course, className }: BannerItemProps) {
   }, [course._id, dispatch, course.slug, router, curUser?._id])
 
   return (
-    <div className='relative flex-shrink-0 w-full h-full snap-center' key={course._id}>
+    <div className={`relative flex-shrink-0 w-full h-full snap-center ${className}`} key={course._id}>
       <div className='w-full h-full'>
         <Image
           className='img w-full h-full object-cover object-right brightness-[0.8]'
@@ -202,11 +202,7 @@ function BannerItem({ course, className }: BannerItemProps) {
                       curUser?.courses.find((c: any) => c.course === course._id)?.progress || 0
                     }%`,
                   }}
-                >
-                  <span className='absolute top-1 left-1 text-xs rounded-full font-semibold'>
-                    {curUser?.courses.find((c: any) => c.course === course._id)?.progress + '%'}
-                  </span>
-                </div>
+                />
               )}
 
               <p className='relative z-10 flex items-center gap-1 text-sm sm:text-base text-ellipsis text-nowrap line-clamp-1 sm:max-w-max'>

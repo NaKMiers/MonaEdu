@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from 'next/server'
 // Models: User, Course
 import '@/models/CourseModel'
 import '@/models/UserModel'
+import mongoose from 'mongoose'
 
 export const dynamic = 'force-dynamic'
 
@@ -18,7 +19,7 @@ export async function GET(req: NextRequest, { params: { id } }: { params: { id: 
 
     // get user by id
     let user: IUser | null = await UserModel.findOne({
-      $or: [{ _id: id }, { username: id }, { email: id }],
+      $or: [{ username: id }, { email: id }],
     })
       .populate({
         path: 'courses.course',
