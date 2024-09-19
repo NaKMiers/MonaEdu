@@ -15,6 +15,7 @@ import { BsLayoutSidebarInset } from 'react-icons/bs'
 import { FaChevronCircleLeft, FaChevronCircleRight } from 'react-icons/fa'
 import Divider from './Divider'
 import LearningChapter from './LearningChapter'
+import { setUserProgress } from '@/libs/reducers/learningReducer'
 
 function AllLessons() {
   // hooks
@@ -23,11 +24,12 @@ function AllLessons() {
   const params = useParams()
   const courseSlug = params.courseSlug as string
   const lessonSlug = params.lessonSlug as string
-  const { data: session, update } = useSession()
+  const { data: session } = useSession()
   const curUser: any = session?.user
 
   // reducers
   const openSidebar = useAppSelector(state => state.modal.openSidebar)
+  const userProgress = useAppSelector(state => state.learning.userProgress)
 
   // states
   const [courseId, setCourseId] = useState<string>('')
@@ -37,15 +39,12 @@ function AllLessons() {
   const [joinedCourse, setJoinedCourse] = useState<any>(null)
   const [isRedirect, setIsRedirect] = useState<boolean>(false)
 
-  // refs
-  const isUpdatedSession = useRef<boolean>(false)
-
   // get all chapters with lessons
   useEffect(() => {
     const getChaptersWithLessons = async () => {
       try {
         // send request to get all chapters with lessons
-        const { chapters, courseId } = await getLearningChaptersApi(courseSlug, '', {
+        const { chapters, courseId, userProgress } = await getLearningChaptersApi(courseSlug, '', {
           next: { revalidate: 60 },
         })
 
@@ -61,6 +60,9 @@ function AllLessons() {
         // set states
         setChapters(chapters)
         setCourseId(courseId)
+
+        // set states
+        dispatch(setUserProgress(userProgress))
 
         if (lessonSlug === 'continue') {
           const lessons: ILesson[] = chapters.reduce(
@@ -132,36 +134,28 @@ function AllLessons() {
               />
             </Link>
 
-            {/* {joinedCourse ? (
+            {joinedCourse ? (
               <div className='relative overflow-hidden rounded-md w-full h-6 shadow-sm shadow-primary'>
                 <div
                   className='h-full bg-primary flex items-center'
                   style={{
-                    width: `${
-                      curUser?.courses.find((course: any) => course.course === courseId)?.progress || 0
-                    }%`,
+                    width: `${userProgress}%`,
                   }}
                 />
-                <div className='absolute flex items-center justify-between top-1/2 px-4 left-0 right-0 -translate-y-1/2 text-orange-400 text-sm font-body tracking-wider font-semibold drop-shadow-sm'>
-                  <span>
-                    {curUser?.courses.find((course: any) => course.course === courseId)?.progress || 0}%
-                  </span>
+                <div className='absolute flex items-center justify-between top-1/2 px-4 left-0 right-0 -translate-y-1/2 text-orange-500 text-sm font-body tracking-wider font-semibold drop-shadow-sm'>
+                  <span>{userProgress}%</span>
                 </div>
               </div>
             ) : (
               <Link href='/' className='text-2xl font-bold text-orange-500 drop-shadow-md -ml-1.5'>
                 MonaEdu
               </Link>
-            )} */}
-
-            <Link href='/' className='text-2xl font-bold text-orange-500 drop-shadow-md -ml-1.5'>
-              MonaEdu
-            </Link>
+            )}
           </div>
 
           <Divider size={3} />
 
-          <div className='relative z-10 flex items-center justify-between gap-21 rounded-lg text-2xl font-semibold h-[40px] text-white'>
+          <div className='relative z-10 flex items-center justify-between gap-21 rounded-lg text-2xl font-semibold h-[40px] text-light'>
             <span>Các bài giảng</span>
 
             <button

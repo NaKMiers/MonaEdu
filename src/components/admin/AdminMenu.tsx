@@ -43,7 +43,7 @@ function AdminMenu() {
 
       {/* MARK: Open Button */}
       <button
-        className={`fixed top-[100px] z-20 right-0 p-[5px] pl-2 bg-dark-100 text-white rounded-tl-md rounded-bl-md shadow-md trans-200 hover:bg-primary ${
+        className={`fixed top-[100px] z-20 right-0 p-[5px] pl-2 bg-dark-100 text-light rounded-tl-md rounded-bl-md shadow-md trans-200 hover:bg-primary ${
           !open ? 'translate-x-0' : 'translate-x-full'
         }`}
         onClick={() => setOpen(!open)}
@@ -55,7 +55,7 @@ function AdminMenu() {
       <div
         className={`fixed top-[100px] max-h-[calc(100vh-72px-121px)] overflow-auto z-${
           open ? 30 : 20
-        } right-0 p-4 bg-dark-100 text-white rounded-tl-medium rounded-bl-medium shadow-primary shadow-md max-w-[300px] w-full trans-200 ${
+        } right-0 p-4 bg-dark-100 text-light rounded-tl-medium rounded-bl-medium shadow-primary shadow-md max-w-[300px] w-full trans-200 ${
           open ? 'translate-x-0 opacity-1' : 'translate-x-full opacity-10'
         }`}
       >
@@ -95,7 +95,7 @@ function AdminMenu() {
               {links[1] && (
                 <Link
                   href={links[1].href}
-                  className='group flex justify-center items-center flex-shrink-0 rounded-full border-2 border-white p-[3px] hover:scale-110 trans-200 hover:border-primary'
+                  className='group flex justify-center items-center flex-shrink-0 rounded-full border-2 border-light p-[3px] hover:scale-110 trans-200 hover:border-primary'
                   onClick={() => setOpen(false)}
                 >
                   <FaPlus size={10} className='group-hover:text-primary wiggle' />

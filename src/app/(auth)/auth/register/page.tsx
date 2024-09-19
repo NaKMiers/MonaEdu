@@ -310,7 +310,7 @@ function RegisterPage() {
             </Link>
           </p>
 
-          <div className='relative w-full border h-px border-white my-2'>
+          <div className='relative w-full border h-px border-light my-2'>
             <span className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg px-3 py-1 font-semibold'>
               Hoặc
             </span>

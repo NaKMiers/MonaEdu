@@ -174,7 +174,7 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
     Strike,
     Code.configure({
       HTMLAttributes: {
-        class: 'text-[0.85rem] px-[0.3em] py-[0.25em] bg-[#333] text-white rounded-md',
+        class: 'text-[0.85rem] px-[0.3em] py-[0.25em] bg-[#333] text-light rounded-md',
       },
     }),
     Link.configure({
@@ -348,7 +348,7 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
             <button
               onClick={() => editor.commands.toggleBold()}
               className={`${
-                editor.isActive('bold') ? 'bg-dark-100 text-white' : ''
+                editor.isActive('bold') ? 'bg-dark-100 text-light' : ''
               } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
               title='Bold'
             >
@@ -359,7 +359,7 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
             <button
               onClick={() => editor.commands.toggleItalic()}
               className={`${
-                editor.isActive('italic') ? 'bg-dark-100 text-white' : ''
+                editor.isActive('italic') ? 'bg-dark-100 text-light' : ''
               } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
               title='Italic'
             >
@@ -370,7 +370,7 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
             <button
               onClick={() => editor.commands.toggleUnderline()}
               className={`${
-                editor.isActive('underline') ? 'bg-dark-100 text-white' : ''
+                editor.isActive('underline') ? 'bg-dark-100 text-light' : ''
               } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
               title='Underline'
             >
@@ -381,7 +381,7 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
             <button
               onClick={() => editor.commands.toggleStrike()}
               className={`${
-                editor.isActive('strike') ? 'bg-dark-100 text-white' : ''
+                editor.isActive('strike') ? 'bg-dark-100 text-light' : ''
               } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
               title='Strike'
             >
@@ -392,7 +392,7 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
             <button
               onClick={() => editor.commands.toggleCode()}
               className={`${
-                editor.isActive('code') ? 'bg-dark-100 text-white' : ''
+                editor.isActive('code') ? 'bg-dark-100 text-light' : ''
               } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
               title='Code'
             >
@@ -403,7 +403,7 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
             <button
               onClick={setLink}
               className={`${
-                editor.isActive('link') ? 'bg-dark-100 text-white' : ''
+                editor.isActive('link') ? 'bg-dark-100 text-light' : ''
               } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
               title='Link'
             >
@@ -414,7 +414,7 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
             <button
               onClick={() => editor.commands.toggleSubscript()}
               className={`${
-                editor.isActive('subscript') ? 'bg-dark-100 text-white' : ''
+                editor.isActive('subscript') ? 'bg-dark-100 text-light' : ''
               } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
               title='Subscript'
             >
@@ -425,7 +425,7 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
             <button
               onClick={() => editor.commands.toggleSuperscript()}
               className={`${
-                editor.isActive('superscript') ? 'bg-dark-100 text-white' : ''
+                editor.isActive('superscript') ? 'bg-dark-100 text-light' : ''
               } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
               title='Superscript'
             >
@@ -436,7 +436,7 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
             <button
               onClick={() => editor.commands.toggleHighlight()}
               className={`${
-                editor.isActive('highlight') ? 'bg-dark-100 text-white' : ''
+                editor.isActive('highlight') ? 'bg-dark-100 text-light' : ''
               } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
               title='Highlight'
             >
@@ -447,7 +447,7 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
             <button
               onClick={() => editor.commands.setHardBreak()}
               className={`${
-                editor.isActive('highlight') ? 'bg-dark-100 text-white' : ''
+                editor.isActive('highlight') ? 'bg-dark-100 text-light' : ''
               } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
               title='Hard Break'
             >
@@ -471,7 +471,7 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
                 onClick={() => editor.commands.toggleHeading({ level: (index + 1) as any })}
                 className={`${
                   editor.isActive('heading', { level: index + 1 })
-                    ? 'bg-dark-100 text-white font-semibold'
+                    ? 'bg-dark-100 text-light font-semibold'
                     : ''
                 } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
                 title={`Heading ${index + 1}`}
@@ -491,7 +491,7 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
             <button
               onClick={() => editor.commands.toggleBlockquote()}
               className={`${
-                editor.isActive('blockquote') ? 'bg-dark-100 text-white' : ''
+                editor.isActive('blockquote') ? 'bg-dark-100 text-light' : ''
               } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
               title='Block Quote'
             >
@@ -502,7 +502,7 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
             <button
               onClick={() => editor.commands.toggleBulletList()}
               className={`${
-                editor.isActive('bulletList') ? 'bg-dark-100 text-white' : ''
+                editor.isActive('bulletList') ? 'bg-dark-100 text-light' : ''
               } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
               title='Bullet List'
             >
@@ -513,7 +513,7 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
             <button
               onClick={() => editor.commands.toggleOrderedList()}
               className={`${
-                editor.isActive('orderedList') ? 'bg-dark-100 text-white' : ''
+                editor.isActive('orderedList') ? 'bg-dark-100 text-light' : ''
               } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
               title='Order List'
             >
@@ -584,7 +584,7 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
             <button
               onClick={() => editor.commands.setTextAlign('left')}
               className={`${
-                editor.isActive('left') ? 'bg-dark-100 text-white' : ''
+                editor.isActive('left') ? 'bg-dark-100 text-light' : ''
               } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
               title='Left'
             >
@@ -595,7 +595,7 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
             <button
               onClick={() => editor.commands.setTextAlign('center')}
               className={`${
-                editor.isActive('center') ? 'bg-dark-100 text-white' : ''
+                editor.isActive('center') ? 'bg-dark-100 text-light' : ''
               } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
               title='Center'
             >
@@ -606,7 +606,7 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
             <button
               onClick={() => editor.commands.setTextAlign('right')}
               className={`${
-                editor.isActive('right') ? 'bg-dark-100 text-white' : ''
+                editor.isActive('right') ? 'bg-dark-100 text-light' : ''
               } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
               title='Right'
             >

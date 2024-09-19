@@ -20,7 +20,7 @@ function AdminHeader({ title, addLink, backLink, className = '' }: AdminHeaderPr
         Admin
       </Link>
 
-      <div className='py-2 px-3 text-white border border-slate-300 rounded-lg text-lg text-center'>
+      <div className='py-2 px-3 text-light border border-slate-300 rounded-lg text-lg text-center'>
         {title}
       </div>
 

@@ -435,7 +435,7 @@ function AllOrdersPage({ searchParams }: { searchParams?: { [key: string]: strin
         <div className='flex flex-wrap justify-end items-center gap-2 col-span-12'>
           {/* Select All Button */}
           <button
-            className='border border-sky-400 text-sky-400 rounded-lg px-3 py-2 hover:bg-sky-400 hover:text-white trans-200'
+            className='border border-sky-400 text-sky-400 rounded-lg px-3 py-2 hover:bg-sky-400 hover:text-light trans-200'
             onClick={() =>
               setSelectedOrders(selectedOrders.length > 0 ? [] : orders.map(order => order._id))
             }
@@ -447,7 +447,7 @@ function AllOrdersPage({ searchParams }: { searchParams?: { [key: string]: strin
           {!!selectedOrders.length &&
             selectedOrders.every(id => orders.find(order => order._id === id)?.status === 'pending') && (
               <button
-                className='border border-slate-300 rounded-lg px-3 py-2 hover:bg-slate-300 hover:text-white trans-200'
+                className='border border-slate-300 rounded-lg px-3 py-2 hover:bg-slate-300 hover:text-light trans-200'
                 onClick={() => handleCancelOrders(selectedOrders)}
               >
                 Cancel
@@ -457,7 +457,7 @@ function AllOrdersPage({ searchParams }: { searchParams?: { [key: string]: strin
           {/* Delete Many Button */}
           {!!selectedOrders.length && (
             <button
-              className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-white trans-200'
+              className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-light trans-200'
               onClick={() => setIsOpenConfirmModal(true)}
             >
               Delete
@@ -477,7 +477,7 @@ function AllOrdersPage({ searchParams }: { searchParams?: { [key: string]: strin
       />
 
       {/* MARK: Amount */}
-      <div className='p-3 text-sm text-right text-white font-semibold'>
+      <div className='p-3 text-sm text-right text-light font-semibold'>
         {Math.min(itemPerPage * +(searchParams?.page || 1), amount)}/{amount} order
         {amount > 1 ? 's' : ''}
       </div>

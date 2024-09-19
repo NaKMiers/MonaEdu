@@ -453,7 +453,7 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
         <div className='flex flex-wrap justify-end items-center col-span-12 gap-2'>
           {/* Select All Button */}
           <button
-            className='border border-sky-400 text-sky-400 rounded-lg px-3 py-2 hover:bg-sky-400 hover:text-white trans-200'
+            className='border border-sky-400 text-sky-400 rounded-lg px-3 py-2 hover:bg-sky-400 hover:text-light trans-200'
             onClick={() =>
               setSelectedCourses(selectedCourses.length > 0 ? [] : courses.map(course => course._id))
             }
@@ -466,7 +466,7 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
           {!!selectedCourses.length &&
             selectedCourses.some(id => !courses.find(course => course._id === id)?.active) && (
               <button
-                className='border border-green-400 text-green-400 rounded-lg px-3 py-2 hover:bg-green-400 hover:text-white trans-200'
+                className='border border-green-400 text-green-400 rounded-lg px-3 py-2 hover:bg-green-400 hover:text-light trans-200'
                 onClick={() => handleActivateCourses(selectedCourses, true)}
               >
                 Activate
@@ -478,7 +478,7 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
           {!!selectedCourses.length &&
             selectedCourses.some(id => courses.find(course => course._id === id)?.active) && (
               <button
-                className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-white trans-200'
+                className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-light trans-200'
                 onClick={() => handleActivateCourses(selectedCourses, false)}
               >
                 Deactivate
@@ -489,7 +489,7 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
           {!!selectedCourses.length &&
             selectedCourses.some(id => courses.find(course => course._id === id)?.flashSale) && (
               <button
-                className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-white trans-200'
+                className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-light trans-200'
                 onClick={() => {
                   handleRemoveApplyingFlashSales(selectedCourses)
                 }}
@@ -501,7 +501,7 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
           {/* Delete Many Button */}
           {!!selectedCourses.length && (
             <button
-              className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-white trans-200'
+              className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-light trans-200'
               onClick={() => setIsOpenConfirmModal(true)}
             >
               Delete
@@ -521,7 +521,7 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
       />
 
       {/* Amount */}
-      <div className='p-3 text-sm text-right text-white font-semibold'>
+      <div className='p-3 text-sm text-right text-light font-semibold'>
         {Math.min(itemPerPage * +(searchParams?.page || 1), amount)}/{amount} course
         {amount > 1 ? 's' : ''}
       </div>

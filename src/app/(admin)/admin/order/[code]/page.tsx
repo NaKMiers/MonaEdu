@@ -158,7 +158,7 @@ function AdminOrderDetailPage({ params: { code } }: { params: { code: string } }
           {editMode ? (
             <>
               <button
-                className='group flex items-center justify-center h-9 rounded-md px-2 border-2 border-slate-400 text-slate-400 hover:bg-slate-400 hover:text-white trans-200'
+                className='group flex items-center justify-center h-9 rounded-md px-2 border-2 border-slate-400 text-slate-400 hover:bg-slate-400 hover:text-light trans-200'
                 onClick={() => {
                   setOrder(originalOrder)
                   setEditMode(false)
@@ -167,7 +167,7 @@ function AdminOrderDetailPage({ params: { code } }: { params: { code: string } }
                 <MdCancel size={20} className='wiggle' />
               </button>
               <button
-                className={`group flex items-center justify-center h-9 rounded-md px-2 border-2 hover:bg-rose-500 hover:text-white trans-200 ${
+                className={`group flex items-center justify-center h-9 rounded-md px-2 border-2 hover:bg-rose-500 hover:text-light trans-200 ${
                   isSaving
                     ? 'pointer-events-none border-slate-400 text-slate-400'
                     : 'border-rose-500 text-rose-500'
@@ -183,7 +183,7 @@ function AdminOrderDetailPage({ params: { code } }: { params: { code: string } }
             </>
           ) : (
             <button
-              className='group flex items-center justify-center h-9 rounded-md px-2 border-2 border-secondary text-secondary hover:bg-secondary hover:text-white trans-200'
+              className='group flex items-center justify-center h-9 rounded-md px-2 border-2 border-secondary text-secondary hover:bg-secondary hover:text-light trans-200'
               onClick={() => setEditMode(true)}
             >
               <MdEdit size={20} className='wiggle' />
@@ -329,7 +329,7 @@ function AdminOrderDetailPage({ params: { code } }: { params: { code: string } }
               <div className='flex gap-2 absolute z-10 top-2 right-2'>
                 {/* Remove Button */}
                 <button
-                  className='group rounded-md h-7 w-7 flex items-center justify-center border-2 border-rose-500 text-rose-500 hover:bg-rose-500 hover:text-white trans-200'
+                  className='group rounded-md h-7 w-7 flex items-center justify-center border-2 border-rose-500 text-rose-500 hover:bg-rose-500 hover:text-light trans-200'
                   onClick={() => handleRemoveItem(item)}
                 >
                   <FaTrash size={12} className='wiggle' />

@@ -121,7 +121,7 @@ export function NotifyOrderEmail({ order = orderSample }: { order?: any }) {
               <div className='text-center p-3 mb-8'>
                 <a
                   href={`${process.env.NEXT_PUBLIC_APP_URL}/admin/order/all`}
-                  className='inline bg-sky-500 no-underline rounded-lg text-white font-semibold cursor-pointer py-3 px-7 border-0'
+                  className='inline bg-sky-500 no-underline rounded-lg text-light font-semibold cursor-pointer py-3 px-7 border-0'
                 >
                   Giao ngay
                 </a>

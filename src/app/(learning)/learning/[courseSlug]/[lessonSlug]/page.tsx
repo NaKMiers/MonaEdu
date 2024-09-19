@@ -34,7 +34,7 @@ function LessonPage({
   const dispatch = useAppDispatch()
   const router = useRouter()
   const openSidebar = useAppSelector(state => state.modal.openSidebar)
-  const { data: session, update } = useSession()
+  const { data: session } = useSession()
   const curUser: any = session?.user
   const lesson = useAppSelector(state => state.learning.learningLesson)
 
@@ -192,7 +192,7 @@ function LessonPage({
 
           <Link
             href='/my-courses'
-            className='flex items-center gap-1 font-bold px-2 py-1.5 text-xs hover:bg-dark-0 hover:border-dark hover:text-white border border-dark text-dark rounded-md shadow-md trans-200 group'
+            className='flex items-center gap-1 font-bold px-2 py-1.5 text-xs hover:bg-dark-0 hover:border-dark hover:text-light border border-dark text-dark rounded-md shadow-md trans-200 group'
           >
             <FaChevronLeft size={12} className='wiggle' />
             Quay lại

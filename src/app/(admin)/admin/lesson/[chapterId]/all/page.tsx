@@ -355,7 +355,7 @@ function AllLessonsPage({
         <div className='flex flex-wrap justify-end items-center gap-2 col-span-12'>
           {/* Select All Button */}
           <button
-            className='border border-sky-400 text-sky-400 rounded-lg px-3 py-2 hover:bg-sky-400 hover:text-white trans-200'
+            className='border border-sky-400 text-sky-400 rounded-lg px-3 py-2 hover:bg-sky-400 hover:text-light trans-200'
             title='Alt + A'
             onClick={() =>
               setSelectedLessons(selectedLessons.length > 0 ? [] : lessons.map(lesson => lesson._id))
@@ -367,7 +367,7 @@ function AllLessonsPage({
           {/* Activate Many Button */}
           {selectedLessons.some(id => !lessons.find(lesson => lesson._id === id)?.active) && (
             <button
-              className='border border-green-400 text-green-400 rounded-lg px-3 py-2 hover:bg-green-400 hover:text-white trans-200'
+              className='border border-green-400 text-green-400 rounded-lg px-3 py-2 hover:bg-green-400 hover:text-light trans-200'
               onClick={() => handleActivateLessons(selectedLessons, true)}
             >
               Activate
@@ -377,7 +377,7 @@ function AllLessonsPage({
           {/* Deactivate Many Button */}
           {selectedLessons.some(id => lessons.find(lesson => lesson._id === id)?.active) && (
             <button
-              className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-white trans-200'
+              className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-light trans-200'
               onClick={() => handleActivateLessons(selectedLessons, false)}
             >
               Deactivate
@@ -389,7 +389,7 @@ function AllLessonsPage({
             id => lessons.find(lesson => lesson._id === id)?.status !== 'public'
           ) && (
             <button
-              className='border border-yellow-500 text-yellow-500 rounded-lg px-3 py-2 hover:bg-yellow-500 hover:text-white trans-200'
+              className='border border-yellow-500 text-yellow-500 rounded-lg px-3 py-2 hover:bg-yellow-500 hover:text-light trans-200'
               onClick={() => handleChangeLessonStatus(selectedLessons, 'public')}
             >
               Public
@@ -401,7 +401,7 @@ function AllLessonsPage({
             id => lessons.find(lesson => lesson._id === id)?.status !== 'private'
           ) && (
             <button
-              className='border border-dark text-dark-0 rounded-lg px-3 py-2 hover:bg-dark-0 hover:text-white trans-200'
+              className='border border-dark text-dark-0 rounded-lg px-3 py-2 hover:bg-dark-0 hover:text-light trans-200'
               onClick={() => handleChangeLessonStatus(selectedLessons, 'private')}
             >
               Private
@@ -411,7 +411,7 @@ function AllLessonsPage({
           {/* Delete Many Button */}
           {!!selectedLessons.length && (
             <button
-              className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-white trans-200'
+              className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-light trans-200'
               title='Alt + Delete'
               onClick={() => setIsOpenConfirmModal(true)}
             >
@@ -442,7 +442,7 @@ function AllLessonsPage({
       </p>
 
       {/* MARK: Amount */}
-      <div className='p-3 text-sm text-right text-white font-semibold'>
+      <div className='p-3 text-sm text-right text-light font-semibold'>
         {Math.min(itemPerPage * +(searchParams?.page || 1), amount)}/{amount} lesson{amount > 1 && 's'}
       </div>
 

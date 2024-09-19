@@ -518,7 +518,7 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
         <div className='flex flex-wrap justify-end items-center gap-2 col-span-12'>
           {/* Select All Button */}
           <button
-            className='border border-sky-400 text-sky-400 rounded-lg px-3 py-2 hover:bg-sky-400 hover:text-white trans-200'
+            className='border border-sky-400 text-sky-400 rounded-lg px-3 py-2 hover:bg-sky-400 hover:text-light trans-200'
             onClick={() =>
               setSelectedVouchers(
                 selectedVouchers.length > 0 ? [] : vouchers.map(voucher => voucher._id)
@@ -531,7 +531,7 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
           {/* Activate Many Button */}
           {selectedVouchers.some(id => !vouchers.find(voucher => voucher._id === id)?.active) && (
             <button
-              className='border border-green-400 text-green-400 rounded-lg px-3 py-2 hover:bg-green-400 hover:text-white trans-200'
+              className='border border-green-400 text-green-400 rounded-lg px-3 py-2 hover:bg-green-400 hover:text-light trans-200'
               onClick={() => handleActivateVouchers(selectedVouchers, true)}
             >
               Activate
@@ -541,7 +541,7 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
           {/* Deactivate Many Button */}
           {selectedVouchers.some(id => vouchers.find(voucher => voucher._id === id)?.active) && (
             <button
-              className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-white trans-200'
+              className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-light trans-200'
               onClick={() => handleActivateVouchers(selectedVouchers, false)}
             >
               Deactivate
@@ -551,7 +551,7 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
           {/* Delete Many Button */}
           {!!selectedVouchers.length && (
             <button
-              className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-white trans-200'
+              className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-light trans-200'
               onClick={() => setIsOpenConfirmModal(true)}
             >
               Delete
@@ -571,7 +571,7 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
       />
 
       {/* MARK: Amount */}
-      <div className='p-3 text-sm text-right text-white font-semibold'>
+      <div className='p-3 text-sm text-right text-light font-semibold'>
         {Math.min(itemPerPage * +(searchParams?.page || 1), amount)}/{amount} voucher
         {amount > 1 ? 's' : ''}
       </div>

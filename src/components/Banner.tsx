@@ -136,13 +136,13 @@ function Banner({ time, courses, className = '' }: SliderProps) {
       {/* Arrows */}
       <div className='arrows absolute z-20 bottom-[50px] left-[10%] md:left-[30%] flex gap-4'>
         <button
-          className='prev flex items-center justify-center w-12 h-12 rounded-full text-dark border border-dark bg-white shadow-lg z-10 hover:bg-dark-0 hover:text-white trans-200'
+          className='prev flex items-center justify-center w-12 h-12 rounded-full text-dark border border-dark bg-white shadow-lg z-10 hover:bg-dark-0 hover:text-light trans-200'
           onClick={prevSlide}
         >
           <FaChevronLeft size={16} />
         </button>
         <button
-          className='next flex items-center justify-center w-12 h-12 rounded-full text-dark border border-dark bg-white shadow-lg z-10 hover:bg-dark-0 hover:text-white trans-200'
+          className='next flex items-center justify-center w-12 h-12 rounded-full text-dark border border-dark bg-white shadow-lg z-10 hover:bg-dark-0 hover:text-light trans-200'
           onClick={nextSlide}
         >
           <FaChevronRight size={16} />
@@ -159,7 +159,7 @@ function Banner({ time, courses, className = '' }: SliderProps) {
             <div className='p-21/2 flex-shrink-0 snap-start' key={course._id}>
               <button
                 className={`relative max-w-[200px] aspect-video rounded-lg border-2 ${
-                  slide === index + 1 ? 'shadow-primary shadow-lg' : 'border-white shadow-md'
+                  slide === index + 1 ? 'shadow-primary shadow-lg' : 'border-light shadow-md'
                 } trans-300 hover:opacity-100 hover:scale-105 hover:-translate-y-1 overflow-hidden`}
                 onClick={() => changeSlide(index + 1)}
                 key={course._id}

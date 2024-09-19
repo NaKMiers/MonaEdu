@@ -129,7 +129,7 @@ function UserSpendingRankTab({ className = '' }: UserSpendingRankTabProps) {
       )}
 
       <div className='flex justify-center items-center my-1'>
-        <span className='text-xs bg-dark-100 text-white px-1.5 py-0.5 rounded-lg font-semibold'>
+        <span className='text-xs bg-dark-100 text-light px-1.5 py-0.5 rounded-lg font-semibold'>
           {searchResults.length} user{searchResults.length > 1 ? 's' : ''}
         </span>
       </div>
@@ -137,7 +137,7 @@ function UserSpendingRankTab({ className = '' }: UserSpendingRankTabProps) {
       <div className='flex-1 overflow-y-scroll'>
         {(search.trim() ? showSearchResults : showUsers).map((user, index) => (
           <div className='flex gap-3 mb-4' key={index}>
-            <Link href='/' className='flex-shrink-0 relative aspect-square text-white'>
+            <Link href='/' className='flex-shrink-0 relative aspect-square text-light'>
               <Image
                 className='rounded-lg'
                 src={user.avatar || process.env.NEXT_PUBLIC_DEFAULT_AVATAR}
@@ -169,7 +169,7 @@ function UserSpendingRankTab({ className = '' }: UserSpendingRankTabProps) {
           : showUsers.length < users.length || loading) && (
           <div className='flex items-center justify-center'>
             <button
-              className={`flex items-center justify-center font-semibold rounded-md px-3 h-8 text-sm text-white border-2 hover:bg-white hover:text-dark common-transition ${
+              className={`flex items-center justify-center font-semibold rounded-md px-3 h-8 text-sm text-light border-2 hover:bg-white hover:text-dark common-transition ${
                 loading ? 'pointer-events-none bg-white border-slate-400' : 'bg-dark-100 border-dark'
               }`}
               onClick={handleLoadMore}

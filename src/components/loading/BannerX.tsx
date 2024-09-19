@@ -37,8 +37,8 @@ function BannerX() {
       </div>
       {/* Arrows */}
       <div className='arrows absolute bottom-[50px] left-[10%] md:left-1/3 flex gap-4'>
-        <div className='prev w-12 h-12 border border-white rounded-full animate-pulse bg-slate-800' />
-        <div className='next w-12 h-12 border border-white rounded-full animate-pulse bg-slate-800' />
+        <div className='prev w-12 h-12 border border-light rounded-full animate-pulse bg-slate-800' />
+        <div className='next w-12 h-12 border border-light rounded-full animate-pulse bg-slate-800' />
       </div>
     </div>
   )

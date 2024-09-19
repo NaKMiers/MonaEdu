@@ -71,11 +71,11 @@ function CategoryRankTab({ className = '' }: CategoryRankTabProps) {
               <div className='flex-shrink-0 p-[2px] bg-white rounded-md'>
                 <Image src={category.image} width={20} height={20} alt='Mona-Edu' />
               </div>
-              <span className='font-body text-sm font-semibold tracking-wider text-white bg-dark-100 px-2 rounded-full'>
+              <span className='font-body text-sm font-semibold tracking-wider text-light bg-dark-100 px-2 rounded-full'>
                 {category.title}
               </span>
             </div>
-            <span className='flex justify-center items-center font-semibold text-xs h-5 px-2 rounded-full bg-dark-100 text-white'>
+            <span className='flex justify-center items-center font-semibold text-xs h-5 px-2 rounded-full bg-dark-100 text-light'>
               {category.joined}
             </span>
           </div>

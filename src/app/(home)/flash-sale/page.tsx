@@ -92,7 +92,7 @@ async function FlashSalePage({ searchParams }: { searchParams?: { [key: string]:
       <script type='application/ld+json' dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       {/* Heading */}
-      <h1 className='text-4xl font-semibold px-21 text-white text-center'>Đang Giảm Giá ({amount})</h1>
+      <h1 className='text-4xl font-semibold px-21 text-light text-center'>Đang Giảm Giá ({amount})</h1>
 
       <Divider size={18} />
 

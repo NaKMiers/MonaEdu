@@ -235,7 +235,7 @@ function CommentItem({ comment, setCmts, className = '' }: CommentItemProps) {
               >
                 {(user?._id === curUser._id || user?.role === 'admin') && (
                   <button
-                    className={`font-bold px-1.5 py-1 text-[10px] bg-slate-200 hover:text-white trans-200 ${
+                    className={`font-bold px-1.5 py-1 text-[10px] bg-slate-200 hover:text-light trans-200 ${
                       status === 'open'
                         ? 'border-dark hover:bg-black'
                         : 'border-green-500 text-green-500 hover:bg-green-500'
@@ -337,7 +337,7 @@ function CommentItem({ comment, setCmts, className = '' }: CommentItemProps) {
                   Hủy
                 </button>
                 <LoadingButton
-                  className='h-[30px] flex items-center text-sm px-3 border border-dark hover:bg-dark-100 text-dark hover:text-white rounded-lg trans-200'
+                  className='h-[30px] flex items-center text-sm px-3 border border-dark hover:bg-dark-100 text-dark hover:text-light rounded-lg trans-200'
                   onClick={handleSubmit(replyComment)}
                   text='Gửi'
                   isLoading={isLoading}

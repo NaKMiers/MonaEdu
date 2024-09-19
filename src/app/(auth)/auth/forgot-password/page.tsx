@@ -141,7 +141,7 @@ function ForgotPasswordPage() {
         <p className='text-orange-400 drop-shadow-lg left-[46px] font-semibold text-3xl top-[20%]'>
           MONAEDU
         </p>
-        <p className='text-white drop-shadow-lg font-semibold text-3xl mt-5'>
+        <p className='text-light drop-shadow-lg font-semibold text-3xl mt-5'>
           Hành trang trên con đường thành công.
         </p>
       </div>

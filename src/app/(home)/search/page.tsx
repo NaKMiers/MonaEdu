@@ -93,7 +93,7 @@ async function SearchPage({ searchParams }: { searchParams?: { [key: string]: st
       <script type='application/ld+json' dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       {/* Heading */}
-      <h1 className='text-4xl font-semibold px-21 text-white text-center'>
+      <h1 className='text-4xl font-semibold px-21 text-light text-center'>
         Kết quả tìm kiếm {amount > 0 && <span>({amount})</span>}
       </h1>
 

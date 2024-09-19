@@ -172,7 +172,7 @@ function FloatingActionButtons({ course: data, className = '' }: FloatingActionB
           {isLoading ? (
             <RiDonutChartFill size={18} className='animate-spin text-dark' />
           ) : (
-            <FaCartPlus className='text-[18px] sm:text-[20px] wiggle text-white group-hover:text-dark' />
+            <FaCartPlus className='text-[18px] sm:text-[20px] wiggle text-light group-hover:text-dark' />
           )}
         </button>
       )}
@@ -188,7 +188,7 @@ function FloatingActionButtons({ course: data, className = '' }: FloatingActionB
             }  overflow-hidden absolute z-20 bottom-[80%] flex gap-2 rounded-md trans-300`}
           >
             <button
-              className={`font-bold text-nowrap px-1.5 py-1 text-[10px] bg-white hover:bg-dark-0 hover:text-white border border-dark text-dark rounded-md shadow-md trans-200`}
+              className={`font-bold text-nowrap px-1.5 py-1 text-[10px] bg-white hover:bg-dark-0 hover:text-light border border-dark text-dark rounded-md shadow-md trans-200`}
               onClick={buyNow}
             >
               Mua tặng

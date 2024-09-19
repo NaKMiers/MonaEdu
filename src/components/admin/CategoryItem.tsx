@@ -86,7 +86,7 @@ function CategoryItem({
   return (
     <>
       <div
-        className={`h-9 flex-shrink-0 overflow-hidden flex items-center justify-between gap-3 trans-300 text-dark rounded-lg px-3 py-1.5 hover:bg-secondary hover:text-white cursor-pointer ${
+        className={`h-9 flex-shrink-0 overflow-hidden flex items-center justify-between gap-3 trans-300 text-dark rounded-lg px-3 py-1.5 hover:bg-secondary hover:text-light cursor-pointer ${
           selectMode && selectedCategory === data._id ? 'bg-green-500' : 'bg-white'
         } ${className}`}
         onClick={() => {

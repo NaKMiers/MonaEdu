@@ -59,7 +59,7 @@ function AdminPage() {
       {/* Filter By Time */}
       <div className='flex justify-end'>
         <select
-          className='appearance-none p-2.5 font-semibold text-sm bg-dark-100 text-white focus:outline-none focus:ring-0 peer rounded-lg cursor-pointer'
+          className='appearance-none p-2.5 font-semibold text-sm bg-dark-100 text-light focus:outline-none focus:ring-0 peer rounded-lg cursor-pointer'
           value={by}
           onChange={e => {
             setBy(e.target.value as never)
@@ -67,19 +67,19 @@ function AdminPage() {
           }}
         >
           <option
-            className='bg-dark-100 text-white font-body font-semibold tracking-wider p-5'
+            className='bg-dark-100 text-light font-body font-semibold tracking-wider p-5'
             value='day'
           >
             By Day
           </option>
           <option
-            className='bg-dark-100 text-white font-body font-semibold tracking-wider p-5'
+            className='bg-dark-100 text-light font-body font-semibold tracking-wider p-5'
             value='month'
           >
             By Month
           </option>
           <option
-            className='bg-dark-100 text-white font-body font-semibold tracking-wider p-5'
+            className='bg-dark-100 text-light font-body font-semibold tracking-wider p-5'
             value='year'
           >
             By Year
@@ -101,7 +101,7 @@ function AdminPage() {
               {['Revenue', 'Orders', 'Courses', 'Used VC'].map((label, index) => (
                 <span
                   className={`px-2 py-1 text-nowrap rounded-t-lg border border-b-0 cursor-pointer common-transition max-w-[100px] text-ellipsis line-clamp-1 block ${
-                    selectedChart === label ? 'bg-dark-100 text-white border-transparent' : ''
+                    selectedChart === label ? 'bg-dark-100 text-light border-transparent' : ''
                   }`}
                   onClick={() => setSelectedChart(label as never)}
                   title={label}
@@ -141,7 +141,7 @@ function AdminPage() {
               {['Sales', 'Course', 'Expended', 'Category', 'Tag'].map((label, index) => (
                 <span
                   className={`px-2 py-1 text-nowrap rounded-t-lg border border-b-0 cursor-pointer common-transition max-w-[100px] text-ellipsis line-clamp-1 block ${
-                    tab === index + 1 ? 'bg-dark-100 text-white border-transparent' : ''
+                    tab === index + 1 ? 'bg-dark-100 text-light border-transparent' : ''
                   }`}
                   onClick={() => setTab(index + 1)}
                   title={label}

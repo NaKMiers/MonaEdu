@@ -113,7 +113,7 @@ function LessonItem({
                 className={`p-1.5 border-2 rounded-full ${
                   data.status === 'public'
                     ? 'border-primary hover:bg-primary text-primary hover:text-dark'
-                    : 'border-dark hover:bg-dark-0 text-dark hover:text-white'
+                    : 'border-dark hover:bg-dark-0 text-dark hover:text-light'
                 } trans-200 group`}
                 onClick={() => setIsOpenStatusConfirmModal(true)}
               >

@@ -137,7 +137,7 @@ function CategoryTabs({ open, setOpen, className = '' }: CategoryTabsProps) {
                   >
                     <span
                       className={`text-dark group-hover:text-light ${
-                        list[tabIndex + 1] && list[tabIndex + 1].ref === item._id ? 'text-white' : ''
+                        list[tabIndex + 1] && list[tabIndex + 1].ref === item._id ? 'text-light' : ''
                       }`}
                     >
                       {item.title}
@@ -146,7 +146,7 @@ function CategoryTabs({ open, setOpen, className = '' }: CategoryTabsProps) {
                       <FaChevronRight
                         size={12}
                         className={`wiggle text-dark group-hover:text-light  ${
-                          list[tabIndex + 1] && list[tabIndex + 1].ref === item._id ? 'text-white' : ''
+                          list[tabIndex + 1] && list[tabIndex + 1].ref === item._id ? 'text-light' : ''
                         }`}
                       />
                     )}

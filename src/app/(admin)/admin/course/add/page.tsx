@@ -345,7 +345,7 @@ function AddCoursePage() {
           </div>
           <label
             className={`select-none cursor-pointer border border-green-500 px-4 py-2 rounded-lg trans-200  ${
-              isActiveChecked ? 'bg-green-500 text-white' : 'bg-white text-green-500'
+              isActiveChecked ? 'bg-green-500 text-light' : 'bg-white text-green-500'
             }`}
             htmlFor='active'
             onClick={() => setIsActiveChecked(!isActiveChecked)}
@@ -362,7 +362,7 @@ function AddCoursePage() {
           </div>
           <label
             className={`select-none cursor-pointer border border-green-500 px-4 py-2 rounded-lg trans-200  ${
-              isBootedChecked ? 'bg-green-500 text-white' : 'bg-white text-green-500'
+              isBootedChecked ? 'bg-green-500 text-light' : 'bg-white text-green-500'
             }`}
             htmlFor='booted'
             onClick={() => setIsBootedChecked(!isBootedChecked)}
@@ -391,7 +391,7 @@ function AddCoursePage() {
                 />
                 <label
                   className={`cursor-pointer select-none text-sm rounded-lg border border-green-500 text-green-500 py-1 px-3 trans-200 ${
-                    selectedTags.some(t => t === tag._id) ? 'bg-green-500 text-white' : ''
+                    selectedTags.some(t => t === tag._id) ? 'bg-green-500 text-light' : ''
                   }`}
                   htmlFor={tag._id}
                 >
@@ -465,7 +465,7 @@ function AddCoursePage() {
                   onClick={() => handleRemoveImage(url)}
                   className='absolute top-2 bg-slate-300 p-2 right-2 group hover:bg-dark-100 rounded-lg'
                 >
-                  <FaX size={16} className='text-dark group-hover:text-white trans-200' />
+                  <FaX size={16} className='text-dark group-hover:text-light trans-200' />
                 </button>
               </div>
             ))}
@@ -473,7 +473,7 @@ function AddCoursePage() {
         )}
 
         <LoadingButton
-          className='px-4 py-2 bg-secondary hover:bg-primary text-white rounded-lg font-semibold trans-200'
+          className='px-4 py-2 bg-secondary hover:bg-primary text-light rounded-lg font-semibold trans-200'
           onClick={handleSubmit(onSubmit)}
           text='Add'
           isLoading={isLoading}

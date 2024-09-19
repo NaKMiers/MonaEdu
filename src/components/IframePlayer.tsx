@@ -28,7 +28,7 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
   // hooks
   const dispatch = useAppDispatch()
   const videoId = lesson?.source.split('https://www.youtube.com/embed/')[1].split('?')[0]
-  const { data: session, update } = useSession()
+  const { data: session } = useSession()
   const curUser: any = session?.user
 
   // states
@@ -677,21 +677,21 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
                 {isPlaying ? (
                   <FaCirclePause
                     size={22}
-                    className='text-white group-hover:shadow-orange-400 shadow-md rounded-full trans-200'
+                    className='text-light group-hover:shadow-orange-400 shadow-md rounded-full trans-200'
                   />
                 ) : (
                   <FaCirclePlay
                     size={22}
-                    className='text-white group-hover:shadow-orange-400 shadow-md rounded-full trans-200'
+                    className='text-light group-hover:shadow-orange-400 shadow-md rounded-full trans-200'
                   />
                 )}
               </button>
               <div className='flex h-[50px] items-center cursor-pointer'>
                 <button className='flex items-center justify-center group peer' onClick={handleMute}>
                   {volume > 0 ? (
-                    <HiSpeakerWave size={23} className='text-white flex-shrink-0' />
+                    <HiSpeakerWave size={23} className='text-light flex-shrink-0' />
                   ) : (
-                    <HiSpeakerXMark size={23} className='text-white flex-shrink-0' />
+                    <HiSpeakerXMark size={23} className='text-light flex-shrink-0' />
                   )}
                 </button>
 
@@ -703,7 +703,7 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
                   />
                 </div>
               </div>
-              <div className='text-white tracking-widest font-semibold text-sm flex items-center'>
+              <div className='text-light tracking-widest font-semibold text-sm flex items-center'>
                 <span>
                   {currentTime / 3600 < 1
                     ? moment.utc(currentTime * 1000).format('m:ss')
@@ -722,7 +722,7 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
                 className='group w-12 h-[50px] flex items-center justify-center'
                 onClick={handleFullscreen}
               >
-                <RiFullscreenFill size={24} className='text-white' />
+                <RiFullscreenFill size={24} className='text-light' />
               </button>
             </div>
           </div>

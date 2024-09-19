@@ -111,7 +111,7 @@ function Price({ price, oldPrice, flashSale, big, className = '' }: PriceProps) 
     <div className={`rounded-md overflow-hidden ${className}`}>
       {/* MARK: Flash Sale */}
       {isValidFS && (
-        <div className='flex items-center justify-between gap-2 px-2 py-1.5 bg-dark-0 text-white font-body text-[18px] font-bold tracking-wider'>
+        <div className='flex items-center justify-between gap-2 px-2 py-1.5 bg-dark-0 text-light font-body text-[18px] font-bold tracking-wider'>
           <span className={`hidden md:block leading-[20px] ${big ? 'sm:text-[22px]' : ''} text-[14px]`}>
             Flash sale
           </span>
@@ -168,7 +168,7 @@ function Price({ price, oldPrice, flashSale, big, className = '' }: PriceProps) 
           <div
             className={`bg-yellow-400 ${
               big ? 'text-[16px]' : 'text-[11px]'
-            } flex items-center h-6 font-semibold rounded-md px-1 py-0.5 text-white font-sans`}
+            } flex items-center h-6 font-semibold rounded-md px-1 py-0.5 text-light font-sans`}
           >
             -{countPercent(newPrice, oldPrice)}
           </div>

@@ -89,7 +89,7 @@ function SearchResultItem({ course, className = '' }: SearchResultItemProps) {
           ) : (
             <FaCartPlus
               size={18}
-              className='text-[18px] sm:text-[20px] wiggle text-white group-hover:text-dark'
+              className='text-[18px] sm:text-[20px] wiggle text-light group-hover:text-dark'
             />
           )}
         </button>

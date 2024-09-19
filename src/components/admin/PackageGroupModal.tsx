@@ -171,14 +171,14 @@ function PackageGroupModal({
 
             <div className='flex justify-center gap-3'>
               <button
-                className={`font-semibold border-2 border-dark bg-slate-300 shadow-lg text-dark px-3 py-1.5 rounded-lg drop-shadow-md hover:text-white hover:border-slate-300 trans-200`}
+                className={`font-semibold border-2 border-dark bg-slate-300 shadow-lg text-dark px-3 py-1.5 rounded-lg drop-shadow-md hover:text-light hover:border-slate-300 trans-200`}
                 onClick={() => setOpen(false)}
               >
                 Cancel
               </button>
 
               <button
-                className={`font-semibold border-2 border-dark shadow-lg text-dark px-3 py-1.5 rounded-lg drop-shadow-md hover:bg-dark-100 hover:text-white trans-200 ${
+                className={`font-semibold border-2 border-dark shadow-lg text-dark px-3 py-1.5 rounded-lg drop-shadow-md hover:bg-dark-100 hover:text-light trans-200 ${
                   isLoading ? 'bg-slate-200 pointer-events-none' : ''
                 }`}
                 onClick={handleSubmit(packageGroup ? onEditSubmit : onAddSubmit)}

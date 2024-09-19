@@ -75,7 +75,7 @@ function AllCategoriesPage({ searchParams }: { searchParams?: { [key: string]: s
           Admin
         </Link>
 
-        <div className='py-2 px-3 text-white border border-slate-300 rounded-lg text-lg text-center'>
+        <div className='py-2 px-3 text-light border border-slate-300 rounded-lg text-lg text-center'>
           All Categories
         </div>
 
@@ -91,7 +91,7 @@ function AllCategoriesPage({ searchParams }: { searchParams?: { [key: string]: s
       <Pagination searchParams={searchParams} amount={amount} itemsPerPage={itemPerPage} />
 
       {/* MARK: Amount */}
-      <div className='p-3 text-sm text-right text-white font-semibold'>
+      <div className='p-3 text-sm text-right text-light font-semibold'>
         {categories.length} {categories.length > 1 ? 'categories' : 'category'}
       </div>
 

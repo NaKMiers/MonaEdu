@@ -27,7 +27,7 @@ const seekTime = 5
 function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
   // hooks
   const dispatch = useAppDispatch()
-  const { data: session, update } = useSession()
+  const { data: session } = useSession()
   const curUser: any = session?.user
 
   // states
@@ -116,7 +116,6 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
 
         // update states
         dispatch(setLearningLesson({ ...lesson, progress }))
-        console.log('updated')
 
         // // update course's progress
         // if (progress.status === 'completed') {
@@ -611,21 +610,21 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
                 {isPlaying ? (
                   <FaCirclePause
                     size={22}
-                    className='text-white group-hover:shadow-orange-400 shadow-md rounded-full trans-200'
+                    className='text-light group-hover:shadow-orange-400 shadow-md rounded-full trans-200'
                   />
                 ) : (
                   <FaCirclePlay
                     size={22}
-                    className='text-white group-hover:shadow-orange-400 shadow-md rounded-full trans-200'
+                    className='text-light group-hover:shadow-orange-400 shadow-md rounded-full trans-200'
                   />
                 )}
               </button>
               <div className='flex h-[50px] items-center cursor-pointer'>
                 <button className='flex items-center justify-center group peer' onClick={handleMute}>
                   {volume > 0 ? (
-                    <HiSpeakerWave size={23} className='text-white flex-shrink-0' />
+                    <HiSpeakerWave size={23} className='text-light flex-shrink-0' />
                   ) : (
-                    <HiSpeakerXMark size={23} className='text-white flex-shrink-0' />
+                    <HiSpeakerXMark size={23} className='text-light flex-shrink-0' />
                   )}
                 </button>
 
@@ -637,7 +636,7 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
                   />
                 </div>
               </div>
-              <div className='text-white tracking-widest font-semibold text-sm flex items-center'>
+              <div className='text-light tracking-widest font-semibold text-sm flex items-center'>
                 <span>
                   {currentTime / 3600 < 1
                     ? moment.utc(currentTime * 1000).format('m:ss')
@@ -656,7 +655,7 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
                 className='group w-12 h-[50px] flex items-center justify-center'
                 onClick={handleFullscreen}
               >
-                <RiFullscreenFill size={24} className='text-white' />
+                <RiFullscreenFill size={24} className='text-light' />
               </button>
             </div>
           </div>

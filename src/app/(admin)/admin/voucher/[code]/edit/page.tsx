@@ -395,7 +395,7 @@ function EditVoucherPage() {
           />
           <label
             className={
-              'select-none cursor-pointer border border-green-500 px-4 py-2 rounded-lg trans-200 peer-checked:bg-green-500 peer-checked:text-white bg-white text-green-500'
+              'select-none cursor-pointer border border-green-500 px-4 py-2 rounded-lg trans-200 peer-checked:bg-green-500 peer-checked:text-light bg-white text-green-500'
             }
             htmlFor='active'
           >
@@ -405,7 +405,7 @@ function EditVoucherPage() {
 
         {/* MARK: Save Button */}
         <LoadingButton
-          className='mt-4 px-4 py-2 bg-secondary hover:bg-primary text-white rounded-lg font-semibold trans-200'
+          className='mt-4 px-4 py-2 bg-secondary hover:bg-primary text-light rounded-lg font-semibold trans-200'
           onClick={handleSubmit(onSubmit)}
           text='Save'
           isLoading={isLoading}

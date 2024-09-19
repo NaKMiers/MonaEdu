@@ -268,7 +268,7 @@ function AllReportsPage({ searchParams }: { searchParams?: { [key: string]: stri
         <div className='flex flex-wrap justify-end items-center gap-2 col-span-12 md:col-span-4'>
           {/* Select All Button */}
           <button
-            className='border border-sky-400 text-sky-400 rounded-lg px-3 py-2 hover:bg-sky-400 hover:text-white trans-200'
+            className='border border-sky-400 text-sky-400 rounded-lg px-3 py-2 hover:bg-sky-400 hover:text-light trans-200'
             onClick={() =>
               setSelectedReports(selectedReports.length > 0 ? [] : reports.map(report => report._id))
             }
@@ -279,7 +279,7 @@ function AllReportsPage({ searchParams }: { searchParams?: { [key: string]: stri
           {/* Delete Many Button */}
           {!!selectedReports.length && (
             <button
-              className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-white trans-200'
+              className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-light trans-200'
               onClick={() => setIsOpenConfirmModal(true)}
             >
               Delete
@@ -299,7 +299,7 @@ function AllReportsPage({ searchParams }: { searchParams?: { [key: string]: stri
       />
 
       {/* MARK: Amount */}
-      <div className='p-3 text-sm text-right text-white font-semibold'>
+      <div className='p-3 text-sm text-right text-light font-semibold'>
         {Math.min(itemPerPage * +(searchParams?.page || 1), amount)}/{amount} report
         {amount > 1 ? 's' : ''}
       </div>

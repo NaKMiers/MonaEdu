@@ -179,13 +179,13 @@ function FloatingSummary({ course: data, chapters, totalTime, className = '' }: 
               {isLoading ? (
                 <RiDonutChartFill size={18} className='animate-spin text-dark' />
               ) : (
-                <FaCartPlus className='text-[18px] sm:text-[20px] wiggle text-white group-hover:text-dark' />
+                <FaCartPlus className='text-[18px] sm:text-[20px] wiggle text-light group-hover:text-dark' />
               )}
             </button>
           )}
 
           {curUser?._id && curUser.courses.map((course: any) => course.course).includes(course._id) && (
-            <div className='text-white relative flex justify-end items-center w-[30px] h-[42px]'>
+            <div className='text-light relative flex justify-end items-center w-[30px] h-[42px]'>
               <button className='group' onClick={() => setShowActions(prev => !prev)}>
                 <HiDotsVertical size={24} className='text-dark' />
               </button>
@@ -195,7 +195,7 @@ function FloatingSummary({ course: data, chapters, totalTime, className = '' }: 
                 }  overflow-hidden absolute z-20 top-[80%] flex gap-2 rounded-md trans-300`}
               >
                 <button
-                  className={`font-bold text-nowrap px-1.5 py-1 text-[10px] bg-white hover:bg-dark-0 hover:text-white border border-dark text-dark rounded-md shadow-md trans-200`}
+                  className={`font-bold text-nowrap px-1.5 py-1 text-[10px] bg-white hover:bg-dark-0 hover:text-light border border-dark text-dark rounded-md shadow-md trans-200`}
                   onClick={buyNow}
                 >
                   Mua tặng

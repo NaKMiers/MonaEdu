@@ -270,7 +270,7 @@ function AllCourseChaptersPage({
         <div className='flex flex-wrap justify-end items-center gap-2 col-span-12'>
           {/* Select All Button */}
           <button
-            className='border border-sky-400 text-sky-400 rounded-lg px-3 py-2 hover:bg-sky-400 hover:text-white trans-200'
+            className='border border-sky-400 text-sky-400 rounded-lg px-3 py-2 hover:bg-sky-400 hover:text-light trans-200'
             onClick={() =>
               setSelectedChapters(
                 selectedChapters.length > 0 ? [] : chapters.map(chapter => chapter._id)
@@ -286,7 +286,7 @@ function AllCourseChaptersPage({
               .filter(chapter => selectedChapters.includes(chapter._id))
               .reduce((acc, chapter) => acc + chapter.lessonQuantity, 0) === 0 && (
               <button
-                className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-white trans-200'
+                className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-light trans-200'
                 onClick={() => setIsOpenConfirmModal(true)}
               >
                 Delete
@@ -316,7 +316,7 @@ function AllCourseChaptersPage({
       </h2>
 
       {/* MARK: Amount */}
-      <div className='p-3 text-sm text-right text-white font-semibold'>
+      <div className='p-3 text-sm text-right text-light font-semibold'>
         {amount} chapter{amount > 1 && 's'}
       </div>
 

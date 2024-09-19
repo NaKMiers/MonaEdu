@@ -141,7 +141,7 @@ function Comment({ comments, lessonId, className = '' }: CommentProps) {
           </label>
         </div>
         <LoadingButton
-          className='h-[40px] flex items-center px-3 sm:px-6 border border-dark hover:bg-dark-100 font-semibold text-dark hover:text-white rounded-lg trans-200'
+          className='h-[40px] flex items-center px-3 sm:px-6 border border-dark hover:bg-dark-100 font-semibold text-dark hover:text-light rounded-lg trans-200'
           onClick={handleSubmit(sendComment)}
           text='Gửi'
           isLoading={isLoading}

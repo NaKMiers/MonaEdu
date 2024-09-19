@@ -206,7 +206,7 @@ function Meta({
           <div
             className={`overflow-hidden max-w-60 text-ellipsis text-nowrap h-[34px] leading-[34px] px-2 rounded-md border cursor-pointer select-none trans-200 ${
               openFilterCategory
-                ? 'bg-dark-100 text-white border-dark-100'
+                ? 'bg-dark-100 text-light border-dark-100'
                 : 'border-slate-300 bg-slate-200'
             }`}
             title='Lọc'
@@ -221,7 +221,7 @@ function Meta({
                 <div
                   className={`group flex items-center justify-center gap-1 overflow-hidden text-ellipsis text-nowrap h-[34px] leading-[34px] px-2 rounded-md border cursor-pointer select-none trans-200 ${
                     selectedFilterCategories.includes(item.slug)
-                      ? 'bg-secondary text-white border-secondary'
+                      ? 'bg-secondary text-light border-secondary'
                       : 'border-slate-300'
                   }`}
                   title={item.title}
@@ -252,7 +252,7 @@ function Meta({
             <li
               className={`overflow-hidden max-w-60 text-ellipsis text-nowrap h-[34px] leading-[34px] px-2 rounded-md border cursor-pointer select-none trans-200 ${
                 categories.length === selectedFilterCategories.length
-                  ? 'bg-dark-100 text-white border-dark-100'
+                  ? 'bg-dark-100 text-light border-dark-100'
                   : 'border-slate-300 bg-slate-200'
               }`}
               title='All Types'
@@ -279,7 +279,7 @@ function Meta({
               <li
                 className={`overflow-hidden max-w-60 text-ellipsis text-nowrap h-[34px] leading-[34px] px-2 rounded-md border cursor-pointer select-none trans-200 ${
                   selectedFilterCategories.includes(item.slug)
-                    ? 'bg-secondary text-white border-secondary'
+                    ? 'bg-secondary text-light border-secondary'
                     : 'border-slate-300'
                 }`}
                 title={item.title}
@@ -296,7 +296,7 @@ function Meta({
         <div className='flex gap-1 flex-wrap max-h-[110px] overflow-auto col-span-12 md:col-span-4 order-2 md:order-1'>
           <div
             className={`overflow-hidden max-w-60 text-ellipsis text-nowrap h-[34px] leading-[34px] px-2 rounded-md border cursor-pointer select-none trans-200 ${
-              openFilterTag ? 'bg-dark-100 text-white border-dark-100' : 'border-slate-300 bg-slate-200'
+              openFilterTag ? 'bg-dark-100 text-light border-dark-100' : 'border-slate-300 bg-slate-200'
             }`}
             title='Lọc'
             onClick={() => setOpenFilterTag(true)}
@@ -310,7 +310,7 @@ function Meta({
                 <div
                   className={`group flex items-center justify-center gap-1 overflow-hidden text-ellipsis text-nowrap h-[34px] leading-[34px] px-2 rounded-md border cursor-pointer select-none trans-200 ${
                     selectedFilterTags.includes(item.slug)
-                      ? 'bg-secondary text-white border-secondary'
+                      ? 'bg-secondary text-light border-secondary'
                       : 'border-slate-300'
                   }`}
                   title={item.title}
@@ -341,7 +341,7 @@ function Meta({
             <li
               className={`overflow-hidden max-w-60 text-ellipsis text-nowrap h-[34px] leading-[34px] px-2 rounded-md border cursor-pointer select-none trans-200 ${
                 tags.length === selectedFilterTags.length
-                  ? 'bg-dark-100 text-white border-dark-100'
+                  ? 'bg-dark-100 text-light border-dark-100'
                   : 'border-slate-300 bg-slate-200'
               }`}
               title='All Types'
@@ -364,7 +364,7 @@ function Meta({
               <li
                 className={`overflow-hidden max-w-60 text-ellipsis text-nowrap h-[34px] leading-[34px] px-2 rounded-md border cursor-pointer select-none trans-200 ${
                   selectedFilterTags.includes(item.slug)
-                    ? 'bg-secondary text-white border-secondary'
+                    ? 'bg-secondary text-light border-secondary'
                     : 'border-slate-300'
                 }`}
                 title={item.title}

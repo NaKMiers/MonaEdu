@@ -103,7 +103,7 @@ function Input({
             >
               {options?.map((option, index) => (
                 <option
-                  className='bg-dark-100 appearance-none text-white font-body font-semibold hover:bg-primary hover:text-dark checked:bg-indigo-500 trans-200 py-0.5 px-1.5'
+                  className='bg-dark-100 appearance-none text-light font-body font-semibold hover:bg-primary hover:text-dark checked:bg-indigo-500 trans-200 py-0.5 px-1.5'
                   key={index}
                   value={option.value}
                 >

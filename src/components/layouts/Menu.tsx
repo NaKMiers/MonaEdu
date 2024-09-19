@@ -77,7 +77,7 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
       <div
         className={`hidden opacity-0 max-h-[358px] sm:max-w-full sm:w-[300px] sm:max-h-[358px] p-2 sm:border-2 max-h-360 ${
           curUser && !curUser?._id ? 'hidden' : ''
-        } rounded-t-xl bg-dark-100 border-white shadow-primary text-white w-full overflow-hidden trans-300 absolute bottom-[72px] md:bottom-auto md:top-[60px] right-0 sm:right-21 z-30 sm:rounded-xl shadow-md`}
+        } rounded-t-xl bg-dark-100 border-light shadow-primary text-light w-full overflow-hidden trans-300 absolute bottom-[72px] md:bottom-auto md:top-[60px] right-0 sm:right-21 z-30 sm:rounded-xl shadow-md`}
         ref={menuRef}
       >
         {curUser ? (

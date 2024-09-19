@@ -276,7 +276,7 @@ function AddFlashSalePage() {
           <div
             className={`border-2 rounded-lg flex items-center px-3 gap-2 cursor-pointer trans-200 ${
               courses.length === selectedCourses.length
-                ? 'bg-dark-100 text-white border-dark'
+                ? 'bg-dark-100 text-light border-dark'
                 : 'text-dark border-slate-300'
             }
             }`}
@@ -293,7 +293,7 @@ function AddFlashSalePage() {
             <div
               className={`max-w-[250px] border-2 border-slate-300 rounded-lg flex items-center py-1 px-2 gap-2 cursor-pointer trans-200 ${
                 selectedCourses.includes(course._id)
-                  ? 'bg-secondary border-white text-white'
+                  ? 'bg-secondary border-light text-light'
                   : course.flashSale
                   ? 'bg-slate-200'
                   : 'text-dark'
@@ -307,7 +307,7 @@ function AddFlashSalePage() {
               key={course._id}
             >
               <Image
-                className='aspect-video rounded-md border-2 border-white'
+                className='aspect-video rounded-md border-2 border-light'
                 src={course.images[0]}
                 height={60}
                 width={60}
@@ -322,7 +322,7 @@ function AddFlashSalePage() {
 
         {/* MARK: Add Button */}
         <LoadingButton
-          className='px-4 py-2 bg-secondary hover:bg-primary text-white rounded-lg font-semibold trans-200'
+          className='px-4 py-2 bg-secondary hover:bg-primary text-light rounded-lg font-semibold trans-200'
           onClick={handleSubmit(onSubmit)}
           text='Add'
           isLoading={isLoading}

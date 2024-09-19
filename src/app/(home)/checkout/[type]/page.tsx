@@ -212,7 +212,7 @@ function CheckoutPage({ params }: { params: { type: string } }) {
         <div className='flex lg:hidden justify-center flex-wrap mt-10 gap-x-21 gap-y-21/2 font-body tracking-wide'>
           <Link
             href='/user/history'
-            className='flex items-center justify-center gap-2 group rounded-lg px-21 py-3 bg-primary hover:bg-secondary hover:text-white common-transition'
+            className='flex items-center justify-center gap-2 group rounded-lg px-21 py-3 bg-primary hover:bg-secondary hover:text-light common-transition'
             onClick={e => {
               if (!curUser?._id) {
                 e.preventDefault()
@@ -228,7 +228,7 @@ function CheckoutPage({ params }: { params: { type: string } }) {
           </Link>
           <a
             href={`/cart`}
-            className='flex items-center justify-center gap-2 group rounded-lg px-21 py-3 bg-slate-300 hover:bg-secondary hover:text-white common-transition'
+            className='flex items-center justify-center gap-2 group rounded-lg px-21 py-3 bg-slate-300 hover:bg-secondary hover:text-light common-transition'
             title='Quay lại giỏ hàng'
             onClick={() => localStorage.removeItem('checkout')}
           >
@@ -261,7 +261,7 @@ function CheckoutPage({ params }: { params: { type: string } }) {
 
             <Divider size={5} />
 
-            <div className='rounded-lg shadow-lg bg-dark-100 text-white p-21'>
+            <div className='rounded-lg shadow-lg bg-dark-100 text-light p-21'>
               {!!checkout?.discount && (
                 <div className='flex justify-between'>
                   <span>Giảm giá</span>
@@ -283,7 +283,7 @@ function CheckoutPage({ params }: { params: { type: string } }) {
             <div className='hidden sm:flex justify-center flex-wrap mt-6 gap-x-21 gap-y-21/2 font-body tracking-wide'>
               <Link
                 href='/user/history'
-                className='flex items-center justify-center gap-2 group rounded-lg px-21 py-3 bg-primary hover:bg-secondary hover:text-white common-transition'
+                className='flex items-center justify-center gap-2 group rounded-lg px-21 py-3 bg-primary hover:bg-secondary hover:text-light common-transition'
                 onClick={e => {
                   if (!curUser?._id) {
                     e.preventDefault()
@@ -299,7 +299,7 @@ function CheckoutPage({ params }: { params: { type: string } }) {
               </Link>
               <a
                 href={`/cart`}
-                className='flex items-center justify-center gap-2 group rounded-lg px-21 py-3 bg-slate-300 hover:bg-secondary hover:text-white common-transition'
+                className='flex items-center justify-center gap-2 group rounded-lg px-21 py-3 bg-slate-300 hover:bg-secondary hover:text-light common-transition'
                 title='Quay lại giỏ hàng'
                 onClick={() => localStorage.removeItem('checkout')}
               >

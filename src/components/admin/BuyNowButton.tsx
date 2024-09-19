@@ -150,7 +150,7 @@ function BuyNowButton({ course, className }: BuyNowButtonProps) {
 
   return (
     <button
-      className={`relative font-semibold h-[42px] flex w-full items-center justify-center rounded-lg shadow-lg bg-dark-100 text-white border-2 border-dark hover:bg-white hover:text-dark trans-300 hover:-translate-y-1 px-2 overflow-hidden ${className}`}
+      className={`relative font-semibold h-[42px] flex w-full items-center justify-center rounded-lg shadow-lg bg-dark-100 text-light border-2 border-dark hover:bg-white hover:text-dark trans-300 hover:-translate-y-1 px-2 overflow-hidden ${className}`}
       onClick={() => {
         if (isRedirect) {
           router.push(`/learning/${course?.slug}/continue`)

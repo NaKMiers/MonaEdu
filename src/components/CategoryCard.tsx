@@ -25,7 +25,7 @@ function CategoryCard({ category, className = '' }: CategoryCardProps) {
         alt={category.title}
       />
 
-      <div className='absolute z-20 bottom-0 left-0 right-0 w-full border-t-3 p-1.5 rounded-xl border-t-2 border-white bg-neutral-950 bg-opacity-50 text-light'>
+      <div className='absolute z-20 bottom-0 left-0 right-0 w-full border-t-3 p-1.5 rounded-xl border-t-2 border-light bg-neutral-950 bg-opacity-50 text-light'>
         <h2
           title={category.title}
           className='font-body tracking-wider font-bold text-2xl lg:text-3xl xl:text-4xl drop-shadow-lg text-ellipsis line-clamp-1'

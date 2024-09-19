@@ -135,7 +135,7 @@ function UserBanner({ user, className = '' }: UserBannerProps) {
               />
             </div>
           ) : (
-            <FaCamera size={52} className='text-white wiggle-0' />
+            <FaCamera size={52} className='text-light wiggle-0' />
           )}
         </div>
       )}

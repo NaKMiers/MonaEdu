@@ -205,13 +205,13 @@ function CourseCard({ course: data, hideBadge, className = '' }: CourseCardProps
               {isLoading ? (
                 <RiDonutChartFill size={18} className='animate-spin text-dark' />
               ) : (
-                <FaCartPlus className='text-[18px] sm:text-[20px] wiggle text-white group-hover:text-dark' />
+                <FaCartPlus className='text-[18px] sm:text-[20px] wiggle text-light group-hover:text-dark' />
               )}
             </button>
 
             {curUser?._id &&
               curUser.courses.map((course: any) => course.course).includes(course._id) && (
-                <div className='text-white relative flex justify-end items-center w-[30px] h-[42px]'>
+                <div className='text-light relative flex justify-end items-center w-[30px] h-[42px]'>
                   <button className='group' onClick={() => setShowActions2(prev => !prev)}>
                     <HiDotsVertical size={24} className='wiggle text-dark' />
                   </button>
@@ -221,7 +221,7 @@ function CourseCard({ course: data, hideBadge, className = '' }: CourseCardProps
                     }  overflow-hidden absolute z-20 top-[80%] flex gap-2 rounded-md trans-300`}
                   >
                     <button
-                      className={`font-bold text-nowrap px-1.5 py-1 text-[10px] bg-white hover:bg-dark-0 hover:text-white border border-dark text-dark rounded-md shadow-md trans-200`}
+                      className={`font-bold text-nowrap px-1.5 py-1 text-[10px] bg-white hover:bg-dark-0 hover:text-light border border-dark text-dark rounded-md shadow-md trans-200`}
                       onClick={buyNow}
                     >
                       Mua tặng
@@ -235,7 +235,7 @@ function CourseCard({ course: data, hideBadge, className = '' }: CourseCardProps
     >
       <div className='h-full'>
         <CardContainer className={`inter-var ${className}`}>
-          <CardBody className='flex flex-col bg-neutral-800 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:border-white/[0.2] border-black/[0.1] h-full rounded-xl p-2.5 md:p-4 border'>
+          <CardBody className='flex flex-col bg-neutral-800 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:border-light/[0.2] border-black/[0.1] h-full rounded-xl p-2.5 md:p-4 border'>
             {course.oldPrice && !hideBadge && (
               <CardItem
                 translateZ='35'
@@ -251,7 +251,7 @@ function CourseCard({ course: data, hideBadge, className = '' }: CourseCardProps
 
             <Divider size={2} />
 
-            <CardItem translateZ={50} className='text-xl font-bold text-neutral-600 dark:text-white'>
+            <CardItem translateZ={50} className='text-xl font-bold text-neutral-600 dark:text-light'>
               <Link
                 href={`/${course.slug}`}
                 prefetch={false}
@@ -297,7 +297,7 @@ function CourseCard({ course: data, hideBadge, className = '' }: CourseCardProps
 
             <CardItem
               translateZ={40}
-              className='w-full text-xl font-bold text-neutral-600 dark:text-white'
+              className='w-full text-xl font-bold text-neutral-600 dark:text-light'
             >
               <Price
                 price={course.price}
@@ -327,7 +327,7 @@ function CourseCard({ course: data, hideBadge, className = '' }: CourseCardProps
                     {isLoading ? (
                       <RiDonutChartFill size={18} className='animate-spin text-dark' />
                     ) : (
-                      <FaCartPlus className='text-[18px] sm:text-[20px] wiggle text-white group-hover:text-dark' />
+                      <FaCartPlus className='text-[18px] sm:text-[20px] wiggle text-light group-hover:text-dark' />
                     )}
                   </button>
                 )}
@@ -335,7 +335,7 @@ function CourseCard({ course: data, hideBadge, className = '' }: CourseCardProps
                 {/* Buy As Gift Button */}
                 {curUser?._id &&
                   curUser.courses.map((course: any) => course.course).includes(course._id) && (
-                    <div className='text-white relative flex justify-end items-center w-[30px] h-[42px]'>
+                    <div className='text-light relative flex justify-end items-center w-[30px] h-[42px]'>
                       <button className='group' onClick={() => setShowActions(prev => !prev)}>
                         <HiDotsVertical size={24} className='wiggle' />
                       </button>
@@ -345,7 +345,7 @@ function CourseCard({ course: data, hideBadge, className = '' }: CourseCardProps
                         }  overflow-hidden absolute z-20 top-[80%] flex gap-2 rounded-md trans-300`}
                       >
                         <button
-                          className={`font-bold text-nowrap px-1.5 py-1 text-[10px] bg-white hover:bg-dark-0 hover:text-white border border-dark text-dark rounded-md shadow-md trans-200`}
+                          className={`font-bold text-nowrap px-1.5 py-1 text-[10px] bg-white hover:bg-dark-0 hover:text-light border border-dark text-dark rounded-md shadow-md trans-200`}
                           onClick={buyNow}
                         >
                           Mua tặng

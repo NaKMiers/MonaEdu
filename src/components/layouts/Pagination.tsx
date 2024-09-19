@@ -96,7 +96,7 @@ function Pagination({
         {currentPage != 1 && (
           <Link
             href={getPageLink(currentPage <= 1 ? 1 : currentPage - 1)}
-            className='rounded-lg border-2 border-transparent py-[6px] px-2 bg-white hover:bg-secondary hover:border-white text-dark hover:text-white trans-200 border-slate-200'
+            className='rounded-lg border-2 border-transparent py-[6px] px-2 bg-white hover:bg-secondary hover:border-light text-dark hover:text-light trans-200 border-slate-200'
             title={`👈 Trang ${currentPage <= 1 ? 1 : currentPage - 1}`}
             scroll={false}
           >
@@ -111,10 +111,10 @@ function Pagination({
               href={getPageLink(page || 0)}
               onClick={e => page || e.preventDefault()}
               scroll={false}
-              className={`rounded-lg border-2 py-[6px] px-2.5 sm:px-4 hover:bg-secondary hover:text-white hover:border-white ${
-                dark ? 'text-dark' : 'text-white'
+              className={`rounded-lg border-2 py-[6px] px-2.5 sm:px-4 hover:bg-secondary hover:text-light hover:border-light ${
+                dark ? 'text-dark' : 'text-light'
               } ${!page ? 'pointer-events-none' : ''} trans-200 ${
-                currentPage === page ? 'bg-primary border-white' : 'border-transparent'
+                currentPage === page ? 'bg-primary border-light' : 'border-transparent'
               }`}
               key={page}
             >
@@ -127,7 +127,7 @@ function Pagination({
         {currentPage != pageAmount && (
           <Link
             href={getPageLink(currentPage >= pageAmount ? pageAmount : currentPage + 1)}
-            className='rounded-lg border-2 border-transparent py-[6px] px-2 bg-white hover:bg-secondary hover:border-white text-dark hover:text-white trans-200 border-slate-200'
+            className='rounded-lg border-2 border-transparent py-[6px] px-2 bg-white hover:bg-secondary hover:border-light text-dark hover:text-light trans-200 border-slate-200'
             title={`👉 Trang ${currentPage >= pageAmount ? pageAmount : currentPage + 1}`}
             scroll={false}
           >

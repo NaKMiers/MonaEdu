@@ -114,7 +114,7 @@ function PackageItem({ pkg, popular = false, className = '' }: PackageItemProps)
       )}
 
       <CardSpotlight className='h-full flex flex-col min-h-[500px] w-full max-sm:p-21 bg-neutral-950 border rounded-none overflow-hidden'>
-        <p className='text-xl font-bold relative z-20 mt-2 text-white'>{pkg.title}</p>
+        <p className='text-xl font-bold relative z-20 mt-2 text-light'>{pkg.title}</p>
 
         <div className='text-neutral-200 mt-4 relative z-20'>
           <p className='text-ellipsis line-clamp-2'>{pkg.description}</p>
@@ -123,7 +123,7 @@ function PackageItem({ pkg, popular = false, className = '' }: PackageItemProps)
               {pkg.features.map((feature, index) => (
                 <li className='flex gap-2 items-start' key={index}>
                   <FaCheckSquare className='flex-shrink-0' />
-                  <p className='text-white'>{feature}</p>
+                  <p className='text-light'>{feature}</p>
                 </li>
               ))}
             </ul>
@@ -177,13 +177,13 @@ function PackageItem({ pkg, popular = false, className = '' }: PackageItemProps)
                     }}
                   >
                     <Image
-                      className='group-hover:border-white rounded-md border-2 wiggle-0'
+                      className='group-hover:border-light rounded-md border-2 wiggle-0'
                       src='/icons/momo-icon.jpg'
                       height={28}
                       width={28}
                       alt='Momo'
                     />
-                    <span className='font-semibold group-hover:text-white text-xs'>Momo</span>
+                    <span className='font-semibold group-hover:text-light text-xs'>Momo</span>
                   </button>
 
                   <button
@@ -200,7 +200,7 @@ function PackageItem({ pkg, popular = false, className = '' }: PackageItemProps)
                       width={28}
                       alt='Banking'
                     />
-                    <span className='font-semibold group-hover:text-white text-xs'>Banking</span>
+                    <span className='font-semibold group-hover:text-light text-xs'>Banking</span>
                   </button>
                 </div>
               </motion.div>

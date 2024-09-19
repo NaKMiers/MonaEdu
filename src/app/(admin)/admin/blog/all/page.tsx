@@ -246,7 +246,7 @@ function AllBlogsPage({ searchParams }: { searchParams?: { [key: string]: string
         <div className='flex flex-wrap justify-end items-center col-span-12 gap-2'>
           {/* Select All Button */}
           <button
-            className='border border-sky-400 text-sky-400 rounded-lg px-3 py-2 hover:bg-sky-400 hover:text-white trans-200'
+            className='border border-sky-400 text-sky-400 rounded-lg px-3 py-2 hover:bg-sky-400 hover:text-light trans-200'
             onClick={() => setSelectedBlogs(selectedBlogs.length > 0 ? [] : blogs.map(blog => blog._id))}
           >
             {selectedBlogs.length > 0 ? 'Unselect All' : 'Select All'}
@@ -255,7 +255,7 @@ function AllBlogsPage({ searchParams }: { searchParams?: { [key: string]: string
           {/* Delete Many Button */}
           {!!selectedBlogs.length && (
             <button
-              className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-white trans-200'
+              className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-light trans-200'
               onClick={() => setIsOpenConfirmModal(true)}
             >
               Delete
@@ -275,7 +275,7 @@ function AllBlogsPage({ searchParams }: { searchParams?: { [key: string]: string
       />
 
       {/* Amount */}
-      <div className='p-3 text-sm text-right text-white font-semibold'>
+      <div className='p-3 text-sm text-right text-light font-semibold'>
         {Math.min(itemPerPage * +(searchParams?.page || 1), amount)}/{amount} blog
         {amount > 1 ? 's' : ''}
       </div>

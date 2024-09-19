@@ -110,10 +110,10 @@ async function CoursesPage({ searchParams }: { searchParams?: { [key: string]: s
 
         <Divider size={3} />
 
-        <h2 className='text-white text-2xl md:text-6xl font-bold text-center relative z-20'>
+        <h2 className='text-light text-2xl md:text-6xl font-bold text-center relative z-20'>
           Tất Cả Khóa Học
         </h2>
-        <p className='text-white text-sm md:text-base max-w-xl mt-6 text-center relative z-20'>
+        <p className='text-light text-sm md:text-base max-w-xl mt-6 text-center relative z-20'>
           Mona Edu - Học trực tuyến mọi lúc, mọi nơi
         </p>
       </div>

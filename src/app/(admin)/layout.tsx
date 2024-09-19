@@ -9,7 +9,7 @@ export default async function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <div className='bg-neutral-800 text-white pt-[72px] -mt-[72px] min-h-[calc(100vh+72px)]'>
+    <div className='bg-neutral-800 text-light pt-[72px] -mt-[72px] min-h-[calc(100vh+72px)]'>
       {/* Header */}
       <Header />
 

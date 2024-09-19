@@ -376,7 +376,7 @@ function AllFlashSalesPage({ searchParams }: { searchParams?: { [key: string]: s
         <div className='flex flex-wrap justify-end items-center gap-2 col-span-12'>
           {/* Select All Button */}
           <button
-            className='border border-sky-400 text-sky-400 rounded-lg px-3 py-2 hover:bg-sky-400 hover:text-white trans-200'
+            className='border border-sky-400 text-sky-400 rounded-lg px-3 py-2 hover:bg-sky-400 hover:text-light trans-200'
             onClick={() =>
               setSelectedFlashSales(
                 selectedFlashSales.length > 0 ? [] : flashSales.map(flashSale => flashSale._id)
@@ -389,7 +389,7 @@ function AllFlashSalesPage({ searchParams }: { searchParams?: { [key: string]: s
           {/* Delete Many Button */}
           {!!selectedFlashSales.length && (
             <button
-              className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-white trans-200'
+              className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-light trans-200'
               onClick={() => setIsOpenConfirmModal(true)}
             >
               Delete
@@ -409,7 +409,7 @@ function AllFlashSalesPage({ searchParams }: { searchParams?: { [key: string]: s
       />
 
       {/* MARK: Amount */}
-      <div className='p-3 text-sm text-right text-white font-semibold'>
+      <div className='p-3 text-sm text-right text-light font-semibold'>
         {Math.min(itemPerPage * +(searchParams?.page || 1), amount)}/{amount} flash sale
         {amount > 1 ? 's' : ''}
       </div>

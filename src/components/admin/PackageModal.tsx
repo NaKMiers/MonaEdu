@@ -299,7 +299,7 @@ function PackageModal({
               </div>
               <label
                 className={`select-none cursor-pointer border border-green-500 px-4 py-2 rounded-lg trans-200  ${
-                  isActiveChecked ? 'bg-green-500 text-white' : 'bg-white text-green-500'
+                  isActiveChecked ? 'bg-green-500 text-light' : 'bg-white text-green-500'
                 }`}
                 htmlFor='active'
                 onClick={() => setIsActiveChecked(!isActiveChecked)}
@@ -327,7 +327,7 @@ function PackageModal({
                 }}
               />
               <button
-                className='bg-primary text-dark px-2 trans-200 hover:text-white hover:bg-secondary'
+                className='bg-primary text-dark px-2 trans-200 hover:text-light hover:bg-secondary'
                 onClick={() => {
                   if (featureValue.trim()) {
                     setFeatures(prev => [...prev, featureValue])
@@ -358,14 +358,14 @@ function PackageModal({
 
             <div className='flex justify-center gap-3'>
               <button
-                className={`font-semibold border-2 border-dark bg-slate-300 shadow-lg text-dark px-3 py-1.5 rounded-lg drop-shadow-md hover:text-white hover:border-slate-300 trans-200`}
+                className={`font-semibold border-2 border-dark bg-slate-300 shadow-lg text-dark px-3 py-1.5 rounded-lg drop-shadow-md hover:text-light hover:border-slate-300 trans-200`}
                 onClick={() => setOpen(false)}
               >
                 Cancel
               </button>
 
               <button
-                className={`font-semibold border-2 border-dark shadow-lg text-dark px-3 py-1.5 rounded-lg drop-shadow-md hover:bg-dark-100 hover:text-white trans-200 ${
+                className={`font-semibold border-2 border-dark shadow-lg text-dark px-3 py-1.5 rounded-lg drop-shadow-md hover:bg-dark-100 hover:text-light trans-200 ${
                   isLoading ? 'bg-slate-200 pointer-events-none' : ''
                 }`}
                 onClick={handleSubmit(pkg ? onEditSubmit : onAddSubmit)}

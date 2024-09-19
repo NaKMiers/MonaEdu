@@ -148,7 +148,7 @@ export function OrderEmail({ order = orderSample }: { order?: any }) {
                     ? `${process.env.NEXT_PUBLIC_APP_URL}/my-courses`
                     : `${process.env.NEXT_PUBLIC_APP_URL}/learning/${order.items[0]._id}/start`
                 }
-                className='inline bg-sky-500 no-underline rounded-lg text-white font-semibold cursor-pointer py-3 px-7 border-0'
+                className='inline bg-sky-500 no-underline rounded-lg text-light font-semibold cursor-pointer py-3 px-7 border-0'
               >
                 Học ngay
               </a>

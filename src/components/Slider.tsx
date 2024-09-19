@@ -160,13 +160,13 @@ function Slider({ time, hideControls, children, thumbs = [], mobile, className =
             className='group md:-translate-x-full group-hover:translate-x-0 absolute flex items-center justify-center hover:bg-slate-100 hover:bg-opacity-10 trans-200 h-full w-12 left-0 top-0'
             onClick={prevSlide}
           >
-            <FaChevronLeft size={16} className='wiggle text-white' />
+            <FaChevronLeft size={16} className='wiggle text-light' />
           </button>
           <button
             className='group md:translate-x-full group-hover:translate-x-0 absolute flex items-center justify-center hover:bg-slate-100 hover:bg-opacity-10 trans-200 h-full w-12 right-0 top-0'
             onClick={nextSlide}
           >
-            <FaChevronRight size={16} className='wiggle text-white' />
+            <FaChevronRight size={16} className='wiggle text-light' />
           </button>
         </>
       )}
@@ -183,7 +183,7 @@ function Slider({ time, hideControls, children, thumbs = [], mobile, className =
               <button
                 className={`${
                   mobile ? 'aspect-[9/16]' : 'aspect-video'
-                } rounded-lg shadow-md border-2 border-white trans-200 hover:opacity-100 hover:scale-105 hover:-translate-y-1 overflow-hidden ${
+                } rounded-lg shadow-md border-2 border-light trans-200 hover:opacity-100 hover:scale-105 hover:-translate-y-1 overflow-hidden ${
                   slide === index + 1 ? 'opacity-100' : 'opacity-60'
                 }`}
                 onClick={() => setSlide(index + 1)}

@@ -160,7 +160,7 @@ function BannerItem({ course, className }: BannerItemProps) {
           loading='lazy'
         />
       </div>
-      <div className='content absolute top-[20%] md:top-[15%] left-1/2 -translate-x-1/2 max-w-[1200px] px-21 w-full drop-shadow-2xl text-white'>
+      <div className='content absolute top-[20%] md:top-[15%] left-1/2 -translate-x-1/2 max-w-[1200px] px-21 w-full drop-shadow-2xl text-light'>
         <div className='max-w-[700px] w-full'>
           <div className='author font-bold tracking-[10px] drop-shadow-lg uppercase'>
             {course.author}
@@ -178,14 +178,14 @@ function BannerItem({ course, className }: BannerItemProps) {
           <div className='buttons flex flex-wrap gap-1.5 mt-5'>
             <Link
               href={`/${course.slug}`}
-              className='h-10 flex items-center justify-center px-2 shadow-md text-dark bg-slate-100 font-semibold font-body tracking-wider rounded-md hover:bg-dark-0 hover:text-white trans-200'
+              className='h-10 flex items-center justify-center px-2 shadow-md text-dark bg-slate-100 font-semibold font-body tracking-wider rounded-md hover:bg-dark-0 hover:text-light trans-200'
             >
               CHI TIẾT
             </Link>
 
             {/* Buy Now */}
             <button
-              className='relative h-10 flex items-center justify-center px-2 shadow-md text-white border-2 border-white font-semibold font-body tracking-wider rounded-md hover:bg-white hover:text-dark trans-200 uppercase'
+              className='relative h-10 flex items-center justify-center px-2 shadow-md text-light border-2 border-light font-semibold font-body tracking-wider rounded-md hover:bg-white hover:text-dark trans-200 uppercase'
               onClick={() => {
                 if (isRedirect) {
                   router.push(`/learning/${course?.slug}/continue`)

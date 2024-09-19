@@ -398,7 +398,7 @@ function UserItem({
                 onFocus={() => clearErrors('value-' + data._id)}
               />
               <LoadingButton
-                className='px-4 h-[46px] flex items-center justify-center shadow-lg bg-secondary hover:bg-primary text-white rounded-lg font-semibold trans-200'
+                className='px-4 h-[46px] flex items-center justify-center shadow-lg bg-secondary hover:bg-primary text-light rounded-lg font-semibold trans-200'
                 text='Set'
                 onClick={e => {
                   e.stopPropagation()

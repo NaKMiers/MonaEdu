@@ -114,7 +114,7 @@ function AllSummariesPage({ searchParams }: { searchParams?: { [key: string]: st
         <div className='flex flex-wrap justify-end items-center gap-2 col-span-12'>
           {/* Select All Button */}
           <button
-            className='border border-sky-400 text-sky-400 rounded-lg px-3 py-2 hover:bg-sky-400 hover:text-white trans-200'
+            className='border border-sky-400 text-sky-400 rounded-lg px-3 py-2 hover:bg-sky-400 hover:text-light trans-200'
             title='Alt + A'
             onClick={() =>
               setSelectedSummaries(
@@ -128,7 +128,7 @@ function AllSummariesPage({ searchParams }: { searchParams?: { [key: string]: st
           {/* Send Summaries Button */}
           {!!selectedSummaries.length && (
             <button
-              className='border border-green-500 text-green-500 rounded-lg px-3 py-2 hover:bg-green-500 hover:text-white trans-200'
+              className='border border-green-500 text-green-500 rounded-lg px-3 py-2 hover:bg-green-500 hover:text-light trans-200'
               title='Alt + Delete'
               onClick={() => handleSendSummaries(selectedSummaries)}
             >
@@ -139,7 +139,7 @@ function AllSummariesPage({ searchParams }: { searchParams?: { [key: string]: st
       </AdminMeta>
 
       {/* MARK: Amount */}
-      <div className='p-3 text-sm text-right text-white font-semibold'>
+      <div className='p-3 text-sm text-right text-light font-semibold'>
         {Math.min(itemPerPage * +(searchParams?.page || 1), amount)}/{amount} collaborator
         {amount > 1 ? 's' : ''}
       </div>

@@ -115,7 +115,7 @@ function Header({ className = '' }: HeaderProps) {
         isTransparent
           ? 'drop-shadow-lg md:bg-opacity-0'
           : 'shadow-medium-light border-b-2 md:rounded-b-[40px] md:rounded-t-0'
-      }  bg-dark-100 text-white w-full trans-300 bottom-0 md:bottom-auto md:top-0 ${className}`}
+      }  bg-dark-100 text-light w-full trans-300 bottom-0 md:bottom-auto md:top-0 ${className}`}
     >
       {/* Main Header */}
       <div className='relative flex justify-between gap-1 items-center max-w-1200 trans-300 w-full h-[72px] m-auto px-3 sm:px-21'>
@@ -230,13 +230,13 @@ function Header({ className = '' }: HeaderProps) {
             <div className='flex items-center gap-3'>
               <Link
                 href='/auth/login'
-                className='bg-dark text-white hover:bg-primary bg-dark-100 hover:text-dark border border-white text-nowrap trans-200 px-4 py-1.5 rounded-3xl font-body font-semibold tracking-wider cursor-pointer'
+                className='bg-dark text-light hover:bg-primary bg-dark-100 hover:text-dark border border-light text-nowrap trans-200 px-4 py-1.5 rounded-3xl font-body font-semibold tracking-wider cursor-pointer'
               >
                 Đăng nhập
               </Link>
               <Link
                 href='/auth/register'
-                className='bg-sky-500 hover:bg-primary hover:text-dark text-white border border-dark text-nowrap trans-200 px-4 py-1.5 rounded-3xl font-body font-semibold tracking-wider cursor-pointer'
+                className='bg-sky-500 hover:bg-primary hover:text-dark text-light border border-dark text-nowrap trans-200 px-4 py-1.5 rounded-3xl font-body font-semibold tracking-wider cursor-pointer'
               >
                 Đăng ký
               </Link>

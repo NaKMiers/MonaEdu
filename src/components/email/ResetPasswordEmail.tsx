@@ -74,7 +74,7 @@ function ResetPasswordEmail({
             <div className='text-center p-3'>
               <a
                 href={link}
-                className='inline bg-sky-500 no-underline rounded-lg text-white font-semibold cursor-pointer py-3 px-7 border-0'
+                className='inline bg-sky-500 no-underline rounded-lg text-light font-semibold cursor-pointer py-3 px-7 border-0'
               >
                 Khôi phục mật khẩu
               </a>

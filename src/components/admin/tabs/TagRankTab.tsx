@@ -56,7 +56,7 @@ function TagRankTab({ className = '' }: TagRankTabProps) {
             key={index}
           >
             <span className='font-body tracking-wider text-dark'>{tag.title}</span>
-            <span className='flex justify-center items-center font-semibold text-xs h-5 px-2 rounded-full bg-dark-100 text-white'>
+            <span className='flex justify-center items-center font-semibold text-xs h-5 px-2 rounded-full bg-dark-100 text-light'>
               {tag.joined}
             </span>
           </div>

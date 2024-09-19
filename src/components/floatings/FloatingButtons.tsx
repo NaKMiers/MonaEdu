@@ -27,7 +27,7 @@ function FloatingButtons({ className = '' }: FloatingButtonsProps) {
           className='group flex items-center justify-center h-[44px] w-[44px] border-2 bg-dark-100 border-light rounded-xl'
           title='Gói học viên'
         >
-          <RiVipCrown2Fill size={20} className={`text-white wiggle trans-200`} />
+          <RiVipCrown2Fill size={20} className={`text-light wiggle trans-200`} />
         </Link>
 
         <Link
@@ -35,7 +35,7 @@ function FloatingButtons({ className = '' }: FloatingButtonsProps) {
           className='group flex items-center justify-center h-[44px] w-[44px] border-2 bg-dark-100 border-light rounded-xl'
           title='Flash Sale'
         >
-          <FaBoltLightning size={20} className={`text-white wiggle trans-200`} />
+          <FaBoltLightning size={20} className={`text-light wiggle trans-200`} />
         </Link>
 
         <button
@@ -43,7 +43,7 @@ function FloatingButtons({ className = '' }: FloatingButtonsProps) {
           title='Liên hệ'
           onClick={() => setOpen(true)}
         >
-          <AiFillMessage size={20} className={`text-white wiggle trans-200`} />
+          <AiFillMessage size={20} className={`text-light wiggle trans-200`} />
         </button>
       </div>
 

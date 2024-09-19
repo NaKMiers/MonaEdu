@@ -60,24 +60,24 @@ function CourseRankTab({ className = '' }: CourseRankTabProps) {
       {!loading ? (
         <>
           <select
-            className='appearance-none p-2.5 font-semibold text-xs bg-dark-100 text-white focus:outline-none focus:ring-0 peer rounded-lg cursor-pointer'
+            className='appearance-none p-2.5 font-semibold text-xs bg-dark-100 text-light focus:outline-none focus:ring-0 peer rounded-lg cursor-pointer'
             value={by}
             onChange={e => setBy(e.target.value as never)}
           >
             <option
-              className='bg-dark-100 text-white font-body font-semibold tracking-wider p-5'
+              className='bg-dark-100 text-light font-body font-semibold tracking-wider p-5'
               value='day'
             >
               By Day
             </option>
             <option
-              className='bg-dark-100 text-white font-body font-semibold tracking-wider p-5'
+              className='bg-dark-100 text-light font-body font-semibold tracking-wider p-5'
               value='month'
             >
               By Month
             </option>
             <option
-              className='bg-dark-100 text-white font-body font-semibold tracking-wider p-5'
+              className='bg-dark-100 text-light font-body font-semibold tracking-wider p-5'
               value='year'
             >
               By Year

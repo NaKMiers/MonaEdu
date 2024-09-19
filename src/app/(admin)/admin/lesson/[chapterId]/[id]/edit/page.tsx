@@ -532,7 +532,7 @@ function EditLessonPage() {
               onClick={() => handleRemoveSource(fileUrl)}
               className='absolute top-2 bg-slate-300 p-2 right-2 group hover:bg-dark-100 rounded-lg'
             >
-              <FaX size={16} className='text-dark group-hover:text-white trans-200' />
+              <FaX size={16} className='text-dark group-hover:text-light trans-200' />
             </button>
           </div>
         )}
@@ -550,7 +550,7 @@ function EditLessonPage() {
             {...register('active', { required: false })}
           />
           <label
-            className={`select-none cursor-pointer border border-green-500 px-4 py-2 rounded-lg trans-200 bg-white text-green-500 peer-checked:bg-green-500 peer-checked:text-white`}
+            className={`select-none cursor-pointer border border-green-500 px-4 py-2 rounded-lg trans-200 bg-white text-green-500 peer-checked:bg-green-500 peer-checked:text-light`}
             htmlFor='active'
           >
             Active
@@ -640,7 +640,7 @@ function EditLessonPage() {
                   onClick={() => setOriginalDocs(prev => prev.filter(i => i !== doc))}
                   className='bg-slate-300 p-2 group hover:bg-dark-100 rounded-lg flex-shrink-0'
                 >
-                  <FaX size={16} className='text-dark group-hover:text-white trans-200' />
+                  <FaX size={16} className='text-dark group-hover:text-light trans-200' />
                 </button>
               </Link>
             ))}
@@ -663,7 +663,7 @@ function EditLessonPage() {
                   onClick={() => handleRemoveDoc(doc)}
                   className='bg-slate-300 p-2 group hover:bg-dark-100 rounded-lg flex-shrink-0'
                 >
-                  <FaX size={16} className='text-dark group-hover:text-white trans-200' />
+                  <FaX size={16} className='text-dark group-hover:text-light trans-200' />
                 </button>
               </div>
             ))}
@@ -690,7 +690,7 @@ function EditLessonPage() {
                     }}
                     className='bg-slate-300 p-2 group hover:bg-dark-100 rounded-lg flex-shrink-0'
                   >
-                    <FaX size={16} className='text-dark group-hover:text-white trans-200' />
+                    <FaX size={16} className='text-dark group-hover:text-light trans-200' />
                   </button>
                 </div>
               )

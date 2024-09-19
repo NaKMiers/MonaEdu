@@ -3,14 +3,16 @@ import ChapterModel, { IChapter } from '@/models/ChapterModel'
 import CourseModel, { ICourse } from '@/models/CourseModel'
 import LessonModel, { ILesson } from '@/models/LessonModel'
 import ProgressModel from '@/models/ProgressModel'
+import UserModel from '@/models/UserModel'
+import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Models: Course, Chapter, Lesson, Progress
+// Models: Course, Chapter, Lesson, Progress, User
 import '@/models/ChapterModel'
 import '@/models/CourseModel'
 import '@/models/LessonModel'
 import '@/models/ProgressModel'
-import { getToken } from 'next-auth/jwt'
+import '@/models/UserModel'
 
 export const dynamic = 'force-dynamic'
 
@@ -40,20 +42,28 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
     }
 
     // get all chapters and lessons of course
-    let [chapters, lessons, progresses]: any = await Promise.all([
+    let [chapters, lessons, progresses, userCourses]: any = await Promise.all([
+      // all chapters of course
       ChapterModel.find({
         courseId: course._id,
       })
         .sort({ order: 1 })
         .lean(),
+
+      // all lessons of course
       LessonModel.find({
         courseId: course._id,
         active: true,
       }).lean(),
+
+      // all progresses of course of user
       ProgressModel.find({
         userId,
         courseId: course._id,
       }),
+
+      // user courses
+      UserModel.findById(userId).select('courses').lean(),
     ])
 
     // add progress to each lessons and add lessons to each chapter
@@ -73,8 +83,16 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
       return { ...chapter, lessons: chapterLessonsWithProgress }
     })
 
+    // user progress of course
+    const userProgress = userCourses.courses.find(
+      (c: any) => c.course.toString() === course._id.toString()
+    ).progress
+
     // return course
-    return NextResponse.json({ chapters: chaptersWithLessons, courseId: course._id }, { status: 200 })
+    return NextResponse.json(
+      { chapters: chaptersWithLessons, courseId: course._id, userProgress },
+      { status: 200 }
+    )
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 })
   }

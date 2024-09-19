@@ -134,7 +134,7 @@ async function ProfilePage({ params: { id } }: { params: { id: string } }) {
       </div>
 
       {/* Body */}
-      <div className='bg-neutral-700 text-white -mb-36 pb-48'>
+      <div className='bg-neutral-700 text-light -mb-36 pb-48'>
         <div className='max-w-1200 mx-auto grid grid-cols-12 gap-x-21 gap-y-12 px-21 pt-12'>
           {/* Courses */}
           <div className='col-span-12 md:col-span-8 order-2 md:order-1'>

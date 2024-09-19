@@ -97,7 +97,7 @@ function ReportDialog({
       <div
         className={`rounded-medium shadow-medium-light bg-white p-21 max-w-[500px] w-full max-h-[500px] opacity-0 trans-300 translate-y-8 ${className}`}
         ref={modalBodyRef}
-        onClick={(e) => e.stopPropagation()}
+        onClick={e => e.stopPropagation()}
       >
         <h2 className='text-2xl font-semibold tracking-wide'>{title}</h2>
 
@@ -119,7 +119,7 @@ function ReportDialog({
               disabled={isLoading}
               required
               value={selectedContent}
-              onChange={(e) => setSelectedContent(e.target.value)}
+              onChange={e => setSelectedContent(e.target.value)}
             >
               <option value=''>Chọn nội dung</option>
 
@@ -144,7 +144,7 @@ function ReportDialog({
 
         <div className='flex items-center justify-end gap-3 select-none'>
           <button
-            className={`rounded-lg shadow-lg px-3 py-2 border border-slate-300 hover:bg-slate-300 hover:text-white trans-200 ${
+            className={`rounded-lg shadow-lg px-3 py-2 border border-slate-300 hover:bg-slate-300 hover:text-light trans-200 ${
               isLoading ? 'pointer-events-none' : ''
             }`}
             onClick={() => setOpen(false)}
@@ -153,7 +153,7 @@ function ReportDialog({
             {cancelLabel || 'Hủy'}
           </button>
           <button
-            className={`rounded-lg shadow-lg px-3 py-2 border text-${color}-500 hover:bg-secondary hover:border-secondary hover:text-white trans-200 ${
+            className={`rounded-lg shadow-lg px-3 py-2 border text-${color}-500 hover:bg-secondary hover:border-secondary hover:text-light trans-200 ${
               isLoading ? 'pointer-events-none border-slate-300' : `border-${color}-500`
             }`}
             onClick={() => {

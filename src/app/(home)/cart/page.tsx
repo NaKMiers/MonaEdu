@@ -339,7 +339,7 @@ function CartPage() {
                 className='w-full'
               />
               <button
-                className={`rounded-2xl border py-2 px-3 text-nowrap h-[42px] flex-shrink-0 hover:bg-black trans-200 hover:text-white ${
+                className={`rounded-2xl border py-2 px-3 text-nowrap h-[42px] flex-shrink-0 hover:bg-black trans-200 hover:text-light ${
                   applyingVoucher
                     ? 'border-slate-200 bg-slate-200 pointer-events-none'
                     : 'border-dark text-dark '
@@ -390,7 +390,7 @@ function CartPage() {
                 className='w-full'
               />
               <button
-                className={`rounded-2xl border py-2 px-3 text-nowrap h-[42px] flex-shrink-0 hover:bg-black trans-200 hover:text-white ${
+                className={`rounded-2xl border py-2 px-3 text-nowrap h-[42px] flex-shrink-0 hover:bg-black trans-200 hover:text-light ${
                   findingUser
                     ? 'border-slate-200 bg-slate-200 pointer-events-none'
                     : 'border-dark text-dark '
@@ -414,7 +414,7 @@ function CartPage() {
             <Divider size={2} />
 
             {/* Payment Detail */}
-            <div className='rounded-lg shaodow-lg bg-dark-100 text-white p-21'>
+            <div className='rounded-lg shaodow-lg bg-dark-100 text-light p-21'>
               <p>Chi tiết thanh toán</p>
 
               <Divider size={3} border />
@@ -455,13 +455,13 @@ function CartPage() {
                 disabled={isBuying || isLoading}
               >
                 <Image
-                  className='group-hover:border-white rounded-md border-2 wiggle-0'
+                  className='group-hover:border-light rounded-md border-2 wiggle-0'
                   src='/icons/momo-icon.jpg'
                   height={32}
                   width={32}
                   alt='Momo'
                 />
-                <span className='font-semibold group-hover:text-white'>Momo</span>
+                <span className='font-semibold group-hover:text-light'>Momo</span>
               </button>
 
               <button
@@ -478,7 +478,7 @@ function CartPage() {
                   width={32}
                   alt='Banking'
                 />
-                <span className='font-semibold group-hover:text-white'>Banking</span>
+                <span className='font-semibold group-hover:text-light'>Banking</span>
               </button>
             </div>
           </div>
