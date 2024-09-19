@@ -11,7 +11,7 @@ import '@/models/CategoryModel'
 import '@/models/CourseModel'
 import '@/models/TagModel'
 
-// [PUT]: /api/admin/tag/:code/edit
+// [PUT]: /admin/course/:code/edit
 export async function PUT(req: NextRequest, { params: { id } }: { params: { id: string } }) {
   console.log('- Edit Course -')
 

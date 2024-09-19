@@ -9,8 +9,10 @@ import Pagination from '@/components/layouts/Pagination'
 import { useAppDispatch } from '@/libs/hooks'
 import { setPageLoading } from '@/libs/reducers/modalReducer'
 import { IBlog } from '@/models/BlogModel'
-import { deleteBlogsApi, getAllBlogsApi } from '@/requests'
+import { bootBlogsApi, changeBlogsStatusApi, deleteBlogsApi, getAllBlogsApi } from '@/requests'
 import { handleQuery } from '@/utils/handleQuery'
+import { formatPrice } from '@/utils/number'
+import { Slider } from '@mui/material'
 import { usePathname, useRouter } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
@@ -34,12 +36,21 @@ function AllBlogsPage({ searchParams }: { searchParams?: { [key: string]: string
 
   // values
   const itemPerPage = 9
+  const [minPrice, setMinPrice] = useState<number>(0)
+  const [maxPrice, setMaxPrice] = useState<number>(0)
+  const [price, setPrice] = useState<number[]>([0, 0])
+
+  const [minJoined, setMinJoined] = useState<number>(0)
+  const [maxJoined, setMaxJoined] = useState<number>(0)
+  const [joined, setJoined] = useState<number[]>([0, 0])
 
   // Form
   const defaultValues = useMemo<FieldValues>(
     () => ({
       search: '',
       sort: 'updatedAt|-1',
+      active: '',
+      flashSale: '',
     }),
     []
   )
@@ -75,6 +86,31 @@ function AllBlogsPage({ searchParams }: { searchParams?: { [key: string]: string
         // sync search params with states
         setValue('search', searchParams?.search || getValues('search'))
         setValue('sort', searchParams?.sort || getValues('sort'))
+        setValue('active', searchParams?.active || getValues('active'))
+        setValue('flashSale', searchParams?.flashSale || getValues('flashSale'))
+
+        // get min - max
+        setMinPrice(chops?.minPrice || 0)
+        setMaxPrice(chops?.maxPrice || 0)
+        if (searchParams?.price) {
+          const [from, to] = Array.isArray(searchParams.price)
+            ? searchParams.price[0].split('-')
+            : searchParams.price.split('-')
+          setPrice([+from, +to])
+        } else {
+          setPrice([chops?.minPrice || 0, chops?.maxPrice || 0])
+        }
+
+        setMinJoined(chops?.minJoined || 0)
+        setMaxJoined(chops?.maxJoined || 0)
+        if (searchParams?.joined) {
+          const [from, to] = Array.isArray(searchParams.joined)
+            ? searchParams.joined[0].split('-')
+            : searchParams.joined.split('-')
+          setJoined([+from, +to])
+        } else {
+          setJoined([chops?.minJoined || 0, chops?.maxJoined || 0])
+        }
       } catch (err: any) {
         console.log(err)
         toast.error(err.message)
@@ -85,6 +121,55 @@ function AllBlogsPage({ searchParams }: { searchParams?: { [key: string]: string
     }
     getAllBlogs()
   }, [dispatch, searchParams, setValue, getValues])
+
+  // boot blog
+  const handleBootBlogs = useCallback(async (ids: string[], value: boolean) => {
+    try {
+      // send request to server
+      const { updatedBlogs, message } = await bootBlogsApi(ids, value)
+
+      // update blogs from state
+      setBlogs(prev =>
+        prev.map(blog =>
+          updatedBlogs.map((blog: IBlog) => blog._id).includes(blog._id)
+            ? { ...blog, booted: value }
+            : blog
+        )
+      )
+
+      // show success message
+      toast.success(message)
+    } catch (err: any) {
+      console.log(err)
+      toast.error(err.message)
+    }
+  }, [])
+
+  // change blogs status
+  const handleChangeBlogsStatus = useCallback(
+    async (ids: string[], value: 'draft' | 'published' | 'archived') => {
+      try {
+        // send request to server
+        const { updatedBlogs, message } = await changeBlogsStatusApi(ids, value)
+
+        // update blogs from state
+        setBlogs(prev =>
+          prev.map(blog =>
+            updatedBlogs.map((blog: IBlog) => blog._id).includes(blog._id)
+              ? { ...blog, status: value }
+              : blog
+          )
+        )
+
+        // show success message
+        toast.success(message)
+      } catch (err: any) {
+        console.log(err)
+        toast.error(err.message)
+      }
+    },
+    []
+  )
 
   // delete blog
   const handleDeleteBlogs = useCallback(async (ids: string[]) => {
@@ -131,9 +216,11 @@ function AllBlogsPage({ searchParams }: { searchParams?: { [key: string]: string
 
       return {
         ...data,
+        price: price[0] === minPrice && price[1] === maxPrice ? '' : price.join('-'),
+        joined: joined[0] === minJoined && joined[1] === maxJoined ? '' : joined.join('-'),
       }
     },
-    [searchParams, defaultValues]
+    [searchParams, defaultValues, minPrice, maxPrice, minJoined, maxJoined, price, joined]
   )
 
   // handle submit filter
@@ -208,6 +295,42 @@ function AllBlogsPage({ searchParams }: { searchParams?: { [key: string]: string
           />
         </div>
 
+        {/* Price */}
+        <div className='flex flex-col col-span-12 md:col-span-4'>
+          <label htmlFor='price'>
+            <span className='font-bold'>Price: </span>
+            <span>{formatPrice(price[0])}</span> - <span>{formatPrice(price[1])}</span>
+          </label>
+          <Slider
+            value={price}
+            min={minPrice}
+            max={maxPrice}
+            step={1}
+            className='w-full -mb-1.5'
+            onChange={(_: any, newValue: number | number[]) => setPrice(newValue as number[])}
+            valueLabelDisplay='auto'
+            style={{ color: '#333' }}
+          />
+        </div>
+
+        {/* Joined */}
+        <div className='flex flex-col col-span-12 md:col-span-4'>
+          <label htmlFor='joined'>
+            <span className='font-bold'>Joined: </span>
+            <span>{joined[0]}</span> - <span>{joined[1]}</span>
+          </label>
+          <Slider
+            value={joined}
+            min={minJoined}
+            max={maxJoined}
+            step={1}
+            className='w-full -mb-1.5'
+            onChange={(_: any, newValue: number | number[]) => setJoined(newValue as number[])}
+            valueLabelDisplay='auto'
+            style={{ color: '#333' }}
+          />
+        </div>
+
         {/* Select Filter */}
         <div className='flex justify-end items-center flex-wrap gap-3 col-span-12 md:col-span-8'>
           {/* Sort */}
@@ -240,6 +363,62 @@ function AllBlogsPage({ searchParams }: { searchParams?: { [key: string]: string
               },
             ]}
           />
+
+          {/* Active */}
+          <Input
+            id='active'
+            label='Active'
+            disabled={false}
+            register={register}
+            errors={errors}
+            icon={FaSort}
+            type='select'
+            onFocus={() => clearErrors('active')}
+            options={[
+              {
+                value: '',
+                label: 'All',
+                selected: true,
+              },
+              {
+                value: 'true',
+                label: 'On',
+              },
+              {
+                value: 'false',
+                label: 'Off',
+              },
+            ]}
+            className='min-w-[104px]'
+          />
+
+          {/* Flash Sale */}
+          <Input
+            id='flashSale'
+            label='Flash Sale'
+            disabled={false}
+            register={register}
+            errors={errors}
+            icon={FaSort}
+            type='select'
+            onFocus={() => clearErrors('flashSale')}
+            options={[
+              {
+                value: '',
+                label: 'All',
+                selected: true,
+              },
+              {
+                value: 'true',
+                label: 'On',
+              },
+              {
+                value: 'false',
+                label: 'Off',
+              },
+            ]}
+            className='min-w-[124px]'
+          />
         </div>
 
         {/* Action Buttons */}
@@ -251,6 +430,39 @@ function AllBlogsPage({ searchParams }: { searchParams?: { [key: string]: string
           >
             {selectedBlogs.length > 0 ? 'Unselect All' : 'Select All'}
           </button>
+
+          {/* Publish All Button */}
+          {!!selectedBlogs.length &&
+            selectedBlogs.some(id => blogs.find(blog => blog._id === id)?.status !== 'published') && (
+              <button
+                className='border border-violet-500 text-violet-500 rounded-lg px-3 py-2 hover:bg-violet-500 hover:text-light trans-200'
+                onClick={() => handleChangeBlogsStatus(selectedBlogs, 'published')}
+              >
+                Publish All
+              </button>
+            )}
+
+          {/* Draft All Button */}
+          {!!selectedBlogs.length &&
+            selectedBlogs.some(id => blogs.find(blog => blog._id === id)?.status !== 'draft') && (
+              <button
+                className='border border-slate-500 text-slate-500 rounded-lg px-3 py-2 hover:bg-slate-500 hover:text-light trans-200'
+                onClick={() => handleChangeBlogsStatus(selectedBlogs, 'draft')}
+              >
+                Draft All
+              </button>
+            )}
+
+          {/* Archive All Button */}
+          {!!selectedBlogs.length &&
+            selectedBlogs.some(id => blogs.find(blog => blog._id === id)?.status !== 'archived') && (
+              <button
+                className='border border-blue-500 text-blue-500 rounded-lg px-3 py-2 hover:bg-blue-500 hover:text-light trans-200'
+                onClick={() => handleChangeBlogsStatus(selectedBlogs, 'archived')}
+              >
+                Archive All
+              </button>
+            )}
 
           {/* Delete Many Button */}
           {!!selectedBlogs.length && (
@@ -290,6 +502,8 @@ function AllBlogsPage({ searchParams }: { searchParams?: { [key: string]: string
             selectedBlogs={selectedBlogs}
             setSelectedBlogs={setSelectedBlogs}
             // functions
+            handleBootBlogs={handleBootBlogs}
+            handleChangeBlogsStatus={handleChangeBlogsStatus}
             handleDeleteBlogs={handleDeleteBlogs}
             key={blog._id}
           />

@@ -1,23 +1,28 @@
 import { connectDatabase } from '@/config/database'
 import UserModel from '@/models/UserModel'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
 // Models: User
 import '@/models/UserModel'
+import { searchParamsToObject } from '@/utils/handleQuery'
 
 export const dynamic = 'force-dynamic'
 
 // [GET]: /admin/user/role-users
-export async function GET() {
+export async function GET(req: NextRequest) {
   console.log('- Get Role-Users -')
 
   try {
     // connect to database
     await connectDatabase()
 
+    // get query params
+    const params: { [key: string]: string[] } = searchParamsToObject(req.nextUrl.searchParams)
+    const roles = params.role[0] ? params.role[0].split('|') : ['admin', 'editor', 'collaborator']
+
     // get special role users from database
     let roleUsers = await UserModel.find({
-      role: { $in: ['admin', 'editor', 'collaborator'] },
+      role: { $in: roles },
     }).lean()
 
     // group admins, editors, collaborators

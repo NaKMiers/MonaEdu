@@ -3,8 +3,9 @@ import BlogModel from '@/models/BlogModel'
 import { searchParamsToObject } from '@/utils/handleQuery'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Models: Blog
+// Models: Blog, User
 import '@/models/BlogModel'
+import '@/models/UserModel'
 
 export const dynamic = 'force-dynamic'
 
@@ -72,7 +73,12 @@ export async function GET(req: NextRequest) {
       BlogModel.countDocuments(filter),
 
       // get all blogs from database
-      BlogModel.find(filter).populate('relatedBlogs').sort(sort).skip(skip).limit(itemPerPage).lean(),
+      BlogModel.find(filter)
+        .populate('author relatedBlogs')
+        .sort(sort)
+        .skip(skip)
+        .limit(itemPerPage)
+        .lean(),
     ])
 
     // return all blogs

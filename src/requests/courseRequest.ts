@@ -248,11 +248,11 @@ export const removeApplyingFlashSalesApi = async (ids: string[]) => {
   return await res.json()
 }
 
-// [PATCH]: /admin/course/:id/edit-property
-export const updateCoursePropertyApi = async (id: string, property: string, value: any) => {
-  const res = await fetch(`/api/admin/course/${id}/edit-property`, {
-    method: 'PATCH',
-    body: JSON.stringify({ property, value }),
+// [PUT]: /admin/course/:id/edit
+export const updateCourseApi = async (id: string, data: FormData) => {
+  const res = await fetch(`/api/admin/course/${id}/edit`, {
+    method: 'PUT',
+    body: data,
   })
 
   // check status
@@ -263,11 +263,11 @@ export const updateCoursePropertyApi = async (id: string, property: string, valu
   return await res.json()
 }
 
-// [PUT]: /admin/course/:id/edit
-export const updateCourseApi = async (id: string, data: FormData) => {
-  const res = await fetch(`/api/admin/course/${id}/edit`, {
-    method: 'PUT',
-    body: data,
+// [PATCH]: /admin/course/:id/edit-property
+export const updateCoursePropertyApi = async (id: string, property: string, value: any) => {
+  const res = await fetch(`/api/admin/course/${id}/edit-property`, {
+    method: 'PATCH',
+    body: JSON.stringify({ property, value }),
   })
 
   // check status

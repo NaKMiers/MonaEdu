@@ -198,3 +198,21 @@ export const getSearchPageApi = async (
 
   return await res.json()
 }
+
+// [GET]: /blog/:slug
+export const getBlogPageApi = async (
+  slug: string,
+  option: RequestInit = {
+    cache: 'no-store',
+  }
+) => {
+  // no cache for filter
+  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/blog/${slug}`, option)
+
+  // check status
+  if (!res.ok) {
+    throw new Error((await res.json()).message)
+  }
+
+  return await res.json()
+}

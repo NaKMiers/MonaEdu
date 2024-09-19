@@ -1,5 +1,6 @@
 'use client'
 
+import { Node } from '@tiptap/core'
 import Blockquote from '@tiptap/extension-blockquote'
 import Bold from '@tiptap/extension-bold'
 import BulletList from '@tiptap/extension-bullet-list'
@@ -33,6 +34,7 @@ import Underline from '@tiptap/extension-underline'
 import Youtube from '@tiptap/extension-youtube'
 import { EditorContent, useEditor } from '@tiptap/react'
 import { useCallback, useState } from 'react'
+import toast from 'react-hot-toast'
 import {
   FaAlignCenter,
   FaAlignJustify,
@@ -56,6 +58,7 @@ import {
   FaUndo,
   FaYoutube,
 } from 'react-icons/fa'
+import { SiFramer } from 'react-icons/si'
 
 interface TextEditorProps {
   onChange: (content: string) => void
@@ -63,7 +66,7 @@ interface TextEditorProps {
   className?: string
 }
 
-const limit = 5000
+const limit = 10000
 
 // MARK: Customer Nodes
 const CustomHeading = Heading.extend({
@@ -159,12 +162,99 @@ const CustomImage = Image.extend({
   },
 })
 
+export interface IframeOptions {
+  allowFullscreen: boolean
+  HTMLAttributes: {
+    [key: string]: any
+  }
+}
+
+declare module '@tiptap/core' {
+  interface Commands<ReturnType> {
+    iframe: {
+      /**
+       * Add an iframe
+       */
+      setIframe: (options: { src: string }) => ReturnType
+    }
+  }
+}
+
+const Iframe = Node.create<IframeOptions>({
+  name: 'iframe',
+
+  group: 'block',
+
+  atom: true,
+
+  addOptions() {
+    return {
+      allowFullscreen: false,
+      HTMLAttributes: {
+        class: 'iframe-wrapper',
+      },
+    }
+  },
+
+  addAttributes() {
+    return {
+      src: {
+        default: null,
+      },
+      frameborder: {
+        default: 0,
+      },
+      width: {
+        default: '100%',
+      },
+      height: {
+        default: '400px',
+      },
+    }
+  },
+
+  parseHTML() {
+    return [
+      {
+        tag: 'iframe',
+      },
+    ]
+  },
+
+  renderHTML({ HTMLAttributes }) {
+    return ['div', this.options.HTMLAttributes, ['iframe', HTMLAttributes]]
+  },
+
+  addCommands() {
+    return {
+      setIframe:
+        (options: { src: string; width?: string; height?: string }) =>
+        ({ tr, dispatch }) => {
+          const { selection } = tr
+          const node = this.type.create({
+            src: options.src,
+            width: options.width || '100%',
+            height: options.height || '400px',
+          })
+
+          if (dispatch) {
+            tr.replaceRangeWith(selection.from, selection.to, node)
+          }
+
+          return true
+        },
+    }
+  },
+})
+
 const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps) => {
   const [openTableControls, setOpenTableControls] = useState<boolean>(false)
-  const [youtubeHeight, setYoutubeHeight] = useState<number>(480)
-  const [youtubeWidth, setYoutubeWidth] = useState<number>(640)
-  const [imageHeight, setImageHeight] = useState<number>(480)
-  const [imageWidth, setImageWidth] = useState<number>(640)
+  const [youtubeWidth, setYoutubeWidth] = useState<string>('640px')
+  const [youtubeHeight, setYoutubeHeight] = useState<string>('480px')
+  const [imageWidth, setImageWidth] = useState<string>('640px')
+  const [imageHeight, setImageHeight] = useState<string>('480px')
+  const [iframeWidth, setIframeWidth] = useState<string>('400px')
+  const [iframeHeight, setIframeHeight] = useState<string>('500px')
 
   // MARK: Marks
   const marks = [
@@ -174,7 +264,7 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
     Strike,
     Code.configure({
       HTMLAttributes: {
-        class: 'text-[0.85rem] px-[0.3em] py-[0.25em] bg-[#333] text-light rounded-md',
+        class: 'text-[0.85rem] px-[0.3em] py-[0.25em] bg-[#333] text-white rounded-md',
       },
     }),
     Link.configure({
@@ -231,6 +321,11 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
       nocookie: true,
       HTMLAttributes: {
         class: 'aspect-video rounded-lg shadow-md',
+      },
+    }),
+    Iframe.configure({
+      HTMLAttributes: {
+        class: 'no-scrollbar flex items-center overflow-hidden',
       },
     }),
   ]
@@ -305,15 +400,28 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
   const addImage = useCallback(() => {
     const url = window.prompt('URL')
 
+    if (!imageWidth.endsWith('px') && !imageWidth.endsWith('%')) {
+      toast.error('Width must be in pixels or percentage')
+      return
+    }
+
+    if (!imageHeight.endsWith('px')) {
+      toast.error('Height must be in pixels')
+      return
+    }
+
     if (url?.trim()) {
       if (!editor) return
 
-      const imageAttributes = {
-        src: url,
-        width: `${imageWidth}px`,
-        height: `${imageHeight}px`,
-      }
-      editor.chain().focus().setImage(imageAttributes).run()
+      editor
+        .chain()
+        .focus()
+        .setImage({
+          src: url,
+          width: `${imageWidth}px`,
+          height: `${imageHeight}px`,
+        } as any)
+        .run()
     }
   }, [editor, imageWidth, imageHeight])
 
@@ -322,14 +430,49 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
     if (!editor) return
     const url = prompt('Enter YouTube URL')
 
+    if (!youtubeWidth.endsWith('px') && !youtubeWidth.endsWith('%')) {
+      toast.error('Width must be in pixels or percentage')
+      return
+    }
+
+    if (!youtubeHeight.endsWith('px')) {
+      toast.error('Height must be in pixels')
+      return
+    }
+
     if (url?.trim()) {
       editor.commands.setYoutubeVideo({
         src: url,
         width: youtubeWidth,
         height: youtubeHeight,
-      })
+      } as any)
     }
   }, [editor, youtubeHeight, youtubeWidth])
+
+  // Iframe
+  const addIframe = useCallback(() => {
+    if (!editor) return
+
+    if (!iframeWidth.endsWith('px') && !iframeWidth.endsWith('%')) {
+      toast.error('Width must be in pixels or percentage')
+      return
+    }
+
+    if (!iframeHeight.endsWith('px')) {
+      toast.error('Height must be in pixels')
+      return
+    }
+
+    const url = prompt('Enter URL')
+
+    if (url?.trim()) {
+      editor.commands.setIframe({
+        src: url,
+        width: iframeWidth,
+        height: iframeHeight,
+      } as any)
+    }
+  }, [editor, iframeWidth, iframeHeight])
 
   if (!editor) {
     return null
@@ -348,7 +491,7 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
             <button
               onClick={() => editor.commands.toggleBold()}
               className={`${
-                editor.isActive('bold') ? 'bg-dark-100 text-light' : ''
+                editor.isActive('bold') ? 'bg-dark-100 text-white' : ''
               } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
               title='Bold'
             >
@@ -359,7 +502,7 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
             <button
               onClick={() => editor.commands.toggleItalic()}
               className={`${
-                editor.isActive('italic') ? 'bg-dark-100 text-light' : ''
+                editor.isActive('italic') ? 'bg-dark-100 text-white' : ''
               } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
               title='Italic'
             >
@@ -370,7 +513,7 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
             <button
               onClick={() => editor.commands.toggleUnderline()}
               className={`${
-                editor.isActive('underline') ? 'bg-dark-100 text-light' : ''
+                editor.isActive('underline') ? 'bg-dark-100 text-white' : ''
               } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
               title='Underline'
             >
@@ -381,7 +524,7 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
             <button
               onClick={() => editor.commands.toggleStrike()}
               className={`${
-                editor.isActive('strike') ? 'bg-dark-100 text-light' : ''
+                editor.isActive('strike') ? 'bg-dark-100 text-white' : ''
               } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
               title='Strike'
             >
@@ -392,7 +535,7 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
             <button
               onClick={() => editor.commands.toggleCode()}
               className={`${
-                editor.isActive('code') ? 'bg-dark-100 text-light' : ''
+                editor.isActive('code') ? 'bg-dark-100 text-white' : ''
               } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
               title='Code'
             >
@@ -403,7 +546,7 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
             <button
               onClick={setLink}
               className={`${
-                editor.isActive('link') ? 'bg-dark-100 text-light' : ''
+                editor.isActive('link') ? 'bg-dark-100 text-white' : ''
               } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
               title='Link'
             >
@@ -414,7 +557,7 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
             <button
               onClick={() => editor.commands.toggleSubscript()}
               className={`${
-                editor.isActive('subscript') ? 'bg-dark-100 text-light' : ''
+                editor.isActive('subscript') ? 'bg-dark-100 text-white' : ''
               } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
               title='Subscript'
             >
@@ -425,7 +568,7 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
             <button
               onClick={() => editor.commands.toggleSuperscript()}
               className={`${
-                editor.isActive('superscript') ? 'bg-dark-100 text-light' : ''
+                editor.isActive('superscript') ? 'bg-dark-100 text-white' : ''
               } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
               title='Superscript'
             >
@@ -436,7 +579,7 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
             <button
               onClick={() => editor.commands.toggleHighlight()}
               className={`${
-                editor.isActive('highlight') ? 'bg-dark-100 text-light' : ''
+                editor.isActive('highlight') ? 'bg-dark-100 text-white' : ''
               } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
               title='Highlight'
             >
@@ -447,7 +590,7 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
             <button
               onClick={() => editor.commands.setHardBreak()}
               className={`${
-                editor.isActive('highlight') ? 'bg-dark-100 text-light' : ''
+                editor.isActive('highlight') ? 'bg-dark-100 text-white' : ''
               } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
               title='Hard Break'
             >
@@ -465,13 +608,13 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
           </div>
 
           {/* Headings */}
-          <div className='flex items-center flex-wrap gap-x-2 gap-y-1'>
+          <div className='flex items-center justify-end flex-wrap gap-x-2 gap-y-1'>
             {Array.from({ length: 6 }, (_, index) => (
               <button
                 onClick={() => editor.commands.toggleHeading({ level: (index + 1) as any })}
                 className={`${
                   editor.isActive('heading', { level: index + 1 })
-                    ? 'bg-dark-100 text-light font-semibold'
+                    ? 'bg-dark-100 text-white font-semibold'
                     : ''
                 } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
                 title={`Heading ${index + 1}`}
@@ -491,7 +634,7 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
             <button
               onClick={() => editor.commands.toggleBlockquote()}
               className={`${
-                editor.isActive('blockquote') ? 'bg-dark-100 text-light' : ''
+                editor.isActive('blockquote') ? 'bg-dark-100 text-white' : ''
               } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
               title='Block Quote'
             >
@@ -502,7 +645,7 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
             <button
               onClick={() => editor.commands.toggleBulletList()}
               className={`${
-                editor.isActive('bulletList') ? 'bg-dark-100 text-light' : ''
+                editor.isActive('bulletList') ? 'bg-dark-100 text-white' : ''
               } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
               title='Bullet List'
             >
@@ -513,7 +656,7 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
             <button
               onClick={() => editor.commands.toggleOrderedList()}
               className={`${
-                editor.isActive('orderedList') ? 'bg-dark-100 text-light' : ''
+                editor.isActive('orderedList') ? 'bg-dark-100 text-white' : ''
               } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
               title='Order List'
             >
@@ -539,15 +682,15 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
               </button>
               <input
                 id='width'
-                type='number'
-                className='w-14 h-full bg-transparent text-xs font-semibold border-l-2 border-dark rounded-sm px-1.5 outline-none'
+                type='text'
+                className='w-[52px] h-full bg-transparent text-xs font-semibold border-l-2 border-dark rounded-sm px-1.5 outline-none'
                 value={imageWidth}
                 onChange={(e: any) => setImageWidth(e.target.value)}
               />
               <input
                 id='width'
-                type='number'
-                className='w-14 h-full bg-transparent text-xs font-semibold border-l-2 border-dark rounded-sm px-1.5 outline-none'
+                type='text'
+                className='w-[52px] h-full bg-transparent text-xs font-semibold border-l-2 border-dark rounded-sm px-1.5 outline-none'
                 value={imageHeight}
                 onChange={(e: any) => setImageHeight(e.target.value)}
               />
@@ -563,28 +706,53 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
               </button>
               <input
                 id='width'
-                type='number'
-                className='w-14 h-full bg-transparent text-xs font-semibold border-l-2 border-dark rounded-sm px-1.5 outline-none'
+                type='text'
+                className='w-[52px] h-full bg-transparent text-xs font-semibold border-l-2 border-dark rounded-sm px-1.5 outline-none'
                 value={youtubeWidth}
                 onChange={(e: any) => setYoutubeWidth(e.target.value)}
               />
               <input
                 id='width'
-                type='number'
-                className='w-14 h-full bg-transparent text-xs font-semibold border-l-2 border-dark rounded-sm px-1.5 outline-none'
+                type='text'
+                className='w-[52px] h-full bg-transparent text-xs font-semibold border-l-2 border-dark rounded-sm px-1.5 outline-none'
                 value={youtubeHeight}
                 onChange={(e: any) => setYoutubeHeight(e.target.value)}
+              />
+            </div>
+
+            {/* Iframe */}
+            <div
+              className={`border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center`}
+              title='Iframe'
+            >
+              <button className='px-2' onClick={addIframe}>
+                <SiFramer />
+              </button>
+
+              <input
+                id='width'
+                type='text'
+                className='w-[52px] h-full bg-transparent text-xs font-semibold border-l-2 border-dark rounded-sm px-1.5 outline-none'
+                value={iframeWidth}
+                onChange={(e: any) => setIframeWidth(e.target.value)}
+              />
+              <input
+                id='width'
+                type='text'
+                className='w-[52px] h-full bg-transparent text-xs font-semibold border-l-2 border-dark rounded-sm px-1.5 outline-none'
+                value={iframeHeight}
+                onChange={(e: any) => setIframeHeight(e.target.value)}
               />
             </div>
           </div>
 
           {/* Alignment */}
-          <div className='flex items-center flex-wrap gap-x-2 gap-y-1'>
+          <div className='flex justify-end flex-wrap gap-x-2 gap-y-1'>
             {/* Left */}
             <button
               onClick={() => editor.commands.setTextAlign('left')}
               className={`${
-                editor.isActive('left') ? 'bg-dark-100 text-light' : ''
+                editor.isActive('left') ? 'bg-dark-100 text-white' : ''
               } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
               title='Left'
             >
@@ -595,7 +763,7 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
             <button
               onClick={() => editor.commands.setTextAlign('center')}
               className={`${
-                editor.isActive('center') ? 'bg-dark-100 text-light' : ''
+                editor.isActive('center') ? 'bg-dark-100 text-white' : ''
               } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
               title='Center'
             >
@@ -606,7 +774,7 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
             <button
               onClick={() => editor.commands.setTextAlign('right')}
               className={`${
-                editor.isActive('right') ? 'bg-dark-100 text-light' : ''
+                editor.isActive('right') ? 'bg-dark-100 text-white' : ''
               } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
               title='Right'
             >
@@ -643,7 +811,6 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
         </div>
 
         {/* Table */}
-
         <div className='rounded-lg shadow-lg border border-dark'>
           <button
             className={`flex w-full items-center justify-center px-3 py-3 group border-b rounded-b-lg delay-300 trans-200 ${

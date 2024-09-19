@@ -316,7 +316,7 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
             max={maxMaxReduce}
             step={1}
             className='w-full -mb-1.5'
-            onChange={(_, newValue: number | number[]) => setMinTotal(newValue as number[])}
+            onChange={(_: any, newValue: number | number[]) => setMinTotal(newValue as number[])}
             valueLabelDisplay='auto'
             style={{ color: '#333' }}
           />
@@ -334,7 +334,7 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
             max={maxMaxReduce}
             step={1}
             className='w-full -mb-1.5'
-            onChange={(_, newValue: number | number[]) => setMaxReduce(newValue as number[])}
+            onChange={(_: any, newValue: number | number[]) => setMaxReduce(newValue as number[])}
             valueLabelDisplay='auto'
             style={{ color: '#333' }}
           />

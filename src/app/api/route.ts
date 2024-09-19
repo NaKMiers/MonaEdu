@@ -109,7 +109,7 @@ export async function GET(req: NextRequest) {
       packageGroups,
       packages,
     ] = await Promise.all([
-      // get courses
+      // get banner courses
       CourseModel.find({
         active: true,
       })

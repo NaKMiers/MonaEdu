@@ -8,28 +8,33 @@ import AdminHeader from '@/components/admin/AdminHeader'
 import { useAppDispatch, useAppSelector } from '@/libs/hooks'
 import { setLoading } from '@/libs/reducers/modalReducer'
 import { IUser } from '@/models/UserModel'
-import { addBlogApi, getRoleUsersApi } from '@/requests'
+import { getBlogByIdApi, getRoleUsersApi, updateBlogApi } from '@/requests'
 import Image from 'next/image'
+import { useParams, useRouter } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { FaFile, FaUserEdit } from 'react-icons/fa'
 import { FaPlay, FaX } from 'react-icons/fa6'
+import { HiStatusOnline } from 'react-icons/hi'
 import { MdNumbers } from 'react-icons/md'
 import { RiCharacterRecognitionLine } from 'react-icons/ri'
 
-function AddBlogPage() {
+function EditBlogPage() {
   // hooks
   const dispatch = useAppDispatch()
   const isLoading = useAppSelector(state => state.modal.isLoading)
+  const { id } = useParams<{ id: string }>()
+  const router = useRouter()
 
   // states
-  const [isBootedChecked, setIsBootedChecked] = useState<boolean>(false)
   const [roleUsers, setRoleUsers] = useState<IUser[]>([])
+  const [isBootedChecked, setIsBootedChecked] = useState<boolean>(false)
 
   const [tagValue, setTagValue] = useState<string>('')
   const [tags, setTags] = useState<string[]>([])
 
+  const [originalThumbnails, setOriginalThumbnails] = useState<string[]>([])
   const [thumbnailUrls, setThumbnailUrls] = useState<string[]>([])
   const [files, setFiles] = useState<File[]>([])
 
@@ -38,8 +43,7 @@ function AddBlogPage() {
     register,
     handleSubmit,
     formState: { errors },
-    setError,
-    reset,
+    getValues,
     clearErrors,
     setValue,
   } = useForm<FieldValues>({
@@ -50,6 +54,7 @@ function AddBlogPage() {
       summary: '',
       relatedBlogs: [],
       booted: false,
+      status: '',
     },
   })
 
@@ -63,6 +68,36 @@ function AddBlogPage() {
     }
   }, [thumbnailUrls])
 
+  // MARK: Get Data
+  // get blog by id
+  useEffect(() => {
+    const getBlog = async () => {
+      try {
+        // send request to server to get blog
+        const { blog } = await getBlogByIdApi(id) // cache: no-store
+
+        console.log('blog', blog)
+
+        // set value to form
+        setValue('title', blog.title)
+        setValue('content', blog.content)
+        setValue('author', blog.author)
+        setValue('summary', blog.summary)
+        setValue('relatedBlogs', blog.relatedBlogs)
+        setValue('booted', blog.booted)
+        setValue('status', blog.status)
+
+        setTags(blog.tags)
+        setIsBootedChecked(blog.booted)
+        setOriginalThumbnails(blog.thumbnails)
+      } catch (err: any) {
+        console.log(err)
+        toast.error(err.message)
+      }
+    }
+    getBlog()
+  }, [id, setValue])
+
   // get roleUsers, admins, editors
   useEffect(() => {
     const getRoleUsers = async () => {
@@ -72,7 +107,7 @@ function AddBlogPage() {
 
         // set roleUsers to state
         setRoleUsers(roleUsers)
-        setValue('owner', roleUsers.find((user: IUser) => user.role === 'admin')._id)
+        setValue('author', roleUsers.find((user: IUser) => user.role === 'admin')._id)
       } catch (err: any) {
         console.log(err)
       }
@@ -128,14 +163,14 @@ function AddBlogPage() {
     data => {
       let isValid = true
 
-      if (!files.length) {
+      if (!files.length && !originalThumbnails.length) {
         toast.error('Please select at least 1 image')
         isValid = false
       }
 
       return isValid
     },
-    [files]
+    [files.length, originalThumbnails.length]
   )
 
   // send data to server to create new blog
@@ -155,19 +190,18 @@ function AddBlogPage() {
       formData.append('tags', JSON.stringify(tags))
       formData.append('relatedBlogs', JSON.stringify(data.relatedBlogs))
       formData.append('booted', data.booted)
+      formData.append('status', data.status)
+      formData.append('originalThumbnails', JSON.stringify(originalThumbnails))
       files.forEach(file => formData.append('thumbnails', file))
 
-      // send request to server to create new blog
-      const { message } = await addBlogApi(formData)
+      // send request to server to update blog
+      const { message } = await updateBlogApi(id, formData)
 
       // show success message
       toast.success(message)
 
-      // reset form
-      setFiles([])
-      thumbnailUrls.forEach(url => URL.revokeObjectURL(url))
-      setThumbnailUrls([])
-      reset()
+      // redirect to back
+      router.back()
     } catch (err: any) {
       console.log(err)
       toast.error(err.message)
@@ -194,7 +228,7 @@ function AddBlogPage() {
       <Divider size={4} />
 
       <div className='bg-slate-200 rounded-lg p-21 shadow-lg'>
-        <div className='mb-5 grid grid-cols-1 sm:grid-cols-2 gap-5'>
+        <div className='mb-5 grid grid-cols-1 sm:grid-cols-3 gap-5'>
           {/* Title */}
           <Input
             id='title'
@@ -227,6 +261,34 @@ function AddBlogPage() {
             }))}
             icon={FaUserEdit}
           />
+
+          {/* Status */}
+          <Input
+            id='status'
+            label='Status'
+            disabled={isLoading}
+            register={register}
+            errors={errors}
+            required
+            type='select'
+            onFocus={() => clearErrors('status')}
+            options={[
+              {
+                value: 'published',
+                label: 'Published',
+              },
+              {
+                value: 'draft',
+                label: 'Draft',
+                selected: true,
+              },
+              {
+                value: 'archived',
+                label: 'Archived',
+              },
+            ]}
+            icon={HiStatusOnline}
+          />
         </div>
 
         {/* Summary */}
@@ -246,10 +308,13 @@ function AddBlogPage() {
 
         {/* Content */}
         <p className='text-dark font-semibold text-xl mb-2'>Content</p>
-        <TextEditor
-          onChange={(content: string) => setValue('content', content)}
-          className='w-ful text-dark mb-5'
-        />
+        {getValues('content') && (
+          <TextEditor
+            content={getValues('content')}
+            onChange={(content: string) => setValue('content', content)}
+            className='w-ful text-dark mb-5'
+          />
+        )}
 
         {/* Tags */}
         <div className='mb-5'>
@@ -331,17 +396,24 @@ function AddBlogPage() {
           </div>
         </div>
 
-        {!!thumbnailUrls.length && (
+        {/* MARK: Image Urls */}
+        {(!!thumbnailUrls.length || !!originalThumbnails.length) && (
           <div className='flex flex-wrap gap-3 rounded-lg bg-white p-3 mb-5'>
+            {originalThumbnails.map(url => (
+              <div className='relative' key={url}>
+                <Image className='rounded-lg' src={url} height={250} width={250} alt='thumbnail' />
+
+                <button
+                  onClick={() => setOriginalThumbnails(prev => prev.filter(i => i !== url))}
+                  className='absolute top-2 bg-slate-300 p-2 right-2 group hover:bg-dark-100 rounded-lg'
+                >
+                  <FaX size={16} className='text-dark group-hover:text-light trans-200' />
+                </button>
+              </div>
+            ))}
             {thumbnailUrls.map(url => (
-              <div className='relative aspect-video max-w-[250px]' key={url}>
-                <Image
-                  className='rounded-lg w-full h-full object-cover'
-                  src={url}
-                  height={250}
-                  width={250}
-                  alt='thumbnail'
-                />
+              <div className='relative' key={url}>
+                <Image className='rounded-lg' src={url} height={250} width={250} alt='thumbnail' />
 
                 <button
                   onClick={() => handleRemoveImage(url)}
@@ -360,7 +432,7 @@ function AddBlogPage() {
           <LoadingButton
             className='w-full max-w-[500px] px-4 py-3 bg-secondary hover:bg-primary text-light rounded-lg font-semibold trans-200'
             onClick={handleSubmit(onSubmit)}
-            text='Add'
+            text='Save'
             isLoading={isLoading}
           />
         </div>
@@ -369,4 +441,4 @@ function AddBlogPage() {
   )
 }
 
-export default AddBlogPage
+export default EditBlogPage

@@ -1,5 +1,6 @@
 import { generateSlug, removeDiacritics } from '@/utils'
 import mongoose from 'mongoose'
+import { IUser } from './UserModel'
 const Schema = mongoose.Schema
 
 const BlogSchema = new Schema(
@@ -99,7 +100,7 @@ export interface IBlog {
   thumbnails: string[]
   tags: string[]
   content: string
-  author: string
+  author: string | IUser
   status: 'draft' | 'published' | 'archived'
   summary: string
   views: number
