@@ -1,11 +1,11 @@
 import { connectDatabase } from '@/config/database'
+import LessonModel from '@/models/LessonModel'
 import UserModel, { IUser } from '@/models/UserModel'
 import { notifyExpiredPackage } from '@/utils/sendMail'
 import jwt, { JwtPayload } from 'jsonwebtoken'
 import momentTZ from 'moment-timezone'
 import { NextRequest, NextResponse } from 'next/server'
 import { format, register } from 'timeago.js'
-import LessonModel from '@/models/LessonModel'
 import vi from 'timeago.js/lib/lang/vi'
 register('vi', vi)
 
@@ -21,25 +21,6 @@ export async function GET(req: NextRequest) {
   try {
     // connect to database
     await connectDatabase()
-
-    const duplicateLessons = await LessonModel.aggregate([
-      {
-        $group: {
-          _id: { title: '$title', courseId: '$courseId' },
-          count: { $sum: 1 },
-          lessons: {
-            $push: { _id: '$_id', title: '$title', chapterId: '$chapterId', courseId: '$courseId' },
-          },
-        },
-      },
-      {
-        $match: {
-          count: { $gt: 1 },
-        },
-      },
-    ])
-
-    console.log('duplicateLessons:', duplicateLessons)
 
     // get token from query
     const searchParams = req.nextUrl.searchParams

@@ -13,7 +13,6 @@ import '@/models/CourseModel'
 import '@/models/LessonModel'
 import '@/models/NotificationModel'
 import '@/models/UserModel'
-import { generateSlug } from '@/utils'
 
 // [POST]: /admin/lesson/add
 export async function POST(
@@ -36,18 +35,6 @@ export async function POST(
 
     if (!file && !embedUrl && !docs.length && !customDocs.length) {
       return NextResponse.json({ message: 'Source or Embed or Document is required' }, { status: 400 })
-    }
-
-    // check if new lesson is duplicate with another lesson (title, slug) in them same course
-    const isDuplicateLesson = await LessonModel.findOne({
-      courseId,
-      $or: [{ title }, { slug: generateSlug(title as string) }],
-    })
-    if (isDuplicateLesson) {
-      return NextResponse.json(
-        { message: 'Lesson title is duplicated in current course' },
-        { status: 400 }
-      )
     }
 
     // check file

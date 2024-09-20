@@ -1,7 +1,7 @@
 import { connectDatabase } from '@/config/database'
 import CourseModel from '@/models/CourseModel'
 import LessonModel, { ILesson } from '@/models/LessonModel'
-import { generateSlug, removeDiacritics } from '@/utils'
+import { generateCode, generateSlug, removeDiacritics } from '@/utils'
 import { deleteFile, uploadFile } from '@/utils/uploadFile'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -32,18 +32,6 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
     // lesson does not exist
     if (!lesson) {
       return NextResponse.json({ message: 'Lesson does not exist' }, { status: 404 })
-    }
-
-    // check if new lesson is duplicate with another lesson (title, slug) in them same course
-    const isDuplicateLesson = await LessonModel.findOne({
-      courseId,
-      $or: [{ title }, { slug: generateSlug(title as string) }],
-    })
-    if (isDuplicateLesson) {
-      return NextResponse.json(
-        { message: 'Lesson title is duplicated in current course' },
-        { status: 400 }
-      )
     }
 
     let newSource: string = lesson.source
@@ -102,7 +90,8 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
           description,
           active,
           status,
-          slug: generateSlug(title as string),
+          slug:
+            title !== lesson.title ? generateSlug(title as string) + '-' + generateCode(4) : lesson.slug,
         },
       }),
 

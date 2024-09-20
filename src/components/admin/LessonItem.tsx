@@ -106,7 +106,11 @@ function LessonItem({
               className='flex items-center gap-2 font-semibold font-body tracking-wide'
               onClick={e => e.stopPropagation()}
             >
-              <span className='cursor-copy hover:opacity-75' onClick={() => handleCopy(data.title)}>
+              <span
+                className='cursor-copy hover:opacity-75'
+                title={data.titleNoDiacritics}
+                onClick={() => handleCopy(data.title)}
+              >
                 {data.title}
               </span>{' '}
               <span

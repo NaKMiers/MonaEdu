@@ -1,4 +1,4 @@
-import { generateSlug, removeDiacritics } from '@/utils'
+import { generateCode, generateSlug, removeDiacritics } from '@/utils'
 import mongoose from 'mongoose'
 import { IChapter } from './ChapterModel'
 import { ICourse } from './CourseModel'
@@ -78,7 +78,7 @@ LessonSchema.pre('save', function (next) {
   console.log('- Pre-Save Lesson -')
 
   if (this.isModified('title')) {
-    this.slug = generateSlug(this.title)
+    this.slug = generateSlug(this.title as string) + '-' + generateCode(4)
     this.titleNoDiacritics = removeDiacritics(this.title)
   }
   next()
