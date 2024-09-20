@@ -15,6 +15,7 @@ export const adminLinks = [
         href: '/admin',
       },
     ],
+    accessRoles: ['admin', 'editor'],
   },
   {
     title: 'Order',
@@ -25,6 +26,7 @@ export const adminLinks = [
         href: '/admin/order/all',
       },
     ],
+    accessRoles: ['admin', 'editor'],
   },
   {
     title: 'Course',
@@ -39,6 +41,7 @@ export const adminLinks = [
         href: '/admin/course/add',
       },
     ],
+    accessRoles: ['admin', 'editor'],
   },
   {
     title: 'User',
@@ -49,6 +52,7 @@ export const adminLinks = [
         href: '/admin/user/all',
       },
     ],
+    accessRoles: ['admin', 'editor'],
   },
   {
     title: 'Summary',
@@ -59,8 +63,8 @@ export const adminLinks = [
         href: '/admin/summary/all',
       },
     ],
+    accessRoles: ['admin', 'editor', 'collaborator'],
   },
-
   {
     title: 'Tag',
     Icon: FaTags,
@@ -74,6 +78,7 @@ export const adminLinks = [
         href: '/admin/tag/add',
       },
     ],
+    accessRoles: ['admin', 'editor'],
   },
   {
     title: 'Category',
@@ -84,6 +89,7 @@ export const adminLinks = [
         href: '/admin/category/all',
       },
     ],
+    accessRoles: ['admin', 'editor'],
   },
   {
     title: 'Voucher',
@@ -98,6 +104,7 @@ export const adminLinks = [
         href: '/admin/voucher/add',
       },
     ],
+    accessRoles: ['admin', 'editor', 'collaborator'],
   },
   {
     title: 'Flash Sale',
@@ -112,6 +119,7 @@ export const adminLinks = [
         href: '/admin/flash-sale/add',
       },
     ],
+    accessRoles: ['admin', 'editor', 'collaborator'],
   },
   {
     title: 'Packages',
@@ -122,6 +130,7 @@ export const adminLinks = [
         href: '/admin/package/all',
       },
     ],
+    accessRoles: ['admin', 'editor'],
   },
   {
     title: 'Blog',
@@ -136,6 +145,7 @@ export const adminLinks = [
         href: '/admin/blog/add',
       },
     ],
+    accessRoles: ['admin', 'editor', 'collaborator'],
   },
   {
     title: 'Report',
@@ -146,6 +156,7 @@ export const adminLinks = [
         href: '/admin/report/all',
       },
     ],
+    accessRoles: ['admin', 'editor', 'collaborator'],
   },
 ]
 

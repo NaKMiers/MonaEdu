@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { memo, useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 import { FaPlus } from 'react-icons/fa'
 import { FaBarsStaggered } from 'react-icons/fa6'
 
@@ -79,30 +80,53 @@ function AdminMenu() {
 
         {/* Links */}
         <ul>
-          {adminLinks.map(({ title, Icon, links }) => (
-            <li className='flex items-center gap-2' key={title}>
-              {/* "All" Link */}
-              <Link
-                href={links[0].href}
-                className='group flex flex-grow items-center gap-2 group rounded-lg p-2 trans-200 hover:bg-secondary font-body tracking-wide'
-                onClick={() => setOpen(false)}
-              >
-                <Icon size={18} className='wiggle' />
-                {links[0].title}
-              </Link>
-
-              {/* "Add" Link */}
-              {links[1] && (
+          {adminLinks.map(({ title, Icon, links, accessRoles }) =>
+            accessRoles.includes(curUser?.role) ? (
+              <li className='flex items-center gap-2' key={title}>
+                {/* "All" Link */}
                 <Link
-                  href={links[1].href}
-                  className='group flex justify-center items-center flex-shrink-0 rounded-full border-2 border-light p-[3px] hover:scale-110 trans-200 hover:border-primary'
+                  href={links[0].href}
+                  className='group flex flex-grow items-center gap-2 group rounded-lg p-2 trans-200 hover:bg-secondary font-body tracking-wide'
                   onClick={() => setOpen(false)}
                 >
-                  <FaPlus size={10} className='group-hover:text-primary wiggle' />
+                  <Icon size={18} className='wiggle' />
+                  {links[0].title}
                 </Link>
-              )}
-            </li>
-          ))}
+
+                {/* "Add" Link */}
+                {links[1] && (
+                  <Link
+                    href={links[1].href}
+                    className='group flex justify-center items-center flex-shrink-0 rounded-full border-2 border-light p-[3px] hover:scale-110 trans-200 hover:border-primary'
+                    onClick={() => setOpen(false)}
+                  >
+                    <FaPlus size={10} className='group-hover:text-primary wiggle' />
+                  </Link>
+                )}
+              </li>
+            ) : (
+              <li className='flex items-center gap-2' key={title}>
+                {/* "All" Link */}
+                <button
+                  className='group flex flex-grow items-center gap-2 group rounded-lg p-2 trans-200 hover:bg-secondary font-body tracking-wide'
+                  onClick={() => toast.error('Bạn không có quyền truy cập chức năng này')}
+                >
+                  <Icon size={18} className='wiggle' />
+                  {links[0].title}
+                </button>
+
+                {/* "Add" Link */}
+                {links[1] && (
+                  <button
+                    className='group flex justify-center items-center flex-shrink-0 rounded-full border-2 border-light p-[3px] hover:scale-110 trans-200 hover:border-primary'
+                    onClick={() => toast.error('Bạn không có quyền truy cập chức năng này')}
+                  >
+                    <FaPlus size={10} className='group-hover:text-primary wiggle' />
+                  </button>
+                )}
+              </li>
+            )
+          )}
         </ul>
       </div>
     </>

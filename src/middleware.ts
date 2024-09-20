@@ -62,7 +62,13 @@ export default async function middleware(req: NextRequest) {
     pathname.startsWith('/api/admin') ||
     pathname.startsWith('/email')
   ) {
-    if (pathname.startsWith('/admin/blog') || pathname.startsWith('/admin/summary')) {
+    // require
+    if (
+      pathname.startsWith('/admin/blog') ||
+      pathname.startsWith('/admin/summary') ||
+      pathname.startsWith('/admin/voucher') ||
+      pathname.startsWith('/admin/flash-sale')
+    ) {
       return requiredCollaborator(req, token)
     }
 
