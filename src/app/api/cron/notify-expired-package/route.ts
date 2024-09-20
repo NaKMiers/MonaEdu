@@ -10,6 +10,7 @@ register('vi', vi)
 
 // Models: User
 import '@/models/UserModel'
+import LessonModel from '@/models/LessonModel'
 
 export const dynamic = 'force-dynamic'
 
@@ -20,6 +21,23 @@ export async function GET(req: NextRequest) {
   try {
     // connect to database
     await connectDatabase()
+
+    const duplicateLessons = await LessonModel.aggregate([
+      {
+        $group: {
+          _id: { title: '$title', courseId: '$courseId' },
+          count: { $sum: 1 },
+          lessons: { $push: { _id: '$_id', title: '$title' } },
+        },
+      },
+      {
+        $match: {
+          count: { $gt: 1 },
+        },
+      },
+    ])
+
+    console.log('duplicateLessons:', duplicateLessons)
 
     // get token from query
     const searchParams = req.nextUrl.searchParams
@@ -70,7 +88,7 @@ export async function GET(req: NextRequest) {
     )
 
     // return response
-    return NextResponse.json({ message: 'Notified' }, { status: 200 })
+    return NextResponse.json({ message: 'Notified', duplicateLessons }, { status: 200 })
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })
   }

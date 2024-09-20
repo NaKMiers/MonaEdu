@@ -60,7 +60,7 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
       ProgressModel.find({
         userId,
         courseId: course._id,
-      }),
+      }).lean(),
 
       // user courses
       UserModel.findById(userId).select('courses').lean(),
@@ -77,16 +77,21 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
         const progress = progresses.find(
           (progress: any) => progress.lessonId.toString() === lesson._id.toString()
         )
-        return { ...lesson, progress }
+
+        return progress ? { ...lesson, progress } : lesson
       })
 
       return { ...chapter, lessons: chapterLessonsWithProgress }
     })
 
     // user progress of course
-    const userProgress = userCourses.courses.find(
+    let userProgress = userCourses.courses.find(
       (c: any) => c.course.toString() === course._id.toString()
-    ).progress
+    )
+
+    if (userProgress) {
+      userProgress = userProgress.progress
+    }
 
     // return course
     return NextResponse.json(

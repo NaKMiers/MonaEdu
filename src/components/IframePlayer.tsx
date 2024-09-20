@@ -503,13 +503,13 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
       // J
       if (e.key === 'j') {
         e.preventDefault()
-        handleSeek(currentTime - 5)
+        handleSeek(currentTime - 10)
       }
 
       // L
-      if (e.key === 'K') {
+      if (e.key === 'l') {
         e.preventDefault()
-        handleSeek(currentTime - 5)
+        handleSeek(currentTime + 10)
       }
 
       // Number: 0-9
