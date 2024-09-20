@@ -71,7 +71,7 @@ export async function GET(req: NextRequest) {
     )
 
     // return response
-    return NextResponse.json({ message: 'Notified', duplicateLessons }, { status: 200 })
+    return NextResponse.json({ message: 'Notified' }, { status: 200 })
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })
   }
