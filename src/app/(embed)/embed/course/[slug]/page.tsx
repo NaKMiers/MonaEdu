@@ -47,6 +47,8 @@ async function EmbedPage({ params: { slug } }: { params: { slug: string } }) {
             <Link
               href={`/${course.slug}`}
               prefetch={false}
+              target='_blank'
+              rel='noreferrer'
               className='font-body text-[14px] md:text-[21px] tracking-wider leading-[20px] md:leading-[28px] mb-1 md:mb-2 text-ellipsis line-clamp-2'
               title={course.title}
             >
@@ -67,6 +69,8 @@ async function EmbedPage({ params: { slug } }: { params: { slug: string } }) {
             <Link
               href={`/${course.slug}`}
               prefetch={false}
+              target='_blank'
+              rel='noreferrer'
               className='relative aspect-video rounded-lg overflow-hidden shadow-lg block group'
             >
               <div className='flex w-full overflow-x-scroll snap-x snap-mandatory hover:scale-105 trans-500'>
@@ -106,8 +110,10 @@ async function EmbedPage({ params: { slug } }: { params: { slug: string } }) {
             <CardItem translateZ={80} className='flex items-center gap-1 w-full'>
               {/* Buy Now Button */}
               <Link
-                href={`/checkout/${course.slug}`}
+                href={`/${course.slug}`}
                 prefetch={false}
+                target='_blank'
+                rel='noreferrer'
                 className='relative font-semibold h-[42px] flex w-full items-center justify-center rounded-lg shadow-lg bg-dark-100 text-light border-2 border-dark hover:bg-white hover:text-dark trans-300 hover:-translate-y-1 px-2 overflow-hidden'
               >
                 <p className='relative z-10 flex items-center gap-1 text-sm sm:text-base text-ellipsis text-nowrap line-clamp-1 sm:max-w-max'>
