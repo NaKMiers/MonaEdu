@@ -62,26 +62,6 @@ function AllLessons() {
 
         // set states
         dispatch(setUserProgress(userProgress))
-
-        if (lessonSlug === 'continue') {
-          const lessons: ILesson[] = chapters.reduce(
-            (acc: ILesson[], chapter: any) => [...acc, ...chapter.lessons],
-            []
-          )
-          // first lesson
-          let lesson = lessons[0]
-
-          // find next lesson
-          const nextLesson = lessons.find(
-            lesson => !lesson.progress || lesson.progress.status !== 'completed'
-          )
-          if (nextLesson) {
-            lesson = nextLesson
-          }
-
-          // push to next lesson
-          router.push(`/learning/${courseSlug}/${lesson.slug}`)
-        }
       } catch (err: any) {
         console.log(err)
         toast.error(err.message)
@@ -93,7 +73,32 @@ function AllLessons() {
     return () => {
       dispatch(setChapters([]))
     }
-  }, [router, dispatch, courseSlug, lessonSlug, curUser?.courses])
+  }, [dispatch, router, courseSlug, curUser?.courses])
+
+  // auto redirect to learning lesson if lesson slug is "continue"
+  useEffect(() => {
+    if (!chapters.length) return
+
+    if (lessonSlug === 'continue') {
+      const lessons: ILesson[] = chapters.reduce(
+        (acc: ILesson[], chapter: any) => [...acc, ...chapter.lessons],
+        []
+      )
+      // first lesson
+      let lesson = lessons[0]
+
+      // find next lesson
+      const nextLesson = lessons.find(
+        lesson => !lesson.progress || lesson.progress.status !== 'completed'
+      )
+      if (nextLesson) {
+        lesson = nextLesson
+      }
+
+      // push to next lesson
+      router.push(`/learning/${courseSlug}/${lesson.slug}`)
+    }
+  }, [chapters, courseSlug, lessonSlug, router])
 
   // find next and prev lesson
   useEffect(() => {
