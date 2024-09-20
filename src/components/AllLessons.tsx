@@ -146,7 +146,7 @@ function AllLessons() {
             {joinedCourse ? (
               <div className='relative overflow-hidden rounded-md w-full h-6 shadow-sm shadow-primary'>
                 <div
-                  className='h-full bg-primary flex items-center'
+                  className='h-full bg-primary flex items-center trans-500'
                   style={{
                     width: `${userProgress}%`,
                   }}

@@ -3,7 +3,8 @@ import UserModel from '@/models/UserModel'
 import { searchParamsToObject } from '@/utils/handleQuery'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Models: User
+// Models: User, Course
+import '@/models/CourseModel'
 import '@/models/UserModel'
 
 export const dynamic = 'force-dynamic'
@@ -95,7 +96,12 @@ export async function GET(req: NextRequest) {
       UserModel.countDocuments(filter),
 
       // get all users from database
-      UserModel.find(filter).sort(sort).skip(skip).limit(itemPerPage).lean(),
+      UserModel.find(filter)
+        .sort(sort)
+        .skip(skip)
+        .populate({ path: 'courses.course', select: 'title slug' })
+        .limit(itemPerPage)
+        .lean(),
 
       // get all order without filter
       UserModel.aggregate([

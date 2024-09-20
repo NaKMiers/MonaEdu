@@ -41,7 +41,7 @@ function LessonItemOfChapter({
       key={lesson._id}
     >
       <div
-        className={`absolute top-0 left-0 bottom-0 bg-yellow-200 rounded-sm`}
+        className={`absolute top-0 left-0 bottom-0 bg-yellow-200 rounded-sm trans-500`}
         style={{
           width: `${lesson.progress?.progress || 0}%`,
         }}

@@ -11,10 +11,11 @@ import Link from 'next/link'
 import React, { memo, useCallback, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
-import { FaCartArrowDown, FaCommentSlash, FaTrash } from 'react-icons/fa'
+import { FaCartArrowDown, FaCommentSlash, FaEye, FaTrash } from 'react-icons/fa'
 import { GrUpgrade } from 'react-icons/gr'
 import { HiLightningBolt } from 'react-icons/hi'
 import { RiCheckboxMultipleBlankLine, RiDonutChartFill } from 'react-icons/ri'
+import { SiCoursera } from 'react-icons/si'
 import Divider from '../Divider'
 import Input from '../Input'
 import LoadingButton from '../LoadingButton'
@@ -57,6 +58,8 @@ function UserItem({
   const [isOpenDemoteCollboratorConfirmationDialog, setIsOpenDemoteCollboratorConfirmationDialog] =
     useState<boolean>(false)
   const [isOpenCartList, setIsOpenCartList] = useState<boolean>(false)
+  const [isOpenUserProgresses, setIsOpenUserProgresses] = useState<boolean>(false)
+  const [isOpenOptions, setIsOpenOptions] = useState<boolean>(false)
 
   // loading states
   const [isLoadingSetCollaborator, setIsLoadingSetCollaborator] = useState<boolean>(false)
@@ -476,24 +479,53 @@ function UserItem({
               )}
             </button>
 
-            {/* View Cart */}
-            <button
-              className='block group'
-              onClick={e => {
-                e.stopPropagation()
-                handleGetUserCart()
-              }}
-              disabled={
-                loadingUsers.includes(userData._id) || isBlockingComment || isDemoting || isGettingCart
-              }
-              title='View Cart'
-            >
-              {isGettingCart ? (
-                <RiDonutChartFill size={18} className='animate-spin text-slate-300' />
-              ) : (
-                <FaCartArrowDown size={18} className='wiggle text-yellow-500' />
-              )}
-            </button>
+            {/* Change Status Button */}
+            <div className='relative'>
+              <button
+                className='block group'
+                onClick={e => {
+                  e.stopPropagation()
+                  setIsOpenOptions(prev => !prev)
+                }}
+                disabled={false}
+                title='Change Status'
+              >
+                <FaEye size={18} className='wiggle text-violet-500' />
+              </button>
+
+              <AnimatePresence>
+                {isOpenOptions && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.5, translateY: '-50%', originX: '100%' }}
+                    animate={{ opacity: 1, scale: 1, translateY: '-50%', originX: '100%' }}
+                    exit={{ opacity: 0, scale: 0.5, translateY: '-50%', originX: '100%' }}
+                    className='flex items-center justify-between gap-4 absolute top-1/2 right-8 rounded-md shadow-lg px-3 py-2 bg-black'
+                    onClick={e => e.stopPropagation()}
+                  >
+                    <button
+                      className='group'
+                      title='Publish'
+                      onClick={() => {
+                        setIsOpenOptions(false)
+                        handleGetUserCart()
+                      }}
+                    >
+                      <FaCartArrowDown size={18} className='wiggle text-yellow-500' />
+                    </button>
+                    <button
+                      className='group'
+                      title='Draft'
+                      onClick={() => {
+                        setIsOpenOptions(false)
+                        setIsOpenUserProgresses(true)
+                      }}
+                    >
+                      <SiCoursera size={18} className='wiggle text-orange-500' />
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
         )}
       </div>
@@ -535,6 +567,50 @@ function UserItem({
                 </div>
               ) : (
                 <p className='italic text-slate-400 text-sm'>User cart is empty.</p>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* User Courses Progresses */}
+      <AnimatePresence>
+        {isOpenUserProgresses && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className={`fixed z-40 top-0 left-0 right-0 bottom-0 text-dark bg-black bg-opacity-50 flex items-center justify-center ${className}`}
+            onClick={() => setIsOpenUserProgresses(false)}
+          >
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0 }}
+              className='w-full max-w-[500px] max-h-[500px] overflow-y-auto rounded-medium shadow-medium bg-white p-21'
+              onClick={e => e.stopPropagation()}
+            >
+              <h1 className='font-semibold'>{getUserName(data)}&apos;s Courses&apos;s Progresses</h1>
+              <Divider border size={4} />
+
+              {data.courses.length > 0 ? (
+                <div className='text-sm font-body tracking-wider flex flex-col gap-1'>
+                  {data.courses.map((item: any, index) => (
+                    <Link
+                      href={`/${item.course.slug}`}
+                      className='flex items-start gap-2 hover:text-sky-500 trans-200 hover:underline'
+                      key={item._id}
+                    >
+                      <span className='rounded-full min-w-6 text-center border border-dark-100 px-0.5 text-[10px]'>
+                        {index + 1}
+                      </span>
+                      <span>{item.course.title}</span> -{' '}
+                      <span className='font-semibold text-orange-500'>{item.progress}%</span>
+                    </Link>
+                  ))}
+                </div>
+              ) : (
+                <p className='italic text-slate-400 text-sm'>User courses is empty.</p>
               )}
             </motion.div>
           </motion.div>
