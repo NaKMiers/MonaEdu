@@ -16,13 +16,21 @@ export async function PATCH(req: NextRequest) {
     // get blog id to delete
     const { ids, value } = await req.json()
 
+    const updateSet: any = {
+      $set: { status: value || 'draft' },
+    }
+
+    if (value === 'published') {
+      updateSet.$set.publishedAt = new Date()
+    }
+
     // update blogs, get updated blogs
     const [updatedBlogs] = await Promise.all([
       // get updated blogs
       BlogModel.find({ _id: { $in: ids } }).lean(),
 
       // update blogs from database
-      BlogModel.updateMany({ _id: { $in: ids } }, { $set: { status: value || 'draft' } }),
+      BlogModel.updateMany({ _id: { $in: ids } }, updateSet),
     ])
 
     if (!updatedBlogs.length) {

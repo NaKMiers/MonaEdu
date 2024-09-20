@@ -1,7 +1,7 @@
 'use client'
 
-import { useAppDispatch } from '@/libs/hooks'
-import { setLearningLesson } from '@/libs/reducers/learningReducer'
+import { useAppDispatch, useAppSelector } from '@/libs/hooks'
+import { resetLearningLesson, setLearningLesson, setUserProgress } from '@/libs/reducers/learningReducer'
 import { ICourse } from '@/models/CourseModel'
 import { ILesson } from '@/models/LessonModel'
 import { IProgress } from '@/models/ProgressModel'
@@ -29,6 +29,9 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
   const dispatch = useAppDispatch()
   const { data: session } = useSession()
   const curUser: any = session?.user
+
+  // reducers
+  const chapters = useAppSelector(state => state.learning.chapters)
 
   // states
   const [showControls, setShowControls] = useState<boolean>(true)
@@ -69,6 +72,14 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
 
     // set volume from local storage
     setVolume(+(localStorage.getItem('volume') || '100'))
+
+    // Cleanup function to destroy the player instance
+    return () => {
+      if (progressTimeoutRef.current) {
+        clearTimeout(progressTimeoutRef.current)
+      }
+      dispatch(resetLearningLesson())
+    }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   // update current time and buffered
@@ -117,10 +128,22 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
         // update states
         dispatch(setLearningLesson({ ...lesson, progress }))
 
-        // // update course's progress
-        // if (progress.status === 'completed') {
-        //   await update()
-        // }
+        // update course's progress
+        if (progress.status === 'completed') {
+          const allLessons = chapters.reduce(
+            (acc: any, chapter: any) => [...acc, ...chapter.lessons],
+            []
+          )
+
+          const completedLessons = allLessons.filter(
+            lesson => lesson?.progress && lesson.progress.status === 'completed'
+          )
+
+          let percent = Math.round(((completedLessons.length + 1) / allLessons.length) * 100)
+          if (percent > 100) percent = 100
+
+          dispatch(setUserProgress(percent))
+        }
       }
     } catch (err: any) {
       console.log(err)
@@ -161,7 +184,7 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
         }
       }, interval)
     }
-  }, [dispatch, duration, lesson, curUser])
+  }, [dispatch, lesson, chapters, duration, curUser])
 
   // MARK: Play/Pause
   const play = useCallback(() => {

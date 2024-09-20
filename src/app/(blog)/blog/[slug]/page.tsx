@@ -1,12 +1,13 @@
 import Divider from '@/components/Divider'
 import { IBlog } from '@/models/BlogModel'
+import { IUser } from '@/models/UserModel'
 import { getBlogPageApi } from '@/requests'
+import { capitalize, getUserName } from '@/utils/string'
 import moment from 'moment-timezone'
+import 'moment/locale/vi'
 import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import 'moment/locale/vi'
-import { capitalize } from '@/utils/string'
 moment.locale('vi')
 
 async function BlogPage({ params: { slug } }: { params: { slug: string } }) {
@@ -17,13 +18,83 @@ async function BlogPage({ params: { slug } }: { params: { slug: string } }) {
     const data = await getBlogPageApi(slug, { next: { revalidate: 0 } })
     blog = data.blog
     suggestedBlogs = data.suggestedBlogs
+
+    console.log('suggestedBlogs:', suggestedBlogs)
   } catch (err: any) {
     notFound()
   }
 
+  // jsonLd
+  const jsonLd = {
+    '@context': 'https://schema.org/',
+    '@type': 'BlogPosting',
+    '@id': `${process.env.NEXT_PUBLIC_APP_URL}/blog/${blog?.slug}`,
+    mainEntityOfPage: `${process.env.NEXT_PUBLIC_APP_URL}/blog/${blog?.slug}`,
+    headline: blog?.title,
+    alternativeHeadline: blog?.titleNoDiacritics,
+    name: blog?.title,
+    description: blog?.summary,
+    datePublished: blog?.publishedAt,
+    dateModified: blog?.updatedAt,
+    author: {
+      '@type': 'Person',
+      '@id': `${process.env.NEXT_PUBLIC_APP_URL}/user/${(blog?.author as IUser).email}`,
+      name: typeof blog?.author === 'string' ? 'unknown' : getUserName(blog?.author),
+      url:
+        typeof blog?.author === 'string'
+          ? 'unknown'
+          : `${process.env.NEXT_PUBLIC_APP_URL}/user/${blog?.author.email}`,
+      image: {
+        '@type': 'ImageObject',
+        '@id': `${process.env.NEXT_PUBLIC_APP_URL}/user/${(blog?.author as IUser).avatar}`,
+        url: `${process.env.NEXT_PUBLIC_APP_URL}/user/${(blog?.author as IUser).avatar}`,
+        height: '96',
+        width: '96',
+      },
+    },
+    publisher: {
+      '@type': 'Organization',
+      '@id': process.env.NEXT_PUBLIC_APP_URL,
+      name: 'Mona Edu',
+      logo: {
+        '@type': 'ImageObject',
+        '@id': `${process.env.NEXT_PUBLIC_APP_URL}/images/logo.png`,
+        url: `${process.env.NEXT_PUBLIC_APP_URL}/images/logo.png`,
+      },
+    },
+    image: blog?.thumbnails,
+    url: `${process.env.NEXT_PUBLIC_APP_URL}/blog/${blog?.slug}`,
+    keywords: blog?.tags,
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      '@id': `${process.env.NEXT_PUBLIC_APP_URL}/blog/${blog?.slug}`,
+      url: `${process.env.NEXT_PUBLIC_APP_URL}/blog/${blog?.slug}`,
+      ratingValue: '4.9',
+      ratingCount: Math.floor((blog?.likes.length || 0) / 2),
+    },
+    // Adding suggestedBlogs (relatedBlogs)
+    isRelatedTo: suggestedBlogs?.map(blog => ({
+      '@type': 'BlogPosting',
+      '@id': `${process.env.NEXT_PUBLIC_APP_URL}/blog/${blog.slug}`,
+      name: blog.title,
+      url: `${process.env.NEXT_PUBLIC_APP_URL}/blog/${blog.slug}`,
+      headline: blog.title,
+      datePublished: blog.publishedAt,
+      author: {
+        '@type': 'Person',
+        '@id': `${process.env.NEXT_PUBLIC_APP_URL}/user/${(blog.author as IUser).email}`,
+        name: getUserName(blog.author as IUser),
+      },
+      image: blog.thumbnails, // Assuming the related blog also has thumbnails
+    })),
+  }
+
   return (
-    <div className='max-w-1200 mx-auto py-8 px-3 min-h-screen'>
-      <div className='grid grid-cols-12'>
+    <div className='max-w-1200 mx-auto px-3 min-h-screen pb-[72px] -mb-[72px]'>
+      {/* MARK: Add JSON-LD */}
+      <script type='application/ld+json' dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+
+      <div className='grid grid-cols-12 pt-16 md:pt-8'>
         {/* Content */}
         <div className='col-span-9 pr-9'>
           <div className='flex justify-end items-center'>
@@ -69,6 +140,8 @@ async function BlogPage({ params: { slug } }: { params: { slug: string } }) {
           </div>
         </div>
       </div>
+
+      <Divider size={45} border />
     </div>
   )
 }

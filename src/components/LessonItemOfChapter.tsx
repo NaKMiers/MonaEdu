@@ -1,6 +1,7 @@
 import { useAppSelector } from '@/libs/hooks'
 import { ILesson } from '@/models/LessonModel'
 import { duration } from '@/utils/time'
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { TiLockOpen, TiTick } from 'react-icons/ti'
 
@@ -32,7 +33,7 @@ function LessonItemOfChapter({
   }, [learningLesson, lesson._id])
 
   return (
-    <a
+    <Link
       href={`/learning/${courseSlug}/${lesson.slug}`}
       className={`relative bg-white rounded-md py-2 px-3 gap-4 hover:bg-primary trans-200 flex items-center overflow-hidden ${
         lesson.slug === lessonSlug ? 'font-semibold text-orange-500' : ''
@@ -61,7 +62,7 @@ function LessonItemOfChapter({
           {duration(lesson.duration)}
         </span>
       </div>
-    </a>
+    </Link>
   )
 }
 

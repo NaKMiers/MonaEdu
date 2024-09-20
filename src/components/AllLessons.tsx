@@ -1,21 +1,20 @@
 'use client'
 
 import { useAppDispatch, useAppSelector } from '@/libs/hooks'
+import { setChapters, setUserProgress } from '@/libs/reducers/learningReducer'
 import { setOpenSidebar } from '@/libs/reducers/modalReducer'
-import { IChapter } from '@/models/ChapterModel'
 import { ILesson } from '@/models/LessonModel'
 import { getLearningChaptersApi } from '@/requests/chapterRequest'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
-import { memo, useEffect, useRef, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { BsLayoutSidebarInset } from 'react-icons/bs'
 import { FaChevronCircleLeft, FaChevronCircleRight } from 'react-icons/fa'
 import Divider from './Divider'
 import LearningChapter from './LearningChapter'
-import { setUserProgress } from '@/libs/reducers/learningReducer'
 
 function AllLessons() {
   // hooks
@@ -28,12 +27,12 @@ function AllLessons() {
   const curUser: any = session?.user
 
   // reducers
+  const chapters = useAppSelector(state => state.learning.chapters)
   const openSidebar = useAppSelector(state => state.modal.openSidebar)
   const userProgress = useAppSelector(state => state.learning.userProgress)
 
   // states
   const [courseId, setCourseId] = useState<string>('')
-  const [chapters, setChapters] = useState<IChapter[]>([])
   const [nextLesson, setNextLesson] = useState<string>('')
   const [prevLesson, setPrevLesson] = useState<string>('')
   const [joinedCourse, setJoinedCourse] = useState<any>(null)
@@ -58,7 +57,7 @@ function AllLessons() {
         setIsRedirect(isRedirect)
 
         // set states
-        setChapters(chapters)
+        dispatch(setChapters(chapters))
         setCourseId(courseId)
 
         // set states
@@ -89,6 +88,11 @@ function AllLessons() {
       }
     }
     getChaptersWithLessons()
+
+    // clear chapters after unmount
+    return () => {
+      dispatch(setChapters([]))
+    }
   }, [router, dispatch, courseSlug, lessonSlug, curUser?.courses])
 
   // find next and prev lesson

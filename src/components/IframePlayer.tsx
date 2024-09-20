@@ -1,7 +1,7 @@
 'use client'
 
-import { useAppDispatch } from '@/libs/hooks'
-import { setLearningLesson } from '@/libs/reducers/learningReducer'
+import { useAppDispatch, useAppSelector } from '@/libs/hooks'
+import { resetLearningLesson, setLearningLesson, setUserProgress } from '@/libs/reducers/learningReducer'
 import { ICourse } from '@/models/CourseModel'
 import { ILesson } from '@/models/LessonModel'
 import { IProgress } from '@/models/ProgressModel'
@@ -30,6 +30,9 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
   const videoId = lesson?.source.split('https://www.youtube.com/embed/')[1].split('?')[0]
   const { data: session } = useSession()
   const curUser: any = session?.user
+
+  // reducers
+  const chapters = useAppSelector(state => state.learning.chapters)
 
   // states
   const [showControls, setShowControls] = useState<boolean>(true)
@@ -111,6 +114,7 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
     // Cleanup function to destroy the player instance
     return () => {
       if (playerRef.current && playerRef.current.destroy) {
+        dispatch(resetLearningLesson())
         playerRef.current.destroy()
       }
     }
@@ -164,11 +168,28 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
         // update states
         dispatch(setLearningLesson({ ...lesson, progress }))
 
-        // // update course's progress
-        // if (progress.status === 'completed') {
-        //   console.log('Session - iframe-completed...')
-        //   await update()
-        // }
+        // update course's progress
+        if (progress.status === 'completed') {
+          const allLessons = chapters.reduce(
+            (acc: any, chapter: any) => [...acc, ...chapter.lessons],
+            []
+          )
+
+          console.log('allLessons:', allLessons)
+
+          const completedLessons = allLessons.filter(
+            lesson => lesson?.progress && lesson.progress.status === 'completed'
+          )
+
+          console.log('completedLessons:', completedLessons)
+
+          let percent = Math.round(((completedLessons.length + 1) / allLessons.length) * 100)
+          if (percent > 100) percent = 100
+
+          console.log('percent:', percent)
+
+          dispatch(setUserProgress(percent))
+        }
       }
     } catch (err: any) {
       console.log(err)
@@ -209,7 +230,7 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
         }
       }, interval)
     }
-  }, [dispatch, duration, lesson, curUser])
+  }, [dispatch, lesson, duration, curUser, chapters])
 
   // MARK: Show/Hide Controls
   const showControlsHandler = useCallback(() => {
