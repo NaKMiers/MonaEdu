@@ -39,13 +39,15 @@ export async function POST(
     }
 
     // check if new lesson is duplicate with another lesson (title, slug) in them same course
-
     const isDuplicateLesson = await LessonModel.findOne({
       courseId,
       $or: [{ title }, { slug: generateSlug(title as string) }],
     })
     if (isDuplicateLesson) {
-      return NextResponse.json({ message: 'Lesson title is duplicated' }, { status: 400 })
+      return NextResponse.json(
+        { message: 'Lesson title is duplicated in current course' },
+        { status: 400 }
+      )
     }
 
     // check file

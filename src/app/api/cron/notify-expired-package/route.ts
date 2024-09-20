@@ -5,12 +5,12 @@ import jwt, { JwtPayload } from 'jsonwebtoken'
 import momentTZ from 'moment-timezone'
 import { NextRequest, NextResponse } from 'next/server'
 import { format, register } from 'timeago.js'
+import LessonModel from '@/models/LessonModel'
 import vi from 'timeago.js/lib/lang/vi'
 register('vi', vi)
 
 // Models: User
 import '@/models/UserModel'
-import LessonModel from '@/models/LessonModel'
 
 export const dynamic = 'force-dynamic'
 
@@ -27,7 +27,9 @@ export async function GET(req: NextRequest) {
         $group: {
           _id: { title: '$title', courseId: '$courseId' },
           count: { $sum: 1 },
-          lessons: { $push: { _id: '$_id', title: '$title' } },
+          lessons: {
+            $push: { _id: '$_id', title: '$title', chapterId: '$chapterId', courseId: '$courseId' },
+          },
         },
       },
       {

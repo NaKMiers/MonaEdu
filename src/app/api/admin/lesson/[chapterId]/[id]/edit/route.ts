@@ -34,6 +34,18 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
       return NextResponse.json({ message: 'Lesson does not exist' }, { status: 404 })
     }
 
+    // check if new lesson is duplicate with another lesson (title, slug) in them same course
+    const isDuplicateLesson = await LessonModel.findOne({
+      courseId,
+      $or: [{ title }, { slug: generateSlug(title as string) }],
+    })
+    if (isDuplicateLesson) {
+      return NextResponse.json(
+        { message: 'Lesson title is duplicated in current course' },
+        { status: 400 }
+      )
+    }
+
     let newSource: string = lesson.source
 
     // delete the file do not associated with the lesson in cloud
