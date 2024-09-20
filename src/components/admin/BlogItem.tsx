@@ -211,36 +211,42 @@ function BlogItem({
                   className='flex items-center justify-between gap-4 absolute top-1/2 right-8 rounded-md shadow-lg px-3 py-2 bg-black'
                   onClick={e => e.stopPropagation()}
                 >
-                  <button
-                    className='group'
-                    title='Publish'
-                    onClick={() => {
-                      setIsOpenStatusOptions(false)
-                      handleChangeBlogsStatus([data._id], 'published')
-                    }}
-                  >
-                    <FaCloudUploadAlt size={18} className='wiggle text-violet-500' />
-                  </button>
-                  <button
-                    className='group'
-                    title='Draft'
-                    onClick={() => {
-                      setIsOpenStatusOptions(false)
-                      handleChangeBlogsStatus([data._id], 'draft')
-                    }}
-                  >
-                    <RiDraftLine size={18} className='wiggle text-slate-300 -ml-0.5' />
-                  </button>
-                  <button
-                    className='group'
-                    title='Archive'
-                    onClick={() => {
-                      setIsOpenStatusOptions(false)
-                      handleChangeBlogsStatus([data._id], 'archived')
-                    }}
-                  >
-                    <FaArchive size={17} className='wiggle text-blue-500' />
-                  </button>
+                  {data.status !== 'published' && (
+                    <button
+                      className='group'
+                      title='Publish'
+                      onClick={() => {
+                        setIsOpenStatusOptions(false)
+                        handleChangeBlogsStatus([data._id], 'published')
+                      }}
+                    >
+                      <FaCloudUploadAlt size={18} className='wiggle text-violet-500' />
+                    </button>
+                  )}
+                  {data.status !== 'draft' && (
+                    <button
+                      className='group'
+                      title='Draft'
+                      onClick={() => {
+                        setIsOpenStatusOptions(false)
+                        handleChangeBlogsStatus([data._id], 'draft')
+                      }}
+                    >
+                      <RiDraftLine size={18} className='wiggle text-slate-300 -ml-0.5' />
+                    </button>
+                  )}
+                  {data.status !== 'archived' && (
+                    <button
+                      className='group'
+                      title='Archive'
+                      onClick={() => {
+                        setIsOpenStatusOptions(false)
+                        handleChangeBlogsStatus([data._id], 'archived')
+                      }}
+                    >
+                      <FaArchive size={17} className='wiggle text-blue-500' />
+                    </button>
+                  )}
                 </motion.div>
               )}
             </AnimatePresence>

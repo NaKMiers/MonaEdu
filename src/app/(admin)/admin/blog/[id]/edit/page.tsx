@@ -76,8 +76,6 @@ function EditBlogPage() {
         // send request to server to get blog
         const { blog } = await getBlogByIdApi(id) // cache: no-store
 
-        console.log('blog', blog)
-
         // set value to form
         setValue('title', blog.title)
         setValue('content', blog.content)
@@ -175,6 +173,8 @@ function EditBlogPage() {
 
   // send data to server to create new blog
   const onSubmit: SubmitHandler<FieldValues> = async data => {
+    console.log('data.content', data.content)
+
     if (!handleValidate(data)) return
 
     // return

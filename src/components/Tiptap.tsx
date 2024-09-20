@@ -158,7 +158,7 @@ const CustomImage = Image.extend({
       customClass += ' mx-auto'
     }
 
-    return ['img', { ...HTMLAttributes, class: customClass }, 0]
+    return ['img', { ...HTMLAttributes, class: customClass }]
   },
 })
 
