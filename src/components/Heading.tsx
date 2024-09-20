@@ -15,13 +15,13 @@ function Heading({ title, noLine, space, align = 'center', className }: HeadingP
         space ? 'w-[calc(100%_-_21_*_2px)]' : 'w-full'
       } ${className}`}
     >
-      <span
+      <h1
         className={`absolute top-1/2 ${
           align === 'left' ? 'left-0' : align === 'right' ? 'right-0' : 'left-1/2 -translate-x-1/2'
         } -translate-y-1/2 text-nowrap text-xs xs:text-xl sm:text-2xl font-semibold bg-white px-2 xs:px-4 py-1 rounded-lg text-center`}
       >
         {title}
-      </span>
+      </h1>
     </div>
   )
 }
