@@ -66,7 +66,7 @@ interface TextEditorProps {
   className?: string
 }
 
-const limit = 10000
+const limit = 20000
 
 // MARK: Customer Nodes
 const CustomHeading = Heading.extend({
