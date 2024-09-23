@@ -217,7 +217,7 @@ function CourseCard({ course: data, hideBadge, className = '' }: CourseCardProps
                   </button>
                   <div
                     className={`${
-                      showActions2 ? 'max-w-[100px] max-h-[40px] px-1.5 py-1' : 'max-w-0 max-h-0 p-0'
+                      showActions2 ? 'max-w-[120px] max-h-[40px] px-1.5 py-1' : 'max-w-0 max-h-0 p-0'
                     }  overflow-hidden absolute z-20 top-[80%] flex gap-2 rounded-md trans-300`}
                   >
                     <button
@@ -226,6 +226,14 @@ function CourseCard({ course: data, hideBadge, className = '' }: CourseCardProps
                     >
                       Mua tặng
                     </button>
+                    {['admin', 'editor'].includes(curUser.role) && (
+                      <Link
+                        href={`/admin/course/all?slug=${course.slug}`}
+                        className={`font-bold text-nowrap px-1.5 py-1 text-[10px] bg-white hover:bg-dark-0 hover:text-light border border-dark text-dark rounded-md shadow-md trans-200`}
+                      >
+                        Edit
+                      </Link>
+                    )}
                   </div>
                 </div>
               )}
@@ -341,7 +349,7 @@ function CourseCard({ course: data, hideBadge, className = '' }: CourseCardProps
                       </button>
                       <div
                         className={`${
-                          showActions ? 'max-w-[100px] max-h-[40px] px-1.5 py-1' : 'max-w-0 max-h-0 p-0'
+                          showActions ? 'max-w-[120px] max-h-[40px] px-1.5 py-1' : 'max-w-0 max-h-0 p-0'
                         }  overflow-hidden absolute z-20 top-[80%] flex gap-2 rounded-md trans-300`}
                       >
                         <button
@@ -350,6 +358,14 @@ function CourseCard({ course: data, hideBadge, className = '' }: CourseCardProps
                         >
                           Mua tặng
                         </button>
+                        {['admin', 'editor'].includes(curUser.role) && (
+                          <Link
+                            href={`/admin/course/all?slug=${course.slug}`}
+                            className={`font-bold text-nowrap px-1.5 py-1 text-[10px] bg-white hover:bg-dark-0 hover:text-light border border-dark text-dark rounded-md shadow-md trans-200`}
+                          >
+                            Edit
+                          </Link>
+                        )}
                       </div>
                     </div>
                   )}

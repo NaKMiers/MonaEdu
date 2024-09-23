@@ -18,9 +18,9 @@ import { HiDotsVertical } from 'react-icons/hi'
 import { PiStudentBold } from 'react-icons/pi'
 import { RiDonutChartFill } from 'react-icons/ri'
 import { FacebookShareButton } from 'react-share'
-import { CardBody, CardContainer, CardItem } from './effects/3dCard'
 import Divider from './Divider'
 import BuyNowButton from './admin/BuyNowButton'
+import { CardBody, CardContainer, CardItem } from './effects/3dCard'
 
 const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -216,7 +216,7 @@ function BestSellerCard({ course: data, index, className = '' }: BestSellerCardP
                   </button>
                   <div
                     className={`${
-                      showActions2 ? 'max-w-[100px] max-h-[40px] px-1.5 py-1' : 'max-w-0 max-h-0 p-0'
+                      showActions2 ? 'max-w-[120px] max-h-[40px] px-1.5 py-1' : 'max-w-0 max-h-0 p-0'
                     }  overflow-hidden absolute z-20 top-[80%] flex gap-2 rounded-md trans-300`}
                   >
                     <button
@@ -225,6 +225,14 @@ function BestSellerCard({ course: data, index, className = '' }: BestSellerCardP
                     >
                       Mua tặng
                     </button>
+                    {['admin', 'editor'].includes(curUser.role) && (
+                      <Link
+                        href={`/admin/course/all?slug=${course.slug}`}
+                        className={`font-bold text-nowrap px-1.5 py-1 text-[10px] bg-white hover:bg-dark-0 hover:text-light border border-dark text-dark rounded-md shadow-md trans-200`}
+                      >
+                        Edit
+                      </Link>
+                    )}
                   </div>
                 </div>
               )}
@@ -232,7 +240,7 @@ function BestSellerCard({ course: data, index, className = '' }: BestSellerCardP
         </div>
       }
     >
-      <div className='w-full'>
+      <div className={`w-full ${className}`}>
         <CardContainer className='inter-var w-full'>
           <CardBody className='w-full flex flex-col relative group/card dark:hover:shadow-2xl rounded-xl'>
             <CardItem className='w-full' translateZ={100} rotateX={20} rotateZ={-10}>

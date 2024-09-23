@@ -15,6 +15,7 @@ import { HiDotsVertical } from 'react-icons/hi'
 import { RiDonutChartFill } from 'react-icons/ri'
 import { FacebookShareButton } from 'react-share'
 import BuyNowButton from '../admin/BuyNowButton'
+import Link from 'next/link'
 
 interface FloatingActionButtonsProps {
   course: ICourse
@@ -184,7 +185,7 @@ function FloatingActionButtons({ course: data, className = '' }: FloatingActionB
           </button>
           <div
             className={`${
-              showActions ? 'max-w-[100px] max-h-[40px] px-1.5 py-1' : 'max-w-0 max-h-0 p-0'
+              showActions ? 'max-w-[120px] max-h-[40px] px-1.5 py-1' : 'max-w-0 max-h-0 p-0'
             }  overflow-hidden absolute z-20 bottom-[80%] flex gap-2 rounded-md trans-300`}
           >
             <button
@@ -193,6 +194,14 @@ function FloatingActionButtons({ course: data, className = '' }: FloatingActionB
             >
               Mua tặng
             </button>
+            {['admin', 'editor'].includes(curUser.role) && (
+              <Link
+                href={`/admin/course/all?slug=${course.slug}`}
+                className={`font-bold text-nowrap px-1.5 py-1 text-[10px] bg-white hover:bg-dark-0 hover:text-light border border-dark text-dark rounded-md shadow-md trans-200`}
+              >
+                Edit
+              </Link>
+            )}
           </div>
         </div>
       )}
