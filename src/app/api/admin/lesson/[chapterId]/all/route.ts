@@ -29,7 +29,7 @@ export async function GET(
     let skip = 0
     let itemPerPage = 9
     const filter: { [key: string]: any } = { chapterId, active: true }
-    let sort: { [key: string]: any } = { updatedAt: -1 } // default sort
+    let sort: { [key: string]: any } = { createdAt: 1 } // default sort
 
     // build filter
     for (const key in params) {

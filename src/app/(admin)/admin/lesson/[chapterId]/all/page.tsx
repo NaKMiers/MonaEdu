@@ -53,7 +53,7 @@ function AllLessonsPage({
   const defaultValues = useMemo<FieldValues>(() => {
     return {
       search: '',
-      sort: 'createdAt|-1',
+      sort: 'createdAt|1',
       active: 'true',
       expire: '',
       renew: '',
@@ -310,11 +310,11 @@ function AllLessonsPage({
               {
                 value: 'createdAt|1',
                 label: 'Oldest',
+                selected: true,
               },
               {
                 value: 'updatedAt|-1',
                 label: 'Latest',
-                selected: true,
               },
               {
                 value: 'updatedAt|1',
