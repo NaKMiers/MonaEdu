@@ -113,7 +113,7 @@ function Chapter({
                   }
                 }}
               >
-                {!isRedirect && <TiLockOpen size={16} className='flex-shrink-0' />}
+                {/* {!isRedirect && <TiLockOpen size={16} className='flex-shrink-0' />} */}
                 <span className='text-ellipsis line-clamp-1'>{lesson.title}</span>
                 <span className='text-xs font-semibold text-nowrap text-slate-500 ml-auto'>
                   {duration(lesson.duration)}
