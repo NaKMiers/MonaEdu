@@ -105,7 +105,7 @@ function CourseItem({
             title={data._id}
           >
             <div className='flex items-center w-full overflow-x-scroll snap-x snap-mandatory no-scrollbar'>
-              {data.images.map((src, index) => (
+              {data.images.slice(0, data.images.length === 1 ? 1 : -1).map((src, index) => (
                 <Image
                   key={index}
                   className='aspect-video flex-shrink-0 snap-start'

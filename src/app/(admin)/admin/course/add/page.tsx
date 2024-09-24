@@ -450,26 +450,29 @@ function AddCoursePage() {
         </div>
 
         {!!imageUrls.length && (
-          <div className='flex flex-wrap gap-3 rounded-lg bg-white p-3 mb-5'>
-            {imageUrls.map(url => (
-              <div className='relative aspect-video max-w-[250px]' key={url}>
-                <Image
-                  className='rounded-lg w-full h-full object-cover'
-                  src={url}
-                  height={250}
-                  width={250}
-                  alt='thumbnail'
-                />
+          <>
+            <div className='flex flex-wrap gap-3 rounded-lg bg-white p-3 mb-5'>
+              {imageUrls.map(url => (
+                <div className='relative aspect-video max-w-[250px]' key={url}>
+                  <Image
+                    className='rounded-lg w-full h-full object-cover'
+                    src={url}
+                    height={250}
+                    width={250}
+                    alt='thumbnail'
+                  />
 
-                <button
-                  onClick={() => handleRemoveImage(url)}
-                  className='absolute top-2 bg-slate-300 p-2 right-2 group hover:bg-dark-100 rounded-lg'
-                >
-                  <FaX size={16} className='text-dark group-hover:text-light trans-200' />
-                </button>
-              </div>
-            ))}
-          </div>
+                  <button
+                    onClick={() => handleRemoveImage(url)}
+                    className='absolute top-2 bg-slate-300 p-2 right-2 group hover:bg-dark-100 rounded-lg'
+                  >
+                    <FaX size={16} className='text-dark group-hover:text-light trans-200' />
+                  </button>
+                </div>
+              ))}
+            </div>
+            <p className='text-slate-400 italic -mt-4 text-center'>The last image must be portrait</p>
+          </>
         )}
 
         <LoadingButton

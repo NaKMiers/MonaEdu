@@ -170,6 +170,7 @@ function Banner({ time, courses, className = '' }: SliderProps) {
                   width={200}
                   height={200}
                   alt={course.title}
+                  loading='lazy'
                 />
 
                 <div

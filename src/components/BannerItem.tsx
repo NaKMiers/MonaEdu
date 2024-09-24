@@ -8,7 +8,7 @@ import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { memo, ReactNode, useCallback } from 'react'
+import { memo, ReactNode, useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 
 interface BannerItemProps {
@@ -22,6 +22,9 @@ function BannerItem({ course, className }: BannerItemProps) {
   const router = useRouter()
   const { data: session, update } = useSession()
   const curUser: any = session?.user
+
+  // states
+  const [width, setWidth] = useState<number>(0)
 
   // values
   const joinedCourse = curUser?.courses.find((c: any) => c.course === course._id)
@@ -80,6 +83,23 @@ function BannerItem({ course, className }: BannerItemProps) {
       action = 'buy'
     }
   }
+
+  // set width
+  useEffect(() => {
+    // handle resize
+    const handleResize = () => {
+      setWidth(window.innerWidth)
+    }
+
+    // initial width
+    setWidth(window.innerWidth)
+
+    // add event listener
+    window.addEventListener('resize', handleResize)
+
+    // remove event listener
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   // handle buy on subscription features
   const joinOnSubscription = useCallback(async () => {
@@ -152,10 +172,10 @@ function BannerItem({ course, className }: BannerItemProps) {
     <div className={`relative flex-shrink-0 w-full h-full snap-center ${className}`} key={course._id}>
       <div className='w-full h-full'>
         <Image
-          className='img w-full h-full object-cover object-right brightness-[0.8]'
-          src={course.images[0]}
+          className='img w-full h-full object-cover object-center brightness-[0.8]'
+          src={course.images[course.images.length - 1]}
           width={1920}
-          height={1080}
+          height={1920}
           alt={course.title}
           loading='lazy'
         />

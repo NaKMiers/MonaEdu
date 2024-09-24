@@ -38,7 +38,11 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
     }
 
     // upload images to aws s3
-    const imageUrls: string[] = await Promise.all(images.map(file => uploadFile(file)))
+    const imageUrls: string[] = await Promise.all(
+      images.map((file, index) =>
+        index + 1 !== images.length ? uploadFile(file) : uploadFile(file, '9:16')
+      )
+    )
 
     const stayImages = course.images.filter(img => originalImages.includes(img))
     const needToRemovedImages = course.images.filter(img => !originalImages.includes(img))

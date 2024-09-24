@@ -197,6 +197,11 @@ function AddCoursePage() {
         isValid = false
       }
 
+      if (!languages.length) {
+        toast.error('Please select at least 1 language')
+        isValid = false
+      }
+
       if (!selectedCategory) {
         toast.error('Please select category')
         isValid = false
@@ -237,6 +242,8 @@ function AddCoursePage() {
       formData.append('languages', JSON.stringify(data.languages))
       formData.append('originalImages', JSON.stringify(originalImages))
       files.forEach(file => formData.append('images', file))
+
+      console.log('data', data)
 
       const { message } = await updateCourseApi(id, formData)
 
@@ -492,32 +499,35 @@ function AddCoursePage() {
 
         {/* MARK: Image Urls */}
         {(!!imageUrls.length || !!originalImages.length) && (
-          <div className='flex flex-wrap gap-3 rounded-lg bg-white p-3 mb-5'>
-            {originalImages.map(url => (
-              <div className='relative' key={url}>
-                <Image className='rounded-lg' src={url} height={250} width={250} alt='thumbnail' />
+          <>
+            <div className='flex flex-wrap gap-3 rounded-lg bg-white p-3 mb-5'>
+              {originalImages.map(url => (
+                <div className='relative' key={url}>
+                  <Image className='rounded-lg' src={url} height={250} width={250} alt='thumbnail' />
 
-                <button
-                  onClick={() => setOriginalImages(prev => prev.filter(i => i !== url))}
-                  className='absolute top-2 bg-slate-300 p-2 right-2 group hover:bg-dark-100 rounded-lg'
-                >
-                  <FaX size={16} className='text-dark group-hover:text-light trans-200' />
-                </button>
-              </div>
-            ))}
-            {imageUrls.map(url => (
-              <div className='relative' key={url}>
-                <Image className='rounded-lg' src={url} height={250} width={250} alt='thumbnail' />
+                  <button
+                    onClick={() => setOriginalImages(prev => prev.filter(i => i !== url))}
+                    className='absolute top-2 bg-slate-300 p-2 right-2 group hover:bg-dark-100 rounded-lg'
+                  >
+                    <FaX size={16} className='text-dark group-hover:text-light trans-200' />
+                  </button>
+                </div>
+              ))}
+              {imageUrls.map(url => (
+                <div className='relative' key={url}>
+                  <Image className='rounded-lg' src={url} height={250} width={250} alt='thumbnail' />
 
-                <button
-                  onClick={() => handleRemoveImage(url)}
-                  className='absolute top-2 bg-slate-300 p-2 right-2 group hover:bg-dark-100 rounded-lg'
-                >
-                  <FaX size={16} className='text-dark group-hover:text-light trans-200' />
-                </button>
-              </div>
-            ))}
-          </div>
+                  <button
+                    onClick={() => handleRemoveImage(url)}
+                    className='absolute top-2 bg-slate-300 p-2 right-2 group hover:bg-dark-100 rounded-lg'
+                  >
+                    <FaX size={16} className='text-dark group-hover:text-light trans-200' />
+                  </button>
+                </div>
+              ))}
+            </div>
+            <p className='text-slate-400 italic -mt-4 text-center'>The last image must be portrait</p>
+          </>
         )}
 
         {/* MARK: Save Button */}
