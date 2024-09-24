@@ -133,7 +133,7 @@ function AllLessons() {
       >
         <div className='flex flex-col h-full relative z-10'>
           <div className='flex items-center gap-4'>
-            <Link href='/' className='shrink-0 trans-200'>
+            <Link href='/my-courses' className='shrink-0 trans-200'>
               <Image
                 className='aspect-square rounded-md'
                 src='/images/logo.png'
