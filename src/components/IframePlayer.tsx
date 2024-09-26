@@ -7,6 +7,7 @@ import { ILesson } from '@/models/LessonModel'
 import { IProgress } from '@/models/ProgressModel'
 import { updateProgressApi } from '@/requests'
 import { Slider } from '@mui/material'
+import { AnimatePresence, motion } from 'framer-motion'
 import moment from 'moment-timezone'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
@@ -15,6 +16,7 @@ import toast from 'react-hot-toast'
 import { FaCirclePause, FaCirclePlay } from 'react-icons/fa6'
 import { GrRotateLeft, GrRotateRight } from 'react-icons/gr'
 import { HiSpeakerWave, HiSpeakerXMark } from 'react-icons/hi2'
+import { IoMdSettings } from 'react-icons/io'
 import { RiFullscreenFill } from 'react-icons/ri'
 
 interface IframePlayerProps {
@@ -40,6 +42,8 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
   const [prevVolume, setPrevVolume] = useState<number>(100)
   const [isPlaying, setIsPlaying] = useState<boolean>(false)
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false)
+  const [isOpenQualitySetting, setIsOpenQualitySetting] = useState<boolean>(false)
+  const [quality, setQuality] = useState<string>('hd1080')
 
   const [currentTime, setCurrentTime] = useState<number>(
     lesson.progress?.progress ? (lesson.progress.progress / 100) * lesson.duration : 0
@@ -68,9 +72,34 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
     const duration = wd.player.getDuration()
     setDuration(duration)
 
+    // pause video
+    setTimeout(() => {
+      wd.player.pauseVideo()
+      setIsPlaying(false)
+    }, 0)
+
     // set init current time from prev progress
     wd.player.seekTo(currentTime, true)
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const onPlaybackQualityChange = useCallback((e: any) => {
+    console.log('Quality changed to:', e.data)
+    setQuality(e.data)
+  }, [])
+
+  // change video quality
+  const handleChangeVideoQuality = useCallback((newQuality: string) => {
+    if (playerRef.current) {
+      const currentQuality = playerRef.current.getPlaybackQuality()
+      console.log('New quality:', newQuality)
+      console.log('Current quality:', currentQuality)
+
+      if (currentQuality !== newQuality) {
+        playerRef.current.setPlaybackQuality(newQuality)
+        setQuality(newQuality)
+      }
+    }
+  }, [])
 
   // load youtube iframe api
   useEffect(() => {
@@ -93,6 +122,7 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
           },
           events: {
             onReady: onPlayerReady,
+            onPlaybackQualityChange: onPlaybackQualityChange,
           },
         })
       }
@@ -118,7 +148,7 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
         playerRef.current.destroy()
       }
     }
-  }, [onPlayerReady]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [dispatch, onPlayerReady, onPlaybackQualityChange]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // update current time and buffered
   useEffect(() => {
@@ -128,6 +158,9 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
         const buffered = wd.player.getVideoLoadedFraction()
         setBuffered(buffered * duration)
         setCurrentTime(wd.player.getCurrentTime())
+
+        const quality = wd.player.getPlaybackQuality()
+        setQuality(quality)
       }
     }, 1000)
 
@@ -563,7 +596,7 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
       <iframe
         key={videoId}
         className='w-full h-full object-contain'
-        src={`https://www.youtube.com/embed/${videoId}?enablejsapi=1&autoplay=0&mute=0&controls=0&rel=0&playsinline=1&iv_load_policy=3&origin=${process.env.NEXT_PUBLIC_APP_URL}`}
+        src={`https://www.youtube.com/embed/${videoId}?enablejsapi=1&autoplay=0&mute=0&controls=0&rel=0&playsinline=1&iv_load_policy=3&vq=tiny&origin=${process.env.NEXT_PUBLIC_APP_URL}`}
         allow='fullscreen; accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; autoplay'
         referrerPolicy='strict-origin-when-cross-origin'
         sandbox='allow-same-origin allow-scripts'
@@ -690,7 +723,9 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
 
           {/* Actions Buttons */}
           <div className='flex items-center justify-between w-full'>
+            {/* Left Side */}
             <div className='flex items-center gap-[13px]'>
+              {/* Play / Pause */}
               <button
                 className='group w-12 h-[50px] flex items-center justify-center'
                 onClick={handlePlay}
@@ -707,6 +742,8 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
                   />
                 )}
               </button>
+
+              {/* Volume */}
               <div className='flex h-[50px] items-center cursor-pointer'>
                 <button className='flex items-center justify-center group peer' onClick={handleMute}>
                   {volume > 0 ? (
@@ -724,6 +761,7 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
                   />
                 </div>
               </div>
+
               <div className='text-light tracking-widest font-semibold text-sm flex items-center'>
                 <span>
                   {currentTime / 3600 < 1
@@ -738,7 +776,18 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
                 </span>
               </div>
             </div>
+
+            {/* Right Side */}
             <div className='flex items-center'>
+              {/* Quality */}
+              <button
+                className='group w-12 h-[50px] flex items-center justify-center'
+                onClick={() => setIsOpenQualitySetting(true)}
+              >
+                <IoMdSettings size={24} className='text-light' />
+              </button>
+
+              {/* Zoom */}
               <button
                 className='group w-12 h-[50px] flex items-center justify-center'
                 onClick={handleFullscreen}
@@ -749,6 +798,54 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
           </div>
         </div>
       </div>
+
+      <AnimatePresence>
+        {isOpenQualitySetting && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className={`absolute top-0 left-0 right-0 bottom-0 bg-black bg-opacity-0 flex items-center justify-center ${className}`}
+            onClick={() => setIsOpenQualitySetting(false)}
+          >
+            <motion.div
+              className='absolute bottom-12 right-[6.5em] translate-x-1/2 text-sm text-light rounded-lg shadow-lg bg-dark-100 border-b-2 border-light flex flex-col'
+              onClick={() => toast.error('Độ phân giải được thay đổi tự động')}
+            >
+              <button
+                className={`w-full px-3 py-1.5 ${quality === 'hd1080' ? 'bg-primary text-dark' : ''}`}
+              >
+                1080p
+              </button>
+              <button
+                className={`w-full px-3 py-1.5 ${quality === 'hd720' ? 'bg-primary text-dark' : ''}`}
+              >
+                720p
+              </button>
+              <button
+                className={`w-full px-3 py-1.5 ${quality === 'large' ? 'bg-primary text-dark' : ''}`}
+              >
+                480p
+              </button>
+              <button
+                className={`w-full px-3 py-1.5 ${quality === 'medium' ? 'bg-primary text-dark' : ''}`}
+              >
+                360p
+              </button>
+              <button
+                className={`w-full px-3 py-1.5 ${quality === 'small' ? 'bg-primary text-dark' : ''}`}
+              >
+                240p
+              </button>
+              <button
+                className={`w-full px-3 py-1.5 ${quality === 'tiny' ? 'bg-primary text-dark' : ''}`}
+              >
+                144p
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
