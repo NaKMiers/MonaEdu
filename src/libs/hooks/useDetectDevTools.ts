@@ -1,7 +1,7 @@
 'use client'
 
 import { useSession } from 'next-auth/react'
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useAppDispatch } from '../hooks'
 import { setPageLoading } from '../reducers/modalReducer'
 
@@ -11,9 +11,20 @@ function UseDetectDevTools() {
   const { data: session } = useSession()
   const curUser: any = session?.user
 
+  const checkActive = useCallback(() => {
+    // de-active for development, review, test environments
+    if (process.env.NODE_ENV !== 'production') return false
+    // de-active for admin
+    if (curUser?.role === 'admin') return false
+    // de-active for mobile devices
+    if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) return false
+
+    return true
+  }, [curUser?.role])
+
   // disabled dev tool by reloading the page
   useEffect(() => {
-    if (process.env.NODE_ENV !== 'production' || curUser?.role === 'admin') {
+    if (!checkActive()) {
       return
     }
 
@@ -43,11 +54,11 @@ function UseDetectDevTools() {
     return () => {
       clearInterval(intervalId)
     }
-  }, [dispatch, curUser])
+  }, [dispatch, checkActive])
 
   // disabled keyboard shortcuts (Ctrl + Shift + I, Ctrl + Shift + J, Ctrl + Shift + C, Ctrl + Shift + M, Ctrl + U, F12)
   useEffect(() => {
-    if (process.env.NODE_ENV !== 'production' || curUser?.role === 'admin') {
+    if (!checkActive()) {
       return
     }
 
@@ -69,11 +80,11 @@ function UseDetectDevTools() {
     return () => {
       window.removeEventListener('keydown', disableShortcuts)
     }
-  }, [dispatch, curUser])
+  }, [checkActive])
 
   // disable context menu on specific paths
   useEffect(() => {
-    if (process.env.NODE_ENV !== 'production' || curUser?.role === 'admin') {
+    if (!checkActive()) {
       return
     }
 
@@ -88,7 +99,7 @@ function UseDetectDevTools() {
     return () => {
       window.removeEventListener('contextmenu', disableContextMenu)
     }
-  }, [curUser])
+  }, [checkActive])
 
   return null
 }

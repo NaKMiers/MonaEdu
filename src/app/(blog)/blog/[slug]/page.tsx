@@ -18,8 +18,6 @@ async function BlogPage({ params: { slug } }: { params: { slug: string } }) {
     const data = await getBlogPageApi(slug, { next: { revalidate: 0 } })
     blog = data.blog
     suggestedBlogs = data.suggestedBlogs
-
-    console.log('suggestedBlogs:', suggestedBlogs)
   } catch (err: any) {
     notFound()
   }

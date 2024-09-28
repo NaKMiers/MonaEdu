@@ -22,8 +22,6 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
     const originalThumbnails = JSON.parse(data.originalThumbnails as string)
     let thumbnails = formData.getAll('thumbnails')
 
-    console.log('data:', data)
-
     // get blog from database to edit
     const blog: IBlog | null = await BlogModel.findById(id).lean()
 

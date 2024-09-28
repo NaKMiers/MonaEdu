@@ -119,9 +119,6 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    console.log('filter:', filter)
-    console.log('sort:', sort)
-
     // count amount, get all courses, get all tags and categories, get all order
     const [amount, courses, chops] = await Promise.all([
       // get amount of course

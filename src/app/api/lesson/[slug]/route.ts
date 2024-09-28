@@ -22,8 +22,6 @@ export const dynamic = 'force-dynamic'
 export async function GET(req: NextRequest, { params: { slug } }: { params: { slug: string } }) {
   console.log('- Get Lesson -')
 
-  console.log('slug:', slug)
-
   try {
     // connect to database
     await connectDatabase()

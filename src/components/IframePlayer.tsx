@@ -83,7 +83,6 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const onPlaybackQualityChange = useCallback((e: any) => {
-    console.log('Quality changed to:', e.data)
     setQuality(e.data)
   }, [])
 
@@ -91,8 +90,6 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
   const handleChangeVideoQuality = useCallback((newQuality: string) => {
     if (playerRef.current) {
       const currentQuality = playerRef.current.getPlaybackQuality()
-      console.log('New quality:', newQuality)
-      console.log('Current quality:', currentQuality)
 
       if (currentQuality !== newQuality) {
         playerRef.current.setPlaybackQuality(newQuality)
@@ -491,6 +488,15 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
   // MARK: Keyboard events
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      const activeElement = document.activeElement as HTMLElement
+
+      if (
+        activeElement.tagName === 'INPUT' ||
+        activeElement.tagName === 'TEXTAREA' ||
+        activeElement.isContentEditable
+      )
+        return
+
       // Space
       if (e.code === 'Space' || e.key === 'k') {
         e.preventDefault()

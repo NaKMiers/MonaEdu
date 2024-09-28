@@ -173,8 +173,6 @@ function EditBlogPage() {
 
   // send data to server to create new blog
   const onSubmit: SubmitHandler<FieldValues> = async data => {
-    console.log('data.content', data.content)
-
     if (!handleValidate(data)) return
 
     // return

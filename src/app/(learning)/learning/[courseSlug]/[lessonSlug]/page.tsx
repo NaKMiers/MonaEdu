@@ -61,8 +61,6 @@ function LessonPage({
           next: { revalidate: 300 },
         })
 
-        console.log('Lesson:', lesson)
-
         // set learning lesson
         dispatch(setLearningLesson(lesson))
 
@@ -94,12 +92,6 @@ function LessonPage({
 
             // update states
             dispatch(setLearningLesson({ ...lesson, progress }))
-
-            // // update course's progress
-            // if (progress.status === 'completed') {
-            //   console.log('Session - docs-completed...')
-            //   await update()
-            // }
           }, 5000)
         }
       } catch (err: any) {

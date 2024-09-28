@@ -243,8 +243,6 @@ function AddCoursePage() {
       formData.append('originalImages', JSON.stringify(originalImages))
       files.forEach(file => formData.append('images', file))
 
-      console.log('data', data)
-
       const { message } = await updateCourseApi(id, formData)
 
       // show success message

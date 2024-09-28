@@ -404,6 +404,15 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
   // MARK: Keyboard events
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      const activeElement = document.activeElement as HTMLElement
+
+      if (
+        activeElement.tagName === 'INPUT' ||
+        activeElement.tagName === 'TEXTAREA' ||
+        activeElement.isContentEditable
+      )
+        return
+
       // Space
       if (e.code === 'Space' || e.key === 'k') {
         e.preventDefault()

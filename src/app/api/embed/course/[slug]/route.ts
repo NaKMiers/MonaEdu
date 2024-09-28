@@ -22,8 +22,6 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
       .populate('flashSale')
       .lean()
 
-    console.log('Course:', course)
-
     // return response
     return NextResponse.json({ course }, { status: 200 })
   } catch (err: any) {

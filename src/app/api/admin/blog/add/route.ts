@@ -20,9 +20,6 @@ export async function POST(req: NextRequest) {
     const { title, content, author, summary, relatedBlogs, booted } = data
     const tags = JSON.parse(data.tags as string)
 
-    console.log('data:', data)
-    console.log('tags:', tags)
-
     let thumbnails = formData.getAll('thumbnails')
 
     // check images

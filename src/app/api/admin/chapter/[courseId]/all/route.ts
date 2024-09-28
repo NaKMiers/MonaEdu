@@ -80,8 +80,6 @@ export async function GET(req: NextRequest, { params: { courseId } }: { params: 
       }
     }
 
-    console.log('filter:', filter)
-
     // get amount, get all chapters
     const [amount, chapters] = await Promise.all([
       // get amount of course

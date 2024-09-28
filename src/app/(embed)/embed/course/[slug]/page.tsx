@@ -14,7 +14,6 @@ async function EmbedPage({ params: { slug } }: { params: { slug: string } }) {
 
   try {
     const data = await getEmbedCourseApi(slug, { next: { revalidate: 60 } })
-    console.log('data:', data)
     course = data.course
   } catch (err: any) {
     notFound()

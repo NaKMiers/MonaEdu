@@ -203,7 +203,6 @@ function UserItem({
     try {
       // send request to get user's cart
       const { cart } = await getCartApi(`?userId=${data._id}`) // cache: no-store
-      console.log('cart', cart)
 
       // set cart states
       setUserCart(cart)

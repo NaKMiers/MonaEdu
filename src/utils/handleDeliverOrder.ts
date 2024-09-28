@@ -140,7 +140,6 @@ export default async function handleDeliverOrder(id: string, message: string = '
       // get receiver courses
       let receiver: IUser | null = await UserModel.findOne({ email: receivedUser }).lean()
 
-      console.log('receiver111', receiver)
       // check if receiver exists or not
       if (!receiver) {
         throw new Error('Receiver not found')
@@ -165,8 +164,6 @@ export default async function handleDeliverOrder(id: string, message: string = '
         }
       })
 
-      console.log('updatedCourses111', updatedCourses)
-
       const newCourses = items.map((course: any) => {
         if (!duplicatedCourseIds.includes(course._id.toString())) {
           return {
@@ -175,8 +172,6 @@ export default async function handleDeliverOrder(id: string, message: string = '
           }
         }
       })
-
-      console.log('newCourses111', newCourses)
 
       // buy as a gift
       await UserModel.updateOne(

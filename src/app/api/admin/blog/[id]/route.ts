@@ -18,8 +18,6 @@ export async function GET(req: NextRequest, { params: { id } }: { params: { id: 
     // get blog from database
     const blog = await BlogModel.findById(id).lean()
 
-    console.log('Blog:', blog)
-
     // return blog
     return NextResponse.json({ blog, message: 'Blog found' }, { status: 200 })
   } catch (err: any) {

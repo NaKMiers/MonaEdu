@@ -41,9 +41,6 @@ export async function GET(req: NextRequest) {
     const twelveHoursAgo = momentTZ.tz(now, 'Asia/Ho_Chi_Minh').add(12, 'hours').toDate()
     const twentyFourHoursAgo = momentTZ.tz(now, 'Asia/Ho_Chi_Minh').add(24, 'hours').toDate()
 
-    console.log('twentyFourHoursAgo:', twentyFourHoursAgo)
-    console.log('twelveHoursAgo:', twelveHoursAgo)
-
     // get all users have expired monthly package
     const users: IUser[] = await UserModel.find({
       'package.expire': { $gt: twelveHoursAgo, $lte: twentyFourHoursAgo }, // (12, 24h]
