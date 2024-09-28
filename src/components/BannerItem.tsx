@@ -23,9 +23,6 @@ function BannerItem({ course, className }: BannerItemProps) {
   const { data: session, update } = useSession()
   const curUser: any = session?.user
 
-  // states
-  const [width, setWidth] = useState<number>(0)
-
   // values
   const joinedCourse = curUser?.courses.find((c: any) => c.course === course._id)
   let packageType: 'lifetime' | 'credit' | 'monthly' | 'no-subscription' = 'no-subscription'
@@ -83,23 +80,6 @@ function BannerItem({ course, className }: BannerItemProps) {
       action = 'buy'
     }
   }
-
-  // set width
-  useEffect(() => {
-    // handle resize
-    const handleResize = () => {
-      setWidth(window.innerWidth)
-    }
-
-    // initial width
-    setWidth(window.innerWidth)
-
-    // add event listener
-    window.addEventListener('resize', handleResize)
-
-    // remove event listener
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
 
   // handle buy on subscription features
   const joinOnSubscription = useCallback(async () => {

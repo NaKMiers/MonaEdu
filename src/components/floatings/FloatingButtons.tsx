@@ -4,11 +4,12 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { memo, useState } from 'react'
+import { memo, useCallback, useEffect, useState } from 'react'
 import { AiFillMessage } from 'react-icons/ai'
 import { FaBoltLightning } from 'react-icons/fa6'
 import { RiAdvertisementFill, RiVipCrown2Fill } from 'react-icons/ri'
 import Divider from '../Divider'
+import { IoCloseSharp } from 'react-icons/io5'
 
 interface FloatingButtonsProps {
   className?: string
@@ -19,9 +20,45 @@ function FloatingButtons({ className = '' }: FloatingButtonsProps) {
   const { data: session } = useSession()
   const curUser: any = session?.user
 
+  const [width, setWidth] = useState<number>(0)
+
   // states
   const [openContact, setOpenContact] = useState<boolean>(false)
-  const [openAds, setOpenAds] = useState<boolean>(false)
+  const [openAds, setOpenAds] = useState<boolean>(
+    JSON.parse(localStorage.getItem('openAds') || '{"timeLeft": 2}').timeLeft > 0
+  )
+
+  // set width
+  useEffect(() => {
+    // handle resize
+    const handleResize = () => {
+      setWidth(window.innerWidth)
+    }
+
+    // initial width
+    setWidth(window.innerWidth)
+
+    // add event listener
+    window.addEventListener('resize', handleResize)
+
+    // remove event listener
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  // handle close ads
+  const handleCloseAds = useCallback(() => {
+    const string = localStorage.getItem('openAds')
+    if (string) {
+      const data = JSON.parse(string)
+      if (data.timeLeft > 0) {
+        data.timeLeft = data.timeLeft - 1
+        localStorage.setItem('openAds', JSON.stringify(data))
+      }
+    } else {
+      localStorage.setItem('openAds', JSON.stringify({ timeLeft: 2 }))
+    }
+    setOpenAds(false)
+  }, [])
 
   return (
     <>
@@ -38,13 +75,13 @@ function FloatingButtons({ className = '' }: FloatingButtonsProps) {
           </Link>
         )}
 
-        {/* <button
+        <button
           className='group flex items-center justify-center h-[44px] w-[44px] border-2 bg-dark-100 border-light rounded-xl'
-          title='Liên hệ'
+          title='Ads'
           onClick={() => setOpenAds(true)}
         >
           <RiAdvertisementFill size={24} className={`text-light wiggle trans-200`} />
-        </button> */}
+        </button>
 
         <Link
           href='/flash-sale'
@@ -64,28 +101,37 @@ function FloatingButtons({ className = '' }: FloatingButtonsProps) {
       </div>
 
       {/* Ads Modal */}
-      {/* <AnimatePresence>
+      <AnimatePresence>
         {openAds && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3, exit: { duration: 5 } }}
-            className='fixed z-50 top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex items-center justify-center px-2'
-            onClick={() => setOpenAds(false)}
+            transition={{ duration: 0.5 }}
+            className='fixed z-[60] top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex items-center justify-center p-10'
+            onClick={handleCloseAds}
           >
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               exit={{ scale: 0 }}
-              className='w-full max-w-[500px] rounded-medium shadow-medium bg-white p-21'
-              onClick={e => e.stopPropagation()}
+              className='h-full w-full'
             >
-              Hello
+              <button className='absolute top-12 right-12 group text-light' onClick={handleCloseAds}>
+                <IoCloseSharp size={30} className='wiggle' />
+              </button>
+              <Image
+                className='w-full h-full object-contain overflow-hidden shadow-lg'
+                src={width > 0 && width < 768 ? '/sales/bigsale-mobile.png' : '/sales/bigsale.png'}
+                width={2000}
+                height={2000}
+                alt='big-sale'
+                loading='lazy'
+              />
             </motion.div>
           </motion.div>
         )}
-      </AnimatePresence> */}
+      </AnimatePresence>
 
       {/* Contact Modal */}
       <AnimatePresence>
