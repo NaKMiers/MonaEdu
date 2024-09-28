@@ -24,9 +24,7 @@ function FloatingButtons({ className = '' }: FloatingButtonsProps) {
 
   // states
   const [openContact, setOpenContact] = useState<boolean>(false)
-  const [openAds, setOpenAds] = useState<boolean>(
-    JSON.parse(localStorage.getItem('openAds') || '{"timeLeft": 2}').timeLeft > 0
-  )
+  const [openAds, setOpenAds] = useState<boolean>(false)
 
   // set width
   useEffect(() => {
@@ -43,6 +41,15 @@ function FloatingButtons({ className = '' }: FloatingButtonsProps) {
 
     // remove event listener
     return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  // auto show ads
+  useEffect(() => {
+    if (JSON.parse(localStorage.getItem('openAds') || '{"timeLeft": 2}').timeLeft > 0) {
+      setTimeout(() => {
+        setOpenAds(true)
+      }, 8000)
+    }
   }, [])
 
   // handle close ads
