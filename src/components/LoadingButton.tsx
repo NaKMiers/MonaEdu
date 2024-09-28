@@ -15,7 +15,14 @@ function LoadingButton({ text, isLoading, onClick, className = '' }: LoadingButt
       disabled={isLoading}
       onClick={onClick}
     >
-      {isLoading ? <RiDonutChartFill size={20} className='animate-spin' /> : text}
+      {isLoading ? (
+        <RiDonutChartFill
+          size={20}
+          className="animate-spin"
+        />
+      ) : (
+        text
+      )}
     </button>
   )
 }

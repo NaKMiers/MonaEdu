@@ -7,6 +7,7 @@ import { ICourse } from '@/models/CourseModel'
 import { addToCartApi, likeCourseApi } from '@/requests'
 import { formatPrice } from '@/utils/number'
 import { useSession } from 'next-auth/react'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { memo, useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
@@ -15,7 +16,6 @@ import { HiDotsVertical } from 'react-icons/hi'
 import { RiDonutChartFill } from 'react-icons/ri'
 import { FacebookShareButton } from 'react-share'
 import BuyNowButton from '../admin/BuyNowButton'
-import Link from 'next/link'
 
 interface FloatingActionButtonsProps {
   course: ICourse
@@ -126,33 +126,36 @@ function FloatingActionButtons({ course: data, className = '' }: FloatingActionB
   return (
     <div className={`fixed ${className}`}>
       {/* Like & Share */}
-      <div className='flex items-center gap-2 sm:gap-2.5 mr-1 sm:mr-2.5'>
-        <button className='flex items-center justify-center group'>
-          <span className='hidden sm:block mr-1.5 font-semibold'>{course.likes.length}</span>{' '}
+      <div className="mr-1 flex items-center gap-2 sm:mr-2.5 sm:gap-2.5">
+        <button className="group flex items-center justify-center">
+          <span className="mr-1.5 hidden font-semibold sm:block">{course.likes.length}</span>{' '}
           <FaRegThumbsUp
             size={16}
             className={`${
               !course.likes.includes(curUser?._id)
                 ? 'text-dark group-hover:text-rose-500'
                 : 'text-rose-500 group-hover:text-dark'
-            } -mt-1 trans-200`}
+            } trans-200 -mt-1`}
             onClick={handleLike}
           />
         </button>
 
-        <FacebookShareButton url={`https://monaedu.com/${course.slug}`} hashtag='#monaedu'>
-          <div className='flex justify-center items-center w-full'>
+        <FacebookShareButton
+          url={`https://monaedu.com/${course.slug}`}
+          hashtag="#monaedu"
+        >
+          <div className="flex w-full items-center justify-center">
             <FaShareAlt size={16} />
-            <span className='hidden sm:block font-semibold ml-1.5 text-nowrap'>Chia sẻ</span>
+            <span className="ml-1.5 hidden text-nowrap font-semibold sm:block">Chia sẻ</span>
           </div>
         </FacebookShareButton>
       </div>
 
       {/* Price */}
-      <div className='flex flex-col justify-center tracking-tighter text-dark font-semibold pl-2 sm:px-4 border-l'>
-        <span className='font-bold leading-4 text-sm sm:text-[18px]'>{formatPrice(course.price)}</span>
+      <div className="flex flex-col justify-center border-l pl-2 font-semibold tracking-tighter text-dark sm:px-4">
+        <span className="text-sm font-bold leading-4 sm:text-[18px]">{formatPrice(course.price)}</span>
         {course.oldPrice && (
-          <span className='line-through leading-4 text-slate-400 text-[10px] sm:text-sm'>
+          <span className="text-[10px] leading-4 text-slate-400 line-through sm:text-sm">
             {formatPrice(course.oldPrice)}
           </span>
         )}
@@ -164,32 +167,41 @@ function FloatingActionButtons({ course: data, className = '' }: FloatingActionB
       {/* Add To Cart */}
       {(!curUser || !curUser?.courses?.map((course: any) => course.course).includes(course._id)) && (
         <button
-          className={`group font-semibold h-[42px] px-3 flex items-center justify-center rounded-lg shadow-lg bg-dark-100 border-2 border-dark hover:bg-white trans-300 hover:-translate-y-1 ${
+          className={`trans-300 group flex h-[42px] items-center justify-center rounded-lg border-2 border-dark bg-dark-100 px-3 font-semibold shadow-lg hover:-translate-y-1 hover:bg-white ${
             isLoading ? 'pointer-events-none bg-slate-200' : ''
           }`}
           onClick={addCourseToCart}
           disabled={isLoading}
         >
           {isLoading ? (
-            <RiDonutChartFill size={18} className='animate-spin text-dark' />
+            <RiDonutChartFill
+              size={18}
+              className="animate-spin text-dark"
+            />
           ) : (
-            <FaCartPlus className='text-[18px] sm:text-[20px] wiggle text-light group-hover:text-dark' />
+            <FaCartPlus className="wiggle text-[18px] text-light group-hover:text-dark sm:text-[20px]" />
           )}
         </button>
       )}
 
       {curUser?._id && curUser.courses.map((course: any) => course.course).includes(course._id) && (
-        <div className='text-dark relative flex justify-end items-center w-[30px] h-[42px]'>
-          <button className='group' onClick={() => setShowActions(prev => !prev)}>
-            <HiDotsVertical size={24} className='wiggle' />
+        <div className="relative flex h-[42px] w-[30px] items-center justify-end text-dark">
+          <button
+            className="group"
+            onClick={() => setShowActions(prev => !prev)}
+          >
+            <HiDotsVertical
+              size={24}
+              className="wiggle"
+            />
           </button>
           <div
             className={`${
-              showActions ? 'max-w-[120px] max-h-[40px] px-1.5 py-1' : 'max-w-0 max-h-0 p-0'
-            }  overflow-hidden absolute z-20 bottom-[80%] flex gap-2 rounded-md trans-300`}
+              showActions ? 'max-h-[40px] max-w-[120px] px-1.5 py-1' : 'max-h-0 max-w-0 p-0'
+            } trans-300 absolute bottom-[80%] z-20 flex gap-2 overflow-hidden rounded-md`}
           >
             <button
-              className={`font-bold text-nowrap px-1.5 py-1 text-[10px] bg-white hover:bg-dark-0 hover:text-light border border-dark text-dark rounded-md shadow-md trans-200`}
+              className={`trans-200 text-nowrap rounded-md border border-dark bg-white px-1.5 py-1 text-[10px] font-bold text-dark shadow-md hover:bg-dark-0 hover:text-light`}
               onClick={buyNow}
             >
               Mua tặng
@@ -197,7 +209,7 @@ function FloatingActionButtons({ course: data, className = '' }: FloatingActionB
             {['admin', 'editor'].includes(curUser.role) && (
               <Link
                 href={`/admin/course/all?slug=${course.slug}`}
-                className={`font-bold text-nowrap px-1.5 py-1 text-[10px] bg-white hover:bg-dark-0 hover:text-light border border-dark text-dark rounded-md shadow-md trans-200`}
+                className={`trans-200 text-nowrap rounded-md border border-dark bg-white px-1.5 py-1 text-[10px] font-bold text-dark shadow-md hover:bg-dark-0 hover:text-light`}
               >
                 Edit
               </Link>

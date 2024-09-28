@@ -84,25 +84,25 @@ function ConfirmDialog({
 
   return (
     <div
-      className='fixed z-50 top-0 left-0 h-screen text-dark w-screen hidden items-center justify-center p-21 bg-black bg-opacity-10 opacity-0 trans-300'
+      className="trans-300 fixed left-0 top-0 z-50 hidden h-screen w-screen items-center justify-center bg-black bg-opacity-10 p-21 text-dark opacity-0"
       ref={modalRef}
       onClick={() => setOpen(false)}
     >
       <div
-        className={`relative z-50 rounded-medium shadow-medium-light bg-white p-21 max-w-[500px] w-full max-h-[500px] opacity-0 trans-300 translate-y-8 ${className}`}
+        className={`trans-300 relative z-50 max-h-[500px] w-full max-w-[500px] translate-y-8 rounded-medium bg-white p-21 opacity-0 shadow-medium-light ${className}`}
         ref={modalBodyRef}
         onClick={e => e.stopPropagation()}
       >
-        <h2 className='text-xl font-semibold tracking-wide'>{title}</h2>
-        <hr className='my-2' />
+        <h2 className="text-xl font-semibold tracking-wide">{title}</h2>
+        <hr className="my-2" />
 
-        <p className='font-body tracking-wide'>{content}</p>
+        <p className="font-body tracking-wide">{content}</p>
 
-        <hr className='my-2' />
+        <hr className="my-2" />
 
-        <div className='flex items-center justify-end gap-3 select-none'>
+        <div className="flex select-none items-center justify-end gap-3">
           <button
-            className={`rounded-lg shadow-lg px-3 py-2 border border-slate-300 hover:bg-slate-300 hover:text-light trans-200 ${
+            className={`trans-200 rounded-lg border border-slate-300 px-3 py-2 shadow-lg hover:bg-slate-300 hover:text-light ${
               isLoading ? 'pointer-events-none' : ''
             }`}
             onClick={() => setOpen(false)}
@@ -111,7 +111,7 @@ function ConfirmDialog({
             {cancelLabel || 'Hủy bỏ'}
           </button>
           <button
-            className={`rounded-lg shadow-lg px-3 py-2 border text-${color}-500 hover:bg-secondary hover:border-secondary hover:text-light trans-200 ${
+            className={`rounded-lg border px-3 py-2 shadow-lg text-${color}-500 trans-200 hover:border-secondary hover:bg-secondary hover:text-light ${
               isLoading ? 'pointer-events-none border-slate-300' : `border-${color}-500`
             }`}
             onClick={() => {
@@ -121,7 +121,10 @@ function ConfirmDialog({
             disabled={isLoading}
           >
             {isLoading ? (
-              <RiDonutChartFill size={24} className='animate-spin text-slate-300' />
+              <RiDonutChartFill
+                size={24}
+                className="animate-spin text-slate-300"
+              />
             ) : (
               acceptLabel || 'Chấp nhận'
             )}

@@ -3,10 +3,9 @@
 import { IChapter } from '@/models/ChapterModel'
 import { duration } from '@/utils/time'
 import { useSession } from 'next-auth/react'
-import Link from 'next/link'
 import { memo, useEffect, useRef, useState } from 'react'
 import { FaAngleDown } from 'react-icons/fa'
-import { TiLockClosed, TiLockOpen } from 'react-icons/ti'
+import { TiLockClosed } from 'react-icons/ti'
 import Divider from './Divider'
 import LessonItemOfChapter from './LessonItemOfChapter'
 
@@ -64,25 +63,28 @@ function LearningChapter({
 
   return (
     <ul
-      className={`flex flex-col border-b-2 bg-neutral-800 rounded-lg shadow-lg border-slate-300 ${className}`}
+      className={`flex flex-col rounded-lg border-b-2 border-slate-300 bg-neutral-800 shadow-lg ${className}`}
     >
       <div
         className={`${
           chapter.lessons?.some(lesson => lesson.slug === lessonSlug) ? 'text-orange-500' : 'text-light'
-        } font-semibold flex justify-between items-start gap-2 py-2 px-3 cursor-pointer`}
+        } flex cursor-pointer items-start justify-between gap-2 px-3 py-2 font-semibold`}
         onClick={() => setOpen(!open)}
       >
-        <p className='text-sm'>{chapter.title}</p>
-        <div className='flex items-center gap-2'>
-          <span className='text-xs'>
+        <p className="text-sm">{chapter.title}</p>
+        <div className="flex items-center gap-2">
+          <span className="text-xs">
             {duration(chapter.lessons?.reduce((total, lesson) => total + lesson.duration, 0) || 0)}
           </span>{' '}
-          <FaAngleDown size={18} className={`${open ? 'rotate-180' : ''} trans-200`} />
+          <FaAngleDown
+            size={18}
+            className={`${open ? 'rotate-180' : ''} trans-200`}
+          />
         </div>
       </div>
 
       <ul
-        className={`flex flex-col px-2 gap-[4px] ${open ? '' : 'max-h-0'} trans-300 overflow-hidden`}
+        className={`flex flex-col gap-[4px] px-2 ${open ? '' : 'max-h-0'} trans-300 overflow-hidden`}
         ref={chapterRef}
       >
         {chapter.lessons?.map(lesson =>
@@ -96,15 +98,20 @@ function LearningChapter({
             />
           ) : (
             <div
-              className={`bg-white rounded-md py-2 px-3 gap-4 flex items-center ${
+              className={`flex items-center gap-4 rounded-md bg-white px-3 py-2 ${
                 lesson.slug === lessonSlug ? 'font-semibold text-orange-500' : ''
               }`}
               title={lesson.title}
               key={lesson._id}
             >
-              {!isRedirect && <TiLockClosed size={16} className='flex-shrink-0' />}
-              <span className='text-ellipsis line-clamp-1'>{lesson.title}</span>
-              <span className='text-xs font-semibold text-nowrap text-slate-500 ml-auto'>
+              {!isRedirect && (
+                <TiLockClosed
+                  size={16}
+                  className="flex-shrink-0"
+                />
+              )}
+              <span className="line-clamp-1 text-ellipsis">{lesson.title}</span>
+              <span className="ml-auto text-nowrap text-xs font-semibold text-slate-500">
                 {duration(lesson.duration)}
               </span>
             </div>

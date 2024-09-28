@@ -259,34 +259,37 @@ function AddCoursePage() {
   }
 
   return (
-    <div className='max-w-1200 mx-auto'>
+    <div className="mx-auto max-w-1200">
       {/* MARK: Admin Header */}
-      <AdminHeader title='Edit Course' backLink='/admin/course/all' />
+      <AdminHeader
+        title="Edit Course"
+        backLink="/admin/course/all"
+      />
 
-      <div className='mt-5 bg-slate-200 rounded-lg p-21 shadow-lg'>
-        <div className='mb-5 grid grid-cols-1 lg:grid-cols-3 gap-5'>
+      <div className="mt-5 rounded-lg bg-slate-200 p-21 shadow-lg">
+        <div className="mb-5 grid grid-cols-1 gap-5 lg:grid-cols-3">
           {/* MARK: Title */}
           <Input
-            id='title'
-            label='Title'
+            id="title"
+            label="Title"
             disabled={isLoading}
             register={register}
             errors={errors}
             required
-            type='text'
+            type="text"
             icon={RiCharacterRecognitionLine}
             onFocus={() => clearErrors('title')}
           />
 
           {/* MARK: Author */}
           <Input
-            id='author'
-            label='Author'
+            id="author"
+            label="Author"
             disabled={isLoading}
             register={register}
             required
             errors={errors}
-            type='text'
+            type="text"
             rows={10}
             icon={FaUser}
             onFocus={() => clearErrors('author')}
@@ -294,13 +297,13 @@ function AddCoursePage() {
 
           {/* MARK: Citing */}
           <Input
-            id='citing'
-            label='Citing'
+            id="citing"
+            label="Citing"
             disabled={isLoading}
             register={register}
             required
             errors={errors}
-            type='text'
+            type="text"
             rows={10}
             icon={BsSourceforge}
             onFocus={() => clearErrors('citing')}
@@ -308,28 +311,28 @@ function AddCoursePage() {
         </div>
 
         {/* MARK: Price - Old Price */}
-        <div className='mb-5 grid grid-cols-1 lg:grid-cols-2 gap-5'>
+        <div className="mb-5 grid grid-cols-1 gap-5 lg:grid-cols-2">
           {/* Price */}
           <Input
-            id='price'
-            label='Price'
+            id="price"
+            label="Price"
             disabled={isLoading}
             register={register}
             errors={errors}
             required
-            type='number'
+            type="number"
             icon={FaMoneyBillAlt}
             onFocus={() => clearErrors('price')}
           />
 
           {/* Old Price */}
           <Input
-            id='oldPrice'
-            label='Old Price'
+            id="oldPrice"
+            label="Old Price"
             disabled={isLoading}
             register={register}
             errors={errors}
-            type='number'
+            type="number"
             icon={FaMoneyBillAlt}
             onFocus={() => clearErrors('oldPrice')}
           />
@@ -337,91 +340,97 @@ function AddCoursePage() {
 
         {/* MARK: Text Hook */}
         <Input
-          id='textHook'
-          label='Hook'
+          id="textHook"
+          label="Hook"
           disabled={isLoading}
           register={register}
           errors={errors}
           required
-          type='textarea'
+          type="textarea"
           rows={3}
           icon={MdNumbers}
-          className='mb-5'
+          className="mb-5"
           onFocus={() => clearErrors('textHook')}
         />
 
         {/* MARK: Description */}
-        <p className='text-dark font-semibold text-xl mb-1'>Description</p>
+        <p className="mb-1 text-xl font-semibold text-dark">Description</p>
         {getValues('description') && (
           <TextEditor
             onChange={(content: string) => setValue('description', content)}
             content={getValues('description')}
-            className='w-full p-21 rounded-lg shadow-lg border border-dark bg-slate-200 text-dark mb-5'
+            className="mb-5 w-full rounded-lg border border-dark bg-slate-200 p-21 text-dark shadow-lg"
           />
         )}
 
         {/* MARK: Languages */}
         <Input
-          id='languages'
-          label='Languages'
+          id="languages"
+          label="Languages"
           disabled={isLoading}
           register={register}
           errors={errors}
-          type='select'
+          type="select"
           options={languages}
           multiple
           icon={MdNumbers}
-          className='mb-5 text-light'
+          className="mb-5 text-light"
           onFocus={() => clearErrors('languages')}
         />
 
         {/* MARK: Active */}
-        <div className='flex mb-4'>
-          <div className='bg-white rounded-lg px-3 flex items-center'>
-            <FaPlay size={16} className='text-secondary' />
+        <div className="mb-4 flex">
+          <div className="flex items-center rounded-lg bg-white px-3">
+            <FaPlay
+              size={16}
+              className="text-secondary"
+            />
           </div>
           <input
             checked={getValues('active')}
-            className='peer'
-            type='checkbox'
-            id='active'
+            className="peer"
+            type="checkbox"
+            id="active"
             hidden
             {...register('active', { required: false })}
           />
           <label
-            className={`select-none cursor-pointer border border-green-500 px-4 py-2 rounded-lg trans-200 bg-white text-green-500 peer-checked:bg-green-500 peer-checked:text-light`}
-            htmlFor='active'
+            className={`trans-200 cursor-pointer select-none rounded-lg border border-green-500 bg-white px-4 py-2 text-green-500 peer-checked:bg-green-500 peer-checked:text-light`}
+            htmlFor="active"
           >
             Active
           </label>
         </div>
 
         {/* MARK: Boot */}
-        <div className='flex mb-4'>
-          <div className='bg-white rounded-lg px-3 flex items-center'>
-            <FaPlay size={16} className='text-secondary' />
+        <div className="mb-4 flex">
+          <div className="flex items-center rounded-lg bg-white px-3">
+            <FaPlay
+              size={16}
+              className="text-secondary"
+            />
           </div>
           <input
             checked={getValues('booted')}
-            className='peer'
-            type='checkbox'
-            id='booted'
+            className="peer"
+            type="checkbox"
+            id="booted"
             hidden
             {...register('booted', { required: false })}
           />
           <label
-            className={`select-none cursor-pointer border border-green-500 px-4 py-2 rounded-lg trans-200 bg-white text-green-500 peer-checked:bg-green-500 peer-checked:text-light`}
-            htmlFor='booted'
+            className={`trans-200 cursor-pointer select-none rounded-lg border border-green-500 bg-white px-4 py-2 text-green-500 peer-checked:bg-green-500 peer-checked:text-light`}
+            htmlFor="booted"
           >
             Boot
           </label>
         </div>
 
         {/* MARK: Tags */}
-        <div className='mb-5'>
-          <p className='text-dark font-semibold text-xl mb-1'>Select Tags</p>
+        <div className="mb-5">
+          <p className="mb-1 text-xl font-semibold text-dark">Select Tags</p>
 
-          <div className='p-2 rounded-lg flex flex-wrap items-center bg-white gap-2 max-h-[196px] overflow-y-auto'>
+          <div className="flex max-h-[196px] flex-wrap items-center gap-2 overflow-y-auto rounded-lg bg-white p-2">
             {tags.map(tag => (
               <Fragment key={tag._id}>
                 <input
@@ -432,11 +441,11 @@ function AddCoursePage() {
                   }
                   hidden
                   checked={selectedTags.some(t => t === tag._id)}
-                  type='checkbox'
+                  type="checkbox"
                   id={tag._id}
                 />
                 <label
-                  className={`cursor-pointer select-none text-sm rounded-lg border border-green-500 text-green-500 py-1 px-3 trans-200 ${
+                  className={`trans-200 cursor-pointer select-none rounded-lg border border-green-500 px-3 py-1 text-sm text-green-500 ${
                     selectedTags.some(t => t === tag._id) ? 'bg-green-500 text-light' : ''
                   }`}
                   htmlFor={tag._id}
@@ -449,10 +458,10 @@ function AddCoursePage() {
         </div>
 
         {/* MARK: Categories */}
-        <div className='mb-5'>
-          <p className='text-dark font-semibold text-xl mb-1'>Select Categories</p>
+        <div className="mb-5">
+          <p className="mb-1 text-xl font-semibold text-dark">Select Categories</p>
 
-          <div className='flex flex-col gap-2'>
+          <div className="flex flex-col gap-2">
             {categories.map(category => (
               <CategoryItem
                 data={category}
@@ -467,19 +476,22 @@ function AddCoursePage() {
         </div>
 
         {/* MARK: Images */}
-        <div className='mb-5'>
-          <div className='flex'>
-            <span className='inline-flex items-center px-3 rounded-tl-lg rounded-bl-lg border-[2px] text-sm text-gray-900 border-slate-200 bg-slate-100'>
-              <FaFile size={19} className='text-secondary' />
+        <div className="mb-5">
+          <div className="flex">
+            <span className="inline-flex items-center rounded-bl-lg rounded-tl-lg border-[2px] border-slate-200 bg-slate-100 px-3 text-sm text-gray-900">
+              <FaFile
+                size={19}
+                className="text-secondary"
+              />
             </span>
-            <div className='relative w-full border-[2px] border-l-0 bg-white border-slate-200'>
+            <div className="relative w-full border-[2px] border-l-0 border-slate-200 bg-white">
               <input
-                id='images'
-                className='block px-2.5 pb-2.5 pt-4 w-full text-sm text-dark bg-transparent focus:outline-none focus:ring-0 peer'
-                placeholder=' '
+                id="images"
+                className="peer block w-full bg-transparent px-2.5 pb-2.5 pt-4 text-sm text-dark focus:outline-none focus:ring-0"
+                placeholder=" "
                 disabled={isLoading}
-                type='file'
-                accept='image/*'
+                type="file"
+                accept="image/*"
                 multiple
                 onChange={handleAddFiles}
               />
@@ -487,7 +499,7 @@ function AddCoursePage() {
               {/* label */}
               <label
                 htmlFor={'images'}
-                className='absolute rounded-md text-sm trans-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1 cursor-pointer text-dark'
+                className="trans-300 absolute start-1 top-2 z-10 origin-[0] -translate-y-4 scale-75 transform cursor-pointer rounded-md bg-white px-2 text-sm text-dark peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:px-2 rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4"
               >
                 Images
               </label>
@@ -498,41 +510,65 @@ function AddCoursePage() {
         {/* MARK: Image Urls */}
         {(!!imageUrls.length || !!originalImages.length) && (
           <>
-            <div className='flex flex-wrap gap-3 rounded-lg bg-white p-3 mb-5'>
+            <div className="mb-5 flex flex-wrap gap-3 rounded-lg bg-white p-3">
               {originalImages.map(url => (
-                <div className='relative' key={url}>
-                  <Image className='rounded-lg' src={url} height={250} width={250} alt='thumbnail' />
+                <div
+                  className="relative"
+                  key={url}
+                >
+                  <Image
+                    className="rounded-lg"
+                    src={url}
+                    height={250}
+                    width={250}
+                    alt="thumbnail"
+                  />
 
                   <button
                     onClick={() => setOriginalImages(prev => prev.filter(i => i !== url))}
-                    className='absolute top-2 bg-slate-300 p-2 right-2 group hover:bg-dark-100 rounded-lg'
+                    className="group absolute right-2 top-2 rounded-lg bg-slate-300 p-2 hover:bg-dark-100"
                   >
-                    <FaX size={16} className='text-dark group-hover:text-light trans-200' />
+                    <FaX
+                      size={16}
+                      className="trans-200 text-dark group-hover:text-light"
+                    />
                   </button>
                 </div>
               ))}
               {imageUrls.map(url => (
-                <div className='relative' key={url}>
-                  <Image className='rounded-lg' src={url} height={250} width={250} alt='thumbnail' />
+                <div
+                  className="relative"
+                  key={url}
+                >
+                  <Image
+                    className="rounded-lg"
+                    src={url}
+                    height={250}
+                    width={250}
+                    alt="thumbnail"
+                  />
 
                   <button
                     onClick={() => handleRemoveImage(url)}
-                    className='absolute top-2 bg-slate-300 p-2 right-2 group hover:bg-dark-100 rounded-lg'
+                    className="group absolute right-2 top-2 rounded-lg bg-slate-300 p-2 hover:bg-dark-100"
                   >
-                    <FaX size={16} className='text-dark group-hover:text-light trans-200' />
+                    <FaX
+                      size={16}
+                      className="trans-200 text-dark group-hover:text-light"
+                    />
                   </button>
                 </div>
               ))}
             </div>
-            <p className='text-slate-400 italic -mt-4 text-center'>The last image must be portrait</p>
+            <p className="-mt-4 text-center italic text-slate-400">The last image must be portrait</p>
           </>
         )}
 
         {/* MARK: Save Button */}
         <LoadingButton
-          className='px-4 py-2 bg-secondary hover:bg-primary text-light rounded-lg font-semibold trans-200'
+          className="trans-200 rounded-lg bg-secondary px-4 py-2 font-semibold text-light hover:bg-primary"
           onClick={handleSubmit(onSubmit)}
-          text='Save'
+          text="Save"
           isLoading={isLoading}
         />
       </div>

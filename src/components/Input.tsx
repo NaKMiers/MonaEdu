@@ -52,39 +52,52 @@ function Input({
   }, [])
 
   return (
-    <div className={`${className}`} onClick={onClick} onFocus={onFocus}>
+    <div
+      className={`${className}`}
+      onClick={onClick}
+      onFocus={onFocus}
+    >
       <div className={`flex border ${errors[id] ? 'border-rose-500' : 'border-dark'} rounded-[16px]`}>
         {/* MARK: Icon */}
         {Icon && (
           <span
             onClick={type === 'password' ? showPassword : undefined}
-            className={`inline-flex items-center px-3 rounded-l-[16px] text-sm text-gray-900 ${
+            className={`inline-flex items-center rounded-l-[16px] px-3 text-sm text-gray-900 ${
               errors[id] ? 'border-rose-400 bg-rose-100' : 'border-slate-200 bg-slate-100'
             } ${type === 'password' ? 'cursor-pointer' : ''}`}
           >
             {type === 'password' ? (
               isShowPassword ? (
-                <FaEye size={19} className='text-secondary' />
+                <FaEye
+                  size={19}
+                  className="text-secondary"
+                />
               ) : (
-                <Icon size={19} className='text-secondary' />
+                <Icon
+                  size={19}
+                  className="text-secondary"
+                />
               )
             ) : (
-              <Icon size={19} className='text-secondary' />
+              <Icon
+                size={19}
+                className="text-secondary"
+              />
             )}
           </span>
         )}
 
         {/* MARK: Text Field */}
         <div
-          className={`relative group/btn w-full border-l-0 bg-white ${
+          className={`group/btn relative w-full border-l-0 bg-white ${
             Icon ? 'rounded-r-[16px]' : 'rounded-[16px]'
           } ${errors[id] ? 'border-rose-400' : 'border-slate-200'}`}
         >
           {type === 'textarea' ? (
             <textarea
               id={id}
-              className='block px-2.5 pb-2.5 pt-4 w-full text-sm text-dark bg-transparent focus:outline-none focus:ring-0 peer'
-              placeholder=' '
+              className="peer block w-full bg-transparent px-2.5 pb-2.5 pt-4 text-sm text-dark focus:outline-none focus:ring-0"
+              placeholder=" "
               disabled={disabled}
               rows={rows || 4}
               {...register(id, { required })}
@@ -93,7 +106,7 @@ function Input({
           ) : type === 'select' ? (
             <select
               id={id}
-              className='rounded-l-[16px] block min-h-[42px] px-2.5 pb-2.5 pt-4 w-full text-sm text-dark focus:outline-none focus:ring-0 peer rounded-r-lg'
+              className="peer block min-h-[42px] w-full rounded-l-[16px] rounded-r-lg px-2.5 pb-2.5 pt-4 text-sm text-dark focus:outline-none focus:ring-0"
               style={{ WebkitAppearance: 'none', borderTopRightRadius: 16, borderBottomRightRadius: 16 }}
               disabled={disabled}
               {...register(id, { required })}
@@ -103,7 +116,7 @@ function Input({
             >
               {options?.map((option, index) => (
                 <option
-                  className='bg-dark-100 appearance-none text-light font-body font-semibold hover:bg-primary hover:text-dark checked:bg-indigo-500 trans-200 py-0.5 px-1.5'
+                  className="trans-200 appearance-none bg-dark-100 px-1.5 py-0.5 font-body font-semibold text-light checked:bg-indigo-500 hover:bg-primary hover:text-dark"
                   key={index}
                   value={option.value}
                 >
@@ -114,12 +127,12 @@ function Input({
           ) : (
             <input
               id={id}
-              className='block h-[42px] px-2.5 pb-2.5 pt-4 w-full rounded-r-[16px] text-sm text-dark bg-transparent focus:outline-none focus:ring-0 peer number-input'
+              className="number-input peer block h-[42px] w-full rounded-r-[16px] bg-transparent px-2.5 pb-2.5 pt-4 text-sm text-dark focus:outline-none focus:ring-0"
               disabled={disabled}
               type={type === 'password' ? (isShowPassword ? 'text' : 'password') : type}
               {...register(id, { required })}
               onWheel={e => e.currentTarget.blur()}
-              placeholder=''
+              placeholder=""
               onChange={onChange}
               {...rest}
             />
@@ -130,13 +143,13 @@ function Input({
             type === 'password' &&
             (isShowPassword ? (
               <FaEye
-                className='absolute top-1/2 -translate-y-1/2 right-3 text-dark cursor-pointer'
+                className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-dark"
                 size={19}
                 onClick={showPassword}
               />
             ) : (
               <FaEye
-                className='absolute top-1/2 -translate-y-1/2 right-3 text-dark cursor-pointer'
+                className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-dark"
                 size={19}
                 onClick={showPassword}
               />
@@ -145,7 +158,7 @@ function Input({
           {/* MARK: Label */}
           <label
             htmlFor={id}
-            className={`absolute text-nowrap rounded-md text-sm text-dark trans-300 transform -translate-y-4 scale-75 top-2 left-5 z-10 origin-[0] font-semibold ${labelBg} px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-[48%] peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1 cursor-pointer ${
+            className={`trans-300 absolute left-5 top-2 z-10 origin-[0] -translate-y-4 scale-75 transform text-nowrap rounded-md text-sm font-semibold text-dark ${labelBg} start-1 cursor-pointer px-2 peer-placeholder-shown:top-[48%] peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:px-2 rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4 ${
               errors[id] ? 'text-rose-400' : 'text-dark'
             }`}
           >
@@ -156,7 +169,7 @@ function Input({
 
       {/* MARK: Error */}
       {errors[id]?.message && (
-        <span className='text-sm drop-shadow-md text-rose-400'>{errors[id]?.message?.toString()}</span>
+        <span className="text-sm text-rose-400 drop-shadow-md">{errors[id]?.message?.toString()}</span>
       )}
     </div>
   )

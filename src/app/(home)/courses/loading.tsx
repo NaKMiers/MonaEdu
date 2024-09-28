@@ -9,26 +9,26 @@ async function CoursesPageX() {
   return (
     <div>
       {/* Banner */}
-      <BreadcrumbBannerX className='md:shadow-medium md:rounded-b-lg rounded-none h-[calc(300px+72px)] -mt-[72px] pt-[72px]' />
+      <BreadcrumbBannerX className="-mt-[72px] h-[calc(300px+72px)] rounded-none pt-[72px] md:rounded-b-lg md:shadow-medium" />
 
       {/* Body */}
-      <div className='md:px-21 md:mt-10'>
-        <div className='flex flex-col md:flex-row bg-white rounded-b-lg md:rounded-lg gap-x-21 p-3 md:p-21 shadow-lg'>
+      <div className="md:mt-10 md:px-21">
+        <div className="flex flex-col gap-x-21 rounded-b-lg bg-white p-3 shadow-lg md:flex-row md:rounded-lg md:p-21">
           {/* Filter & Search */}
-          <div className='flex justify-between md:max-w-[200px] lg:max-w-[250px] w-full flex-shrink-0'>
+          <div className="flex w-full flex-shrink-0 justify-between md:max-w-[200px] lg:max-w-[250px]">
             <FilterAndSearchX />
           </div>
 
           {/* Main */}
-          <div className='flex-1 w-full'>
-            <div className='flex flex-wrap gap-2 w-full'>
+          <div className="w-full flex-1">
+            <div className="flex w-full flex-wrap gap-2">
               {/* Mini Pagination */}
-              <ShortPaginationX className='justify-end hidden md:flex flex-1' />
+              <ShortPaginationX className="hidden flex-1 justify-end md:flex" />
             </div>
             <Divider size={8} />
 
             {/* List */}
-            <div className='grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 md:mx-0 flex-1 mb-8'>
+            <div className="mb-8 grid flex-1 grid-cols-1 gap-3 xs:grid-cols-2 md:mx-0 md:grid-cols-3 md:gap-4 xl:grid-cols-4">
               {Array.from({ length: 12 }).map((_, index) => (
                 <CourseCardX key={index} />
               ))}

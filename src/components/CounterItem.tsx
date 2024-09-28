@@ -40,10 +40,19 @@ function CounterItem({ max, value, size = 18, className }: CounterItem) {
   }, [max, value, size])
 
   return (
-    <div className={`overflow-y-hidden ${className}`} style={{ height: size }}>
-      <div className={`flex flex-col h-full trans-200`} ref={slideTrackRef}>
+    <div
+      className={`overflow-y-hidden ${className}`}
+      style={{ height: size }}
+    >
+      <div
+        className={`trans-200 flex h-full flex-col`}
+        ref={slideTrackRef}
+      >
         {[...Array.from({ length: max + 1 }, (_, i) => max - i), max].map((n, i) => (
-          <span className='flex-shrink-0 h-full text-sm' key={i}>
+          <span
+            className="h-full flex-shrink-0 text-sm"
+            key={i}
+          >
             {n}
           </span>
         ))}

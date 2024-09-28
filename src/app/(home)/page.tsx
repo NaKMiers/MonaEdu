@@ -133,9 +133,12 @@ async function Home({ searchParams }: { searchParams?: { [key: string]: string[]
   }
 
   return (
-    <div className='min-h-screen'>
+    <div className="min-h-screen">
       {/* MARK: Add JSON-LD */}
-      <script type='application/ld+json' dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
       {/* Banner */}
       <Banner courses={bannerCourses} />
@@ -164,7 +167,11 @@ async function Home({ searchParams }: { searchParams?: { [key: string]: string[]
 
       {/* All Courses */}
       <AllCourses courses={courses} />
-      <Pagination searchParams={searchParams} amount={amount} itemsPerPage={12} />
+      <Pagination
+        searchParams={searchParams}
+        amount={amount}
+        itemsPerPage={12}
+      />
 
       <Divider size={40} />
 
@@ -173,9 +180,12 @@ async function Home({ searchParams }: { searchParams?: { [key: string]: string[]
 
       {/* <Divider size={30} /> */}
 
-      <div className='max-w-1200 mx-auto w-full px-21'>
-        <Heading className='text-dark' title='Gói học viên' />
-        <p className='text-center text-[18px] text-neutral-300 mt-8'>
+      <div className="mx-auto w-full max-w-1200 px-21">
+        <Heading
+          className="text-dark"
+          title="Gói học viên"
+        />
+        <p className="mt-8 text-center text-[18px] text-neutral-300">
           Chọn cơ hội để tối ưu hiệu quả học tập của bạn
         </p>
       </div>
@@ -191,11 +201,11 @@ async function Home({ searchParams }: { searchParams?: { [key: string]: string[]
 
       {/* Let Buy Courses Of Author Banner */}
       <Image
-        className='w-full h-full object-contain'
-        src='/images/let-buy-courses-of-authors.png'
+        className="h-full w-full object-contain"
+        src="/images/let-buy-courses-of-authors.png"
         width={1920}
         height={960}
-        alt='let-buy-courses-of-authors'
+        alt="let-buy-courses-of-authors"
         draggable={false}
       />
 

@@ -301,32 +301,42 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
   }, [handleFilter, handleResetFilter, courses, handleSubmit])
 
   return (
-    <div className='w-full'>
+    <div className="w-full">
       {/* Top & Pagination */}
-      <AdminHeader title='All Courses' addLink='/admin/course/add' />
-      <Pagination searchParams={searchParams} amount={amount} itemsPerPage={itemPerPage} />
+      <AdminHeader
+        title="All Courses"
+        addLink="/admin/course/add"
+      />
+      <Pagination
+        searchParams={searchParams}
+        amount={amount}
+        itemsPerPage={itemPerPage}
+      />
 
       {/* Filter */}
-      <AdminMeta handleFilter={handleSubmit(handleFilter)} handleResetFilter={handleResetFilter}>
+      <AdminMeta
+        handleFilter={handleSubmit(handleFilter)}
+        handleResetFilter={handleResetFilter}
+      >
         {/* Search */}
-        <div className='flex flex-col col-span-12 md:col-span-4'>
+        <div className="col-span-12 flex flex-col md:col-span-4">
           <Input
-            id='search'
-            className='md:max-w-[450px]'
-            label='Search'
+            id="search"
+            className="md:max-w-[450px]"
+            label="Search"
             disabled={false}
             register={register}
             errors={errors}
-            type='text'
+            type="text"
             icon={FaSearch}
             onFocus={() => clearErrors('search')}
           />
         </div>
 
         {/* Price */}
-        <div className='flex flex-col col-span-12 md:col-span-4'>
-          <label htmlFor='price'>
-            <span className='font-bold'>Price: </span>
+        <div className="col-span-12 flex flex-col md:col-span-4">
+          <label htmlFor="price">
+            <span className="font-bold">Price: </span>
             <span>{formatPrice(price[0])}</span> - <span>{formatPrice(price[1])}</span>
           </label>
           <Slider
@@ -334,17 +344,17 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
             min={minPrice}
             max={maxPrice}
             step={1}
-            className='w-full -mb-1.5'
+            className="-mb-1.5 w-full"
             onChange={(_: any, newValue: number | number[]) => setPrice(newValue as number[])}
-            valueLabelDisplay='auto'
+            valueLabelDisplay="auto"
             style={{ color: '#333' }}
           />
         </div>
 
         {/* Joined */}
-        <div className='flex flex-col col-span-12 md:col-span-4'>
-          <label htmlFor='joined'>
-            <span className='font-bold'>Joined: </span>
+        <div className="col-span-12 flex flex-col md:col-span-4">
+          <label htmlFor="joined">
+            <span className="font-bold">Joined: </span>
             <span>{joined[0]}</span> - <span>{joined[1]}</span>
           </label>
           <Slider
@@ -352,24 +362,24 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
             min={minJoined}
             max={maxJoined}
             step={1}
-            className='w-full -mb-1.5'
+            className="-mb-1.5 w-full"
             onChange={(_: any, newValue: number | number[]) => setJoined(newValue as number[])}
-            valueLabelDisplay='auto'
+            valueLabelDisplay="auto"
             style={{ color: '#333' }}
           />
         </div>
 
         {/* Select Filter */}
-        <div className='flex justify-end items-center flex-wrap gap-3 col-span-12 md:col-span-8'>
+        <div className="col-span-12 flex flex-wrap items-center justify-end gap-3 md:col-span-8">
           {/* Sort */}
           <Input
-            id='sort'
-            label='Sort'
+            id="sort"
+            label="Sort"
             disabled={false}
             register={register}
             errors={errors}
             icon={FaSort}
-            type='select'
+            type="select"
             onFocus={() => clearErrors('sort')}
             options={[
               {
@@ -394,13 +404,13 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
 
           {/* Active */}
           <Input
-            id='active'
-            label='Active'
+            id="active"
+            label="Active"
             disabled={false}
             register={register}
             errors={errors}
             icon={FaSort}
-            type='select'
+            type="select"
             onFocus={() => clearErrors('active')}
             options={[
               {
@@ -417,18 +427,18 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
                 label: 'Off',
               },
             ]}
-            className='min-w-[104px]'
+            className="min-w-[104px]"
           />
 
           {/* Flash Sale */}
           <Input
-            id='flashSale'
-            label='Flash Sale'
+            id="flashSale"
+            label="Flash Sale"
             disabled={false}
             register={register}
             errors={errors}
             icon={FaSort}
-            type='select'
+            type="select"
             onFocus={() => clearErrors('flashSale')}
             options={[
               {
@@ -445,15 +455,15 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
                 label: 'Off',
               },
             ]}
-            className='min-w-[124px]'
+            className="min-w-[124px]"
           />
         </div>
 
         {/* Action Buttons */}
-        <div className='flex flex-wrap justify-end items-center col-span-12 gap-2'>
+        <div className="col-span-12 flex flex-wrap items-center justify-end gap-2">
           {/* Select All Button */}
           <button
-            className='border border-sky-400 text-sky-400 rounded-lg px-3 py-2 hover:bg-sky-400 hover:text-light trans-200'
+            className="trans-200 rounded-lg border border-sky-400 px-3 py-2 text-sky-400 hover:bg-sky-400 hover:text-light"
             onClick={() =>
               setSelectedCourses(selectedCourses.length > 0 ? [] : courses.map(course => course._id))
             }
@@ -466,7 +476,7 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
           {!!selectedCourses.length &&
             selectedCourses.some(id => !courses.find(course => course._id === id)?.active) && (
               <button
-                className='border border-green-400 text-green-400 rounded-lg px-3 py-2 hover:bg-green-400 hover:text-light trans-200'
+                className="trans-200 rounded-lg border border-green-400 px-3 py-2 text-green-400 hover:bg-green-400 hover:text-light"
                 onClick={() => handleActivateCourses(selectedCourses, true)}
               >
                 Activate
@@ -478,7 +488,7 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
           {!!selectedCourses.length &&
             selectedCourses.some(id => courses.find(course => course._id === id)?.active) && (
               <button
-                className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-light trans-200'
+                className="trans-200 rounded-lg border border-red-500 px-3 py-2 text-red-500 hover:bg-red-500 hover:text-light"
                 onClick={() => handleActivateCourses(selectedCourses, false)}
               >
                 Deactivate
@@ -489,7 +499,7 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
           {!!selectedCourses.length &&
             selectedCourses.some(id => courses.find(course => course._id === id)?.flashSale) && (
               <button
-                className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-light trans-200'
+                className="trans-200 rounded-lg border border-red-500 px-3 py-2 text-red-500 hover:bg-red-500 hover:text-light"
                 onClick={() => {
                   handleRemoveApplyingFlashSales(selectedCourses)
                 }}
@@ -501,7 +511,7 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
           {/* Delete Many Button */}
           {!!selectedCourses.length && (
             <button
-              className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-light trans-200'
+              className="trans-200 rounded-lg border border-red-500 px-3 py-2 text-red-500 hover:bg-red-500 hover:text-light"
               onClick={() => setIsOpenConfirmModal(true)}
             >
               Delete
@@ -514,20 +524,20 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
       <ConfirmDialog
         open={isOpenConfirmModal}
         setOpen={setIsOpenConfirmModal}
-        title='Delete Courses'
-        content='Are you sure that you want to delete these courses?'
+        title="Delete Courses"
+        content="Are you sure that you want to delete these courses?"
         onAccept={() => handleDeleteCourses(selectedCourses)}
         isLoading={loadingCourses.length > 0}
       />
 
       {/* Amount */}
-      <div className='p-3 text-sm text-right text-light font-semibold'>
+      <div className="p-3 text-right text-sm font-semibold text-light">
         {Math.min(itemPerPage * +(searchParams?.page || 1), amount)}/{amount} course
         {amount > 1 ? 's' : ''}
       </div>
 
       {/* MAIN LIST */}
-      <div className='grid grid-cols-1 md:grid-cols-2 gap-21 lg:grid-cols-3'>
+      <div className="grid grid-cols-1 gap-21 md:grid-cols-2 lg:grid-cols-3">
         {courses.map(course => (
           <CourseItem
             data={course}

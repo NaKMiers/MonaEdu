@@ -114,20 +114,20 @@ function NotificationMenu({
       <div
         className={`${
           open && notifications.length ? 'block' : 'hidden'
-        } fixed top-0 left-0 right-0 bottom-0 w-screen h-screen z-30 ${className}`}
+        } fixed bottom-0 left-0 right-0 top-0 z-30 h-screen w-screen ${className}`}
         onClick={() => setOpen(false)}
       />
 
       {/* MARK: Main */}
       <ul
-        className={`hidden opacity-0 max-h-[400px] sm:max-w-full sm:w-[300px] sm:max-h-[350px] p-2 opacity-1x ${
+        className={`opacity-1x hidden max-h-[400px] p-2 opacity-0 sm:max-h-[350px] sm:w-[300px] sm:max-w-full ${
           curUser && !curUser?._id ? 'hidden' : ''
-        } text-dark flex flex-col gap-2 overflow-y-auto w-full overflow-hidden trans-300 absolute bottom-[72px] md:bottom-auto md:top-[60px] right-0 sm:right-21 z-30 sm:rounded-medium sm:shadow-sky-400 shadow-md bg-slate-100`}
+        } trans-300 absolute bottom-[72px] right-0 z-30 flex w-full flex-col gap-2 overflow-hidden overflow-y-auto bg-slate-100 text-dark shadow-md sm:right-21 sm:rounded-medium sm:shadow-sky-400 md:bottom-auto md:top-[60px]`}
         ref={menuRef}
       >
-        <li className='flex items-center justify-end px-2'>
+        <li className="flex items-center justify-end px-2">
           <button
-            className='text-xs font-semibold trans-200'
+            className="trans-200 text-xs font-semibold"
             onClick={() =>
               handleReadNotifications(
                 notifications.map(n => n._id),
@@ -141,7 +141,7 @@ function NotificationMenu({
 
         {notifications.length <= 0 && (
           <li>
-            <p className='italic text-slate-500 font-body tracking-wider text-center'>
+            <p className="text-center font-body italic tracking-wider text-slate-500">
               Không có thông báo.
             </p>
           </li>
@@ -153,31 +153,31 @@ function NotificationMenu({
             <li
               className={`relative ${
                 noti.status === 'unread' ? 'bg-red-100' : ''
-              } rounded-lg hover:bg-white trans-300 p-2`}
+              } trans-300 rounded-lg p-2 hover:bg-white`}
               key={noti._id}
             >
               <div
                 className={`flex gap-2 ${noti.link ? 'cursor-pointer' : ''}`}
                 onClick={() => noti.link && router.push(noti.link)}
               >
-                <div className='max-w-[28px] max-h-[28px] w-full h-full rounded-md shadow-lg overflow-hidden'>
+                <div className="h-full max-h-[28px] w-full max-w-[28px] overflow-hidden rounded-md shadow-lg">
                   <Image
-                    className='w-full h-full object-cover'
+                    className="h-full w-full object-cover"
                     src={noti.image}
                     width={28}
                     height={28}
-                    alt='avatar'
+                    alt="avatar"
                   />
                 </div>
-                <div className='flex gap-1 font-body tracking-wider -mt-1 w-full'>
-                  <div className='font-semibold text-xs flex-1'>
+                <div className="-mt-1 flex w-full gap-1 font-body tracking-wider">
+                  <div className="flex-1 text-xs font-semibold">
                     <span>{noti.title}</span>
-                    <p className='text-xs text-slate-500 font-normal'>{format(noti.createdAt, 'vi')}</p>
+                    <p className="text-xs font-normal text-slate-500">{format(noti.createdAt, 'vi')}</p>
                   </div>
-                  <div className='flex flex-col gap-0.5 items-center'>
+                  <div className="flex flex-col items-center gap-0.5">
                     <IoCloseCircleOutline
                       size={18}
-                      className='wiggle-1 flex-shrink-0 cursor-pointer'
+                      className="wiggle-1 flex-shrink-0 cursor-pointer"
                       onClick={e => {
                         e.stopPropagation()
                         handleRemoveNotifications([noti._id])
@@ -186,7 +186,7 @@ function NotificationMenu({
                     {noti.status === 'unread' ? (
                       <IoMail
                         size={16}
-                        className='wiggle-1 flex-shrink-0 cursor-pointer'
+                        className="wiggle-1 flex-shrink-0 cursor-pointer"
                         onClick={e => {
                           e.stopPropagation()
                           handleReadNotifications([noti._id], 'read')
@@ -195,7 +195,7 @@ function NotificationMenu({
                     ) : (
                       <IoMailOpen
                         size={16}
-                        className='wiggle-1 flex-shrink-0 cursor-pointer'
+                        className="wiggle-1 flex-shrink-0 cursor-pointer"
                         onClick={e => {
                           e.stopPropagation()
                           handleReadNotifications([noti._id], 'unread')
@@ -205,7 +205,7 @@ function NotificationMenu({
                   </div>
                 </div>
               </div>
-              {noti.content && <p className='font-body text-xs tracking-wider mt-2'>{noti.content}</p>}
+              {noti.content && <p className="mt-2 font-body text-xs tracking-wider">{noti.content}</p>}
             </li>
           ))}
       </ul>

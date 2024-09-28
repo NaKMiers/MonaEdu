@@ -11,7 +11,6 @@ import { useAppDispatch } from '@/libs/hooks'
 import { setPageLoading } from '@/libs/reducers/modalReducer'
 import { IChapter } from '@/models/ChapterModel'
 import { ICourse } from '@/models/CourseModel'
-import {} from '@/requests'
 import { deleteChaptersApi, getAllCourseChaptersApi } from '@/requests/chapterRequest'
 import { handleQuery } from '@/utils/handleQuery'
 import { usePathname, useRouter } from 'next/navigation'
@@ -211,38 +210,41 @@ function AllCourseChaptersPage({
   }, [])
 
   return (
-    <div className='w-full'>
+    <div className="w-full">
       {/* MARK: Top & Pagination */}
-      <AdminHeader title='All Chapters' />
+      <AdminHeader title="All Chapters" />
 
       {/* MARK: Filter */}
-      <AdminMeta handleFilter={handleSubmit(handleFilter)} handleResetFilter={handleResetFilter}>
+      <AdminMeta
+        handleFilter={handleSubmit(handleFilter)}
+        handleResetFilter={handleResetFilter}
+      >
         {/* Search */}
-        <div className='flex flex-col col-span-12 md:col-span-4'>
+        <div className="col-span-12 flex flex-col md:col-span-4">
           <Input
-            id='search'
-            className='md:max-w-[450px]'
-            label='Search'
+            id="search"
+            className="md:max-w-[450px]"
+            label="Search"
             disabled={false}
             register={register}
             errors={errors}
-            type='text'
+            type="text"
             icon={FaSearch}
             onFocus={() => clearErrors('search')}
           />
         </div>
 
         {/* MARK: Select Filter */}
-        <div className='flex justify-end items-center flex-wrap gap-3 col-span-12 md:col-span-8'>
+        <div className="col-span-12 flex flex-wrap items-center justify-end gap-3 md:col-span-8">
           {/* Sort */}
           <Input
-            id='sort'
-            label='Sort'
+            id="sort"
+            label="Sort"
             disabled={false}
             register={register}
             errors={errors}
             icon={FaSort}
-            type='select'
+            type="select"
             onFocus={() => clearErrors('sort')}
             options={[
               {
@@ -267,10 +269,10 @@ function AllCourseChaptersPage({
         </div>
 
         {/* MARK: Action Buttons */}
-        <div className='flex flex-wrap justify-end items-center gap-2 col-span-12'>
+        <div className="col-span-12 flex flex-wrap items-center justify-end gap-2">
           {/* Select All Button */}
           <button
-            className='border border-sky-400 text-sky-400 rounded-lg px-3 py-2 hover:bg-sky-400 hover:text-light trans-200'
+            className="trans-200 rounded-lg border border-sky-400 px-3 py-2 text-sky-400 hover:bg-sky-400 hover:text-light"
             onClick={() =>
               setSelectedChapters(
                 selectedChapters.length > 0 ? [] : chapters.map(chapter => chapter._id)
@@ -286,7 +288,7 @@ function AllCourseChaptersPage({
               .filter(chapter => selectedChapters.includes(chapter._id))
               .reduce((acc, chapter) => acc + chapter.lessonQuantity, 0) === 0 && (
               <button
-                className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-light trans-200'
+                className="trans-200 rounded-lg border border-red-500 px-3 py-2 text-red-500 hover:bg-red-500 hover:text-light"
                 onClick={() => setIsOpenConfirmModal(true)}
               >
                 Delete
@@ -299,8 +301,8 @@ function AllCourseChaptersPage({
       <ConfirmDialog
         open={isOpenConfirmModal}
         setOpen={setIsOpenConfirmModal}
-        title='Delete Chapters'
-        content='Are you sure that you want to delete these chapters?'
+        title="Delete Chapters"
+        content="Are you sure that you want to delete these chapters?"
         onAccept={() => handleDeleteChapters(selectedChapters)}
         isLoading={loadingChapters.length > 0}
       />
@@ -308,15 +310,21 @@ function AllCourseChaptersPage({
       <Divider />
 
       {/* MARK: Course */}
-      <h2 className='text-center font-semibold text-2xl text-slate-200' title={course?.title}>
+      <h2
+        className="text-center text-2xl font-semibold text-slate-200"
+        title={course?.title}
+      >
         Course:{' '}
-        <span className='cursor-copy hover:opacity-75' onClick={() => handleCopy(course?.title)}>
+        <span
+          className="cursor-copy hover:opacity-75"
+          onClick={() => handleCopy(course?.title)}
+        >
           {course?.title}
         </span>
       </h2>
 
       {/* MARK: Amount */}
-      <div className='p-3 text-sm text-right text-light font-semibold'>
+      <div className="p-3 text-right text-sm font-semibold text-light">
         {amount} chapter{amount > 1 && 's'}
       </div>
 
@@ -332,7 +340,7 @@ function AllCourseChaptersPage({
       <Divider />
 
       {/* MARK: MAIN LIST */}
-      <div className='flex flex-col gap-21'>
+      <div className="flex flex-col gap-21">
         {chapters.map(chapter => (
           <ChapterItem
             data={chapter}

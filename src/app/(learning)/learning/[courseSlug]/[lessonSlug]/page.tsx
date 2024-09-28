@@ -167,48 +167,60 @@ function LessonPage({
   }, [lesson?.title])
 
   return (
-    <div className='w-full px-3'>
+    <div className="w-full px-3">
       <Divider size={5} />
 
       {/* MARK: Header Buttons */}
-      <div className='flex justify-between items-center'>
-        <div className='flex items-center'>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center">
           <button
             className={`${
-              openSidebar ? 'max-w-0 p-0 mr-0' : 'max-w-[44px] px-3 py-2 mr-2'
-            } flex-shrink-0 overflow-hidden group rounded-lg trans-300`}
+              openSidebar ? 'mr-0 max-w-0 p-0' : 'mr-2 max-w-[44px] px-3 py-2'
+            } trans-300 group flex-shrink-0 overflow-hidden rounded-lg`}
             onClick={() => dispatch(setOpenSidebar(!openSidebar))}
           >
-            <BsLayoutSidebarInsetReverse size={20} className='wiggle' />
+            <BsLayoutSidebarInsetReverse
+              size={20}
+              className="wiggle"
+            />
           </button>
 
           <Link
-            href='/my-courses'
-            className='flex items-center gap-1 font-bold px-2 py-1.5 text-xs hover:bg-dark-0 hover:border-dark hover:text-light border border-dark text-dark rounded-md shadow-md trans-200 group'
+            href="/my-courses"
+            className="trans-200 group flex items-center gap-1 rounded-md border border-dark px-2 py-1.5 text-xs font-bold text-dark shadow-md hover:border-dark hover:bg-dark-0 hover:text-light"
           >
-            <FaChevronLeft size={12} className='wiggle' />
+            <FaChevronLeft
+              size={12}
+              className="wiggle"
+            />
             Quay lại
           </Link>
         </div>
 
         {curUser?._id && (
-          <div className='relative flex-shrink-0 flex justify-end items-center bg'>
-            <button className='group' onClick={() => setShowActions(prev => !prev)}>
-              <HiDotsHorizontal size={24} className='wiggle' />
+          <div className="bg relative flex flex-shrink-0 items-center justify-end">
+            <button
+              className="group"
+              onClick={() => setShowActions(prev => !prev)}
+            >
+              <HiDotsHorizontal
+                size={24}
+                className="wiggle"
+              />
             </button>
 
             <div
-              className={`fixed z-10 top-0 left-0 right-0 bottom-0 ${showActions ? '' : 'hidden'}`}
+              className={`fixed bottom-0 left-0 right-0 top-0 z-10 ${showActions ? '' : 'hidden'}`}
               onClick={() => setShowActions(false)}
             />
             <div
               className={`${
-                showActions ? 'max-w-[120px] max-h-[40px]' : 'max-w-0 max-h-0 p-0'
-              }  overflow-hidden absolute z-20 top-1/2 -translate-y-1/2 right-[calc(100%_+_8px)] flex gap-2 rounded-md bg-white trans-300`}
+                showActions ? 'max-h-[40px] max-w-[120px]' : 'max-h-0 max-w-0 p-0'
+              } trans-300 absolute right-[calc(100%_+_8px)] top-1/2 z-20 flex -translate-y-1/2 gap-2 overflow-hidden rounded-md bg-white`}
             >
               <button
-                className={`font-bold px-1.5 py-1 text-[10px] bg-white hover:bg-dark-0 hover:border-dark hover:text-rose-500 border border-rose-400 text-rose-400 rounded-md shadow-md trans-200`}
-                title='Report'
+                className={`trans-200 rounded-md border border-rose-400 bg-white px-1.5 py-1 text-[10px] font-bold text-rose-400 shadow-md hover:border-dark hover:bg-dark-0 hover:text-rose-500`}
+                title="Report"
                 onClick={() => setIsOpenReportDialog(true)}
               >
                 Báo cáo
@@ -221,7 +233,7 @@ function LessonPage({
         <ReportDialog
           open={isOpenReportDialog}
           setOpen={setIsOpenReportDialog}
-          title='Báo cáo bài giảng'
+          title="Báo cáo bài giảng"
           contents={reportContents.lesson}
           selectedContent={selectedContent}
           setSelectedContent={setSelectedContent}
@@ -235,12 +247,18 @@ function LessonPage({
       {lesson ? (
         <>
           {/* Breadcrumbs */}
-          <div className='flex items-center flex-wrap gap-x-3 gap-y-1 relative z-20 text-slate-400 text-sm'>
-            <Link href='/' className='hover:text-secondary trans-200 hover:drop-shadow-md'>
+          <div className="relative z-20 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-slate-400">
+            <Link
+              href="/"
+              className="trans-200 hover:text-secondary hover:drop-shadow-md"
+            >
               trang-chu
             </Link>
             <FaAngleRight size={14} />
-            <Link href='/categories' className='hover:text-secondary trans-200 hover:drop-shadow-md'>
+            <Link
+              href="/categories"
+              className="trans-200 hover:text-secondary hover:drop-shadow-md"
+            >
               danh-muc
             </Link>
             {breadcrumbs.map((breadcrumb, index) => (
@@ -248,7 +266,7 @@ function LessonPage({
                 {index === 0 && <FaAngleRight size={14} />}
                 <Link
                   href={`/categories/${breadcrumbs.slice(0, index + 1).join('/')}`}
-                  className='hover:text-secondary trans-200 hover:drop-shadow-md'
+                  className="trans-200 hover:text-secondary hover:drop-shadow-md"
                 >
                   {breadcrumb}
                 </Link>
@@ -259,7 +277,7 @@ function LessonPage({
 
           {/* Course */}
           <h2
-            className='font-semibold text-2xl mt-2 text-ellipsis line-clamp-1'
+            className="mt-2 line-clamp-1 text-ellipsis text-2xl font-semibold"
             title={(lesson?.courseId as ICourse)?.title}
           >
             {(lesson?.courseId as ICourse)?.title}
@@ -269,7 +287,7 @@ function LessonPage({
 
           {/* MARK: Source */}
           {lesson.source ? (
-            <div className='aspect-video w-full rounded-lg shadow-lg overflow-hidden'>
+            <div className="aspect-video w-full overflow-hidden rounded-lg shadow-lg">
               {lesson.sourceType === 'embed' ? (
                 <IframePlayer lesson={lesson} />
               ) : (
@@ -277,25 +295,25 @@ function LessonPage({
               )}
             </div>
           ) : (
-            <p className='font-semibold text-slate-300 text-xl text-center px-3 py-2 rounded-lg border border-slate-200'>
+            <p className="rounded-lg border border-slate-200 px-3 py-2 text-center text-xl font-semibold text-slate-300">
               Tài liệu khóa học
             </p>
           )}
 
           <Divider size={4} />
 
-          <div className='flex justify-between font-semibold gap-21'>
-            <div className='group flex items-center justify-center gap-1'>
+          <div className="flex justify-between gap-21 font-semibold">
+            <div className="group flex items-center justify-center gap-1">
               {lesson.likes.includes(curUser?._id) ? (
                 <FaHeart
                   size={20}
-                  className='text-rose-400 cursor-pointer wiggle'
+                  className="wiggle cursor-pointer text-rose-400"
                   onClick={() => likeLesson('n')}
                 />
               ) : (
                 <FaRegHeart
                   size={20}
-                  className='text-rose-400 cursor-pointer wiggle'
+                  className="wiggle cursor-pointer text-rose-400"
                   onClick={() => likeLesson('y')}
                 />
               )}{' '}
@@ -305,21 +323,24 @@ function LessonPage({
 
           <Divider size={2} />
 
-          <div className='flex items-center flex-wrap gap-x-4 gap-y-1 text-sm text-slate-500'>
-            <p className='font-body tracking-wider'>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-slate-500">
+            <p className="font-body tracking-wider">
               Thời gian tạo:{' '}
-              <span className='font-semibold text-slate-600'>{moment(lesson.createdAt).fromNow()}</span>
+              <span className="font-semibold text-slate-600">{moment(lesson.createdAt).fromNow()}</span>
             </p>
-            <p className='font-body tracking-wider'>
+            <p className="font-body tracking-wider">
               Thời gian cập nhật:{' '}
-              <span className='font-semibold text-slate-600'>{moment(lesson.updatedAt).fromNow()}</span>
+              <span className="font-semibold text-slate-600">{moment(lesson.updatedAt).fromNow()}</span>
             </p>
           </div>
 
           <Divider size={2} />
 
           {/* Title */}
-          <h1 className='text-ellipsis line-clamp-2 w-full text-3xl font-body tracking-wider' title=''>
+          <h1
+            className="line-clamp-2 w-full text-ellipsis font-body text-3xl tracking-wider"
+            title=""
+          >
             {lesson.title}
           </h1>
 
@@ -329,7 +350,7 @@ function LessonPage({
           {(lesson.courseId as any)?.category && (
             <Link
               href={`/categories/${(lesson.courseId as any)?.category?.slug}`}
-              className='rounded-3xl shadow-lg bg-primary text-slate-800 font-semibold uppercase px-3 py-2 text-xs md:text-sm text-nowrap'
+              className="text-nowrap rounded-3xl bg-primary px-3 py-2 text-xs font-semibold uppercase text-slate-800 shadow-lg md:text-sm"
             >
               {(lesson.courseId as any)?.category?.title}
             </Link>
@@ -338,10 +359,10 @@ function LessonPage({
           <Divider size={12} />
 
           {/* Description & Docs */}
-          <div className='w-full'>
+          <div className="w-full">
             <div className={`flex`}>
               <button
-                className={`rounded-t-lg px-4 py-1.5 trans-200 font-semibold ${
+                className={`trans-200 rounded-t-lg px-4 py-1.5 font-semibold ${
                   tab === 1 ? 'bg-primary shadow-lg' : 'bg-white shadow-md'
                 }`}
                 onClick={() => setTab(1)}
@@ -350,7 +371,7 @@ function LessonPage({
               </button>
               {lesson?.docs?.length > 0 && (
                 <button
-                  className={`rounded-t-lg px-4 py-1.5 trans-200 font-semibold ${
+                  className={`trans-200 rounded-t-lg px-4 py-1.5 font-semibold ${
                     tab === 2 ? 'bg-primary shadow-lg drop-shadow-lg' : 'bg-white shadow-md'
                   }`}
                   onClick={() => setTab(2)}
@@ -359,25 +380,28 @@ function LessonPage({
                 </button>
               )}
             </div>
-            <div className='border-t-2 border-primary bg-white rounded-b-lg py-3'>
+            <div className="rounded-b-lg border-t-2 border-primary bg-white py-3">
               {tab === 1 && <div dangerouslySetInnerHTML={{ __html: lesson?.description || '' }} />}
               {tab === 2 && lesson?.docs?.length > 0 && (
-                <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-21'>
+                <div className="grid grid-cols-2 gap-21 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
                   {lesson.docs.map((doc, index) => (
                     <Link
                       href={doc.url}
-                      target='_blank'
-                      rel='noreferrer'
-                      className='flex gap-1.5 rounded-md shadow-lg border border-dark p-3'
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex gap-1.5 rounded-md border border-dark p-3 shadow-lg"
                       key={index}
                     >
-                      <FaFile size={20} className='text-secondary flex-shrink-0' />
+                      <FaFile
+                        size={20}
+                        className="flex-shrink-0 text-secondary"
+                      />
 
-                      <div className='flex flex-col w-full font-body tracking-wider'>
-                        <p className='text-dark -mt-1 text-sm text-ellipsis line-clamp-2 overflow-hidden'>
+                      <div className="flex w-full flex-col font-body tracking-wider">
+                        <p className="-mt-1 line-clamp-2 overflow-hidden text-ellipsis text-sm text-dark">
                           {doc.name}
                         </p>
-                        <p className='text-slate-500 text-xs'>{formatFileSize(doc.size)}</p>
+                        <p className="text-xs text-slate-500">{formatFileSize(doc.size)}</p>
                       </div>
                     </Link>
                   ))}
@@ -388,17 +412,20 @@ function LessonPage({
 
           {/* MARK: Comments */}
           {isEnrolled && (
-            <div className='mt-12'>
-              <h3 className='font-semibold text-xl mb-2 text-slate-800'>Bình luận</h3>
+            <div className="mt-12">
+              <h3 className="mb-2 text-xl font-semibold text-slate-800">Bình luận</h3>
 
-              <Comment comments={comments} lessonId={lesson._id} />
+              <Comment
+                comments={comments}
+                lessonId={lesson._id}
+              />
             </div>
           )}
 
           <Divider size={20} />
         </>
       ) : (
-        <p className='font-body tracking-wider font-semibold text-2xl italic text-slate-400 text-center mt-4'>
+        <p className="mt-4 text-center font-body text-2xl font-semibold italic tracking-wider text-slate-400">
           Không tìm thấy bài giảng. Vui lòng kiểm tra lại đường dẫn.
         </p>
       )}

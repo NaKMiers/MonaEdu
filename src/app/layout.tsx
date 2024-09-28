@@ -1,12 +1,12 @@
 import StoreProvider from '@/libs/StoreProvider'
 import type { Metadata } from 'next'
 import { getServerSession } from 'next-auth'
+import Script from 'next/script'
 import NextTopLoader from 'nextjs-toploader'
 import { ReactNode } from 'react'
 import { Toaster } from 'react-hot-toast'
 import authOptions from './api/auth/[...nextauth]/authOptions'
 import './globals.scss'
-import Script from 'next/script'
 
 export const metadata: Metadata = {
   title: 'Mona Edu',
@@ -52,14 +52,17 @@ export default async function RootLayout({
   const session = await getServerSession(authOptions)
 
   return (
-    <html lang='vi'>
+    <html lang="vi">
       <body suppressHydrationWarning={true}>
         {/* Google Analytics Script */}
         <Script
-          strategy='afterInteractive'
-          src='https://www.googletagmanager.com/gtag/js?id=G-4PFK735075'
+          strategy="afterInteractive"
+          src="https://www.googletagmanager.com/gtag/js?id=G-4PFK735075"
         />
-        <Script id='google-analytics' strategy='afterInteractive'>
+        <Script
+          id="google-analytics"
+          strategy="afterInteractive"
+        >
           {`
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
@@ -82,15 +85,15 @@ export default async function RootLayout({
 
           {/* Top Loader */}
           <NextTopLoader
-            color='#F7E360'
+            color="#F7E360"
             initialPosition={0.08}
             crawlSpeed={200}
             height={3}
             crawl={true}
             showSpinner={false}
-            easing='ease'
+            easing="ease"
             speed={200}
-            shadow='0 0 10px #F7E360,0 0 5px #F7E360'
+            shadow="0 0 10px #F7E360,0 0 5px #F7E360"
             zIndex={1600}
             showAtBottom={false}
           />

@@ -11,23 +11,23 @@ interface AdminHeaderProps {
 
 function AdminHeader({ title, addLink, backLink, className = '' }: AdminHeaderProps) {
   return (
-    <div className={`flex flex-wrap text-sm justify-center items-end mb-3 gap-3 ${className}`}>
+    <div className={`mb-3 flex flex-wrap items-end justify-center gap-3 text-sm ${className}`}>
       <Link
-        className='flex items-center gap-1 text-dark bg-slate-200 py-2 px-3 rounded-lg trans-200 hover:bg-white hover:text-primary'
-        href='/admin'
+        className="trans-200 flex items-center gap-1 rounded-lg bg-slate-200 px-3 py-2 text-dark hover:bg-white hover:text-primary"
+        href="/admin"
       >
         <FaArrowLeft />
         Admin
       </Link>
 
-      <div className='py-2 px-3 text-light border border-slate-300 rounded-lg text-lg text-center'>
+      <div className="rounded-lg border border-slate-300 px-3 py-2 text-center text-lg text-light">
         {title}
       </div>
 
       {backLink && (
         <Link
           href={backLink}
-          className='flex items-center gap-1 bg-slate-200 text-dark py-2 px-3 rounded-lg trans-200 hover:bg-yellow-300 hover:text-secondary'
+          className="trans-200 flex items-center gap-1 rounded-lg bg-slate-200 px-3 py-2 text-dark hover:bg-yellow-300 hover:text-secondary"
         >
           <FaArrowLeft />
           Back
@@ -37,7 +37,7 @@ function AdminHeader({ title, addLink, backLink, className = '' }: AdminHeaderPr
       {addLink && (
         <Link
           href={addLink}
-          className='flex items-center gap-1 bg-slate-200 text-dark py-2 px-3 rounded-lg trans-200 hover:bg-yellow-300 hover:text-secondary'
+          className="trans-200 flex items-center gap-1 rounded-lg bg-slate-200 px-3 py-2 text-dark hover:bg-yellow-300 hover:text-secondary"
         >
           <FaPlus />
           Add

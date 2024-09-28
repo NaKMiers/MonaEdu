@@ -14,33 +14,33 @@ function CategoryCard({ category, className = '' }: CategoryCardProps) {
   return (
     <Link
       href={`/categories/${category.slug}`}
-      className={`hover:-translate-y-2 trans-300 shadow-medium-light rounded-xl overflow-hidden relative w-full ${className}`}
+      className={`trans-300 relative w-full overflow-hidden rounded-xl shadow-medium-light hover:-translate-y-2 ${className}`}
     >
       <Image
         src={category.image || '/images/default-category.jpg'}
-        height='1000'
-        width='1000'
-        className='h-full bg-white w-full object-cover rounded-xl'
-        loading='lazy'
+        height="1000"
+        width="1000"
+        className="h-full w-full rounded-xl bg-white object-cover"
+        loading="lazy"
         alt={category.title}
       />
 
-      <div className='absolute z-20 bottom-0 left-0 right-0 w-full border-t-3 p-1.5 rounded-xl border-t-2 border-light bg-neutral-950 bg-opacity-50 text-light'>
+      <div className="border-t-3 absolute bottom-0 left-0 right-0 z-20 w-full rounded-xl border-t-2 border-light bg-neutral-950 bg-opacity-50 p-1.5 text-light">
         <h2
           title={category.title}
-          className='font-body tracking-wider font-bold text-2xl lg:text-3xl xl:text-4xl drop-shadow-lg text-ellipsis line-clamp-1'
+          className="line-clamp-1 text-ellipsis font-body text-2xl font-bold tracking-wider drop-shadow-lg lg:text-3xl xl:text-4xl"
         >
           {category.title}
         </h2>
 
         <p
           title={category.description}
-          className='font-body tracking-wide text-sm text-ellipsis line-clamp-1 md:line-clamp-2'
+          className="line-clamp-1 text-ellipsis font-body text-sm tracking-wide md:line-clamp-2"
         >
           {category.description}
         </p>
 
-        <p className='font-body tracking-wider font-semibold text-sm'>
+        <p className="font-body text-sm font-semibold tracking-wider">
           {category.courseQuantity} Khóa học
         </p>
       </div>

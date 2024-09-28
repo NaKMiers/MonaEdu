@@ -76,22 +76,22 @@ function FeatureCourses({ courses: originalData, className = '' }: FeatureCourse
   }, [originalData, selectedCategory, width])
 
   return (
-    <div className={`border-t-2 border-b-2 border-light bg-dark-100 ${className}`}>
+    <div className={`border-b-2 border-t-2 border-light bg-dark-100 ${className}`}>
       <Divider size={16} />
 
-      <div className='px-21'>
-        <Heading title='Khóa học nổi bật' />
+      <div className="px-21">
+        <Heading title="Khóa học nổi bật" />
       </div>
 
       <Divider size={14} />
 
       {/* Select Tab */}
-      <div className='flex justify-center bg-white border-b border-neutral-800'>
-        <div className='flex text-nowrap overflow-x-auto'>
+      <div className="flex justify-center border-b border-neutral-800 bg-white">
+        <div className="flex overflow-x-auto text-nowrap">
           <button
             className={`${
               selectedCategory === '' ? 'bg-neutral-700 text-light' : ''
-            } min-w-[100px] flex-shrink-0 px-3 py-3 text-lg text-center font-body tracking-wider font-semibold hover:text-primary hover:bg-neutral-800 trans-300`}
+            } trans-300 min-w-[100px] flex-shrink-0 px-3 py-3 text-center font-body text-lg font-semibold tracking-wider hover:bg-neutral-800 hover:text-primary`}
             onClick={() => setSelectedCategory('')}
           >
             Tất cả
@@ -100,7 +100,7 @@ function FeatureCourses({ courses: originalData, className = '' }: FeatureCourse
             <button
               className={`${
                 selectedCategory === category._id ? 'bg-neutral-700 text-light' : ''
-              } min-w-[100px] flex-shrink-0 px-3 py-3 text-lg text-center font-body tracking-wider font-semibold hover:text-primary hover:bg-neutral-800 trans-300`}
+              } trans-300 min-w-[100px] flex-shrink-0 px-3 py-3 text-center font-body text-lg font-semibold tracking-wider hover:bg-neutral-800 hover:text-primary`}
               onClick={() => setSelectedCategory(category._id)}
               key={category._id}
             >
@@ -110,12 +110,15 @@ function FeatureCourses({ courses: originalData, className = '' }: FeatureCourse
         </div>
       </div>
 
-      <div className='flex flex-col gap-2 md:gap-21 py-21 px-2 md:px-21/2 overflow-x-auto bg-slate-200'>
+      <div className="flex flex-col gap-2 overflow-x-auto bg-slate-200 px-2 py-21 md:gap-21 md:px-21/2">
         {courses.map((row, index) => (
-          <div className='flex' key={index}>
+          <div
+            className="flex"
+            key={index}
+          >
             {row.map((course: ICourse) => (
               <div
-                className='w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 flex-shrink-0 px-2 md:px-21/2'
+                className="w-1/2 flex-shrink-0 px-2 md:w-1/3 md:px-21/2 lg:w-1/4 xl:w-1/5"
                 key={course._id}
               >
                 <CourseCard course={course} />

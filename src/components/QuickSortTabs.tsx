@@ -1,9 +1,9 @@
 'use client'
 
-import { useCallback, useState } from 'react'
-import ShortPagination from './layouts/ShortPagination'
-import { usePathname, useRouter } from 'next/navigation'
 import { handleQuery } from '@/utils/handleQuery'
+import { usePathname, useRouter } from 'next/navigation'
+import { memo, useCallback, useState } from 'react'
+import ShortPagination from './layouts/ShortPagination'
 
 interface QuickSortTabsProps {
   searchParams?: { [key: string]: string[] }
@@ -41,7 +41,7 @@ function QuickSortTabs({ searchParams, amount, className = '' }: QuickSortTabsPr
   )
 
   return (
-    <div className={`flex flex-wrap gap-2 w-full ${className}`}>
+    <div className={`flex w-full flex-wrap gap-2 ${className}`}>
       {[
         {
           label: 'Liên quan',
@@ -65,7 +65,7 @@ function QuickSortTabs({ searchParams, amount, className = '' }: QuickSortTabsPr
         },
       ].map((item, index) => (
         <button
-          className={`rounded-3xl text-nowrap shadow-md px-2 md:px-3 py-1 flex items-center justify-center h-[42px] text-sm md:text-lg font-semibold font-body tracking-wider border-2 border-secondary hover:border-secondary hover:bg-primary text-secondary hover:drop-shadow-lg hover:text-dark hover:shadow-lg trans-300 ${
+          className={`trans-300 flex h-[42px] items-center justify-center text-nowrap rounded-3xl border-2 border-secondary px-2 py-1 font-body text-sm font-semibold tracking-wider text-secondary shadow-md hover:border-secondary hover:bg-primary hover:text-dark hover:shadow-lg hover:drop-shadow-lg md:px-3 md:text-lg ${
             sort === item.value ? 'bg-primary text-dark' : ''
           }`}
           onClick={() => handleSort(item.value)}
@@ -80,10 +80,10 @@ function QuickSortTabs({ searchParams, amount, className = '' }: QuickSortTabsPr
         searchParams={searchParams}
         amount={amount}
         itemsPerPage={16}
-        className='justify-end hidden md:flex flex-1'
+        className="hidden flex-1 justify-end md:flex"
       />
     </div>
   )
 }
 
-export default QuickSortTabs
+export default memo(QuickSortTabs)

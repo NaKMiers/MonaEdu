@@ -12,27 +12,31 @@ interface BestSellerProps {
 
 function BestSeller({ courses, className = '' }: BestSellerProps) {
   return (
-    <div className={`max-w-1200 mx-auto px-21 ${className}`}>
-      <div className='flex items-center justify-center'>
+    <div className={`mx-auto max-w-1200 px-21 ${className}`}>
+      <div className="flex items-center justify-center">
         <Image
-          className='object-cover'
-          src='/icons/award.svg'
+          className="object-cover"
+          src="/icons/award.svg"
           width={200}
           height={200}
-          alt='Best-Seller'
-          loading='lazy'
+          alt="Best-Seller"
+          loading="lazy"
         />
       </div>
 
       <Divider size={12} />
 
-      <Heading title='Khóa học bán chạy' />
+      <Heading title="Khóa học bán chạy" />
 
       <Divider size={16} />
 
-      <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 items-start gap-21'>
+      <div className="grid grid-cols-2 items-start gap-21 sm:grid-cols-3 md:grid-cols-4">
         {courses.map((course, index) => (
-          <BestSellerCard course={course} index={index} key={course._id} />
+          <BestSellerCard
+            course={course}
+            index={index}
+            key={course._id}
+          />
         ))}
       </div>
     </div>

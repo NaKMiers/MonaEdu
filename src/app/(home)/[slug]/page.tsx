@@ -155,20 +155,26 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
   }
 
   return (
-    <div className='bg-white md:-mt-8 -mb-28 md:-mb-8 md:pt-8 pb-36'>
+    <div className="-mb-28 bg-white pb-36 md:-mb-8 md:-mt-8 md:pt-8">
       {/* MARK: Add JSON-LD */}
-      <script type='application/ld+json' dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
       {/* MARK: Banner */}
-      <div className='relative bg-neutral-800 text-light -mt-8 pt-8'>
+      <div className="relative -mt-8 bg-neutral-800 pt-8 text-light">
         {/* <BeamsBackground /> */}
 
         {/* Container */}
-        <div className='relative max-w-1200 mx-auto py-10'>
-          <div className='lg:max-w-[calc(100%-300px-32px)] w-full px-21 overflow-hidden'>
+        <div className="relative mx-auto max-w-1200 py-10">
+          <div className="w-full overflow-hidden px-21 lg:max-w-[calc(100%-300px-32px)]">
             {/* Breadcrumb */}
-            <div className='flex flex-wrap items-center text-nowrap gap-x-3 relative z-20 text-slate-400'>
-              <Link href='/categories' className='hover:text-primary trans-200 hover:drop-shadow-md'>
+            <div className="relative z-20 flex flex-wrap items-center gap-x-3 text-nowrap text-slate-400">
+              <Link
+                href="/categories"
+                className="trans-200 hover:text-primary hover:drop-shadow-md"
+              >
                 danh-muc
               </Link>
               <FaAngleRight size={14} />
@@ -179,7 +185,7 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
                       .split('/')
                       .slice(0, index + 1)
                       .join('/')}`}
-                    className='hover:text-primary trans-200 hover:drop-shadow-md'
+                    className="trans-200 hover:text-primary hover:drop-shadow-md"
                   >
                     {category}
                   </Link>
@@ -188,18 +194,18 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
               ))}
               <Link
                 href={`/${course?.slug}`}
-                className='hover:text-primary trans-200 hover:drop-shadow-md'
+                className="trans-200 hover:text-primary hover:drop-shadow-md"
               >
                 {course?.slug}
               </Link>
             </div>
 
             {/* Thumbnails */}
-            <div className='lg:hidden max-w-[500px] relative aspect-video rounded-lg overflow-hidden shadow-lg block group mt-8'>
-              <div className='flex w-full overflow-x-scroll snap-x snap-mandatory hover:scale-105 trans-500'>
+            <div className="group relative mt-8 block aspect-video max-w-[500px] overflow-hidden rounded-lg shadow-lg lg:hidden">
+              <div className="trans-500 flex w-full snap-x snap-mandatory overflow-x-scroll hover:scale-105">
                 {course?.images.slice(0, course.images.length === 1 ? 1 : -1).map(src => (
                   <Image
-                    className='flex-shrink-0 snap-start w-full h-full object-cover'
+                    className="h-full w-full flex-shrink-0 snap-start object-cover"
                     src={src}
                     width={500}
                     height={500}
@@ -213,7 +219,7 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
             <Divider size={8} />
 
             {/* Title */}
-            <h1 className='font-semibold text-3xl md:tracking-wide'>{course?.title}</h1>
+            <h1 className="text-3xl font-semibold md:tracking-wide">{course?.title}</h1>
 
             <Divider size={3} />
 
@@ -224,30 +230,33 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
 
             {/* Citing */}
             {course?.citing && (
-              <p className='flex flex-wrap items-center gap-2 font-body tracking-wider'>
+              <p className="flex flex-wrap items-center gap-2 font-body tracking-wider">
                 <BsSourceforge size={16} />
-                Nguồn: <span className='text-sky-500'>{course?.citing}</span>
+                Nguồn: <span className="text-sky-500">{course?.citing}</span>
               </p>
             )}
 
             {/* Author */}
-            <p className='flex flex-wrap items-center gap-2 font-body tracking-wider'>
+            <p className="flex flex-wrap items-center gap-2 font-body tracking-wider">
               <ImUser size={16} />
-              Giảng viên: <span className='text-primary'>{course?.author}</span>
+              Giảng viên: <span className="text-primary">{course?.author}</span>
             </p>
 
             {/* Last Update*/}
-            <p className='flex flex-wrap items-center gap-2 font-body tracking-wider'>
+            <p className="flex flex-wrap items-center gap-2 font-body tracking-wider">
               <FaStarOfLife size={16} />
               Lần cuối cập nhật: <span>{moment(course?.updatedAt).format('MM/YYYY')}</span>
             </p>
 
             {/* Language */}
-            <p className='flex flex-wrap items-center gap-2 font-body tracking-wider'>
+            <p className="flex flex-wrap items-center gap-2 font-body tracking-wider">
               <MdLanguage size={16} />
               Ngôn ngữ:{' '}
               {course?.languages?.map((language, index) => (
-                <span className='text-slate-300' key={index}>
+                <span
+                  className="text-slate-300"
+                  key={index}
+                >
                   {language}
                   {index < course?.languages.length - 1 ? ', ' : ''}
                 </span>
@@ -255,25 +264,25 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
             </p>
 
             {/* Joined */}
-            <p className='flex flex-wrap items-center gap-2 font-body tracking-wider'>
+            <p className="flex flex-wrap items-center gap-2 font-body tracking-wider">
               <PiStudentBold size={16} />
               Học viên: <span>{course?.joined}</span>
             </p>
 
             {/* Tags */}
             {course && (
-              <p className='font-body'>
+              <p className="font-body">
                 Thẻ:{' '}
                 {(course.tags as ITag[]).map((tag, index) => (
                   <Fragment key={tag._id}>
                     <Link
                       href={`/tags/${tag.slug}`}
                       key={tag._id}
-                      className='text-sky-300 hover:underline underline-offset-1'
+                      className="text-sky-300 underline-offset-1 hover:underline"
                     >
                       {tag.title}
                     </Link>
-                    <span className='text-sky-300'>{index !== course.tags.length - 1 ? ', ' : ''}</span>
+                    <span className="text-sky-300">{index !== course.tags.length - 1 ? ', ' : ''}</span>
                   </Fragment>
                 ))}
               </p>
@@ -285,7 +294,7 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
                 price={course.price}
                 oldPrice={course.oldPrice}
                 flashSale={course.flashSale as IFlashSale}
-                className='border-2 mt-5 lg:hidden'
+                className="mt-5 border-2 lg:hidden"
               />
             )}
             <Divider size={4} />
@@ -294,57 +303,74 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
       </div>
 
       {/* Body */}
-      <div className='flex max-w-1200 mx-auto py-8 gap-8 px-21'>
+      <div className="mx-auto flex max-w-1200 gap-8 px-21 py-8">
         {/* Main */}
-        <div className='mb-8 flex-1'>
+        <div className="mb-8 flex-1">
           {/* MARK: Include */}
-          <div className='lg:hidden font-body tracking-wider mb-8'>
-            <h2 className='font-semibold font-sans text-3xl'>Khóa Học Gồm Có:</h2>
+          <div className="mb-8 font-body tracking-wider lg:hidden">
+            <h2 className="font-sans text-3xl font-semibold">Khóa Học Gồm Có:</h2>
             <Divider size={3} />
 
-            <p className='flex items-center flex-wrap'>
-              <MdVideoLibrary size={16} className='mr-3' />
+            <p className="flex flex-wrap items-center">
+              <MdVideoLibrary
+                size={16}
+                className="mr-3"
+              />
               <span>
                 {chapters.length} chương,{' '}
                 {chapters.reduce((total, chapter) => total + (chapter.lessons?.length || 0), 0)} bài
                 giảng
               </span>
             </p>
-            <p className='flex items-center flex-wrap'>
-              <IoTimer size={16} className='mr-3' />
-              <span className='mr-1'>Thời lượng:</span>
+            <p className="flex flex-wrap items-center">
+              <IoTimer
+                size={16}
+                className="mr-3"
+              />
+              <span className="mr-1">Thời lượng:</span>
               <span>
                 {totalTime.hours > 0 && `${totalTime.hours} giờ`}{' '}
                 {totalTime.minutes > 0 && `${totalTime.minutes} phút`}
               </span>
             </p>
-            <p className='flex items-center flex-wrap'>
-              <IoIosPhonePortrait size={16} className='mr-3' />
+            <p className="flex flex-wrap items-center">
+              <IoIosPhonePortrait
+                size={16}
+                className="mr-3"
+              />
               <span>Có khả năng truy cập trên điện thoại và TV</span>
             </p>
           </div>
 
           {/* MARK: Content */}
-          <h2 className='font-semibold text-3xl'>Nội Dung Khóa Học</h2>
+          <h2 className="text-3xl font-semibold">Nội Dung Khóa Học</h2>
           <Divider size={4} />
-          {course && <CourseContent course={course} chapters={chapters} />}
+          {course && (
+            <CourseContent
+              course={course}
+              chapters={chapters}
+            />
+          )}
 
-          <Divider size={10} border />
+          <Divider
+            size={10}
+            border
+          />
 
           {/* Description */}
-          <h2 className='font-semibold text-3xl'>Mô Tả</h2>
+          <h2 className="text-3xl font-semibold">Mô Tả</h2>
           <Divider size={2} />
           <div dangerouslySetInnerHTML={{ __html: course?.description || '' }} />
         </div>
 
         {/* MARK: Floating Box */}
-        <div className='hidden lg:flex flex-shrink-0 w-full max-w-[300px] justify-end items-start'>
+        <div className="hidden w-full max-w-[300px] flex-shrink-0 items-start justify-end lg:flex">
           {course && (
             <FloatingSummary
               course={course}
               chapters={chapters}
               totalTime={totalTime}
-              className='sticky top-[90px] -mt-[100%] right-0 flex-shrink-0 w-full bg-white rounded-xl shadow-md shadow-primary'
+              className="sticky right-0 top-[90px] -mt-[100%] w-full flex-shrink-0 rounded-xl bg-white shadow-md shadow-primary"
             />
           )}
         </div>
@@ -353,7 +379,7 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
       {/* MARK: Floating Action Buttons */}
       {course && (
         <FloatingActionButtons
-          className='lg:hidden fixed bottom-[72px] md:bottom-0 left-0 w-full right-0 flex px-3 py-1.5 rounded-t-xl border-t-2 border-primary gap-2 bg-white shadow-md shadow-primary z-20'
+          className="fixed bottom-[72px] left-0 right-0 z-20 flex w-full gap-2 rounded-t-xl border-t-2 border-primary bg-white px-3 py-1.5 shadow-md shadow-primary md:bottom-0 lg:hidden"
           course={course}
         />
       )}
@@ -361,12 +387,18 @@ async function CoursePage({ params: { slug } }: { params: { slug: string } }) {
       <Divider size={8} />
 
       {/* MARK: Related Courses */}
-      <div className={`max-w-1200 w-full mx-auto px-21`}>
-        <h2 className='font-semibold font-sans text-3xl'>Các khóa học liên quan</h2>
+      <div className={`mx-auto w-full max-w-1200 px-21`}>
+        <h2 className="font-sans text-3xl font-semibold">Các khóa học liên quan</h2>
 
-        <GroupCourses className='' classChild='w-full sm:w-1/2 md:w-1/3 lg:w-1/4'>
+        <GroupCourses
+          className=""
+          classChild="w-full sm:w-1/2 md:w-1/3 lg:w-1/4"
+        >
           {relatedCourses.map(course => (
-            <CourseCard course={course} key={course._id} />
+            <CourseCard
+              course={course}
+              key={course._id}
+            />
           ))}
         </GroupCourses>
       </div>

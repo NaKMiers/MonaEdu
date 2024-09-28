@@ -5,7 +5,7 @@ import { rankCourseRevenue } from '@/utils/stat'
 import moment from 'moment'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { FaCircleNotch } from 'react-icons/fa'
 
@@ -60,25 +60,25 @@ function CourseRankTab({ className = '' }: CourseRankTabProps) {
       {!loading ? (
         <>
           <select
-            className='appearance-none p-2.5 font-semibold text-xs bg-dark-100 text-light focus:outline-none focus:ring-0 peer rounded-lg cursor-pointer'
+            className="peer cursor-pointer appearance-none rounded-lg bg-dark-100 p-2.5 text-xs font-semibold text-light focus:outline-none focus:ring-0"
             value={by}
             onChange={e => setBy(e.target.value as never)}
           >
             <option
-              className='bg-dark-100 text-light font-body font-semibold tracking-wider p-5'
-              value='day'
+              className="bg-dark-100 p-5 font-body font-semibold tracking-wider text-light"
+              value="day"
             >
               By Day
             </option>
             <option
-              className='bg-dark-100 text-light font-body font-semibold tracking-wider p-5'
-              value='month'
+              className="bg-dark-100 p-5 font-body font-semibold tracking-wider text-light"
+              value="month"
             >
               By Month
             </option>
             <option
-              className='bg-dark-100 text-light font-body font-semibold tracking-wider p-5'
-              value='year'
+              className="bg-dark-100 p-5 font-body font-semibold tracking-wider text-light"
+              value="year"
             >
               By Year
             </option>
@@ -86,32 +86,32 @@ function CourseRankTab({ className = '' }: CourseRankTabProps) {
 
           <Divider size={4} />
 
-          <div className='flex flex-col gap-2'>
+          <div className="flex flex-col gap-2">
             {items.map((item, index) => (
               <div
-                className='flex items-start gap-2.5 bg-slate-900 rounded-lg shadow-lg p-2 text-light'
+                className="flex items-start gap-2.5 rounded-lg bg-slate-900 p-2 text-light shadow-lg"
                 key={index}
               >
                 {item?.images?.[0] && (
                   <Link
                     href={`/${item.slug}`}
-                    className='aspect-video rounded-sm overflow-hidden flex-shrink-0 w-full max-w-[60px]'
+                    className="aspect-video w-full max-w-[60px] flex-shrink-0 overflow-hidden rounded-sm"
                   >
                     <Image
-                      className='w-full h-full object-cover'
+                      className="h-full w-full object-cover"
                       src={item.images[0]}
                       width={60}
                       height={40}
                       alt={item.title}
-                      loading='lazy'
+                      loading="lazy"
                     />
                   </Link>
                 )}
-                <div className='flex flex-col'>
-                  <p className='font-body tracking-wider font-semibold -mt-1'>{item.title}</p>
+                <div className="flex flex-col">
+                  <p className="-mt-1 font-body font-semibold tracking-wider">{item.title}</p>
                   <p>
-                    <span className='text-xs'>Revenue</span>:{' '}
-                    <span className='font-semibold'>{formatPrice(item.revenue)}</span>
+                    <span className="text-xs">Revenue</span>:{' '}
+                    <span className="font-semibold">{formatPrice(item.revenue)}</span>
                   </p>
                 </div>
               </div>
@@ -119,12 +119,15 @@ function CourseRankTab({ className = '' }: CourseRankTabProps) {
           </div>
         </>
       ) : (
-        <div className='flex items-center justify-center'>
-          <FaCircleNotch size={18} className='animate-spin text-slate-400' />
+        <div className="flex items-center justify-center">
+          <FaCircleNotch
+            size={18}
+            className="animate-spin text-slate-400"
+          />
         </div>
       )}
     </div>
   )
 }
 
-export default CourseRankTab
+export default memo(CourseRankTab)

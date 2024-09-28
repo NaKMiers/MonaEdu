@@ -99,54 +99,61 @@ function UserBanner({ user, className = '' }: UserBannerProps) {
   }, [imageUrl])
 
   return (
-    <div className={`relative w-full group ${className}`}>
+    <div className={`group relative w-full ${className}`}>
       {(imageUrl || user.banner) && (
         <Image
-          className='w-full h-full object-cover'
+          className="h-full w-full object-cover"
           src={imageUrl || user.banner || process.env.NEXT_PUBLIC_DEFAULT_BANNER!}
           width={1500}
           height={300}
-          alt='banner'
+          alt="banner"
         />
       )}
 
       <input
-        id='images'
+        id="images"
         hidden
-        placeholder=' '
+        placeholder=" "
         disabled={isChangingBanner}
-        type='file'
-        accept='image/*'
+        type="file"
+        accept="image/*"
         onChange={handleAddFile}
         ref={bannerInputRef}
       />
       {!isChangingBanner && curUser?._id === user?._id && (
         <div
-          className='absolute top-0 left-0 flex opacity-0 group-hover:opacity-100 items-center justify-center bg-dark-0 w-full h-full bg-opacity-20 trans-200 cursor-pointer drop-shadow-lg'
+          className="trans-200 absolute left-0 top-0 flex h-full w-full cursor-pointer items-center justify-center bg-dark-0 bg-opacity-20 opacity-0 drop-shadow-lg group-hover:opacity-100"
           onClick={() => !file && bannerInputRef.current?.click()}
         >
           {file ? (
-            <div className='flex items-center justify-center gap-21'>
-              <FaSave size={40} className='text-green-400 wiggle-1' onClick={handleSaveBanner} />
+            <div className="flex items-center justify-center gap-21">
+              <FaSave
+                size={40}
+                className="wiggle-1 text-green-400"
+                onClick={handleSaveBanner}
+              />
               <ImCancelCircle
                 size={40}
-                className='text-slate-200 wiggle-1'
+                className="wiggle-1 text-slate-200"
                 onClick={handleCancelBanner}
               />
             </div>
           ) : (
-            <FaCamera size={52} className='text-light wiggle-0' />
+            <FaCamera
+              size={52}
+              className="wiggle-0 text-light"
+            />
           )}
         </div>
       )}
       {isChangingBanner && (
-        <div className='absolute top-0 left-0 w-full h-full bg-white bg-opacity-20 pt-2 pl-2'>
+        <div className="absolute left-0 top-0 h-full w-full bg-white bg-opacity-20 pl-2 pt-2">
           <Image
-            className='animate-spin'
-            src='/icons/loading.png'
+            className="animate-spin"
+            src="/icons/loading.png"
             width={50}
             height={50}
-            alt='loading'
+            alt="loading"
           />
         </div>
       )}

@@ -7,9 +7,9 @@ import Link from 'next/link'
 import { memo, useCallback, useEffect, useState } from 'react'
 import { AiFillMessage } from 'react-icons/ai'
 import { FaBoltLightning } from 'react-icons/fa6'
+import { IoCloseSharp } from 'react-icons/io5'
 import { RiAdvertisementFill, RiVipCrown2Fill } from 'react-icons/ri'
 import Divider from '../Divider'
-import { IoCloseSharp } from 'react-icons/io5'
 
 interface FloatingButtonsProps {
   className?: string
@@ -70,40 +70,52 @@ function FloatingButtons({ className = '' }: FloatingButtonsProps) {
   return (
     <>
       <div
-        className={`fixed z-30 right-3 bottom-[140px] flex flex-col gap-2 items-center rounded-xl trans-300 overflow-hidden select-none ${className}`}
+        className={`trans-300 fixed bottom-[140px] right-3 z-30 flex select-none flex-col items-center gap-2 overflow-hidden rounded-xl ${className}`}
       >
         <button
-          className='group flex items-center justify-center h-[44px] w-[44px] border-2 bg-dark-100 border-light rounded-xl'
-          title='Ads'
+          className="group flex h-[44px] w-[44px] items-center justify-center rounded-xl border-2 border-light bg-dark-100"
+          title="Ads"
           onClick={() => setOpenAds(true)}
         >
-          <RiAdvertisementFill size={24} className={`text-light wiggle trans-200`} />
+          <RiAdvertisementFill
+            size={24}
+            className={`wiggle trans-200 text-light`}
+          />
         </button>
 
         {!curUser?.package && (
           <Link
-            href='/subscription'
-            className='group flex items-center justify-center h-[44px] w-[44px] border-2 bg-dark-100 border-light rounded-xl'
-            title='Gói học viên'
+            href="/subscription"
+            className="group flex h-[44px] w-[44px] items-center justify-center rounded-xl border-2 border-light bg-dark-100"
+            title="Gói học viên"
           >
-            <RiVipCrown2Fill size={20} className={`text-light wiggle trans-200`} />
+            <RiVipCrown2Fill
+              size={20}
+              className={`wiggle trans-200 text-light`}
+            />
           </Link>
         )}
 
         <Link
-          href='/flash-sale'
-          className='group flex items-center justify-center h-[44px] w-[44px] border-2 bg-dark-100 border-light rounded-xl'
-          title='Flash Sale'
+          href="/flash-sale"
+          className="group flex h-[44px] w-[44px] items-center justify-center rounded-xl border-2 border-light bg-dark-100"
+          title="Flash Sale"
         >
-          <FaBoltLightning size={20} className={`text-light wiggle trans-200`} />
+          <FaBoltLightning
+            size={20}
+            className={`wiggle trans-200 text-light`}
+          />
         </Link>
 
         <button
-          className='group flex items-center justify-center h-[44px] w-[44px] border-2 bg-dark-100 border-light rounded-xl'
-          title='Liên hệ'
+          className="group flex h-[44px] w-[44px] items-center justify-center rounded-xl border-2 border-light bg-dark-100"
+          title="Liên hệ"
           onClick={() => setOpenContact(true)}
         >
-          <AiFillMessage size={20} className={`text-light wiggle trans-200`} />
+          <AiFillMessage
+            size={20}
+            className={`wiggle trans-200 text-light`}
+          />
         </button>
       </div>
 
@@ -115,25 +127,31 @@ function FloatingButtons({ className = '' }: FloatingButtonsProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
-            className='fixed z-[60] top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex items-center justify-center p-10'
+            className="fixed bottom-0 left-0 right-0 top-0 z-[60] flex items-center justify-center bg-black bg-opacity-50 p-10"
             onClick={handleCloseAds}
           >
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               exit={{ scale: 0 }}
-              className='h-full w-full'
+              className="h-full w-full"
             >
-              <button className='absolute top-12 right-12 group text-light' onClick={handleCloseAds}>
-                <IoCloseSharp size={30} className='wiggle' />
+              <button
+                className="group absolute right-12 top-12 text-light"
+                onClick={handleCloseAds}
+              >
+                <IoCloseSharp
+                  size={30}
+                  className="wiggle"
+                />
               </button>
               <Image
-                className='w-full h-full object-contain overflow-hidden shadow-lg'
+                className="h-full w-full overflow-hidden object-contain shadow-lg"
                 src={width > 0 && width < 768 ? '/sales/bigsale-mobile.png' : '/sales/bigsale.png'}
                 width={2000}
                 height={2000}
-                alt='big-sale'
-                loading='lazy'
+                alt="big-sale"
+                loading="lazy"
               />
             </motion.div>
           </motion.div>
@@ -147,87 +165,90 @@ function FloatingButtons({ className = '' }: FloatingButtonsProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className='fixed z-50 top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex items-center justify-center px-2'
+            className="fixed bottom-0 left-0 right-0 top-0 z-50 flex items-center justify-center bg-black bg-opacity-50 px-2"
             onClick={() => setOpenContact(false)}
           >
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               exit={{ scale: 0 }}
-              className='w-full max-w-[500px] rounded-medium shadow-medium bg-white p-21'
+              className="w-full max-w-[500px] rounded-medium bg-white p-21 shadow-medium"
               onClick={e => e.stopPropagation()}
             >
-              <h1 className='font-semibold tracking-wider text-lg'>Liên hệ</h1>
+              <h1 className="text-lg font-semibold tracking-wider">Liên hệ</h1>
 
-              <Divider border size={2} />
+              <Divider
+                border
+                size={2}
+              />
 
-              <div className='grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-4 py-2 gap-x-4 gap-y-8 mt-8'>
-                <div className='flex items-center justify-center'>
+              <div className="mt-8 grid grid-cols-1 gap-x-4 gap-y-8 py-2 xs:grid-cols-2 sm:grid-cols-4">
+                <div className="flex items-center justify-center">
                   <Link
                     href={process.env.NEXT_PUBLIC_MESSENGER!}
-                    target='_blank'
-                    rel='noreferrer'
-                    className='w-[100px] flex flex-col items-center justify-end relative h-[60px] p-2 text-center bg-dark-100 border-[3px] border-primary rounded-2xl trans-300 shadow-lg group'
+                    target="_blank"
+                    rel="noreferrer"
+                    className="trans-300 group relative flex h-[60px] w-[100px] flex-col items-center justify-end rounded-2xl border-[3px] border-primary bg-dark-100 p-2 text-center shadow-lg"
                   >
                     <Image
-                      src='/icons/messenger.jpg'
+                      src="/icons/messenger.jpg"
                       width={55}
                       height={55}
-                      alt='messenger'
-                      className='max-w-[55px] absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 trans-300 group-hover:top-[-10%]'
+                      alt="messenger"
+                      className="trans-300 absolute left-1/2 top-0 max-w-[55px] -translate-x-1/2 -translate-y-1/2 group-hover:top-[-10%]"
                     />
-                    <span className='text-xs text-light'>Messenger</span>
+                    <span className="text-xs text-light">Messenger</span>
                   </Link>
                 </div>
-                <div className='flex items-center justify-center'>
+                <div className="flex items-center justify-center">
                   <Link
                     href={process.env.NEXT_PUBLIC_FACEBOOK!}
-                    target='_blank'
-                    rel='noreferrer'
-                    className='w-[100px] flex flex-col items-center justify-end relative h-[60px] p-2 text-center bg-dark-100 border-[3px] border-primary rounded-2xl trans-300 shadow-lg group'
+                    target="_blank"
+                    rel="noreferrer"
+                    className="trans-300 group relative flex h-[60px] w-[100px] flex-col items-center justify-end rounded-2xl border-[3px] border-primary bg-dark-100 p-2 text-center shadow-lg"
                   >
                     <Image
-                      src='/icons/facebook.png'
+                      src="/icons/facebook.png"
                       width={55}
                       height={55}
-                      alt='facebook'
-                      className='max-w-[55px] absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 trans-300 group-hover:top-[-10%]'
+                      alt="facebook"
+                      className="trans-300 absolute left-1/2 top-0 max-w-[55px] -translate-x-1/2 -translate-y-1/2 group-hover:top-[-10%]"
                     />
-                    <span className='text-xs text-light'>Facebook</span>
+                    <span className="text-xs text-light">Facebook</span>
                   </Link>
                 </div>
-                <div className='flex items-center justify-center'>
+                <div className="flex items-center justify-center">
                   <Link
                     href={process.env.NEXT_PUBLIC_INSTAGRAM!}
-                    target='_blank'
-                    rel='noreferrer'
-                    className='w-[100px] flex flex-col items-center justify-end relative h-[60px] p-2 text-center bg-dark-100 border-[3px] border-primary rounded-2xl trans-300 shadow-lg group'
+                    target="_blank"
+                    rel="noreferrer"
+                    className="trans-300 group relative flex h-[60px] w-[100px] flex-col items-center justify-end rounded-2xl border-[3px] border-primary bg-dark-100 p-2 text-center shadow-lg"
                   >
                     <Image
-                      src='/icons/instagram.png'
+                      src="/icons/instagram.png"
                       width={55}
                       height={55}
-                      alt='instagram'
-                      className='max-w-[55px] absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 trans-300 group-hover:top-[-10%]'
+                      alt="instagram"
+                      className="trans-300 absolute left-1/2 top-0 max-w-[55px] -translate-x-1/2 -translate-y-1/2 group-hover:top-[-10%]"
                     />
-                    <span className='text-xs text-light'>Instagram</span>
+                    <span className="text-xs text-light">Instagram</span>
                   </Link>
                 </div>
-                <div className='flex items-center justify-center'>
+                <div className="flex items-center justify-center">
                   <Link
                     href={`mailto:${process.env.NEXT_PUBLIC_GMAIL!}`}
-                    target='_blank'
-                    rel='noreferrer'
-                    className='w-[100px] flex flex-col items-center justify-end relative h-[60px] p-2 text-center bg-dark-100 border-[3px] border-primary rounded-2xl trans-300 shadow-lg group'
+                    target="_blank"
+                    rel="noreferrer"
+                    className="trans-300 group relative flex h-[60px] w-[100px] flex-col items-center justify-end rounded-2xl border-[3px] border-primary bg-dark-100 p-2 text-center shadow-lg"
                   >
                     <Image
-                      src='/icons/gmail.png'
+                      src="/icons/gmail.png"
                       width={55}
                       height={55}
-                      alt='gmail'
-                      className='max-w-[55px] absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 trans-300 group-hover:top-[-10%]'
+                      alt="gmail"
+                      className="trans-300 absolute left-1/2 top-0 max-w-[55px] -translate-x-1/2 -translate-y-1/2 group-hover:top-[-10%]"
                     />
-                    <span className='text-xs text-light'>Gmail</span>
+                    <span className="text-xs text-light">Gmail</span>
                   </Link>
                 </div>
               </div>

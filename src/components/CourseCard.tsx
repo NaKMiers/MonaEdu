@@ -32,7 +32,10 @@ interface CourseCardProps {
 }
 
 const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
-  <Tooltip {...props} classes={{ popper: className }} />
+  <Tooltip
+    {...props}
+    classes={{ popper: className }}
+  />
 ))(({ theme }) => ({
   [`& .${tooltipClasses.tooltip}`]: {
     backgroundColor: 'transparent',
@@ -143,18 +146,18 @@ function CourseCard({ course: data, hideBadge, className = '' }: CourseCardProps
 
   return (
     <HtmlTooltip
-      placement='right-start'
+      placement="right-start"
       arrow
       enterDelay={120}
       title={
-        <div className='p-21/2 border border-slate-600 rounded-xl bg-white text-dark'>
-          <h1 className='font-semibold text-xl leading-6'>{course?.title}</h1>
+        <div className="rounded-xl border border-slate-600 bg-white p-21/2 text-dark">
+          <h1 className="text-xl font-semibold leading-6">{course?.title}</h1>
 
           <Divider size={2} />
 
           {/* Likes - Joined - Share */}
-          <div className='flex items-center flex-wrap gap-3'>
-            <button className='flex justify-center items-center gap-1.5 group'>
+          <div className="flex flex-wrap items-center gap-3">
+            <button className="group flex items-center justify-center gap-1.5">
               <FaRegThumbsUp
                 size={16}
                 className={`${
@@ -164,20 +167,23 @@ function CourseCard({ course: data, hideBadge, className = '' }: CourseCardProps
                 } trans-200`}
                 onClick={handleLike}
               />
-              <span className='font-semibold text-base'>{course.likes.length}</span>{' '}
+              <span className="text-base font-semibold">{course.likes.length}</span>{' '}
             </button>
 
-            <div className='w-px h-5 bg-slate-300 rounded-lg' />
+            <div className="h-5 w-px rounded-lg bg-slate-300" />
 
-            <div className='flex justify-center items-center gap-1.5'>
+            <div className="flex items-center justify-center gap-1.5">
               <PiStudentBold size={16} />
-              <span className='font-semibold text-base'>{course.joined}</span>
+              <span className="text-base font-semibold">{course.joined}</span>
             </div>
 
-            <div className='w-px h-5 bg-slate-300 rounded-lg' />
+            <div className="h-5 w-px rounded-lg bg-slate-300" />
 
-            <div className='flex justify-center items-center'>
-              <FacebookShareButton url={`https://monaedu.com/${course.slug}`} hashtag='#mona'>
+            <div className="flex items-center justify-center">
+              <FacebookShareButton
+                url={`https://monaedu.com/${course.slug}`}
+                hashtag="#mona"
+              >
                 <FaShareAlt size={16} />
               </FacebookShareButton>
             </div>
@@ -185,43 +191,52 @@ function CourseCard({ course: data, hideBadge, className = '' }: CourseCardProps
 
           <Divider size={2} />
 
-          <p className='text-xs text-slate-600'>{duration(course.duration, 'long')} tổng thời lượng</p>
+          <p className="text-xs text-slate-600">{duration(course.duration, 'long')} tổng thời lượng</p>
 
           <Divider size={2} />
 
-          <p className='font-body tracking-wider'>{course.textHook}</p>
+          <p className="font-body tracking-wider">{course.textHook}</p>
 
           <Divider size={4} />
-          <div className='flex items-center gap-1 w-full'>
+          <div className="flex w-full items-center gap-1">
             <BuyNowButton course={course} />
 
             <button
-              className={`group font-semibold h-[42px] px-3 flex items-center justify-center rounded-lg shadow-lg bg-dark-100 border-2 border-dark hover:bg-white trans-300 hover:-translate-y-1 ${
+              className={`trans-300 group flex h-[42px] items-center justify-center rounded-lg border-2 border-dark bg-dark-100 px-3 font-semibold shadow-lg hover:-translate-y-1 hover:bg-white ${
                 isLoading ? 'pointer-events-none bg-slate-200' : ''
               }`}
               onClick={addCourseToCart}
               disabled={isLoading}
             >
               {isLoading ? (
-                <RiDonutChartFill size={18} className='animate-spin text-dark' />
+                <RiDonutChartFill
+                  size={18}
+                  className="animate-spin text-dark"
+                />
               ) : (
-                <FaCartPlus className='text-[18px] sm:text-[20px] wiggle text-light group-hover:text-dark' />
+                <FaCartPlus className="wiggle text-[18px] text-light group-hover:text-dark sm:text-[20px]" />
               )}
             </button>
 
             {curUser?._id &&
               curUser.courses.map((course: any) => course.course).includes(course._id) && (
-                <div className='text-light relative flex justify-end items-center w-[30px] h-[42px]'>
-                  <button className='group' onClick={() => setShowActions2(prev => !prev)}>
-                    <HiDotsVertical size={24} className='wiggle text-dark' />
+                <div className="relative flex h-[42px] w-[30px] items-center justify-end text-light">
+                  <button
+                    className="group"
+                    onClick={() => setShowActions2(prev => !prev)}
+                  >
+                    <HiDotsVertical
+                      size={24}
+                      className="wiggle text-dark"
+                    />
                   </button>
                   <div
                     className={`${
-                      showActions2 ? 'max-w-[120px] max-h-[40px] px-1.5 py-1' : 'max-w-0 max-h-0 p-0'
-                    }  overflow-hidden absolute z-20 top-[80%] flex gap-2 rounded-md trans-300`}
+                      showActions2 ? 'max-h-[40px] max-w-[120px] px-1.5 py-1' : 'max-h-0 max-w-0 p-0'
+                    } trans-300 absolute top-[80%] z-20 flex gap-2 overflow-hidden rounded-md`}
                   >
                     <button
-                      className={`font-bold text-nowrap px-1.5 py-1 text-[10px] bg-white hover:bg-dark-0 hover:text-light border border-dark text-dark rounded-md shadow-md trans-200`}
+                      className={`trans-200 text-nowrap rounded-md border border-dark bg-white px-1.5 py-1 text-[10px] font-bold text-dark shadow-md hover:bg-dark-0 hover:text-light`}
                       onClick={buyNow}
                     >
                       Mua tặng
@@ -229,7 +244,7 @@ function CourseCard({ course: data, hideBadge, className = '' }: CourseCardProps
                     {['admin', 'editor'].includes(curUser.role) && (
                       <Link
                         href={`/admin/course/all?slug=${course.slug}`}
-                        className={`font-bold text-nowrap px-1.5 py-1 text-[10px] bg-white hover:bg-dark-0 hover:text-light border border-dark text-dark rounded-md shadow-md trans-200`}
+                        className={`trans-200 text-nowrap rounded-md border border-dark bg-white px-1.5 py-1 text-[10px] font-bold text-dark shadow-md hover:bg-dark-0 hover:text-light`}
                       >
                         Edit
                       </Link>
@@ -241,13 +256,13 @@ function CourseCard({ course: data, hideBadge, className = '' }: CourseCardProps
         </div>
       }
     >
-      <div className='h-full'>
+      <div className="h-full">
         <CardContainer className={`inter-var ${className}`}>
-          <CardBody className='flex flex-col bg-neutral-800 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:border-light/[0.2] border-black/[0.1] h-full rounded-xl p-2.5 md:p-4 border'>
+          <CardBody className="group/card relative flex h-full flex-col rounded-xl border border-black/[0.1] bg-neutral-800 p-2.5 md:p-4 dark:border-light/[0.2] dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1]">
             {course.oldPrice && !hideBadge && (
               <CardItem
-                translateZ='35'
-                className='absolute -top-2 -left-2 rounded-tl-lg rounded-br-lg bg-yellow-400 px-1 py-0.5 text-dark font-semibold font-body text-center text-[12px] leading-4'
+                translateZ="35"
+                className="absolute -left-2 -top-2 rounded-br-lg rounded-tl-lg bg-yellow-400 px-1 py-0.5 text-center font-body text-[12px] font-semibold leading-4 text-dark"
               >
                 Giảm{' '}
                 {countPercent(
@@ -259,11 +274,14 @@ function CourseCard({ course: data, hideBadge, className = '' }: CourseCardProps
 
             <Divider size={2} />
 
-            <CardItem translateZ={50} className='text-xl font-bold text-neutral-600 dark:text-light'>
+            <CardItem
+              translateZ={50}
+              className="text-xl font-bold text-neutral-600 dark:text-light"
+            >
               <Link
                 href={`/${course.slug}`}
                 prefetch={false}
-                className='font-body text-[14px] md:text-[21px] tracking-wider leading-[20px] md:leading-[28px] mb-1 md:mb-2 text-ellipsis line-clamp-2'
+                className="mb-1 line-clamp-2 text-ellipsis font-body text-[14px] leading-[20px] tracking-wider md:mb-2 md:text-[21px] md:leading-[28px]"
                 title={course.title}
               >
                 {course.title}
@@ -271,29 +289,32 @@ function CourseCard({ course: data, hideBadge, className = '' }: CourseCardProps
             </CardItem>
 
             <CardItem
-              as='p'
+              as="p"
               translateZ={30}
-              className='text-ellipsis line-clamp-2 text-xs md:text-sm mb-2 text-neutral-300'
+              className="mb-2 line-clamp-2 text-ellipsis text-xs text-neutral-300 md:text-sm"
               title={course.textHook}
             >
               {course.textHook}
             </CardItem>
 
-            <CardItem translateZ={80} className='w-full'>
+            <CardItem
+              translateZ={80}
+              className="w-full"
+            >
               <Link
                 href={`/${course.slug}`}
                 prefetch={false}
-                className='relative aspect-video rounded-lg overflow-hidden shadow-lg block group'
+                className="group relative block aspect-video overflow-hidden rounded-lg shadow-lg"
               >
-                <div className='flex w-full overflow-x-scroll snap-x snap-mandatory hover:scale-105 trans-500'>
+                <div className="trans-500 flex w-full snap-x snap-mandatory overflow-x-scroll hover:scale-105">
                   {course.images.slice(0, course.images.length === 1 ? 1 : -1).map(src => (
                     <Image
-                      className='flex-shrink-0 snap-start w-full h-full object-cover'
+                      className="h-full w-full flex-shrink-0 snap-start object-cover"
                       src={src}
                       width={320}
                       height={320}
                       alt={course.title}
-                      loading='lazy'
+                      loading="lazy"
                       key={src}
                     />
                   ))}
@@ -305,20 +326,23 @@ function CourseCard({ course: data, hideBadge, className = '' }: CourseCardProps
 
             <CardItem
               translateZ={40}
-              className='w-full text-xl font-bold text-neutral-600 dark:text-light'
+              className="w-full text-xl font-bold text-neutral-600 dark:text-light"
             >
               <Price
                 price={course.price}
                 oldPrice={course.oldPrice}
                 flashSale={course.flashSale as IFlashSale}
-                className='border-2'
+                className="border-2"
               />
             </CardItem>
 
             <Divider size={4} />
 
-            <div className='flex flex-1 items-end justify-between'>
-              <CardItem translateZ={80} className='flex items-center gap-1 w-full'>
+            <div className="flex flex-1 items-end justify-between">
+              <CardItem
+                translateZ={80}
+                className="flex w-full items-center gap-1"
+              >
                 {/* Buy Now Button */}
                 <BuyNowButton course={course} />
 
@@ -326,16 +350,19 @@ function CourseCard({ course: data, hideBadge, className = '' }: CourseCardProps
                 {(!curUser ||
                   !curUser.courses?.map((course: any) => course.course).includes(course._id)) && (
                   <button
-                    className={`group font-semibold h-[42px] px-3 flex items-center justify-center rounded-lg shadow-lg bg-dark-100 border-2 border-dark hover:bg-white trans-300 hover:-translate-y-1 ${
+                    className={`trans-300 group flex h-[42px] items-center justify-center rounded-lg border-2 border-dark bg-dark-100 px-3 font-semibold shadow-lg hover:-translate-y-1 hover:bg-white ${
                       isLoading ? 'pointer-events-none bg-slate-200' : ''
                     }`}
                     onClick={addCourseToCart}
                     disabled={isLoading}
                   >
                     {isLoading ? (
-                      <RiDonutChartFill size={18} className='animate-spin text-dark' />
+                      <RiDonutChartFill
+                        size={18}
+                        className="animate-spin text-dark"
+                      />
                     ) : (
-                      <FaCartPlus className='text-[18px] sm:text-[20px] wiggle text-light group-hover:text-dark' />
+                      <FaCartPlus className="wiggle text-[18px] text-light group-hover:text-dark sm:text-[20px]" />
                     )}
                   </button>
                 )}
@@ -343,17 +370,23 @@ function CourseCard({ course: data, hideBadge, className = '' }: CourseCardProps
                 {/* Buy As Gift Button */}
                 {curUser?._id &&
                   curUser.courses.map((course: any) => course.course).includes(course._id) && (
-                    <div className='text-light relative flex justify-end items-center w-[30px] h-[42px]'>
-                      <button className='group' onClick={() => setShowActions(prev => !prev)}>
-                        <HiDotsVertical size={24} className='wiggle' />
+                    <div className="relative flex h-[42px] w-[30px] items-center justify-end text-light">
+                      <button
+                        className="group"
+                        onClick={() => setShowActions(prev => !prev)}
+                      >
+                        <HiDotsVertical
+                          size={24}
+                          className="wiggle"
+                        />
                       </button>
                       <div
                         className={`${
-                          showActions ? 'max-w-[120px] max-h-[40px] px-1.5 py-1' : 'max-w-0 max-h-0 p-0'
-                        }  overflow-hidden absolute z-20 top-[80%] flex gap-2 rounded-md trans-300`}
+                          showActions ? 'max-h-[40px] max-w-[120px] px-1.5 py-1' : 'max-h-0 max-w-0 p-0'
+                        } trans-300 absolute top-[80%] z-20 flex gap-2 overflow-hidden rounded-md`}
                       >
                         <button
-                          className={`font-bold text-nowrap px-1.5 py-1 text-[10px] bg-white hover:bg-dark-0 hover:text-light border border-dark text-dark rounded-md shadow-md trans-200`}
+                          className={`trans-200 text-nowrap rounded-md border border-dark bg-white px-1.5 py-1 text-[10px] font-bold text-dark shadow-md hover:bg-dark-0 hover:text-light`}
                           onClick={buyNow}
                         >
                           Mua tặng
@@ -361,7 +394,7 @@ function CourseCard({ course: data, hideBadge, className = '' }: CourseCardProps
                         {['admin', 'editor'].includes(curUser.role) && (
                           <Link
                             href={`/admin/course/all?slug=${course.slug}`}
-                            className={`font-bold text-nowrap px-1.5 py-1 text-[10px] bg-white hover:bg-dark-0 hover:text-light border border-dark text-dark rounded-md shadow-md trans-200`}
+                            className={`trans-200 text-nowrap rounded-md border border-dark bg-white px-1.5 py-1 text-[10px] font-bold text-dark shadow-md hover:bg-dark-0 hover:text-light`}
                           >
                             Edit
                           </Link>

@@ -221,8 +221,8 @@ function UserItem({
   return (
     <>
       <div
-        className={`relative flex text-dark justify-between items-start gap-2 p-4 rounded-lg shadow-lg trans-200 select-none  ${
-          selectedUsers.includes(userData._id) ? 'bg-violet-50 -translate-y-1' : 'bg-white'
+        className={`trans-200 relative flex select-none items-start justify-between gap-2 rounded-lg p-4 text-dark shadow-lg ${
+          selectedUsers.includes(userData._id) ? '-translate-y-1 bg-violet-50' : 'bg-white'
         } ${!isCurUser ? 'cursor-pointer' : ''} ${className}`}
         onClick={() =>
           !isCurUser &&
@@ -234,103 +234,103 @@ function UserItem({
         }
       >
         {/* MARK: Body */}
-        <div className='w-full'>
+        <div className="w-full">
           {/* Avatar */}
           <Link
             href={`/user/${userData.username || userData.email}`}
-            className='block float-start mr-3 rounded-md overflow-hidden'
+            className="float-start mr-3 block overflow-hidden rounded-md"
             onClick={e => e.stopPropagation()}
           >
             <Image
-              className='aspect-square'
+              className="aspect-square"
               src={userData.avatar}
               height={65}
               width={65}
-              alt='avatar'
+              alt="avatar"
               title={userData._id}
             />
           </Link>
 
           {/* Role */}
-          <div className='absolute z-30 -top-2 -left-2 shadow-md text-xs text-yellow-300 bg-secondary px-2 py-[2px] select-none rounded-lg font-body'>
+          <div className="absolute -left-2 -top-2 z-30 select-none rounded-lg bg-secondary px-2 py-[2px] font-body text-xs text-yellow-300 shadow-md">
             {userData.role}
           </div>
 
           {/* Email */}
           <p
-            className='block font-semibold text-[18px] font-body tracking-wide text-secondary text-ellipsis line-clamp-1'
+            className="line-clamp-1 block text-ellipsis font-body text-[18px] font-semibold tracking-wide text-secondary"
             title={userData.email}
           >
             {userData.email}
           </p>
 
           {/* Expended */}
-          <div className='flex items-center gap-2 text-sm'>
+          <div className="flex items-center gap-2 text-sm">
             <p>
-              <span className='font-semibold'>Expended: </span>
-              <span className='text-green-500'>{formatPrice(userData.expended)}</span>
+              <span className="font-semibold">Expended: </span>
+              <span className="text-green-500">{formatPrice(userData.expended)}</span>
             </p>
           </div>
 
           {/* Username */}
           {userData.username && (
-            <p className='text-sm'>
-              <span className='font-semibold'>Username: </span>
+            <p className="text-sm">
+              <span className="font-semibold">Username: </span>
               <span>{userData.username}</span>
             </p>
           )}
 
           {/* Nickname */}
           {userData.nickname && (
-            <p className='text-sm'>
-              <span className='font-semibold'>Nickname: </span>
+            <p className="text-sm">
+              <span className="font-semibold">Nickname: </span>
               <span>{userData.nickname}</span>
             </p>
           )}
 
           {/* First Name + Last Name: Full Name */}
           {(userData.firstName || userData.lastName) && (
-            <p className='text-sm'>
-              <span className='font-semibold'>Fullname: </span>
+            <p className="text-sm">
+              <span className="font-semibold">Fullname: </span>
               <span>{userData.firstName + ' ' + userData.lastName}</span>
             </p>
           )}
 
           {/* Birthday */}
           {userData.birthday && (
-            <p className='text-sm'>
-              <span className='font-semibold'>Birthday: </span>
+            <p className="text-sm">
+              <span className="font-semibold">Birthday: </span>
               <span>{formatDate(userData.birthday)}</span>
             </p>
           )}
 
           {/* Phone */}
           {userData.phone && (
-            <p className='text-sm'>
-              <span className='font-semibold'>Phone: </span>
+            <p className="text-sm">
+              <span className="font-semibold">Phone: </span>
               <span>{userData.phone}</span>
             </p>
           )}
 
           {/* Address */}
           {userData.address && (
-            <p className='text-sm'>
-              <span className='font-semibold'>Address: </span>
+            <p className="text-sm">
+              <span className="font-semibold">Address: </span>
               <span>{userData.address}</span>
             </p>
           )}
 
           {/* Job */}
           {userData.job && (
-            <p className='text-sm'>
-              <span className='font-semibold'>Job: </span>
+            <p className="text-sm">
+              <span className="font-semibold">Job: </span>
               <span>{userData.job}</span>
             </p>
           )}
 
           {/* Created At */}
-          <p className='text-sm'>
-            <span className='font-semibold'>Created At: </span>
+          <p className="text-sm">
+            <span className="font-semibold">Created At: </span>
             <span
               className={`${
                 +new Date() - +new Date(data.createdAt) <= 60 * 60 * 1000 ? 'text-yellow-500' : ''
@@ -341,8 +341,8 @@ function UserItem({
           </p>
 
           {/* Updated At */}
-          <p className='text-sm'>
-            <span className='font-semibold'>Updated At: </span>
+          <p className="text-sm">
+            <span className="font-semibold">Updated At: </span>
             <span
               className={`${
                 +new Date() - +new Date(data.updatedAt) <= 60 * 60 * 1000 ? 'text-yellow-500' : ''
@@ -356,7 +356,7 @@ function UserItem({
         {/* MARK: Set Collaborator Modal */}
         {isOpenSetCollaborator && (
           <div
-            className='absolute z-20 p-21 top-0 left-0 w-full h-full flex flex-col items-center justify-center gap-2 rounded-md bg-yellow-400 bg-opacity-80'
+            className="absolute left-0 top-0 z-20 flex h-full w-full flex-col items-center justify-center gap-2 rounded-md bg-yellow-400 bg-opacity-80 p-21"
             onClick={e => {
               e.stopPropagation()
               setIsOpenSetCollaborator(false)
@@ -364,14 +364,14 @@ function UserItem({
           >
             {/* Type */}
             <Input
-              id='type'
-              label='Type'
+              id="type"
+              label="Type"
               disabled={isLoadingSetCollaborator}
               register={register}
               errors={errors}
               icon={RiCheckboxMultipleBlankLine}
-              type='select'
-              className='w-full'
+              type="select"
+              className="w-full"
               onClick={e => e.stopPropagation()}
               onFocus={() => clearErrors('type')}
               options={[
@@ -385,23 +385,23 @@ function UserItem({
                 },
               ]}
             />
-            <div className='flex w-full gap-2 items-center'>
+            <div className="flex w-full items-center gap-2">
               <Input
                 id={'value-' + data._id}
-                label='Commission'
+                label="Commission"
                 disabled={isLoadingSetCollaborator}
                 register={register}
                 errors={errors}
                 required
-                type='text'
+                type="text"
                 icon={HiLightningBolt}
-                className='w-full shadow-lg'
+                className="w-full shadow-lg"
                 onClick={e => e.stopPropagation()}
                 onFocus={() => clearErrors('value-' + data._id)}
               />
               <LoadingButton
-                className='px-4 h-[46px] flex items-center justify-center shadow-lg bg-secondary hover:bg-primary text-light rounded-lg font-semibold trans-200'
-                text='Set'
+                className="trans-200 flex h-[46px] items-center justify-center rounded-lg bg-secondary px-4 font-semibold text-light shadow-lg hover:bg-primary"
+                text="Set"
                 onClick={e => {
                   e.stopPropagation()
                   handleSubmit(onSetCollaboratorSubmit)(e)
@@ -414,10 +414,10 @@ function UserItem({
 
         {/* MARK: Action Buttons*/}
         {!isCurUser && (
-          <div className='flex flex-col border border-dark text-dark rounded-lg px-2 py-3 gap-4'>
+          <div className="flex flex-col gap-4 rounded-lg border border-dark px-2 py-3 text-dark">
             {/* Promote User Button */}
             <button
-              className='block group'
+              className="group block"
               onClick={e => {
                 e.stopPropagation()
                 userData.role === 'collaborator'
@@ -428,7 +428,10 @@ function UserItem({
               title={userData.role === 'collaborator' ? 'Demote' : 'Promote'}
             >
               {loadingUsers.includes(userData._id) ? (
-                <RiDonutChartFill size={18} className='animate-spin text-slate-300' />
+                <RiDonutChartFill
+                  size={18}
+                  className="animate-spin text-slate-300"
+                />
               ) : (
                 <GrUpgrade
                   size={18}
@@ -441,16 +444,19 @@ function UserItem({
 
             {/* Block Comment Button */}
             <button
-              className='block group'
+              className="group block"
               onClick={e => {
                 e.stopPropagation()
                 setIsOpenBlockCommentConfirmationDialog(true)
               }}
               disabled={loadingUsers.includes(userData._id) || isBlockingComment || isDemoting}
-              title='Block Comment'
+              title="Block Comment"
             >
               {isBlockingComment ? (
-                <RiDonutChartFill size={18} className='animate-spin text-slate-300' />
+                <RiDonutChartFill
+                  size={18}
+                  className="animate-spin text-slate-300"
+                />
               ) : (
                 <FaCommentSlash
                   size={18}
@@ -463,33 +469,42 @@ function UserItem({
 
             {/* Delete Button */}
             <button
-              className='block group'
+              className="group block"
               onClick={e => {
                 e.stopPropagation()
                 setIsOpenConfirmModal(true)
               }}
               disabled={loadingUsers.includes(userData._id) || isBlockingComment || isDemoting}
-              title='Delete'
+              title="Delete"
             >
               {loadingUsers.includes(userData._id) ? (
-                <RiDonutChartFill size={18} className='animate-spin text-slate-300' />
+                <RiDonutChartFill
+                  size={18}
+                  className="animate-spin text-slate-300"
+                />
               ) : (
-                <FaTrash size={18} className='wiggle' />
+                <FaTrash
+                  size={18}
+                  className="wiggle"
+                />
               )}
             </button>
 
             {/* Change Status Button */}
-            <div className='relative'>
+            <div className="relative">
               <button
-                className='block group'
+                className="group block"
                 onClick={e => {
                   e.stopPropagation()
                   setIsOpenOptions(prev => !prev)
                 }}
                 disabled={false}
-                title='Change Status'
+                title="Change Status"
               >
-                <FaEye size={18} className='wiggle text-violet-500' />
+                <FaEye
+                  size={18}
+                  className="wiggle text-violet-500"
+                />
               </button>
 
               <AnimatePresence>
@@ -498,28 +513,34 @@ function UserItem({
                     initial={{ opacity: 0, scale: 0.5, translateY: '-50%', originX: '100%' }}
                     animate={{ opacity: 1, scale: 1, translateY: '-50%', originX: '100%' }}
                     exit={{ opacity: 0, scale: 0.5, translateY: '-50%', originX: '100%' }}
-                    className='flex items-center justify-between gap-4 absolute top-1/2 right-8 rounded-md shadow-lg px-3 py-2 bg-black'
+                    className="absolute right-8 top-1/2 flex items-center justify-between gap-4 rounded-md bg-black px-3 py-2 shadow-lg"
                     onClick={e => e.stopPropagation()}
                   >
                     <button
-                      className='group'
-                      title='Publish'
+                      className="group"
+                      title="Publish"
                       onClick={() => {
                         setIsOpenOptions(false)
                         handleGetUserCart()
                       }}
                     >
-                      <FaCartArrowDown size={18} className='wiggle text-yellow-500' />
+                      <FaCartArrowDown
+                        size={18}
+                        className="wiggle text-yellow-500"
+                      />
                     </button>
                     <button
-                      className='group'
-                      title='Draft'
+                      className="group"
+                      title="Draft"
                       onClick={() => {
                         setIsOpenOptions(false)
                         setIsOpenUserProgresses(true)
                       }}
                     >
-                      <SiCoursera size={18} className='wiggle text-orange-500' />
+                      <SiCoursera
+                        size={18}
+                        className="wiggle text-orange-500"
+                      />
                     </button>
                   </motion.div>
                 )}
@@ -536,28 +557,31 @@ function UserItem({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className={`fixed z-40 top-0 left-0 right-0 bottom-0 text-dark bg-black bg-opacity-50 flex items-center justify-center ${className}`}
+            className={`fixed bottom-0 left-0 right-0 top-0 z-40 flex items-center justify-center bg-black bg-opacity-50 text-dark ${className}`}
             onClick={() => setIsOpenCartList(false)}
           >
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               exit={{ scale: 0 }}
-              className='w-full max-w-[500px] max-h-[500px] overflow-y-auto rounded-medium shadow-medium bg-white p-21'
+              className="max-h-[500px] w-full max-w-[500px] overflow-y-auto rounded-medium bg-white p-21 shadow-medium"
               onClick={e => e.stopPropagation()}
             >
-              <h1 className='font-semibold'>{getUserName(data)}&apos;s Cart</h1>
-              <Divider border size={4} />
+              <h1 className="font-semibold">{getUserName(data)}&apos;s Cart</h1>
+              <Divider
+                border
+                size={4}
+              />
 
               {userCart.length > 0 ? (
-                <div className='text-sm font-body tracking-wider flex flex-col gap-1'>
+                <div className="flex flex-col gap-1 font-body text-sm tracking-wider">
                   {userCart.map((item: any, index) => (
                     <Link
                       href={`/${item.courseId.slug}`}
-                      className='flex items-start gap-2 hover:text-sky-500 trans-200 hover:underline'
+                      className="trans-200 flex items-start gap-2 hover:text-sky-500 hover:underline"
                       key={item._id}
                     >
-                      <span className='rounded-full min-w-6 text-center border border-dark-100 px-0.5 text-[10px]'>
+                      <span className="border-dark-100 min-w-6 rounded-full border px-0.5 text-center text-[10px]">
                         {index + 1}
                       </span>
                       <span>{item.courseId.title}</span>
@@ -565,7 +589,7 @@ function UserItem({
                   ))}
                 </div>
               ) : (
-                <p className='italic text-slate-400 text-sm'>User cart is empty.</p>
+                <p className="text-sm italic text-slate-400">User cart is empty.</p>
               )}
             </motion.div>
           </motion.div>
@@ -579,37 +603,40 @@ function UserItem({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className={`fixed z-40 top-0 left-0 right-0 bottom-0 text-dark bg-black bg-opacity-50 flex items-center justify-center ${className}`}
+            className={`fixed bottom-0 left-0 right-0 top-0 z-40 flex items-center justify-center bg-black bg-opacity-50 text-dark ${className}`}
             onClick={() => setIsOpenUserProgresses(false)}
           >
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               exit={{ scale: 0 }}
-              className='w-full max-w-[500px] max-h-[500px] overflow-y-auto rounded-medium shadow-medium bg-white p-21'
+              className="max-h-[500px] w-full max-w-[500px] overflow-y-auto rounded-medium bg-white p-21 shadow-medium"
               onClick={e => e.stopPropagation()}
             >
-              <h1 className='font-semibold'>{getUserName(data)}&apos;s Courses&apos;s Progresses</h1>
-              <Divider border size={4} />
+              <h1 className="font-semibold">{getUserName(data)}&apos;s Courses&apos;s Progresses</h1>
+              <Divider
+                border
+                size={4}
+              />
 
               {data.courses.length > 0 ? (
-                <div className='text-sm font-body tracking-wider flex flex-col gap-1'>
+                <div className="flex flex-col gap-1 font-body text-sm tracking-wider">
                   {data.courses.map((item: any, index) => (
                     <Link
                       href={`/${item.course.slug}`}
-                      className='flex items-start gap-2 hover:text-sky-500 trans-200 hover:underline'
+                      className="trans-200 flex items-start gap-2 hover:text-sky-500 hover:underline"
                       key={item._id}
                     >
-                      <span className='rounded-full min-w-6 text-center border border-dark-100 px-0.5 text-[10px]'>
+                      <span className="border-dark-100 min-w-6 rounded-full border px-0.5 text-center text-[10px]">
                         {index + 1}
                       </span>
                       <span>{item.course.title}</span> -{' '}
-                      <span className='font-semibold text-orange-500'>{item.progress}%</span>
+                      <span className="font-semibold text-orange-500">{item.progress}%</span>
                     </Link>
                   ))}
                 </div>
               ) : (
-                <p className='italic text-slate-400 text-sm'>User courses is empty.</p>
+                <p className="text-sm italic text-slate-400">User courses is empty.</p>
               )}
             </motion.div>
           </motion.div>
@@ -620,8 +647,8 @@ function UserItem({
       <ConfirmDialog
         open={isOpenConfirmModal}
         setOpen={setIsOpenConfirmModal}
-        title='Delete User'
-        content='Are you sure that you want to delete this user?'
+        title="Delete User"
+        content="Are you sure that you want to delete this user?"
         onAccept={() => handleDeleteUsers([data._id])}
         isLoading={loadingUsers.includes(data._id)}
       />
@@ -630,8 +657,8 @@ function UserItem({
       <ConfirmDialog
         open={isOpenBlockCommentConfirmationDialog}
         setOpen={setIsOpenBlockCommentConfirmationDialog}
-        title='Block Comment'
-        content='Are you sure that you want to block comment this user?'
+        title="Block Comment"
+        content="Are you sure that you want to block comment this user?"
         onAccept={handleBlockComment}
         isLoading={isBlockingComment}
       />
@@ -640,8 +667,8 @@ function UserItem({
       <ConfirmDialog
         open={isOpenDemoteCollboratorConfirmationDialog}
         setOpen={setIsOpenDemoteCollboratorConfirmationDialog}
-        title='Demote Collaborator'
-        content='Are you sure that you want to  this collaborator?'
+        title="Demote Collaborator"
+        content="Are you sure that you want to  this collaborator?"
         onAccept={handleDemoteCollaborator}
         isLoading={isDemoting}
       />

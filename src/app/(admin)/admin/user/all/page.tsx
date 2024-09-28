@@ -217,32 +217,39 @@ function AllUsersPage({ searchParams }: { searchParams?: { [key: string]: string
   }, [handleFilter, handleResetFilter, handleSelectAllUsers, handleSubmit])
 
   return (
-    <div className='w-full'>
+    <div className="w-full">
       {/* MARK: Top & Pagination */}
-      <AdminHeader title='All Users' />
-      <Pagination searchParams={searchParams} amount={amount} itemsPerPage={itemPerPage} />
+      <AdminHeader title="All Users" />
+      <Pagination
+        searchParams={searchParams}
+        amount={amount}
+        itemsPerPage={itemPerPage}
+      />
 
       {/* MARK: Filter */}
-      <AdminMeta handleFilter={handleSubmit(handleFilter)} handleResetFilter={handleResetFilter}>
+      <AdminMeta
+        handleFilter={handleSubmit(handleFilter)}
+        handleResetFilter={handleResetFilter}
+      >
         {/* Search */}
-        <div className='flex flex-col col-span-12 md:col-span-4'>
+        <div className="col-span-12 flex flex-col md:col-span-4">
           <Input
-            id='search'
-            className='md:max-w-[450px]'
-            label='Search'
+            id="search"
+            className="md:max-w-[450px]"
+            label="Search"
             disabled={false}
             register={register}
             errors={errors}
-            type='text'
+            type="text"
             icon={FaSearch}
             onFocus={() => clearErrors('search')}
           />
         </div>
 
         {/* Expended */}
-        <div className='flex flex-col col-span-12 md:col-span-4'>
-          <label htmlFor='expended'>
-            <span className='font-bold'>Expended: </span>
+        <div className="col-span-12 flex flex-col md:col-span-4">
+          <label htmlFor="expended">
+            <span className="font-bold">Expended: </span>
             <span>{formatPrice(expended[0])}</span> - <span>{formatPrice(expended[1])}</span>
           </label>
           <Slider
@@ -250,26 +257,26 @@ function AllUsersPage({ searchParams }: { searchParams?: { [key: string]: string
             min={minExpended}
             max={maxExpended}
             step={1}
-            className='w-full -mb-1.5'
+            className="-mb-1.5 w-full"
             onChange={(_, newValue: number | number[]) => setExpended(newValue as number[])}
-            valueLabelDisplay='auto'
+            valueLabelDisplay="auto"
             style={{ color: '#333' }}
           />
         </div>
 
         {/* MARK: Select Filter */}
-        <div className='flex justify-end items-center flex-wrap gap-3 col-span-12 md:col-span-8'>
+        <div className="col-span-12 flex flex-wrap items-center justify-end gap-3 md:col-span-8">
           {/* Select */}
 
           {/* Sort */}
           <Input
-            id='sort'
-            label='Sort'
+            id="sort"
+            label="Sort"
             disabled={false}
             register={register}
             errors={errors}
             icon={FaSort}
-            type='select'
+            type="select"
             onFocus={() => clearErrors('sort')}
             options={[
               {
@@ -294,13 +301,13 @@ function AllUsersPage({ searchParams }: { searchParams?: { [key: string]: string
 
           {/* Role */}
           <Input
-            id='role'
-            label='Role'
+            id="role"
+            label="Role"
             disabled={false}
             register={register}
             errors={errors}
             icon={FaSort}
-            type='select'
+            type="select"
             onFocus={() => clearErrors('role')}
             options={[
               {
@@ -325,13 +332,13 @@ function AllUsersPage({ searchParams }: { searchParams?: { [key: string]: string
 
           {/* Auth Type */}
           <Input
-            id='authType'
-            label='Auth Type'
+            id="authType"
+            label="Auth Type"
             disabled={false}
             register={register}
             errors={errors}
             icon={FaSort}
-            type='select'
+            type="select"
             onFocus={() => clearErrors('authType')}
             options={[
               {
@@ -356,10 +363,10 @@ function AllUsersPage({ searchParams }: { searchParams?: { [key: string]: string
         </div>
 
         {/* MARK: Action Buttons */}
-        <div className='flex flex-wrap justify-end items-center gap-2 col-span-12'>
+        <div className="col-span-12 flex flex-wrap items-center justify-end gap-2">
           {/* Select All Button */}
           <button
-            className='border border-sky-400 text-sky-400 rounded-lg px-3 py-2 hover:bg-sky-400 hover:text-light trans-200'
+            className="trans-200 rounded-lg border border-sky-400 px-3 py-2 text-sky-400 hover:bg-sky-400 hover:text-light"
             onClick={handleSelectAllUsers}
           >
             {selectedUsers.length > 0 ? 'Unselect All' : 'Select All'}
@@ -368,7 +375,7 @@ function AllUsersPage({ searchParams }: { searchParams?: { [key: string]: string
           {/* Delete Many Button */}
           {!!selectedUsers.length && (
             <button
-              className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-light trans-200'
+              className="trans-200 rounded-lg border border-red-500 px-3 py-2 text-red-500 hover:bg-red-500 hover:text-light"
               onClick={() => setIsOpenConfirmModal(true)}
             >
               Delete
@@ -381,19 +388,19 @@ function AllUsersPage({ searchParams }: { searchParams?: { [key: string]: string
       <ConfirmDialog
         open={isOpenConfirmModal}
         setOpen={setIsOpenConfirmModal}
-        title='Delete Users'
-        content='Are you sure that you want to delete these users?'
+        title="Delete Users"
+        content="Are you sure that you want to delete these users?"
         onAccept={() => handleDeleteUsers(selectedUsers)}
         isLoading={loadingUsers.length > 0}
       />
 
       {/* MARK: Amount */}
-      <div className='p-3 text-sm text-right text-light font-semibold'>
+      <div className="p-3 text-right text-sm font-semibold text-light">
         {Math.min(itemPerPage * +(searchParams?.page || 1), amount)}/{amount} user{amount > 1 && 's'}
       </div>
 
       {/* MARK: MAIN LIST */}
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-21'>
+      <div className="grid grid-cols-1 gap-21 md:grid-cols-2 lg:grid-cols-3">
         {users.map(user => (
           <UserItem
             data={user}

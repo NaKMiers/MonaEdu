@@ -45,7 +45,7 @@ function BuyNowButton({ course, className }: BuyNowButtonProps) {
         packageType = 'credit'
         actionText = (
           <span title={`Tham gia (-1 credit})`}>
-            Mua <span className='text-[10px] text-violet-400'>(-1 credit)</span>
+            Mua <span className="text-[10px] text-violet-400">(-1 credit)</span>
           </span>
         )
         action = 'join'
@@ -63,7 +63,7 @@ function BuyNowButton({ course, className }: BuyNowButtonProps) {
     if (joinedCourse && packageType === 'credit' && new Date(joinedCourse.expire) < new Date()) {
       actionText = (
         <>
-          Học tiếp <span className='text-xs text-violet-400'>(-1 credit)</span>
+          Học tiếp <span className="text-xs text-violet-400">(-1 credit)</span>
         </>
       )
       action = 'join'
@@ -150,7 +150,7 @@ function BuyNowButton({ course, className }: BuyNowButtonProps) {
 
   return (
     <button
-      className={`relative font-semibold h-[42px] flex w-full items-center justify-center rounded-lg shadow-lg bg-dark-100 text-light border-2 border-dark hover:bg-white hover:text-dark trans-300 hover:-translate-y-1 px-2 overflow-hidden ${className}`}
+      className={`trans-300 relative flex h-[42px] w-full items-center justify-center overflow-hidden rounded-lg border-2 border-dark bg-dark-100 px-2 font-semibold text-light shadow-lg hover:-translate-y-1 hover:bg-white hover:text-dark ${className}`}
       onClick={() => {
         if (isRedirect) {
           router.push(`/learning/${course?.slug}/continue`)
@@ -161,18 +161,18 @@ function BuyNowButton({ course, className }: BuyNowButtonProps) {
     >
       {!!joinedCourse && (
         <div
-          className='absolute top-0 left-0 h-full bg-orange-500'
+          className="absolute left-0 top-0 h-full bg-orange-500"
           style={{
             width: `${curUser?.courses.find((c: any) => c.course === course._id)?.progress || 0}%`,
           }}
         >
-          <span className='absolute top-1 left-1 text-xs rounded-full font-semibold'>
+          <span className="absolute left-1 top-1 rounded-full text-xs font-semibold">
             {curUser?.courses.find((c: any) => c.course === course._id)?.progress + '%'}
           </span>
         </div>
       )}
 
-      <p className='relative z-10 flex items-center gap-1 text-sm sm:text-base text-ellipsis text-nowrap line-clamp-1 sm:max-w-max'>
+      <p className="relative z-10 line-clamp-1 flex items-center gap-1 text-ellipsis text-nowrap text-sm sm:max-w-max sm:text-base">
         {isRedirect ? 'Học tiếp' : actionText}
       </p>
     </button>

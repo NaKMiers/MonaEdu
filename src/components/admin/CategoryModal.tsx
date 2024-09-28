@@ -196,53 +196,53 @@ function CategoryModal({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className={`fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex items-center justify-center ${className}`}
+          className={`fixed bottom-0 left-0 right-0 top-0 flex items-center justify-center bg-black bg-opacity-50 ${className}`}
           onClick={() => setOpen(false)}
         >
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             exit={{ scale: 0 }}
-            className='w-full max-w-[500px] rounded-medium shadow-medium bg-white p-21'
+            className="w-full max-w-[500px] rounded-medium bg-white p-21 shadow-medium"
             onClick={e => e.stopPropagation()}
           >
-            <h1 className='text-dark text-center font-semibold text-xl'>{title}</h1>
+            <h1 className="text-center text-xl font-semibold text-dark">{title}</h1>
 
             <Divider size={2} />
 
             <div
-              className='group relative rounded-xl bg-slate-200 shadow-lg aspect-square mx-auto max-w-[200px] w-full overflow-hidden cursor-pointer'
+              className="group relative mx-auto aspect-square w-full max-w-[200px] cursor-pointer overflow-hidden rounded-xl bg-slate-200 shadow-lg"
               onClick={() => !imageUrl && imageInputRef.current?.click()}
             >
               {(imageUrl || category?.image) && (
                 <Image
-                  className='w-full h-full object-cover'
+                  className="h-full w-full object-cover"
                   src={imageUrl || category?.image || ''}
                   width={200}
                   height={200}
                   alt={category?.title || 'banner'}
-                  loading='lazy'
+                  loading="lazy"
                 />
               )}
               <input
-                id='images'
+                id="images"
                 hidden
-                placeholder=' '
+                placeholder=" "
                 disabled={isChangingImage}
-                type='file'
-                accept='image/*'
+                type="file"
+                accept="image/*"
                 onChange={handleAddFile}
                 ref={imageInputRef}
               />
               {!imageUrl && (
-                <span className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 tracking-wider text-slate-300 drop-shadow-sm'>
+                <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 tracking-wider text-slate-300 drop-shadow-sm">
                   {category?.image ? 'Change' : 'Upload'}
                 </span>
               )}
 
               {imageUrl && (
                 <button
-                  className='absolute top-0 left-0 right-0 bottom-0 tracking-wider drop-shadow-sm bg-slate-200 bg-opacity-50 opacity-0 group-hover:opacity-100 trans-300'
+                  className="trans-300 absolute bottom-0 left-0 right-0 top-0 bg-slate-200 bg-opacity-50 tracking-wider opacity-0 drop-shadow-sm group-hover:opacity-100"
                   onClick={handleCancelImage}
                 >
                   Remove
@@ -253,48 +253,51 @@ function CategoryModal({
             <Divider size={2} />
 
             <Input
-              id='title'
-              label='Title'
+              id="title"
+              label="Title"
               disabled={isLoading}
               register={register}
               errors={errors}
               required
-              type='text'
-              labelBg='bg-white'
-              className='min-w-[40%] mt-3'
+              type="text"
+              labelBg="bg-white"
+              className="mt-3 min-w-[40%]"
               onFocus={() => clearErrors('title')}
             />
 
             <Input
-              id='description'
-              label='Description'
+              id="description"
+              label="Description"
               disabled={isLoading}
               register={register}
               errors={errors}
-              type='textarea'
-              labelBg='bg-white'
-              className='min-w-[40%] mt-6'
+              type="textarea"
+              labelBg="bg-white"
+              className="mt-6 min-w-[40%]"
               onFocus={() => clearErrors('description')}
             />
 
             <Divider size={5} />
 
-            <div className='flex justify-center gap-3'>
+            <div className="flex justify-center gap-3">
               <button
-                className={`font-semibold border-2 border-dark bg-slate-300 shadow-lg text-dark px-3 py-1.5 rounded-lg drop-shadow-md hover:text-light hover:border-slate-300 trans-200`}
+                className={`trans-200 rounded-lg border-2 border-dark bg-slate-300 px-3 py-1.5 font-semibold text-dark shadow-lg drop-shadow-md hover:border-slate-300 hover:text-light`}
                 onClick={() => setOpen(false)}
               >
                 Cancel
               </button>
 
               <button
-                className={`font-semibold border-2 border-dark shadow-lg text-dark px-3 py-1.5 rounded-lg drop-shadow-md hover:bg-dark-100 hover:text-light trans-200 ${
-                  isLoading ? 'bg-slate-200 pointer-events-none' : ''
+                className={`trans-200 rounded-lg border-2 border-dark px-3 py-1.5 font-semibold text-dark shadow-lg drop-shadow-md hover:bg-dark-100 hover:text-light ${
+                  isLoading ? 'pointer-events-none bg-slate-200' : ''
                 }`}
                 onClick={handleSubmit(category ? onEditSubmit : onAddSubmit)}
               >
                 {isLoading ? (
-                  <FaCircleNotch size={18} className='text-slate-400 trans-200 animate-spin' />
+                  <FaCircleNotch
+                    size={18}
+                    className="trans-200 animate-spin text-slate-400"
+                  />
                 ) : (
                   'Submit'
                 )}

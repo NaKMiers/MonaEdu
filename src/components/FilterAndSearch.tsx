@@ -198,41 +198,44 @@ function FilterAndSearch({ searchParams, subs, chops, className = '' }: FilterAn
   return (
     <>
       {/* Desktop */}
-      <div className={`hidden w-full md:flex flex-col gap-3 ${className}`}>
+      <div className={`hidden w-full flex-col gap-3 md:flex ${className}`}>
         {/* Search */}
-        <div className='relative group/btn w-full h-[42px] rounded-3xl bg-neutral-800 shadow-lg overflow-hidden'>
+        <div className="group/btn relative h-[42px] w-full overflow-hidden rounded-3xl bg-neutral-800 shadow-lg">
           <input
-            id='search'
-            className='h-full w-full text-sm bg-transparent text-slate-300 outline-none pl-4 pr-[42px] py-2'
+            id="search"
+            className="h-full w-full bg-transparent py-2 pl-4 pr-[42px] text-sm text-slate-300 outline-none"
             disabled={false}
-            type='text'
+            type="text"
             value={search}
             onChange={e => setSearch(e.target.value)}
-            placeholder='Bạn muốn học gì...'
+            placeholder="Bạn muốn học gì..."
           />
           <BottomGradient />
           <button
-            className='absolute top-1/2 right-2 -translate-y-1/2 group text-slate-400 p-1.5'
+            className="group absolute right-2 top-1/2 -translate-y-1/2 p-1.5 text-slate-400"
             onClick={() => setSearch('')}
           >
-            <FaDeleteLeft size={18} className='wiggle' />
+            <FaDeleteLeft
+              size={18}
+              className="wiggle"
+            />
           </button>
         </div>
 
         {/* Sub Categories */}
         {!!subs.length && (
-          <div className='mt-2'>
-            <h3 className='px-2 font-semibold font-body tracking-wide hover:tracking-widest trans-200 text-lg'>
+          <div className="mt-2">
+            <h3 className="trans-200 px-2 font-body text-lg font-semibold tracking-wide hover:tracking-widest">
               Danh Mục Con
             </h3>
 
             <Divider size={4} />
 
-            <div className='flex flex-col gap-2.5'>
+            <div className="flex flex-col gap-2.5">
               {subs.map(category => (
                 <Link
                   href={`/categories/${category.slug}`}
-                  className='rounded-lg hover:rounded-3xl border-b-2 border-neutral-700 drop-shadow-lg shadow-md text-md font-body tracking-wider text-sm py-1 px-3 trans-300'
+                  className="text-md trans-300 rounded-lg border-b-2 border-neutral-700 px-3 py-1 font-body text-sm tracking-wider shadow-md drop-shadow-lg hover:rounded-3xl"
                   key={category.title}
                 >
                   {category.title}
@@ -242,19 +245,24 @@ function FilterAndSearch({ searchParams, subs, chops, className = '' }: FilterAn
           </div>
         )}
 
-        {!!subs.length && <Divider size={1} border />}
+        {!!subs.length && (
+          <Divider
+            size={1}
+            border
+          />
+        )}
 
         {/* Filter */}
         <div>
-          <h3 className='px-2 font-semibold font-body tracking-wide hover:tracking-widest trans-200 text-lg'>
+          <h3 className="trans-200 px-2 font-body text-lg font-semibold tracking-wide hover:tracking-widest">
             Bộ lọc
           </h3>
 
           <Divider size={4} />
 
           {/* Price Range */}
-          <div className='rounded-medium shadow-lg border-2 border-dark px-5 py-2'>
-            <p className='flex justify-between -mx-2 gap-3 font-body tracking-wider text-slate-700 drop-shadow-md'>
+          <div className="rounded-medium border-2 border-dark px-5 py-2 shadow-lg">
+            <p className="-mx-2 flex justify-between gap-3 font-body tracking-wider text-slate-700 drop-shadow-md">
               Giá:{' '}
               <span>
                 {formatPrice(price[0])} - {formatPrice(price[1])}
@@ -266,9 +274,9 @@ function FilterAndSearch({ searchParams, subs, chops, className = '' }: FilterAn
               min={chops?.minPrice || 0}
               max={chops?.maxPrice || 1000000}
               step={10000}
-              className='w-full -mb-1.5'
+              className="-mb-1.5 w-full"
               onChange={(_: any, newValue: number | number[]) => setPrice(newValue as number[])}
-              valueLabelDisplay='auto'
+              valueLabelDisplay="auto"
               style={{ color: '#333' }}
             />
           </div>
@@ -276,8 +284,8 @@ function FilterAndSearch({ searchParams, subs, chops, className = '' }: FilterAn
           <Divider size={4} />
 
           {/* Time Range */}
-          <div className='rounded-medium shadow-lg border-2 border-dark px-5 py-2'>
-            <p className='flex justify-between -mx-2 gap-3 font-body tracking-wider text-slate-700 drop-shadow-md'>
+          <div className="rounded-medium border-2 border-dark px-5 py-2 shadow-lg">
+            <p className="-mx-2 flex justify-between gap-3 font-body tracking-wider text-slate-700 drop-shadow-md">
               Thời lượng:{' '}
               <span>
                 {duration[0]} - {duration[1]} giờ
@@ -288,29 +296,32 @@ function FilterAndSearch({ searchParams, subs, chops, className = '' }: FilterAn
               value={duration}
               min={0}
               max={40}
-              className='w-full -mb-1.5'
+              className="-mb-1.5 w-full"
               onChange={(_: any, newValue: number | number[]) => setDuration(newValue as number[])}
-              valueLabelDisplay='auto'
+              valueLabelDisplay="auto"
               style={{ color: '#333' }}
             />
           </div>
         </div>
 
-        <Divider size={1} border />
+        <Divider
+          size={1}
+          border
+        />
 
         {/* Sort */}
         <div>
-          <h3 className='px-2 font-semibold font-body tracking-wide hover:tracking-widest trans-200 text-lg'>
+          <h3 className="trans-200 px-2 font-body text-lg font-semibold tracking-wide hover:tracking-widest">
             Sắp xếp
           </h3>
 
           <Divider size={4} />
 
           {/* Sort Price */}
-          <div className='relative z-10 flex items-center gap-3 font-body tracking-wider text-slate-700 drop-shadow-md'>
+          <div className="relative z-10 flex items-center gap-3 font-body tracking-wider text-slate-700 drop-shadow-md">
             Giá:{' '}
             <div
-              className='relative rounded-lg border-2 border-dark px-2 py-1 text-sm cursor-pointer'
+              className="relative cursor-pointer rounded-lg border-2 border-dark px-2 py-1 text-sm"
               onClick={() => setShowSortPrice(prev => !prev)}
             >
               {sortPrice === 'asc' ? 'Tăng dần' : sortPrice === 'desc' ? 'Giảm dần' : 'Không'}
@@ -322,10 +333,10 @@ function FilterAndSearch({ searchParams, subs, chops, className = '' }: FilterAn
                     animate={{ translateY: 0, opacity: 1 }}
                     exit={{ translateY: 10, opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className='bg-slate-100 select-none absolute z-20 -top-0.5 -left-0.5 min-w-max overflow-hidden flex flex-col rounded-lg shadow-lg border-2 border-dark'
+                    className="absolute -left-0.5 -top-0.5 z-20 flex min-w-max select-none flex-col overflow-hidden rounded-lg border-2 border-dark bg-slate-100 shadow-lg"
                   >
                     <li
-                      className={`hover:bg-slate-200 px-1 py-1 trans-200 cursor-pointer ${
+                      className={`trans-200 cursor-pointer px-1 py-1 hover:bg-slate-200 ${
                         sortPrice === 'none' ? 'bg-slate-200' : ''
                       }`}
                       onClick={() => setSortPrice('none')}
@@ -333,7 +344,7 @@ function FilterAndSearch({ searchParams, subs, chops, className = '' }: FilterAn
                       Không
                     </li>
                     <li
-                      className={`hover:bg-slate-200 px-1 py-1 trans-200 cursor-pointer ${
+                      className={`trans-200 cursor-pointer px-1 py-1 hover:bg-slate-200 ${
                         sortPrice === 'asc' ? 'bg-slate-200' : ''
                       }`}
                       onClick={() => setSortPrice('asc')}
@@ -341,7 +352,7 @@ function FilterAndSearch({ searchParams, subs, chops, className = '' }: FilterAn
                       Tăng dần
                     </li>
                     <li
-                      className={`hover:bg-slate-200 px-1 py-1 trans-200 cursor-pointer ${
+                      className={`trans-200 cursor-pointer px-1 py-1 hover:bg-slate-200 ${
                         sortPrice === 'desc' ? 'bg-slate-200' : ''
                       }`}
                       onClick={() => setSortPrice('desc')}
@@ -357,10 +368,10 @@ function FilterAndSearch({ searchParams, subs, chops, className = '' }: FilterAn
           <Divider size={4} />
 
           {/* Sort Time */}
-          <div className='relative flex items-center gap-3 font-body tracking-wider text-slate-700 drop-shadow-md'>
+          <div className="relative flex items-center gap-3 font-body tracking-wider text-slate-700 drop-shadow-md">
             Thời lượng:{' '}
             <div
-              className='relative rounded-lg border-2 border-dark px-2 py-1 text-sm cursor-pointer'
+              className="relative cursor-pointer rounded-lg border-2 border-dark px-2 py-1 text-sm"
               onClick={() => setShowSortDuration(prev => !prev)}
             >
               {sortDuration === 'asc' ? 'Tăng dần' : sortDuration === 'desc' ? 'Giảm dần' : 'Không'}
@@ -372,10 +383,10 @@ function FilterAndSearch({ searchParams, subs, chops, className = '' }: FilterAn
                     animate={{ translateY: 0, opacity: 1 }}
                     exit={{ translateY: 10, opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className='bg-slate-100 select-none absolute z-20 -top-0.5 -left-0.5 min-w-max overflow-hidden flex flex-col rounded-lg shadow-lg border-2 border-dark'
+                    className="absolute -left-0.5 -top-0.5 z-20 flex min-w-max select-none flex-col overflow-hidden rounded-lg border-2 border-dark bg-slate-100 shadow-lg"
                   >
                     <li
-                      className={`hover:bg-slate-200 px-1 py-1 trans-200 cursor-pointer ${
+                      className={`trans-200 cursor-pointer px-1 py-1 hover:bg-slate-200 ${
                         sortDuration === 'none' ? 'bg-slate-200' : ''
                       }`}
                       onClick={() => setSortDuration('none')}
@@ -383,7 +394,7 @@ function FilterAndSearch({ searchParams, subs, chops, className = '' }: FilterAn
                       Không
                     </li>
                     <li
-                      className={`hover:bg-slate-200 px-1 py-1 trans-200 cursor-pointer ${
+                      className={`trans-200 cursor-pointer px-1 py-1 hover:bg-slate-200 ${
                         sortDuration === 'asc' ? 'bg-slate-200' : ''
                       }`}
                       onClick={() => setSortDuration('asc')}
@@ -391,7 +402,7 @@ function FilterAndSearch({ searchParams, subs, chops, className = '' }: FilterAn
                       Tăng dần
                     </li>
                     <li
-                      className={`hover:bg-slate-200 px-1 py-1 trans-200 cursor-pointer ${
+                      className={`trans-200 cursor-pointer px-1 py-1 hover:bg-slate-200 ${
                         sortDuration === 'desc' ? 'bg-slate-200' : ''
                       }`}
                       onClick={() => setSortDuration('desc')}
@@ -409,13 +420,16 @@ function FilterAndSearch({ searchParams, subs, chops, className = '' }: FilterAn
       </div>
 
       {/* Mobile */}
-      <div className='md:hidden flex justify-between w-full items-center gap-3 border-b border-dark pt-3 pb-5'>
+      <div className="flex w-full items-center justify-between gap-3 border-b border-dark pb-5 pt-3 md:hidden">
         {!!subs.length ? (
           <button
-            className='group flex items-center justify-center text-nowrap gap-2 rounded-lg border-b-2 hover:bg-primary border-neutral-700 drop-shadow-lg shadow-md text-md font-body tracking-wider py-1 px-3 trans-300'
+            className="text-md trans-300 group flex items-center justify-center gap-2 text-nowrap rounded-lg border-b-2 border-neutral-700 px-3 py-1 font-body tracking-wider shadow-md drop-shadow-lg hover:bg-primary"
             onClick={() => setOpenSubs(prev => !prev)}
           >
-            <HiOutlineMenuAlt3 size={16} className='wiggle' />
+            <HiOutlineMenuAlt3
+              size={16}
+              className="wiggle"
+            />
             <span>Danh mục con</span>
           </button>
         ) : (
@@ -423,33 +437,36 @@ function FilterAndSearch({ searchParams, subs, chops, className = '' }: FilterAn
         )}
 
         <button
-          className='group flex items-center justify-center text-nowrap gap-2 rounded-lg border-b-2 hover:bg-primary border-neutral-700 drop-shadow-lg shadow-md text-md font-body tracking-wider py-1 px-3 trans-300'
+          className="text-md trans-300 group flex items-center justify-center gap-2 text-nowrap rounded-lg border-b-2 border-neutral-700 px-3 py-1 font-body tracking-wider shadow-md drop-shadow-lg hover:bg-primary"
           onClick={() => setOpenFilter(prev => !prev)}
         >
-          <FiFilter size={16} className='wiggle' />
+          <FiFilter
+            size={16}
+            className="wiggle"
+          />
           <span>Bộ lọc</span>
         </button>
 
         {/* Sub Categories Sidebar */}
         <div
-          className='hidden opacity-0 trans-200 fixed z-50 top-0 left-0 h-screen w-screen bg-black bg-opacity-10'
+          className="trans-200 fixed left-0 top-0 z-50 hidden h-screen w-screen bg-black bg-opacity-10 opacity-0"
           onClick={() => setOpenSubs(false)}
           ref={subSidebarRef}
         >
           <div
             onClick={e => e.stopPropagation()}
-            className='-translate-x-full trans-200 bg-white w-[90%] max-w-[300px] h-[calc(100%-72px)] shadow-lg rounded-r-lg border-r-2 border-dark p-21 overflow-y-auto'
+            className="trans-200 h-[calc(100%-72px)] w-[90%] max-w-[300px] -translate-x-full overflow-y-auto rounded-r-lg border-r-2 border-dark bg-white p-21 shadow-lg"
             ref={subSidebarMainRef}
           >
-            <h3 className='text-xl font-semibold'>Danh Mục Con</h3>
+            <h3 className="text-xl font-semibold">Danh Mục Con</h3>
 
             <Divider size={4} />
 
-            <div className='flex flex-col gap-2.5'>
+            <div className="flex flex-col gap-2.5">
               {subs.map(category => (
                 <Link
                   href={`/categories/${category.slug}`}
-                  className='rounded-lg hover:rounded-3xl border-b-2 border-neutral-700 drop-shadow-lg shadow-md text-md font-body tracking-wider text-sm py-1 px-3 trans-300'
+                  className="text-md trans-300 rounded-lg border-b-2 border-neutral-700 px-3 py-1 font-body text-sm tracking-wider shadow-md drop-shadow-lg hover:rounded-3xl"
                   key={category.title}
                 >
                   {category.title}
@@ -461,22 +478,22 @@ function FilterAndSearch({ searchParams, subs, chops, className = '' }: FilterAn
 
         {/* Filter Sidebar */}
         <div
-          className='hidden opacity-0 trans-200 fixed z-50 top-0 left-0 h-screen w-screen bg-black bg-opacity-10'
+          className="trans-200 fixed left-0 top-0 z-50 hidden h-screen w-screen bg-black bg-opacity-10 opacity-0"
           onClick={() => setOpenFilter(false)}
           ref={filterSidebarRef}
         >
           <div
             onClick={e => e.stopPropagation()}
-            className='translate-x-full ml-auto trans-200 bg-white w-[90%] max-w-[300px] h-[calc(100%-72px)] shadow-lg rounded-l-lg border-l-2 border-dark p-21 overflow-auto'
+            className="trans-200 ml-auto h-[calc(100%-72px)] w-[90%] max-w-[300px] translate-x-full overflow-auto rounded-l-lg border-l-2 border-dark bg-white p-21 shadow-lg"
             ref={filterSidebarMainRef}
           >
-            <h3 className='text-xl font-semibold'>Bộ lọc</h3>
+            <h3 className="text-xl font-semibold">Bộ lọc</h3>
 
             <Divider size={4} />
 
             {/* Price Range */}
-            <div className='rounded-medium shadow-lg border-2 border-dark px-3 py-2'>
-              <p className='flex justify-between gap-3 font-body tracking-wider text-slate-700 drop-shadow-md'>
+            <div className="rounded-medium border-2 border-dark px-3 py-2 shadow-lg">
+              <p className="flex justify-between gap-3 font-body tracking-wider text-slate-700 drop-shadow-md">
                 Giá:{' '}
                 <span>
                   {formatPrice(price[0])} - {formatPrice(price[1])}
@@ -488,9 +505,9 @@ function FilterAndSearch({ searchParams, subs, chops, className = '' }: FilterAn
                 min={0}
                 max={1000000}
                 step={10000}
-                className='w-full -mb-1.5'
+                className="-mb-1.5 w-full"
                 onChange={(_: any, newValue: number | number[]) => setPrice(newValue as number[])}
-                valueLabelDisplay='auto'
+                valueLabelDisplay="auto"
                 style={{ color: '#333' }}
               />
             </div>
@@ -498,8 +515,8 @@ function FilterAndSearch({ searchParams, subs, chops, className = '' }: FilterAn
             <Divider size={4} />
 
             {/* Time Range */}
-            <div className='rounded-medium shadow-lg border-2 border-dark px-3 py-2'>
-              <p className='flex justify-between gap-3 font-body tracking-wider text-slate-700 drop-shadow-md'>
+            <div className="rounded-medium border-2 border-dark px-3 py-2 shadow-lg">
+              <p className="flex justify-between gap-3 font-body tracking-wider text-slate-700 drop-shadow-md">
                 Thời lượng:{' '}
                 <span>
                   {duration[0]} - {duration[1]} giờ
@@ -510,25 +527,28 @@ function FilterAndSearch({ searchParams, subs, chops, className = '' }: FilterAn
                 value={duration}
                 min={0}
                 max={40}
-                className='w-full -mb-1.5'
+                className="-mb-1.5 w-full"
                 onChange={(_: any, newValue: number | number[]) => setDuration(newValue as number[])}
-                valueLabelDisplay='auto'
+                valueLabelDisplay="auto"
                 style={{ color: '#333' }}
               />
             </div>
 
-            <Divider size={6} border />
+            <Divider
+              size={6}
+              border
+            />
 
             {/* Sort */}
-            <h3 className='text-xl font-semibold'>Sắp xếp</h3>
+            <h3 className="text-xl font-semibold">Sắp xếp</h3>
 
             <Divider size={4} />
 
             {/* Sort Price */}
-            <div className='relative z-10 flex items-center gap-3 font-body tracking-wider text-slate-700 drop-shadow-md'>
+            <div className="relative z-10 flex items-center gap-3 font-body tracking-wider text-slate-700 drop-shadow-md">
               Giá:{' '}
               <div
-                className='relative rounded-lg border-2 border-dark px-2 py-1 text-sm cursor-pointer'
+                className="relative cursor-pointer rounded-lg border-2 border-dark px-2 py-1 text-sm"
                 onClick={() => setShowSortPrice(prev => !prev)}
               >
                 {sortPrice === 'asc' ? 'Tăng dần' : sortPrice === 'desc' ? 'Giảm dần' : 'Không'}
@@ -540,10 +560,10 @@ function FilterAndSearch({ searchParams, subs, chops, className = '' }: FilterAn
                       animate={{ translateY: 0, opacity: 1 }}
                       exit={{ translateY: 10, opacity: 0 }}
                       transition={{ duration: 0.2 }}
-                      className='bg-slate-100 select-none absolute z-20 -top-0.5 -left-0.5 min-w-max overflow-hidden flex flex-col rounded-lg shadow-lg border-2 border-dark'
+                      className="absolute -left-0.5 -top-0.5 z-20 flex min-w-max select-none flex-col overflow-hidden rounded-lg border-2 border-dark bg-slate-100 shadow-lg"
                     >
                       <li
-                        className={`hover:bg-slate-200 px-1 py-1 trans-200 cursor-pointer ${
+                        className={`trans-200 cursor-pointer px-1 py-1 hover:bg-slate-200 ${
                           sortPrice === 'none' ? 'bg-slate-200' : ''
                         }`}
                         onClick={() => setSortPrice('none')}
@@ -551,7 +571,7 @@ function FilterAndSearch({ searchParams, subs, chops, className = '' }: FilterAn
                         Không
                       </li>
                       <li
-                        className={`hover:bg-slate-200 px-1 py-1 trans-200 cursor-pointer ${
+                        className={`trans-200 cursor-pointer px-1 py-1 hover:bg-slate-200 ${
                           sortPrice === 'asc' ? 'bg-slate-200' : ''
                         }`}
                         onClick={() => setSortPrice('asc')}
@@ -559,7 +579,7 @@ function FilterAndSearch({ searchParams, subs, chops, className = '' }: FilterAn
                         Tăng dần
                       </li>
                       <li
-                        className={`hover:bg-slate-200 px-1 py-1 trans-200 cursor-pointer ${
+                        className={`trans-200 cursor-pointer px-1 py-1 hover:bg-slate-200 ${
                           sortPrice === 'desc' ? 'bg-slate-200' : ''
                         }`}
                         onClick={() => setSortPrice('desc')}
@@ -575,10 +595,10 @@ function FilterAndSearch({ searchParams, subs, chops, className = '' }: FilterAn
             <Divider size={4} />
 
             {/* Sort Time */}
-            <div className='relative flex items-center gap-3 font-body tracking-wider text-slate-700 drop-shadow-md'>
+            <div className="relative flex items-center gap-3 font-body tracking-wider text-slate-700 drop-shadow-md">
               Thời lượng:{' '}
               <div
-                className='relative rounded-lg border-2 border-dark px-2 py-1 text-sm cursor-pointer'
+                className="relative cursor-pointer rounded-lg border-2 border-dark px-2 py-1 text-sm"
                 onClick={() => setShowSortDuration(prev => !prev)}
               >
                 {sortDuration === 'asc' ? 'Tăng dần' : sortDuration === 'desc' ? 'Giảm dần' : 'Không'}
@@ -590,10 +610,10 @@ function FilterAndSearch({ searchParams, subs, chops, className = '' }: FilterAn
                       animate={{ translateY: 0, opacity: 1 }}
                       exit={{ translateY: 10, opacity: 0 }}
                       transition={{ duration: 0.2 }}
-                      className='bg-slate-100 select-none absolute z-20 -top-0.5 -left-0.5 min-w-max overflow-hidden flex flex-col rounded-lg shadow-lg border-2 border-dark'
+                      className="absolute -left-0.5 -top-0.5 z-20 flex min-w-max select-none flex-col overflow-hidden rounded-lg border-2 border-dark bg-slate-100 shadow-lg"
                     >
                       <li
-                        className={`hover:bg-slate-200 px-1 py-1 trans-200 cursor-pointer ${
+                        className={`trans-200 cursor-pointer px-1 py-1 hover:bg-slate-200 ${
                           sortDuration === 'none' ? 'bg-slate-200' : ''
                         }`}
                         onClick={() => setSortDuration('none')}
@@ -601,7 +621,7 @@ function FilterAndSearch({ searchParams, subs, chops, className = '' }: FilterAn
                         Không
                       </li>
                       <li
-                        className={`hover:bg-slate-200 px-1 py-1 trans-200 cursor-pointer ${
+                        className={`trans-200 cursor-pointer px-1 py-1 hover:bg-slate-200 ${
                           sortDuration === 'asc' ? 'bg-slate-200' : ''
                         }`}
                         onClick={() => setSortDuration('asc')}
@@ -609,7 +629,7 @@ function FilterAndSearch({ searchParams, subs, chops, className = '' }: FilterAn
                         Tăng dần
                       </li>
                       <li
-                        className={`hover:bg-slate-200 px-1 py-1 trans-200 cursor-pointer ${
+                        className={`trans-200 cursor-pointer px-1 py-1 hover:bg-slate-200 ${
                           sortDuration === 'desc' ? 'bg-slate-200' : ''
                         }`}
                         onClick={() => setSortDuration('desc')}

@@ -106,13 +106,16 @@ async function TagPage({
   return (
     <div>
       {/* MARK: Add JSON-LD */}
-      <script type='application/ld+json' dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
       {/* Banner */}
       <BreadcrumbBanner
         title={tag?.title || 'Tag'}
-        description=''
-        className='md:shadow-medium md:rounded-b-lg rounded-none h-[calc(300px+72px)] -mt-[72px] pt-[72px]'
+        description=""
+        className="-mt-[72px] h-[calc(300px+72px)] rounded-none pt-[72px] md:rounded-b-lg md:shadow-medium"
         preLink={[
           { label: 'trang-chu', href: '/' },
           { label: 'tags', href: '' },
@@ -120,35 +123,50 @@ async function TagPage({
       />
 
       {/* Body */}
-      <div className='md:px-21 md:mt-10'>
-        <div className='flex flex-col md:flex-row bg-white rounded-b-lg md:rounded-lg gap-x-21 p-3 md:p-21 shadow-lg'>
+      <div className="md:mt-10 md:px-21">
+        <div className="flex flex-col gap-x-21 rounded-b-lg bg-white p-3 shadow-lg md:flex-row md:rounded-lg md:p-21">
           {/* Filter & Search */}
-          <div className='flex justify-between md:max-w-[200px] lg:max-w-[250px] w-full flex-shrink-0'>
-            <FilterAndSearch searchParams={searchParams} subs={[]} chops={chops} />
+          <div className="flex w-full flex-shrink-0 justify-between md:max-w-[200px] lg:max-w-[250px]">
+            <FilterAndSearch
+              searchParams={searchParams}
+              subs={[]}
+              chops={chops}
+            />
           </div>
 
           {/* Main */}
-          <div className='flex-1 w-full mt-4 md:mt-0'>
+          <div className="mt-4 w-full flex-1 md:mt-0">
             {/* Top */}
-            <QuickSortTabs searchParams={searchParams} amount={amount} />
+            <QuickSortTabs
+              searchParams={searchParams}
+              amount={amount}
+            />
 
             <Divider size={8} />
 
             {/* List */}
             {courses.length > 0 ? (
-              <div className='grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 md:mx-0 flex-1 mb-8'>
+              <div className="mb-8 grid flex-1 grid-cols-1 gap-3 xs:grid-cols-2 md:mx-0 md:grid-cols-3 md:gap-4 xl:grid-cols-4">
                 {courses.map(course => (
-                  <CourseCard course={course} key={course._id} />
+                  <CourseCard
+                    course={course}
+                    key={course._id}
+                  />
                 ))}
               </div>
             ) : (
-              <p className='font-body tracking-wider text-center text-slate-400 text-lg py-8'>
+              <p className="py-8 text-center font-body text-lg tracking-wider text-slate-400">
                 Không có khóa học nào, hãy thử lại với từ khóa khác
               </p>
             )}
 
             {/* Pagination */}
-            <Pagination dark searchParams={searchParams} amount={amount} itemsPerPage={16} />
+            <Pagination
+              dark
+              searchParams={searchParams}
+              amount={amount}
+              itemsPerPage={16}
+            />
 
             <Divider size={8} />
           </div>

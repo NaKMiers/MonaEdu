@@ -23,7 +23,7 @@ export default async function RootLayout({
       <PageLoading />
 
       {/* Main */}
-      <main className='md:mb-auto md:mt-[72px] min-h-21'>{children}</main>
+      <main className="min-h-21 md:mb-auto md:mt-[72px]">{children}</main>
 
       {/* Background */}
       <Background />

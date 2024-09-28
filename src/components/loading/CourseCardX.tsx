@@ -2,20 +2,20 @@ import Divider from '../Divider'
 
 function CourseCardX() {
   return (
-    <div className='w-full'>
-      <div className='flex flex-col h-full rounded-xl p-2.5 md:p-4 bg-slate-500'>
+    <div className="w-full">
+      <div className="flex h-full flex-col rounded-xl bg-slate-500 p-2.5 md:p-4">
         <Divider size={2} />
 
-        <div className='h-12 w-full mb-1 md:mb-2 animate-pulse bg-slate-700 rounded-md' />
-        <div className='h-10 w-full mb-1 md:mb-2 animate-pulse bg-slate-700 rounded-md' />
+        <div className="mb-1 h-12 w-full animate-pulse rounded-md bg-slate-700 md:mb-2" />
+        <div className="mb-1 h-10 w-full animate-pulse rounded-md bg-slate-700 md:mb-2" />
 
-        <div className='aspect-video rounded-lg bg-slate-300 animate-pulse' />
+        <div className="aspect-video animate-pulse rounded-lg bg-slate-300" />
 
         <Divider size={4} />
 
-        <div className='flex items-center gap-1 w-full'>
-          <div className='h-[42px] w-full rounded-lg bg-slate-700 animate-pulse' />
-          <div className={`h-[42px] w-12 px-3 flex rounded-lg bg-slate-300 animate-pulse`} />
+        <div className="flex w-full items-center gap-1">
+          <div className="h-[42px] w-full animate-pulse rounded-lg bg-slate-700" />
+          <div className={`flex h-[42px] w-12 animate-pulse rounded-lg bg-slate-300 px-3`} />
         </div>
       </div>
     </div>

@@ -1,10 +1,7 @@
 'use client'
 
-import { useAppDispatch } from '@/libs/hooks'
 import { ICourse } from '@/models/CourseModel'
-import { useSession } from 'next-auth/react'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
 import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 import BannerItem from './BannerItem'
@@ -16,12 +13,6 @@ interface SliderProps {
 }
 
 function Banner({ time, courses, className = '' }: SliderProps) {
-  // hooks
-  const dispatch = useAppDispatch()
-  const { data: session } = useSession()
-  const curUser: any = session?.user
-  const router = useRouter()
-
   // states
   const [slide, setSlide] = useState<number>(1)
   const [isChanging, setIsChanging] = useState<boolean>(false)
@@ -122,27 +113,30 @@ function Banner({ time, courses, className = '' }: SliderProps) {
   }, [time, nextSlide])
 
   return (
-    <div className={`relative w-full h-screen overflow-hidden group mt-[-72px] ${className}`}>
+    <div className={`group relative mt-[-72px] h-screen w-full overflow-hidden ${className}`}>
       {/* MARK: Slide Track */}
       <div
-        className={`flex w-full h-full no-scrollbar ease-linear overflow-x-auto snap-x snap-mandatory`}
+        className={`no-scrollbar flex h-full w-full snap-x snap-mandatory overflow-x-auto ease-linear`}
         ref={slideTrackRef}
       >
         {courses.map(course => (
-          <BannerItem course={course} key={course._id} />
+          <BannerItem
+            course={course}
+            key={course._id}
+          />
         ))}
       </div>
 
       {/* Arrows */}
-      <div className='arrows absolute z-20 bottom-[50px] left-[10%] md:left-[30%] flex gap-4'>
+      <div className="arrows absolute bottom-[50px] left-[10%] z-20 flex gap-4 md:left-[30%]">
         <button
-          className='prev flex items-center justify-center w-12 h-12 rounded-full text-dark border border-dark bg-white shadow-lg z-10 hover:bg-dark-0 hover:text-light trans-200'
+          className="prev trans-200 z-10 flex h-12 w-12 items-center justify-center rounded-full border border-dark bg-white text-dark shadow-lg hover:bg-dark-0 hover:text-light"
           onClick={prevSlide}
         >
           <FaChevronLeft size={16} />
         </button>
         <button
-          className='next flex items-center justify-center w-12 h-12 rounded-full text-dark border border-dark bg-white shadow-lg z-10 hover:bg-dark-0 hover:text-light trans-200'
+          className="next trans-200 z-10 flex h-12 w-12 items-center justify-center rounded-full border border-dark bg-white text-dark shadow-lg hover:bg-dark-0 hover:text-light"
           onClick={nextSlide}
         >
           <FaChevronRight size={16} />
@@ -152,38 +146,41 @@ function Banner({ time, courses, className = '' }: SliderProps) {
       {/* MARK: Indicators */}
       {courses.length >= 2 && (
         <div
-          className={`absolute z-10 left-[43%] w-[57%] p-21 flex items-center bottom-[0] trans-300 overflow-x-auto no-scrollbar snap-x snap-mandatory`}
+          className={`trans-300 no-scrollbar absolute bottom-[0] left-[43%] z-10 flex w-[57%] snap-x snap-mandatory items-center overflow-x-auto p-21`}
           ref={indicatorRef}
         >
           {courses.map((course, index) => (
-            <div className='p-21/2 flex-shrink-0 snap-start' key={course._id}>
+            <div
+              className="flex-shrink-0 snap-start p-21/2"
+              key={course._id}
+            >
               <button
-                className={`relative max-w-[200px] aspect-video rounded-lg border-2 ${
-                  slide === index + 1 ? 'shadow-primary shadow-lg' : 'border-light shadow-md'
-                } trans-300 hover:opacity-100 hover:scale-105 hover:-translate-y-1 overflow-hidden`}
+                className={`relative aspect-video max-w-[200px] rounded-lg border-2 ${
+                  slide === index + 1 ? 'shadow-lg shadow-primary' : 'border-light shadow-md'
+                } trans-300 overflow-hidden hover:-translate-y-1 hover:scale-105 hover:opacity-100`}
                 onClick={() => changeSlide(index + 1)}
                 key={course._id}
               >
                 <Image
-                  className='w-full h-full object-cover'
+                  className="h-full w-full object-cover"
                   src={course.images[0]}
                   width={200}
                   height={200}
                   alt={course.title}
-                  loading='lazy'
+                  loading="lazy"
                 />
 
                 <div
-                  className={`flex flex-col justify-center items-center absolute top-0 left-0 w-full h-full p-2 text-light bg-neutral-900 bg-opacity-40`}
+                  className={`absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center bg-neutral-900 bg-opacity-40 p-2 text-light`}
                 >
                   <div
-                    className='text-xs font-bold tracking-[5px] drop-shadow-lg uppercase text-ellipsis line-clamp-1'
+                    className="line-clamp-1 text-ellipsis text-xs font-bold uppercase tracking-[5px] drop-shadow-lg"
                     title={course.author}
                   >
                     {course.author}
                   </div>
                   <div
-                    className='font-semibold drop-shadow-md text-ellipsis line-clamp-2'
+                    className="line-clamp-2 text-ellipsis font-semibold drop-shadow-md"
                     title={course.title}
                   >
                     {course.title}

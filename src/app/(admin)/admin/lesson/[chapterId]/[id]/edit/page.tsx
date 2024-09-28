@@ -6,10 +6,10 @@ import { useAppDispatch, useAppSelector } from '@/libs/hooks'
 import { useCallback, useEffect, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import { FaCheck, FaFile, FaPlusSquare } from 'react-icons/fa'
-
 import Divider from '@/components/Divider'
 import TextEditor from '@/components/Tiptap'
 import AdminHeader from '@/components/admin/AdminHeader'
+import CustomDocModal from '@/components/admin/CustomDocModal'
 import { setLoading } from '@/libs/reducers/modalReducer'
 import { IChapter } from '@/models/ChapterModel'
 import { ICourse } from '@/models/CourseModel'
@@ -17,14 +17,13 @@ import { IDoc } from '@/models/LessonModel'
 import { getLessonByIdApi, updateLessonApi } from '@/requests'
 import { formatFileSize } from '@/utils/number'
 import { formatDurationToHMS } from '@/utils/time'
+import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 import { FaX } from 'react-icons/fa6'
 import { MdCategory, MdOutlinePublic } from 'react-icons/md'
 import { RiCharacterRecognitionLine } from 'react-icons/ri'
 import { SiFramer } from 'react-icons/si'
-import CustomDocModal from '@/components/admin/CustomDocModal'
-import Link from 'next/link'
 
 export type GroupTypes = {
   [key: string]: ICourse[]
@@ -336,112 +335,118 @@ function EditLessonPage() {
   }, [fileUrl])
 
   return (
-    <div className='max-w-1200 mx-auto'>
+    <div className="mx-auto max-w-1200">
       {/* MARK: Admin Header */}
-      <AdminHeader title='Edit Lesson' backLink={`/admin/lesson/${chapter?._id}/all`} />
+      <AdminHeader
+        title="Edit Lesson"
+        backLink={`/admin/lesson/${chapter?._id}/all`}
+      />
 
-      <div className='mt-5 bg-slate-200 p-21 rounded-lg shadow-lg'>
+      <div className="mt-5 rounded-lg bg-slate-200 p-21 shadow-lg">
         {/* Course */}
-        <h2 className='text-dark font-semibold text-2xl'>
-          Course: <span className='text-slate-500'>{course?.title}</span>
+        <h2 className="text-2xl font-semibold text-dark">
+          Course: <span className="text-slate-500">{course?.title}</span>
         </h2>
 
         {/* Chapter */}
-        <h2 className='text-dark font-semibold text-xl'>
-          Chapter: <span className='text-slate-500'>{chapter?.title}</span>
+        <h2 className="text-xl font-semibold text-dark">
+          Chapter: <span className="text-slate-500">{chapter?.title}</span>
         </h2>
 
         <Divider size={4} />
 
         {/* Title */}
         <Input
-          id='title'
-          label='Title'
+          id="title"
+          label="Title"
           disabled={isLoading}
           register={register}
           errors={errors}
           required
-          type='text'
+          type="text"
           icon={RiCharacterRecognitionLine}
-          className='mb-5'
+          className="mb-5"
           onFocus={() => clearErrors('title')}
         />
 
         {/* Description */}
-        <p className='text-dark font-semibold text-xl mb-1'>Description</p>
+        <p className="mb-1 text-xl font-semibold text-dark">Description</p>
         {getValues('description') && (
           <TextEditor
             onChange={(content: string) => setValue('description', content)}
             content={getValues('description')}
-            className='w-full p-21 rounded-lg shadow-lg border border-dark bg-slate-200 text-dark mb-5'
+            className="mb-5 w-full rounded-lg border border-dark bg-slate-200 p-21 text-dark shadow-lg"
           />
         )}
 
         {/* MARK: Duration */}
-        <p className='text-dark font-semibold text-xl mb-1'>Duration</p>
-        <div className='grid grid-cols-1 md:grid-cols-3 mb-5 gap-2'>
+        <p className="mb-1 text-xl font-semibold text-dark">Duration</p>
+        <div className="mb-5 grid grid-cols-1 gap-2 md:grid-cols-3">
           {/* Hours */}
           <Input
-            id='hours'
-            label='Hours'
+            id="hours"
+            label="Hours"
             disabled={isLoading}
             register={register}
             errors={errors}
-            type='number'
+            type="number"
             min={0}
             onFocus={() => clearErrors('hours')}
           />
           {/* Minutes */}
           <Input
-            id='minutes'
-            label='Minutes'
+            id="minutes"
+            label="Minutes"
             disabled={isLoading}
             register={register}
             errors={errors}
-            type='number'
+            type="number"
             min={0}
             max={59}
             onFocus={() => clearErrors('minutes')}
           />
           {/* Seconds */}
           <Input
-            id='seconds'
-            label='Seconds'
+            id="seconds"
+            label="Seconds"
             disabled={isLoading}
             register={register}
             errors={errors}
-            type='number'
+            type="number"
             min={0}
             max={59}
             onFocus={() => clearErrors('seconds')}
           />
         </div>
 
-        <div className='mb-5'>
+        <div className="mb-5">
           <div className={`flex`}>
             <span
-              className={`inline-flex items-center px-3 rounded-tl-lg rounded-bl-lg border-[2px] text-sm text-gray-900 border-slate-200 bg-slate-100`}
+              className={`inline-flex items-center rounded-bl-lg rounded-tl-lg border-[2px] border-slate-200 bg-slate-100 px-3 text-sm text-gray-900`}
             >
-              <MdCategory size={19} className='text-secondary' />
+              <MdCategory
+                size={19}
+                className="text-secondary"
+              />
             </span>
             <div
-              className={`relative w-full border-[2px] border-l-0 bg-white rounded-tr-lg rounded-br-lg border-slate-200`}
+              className={`relative w-full rounded-br-lg rounded-tr-lg border-[2px] border-l-0 border-slate-200 bg-white`}
             >
               <select
-                id='sourceType'
-                className='block px-2.5 pb-2.5 pt-4 w-full text-sm text-dark bg-transparent focus:outline-none focus:ring-0 peer'
+                id="sourceType"
+                className="peer block w-full bg-transparent px-2.5 pb-2.5 pt-4 text-sm text-dark focus:outline-none focus:ring-0"
                 disabled={isLoading}
                 value={sourceType}
                 onChange={(e: any) => setSourceType(e.target.value)}
               >
-                <option value='embed'>Embed</option>
-                <option value='file'>File</option>
+                <option value="embed">Embed</option>
+                <option value="file">File</option>
               </select>
 
               {/* label */}
               <label
-                htmlFor='sourceType'
-                className={`absolute rounded-md text-sm text-gray-500 trans-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1 cursor-pointer ${
+                htmlFor="sourceType"
+                className={`trans-300 absolute start-1 top-2 z-10 origin-[0] -translate-y-4 scale-75 transform cursor-pointer rounded-md bg-white px-2 text-sm text-gray-500 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:px-2 rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4 ${
                   errors.couseId ? 'text-rose-400' : 'text-dark'
                 }`}
               >
@@ -450,49 +455,55 @@ function EditLessonPage() {
             </div>
           </div>
           {errors.type?.message && (
-            <span className='text-sm text-rose-400'>{errors.type?.message?.toString()}</span>
+            <span className="text-sm text-rose-400">{errors.type?.message?.toString()}</span>
           )}
         </div>
 
         {/* Source */}
-        <div className='mb-5'>
+        <div className="mb-5">
           {sourceType === 'file' ? (
-            <div className='flex'>
-              <span className='inline-flex items-center px-3 rounded-tl-lg rounded-bl-lg border-[2px] text-sm text-gray-900 border-slate-200 bg-slate-100'>
-                <FaFile size={19} className='text-secondary' />
+            <div className="flex">
+              <span className="inline-flex items-center rounded-bl-lg rounded-tl-lg border-[2px] border-slate-200 bg-slate-100 px-3 text-sm text-gray-900">
+                <FaFile
+                  size={19}
+                  className="text-secondary"
+                />
               </span>
-              <div className='relative w-full border-[2px] border-l-0 rounded-r-lg bg-white border-slate-200'>
+              <div className="relative w-full rounded-r-lg border-[2px] border-l-0 border-slate-200 bg-white">
                 <input
-                  id='fileUrl'
-                  className='block px-2.5 pb-2.5 pt-4 w-full text-sm text-dark bg-transparent focus:outline-none focus:ring-0 peer'
-                  placeholder=' '
+                  id="fileUrl"
+                  className="peer block w-full bg-transparent px-2.5 pb-2.5 pt-4 text-sm text-dark focus:outline-none focus:ring-0"
+                  placeholder=" "
                   disabled={isLoading}
-                  type='file'
-                  accept='video/*'
+                  type="file"
+                  accept="video/*"
                   onChange={handleAddFile}
                 />
 
                 {/* label */}
                 <label
                   htmlFor={'fileUrl'}
-                  className='absolute rounded-md text-sm trans-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1 cursor-pointer text-dark'
+                  className="trans-300 absolute start-1 top-2 z-10 origin-[0] -translate-y-4 scale-75 transform cursor-pointer rounded-md bg-white px-2 text-sm text-dark peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:px-2 rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4"
                 >
                   Source
                 </label>
               </div>
             </div>
           ) : (
-            <div className='flex'>
-              <span className='inline-flex items-center px-3 rounded-tl-lg rounded-bl-lg border-[2px] text-sm text-gray-900 border-slate-200 bg-slate-100'>
-                <SiFramer size={19} className='text-secondary' />
+            <div className="flex">
+              <span className="inline-flex items-center rounded-bl-lg rounded-tl-lg border-[2px] border-slate-200 bg-slate-100 px-3 text-sm text-gray-900">
+                <SiFramer
+                  size={19}
+                  className="text-secondary"
+                />
               </span>
-              <div className='relative w-full border-[2px] border-l-0 rounded-r-lg bg-white border-slate-200'>
+              <div className="relative w-full rounded-r-lg border-[2px] border-l-0 border-slate-200 bg-white">
                 <input
-                  id='fileUrl'
-                  className='block px-2.5 pb-2.5 pt-4 w-full text-sm text-dark bg-transparent focus:outline-none focus:ring-0 peer'
-                  placeholder=' '
+                  id="fileUrl"
+                  className="peer block w-full bg-transparent px-2.5 pb-2.5 pt-4 text-sm text-dark focus:outline-none focus:ring-0"
+                  placeholder=" "
                   disabled={isLoading}
-                  type='url'
+                  type="url"
                   value={embedSrc}
                   onPaste={handlePaste}
                   onChange={e => setEmbedSrc(e.target.value)}
@@ -501,7 +512,7 @@ function EditLessonPage() {
                 {/* label */}
                 <label
                   htmlFor={'fileUrl'}
-                  className='absolute rounded-md text-sm trans-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1 cursor-pointer text-dark'
+                  className="trans-300 absolute start-1 top-2 z-10 origin-[0] -translate-y-4 scale-75 transform cursor-pointer rounded-md bg-white px-2 text-sm text-dark peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:px-2 rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4"
                 >
                   Source
                 </label>
@@ -511,47 +522,57 @@ function EditLessonPage() {
         </div>
 
         {((fileUrl && sourceType === 'file') || (embedSrc && sourceType === 'embed')) && (
-          <div className='relative aspect-video rounded-lg bg-white p-21 mb-5'>
+          <div className="relative mb-5 aspect-video rounded-lg bg-white p-21">
             {fileUrl && sourceType === 'file' && (
-              <video className='rounded-lg w-full h-full object-contain' src={fileUrl} controls />
+              <video
+                className="h-full w-full rounded-lg object-contain"
+                src={fileUrl}
+                controls
+              />
             )}
             {embedSrc && sourceType === 'embed' && (
               <iframe
-                className='rounded-lg w-full h-full object-contain'
-                width='1519'
-                height='574'
+                className="h-full w-full rounded-lg object-contain"
+                width="1519"
+                height="574"
                 src={embedSrc}
-                title='Is Civilization on the Brink of Collapse?'
-                allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-                referrerPolicy='strict-origin-when-cross-origin'
+                title="Is Civilization on the Brink of Collapse?"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
                 allowFullScreen
               />
             )}
 
             <button
               onClick={() => handleRemoveSource(fileUrl)}
-              className='absolute top-2 bg-slate-300 p-2 right-2 group hover:bg-dark-100 rounded-lg'
+              className="group absolute right-2 top-2 rounded-lg bg-slate-300 p-2 hover:bg-dark-100"
             >
-              <FaX size={16} className='text-dark group-hover:text-light trans-200' />
+              <FaX
+                size={16}
+                className="trans-200 text-dark group-hover:text-light"
+              />
             </button>
           </div>
         )}
 
         {/* Active */}
-        <div className='flex mb-5'>
-          <div className='bg-white rounded-lg px-3 flex items-center'>
-            <FaCheck size={16} className='text-secondary' />
+        <div className="mb-5 flex">
+          <div className="flex items-center rounded-lg bg-white px-3">
+            <FaCheck
+              size={16}
+              className="text-secondary"
+            />
           </div>
           <input
-            className='peer'
-            type='checkbox'
-            id='active'
+            className="peer"
+            type="checkbox"
+            id="active"
             hidden
             {...register('active', { required: false })}
           />
           <label
-            className={`select-none cursor-pointer border border-green-500 px-4 py-2 rounded-lg trans-200 bg-white text-green-500 peer-checked:bg-green-500 peer-checked:text-light`}
-            htmlFor='active'
+            className={`trans-200 cursor-pointer select-none rounded-lg border border-green-500 bg-white px-4 py-2 text-green-500 peer-checked:bg-green-500 peer-checked:text-light`}
+            htmlFor="active"
           >
             Active
           </label>
@@ -559,34 +580,37 @@ function EditLessonPage() {
 
         {/* Status */}
         <Input
-          id='status'
-          label='Status'
+          id="status"
+          label="Status"
           disabled={isLoading}
           register={register}
           errors={errors}
           required
-          type='select'
+          type="select"
           onFocus={() => clearErrors('status')}
           options={[
             { label: 'Public', value: 'public' },
             { label: 'Private', value: 'private' },
           ]}
           icon={MdOutlinePublic}
-          className='mb-5'
+          className="mb-5"
         />
 
-        <div className='mb-5'>
-          <div className='flex'>
-            <span className='inline-flex items-center px-3 rounded-tl-lg rounded-bl-lg border-[2px] text-sm text-gray-900 border-slate-200 bg-slate-100'>
-              <FaFile size={19} className='text-secondary' />
+        <div className="mb-5">
+          <div className="flex">
+            <span className="inline-flex items-center rounded-bl-lg rounded-tl-lg border-[2px] border-slate-200 bg-slate-100 px-3 text-sm text-gray-900">
+              <FaFile
+                size={19}
+                className="text-secondary"
+              />
             </span>
-            <div className='relative w-full border-[2px] border-l-0 bg-white border-slate-200'>
+            <div className="relative w-full border-[2px] border-l-0 border-slate-200 bg-white">
               <input
-                id='docs'
-                className='block px-2.5 pb-2.5 pt-4 w-full text-sm text-dark bg-transparent focus:outline-none focus:ring-0 peer'
-                placeholder=' '
+                id="docs"
+                className="peer block w-full bg-transparent px-2.5 pb-2.5 pt-4 text-sm text-dark focus:outline-none focus:ring-0"
+                placeholder=" "
                 disabled={isLoading}
-                type='file'
+                type="file"
                 multiple
                 onChange={handleAddDocs}
               />
@@ -594,17 +618,20 @@ function EditLessonPage() {
               {/* label */}
               <label
                 htmlFor={'docs'}
-                className='absolute rounded-md text-sm trans-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1 cursor-pointer text-dark'
+                className="trans-300 absolute start-1 top-2 z-10 origin-[0] -translate-y-4 scale-75 transform cursor-pointer rounded-md bg-white px-2 text-sm text-dark peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:px-2 rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4"
               >
                 Docs
               </label>
 
               {/* Add Custom Docs Button */}
               <button
-                className='absolute top-1/2 right-2 -translate-y-1/2 rounded-full bg-dark-100 w-9 h-9 flex items-center justify-center group hover:bg-sky-500 trans-200 shadow-lg border-2 border-sky-500'
+                className="trans-200 group absolute right-2 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border-2 border-sky-500 bg-dark-100 shadow-lg hover:bg-sky-500"
                 onClick={() => setOpenCustomDocModal(prev => !prev)}
               >
-                <FaPlusSquare size={14} className='wiggle' />
+                <FaPlusSquare
+                  size={14}
+                  className="wiggle"
+                />
               </button>
             </div>
           </div>
@@ -618,52 +645,64 @@ function EditLessonPage() {
         </div>
 
         {(!!docs.length || !!originalDocs.length || !!customDocs.length) && (
-          <div className='flex flex-wrap gap-3 rounded-lg bg-white p-3 mb-5'>
+          <div className="mb-5 flex flex-wrap gap-3 rounded-lg bg-white p-3">
             {originalDocs.map((doc, index) => (
               <Link
                 href={doc.url}
-                className='flex items-center gap-3 max-w-[250px] rounded-md shadow-md px-2 py-1'
-                target='_blank'
-                rel='noreferrer'
+                className="flex max-w-[250px] items-center gap-3 rounded-md px-2 py-1 shadow-md"
+                target="_blank"
+                rel="noreferrer"
                 key={index}
               >
-                <FaFile size={20} className='text-secondary flex-shrink-0' />
+                <FaFile
+                  size={20}
+                  className="flex-shrink-0 text-secondary"
+                />
 
-                <div className='flex flex-col w-full max-w-[160px] font-body tracking-wider'>
-                  <p className='text-dark text-sm text-ellipsis line-clamp-2 overflow-hidden'>
+                <div className="flex w-full max-w-[160px] flex-col font-body tracking-wider">
+                  <p className="line-clamp-2 overflow-hidden text-ellipsis text-sm text-dark">
                     {doc.name}
                   </p>
-                  <p className='text-slate-500 text-xs'>{formatFileSize(doc.size)}</p>
+                  <p className="text-xs text-slate-500">{formatFileSize(doc.size)}</p>
                 </div>
 
                 <button
                   onClick={() => setOriginalDocs(prev => prev.filter(i => i !== doc))}
-                  className='bg-slate-300 p-2 group hover:bg-dark-100 rounded-lg flex-shrink-0'
+                  className="group flex-shrink-0 rounded-lg bg-slate-300 p-2 hover:bg-dark-100"
                 >
-                  <FaX size={16} className='text-dark group-hover:text-light trans-200' />
+                  <FaX
+                    size={16}
+                    className="trans-200 text-dark group-hover:text-light"
+                  />
                 </button>
               </Link>
             ))}
 
             {docs.map((doc, index) => (
               <div
-                className='flex items-center gap-3 max-w-[250px] rounded-md shadow-md px-2 py-1'
+                className="flex max-w-[250px] items-center gap-3 rounded-md px-2 py-1 shadow-md"
                 key={index}
               >
-                <FaFile size={20} className='text-secondary flex-shrink-0' />
+                <FaFile
+                  size={20}
+                  className="flex-shrink-0 text-secondary"
+                />
 
-                <div className='flex flex-col w-full max-w-[160px] font-body tracking-wider'>
-                  <p className='text-dark text-sm text-ellipsis line-clamp-2 overflow-hidden'>
+                <div className="flex w-full max-w-[160px] flex-col font-body tracking-wider">
+                  <p className="line-clamp-2 overflow-hidden text-ellipsis text-sm text-dark">
                     {doc.name}
                   </p>
-                  <p className='text-slate-500 text-xs'>{formatFileSize(doc.size)}</p>
+                  <p className="text-xs text-slate-500">{formatFileSize(doc.size)}</p>
                 </div>
 
                 <button
                   onClick={() => handleRemoveDoc(doc)}
-                  className='bg-slate-300 p-2 group hover:bg-dark-100 rounded-lg flex-shrink-0'
+                  className="group flex-shrink-0 rounded-lg bg-slate-300 p-2 hover:bg-dark-100"
                 >
-                  <FaX size={16} className='text-dark group-hover:text-light trans-200' />
+                  <FaX
+                    size={16}
+                    className="trans-200 text-dark group-hover:text-light"
+                  />
                 </button>
               </div>
             ))}
@@ -671,16 +710,19 @@ function EditLessonPage() {
             {customDocs.map((doc, index) => {
               return (
                 <div
-                  className='flex items-center gap-3 max-w-[250px] rounded-md shadow-md px-2 py-1'
+                  className="flex max-w-[250px] items-center gap-3 rounded-md px-2 py-1 shadow-md"
                   key={index}
                 >
-                  <FaFile size={20} className='text-secondary flex-shrink-0' />
+                  <FaFile
+                    size={20}
+                    className="flex-shrink-0 text-secondary"
+                  />
 
-                  <div className='flex flex-col w-full max-w-[160px] font-body tracking-wider'>
-                    <p className='text-dark text-sm text-ellipsis line-clamp-2 overflow-hidden'>
+                  <div className="flex w-full max-w-[160px] flex-col font-body tracking-wider">
+                    <p className="line-clamp-2 overflow-hidden text-ellipsis text-sm text-dark">
                       {doc.name}
                     </p>
-                    <p className='text-slate-500 text-xs'>{formatFileSize(doc.size)}</p>
+                    <p className="text-xs text-slate-500">{formatFileSize(doc.size)}</p>
                   </div>
 
                   <button
@@ -688,9 +730,12 @@ function EditLessonPage() {
                       e.stopPropagation()
                       setCustomDocs(prev => prev.filter(d => d !== doc))
                     }}
-                    className='bg-slate-300 p-2 group hover:bg-dark-100 rounded-lg flex-shrink-0'
+                    className="group flex-shrink-0 rounded-lg bg-slate-300 p-2 hover:bg-dark-100"
                   >
-                    <FaX size={16} className='text-dark group-hover:text-light trans-200' />
+                    <FaX
+                      size={16}
+                      className="trans-200 text-dark group-hover:text-light"
+                    />
                   </button>
                 </div>
               )
@@ -700,9 +745,9 @@ function EditLessonPage() {
 
         {/* MARK: Add Button */}
         <LoadingButton
-          className='px-4 py-2 bg-secondary hover:bg-primary text-light rounded-lg font-semibold trans-200'
+          className="trans-200 rounded-lg bg-secondary px-4 py-2 font-semibold text-light hover:bg-primary"
           onClick={handleSubmit(onSubmit)}
-          text='Save'
+          text="Save"
           isLoading={isLoading}
         />
       </div>

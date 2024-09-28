@@ -107,7 +107,7 @@ function CategoryTabs({ open, setOpen, className = '' }: CategoryTabsProps) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className={`hidden md:flex absolute z-50 top-[60px] left-[196px] font-body tracking-wider bg-white bg-opacity-95 text-dark rounded-lg shadow-lg ${className}`}
+          className={`absolute left-[196px] top-[60px] z-50 hidden rounded-lg bg-white bg-opacity-95 font-body tracking-wider text-dark shadow-lg md:flex ${className}`}
           onMouseLeave={() => {
             setList([
               {
@@ -120,18 +120,22 @@ function CategoryTabs({ open, setOpen, className = '' }: CategoryTabsProps) {
         >
           {list.map((tab, tabIndex) => (
             <ul
-              className='flex flex-col p-0.5'
+              className="flex flex-col p-0.5"
               onMouseLeave={() => handleMouseLeave(tabIndex)}
               key={tabIndex}
               ref={tabsRef}
             >
               {tab?.data?.map((item: any, itemIndex: number) => (
-                <li className='p-0.5' onMouseOver={() => handleMouseOver(item)} key={itemIndex}>
+                <li
+                  className="p-0.5"
+                  onMouseOver={() => handleMouseOver(item)}
+                  key={itemIndex}
+                >
                   <Link
                     href={`/categories/${item.slug}`}
-                    className={`w-full h-9 flex items-center justify-between gap-3 px-2.5 hover:bg-secondary group trans-300 hover:rounded-xl hover:shadow-md ${
+                    className={`trans-300 group flex h-9 w-full items-center justify-between gap-3 px-2.5 hover:rounded-xl hover:bg-secondary hover:shadow-md ${
                       list[tabIndex + 1] && list[tabIndex + 1].ref === item._id
-                        ? 'bg-secondary rounded-xl shadow-md'
+                        ? 'rounded-xl bg-secondary shadow-md'
                         : ''
                     }`}
                   >
@@ -145,7 +149,7 @@ function CategoryTabs({ open, setOpen, className = '' }: CategoryTabsProps) {
                     {!!item.subs?.data?.length && (
                       <FaChevronRight
                         size={12}
-                        className={`wiggle text-dark group-hover:text-light  ${
+                        className={`wiggle text-dark group-hover:text-light ${
                           list[tabIndex + 1] && list[tabIndex + 1].ref === item._id ? 'text-light' : ''
                         }`}
                       />

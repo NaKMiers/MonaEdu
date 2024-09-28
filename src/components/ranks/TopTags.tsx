@@ -16,13 +16,13 @@ function TopKeywords({ className }: TopKeywordsProps) {
   ]
 
   return (
-    <div className={`max-w-1200 mx-auto ${className}`}>
-      <div className='flex flex-wrap justify-center gap-2 md:gap-4'>
+    <div className={`mx-auto max-w-1200 ${className}`}>
+      <div className="flex flex-wrap justify-center gap-2 md:gap-4">
         {keywords.map((keyword, index) => (
           <Link
             key={index}
             href={`/search?search=${keyword}`}
-            className='flex items-center justify-center rounded-3xl shadow-sm shadow-lime-50 bg-dark-100 py-2 px-4 text-light hover:rounded-lg trans-200'
+            className="trans-200 flex items-center justify-center rounded-3xl bg-dark-100 px-4 py-2 text-light shadow-sm shadow-lime-50 hover:rounded-lg"
           >
             {keyword}
           </Link>

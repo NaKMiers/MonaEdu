@@ -88,12 +88,15 @@ async function SearchPage({ searchParams }: { searchParams?: { [key: string]: st
   }
 
   return (
-    <div className='px-21 pt-12 md:pt-16'>
+    <div className="px-21 pt-12 md:pt-16">
       {/* MARK: Add JSON-LD */}
-      <script type='application/ld+json' dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
       {/* Heading */}
-      <h1 className='text-4xl font-semibold px-21 text-light text-center'>
+      <h1 className="px-21 text-center text-4xl font-semibold text-light">
         Kết quả tìm kiếm {amount > 0 && <span>({amount})</span>}
       </h1>
 
@@ -101,17 +104,20 @@ async function SearchPage({ searchParams }: { searchParams?: { [key: string]: st
 
       {/* MAIN List */}
       {!!courses.length ? (
-        <div className='grid grid-cols-2 md:grid-cols-4 gap-21'>
+        <div className="grid grid-cols-2 gap-21 md:grid-cols-4">
           {courses.map(course => (
-            <CourseCard course={course} key={course._id} />
+            <CourseCard
+              course={course}
+              key={course._id}
+            />
           ))}
         </div>
       ) : (
-        <div className='font-body tracking-wider text-center text-light'>
-          <p className='italic'>Không có kết quả tìm kiếm nào, hãy thử lại với từ khóa khác hoặc </p>
+        <div className="text-center font-body tracking-wider text-light">
+          <p className="italic">Không có kết quả tìm kiếm nào, hãy thử lại với từ khóa khác hoặc </p>
           <Link
-            href='/'
-            className='text-sky-500 underline underline-offset-2 hover:text-sky-700 trans-200'
+            href="/"
+            className="trans-200 text-sky-500 underline underline-offset-2 hover:text-sky-700"
           >
             về trang chủ
           </Link>
@@ -121,7 +127,11 @@ async function SearchPage({ searchParams }: { searchParams?: { [key: string]: st
       <Divider size={10} />
 
       {/* Pagination */}
-      <Pagination searchParams={searchParams} amount={amount} itemsPerPage={itemPerPage} />
+      <Pagination
+        searchParams={searchParams}
+        amount={amount}
+        itemsPerPage={itemPerPage}
+      />
 
       <Divider size={20} />
     </div>

@@ -68,24 +68,30 @@ function GroupCourses({ className = '', classChild = '', children }: GroupCourse
       {!isExpanded && (
         <>
           <button
-            className='group flex items-center justify-center absolute -left-21 top-1/2 -translate-y-1/2 bg-primary bg-opacity-80 w-11 h-11 z-10 rounded-full shadow-md trans-200 hover:bg-opacity-100 group'
+            className="trans-200 group absolute -left-21 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-primary bg-opacity-80 shadow-md hover:bg-opacity-100"
             onClick={prevSlide}
           >
-            <FaChevronLeft size={18} className='wiggle text-dark' />
+            <FaChevronLeft
+              size={18}
+              className="wiggle text-dark"
+            />
           </button>
           <button
-            className='group flex items-center justify-center absolute -right-21 top-1/2 -translate-y-1/2 bg-primary bg-opacity-80 w-11 h-11 z-10 rounded-full shadow-md trans-200 hover:bg-opacity-100 group'
+            className="trans-200 group absolute -right-21 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-primary bg-opacity-80 shadow-md hover:bg-opacity-100"
             onClick={nextSlide}
           >
-            <FaChevronRight size={18} className='wiggle text-dark' />
+            <FaChevronRight
+              size={18}
+              className="wiggle text-dark"
+            />
           </button>
         </>
       )}
 
       {/* MARK: Slider */}
-      <div className='flex flex-wrap'>
+      <div className="flex flex-wrap">
         <div
-          className={`flex ${isExpanded ? 'flex-wrap gap-y-21' : ''} w-full py-21 overflow-x-auto ${
+          className={`flex ${isExpanded ? 'flex-wrap gap-y-21' : ''} w-full overflow-x-auto py-21 ${
             !isDragging ? 'snap-x snap-mandatory' : ''
           }`}
           ref={slideTrackRef}
@@ -96,7 +102,7 @@ function GroupCourses({ className = '', classChild = '', children }: GroupCourse
           {Children.toArray(children).map((child, index) => (
             <div
               key={index}
-              className={`relative h-full px-21/2 flex-shrink-0 ${
+              className={`relative h-full flex-shrink-0 px-21/2 ${
                 !isDragging ? 'snap-start' : ''
               } ${classChild}`}
             >

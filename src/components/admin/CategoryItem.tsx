@@ -86,7 +86,7 @@ function CategoryItem({
   return (
     <>
       <div
-        className={`h-9 flex-shrink-0 overflow-hidden flex items-center justify-between gap-3 trans-300 text-dark rounded-lg px-3 py-1.5 hover:bg-secondary hover:text-light cursor-pointer ${
+        className={`trans-300 flex h-9 flex-shrink-0 cursor-pointer items-center justify-between gap-3 overflow-hidden rounded-lg px-3 py-1.5 text-dark hover:bg-secondary hover:text-light ${
           selectMode && selectedCategory === data._id ? 'bg-green-500' : 'bg-white'
         } ${className}`}
         onClick={() => {
@@ -96,71 +96,92 @@ function CategoryItem({
           }
         }}
       >
-        <span className='text-sm'>{data.title}</span>
+        <span className="text-sm">{data.title}</span>
 
         {/* Action Buttons */}
         {!selectMode ? (
-          <div className='flex items-center gap-2'>
+          <div className="flex items-center gap-2">
             <button
               onClick={e => {
                 e.stopPropagation()
                 setOpenAddCategoryModal(true)
               }}
-              className='h-7 flex items-center justify-center rounded-lg text-xs border-2 border-yellow-500 px-2 py-1 bg-white text-yellow-500 hover:bg-primary trans-200 group'
+              className="trans-200 group flex h-7 items-center justify-center rounded-lg border-2 border-yellow-500 bg-white px-2 py-1 text-xs text-yellow-500 hover:bg-primary"
             >
-              <MdOutlineAddCircle size={16} className='wiggle' />
+              <MdOutlineAddCircle
+                size={16}
+                className="wiggle"
+              />
             </button>
             <button
               onClick={e => {
                 e.stopPropagation()
                 setOpenEditCategoryModal(true)
               }}
-              className='h-7 flex items-center justify-center rounded-lg text-xs border-2 border-sky-500 px-2 py-1 bg-white text-sky-500 hover:bg-primary trans-200 group'
+              className="trans-200 group flex h-7 items-center justify-center rounded-lg border-2 border-sky-500 bg-white px-2 py-1 text-xs text-sky-500 hover:bg-primary"
             >
-              <MdEdit size={15} className='wiggle' />
+              <MdEdit
+                size={15}
+                className="wiggle"
+              />
             </button>
             <button
               onClick={e => {
                 e.stopPropagation()
                 handleBootCategory()
               }}
-              className={`h-7 flex items-center justify-center rounded-lg text-xs border-2 px-2 py-1 hover:bg-primary trans-200 group ${
+              className={`trans-200 group flex h-7 items-center justify-center rounded-lg border-2 px-2 py-1 text-xs hover:bg-primary ${
                 data.booted
-                  ? 'bg-green-500 text-dark border-dark font-semibold'
-                  : 'bg-white border-green-500 text-green-500'
+                  ? 'border-dark bg-green-500 font-semibold text-dark'
+                  : 'border-green-500 bg-white text-green-500'
               }`}
             >
-              <IoRocketSharp size={14} className='wiggle' />
+              <IoRocketSharp
+                size={14}
+                className="wiggle"
+              />
             </button>
             <button
               onClick={e => {
                 e.stopPropagation()
                 setIsOpenConfirmModal(true)
               }}
-              className={`h-7 flex items-center justify-center rounded-lg text-xs border-2 px-2 py-1 bg-white text-rose-500 hover:bg-rose-300 trans-200 group ${
-                deleting ? 'bg-slate-200 border-slate-200 pointer-events-none' : 'border-rose-500'
+              className={`trans-200 group flex h-7 items-center justify-center rounded-lg border-2 bg-white px-2 py-1 text-xs text-rose-500 hover:bg-rose-300 ${
+                deleting ? 'pointer-events-none border-slate-200 bg-slate-200' : 'border-rose-500'
               }`}
             >
               {deleting ? (
-                <FaCircleNotch size={14} className='text-slate-300 trans-200 animate-spin' />
+                <FaCircleNotch
+                  size={14}
+                  className="trans-200 animate-spin text-slate-300"
+                />
               ) : (
-                <FaTrash size={12} className='wiggle' />
+                <FaTrash
+                  size={12}
+                  className="wiggle"
+                />
               )}
             </button>
             {!!subCategories.length && (
-              <FaChevronUp size={16} className={`${open ? 'rotate-180' : ''} trans-300`} />
+              <FaChevronUp
+                size={16}
+                className={`${open ? 'rotate-180' : ''} trans-300`}
+              />
             )}
           </div>
         ) : (
           !!subCategories.length && (
-            <FaChevronUp size={16} className={`${open ? 'rotate-180' : ''} trans-300`} />
+            <FaChevronUp
+              size={16}
+              className={`${open ? 'rotate-180' : ''} trans-300`}
+            />
           )
         )}
       </div>
 
       {/* Sub Categories */}
       <div
-        className={`flex flex-col gap-2 pl-8 overflow-hidden ${
+        className={`flex flex-col gap-2 overflow-hidden pl-8 ${
           open ? 'max-h-auto' : 'max-h-0 py-0'
         } trans-300`}
         ref={categoryRef}
@@ -200,8 +221,8 @@ function CategoryItem({
       <ConfirmDialog
         open={isOpenConfirmModal}
         setOpen={setIsOpenConfirmModal}
-        title='Delete Category'
-        content='Are you sure that you want to delete this category?'
+        title="Delete Category"
+        content="Are you sure that you want to delete this category?"
         onAccept={handleDeleteCategory}
         isLoading={deleting}
       />

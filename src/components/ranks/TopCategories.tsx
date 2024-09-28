@@ -13,31 +13,31 @@ function TopCategories({ className }: TopCategoriesProps) {
   const categories: any[] = topCategories
 
   return (
-    <div className={`max-w-1200 mx-auto px-21 ${className}`}>
-      <Heading title='Danh mục phổ biến' />
+    <div className={`mx-auto max-w-1200 px-21 ${className}`}>
+      <Heading title="Danh mục phổ biến" />
 
       <Divider size={16} />
 
-      <div className='grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-21 sm:gap-8'>
+      <div className="grid grid-cols-2 gap-3 sm:gap-8 md:grid-cols-4 md:gap-21">
         {categories.map(category => (
           <Link
             key={category._id}
             href={`/categories/${category.slug}`}
-            className={`hover:-translate-y-2 trans-300 shadow-sm shadow-lime-50 rounded-xl overflow-hidden relative w-full ${className}`}
+            className={`trans-300 relative w-full overflow-hidden rounded-xl shadow-sm shadow-lime-50 hover:-translate-y-2 ${className}`}
           >
             <Image
               src={category.image || '/images/default-category.jpg'}
-              height='1000'
-              width='1000'
-              className='h-full bg-white w-full object-cover rounded-xl'
+              height="1000"
+              width="1000"
+              className="h-full w-full rounded-xl bg-white object-cover"
               alt={category.title}
-              loading='lazy'
+              loading="lazy"
             />
 
-            <div className='absolute z-20 bottom-0 left-0 right-0 w-full p-1.5 bg-neutral-950 bg-opacity-50 text-light'>
+            <div className="absolute bottom-0 left-0 right-0 z-20 w-full bg-neutral-950 bg-opacity-50 p-1.5 text-light">
               <h2
                 title={category.title}
-                className='font-body tracking-wider font-bold text-2xl drop-shadow-lg text-ellipsis line-clamp-2 mb-1'
+                className="mb-1 line-clamp-2 text-ellipsis font-body text-2xl font-bold tracking-wider drop-shadow-lg"
               >
                 {category.title}
               </h2>

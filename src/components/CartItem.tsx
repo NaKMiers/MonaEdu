@@ -53,7 +53,7 @@ function CartItem({ cartItem, isCheckout, className = '', isOrderDetailCourse }:
 
   return (
     <div
-      className={`relative flex flex-wrap md:flex-nowrap items-start gap-3 cursor-pointer common-transition rounded-medium border p-21 ${
+      className={`common-transition relative flex cursor-pointer flex-wrap items-start gap-3 rounded-medium border p-21 md:flex-nowrap ${
         !!selectedCartItems.find(cI => cI._id === cartItem._id) && !isCheckout
           ? 'border-primary'
           : 'border-slate-400'
@@ -69,19 +69,19 @@ function CartItem({ cartItem, isCheckout, className = '', isOrderDetailCourse }:
       }
     >
       {/* MARK: Thumbnails */}
-      <div className='relative'>
+      <div className="relative">
         <Link
           href={`/${(cartItem.courseId as ICourse)?.slug}`}
           prefetch={false}
-          className='aspect-video rounded-lg overflow-hidden shadow-lg block max-w-[150px]'
+          className="block aspect-video max-w-[150px] overflow-hidden rounded-lg shadow-lg"
           onClick={e => e.stopPropagation()}
         >
-          <div className='flex w-full overflow-x-scroll snap-x snap-mandatory no-scrollbar'>
+          <div className="no-scrollbar flex w-full snap-x snap-mandatory overflow-x-scroll">
             {(cartItem.courseId as ICourse)?.images
               ?.slice(0, (cartItem.courseId as ICourse)?.images.length === 1 ? 1 : -1)
               .map(src => (
                 <Image
-                  className='flex-shrink w-full snap-start'
+                  className="w-full flex-shrink snap-start"
                   src={src}
                   width={150}
                   height={150}
@@ -96,8 +96,8 @@ function CartItem({ cartItem, isCheckout, className = '', isOrderDetailCourse }:
       {/* MARK: Checkbox */}
       {!isCheckout && (
         <input
-          type='checkbox'
-          className='size-5 z-10 cursor-pointer absolute top-21 right-21 accent-primary'
+          type="checkbox"
+          className="absolute right-21 top-21 z-10 size-5 cursor-pointer accent-primary"
           checked={!!selectedCartItems.find(cI => cI._id === cartItem._id)}
           onChange={() =>
             dispatch(
@@ -112,13 +112,16 @@ function CartItem({ cartItem, isCheckout, className = '', isOrderDetailCourse }:
       )}
 
       {!isCheckout && (
-        <div className='flex items-center justify-between size-5 z-10 cursor-pointer absolute top-[55px] right-21 accent-primary'>
+        <div className="absolute right-21 top-[55px] z-10 flex size-5 cursor-pointer items-center justify-between accent-primary">
           {isDeleting ? (
-            <RiDonutChartFill size={18} className='animate-spin text-slate-400' />
+            <RiDonutChartFill
+              size={18}
+              className="animate-spin text-slate-400"
+            />
           ) : (
             <FaTrashAlt
               size={21}
-              className='cursor-pointer hover:scale-110 common-transition wiggle'
+              className="common-transition wiggle cursor-pointer hover:scale-110"
               onClick={e => {
                 e.stopPropagation()
                 setIsOpenConfirmModal(true)
@@ -129,9 +132,9 @@ function CartItem({ cartItem, isCheckout, className = '', isOrderDetailCourse }:
       )}
 
       {/* MARK: Body */}
-      <div className={`relative w-full h-full pr-10`}>
+      <div className={`relative h-full w-full pr-10`}>
         {/* Title */}
-        <h2 className={`text-[20px] tracking-wide mb-2 leading-6 pr-8`}>
+        <h2 className={`mb-2 pr-8 text-[20px] leading-6 tracking-wide`}>
           {(cartItem.courseId as ICourse)?.title}
         </h2>
 
@@ -147,8 +150,8 @@ function CartItem({ cartItem, isCheckout, className = '', isOrderDetailCourse }:
       <ConfirmDialog
         open={isOpenConfirmModal}
         setOpen={setIsOpenConfirmModal}
-        title='Xóa sản phẩm khỏi giỏ hàng'
-        content='Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng không?'
+        title="Xóa sản phẩm khỏi giỏ hàng"
+        content="Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng không?"
         onAccept={handleDeleteCartItem}
         isLoading={isDeleting}
       />

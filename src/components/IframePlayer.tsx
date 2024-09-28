@@ -594,38 +594,38 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
 
   return (
     <div
-      className={`relative w-full h-full ${className}`}
+      className={`relative h-full w-full ${className}`}
       onDoubleClick={handleFullscreen}
       ref={playerContainerRef}
     >
       {/* Video */}
       <iframe
         key={videoId}
-        className='w-full h-full object-contain'
+        className="h-full w-full object-contain"
         src={`https://www.youtube.com/embed/${videoId}?enablejsapi=1&autoplay=0&mute=0&controls=0&rel=0&playsinline=1&iv_load_policy=3&vq=tiny&origin=${process.env.NEXT_PUBLIC_APP_URL}`}
-        allow='fullscreen; accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; autoplay'
-        referrerPolicy='strict-origin-when-cross-origin'
-        sandbox='allow-same-origin allow-scripts'
+        allow="fullscreen; accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; autoplay"
+        referrerPolicy="strict-origin-when-cross-origin"
+        sandbox="allow-same-origin allow-scripts"
         allowFullScreen
         ref={iframeRef}
       />
 
       {/* Controls */}
       <div
-        className='flex flex-col justify-end absolute top-0 left-0 right-0 bottom-0 w-full h-full bg-neutral-950 bg-opacity-50 select-none trans-300'
+        className="trans-300 absolute bottom-0 left-0 right-0 top-0 flex h-full w-full select-none flex-col justify-end bg-neutral-950 bg-opacity-50"
         onClick={() => isFirstPlayed.current && setShowControls(!showControls)}
         ref={controlsRef}
       >
-        <div className='flex flex-1 justify-between'>
+        <div className="flex flex-1 justify-between">
           <div // back to 5s
-            className='max-w-[300px] w-1/4 h-full'
+            className="h-full w-1/4 max-w-[300px]"
             onDoubleClick={e => {
               e.stopPropagation()
               handleSeek(currentTime - seekTime < 0 ? 0 : currentTime - seekTime)
             }}
           />
           <div // next to 5s
-            className='max-w-[300px] w-1/4 h-full'
+            className="h-full w-1/4 max-w-[300px]"
             onDoubleClick={e => {
               e.stopPropagation()
               handleSeek(currentTime + seekTime > duration ? duration : currentTime + seekTime)
@@ -635,74 +635,80 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
 
         {/* Play - Back - Next Button */}
         <div
-          className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-5 sm:gap-8 justify-center trans-300'
+          className="trans-300 absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center gap-5 sm:gap-8"
           onClick={e => e.stopPropagation()}
           ref={playRef}
         >
           {/* Play - Back - Next Button */}
           <div
-            className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-5 sm:gap-8 justify-center trans-300'
+            className="trans-300 absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center gap-5 sm:gap-8"
             onClick={e => e.stopPropagation()}
             ref={playRef}
           >
             {/* Back */}
             <button
-              className='absolute -top-4 -left-8 -translate-x-1/2 -translate-y-1/2 text-light trans-200 hover:text-orange-400 shadow-lg rounded-full'
+              className="trans-200 absolute -left-8 -top-4 -translate-x-1/2 -translate-y-1/2 rounded-full text-light shadow-lg hover:text-orange-400"
               onClick={() => handleSeek(currentTime - 5 < 0 ? 0 : currentTime - 5)}
               onDoubleClick={e => e.stopPropagation()}
             >
-              <GrRotateLeft className='w-[40px] sm:w-[50px] h-[40px] sm:h-[50px]' />
-              <span className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 mt-0.5 text-xs sm:text-base font-semibold'>
+              <GrRotateLeft className="h-[40px] w-[40px] sm:h-[50px] sm:w-[50px]" />
+              <span className="absolute left-1/2 top-1/2 mt-0.5 -translate-x-1/2 -translate-y-1/2 text-xs font-semibold sm:text-base">
                 5
               </span>
             </button>
 
             {/* Next */}
             <button
-              className='absolute -top-4 -right-8 translate-x-1/2 -translate-y-1/2 text-light trans-200 hover:text-orange-400 shadow-lg rounded-full'
+              className="trans-200 absolute -right-8 -top-4 -translate-y-1/2 translate-x-1/2 rounded-full text-light shadow-lg hover:text-orange-400"
               onClick={() => handleSeek(currentTime + 5 > duration ? duration : currentTime + 5)}
               onDoubleClick={e => e.stopPropagation()}
             >
-              <GrRotateRight className='w-[40px] sm:w-[50px] h-[40px] sm:h-[50px]' />
-              <span className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 mt-0.5 text-xs sm:text-base font-semibold'>
+              <GrRotateRight className="h-[40px] w-[40px] sm:h-[50px] sm:w-[50px]" />
+              <span className="absolute left-1/2 top-1/2 mt-0.5 -translate-x-1/2 -translate-y-1/2 text-xs font-semibold sm:text-base">
                 5
               </span>
             </button>
 
             {/* Play/Pause */}
             <button
-              className='rounded-full bg-orange-400 w-[80px] h-[80px] flex items-center justify-center shadow-lg hover:shadow-orange-400 trans-300'
+              className="trans-300 flex h-[80px] w-[80px] items-center justify-center rounded-full bg-orange-400 shadow-lg hover:shadow-orange-400"
               onClick={handlePlay}
               onDoubleClick={e => e.stopPropagation()}
             >
               {isPlaying ? (
-                <FaCirclePause size={40} className='text-light' />
+                <FaCirclePause
+                  size={40}
+                  className="text-light"
+                />
               ) : (
-                <FaCirclePlay size={40} className='text-light' />
+                <FaCirclePlay
+                  size={40}
+                  className="text-light"
+                />
               )}
             </button>
 
             {/* Smile */}
-            <div className='absolute -bottom-12 -translate-y-1/2 w-[110px]'>
+            <div className="absolute -bottom-12 w-[110px] -translate-y-1/2">
               <Image
                 width={150}
                 height={100}
-                className='w-full h-full object-contain'
-                src='/icons/smile-line.png'
-                alt='mona-edu'
+                className="h-full w-full object-contain"
+                src="/icons/smile-line.png"
+                alt="mona-edu"
               />
             </div>
           </div>
         </div>
 
         <div
-          className='flex flex-col w-full px-4 trans-300 overflow-hidden'
+          className="trans-300 flex w-full flex-col overflow-hidden px-4"
           onClick={e => e.stopPropagation()}
           ref={videoBarRef}
         >
           {/* Seek */}
           <div
-            className='relative w-full h-1 bg-slate-400 bg-opacity-50 cursor-pointer hover:h-2 trans-200'
+            className="trans-200 relative h-1 w-full cursor-pointer bg-slate-400 bg-opacity-50 hover:h-2"
             ref={progressBarRef}
             onMouseDown={handleSeekMouseDown}
             onMouseMove={handleSeekMouseMove}
@@ -720,7 +726,7 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
               }}
             />
             <div
-              className='absolute top-1/2 left-0 -translate-y-1/2 h-[100%] bg-orange-400'
+              className="absolute left-0 top-1/2 h-[100%] -translate-y-1/2 bg-orange-400"
               style={{
                 width: `${(currentTime / duration) * 100}%`,
               }}
@@ -728,53 +734,62 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
           </div>
 
           {/* Actions Buttons */}
-          <div className='flex items-center justify-between w-full'>
+          <div className="flex w-full items-center justify-between">
             {/* Left Side */}
-            <div className='flex items-center gap-[13px]'>
+            <div className="flex items-center gap-[13px]">
               {/* Play / Pause */}
               <button
-                className='group w-12 h-[50px] flex items-center justify-center'
+                className="group flex h-[50px] w-12 items-center justify-center"
                 onClick={handlePlay}
               >
                 {isPlaying ? (
                   <FaCirclePause
                     size={22}
-                    className='text-light group-hover:shadow-orange-400 shadow-md rounded-full trans-200'
+                    className="trans-200 rounded-full text-light shadow-md group-hover:shadow-orange-400"
                   />
                 ) : (
                   <FaCirclePlay
                     size={22}
-                    className='text-light group-hover:shadow-orange-400 shadow-md rounded-full trans-200'
+                    className="trans-200 rounded-full text-light shadow-md group-hover:shadow-orange-400"
                   />
                 )}
               </button>
 
               {/* Volume */}
-              <div className='flex h-[50px] items-center cursor-pointer'>
-                <button className='flex items-center justify-center group peer' onClick={handleMute}>
+              <div className="flex h-[50px] cursor-pointer items-center">
+                <button
+                  className="group peer flex items-center justify-center"
+                  onClick={handleMute}
+                >
                   {volume > 0 ? (
-                    <HiSpeakerWave size={23} className='text-light flex-shrink-0' />
+                    <HiSpeakerWave
+                      size={23}
+                      className="flex-shrink-0 text-light"
+                    />
                   ) : (
-                    <HiSpeakerXMark size={23} className='text-light flex-shrink-0' />
+                    <HiSpeakerXMark
+                      size={23}
+                      className="flex-shrink-0 text-light"
+                    />
                   )}
                 </button>
 
-                <div className='w-0 h-full items-center peer-hover:flex peer-hover:w-[135px] peer-hover:px-4 hover:flex hover:w-[135px] hover:px-4 hover:overflow-visible overflow-hidden hover:mr-1 peer-hover:mr-1 mr-3 flex trans-300'>
+                <div className="trans-300 mr-3 flex h-full w-0 items-center overflow-hidden hover:mr-1 hover:flex hover:w-[135px] hover:overflow-visible hover:px-4 peer-hover:mr-1 peer-hover:flex peer-hover:w-[135px] peer-hover:px-4">
                   <Slider
                     value={volume}
                     onChange={(_: any, newValue: any) => handleChangeVolume(newValue as number)}
-                    color='warning'
+                    color="warning"
                   />
                 </div>
               </div>
 
-              <div className='text-light tracking-widest font-semibold text-sm flex items-center'>
+              <div className="flex items-center text-sm font-semibold tracking-widest text-light">
                 <span>
                   {currentTime / 3600 < 1
                     ? moment.utc(currentTime * 1000).format('m:ss')
                     : moment.utc(currentTime * 1000).format('h:mm:ss')}
                 </span>
-                <span className='mx-0.5'>/</span>
+                <span className="mx-0.5">/</span>
                 <span>
                   {duration / 3600 < 1
                     ? moment.utc(duration * 1000).format('m:ss')
@@ -784,21 +799,27 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
             </div>
 
             {/* Right Side */}
-            <div className='flex items-center'>
+            <div className="flex items-center">
               {/* Quality */}
               <button
-                className='group w-12 h-[50px] flex items-center justify-center'
+                className="group flex h-[50px] w-12 items-center justify-center"
                 onClick={() => setIsOpenQualitySetting(true)}
               >
-                <IoMdSettings size={24} className='text-light' />
+                <IoMdSettings
+                  size={24}
+                  className="text-light"
+                />
               </button>
 
               {/* Zoom */}
               <button
-                className='group w-12 h-[50px] flex items-center justify-center'
+                className="group flex h-[50px] w-12 items-center justify-center"
                 onClick={handleFullscreen}
               >
-                <RiFullscreenFill size={24} className='text-light' />
+                <RiFullscreenFill
+                  size={24}
+                  className="text-light"
+                />
               </button>
             </div>
           </div>
@@ -811,11 +832,11 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className={`absolute top-0 left-0 right-0 bottom-0 bg-black bg-opacity-0 flex items-center justify-center ${className}`}
+            className={`absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center bg-black bg-opacity-0 ${className}`}
             onClick={() => setIsOpenQualitySetting(false)}
           >
             <motion.div
-              className='absolute bottom-12 right-[6.5em] translate-x-1/2 text-sm text-light rounded-lg shadow-lg bg-dark-100 border-b-2 border-light flex flex-col'
+              className="absolute bottom-12 right-[6.5em] flex translate-x-1/2 flex-col rounded-lg border-b-2 border-light bg-dark-100 text-sm text-light shadow-lg"
               onClick={() => toast.error('Độ phân giải được thay đổi tự động')}
             >
               <button

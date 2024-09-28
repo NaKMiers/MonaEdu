@@ -71,39 +71,45 @@ function AddTagPage() {
   }, [handleSubmit, onSubmit])
 
   return (
-    <div className='max-w-1200 mx-auto'>
+    <div className="mx-auto max-w-1200">
       {/* MARK: Admin Header */}
-      <AdminHeader title='Add Tag' backLink='/admin/tag/all' />
+      <AdminHeader
+        title="Add Tag"
+        backLink="/admin/tag/all"
+      />
 
       {/* MARK: Body */}
-      <div className='mt-5 bg-slate-200 p-21 rounded-lg'>
+      <div className="mt-5 rounded-lg bg-slate-200 p-21">
         <Input
-          id='title'
-          label='Title'
+          id="title"
+          label="Title"
           disabled={isLoading}
           register={register}
           errors={errors}
           required
-          type='text'
+          type="text"
           icon={MdTitle}
-          className='mb-5'
+          className="mb-5"
           onFocus={() => clearErrors('title')}
         />
 
-        <div className='flex'>
-          <div className='bg-white rounded-lg px-3 flex items-center'>
-            <FaPlay size={16} className='text-secondary' />
+        <div className="flex">
+          <div className="flex items-center rounded-lg bg-white px-3">
+            <FaPlay
+              size={16}
+              className="text-secondary"
+            />
           </div>
           <input
-            className='peer'
-            type='checkbox'
-            id='booted'
+            className="peer"
+            type="checkbox"
+            id="booted"
             hidden
             {...register('booted', { required: false })}
           />
           <label
-            className='select-none cursor-pointer border border-green-500 px-4 py-2 rounded-lg trans-200 bg-white text-green-500 peer-checked:bg-green-500 peer-checked:text-light'
-            htmlFor='booted'
+            className="trans-200 cursor-pointer select-none rounded-lg border border-green-500 bg-white px-4 py-2 text-green-500 peer-checked:bg-green-500 peer-checked:text-light"
+            htmlFor="booted"
           >
             Booted
           </label>
@@ -111,9 +117,9 @@ function AddTagPage() {
 
         {/* MARK: Add Button */}
         <LoadingButton
-          className='mt-4 px-4 py-2 bg-secondary hover:bg-primary text-light rounded-lg font-semibold trans-200'
+          className="trans-200 mt-4 rounded-lg bg-secondary px-4 py-2 font-semibold text-light hover:bg-primary"
           onClick={handleSubmit(onSubmit)}
-          text='Add'
+          text="Add"
           isLoading={isLoading}
         />
       </div>

@@ -14,14 +14,17 @@ function RecentlyVisit() {
   if (courses.length === 0) return null
 
   return (
-    <div className={`max-w-1200 w-full mx-auto px-21`}>
-      <Heading title='Đã xem gần đây' />
+    <div className={`mx-auto w-full max-w-1200 px-21`}>
+      <Heading title="Đã xem gần đây" />
 
       <Divider size={16} />
 
-      <GroupCourses className='' classChild='w-full sm:w-1/2 md:w-1/3 lg:w-1/4'>
+      <GroupCourses classChild="w-full sm:w-1/2 md:w-1/3 lg:w-1/4">
         {courses.map(course => (
-          <CourseCard course={course} key={course._id} />
+          <CourseCard
+            course={course}
+            key={course._id}
+          />
         ))}
       </GroupCourses>
     </div>

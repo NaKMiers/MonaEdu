@@ -64,31 +64,38 @@ function MyCoursesPage({ searchParams }: { searchParams?: { [key: string]: strin
   }, [])
 
   return (
-    <div className='px-21'>
+    <div className="px-21">
       <Divider size={8} />
 
       {/* Heading */}
-      <h1 className='text-4xl font-semibold px-21 text-center text-light md:mt-8'>
+      <h1 className="px-21 text-center text-4xl font-semibold text-light md:mt-8">
         Khóa học của tôi {!!courses.length && <span>({courses.length})</span>}
       </h1>
 
-      <Divider size={8} border />
+      <Divider
+        size={8}
+        border
+      />
 
       {/* MAIN List */}
       {!!courses.length ? (
-        <div className='grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-21'>
+        <div className="grid grid-cols-1 gap-21 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {courses.map(course => (
-            <CourseCard course={course} key={course._id} hideBadge />
+            <CourseCard
+              course={course}
+              key={course._id}
+              hideBadge
+            />
           ))}
         </div>
       ) : (
-        <div className='font-body tracking-wider text-center'>
-          <p className='italic text-light'>
+        <div className="text-center font-body tracking-wider">
+          <p className="italic text-light">
             Bạn chưa đăng ký khóa học nào cả. <br />
           </p>
           <Link
-            href='/'
-            className='text-sky-500 underline underline-offset-2 hover:text-sky-700 hover:tracking trans-200'
+            href="/"
+            className="hover:tracking trans-200 text-sky-500 underline underline-offset-2 hover:text-sky-700"
           >
             Khám phá các khóa học bổ ích ngay hôm nay!
           </Link>

@@ -10,7 +10,7 @@ import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { BiSolidCategory } from 'react-icons/bi'
 import { FaBell, FaSearch, FaShoppingCart } from 'react-icons/fa'
@@ -114,33 +114,41 @@ function Header({ className = '' }: HeaderProps) {
       className={`fixed z-[60] ${
         isTransparent
           ? 'drop-shadow-lg md:bg-opacity-0'
-          : 'shadow-medium-light border-b-2 md:rounded-b-[40px] md:rounded-t-0'
-      }  bg-dark-100 text-light w-full trans-300 bottom-0 md:bottom-auto md:top-0 ${className}`}
+          : 'md:rounded-t-0 border-b-2 shadow-medium-light md:rounded-b-[40px]'
+      } trans-300 bottom-0 w-full bg-dark-100 text-light md:bottom-auto md:top-0 ${className}`}
     >
       {/* Main Header */}
-      <div className='relative flex justify-between gap-1 items-center max-w-1200 trans-300 w-full h-[72px] m-auto px-3 sm:px-21'>
+      <div className="trans-300 relative m-auto flex h-[72px] w-full max-w-1200 items-center justify-between gap-1 px-3 sm:px-21">
         {/* MARK: Left */}
         <div
-          className={`flex items-center gap-3 pl-4 -ml-4 h-full overflow-x-scroll no-scrollbar trans-300`}
+          className={`no-scrollbar trans-300 -ml-4 flex h-full items-center gap-3 overflow-x-scroll pl-4`}
         >
-          <Link href='/' prefetch={false} className='shrink-0 trans-200 spin rounded-md'>
+          <Link
+            href="/"
+            prefetch={false}
+            className="trans-200 spin shrink-0 rounded-md"
+          >
             <Image
-              className='aspect-square rounded-md'
-              src='/images/logo.png'
+              className="aspect-square rounded-md"
+              src="/images/logo.png"
               width={32}
               height={32}
-              alt='Mona-Edu'
+              alt="Mona-Edu"
             />
           </Link>
-          <Link href='/' prefetch={false} className='text-2xl font-bold hidden md:block'>
+          <Link
+            href="/"
+            prefetch={false}
+            className="hidden text-2xl font-bold md:block"
+          >
             MonaEdu
           </Link>
 
           {/* Categories */}
-          <div className=''>
+          <div className="">
             <Link
-              href='/categories'
-              className='flex items-center justify-center gap-2 group text-nowrap bg-primary text-sm md:text-base font-semibold text-dark px-1.5 md:px-3 py-1 rounded-md hover:bg-secondary hover:text-light trans-200'
+              href="/categories"
+              className="trans-200 group flex items-center justify-center gap-2 text-nowrap rounded-md bg-primary px-1.5 py-1 text-sm font-semibold text-dark hover:bg-secondary hover:text-light md:px-3 md:text-base"
               onMouseOver={() => {
                 const timeoutId = setTimeout(() => {
                   setOpenCategoryTabs(true)
@@ -154,89 +162,105 @@ function Header({ className = '' }: HeaderProps) {
                 }
               }}
             >
-              <BiSolidCategory size={20} className='hidden md:block' />
+              <BiSolidCategory
+                size={20}
+                className="hidden md:block"
+              />
               Danh Mục
             </Link>
           </div>
         </div>
 
         {/* Categories Tabs */}
-        <CategoryTabs open={openCategoryTabs} setOpen={setOpenCategoryTabs} />
+        <CategoryTabs
+          open={openCategoryTabs}
+          setOpen={setOpenCategoryTabs}
+        />
 
         {/* Search */}
         <SearchBar />
 
         {/* MARK: Nav */}
-        <div className='flex-shrink-0 hidden md:flex items-center gap-4'>
-          <button className='lg:hidden' onClick={() => dispatch(setOpenSearchBar(true))}>
-            <FaSearch size={20} className='wiggle' />
+        <div className="hidden flex-shrink-0 items-center gap-4 md:flex">
+          <button
+            className="lg:hidden"
+            onClick={() => dispatch(setOpenSearchBar(true))}
+          >
+            <FaSearch
+              size={20}
+              className="wiggle"
+            />
           </button>
 
           {curUser ? (
             <>
-              <Link href='/cart' prefetch={false} className='relative wiggle'>
+              <Link
+                href="/cart"
+                prefetch={false}
+                className="wiggle relative"
+              >
                 <FaShoppingCart size={24} />
                 {!!cartLength && (
-                  <span className='absolute -top-2 right-[-5px] bg-primary text-dark rounded-full text-center px-[6px] py-[2px] text-[10px] font-bold flex items-center justify-center min-w-[24px]'>
+                  <span className="absolute -top-2 right-[-5px] flex min-w-[24px] items-center justify-center rounded-full bg-primary px-[6px] py-[2px] text-center text-[10px] font-bold text-dark">
                     {cartLength}
                   </span>
                 )}
               </Link>
               <button
-                className='relative wiggle'
+                className="wiggle relative"
                 onClick={() => setIsOpenNotificationMenu(prev => !prev)}
               >
                 <FaBell size={24} />
                 {!!notifications.filter(n => n.status === 'unread').length && (
-                  <span className='absolute -top-2 right-[-5px] bg-orange-400 rounded-full text-center px-[6px] py-[2px] text-[10px] font-bold flex items-center justify-center min-w-[24px]'>
+                  <span className="absolute -top-2 right-[-5px] flex min-w-[24px] items-center justify-center rounded-full bg-orange-400 px-[6px] py-[2px] text-center text-[10px] font-bold">
                     {notifications.filter((n: any) => n.status === 'unread').length}
                   </span>
                 )}
               </button>
               <div
-                className='relative flex items-center gap-2 cursor-pointer'
+                className="relative flex cursor-pointer items-center gap-2"
                 onClick={() => setIsOpenMenu(prev => !prev)}
               >
                 {isShowCrown && (
                   <Image
-                    className='absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 aspect-square rounded-full overflow-hidden'
-                    src='/icons/ring-circle.png'
+                    className="absolute left-1/2 top-1/2 aspect-square -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full"
+                    src="/icons/ring-circle.png"
                     width={40}
                     height={40}
-                    alt='ring'
+                    alt="ring"
                   />
                 )}
                 <Image
-                  className={`relative z-10 aspect-square rounded-full wiggle-0 shadow-lg ${
+                  className={`wiggle-0 relative z-10 aspect-square rounded-full shadow-lg ${
                     isShowCrown ? 'p-1' : ''
                   }`}
                   src={curUser?.avatar || process.env.NEXT_PUBLIC_DEFAULT_AVATAR!}
                   width={40}
                   height={40}
-                  alt='avatar'
+                  alt="avatar"
                 />
                 {isShowCrown && (
                   <Image
-                    className='absolute z-20 -top-[11px] right-[3px] rotate-[18deg]'
-                    src='/icons/crown-icon-2.png'
+                    className="absolute -top-[11px] right-[3px] z-20 rotate-[18deg]"
+                    src="/icons/crown-icon-2.png"
                     width={24}
                     height={24}
-                    alt='crown'
+                    alt="crown"
                   />
                 )}
               </div>
             </>
           ) : (
-            <div className='flex items-center gap-3'>
+            <div className="flex items-center gap-3">
               <Link
-                href='/auth/login'
-                className='bg-dark text-light hover:bg-primary bg-dark-100 hover:text-dark border border-light text-nowrap trans-200 px-4 py-1.5 rounded-3xl font-body font-semibold tracking-wider cursor-pointer'
+                href="/auth/login"
+                className="bg-dark trans-200 cursor-pointer text-nowrap rounded-3xl border border-light bg-dark-100 px-4 py-1.5 font-body font-semibold tracking-wider text-light hover:bg-primary hover:text-dark"
               >
                 Đăng nhập
               </Link>
               <Link
-                href='/auth/register'
-                className='bg-sky-500 hover:bg-primary hover:text-dark text-light border border-dark text-nowrap trans-200 px-4 py-1.5 rounded-3xl font-body font-semibold tracking-wider cursor-pointer'
+                href="/auth/register"
+                className="trans-200 cursor-pointer text-nowrap rounded-3xl border border-dark bg-sky-500 px-4 py-1.5 font-body font-semibold tracking-wider text-light hover:bg-primary hover:text-dark"
               >
                 Đăng ký
               </Link>
@@ -245,39 +269,61 @@ function Header({ className = '' }: HeaderProps) {
         </div>
 
         {/* Mobile Buttons */}
-        <div className='md:hidden flex items-center gap-1'>
-          <button className='lg:hidden' onClick={() => dispatch(setOpenSearchBar(true))}>
-            <FaSearch size={20} className='w-8' />
+        <div className="flex items-center gap-1 md:hidden">
+          <button
+            className="lg:hidden"
+            onClick={() => dispatch(setOpenSearchBar(true))}
+          >
+            <FaSearch
+              size={20}
+              className="w-8"
+            />
           </button>
 
-          <Link href='/cart' prefetch={false} className='relative wiggle mr-2'>
+          <Link
+            href="/cart"
+            prefetch={false}
+            className="wiggle relative mr-2"
+          >
             <FaShoppingCart size={24} />
             {!!cartLength && (
-              <span className='absolute -top-2 right-[-5px] bg-primary text-dark rounded-full text-center px-[6px] py-[2px] text-[10px] font-bold'>
+              <span className="absolute -top-2 right-[-5px] rounded-full bg-primary px-[6px] py-[2px] text-center text-[10px] font-bold text-dark">
                 {cartLength}
               </span>
             )}
           </Link>
 
-          <button className='relative group' onClick={() => setIsOpenNotificationMenu(prev => !prev)}>
-            <FaBell size={22} className='wiggle' />
+          <button
+            className="group relative"
+            onClick={() => setIsOpenNotificationMenu(prev => !prev)}
+          >
+            <FaBell
+              size={22}
+              className="wiggle"
+            />
             {!!notifications?.filter(n => n.status === 'unread').length && (
-              <span className='absolute -top-2 right-[-5px] bg-orange-400 rounded-full text-center px-[6px] py-[2px] text-[10px] font-bold'>
+              <span className="absolute -top-2 right-[-5px] rounded-full bg-orange-400 px-[6px] py-[2px] text-center text-[10px] font-bold">
                 {notifications.filter(n => n.status === 'unread').length}
               </span>
             )}
           </button>
 
           <button
-            className='flex justify-center items-center w-[40px] h-[40px]'
+            className="flex h-[40px] w-[40px] items-center justify-center"
             onClick={() => setIsOpenMenu(prev => !prev)}
           >
-            <FaBars size={22} className='trans-200 wiggle' />
+            <FaBars
+              size={22}
+              className="trans-200 wiggle"
+            />
           </button>
         </div>
 
         {/* MARK: Menu */}
-        <Menu open={isOpenMenu} setOpen={setIsOpenMenu} />
+        <Menu
+          open={isOpenMenu}
+          setOpen={setIsOpenMenu}
+        />
 
         {/* MARK: Notification Menu */}
         <NotificationMenu
@@ -291,4 +337,4 @@ function Header({ className = '' }: HeaderProps) {
   )
 }
 
-export default Header
+export default memo(Header)

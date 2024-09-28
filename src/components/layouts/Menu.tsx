@@ -2,7 +2,6 @@
 
 import { useAppSelector } from '@/libs/hooks'
 import { checkCrown, checkPackageType, getUserName } from '@/utils/string'
-import { AnimatePresence, motion } from 'framer-motion'
 import { signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -69,15 +68,15 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
       <div
         className={`${
           open ? 'block' : 'hidden'
-        } fixed top-0 left-0 right-0 bottom-0 w-screen h-screen z-30 ${className}`}
+        } fixed bottom-0 left-0 right-0 top-0 z-30 h-screen w-screen ${className}`}
         onClick={() => setOpen(false)}
       />
 
       {/* MARK: Main */}
       <div
-        className={`hidden opacity-0 max-h-[358px] sm:max-w-full sm:w-[300px] sm:max-h-[358px] p-2 sm:border-2 max-h-360 ${
+        className={`max-h-360 hidden max-h-[358px] p-2 opacity-0 sm:max-h-[358px] sm:w-[300px] sm:max-w-full sm:border-2 ${
           curUser && !curUser?._id ? 'hidden' : ''
-        } rounded-t-xl bg-dark-100 border-light shadow-primary text-light w-full overflow-hidden trans-300 absolute bottom-[72px] md:bottom-auto md:top-[60px] right-0 sm:right-21 z-30 sm:rounded-xl shadow-md`}
+        } trans-300 absolute bottom-[72px] right-0 z-30 w-full overflow-hidden rounded-t-xl border-light bg-dark-100 text-light shadow-md shadow-primary sm:right-21 sm:rounded-xl md:bottom-auto md:top-[60px]`}
         ref={menuRef}
       >
         {curUser ? (
@@ -86,100 +85,109 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
             <>
               <Link
                 href={`/user/${curUser?.username || curUser?.email}`}
-                className='flex items-center gap-2 py-2 px-3 rounded-lg group hover:bg-white hover:text-dark trans-200'
+                className="trans-200 group flex items-center gap-2 rounded-lg px-3 py-2 hover:bg-white hover:text-dark"
               >
-                <div className='relative'>
+                <div className="relative">
                   {isShowCrown && (
                     <Image
-                      className='absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 aspect-square rounded-full overflow-hidden'
-                      src='/icons/ring-circle.png'
+                      className="absolute left-1/2 top-1/2 aspect-square -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full"
+                      src="/icons/ring-circle.png"
                       width={40}
                       height={40}
-                      alt='ring'
+                      alt="ring"
                     />
                   )}
                   <Image
-                    className={`relative z-10 aspect-square rounded-full wiggle-0 shadow-lg ${
+                    className={`wiggle-0 relative z-10 aspect-square rounded-full shadow-lg ${
                       isShowCrown ? 'p-1' : ''
                     }`}
                     src={curUser?.avatar || process.env.NEXT_PUBLIC_DEFAULT_AVATAR!}
                     height={40}
                     width={40}
-                    alt='avatar'
+                    alt="avatar"
                   />
                   {isShowCrown && (
                     <Image
-                      className='absolute z-20 -top-[11px] right-[3px] rotate-[18deg]'
-                      src='/icons/crown-icon-2.png'
+                      className="absolute -top-[11px] right-[3px] z-20 rotate-[18deg]"
+                      src="/icons/crown-icon-2.png"
                       width={24}
                       height={24}
-                      alt='crown'
+                      alt="crown"
                     />
                   )}
                 </div>
-                <div className='flex flex-col'>
-                  <p className='font-semibold text-xl leading-6 mb-1 text-ellipsis line-clamp-1'>
+                <div className="flex flex-col">
+                  <p className="mb-1 line-clamp-1 text-ellipsis text-xl font-semibold leading-6">
                     {getUserName(curUser)}
                   </p>
-                  {curUser.username && <p className='text-xs '>@{curUser.username}</p>}
+                  {curUser.username && <p className="text-xs">@{curUser.username}</p>}
                 </div>
               </Link>
 
-              <div className='group relative' onClick={() => setOpen(false)}>
+              <div
+                className="group relative"
+                onClick={() => setOpen(false)}
+              >
                 <Link
                   href={`/cart`}
-                  className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white hover:text-dark trans-200'
+                  className="trans-200 flex items-center gap-2 rounded-lg px-3 py-2 hover:bg-white hover:text-dark"
                 >
                   <Image
-                    src='/icons/cart-icon.png'
-                    className='wiggle'
+                    src="/icons/cart-icon.png"
+                    className="wiggle"
                     width={30}
                     height={30}
-                    alt='cart'
+                    alt="cart"
                   />
-                  <span className='font-body text-xl font-semibold tracking-wide'>Giỏ hàng</span>
+                  <span className="font-body text-xl font-semibold tracking-wide">Giỏ hàng</span>
                   {!!cartLength && (
-                    <span className='absolute top-1/2 -translate-y-1/2 right-2 bg-primary text-dark rounded-full flex items-center justify-center px-[7px] h-[20px] text-[10px] font-bold'>
+                    <span className="absolute right-2 top-1/2 flex h-[20px] -translate-y-1/2 items-center justify-center rounded-full bg-primary px-[7px] text-[10px] font-bold text-dark">
                       {cartLength}
                     </span>
                   )}
                 </Link>
               </div>
 
-              <div className='group' onClick={() => setOpen(false)}>
+              <div
+                className="group"
+                onClick={() => setOpen(false)}
+              >
                 <Link
                   href={`/my-courses`}
-                  className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white hover:text-dark trans-200'
+                  className="trans-200 flex items-center gap-2 rounded-lg px-3 py-2 hover:bg-white hover:text-dark"
                 >
                   <Image
-                    src='/icons/my-courses-icon.png'
-                    className='wiggle'
+                    src="/icons/my-courses-icon.png"
+                    className="wiggle"
                     width={30}
                     height={30}
-                    alt='my-courses'
+                    alt="my-courses"
                   />
-                  <span className='font-body text-xl font-semibold tracking-wide'>Khóa học của tôi</span>
+                  <span className="font-body text-xl font-semibold tracking-wide">Khóa học của tôi</span>
                 </Link>
               </div>
-              <div className='group' onClick={() => setOpen(false)}>
+              <div
+                className="group"
+                onClick={() => setOpen(false)}
+              >
                 <Link
                   href={`/subscription`}
-                  className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white hover:text-dark trans-200'
+                  className="trans-200 flex items-center gap-2 rounded-lg px-3 py-2 hover:bg-white hover:text-dark"
                 >
                   <Image
-                    src='/icons/crown-icon.png'
-                    className='wiggle'
+                    src="/icons/crown-icon.png"
+                    className="wiggle"
                     width={30}
                     height={30}
-                    alt='subscription'
+                    alt="subscription"
                   />
                   {curUser?.package ? (
-                    <p className='inline-block rounded-3xl text-center border border-slate-300 bg-neutral-950 font-semibold px-4 py-1 shadow-sm'>
-                      <span className='bg-clip-text text-transparent bg-gradient-to-r from-purple-500 via-pink-500 to-red-500'>
+                    <p className="inline-block rounded-3xl border border-slate-300 bg-neutral-950 px-4 py-1 text-center font-semibold shadow-sm">
+                      <span className="bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 bg-clip-text text-transparent">
                         {checkPackageType(curUser.package.credit, curUser.package.type) === 'credit' ? (
                           <span>
                             {curUser.package.title}{' '}
-                            <span className='text-sm text-slate-500'>
+                            <span className="text-sm text-slate-500">
                               ({curUser.package.credit} credit{curUser.package.credit === 1 ? '' : 's'})
                             </span>
                           </span>
@@ -189,61 +197,70 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
                       </span>
                     </p>
                   ) : (
-                    <span className='font-body text-xl font-semibold tracking-wide'>Gói học viên</span>
+                    <span className="font-body text-xl font-semibold tracking-wide">Gói học viên</span>
                   )}
                 </Link>
               </div>
-              <div className='group' onClick={() => setOpen(false)}>
+              <div
+                className="group"
+                onClick={() => setOpen(false)}
+              >
                 <Link
-                  href='/setting'
-                  className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white hover:text-dark trans-200'
+                  href="/setting"
+                  className="trans-200 flex items-center gap-2 rounded-lg px-3 py-2 hover:bg-white hover:text-dark"
                 >
                   <Image
-                    src='/icons/setting-icon.png'
-                    className='wiggle'
+                    src="/icons/setting-icon.png"
+                    className="wiggle"
                     width={30}
                     height={30}
-                    alt='setting'
+                    alt="setting"
                   />
-                  <span className='font-body text-xl font-semibold tracking-wide'>Cài đặt</span>
+                  <span className="font-body text-xl font-semibold tracking-wide">Cài đặt</span>
                 </Link>
               </div>
               {curUser?.role !== 'user' && (
-                <div className='group' onClick={() => setOpen(false)}>
+                <div
+                  className="group"
+                  onClick={() => setOpen(false)}
+                >
                   <Link
                     href={
                       ['admin', 'editor'].includes(curUser?.role)
                         ? '/admin/order/all'
                         : '/admin/summary/all'
                     }
-                    className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white hover:text-dark trans-200'
+                    className="trans-200 flex items-center gap-2 rounded-lg px-3 py-2 hover:bg-white hover:text-dark"
                   >
                     <Image
-                      src='/icons/order-icon.png'
-                      className='wiggle'
+                      src="/icons/order-icon.png"
+                      className="wiggle"
                       width={30}
                       height={30}
-                      alt='order'
+                      alt="order"
                     />
-                    <span className='font-body text-xl font-semibold tracking-wide'>
+                    <span className="font-body text-xl font-semibold tracking-wide">
                       {['admin', 'editor'].includes(curUser?.role) ? 'Orders' : 'Collaborator'}
                     </span>
                   </Link>
                 </div>
               )}
-              <div className='group' onClick={() => setOpen(false)}>
+              <div
+                className="group"
+                onClick={() => setOpen(false)}
+              >
                 <button
-                  className='flex items-center w-full gap-2 py-2 px-3 rounded-lg hover:bg-white hover:text-dark trans-200'
+                  className="trans-200 flex w-full items-center gap-2 rounded-lg px-3 py-2 hover:bg-white hover:text-dark"
                   onClick={() => signOut()}
                 >
                   <Image
-                    src='/icons/logout-icon.png'
-                    className='wiggle'
+                    src="/icons/logout-icon.png"
+                    className="wiggle"
                     width={30}
                     height={30}
-                    alt='logout'
+                    alt="logout"
                   />
-                  <span className='font-body text-xl font-semibold tracking-wide'>Đăng xuất</span>
+                  <span className="font-body text-xl font-semibold tracking-wide">Đăng xuất</span>
                 </button>
               </div>
             </>
@@ -251,34 +268,40 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
         ) : (
           // MARK: User Not Logged In
           <>
-            <div className='group' onClick={() => setOpen(false)}>
+            <div
+              className="group"
+              onClick={() => setOpen(false)}
+            >
               <Link
-                href='/auth/login'
-                className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white hover:text-dark trans-200'
+                href="/auth/login"
+                className="trans-200 flex items-center gap-2 rounded-lg px-3 py-2 hover:bg-white hover:text-dark"
               >
                 <Image
-                  src='/icons/sign-in-icon.png'
-                  className='wiggle'
+                  src="/icons/sign-in-icon.png"
+                  className="wiggle"
                   width={30}
                   height={30}
-                  alt='sign-in'
+                  alt="sign-in"
                 />
-                <span className='font-body text-xl font-semibold tracking-wide'>Đăng nhập</span>
+                <span className="font-body text-xl font-semibold tracking-wide">Đăng nhập</span>
               </Link>
             </div>
-            <div className='group' onClick={() => setOpen(false)}>
+            <div
+              className="group"
+              onClick={() => setOpen(false)}
+            >
               <Link
-                href='/categories'
-                className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white hover:text-dark trans-200'
+                href="/categories"
+                className="trans-200 flex items-center gap-2 rounded-lg px-3 py-2 hover:bg-white hover:text-dark"
               >
                 <Image
-                  src='/icons/category.png'
-                  className='wiggle'
+                  src="/icons/category.png"
+                  className="wiggle"
                   width={30}
                   height={30}
-                  alt='categories'
+                  alt="categories"
                 />
-                <span className='font-body text-xl font-semibold tracking-wide'>Danh Mục</span>
+                <span className="font-body text-xl font-semibold tracking-wide">Danh Mục</span>
               </Link>
             </div>
           </>

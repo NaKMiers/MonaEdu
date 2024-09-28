@@ -4,17 +4,17 @@ import HeadingX from './HeadingX'
 
 function AllCoursesX() {
   return (
-    <div className='max-w-1200 w-full mx-auto px-21'>
-      <div className='flex gap-21 items-center justify-between'>
-        <HeadingX align='left' />
-        <div className='w-[140px] h-9 bg-slate-700 animate-pulse rounded-3xl' />
+    <div className="mx-auto w-full max-w-1200 px-21">
+      <div className="flex items-center justify-between gap-21">
+        <HeadingX align="left" />
+        <div className="h-9 w-[140px] animate-pulse rounded-3xl bg-slate-700" />
       </div>
 
       <Divider size={8} />
 
-      <div className='flex-1 w-full'>
+      <div className="w-full flex-1">
         {/* List */}
-        <div className='grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 md:mx-0 flex-1 mb-8'>
+        <div className="mb-8 grid flex-1 grid-cols-1 gap-3 xs:grid-cols-2 md:mx-0 md:grid-cols-3 md:gap-4 lg:grid-cols-4">
           {Array.from({ length: 12 }).map((_, index) => (
             <CourseCardX key={index} />
           ))}

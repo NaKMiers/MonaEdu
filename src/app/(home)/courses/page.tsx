@@ -91,69 +91,90 @@ async function CoursesPage({ searchParams }: { searchParams?: { [key: string]: s
   return (
     <div>
       {/* MARK: Add JSON-LD */}
-      <script type='application/ld+json' dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
       {/* Banner */}
-      <div className='relative flex flex-col justify-center items-center p-3 overflow-y-auto bg-neutral-950 bg-opacity-50 mx-auto overflow-hidden md:shadow-medium md:rounded-b-lg rounded-none h-[calc(300px+72px)] -mt-[72px] pt-[72px]'>
-        <div className='absolute inset-0 w-full h-full bg-slate-900 z-20 [mask-image:radial-gradient(transparent,white)] pointer-events-none' />
+      <div className="relative mx-auto -mt-[72px] flex h-[calc(300px+72px)] flex-col items-center justify-center overflow-hidden overflow-y-auto rounded-none bg-neutral-950 bg-opacity-50 p-3 pt-[72px] md:rounded-b-lg md:shadow-medium">
+        <div className="pointer-events-none absolute inset-0 z-20 h-full w-full bg-slate-900 [mask-image:radial-gradient(transparent,white)]" />
         <BeamsBackground />
 
-        <div className='flex items-center flex-wrap justify-center gap-x-3 gap-y-1 relative z-20 text-slate-400 text-nowrap'>
-          <Link href='/' className='hover:text-primary trans-200 hover:drop-shadow-md'>
+        <div className="relative z-20 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-nowrap text-slate-400">
+          <Link
+            href="/"
+            className="trans-200 hover:text-primary hover:drop-shadow-md"
+          >
             trang-chu
           </Link>
           <FaAngleRight size={14} />
-          <Link href='/courses' className='hover:text-primary trans-200 hover:drop-shadow-md'>
+          <Link
+            href="/courses"
+            className="trans-200 hover:text-primary hover:drop-shadow-md"
+          >
             tat-ca-khoa-hoc
           </Link>
         </div>
 
         <Divider size={3} />
 
-        <h2 className='text-light text-2xl md:text-6xl font-bold text-center relative z-20'>
+        <h2 className="relative z-20 text-center text-2xl font-bold text-light md:text-6xl">
           Tất Cả Khóa Học
         </h2>
-        <p className='text-light text-sm md:text-base max-w-xl mt-6 text-center relative z-20'>
+        <p className="relative z-20 mt-6 max-w-xl text-center text-sm text-light md:text-base">
           Mona Edu - Học trực tuyến mọi lúc, mọi nơi
         </p>
       </div>
 
       {/* Body */}
-      <div className='md:px-21 md:mt-10'>
-        <div className='flex flex-col md:flex-row bg-white rounded-b-lg md:rounded-lg gap-x-21 p-3 md:p-21 shadow-lg'>
+      <div className="md:mt-10 md:px-21">
+        <div className="flex flex-col gap-x-21 rounded-b-lg bg-white p-3 shadow-lg md:flex-row md:rounded-lg md:p-21">
           {/* Filter & Search */}
-          <div className='flex justify-between md:max-w-[200px] lg:max-w-[250px] w-full flex-shrink-0'>
-            <FilterAndSearch searchParams={searchParams} subs={[]} chops={chops} />
+          <div className="flex w-full flex-shrink-0 justify-between md:max-w-[200px] lg:max-w-[250px]">
+            <FilterAndSearch
+              searchParams={searchParams}
+              subs={[]}
+              chops={chops}
+            />
           </div>
 
           {/* Main */}
-          <div className='flex-1 w-full'>
-            <div className='flex flex-wrap gap-2 w-full'>
+          <div className="w-full flex-1">
+            <div className="flex w-full flex-wrap gap-2">
               {/* Mini Pagination */}
               <ShortPagination
                 searchParams={searchParams}
                 amount={amount}
                 itemsPerPage={16}
-                className='justify-end hidden md:flex flex-1'
+                className="hidden flex-1 justify-end md:flex"
               />
             </div>
             <Divider size={8} />
 
             {/* List */}
             {courses.length > 0 ? (
-              <div className='grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 md:mx-0 flex-1 mb-8'>
+              <div className="mb-8 grid flex-1 grid-cols-1 gap-3 xs:grid-cols-2 md:mx-0 md:grid-cols-3 md:gap-4 xl:grid-cols-4">
                 {courses.map(course => (
-                  <CourseCard course={course} key={course._id} />
+                  <CourseCard
+                    course={course}
+                    key={course._id}
+                  />
                 ))}
               </div>
             ) : (
-              <p className='font-body tracking-wider text-center text-slate-400 text-lg py-8'>
+              <p className="py-8 text-center font-body text-lg tracking-wider text-slate-400">
                 Không có khóa học nào, hãy thử lại với từ khóa khác
               </p>
             )}
 
             {/* Pagination */}
-            <Pagination dark searchParams={searchParams} amount={amount} itemsPerPage={16} />
+            <Pagination
+              dark
+              searchParams={searchParams}
+              amount={amount}
+              itemsPerPage={16}
+            />
 
             <Divider size={8} />
           </div>

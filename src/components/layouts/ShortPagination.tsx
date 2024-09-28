@@ -66,12 +66,12 @@ function ShortPagination({
 
   return (
     pageAmount > 1 && (
-      <div className={`flex font-semibold gap-4 items-center w-full min-h-[42px] ${className}`}>
+      <div className={`flex min-h-[42px] w-full items-center gap-4 font-semibold ${className}`}>
         {/* MARK: Prev */}
         {currentPage != 1 && (
           <Link
             href={getPageLink(currentPage <= 1 ? 1 : currentPage - 1)}
-            className='min-w-[70px] flex items-center justify-center rounded-full border-2 h-full border-primary px-2 hover:bg-secondary hover:border-secondary shadow-lg drop-shadow-lg text-dark hover:text-light trans-200'
+            className="trans-200 flex h-full min-w-[70px] items-center justify-center rounded-full border-2 border-primary px-2 text-dark shadow-lg drop-shadow-lg hover:border-secondary hover:bg-secondary hover:text-light"
             title={`👈 Trang ${currentPage <= 1 ? 1 : currentPage - 1}`}
             scroll={false}
           >
@@ -80,8 +80,8 @@ function ShortPagination({
         )}
 
         {/* MARK: 1 ... n */}
-        <div className='flex items-center'>
-          <span className='text-base'>
+        <div className="flex items-center">
+          <span className="text-base">
             {currentPage}/{pageAmount}
           </span>
         </div>
@@ -90,7 +90,7 @@ function ShortPagination({
         {currentPage != pageAmount && (
           <Link
             href={getPageLink(currentPage >= pageAmount ? pageAmount : currentPage + 1)}
-            className='min-w-[70px] flex items-center justify-center rounded-full border-2 h-full border-primary px-2 hover:bg-secondary hover:border-secondary shadow-lg drop-shadow-lg text-dark hover:text-light trans-200'
+            className="trans-200 flex h-full min-w-[70px] items-center justify-center rounded-full border-2 border-primary px-2 text-dark shadow-lg drop-shadow-lg hover:border-secondary hover:bg-secondary hover:text-light"
             title={`👉 Trang ${currentPage >= pageAmount ? pageAmount : currentPage + 1}`}
             scroll={false}
           >

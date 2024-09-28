@@ -34,13 +34,13 @@ function CourseContent({ course, chapters, className = '' }: CourseContentProps)
 
   return (
     <div className={`w-full ${className}`}>
-      <div className='flex flex-col gap-1 md:flex-row justify-between tracking-wider text-sm'>
-        <div className='text-center md:text-left'>
+      <div className="flex flex-col justify-between gap-1 text-sm tracking-wider md:flex-row">
+        <div className="text-center md:text-left">
           {chapters.length} Chương - {lessonAmount} Bài giảng - {duration(totalDuration, 'long')} tổng
           thời lượng
         </div>
         <button
-          className='font-semibold text-secondary text-right drop-shadow-md underline underline-offset-1'
+          className="text-right font-semibold text-secondary underline underline-offset-1 drop-shadow-md"
           onClick={() => setCollapseAll(prev => !prev)}
         >
           {!collapseAll ? 'Mở tất cả' : 'Đóng tất cả'}
@@ -49,7 +49,7 @@ function CourseContent({ course, chapters, className = '' }: CourseContentProps)
 
       <Divider size={3} />
 
-      <ul className='flex flex-col gap-2'>
+      <ul className="flex flex-col gap-2">
         {chapters.map(chapter => (
           <Chapter
             courseId={course._id}

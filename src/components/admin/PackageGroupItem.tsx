@@ -1,7 +1,7 @@
 import { IPackageGroup } from '@/models/PackageGroupModel'
 import { IPackage } from '@/models/PackageModel'
 import { deletePackageGroupApi } from '@/requests'
-import { Dispatch, SetStateAction, useCallback, useState } from 'react'
+import { Dispatch, memo, SetStateAction, useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
 import { FaChevronUp, FaCircleNotch, FaTrash } from 'react-icons/fa'
 import { MdEdit, MdOutlineAddCircle } from 'react-icons/md'
@@ -57,19 +57,22 @@ function PackageGroupItem({ packageGroup, setPackageGroups, className = '' }: Pa
 
   return (
     <>
-      <div className={`rounded-lg shadow-lg border-2 bg-white text-dark ${className}`}>
-        <div className='relative flex items-center justify-between pt-2.5 px-4'>
-          <p className='font-semibold'>{data.title}</p>
-          <div className='flex items-center gap-2'>
+      <div className={`rounded-lg border-2 bg-white text-dark shadow-lg ${className}`}>
+        <div className="relative flex items-center justify-between px-4 pt-2.5">
+          <p className="font-semibold">{data.title}</p>
+          <div className="flex items-center gap-2">
             {/* Add Package Button */}
             <button
               onClick={e => {
                 e.stopPropagation()
                 setOpenAddPackageModal(true)
               }}
-              className='h-7 flex items-center justify-center rounded-lg text-xs border-2 border-yellow-500 px-2 py-1 bg-white text-yellow-500 hover:bg-primary trans-200 group'
+              className="trans-200 group flex h-7 items-center justify-center rounded-lg border-2 border-yellow-500 bg-white px-2 py-1 text-xs text-yellow-500 hover:bg-primary"
             >
-              <MdOutlineAddCircle size={16} className='wiggle' />
+              <MdOutlineAddCircle
+                size={16}
+                className="wiggle"
+              />
             </button>
 
             {/* Edit Button */}
@@ -78,9 +81,12 @@ function PackageGroupItem({ packageGroup, setPackageGroups, className = '' }: Pa
                 e.stopPropagation()
                 setOpenEditPackageGroupModal(true)
               }}
-              className='h-7 flex items-center justify-center rounded-lg text-xs border-2 border-sky-500 px-2 py-1 bg-white text-sky-500 hover:bg-sky-300 trans-200 group'
+              className="trans-200 group flex h-7 items-center justify-center rounded-lg border-2 border-sky-500 bg-white px-2 py-1 text-xs text-sky-500 hover:bg-sky-300"
             >
-              <MdEdit size={15} className='wiggle' />
+              <MdEdit
+                size={15}
+                className="wiggle"
+              />
             </button>
 
             {/* Delete Button */}
@@ -89,39 +95,53 @@ function PackageGroupItem({ packageGroup, setPackageGroups, className = '' }: Pa
                 e.stopPropagation()
                 setIsOpenConfirmModal(true)
               }}
-              className={`h-7 flex items-center justify-center rounded-lg text-xs border-2 px-2 py-1 bg-white text-rose-500 hover:bg-rose-300 trans-200 group ${
-                deleting ? 'bg-slate-200 border-slate-200 pointer-events-none' : 'border-rose-500'
+              className={`trans-200 group flex h-7 items-center justify-center rounded-lg border-2 bg-white px-2 py-1 text-xs text-rose-500 hover:bg-rose-300 ${
+                deleting ? 'pointer-events-none border-slate-200 bg-slate-200' : 'border-rose-500'
               }`}
             >
               {deleting ? (
-                <FaCircleNotch size={14} className='text-slate-300 trans-200 animate-spin' />
+                <FaCircleNotch
+                  size={14}
+                  className="trans-200 animate-spin text-slate-300"
+                />
               ) : (
-                <FaTrash size={12} className='wiggle' />
+                <FaTrash
+                  size={12}
+                  className="wiggle"
+                />
               )}
             </button>
           </div>
         </div>
-        <p className='pb-2.5 px-4 text-slate-400 font-body tracking-wider text-sm max-h-[100px] overflow-y-auto'>
+        <p className="max-h-[100px] overflow-y-auto px-4 pb-2.5 font-body text-sm tracking-wider text-slate-400">
           {data.description}
         </p>
 
         {/* Collapse Button */}
         {packages.length > 0 && (
           <button
-            className='flex items-center justify-center w-full py-1.5 px-3 rounded-md bg-dark-100 text-light'
+            className="flex w-full items-center justify-center rounded-md bg-dark-100 px-3 py-1.5 text-light"
             onClick={() => setCollapse(prev => !prev)}
           >
-            <FaChevronUp size={14} className={`trans-200 ${collapse ? 'rotate-180' : ''}`} />
+            <FaChevronUp
+              size={14}
+              className={`trans-200 ${collapse ? 'rotate-180' : ''}`}
+            />
           </button>
         )}
         {packages.length > 0 && (
           <div
-            className={`grid grid-cols-1 md:grid-cols-3 gap-2 trans-300 ${
-              collapse ? 'max-h-[500px] pt-2 overflow-y-auto' : 'max-h-0 p-0 overflow-hidden'
+            className={`trans-300 grid grid-cols-1 gap-2 md:grid-cols-3 ${
+              collapse ? 'max-h-[500px] overflow-y-auto pt-2' : 'max-h-0 overflow-hidden p-0'
             }`}
           >
             {packages.map(p => (
-              <PackageItem pkg={p} packages={packages} setPackages={setPackages} key={p._id} />
+              <PackageItem
+                pkg={p}
+                packages={packages}
+                setPackages={setPackages}
+                key={p._id}
+              />
             ))}
           </div>
         )}
@@ -129,7 +149,7 @@ function PackageGroupItem({ packageGroup, setPackageGroups, className = '' }: Pa
 
       {/* Edit Package Group Modal */}
       <PackageGroupModal
-        title='Edit Package Group'
+        title="Edit Package Group"
         open={openEditPackageGroupModal}
         setOpen={setOpenEditPackageGroupModal}
         packageGroup={data}
@@ -150,8 +170,8 @@ function PackageGroupItem({ packageGroup, setPackageGroups, className = '' }: Pa
       <ConfirmDialog
         open={isOpenConfirmModal}
         setOpen={setIsOpenConfirmModal}
-        title='Delete Package Group'
-        content='Are you sure that you want to delete this package group?'
+        title="Delete Package Group"
+        content="Are you sure that you want to delete this package group?"
         onAccept={handleDeletePackageGroups}
         isLoading={deleting}
       />
@@ -159,4 +179,4 @@ function PackageGroupItem({ packageGroup, setPackageGroups, className = '' }: Pa
   )
 }
 
-export default PackageGroupItem
+export default memo(PackageGroupItem)

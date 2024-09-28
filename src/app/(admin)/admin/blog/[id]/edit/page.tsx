@@ -221,34 +221,37 @@ function EditBlogPage() {
 
   return (
     <div>
-      <AdminHeader title='Add Blog' backLink='/admin/blog/all' />
+      <AdminHeader
+        title="Add Blog"
+        backLink="/admin/blog/all"
+      />
 
       <Divider size={4} />
 
-      <div className='bg-slate-200 rounded-lg p-21 shadow-lg'>
-        <div className='mb-5 grid grid-cols-1 sm:grid-cols-3 gap-5'>
+      <div className="rounded-lg bg-slate-200 p-21 shadow-lg">
+        <div className="mb-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
           {/* Title */}
           <Input
-            id='title'
-            label='Title'
+            id="title"
+            label="Title"
             disabled={isLoading}
             register={register}
             errors={errors}
             required
-            type='text'
+            type="text"
             icon={RiCharacterRecognitionLine}
             onFocus={() => clearErrors('title')}
           />
 
           {/* Author */}
           <Input
-            id='author'
-            label='Author'
+            id="author"
+            label="Author"
             disabled={isLoading}
             register={register}
             errors={errors}
             required
-            type='select'
+            type="select"
             onFocus={() => clearErrors('author')}
             options={roleUsers.map(user => ({
               value: user._id,
@@ -262,13 +265,13 @@ function EditBlogPage() {
 
           {/* Status */}
           <Input
-            id='status'
-            label='Status'
+            id="status"
+            label="Status"
             disabled={isLoading}
             register={register}
             errors={errors}
             required
-            type='select'
+            type="select"
             onFocus={() => clearErrors('status')}
             options={[
               {
@@ -291,54 +294,54 @@ function EditBlogPage() {
 
         {/* Summary */}
         <Input
-          id='summary'
-          label='Summary'
+          id="summary"
+          label="Summary"
           disabled={isLoading}
           register={register}
           errors={errors}
           required
-          type='textarea'
+          type="textarea"
           rows={3}
           icon={MdNumbers}
-          className='mb-5'
+          className="mb-5"
           onFocus={() => clearErrors('summary')}
         />
 
         {/* Content */}
-        <p className='text-dark font-semibold text-xl mb-2'>Content</p>
+        <p className="mb-2 text-xl font-semibold text-dark">Content</p>
         {getValues('content') && (
           <TextEditor
             content={getValues('content')}
             onChange={(content: string) => setValue('content', content)}
-            className='w-ful text-dark mb-5'
+            className="w-ful mb-5 text-dark"
           />
         )}
 
         {/* Tags */}
-        <div className='mb-5'>
-          <p className='text-dark font-semibold text-xl mb-1'>Tags</p>
+        <div className="mb-5">
+          <p className="mb-1 text-xl font-semibold text-dark">Tags</p>
 
-          <div className='flex items-center justify-between gap-1.5 h-8'>
+          <div className="flex h-8 items-center justify-between gap-1.5">
             <input
-              className='w-full h-full px-4 font-body tracking-wider outline-none rounded-md text-dark text-sm'
-              type='text'
+              className="h-full w-full rounded-md px-4 font-body text-sm tracking-wider text-dark outline-none"
+              type="text"
               value={tagValue}
               onChange={e => setTagValue(e.target.value)}
               onKeyDown={(e: any) => e.key === 'Enter' && handleAddTag(e.target.value.trim())}
             />
             <button
-              className='rounded-md bg-secondary px-2 h-full text-sm font-semibold hover:bg-primary hover:text-light trans-200'
+              className="trans-200 h-full rounded-md bg-secondary px-2 text-sm font-semibold hover:bg-primary hover:text-light"
               onClick={() => handleAddTag(tagValue.trim())}
             >
               Add
             </button>
           </div>
           {tags.length > 0 && (
-            <div className='p-2 rounded-lg flex flex-wrap items-center bg-white gap-2 max-h-[196px] overflow-y-auto mt-2'>
+            <div className="mt-2 flex max-h-[196px] flex-wrap items-center gap-2 overflow-y-auto rounded-lg bg-white p-2">
               {tags.map(tag => (
                 <div
                   key={tag}
-                  className='cursor-pointer select-none text-sm rounded-md border border-slate-500 text-slate-500 hover:text-light hover:bg-slate-500 py-1 px-2 trans-200'
+                  className="trans-200 cursor-pointer select-none rounded-md border border-slate-500 px-2 py-1 text-sm text-slate-500 hover:bg-slate-500 hover:text-light"
                   onClick={() => setTags(prev => prev.filter(t => t !== tag))}
                 >
                   {tag}
@@ -349,36 +352,47 @@ function EditBlogPage() {
         </div>
 
         {/* Boot */}
-        <div className='flex mb-4'>
-          <div className='bg-white rounded-lg px-3 flex items-center'>
-            <FaPlay size={16} className='text-secondary' />
+        <div className="mb-4 flex">
+          <div className="flex items-center rounded-lg bg-white px-3">
+            <FaPlay
+              size={16}
+              className="text-secondary"
+            />
           </div>
           <label
-            className={`select-none cursor-pointer border border-green-500 px-4 py-2 rounded-lg trans-200  ${
+            className={`trans-200 cursor-pointer select-none rounded-lg border border-green-500 px-4 py-2 ${
               isBootedChecked ? 'bg-green-500 text-light' : 'bg-white text-green-500'
             }`}
-            htmlFor='booted'
+            htmlFor="booted"
             onClick={() => setIsBootedChecked(!isBootedChecked)}
           >
             Boot
           </label>
-          <input type='checkbox' id='booted' hidden {...register('booted', { required: false })} />
+          <input
+            type="checkbox"
+            id="booted"
+            hidden
+            {...register('booted', { required: false })}
+          />
         </div>
 
         {/* Thumbnails */}
-        <div className='mb-5'>
-          <div className='flex'>
-            <span className='inline-flex items-center px-3 rounded-tl-lg rounded-bl-lg border-[2px] text-sm text-gray-900 border-slate-200 bg-slate-100'>
-              <FaFile size={19} className='text-secondary' />
+        <div className="mb-5">
+          <div className="flex">
+            <span className="inline-flex items-center rounded-bl-lg rounded-tl-lg border-[2px] border-slate-200 bg-slate-100 px-3 text-sm text-gray-900">
+              <FaFile
+                size={19}
+                className="text-secondary"
+              />
             </span>
-            <div className='relative w-full border-[2px] border-l-0 bg-white border-slate-200'>
+            <div className="relative w-full border-[2px] border-l-0 border-slate-200 bg-white">
               <input
-                id='thumbnails'
-                className='block px-2.5 pb-2.5 pt-4 w-full text-sm text-dark bg-transparent focus:outline-none focus:ring-0 peer'
-                placeholder=' '
+                id="thumbnails"
+                className="peer block w-full bg-transparent px-2.5 pb-2.5 pt-4 text-sm text-dark focus:outline-none focus:ring-0"
+                placeholder=" "
                 disabled={isLoading}
-                type='file'
-                accept='image/*'
+                type="file"
+                accept="image/*"
                 multiple
                 onChange={handleAddFiles}
               />
@@ -386,7 +400,7 @@ function EditBlogPage() {
               {/* label */}
               <label
                 htmlFor={'thumbnails'}
-                className='absolute rounded-md text-sm trans-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1 cursor-pointer text-dark'
+                className="trans-300 absolute start-1 top-2 z-10 origin-[0] -translate-y-4 scale-75 transform cursor-pointer rounded-md bg-white px-2 text-sm text-dark peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:px-2 rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4"
               >
                 Thumbnails
               </label>
@@ -396,28 +410,52 @@ function EditBlogPage() {
 
         {/* MARK: Image Urls */}
         {(!!thumbnailUrls.length || !!originalThumbnails.length) && (
-          <div className='flex flex-wrap gap-3 rounded-lg bg-white p-3 mb-5'>
+          <div className="mb-5 flex flex-wrap gap-3 rounded-lg bg-white p-3">
             {originalThumbnails.map(url => (
-              <div className='relative' key={url}>
-                <Image className='rounded-lg' src={url} height={250} width={250} alt='thumbnail' />
+              <div
+                className="relative"
+                key={url}
+              >
+                <Image
+                  className="rounded-lg"
+                  src={url}
+                  height={250}
+                  width={250}
+                  alt="thumbnail"
+                />
 
                 <button
                   onClick={() => setOriginalThumbnails(prev => prev.filter(i => i !== url))}
-                  className='absolute top-2 bg-slate-300 p-2 right-2 group hover:bg-dark-100 rounded-lg'
+                  className="group absolute right-2 top-2 rounded-lg bg-slate-300 p-2 hover:bg-dark-100"
                 >
-                  <FaX size={16} className='text-dark group-hover:text-light trans-200' />
+                  <FaX
+                    size={16}
+                    className="trans-200 text-dark group-hover:text-light"
+                  />
                 </button>
               </div>
             ))}
             {thumbnailUrls.map(url => (
-              <div className='relative' key={url}>
-                <Image className='rounded-lg' src={url} height={250} width={250} alt='thumbnail' />
+              <div
+                className="relative"
+                key={url}
+              >
+                <Image
+                  className="rounded-lg"
+                  src={url}
+                  height={250}
+                  width={250}
+                  alt="thumbnail"
+                />
 
                 <button
                   onClick={() => handleRemoveImage(url)}
-                  className='absolute top-2 bg-slate-300 p-2 right-2 group hover:bg-dark-100 rounded-lg'
+                  className="group absolute right-2 top-2 rounded-lg bg-slate-300 p-2 hover:bg-dark-100"
                 >
-                  <FaX size={16} className='text-dark group-hover:text-light trans-200' />
+                  <FaX
+                    size={16}
+                    className="trans-200 text-dark group-hover:text-light"
+                  />
                 </button>
               </div>
             ))}
@@ -426,11 +464,11 @@ function EditBlogPage() {
 
         <Divider size={4} />
 
-        <div className='flex justify-center'>
+        <div className="flex justify-center">
           <LoadingButton
-            className='w-full max-w-[500px] px-4 py-3 bg-secondary hover:bg-primary text-light rounded-lg font-semibold trans-200'
+            className="trans-200 w-full max-w-[500px] rounded-lg bg-secondary px-4 py-3 font-semibold text-light hover:bg-primary"
             onClick={handleSubmit(onSubmit)}
-            text='Save'
+            text="Save"
             isLoading={isLoading}
           />
         </div>

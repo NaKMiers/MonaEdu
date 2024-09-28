@@ -96,28 +96,31 @@ async function ProfilePage({ params: { id } }: { params: { id: string } }) {
   return (
     <div>
       {/* MARK: Add JSON-LD */}
-      <script type='application/ld+json' dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
       {/* Head */}
-      <div className='bg-neutral-800 md:-mt-[72px] md:pt-[72px]'>
+      <div className="bg-neutral-800 md:-mt-[72px] md:pt-[72px]">
         {/* Container */}
-        <div className='max-w-1200 mx-auto md:pt-21'>
+        <div className="mx-auto max-w-1200 md:pt-21">
           {/* Banner */}
           {user && (
             <UserBanner
               user={user}
-              className='w-full aspect-[7/3] md:aspect-[3/1] lg:aspect-[9/2] overflow-hidden rounded-b-3xl md:rounded-t-3xl border-b-2 border-primary shadow-lg'
+              className="aspect-[7/3] w-full overflow-hidden rounded-b-3xl border-b-2 border-primary shadow-lg md:aspect-[3/1] md:rounded-t-3xl lg:aspect-[9/2]"
             />
           )}
           {user && (
-            <div className='relative -mt-[84px] md:mt-0 md:h-[104px]'>
-              <div className='md:absolute sm:right-6 md:right-12 md:top-0 z-10 flex flex-col-reverse md:flex-row justify-center items-center md:items-end md:justify-end gap-3 md:-translate-y-1/2'>
-                <div className='flex flex-col justify-end text-light pb-4'>
-                  <h1 className='font-bold text-nowrap text-ellipsis line-clamp-1 text-3xl text-center'>
+            <div className="relative -mt-[84px] md:mt-0 md:h-[104px]">
+              <div className="z-10 flex flex-col-reverse items-center justify-center gap-3 sm:right-6 md:absolute md:right-12 md:top-0 md:-translate-y-1/2 md:flex-row md:items-end md:justify-end">
+                <div className="flex flex-col justify-end pb-4 text-light">
+                  <h1 className="line-clamp-1 text-ellipsis text-nowrap text-center text-3xl font-bold">
                     {getUserName(user, 'nickname')}
                   </h1>
                   {!user.nickname && (
-                    <p className='font-semibold font-body tracking-wider text-center md:text-right'>
+                    <p className="text-center font-body font-semibold tracking-wider md:text-right">
                       {user.nickname}
                     </p>
                   )}
@@ -125,7 +128,7 @@ async function ProfilePage({ params: { id } }: { params: { id: string } }) {
 
                 <Avatar
                   user={user}
-                  className='flex-shrink-0 max-w-[168px] border-[4px] border-neutral-800 shadow-lg '
+                  className="max-w-[168px] flex-shrink-0 border-[4px] border-neutral-800 shadow-lg"
                 />
               </div>
             </div>
@@ -134,14 +137,14 @@ async function ProfilePage({ params: { id } }: { params: { id: string } }) {
       </div>
 
       {/* Body */}
-      <div className='bg-neutral-700 text-light -mb-36 pb-48'>
-        <div className='max-w-1200 mx-auto grid grid-cols-12 gap-x-21 gap-y-12 px-21 pt-12'>
+      <div className="-mb-36 bg-neutral-700 pb-48 text-light">
+        <div className="mx-auto grid max-w-1200 grid-cols-12 gap-x-21 gap-y-12 px-21 pt-12">
           {/* Courses */}
-          <div className='col-span-12 md:col-span-8 order-2 md:order-1'>
-            <h2 className='font-semibold text-3xl flex flex-wrap gap-x-3 gap-y-1 items-center'>
+          <div className="order-2 col-span-12 md:order-1 md:col-span-8">
+            <h2 className="flex flex-wrap items-center gap-x-3 gap-y-1 text-3xl font-semibold">
               Các khóa học đã tham gia
               {courses.length > 0 && (
-                <span className='flex items-center justify-center text-nowrap -mb-1 text-dark rounded-full bg-primary shadow-md text-xs font-semibold px-2 py-1'>
+                <span className="-mb-1 flex items-center justify-center text-nowrap rounded-full bg-primary px-2 py-1 text-xs font-semibold text-dark shadow-md">
                   {courses.length} khóa học
                 </span>
               )}
@@ -149,25 +152,28 @@ async function ProfilePage({ params: { id } }: { params: { id: string } }) {
 
             <Divider size={8} />
 
-            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-21'>
+            <div className="grid grid-cols-1 gap-21 sm:grid-cols-2 lg:grid-cols-3">
               {courses.map(course => (
-                <CourseCard course={course} key={course._id} />
+                <CourseCard
+                  course={course}
+                  key={course._id}
+                />
               ))}
             </div>
           </div>
 
           {/* Personal Info */}
-          <div className='relative col-span-12 md:col-span-4 order-1 md:order-2 font-body tracking-wider'>
-            <div className='sticky top-[93px] left-0 right-0 w-full rounded-medium shadow-lg p-4 bg-white'>
+          <div className="relative order-1 col-span-12 font-body tracking-wider md:order-2 md:col-span-4">
+            <div className="sticky left-0 right-0 top-[93px] w-full rounded-medium bg-white p-4 shadow-lg">
               {/* Email */}
-              <h4 className='font-semibold text-slate-700 font-body tracking-wider drop-shadow-md text-center mb-2'>
+              <h4 className="mb-2 text-center font-body font-semibold tracking-wider text-slate-700 drop-shadow-md">
                 Thông tin cá nhân
               </h4>
-              <p className='flex gap-2 text-slate-500 text-sm'>
+              <p className="flex gap-2 text-sm text-slate-500">
                 Email:{' '}
                 <Link
                   href={`mailto:${user?.email}`}
-                  className='underline underline-offset-1 text-sky-800'
+                  className="text-sky-800 underline underline-offset-1"
                 >
                   {user?.email}
                 </Link>
@@ -175,24 +181,24 @@ async function ProfilePage({ params: { id } }: { params: { id: string } }) {
 
               {/* Gender */}
               {user?.gender && (
-                <p className='flex gap-2 text-slate-500 text-sm'>
+                <p className="flex gap-2 text-sm text-slate-500">
                   Giới tính:{' '}
-                  <span className='text-dark'>
+                  <span className="text-dark">
                     {user?.gender === 'male' ? 'Nam' : user?.gender === 'female' ? 'Nữ' : 'Khác'}
                   </span>
                 </p>
               )}
 
               {/* Job */}
-              <p className='flex gap-2 text-slate-500 text-sm'>
-                Công việc: <span className='text-dark'>{user?.job}</span>
+              <p className="flex gap-2 text-sm text-slate-500">
+                Công việc: <span className="text-dark">{user?.job}</span>
               </p>
 
               {/* Bio */}
-              <div className='text-slate-500 text-sm'>
+              <div className="text-sm text-slate-500">
                 <span>Bio: </span>
 
-                <p className='text-dark'>{user?.bio}</p>
+                <p className="text-dark">{user?.bio}</p>
               </div>
             </div>
           </div>

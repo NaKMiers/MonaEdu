@@ -35,32 +35,38 @@ function AdminMeta({ handleFilter, handleResetFilter, className = '', children }
 
   return (
     <div
-      className={`mt-8 bg-white self-end w-full rounded-medium shadow-md text-dark overflow-auto trans-300 no-scrollbar p-21 max-w-full ${className}`}
+      className={`trans-300 no-scrollbar mt-8 w-full max-w-full self-end overflow-auto rounded-medium bg-white p-21 text-dark shadow-md ${className}`}
     >
-      <div className='grid grid-cols-12 gap-21'>
+      <div className="grid grid-cols-12 gap-21">
         {/* MARK: children 1 -> n - 1 */}
         {Children.toArray(children).slice(0, -1)}
 
         {/* MARK: Filter Buttons */}
-        <div className='flex justify-end gap-2 items-center col-span-12 md:col-span-4'>
+        <div className="col-span-12 flex items-center justify-end gap-2 md:col-span-4">
           {/* Filter Button */}
           <button
-            className='group flex items-center text-nowrap bg-primary text-[16px] font-semibold py-2 px-3 rounded-md cursor-pointer hover:bg-secondary text-light trans-200'
-            title='Alt + Enter'
+            className="trans-200 group flex cursor-pointer items-center text-nowrap rounded-md bg-primary px-3 py-2 text-[16px] font-semibold text-light hover:bg-secondary"
+            title="Alt + Enter"
             onClick={handleFilter}
           >
             Filter
-            <FaFilter size={14} className='ml-[6px] wiggle' />
+            <FaFilter
+              size={14}
+              className="wiggle ml-[6px]"
+            />
           </button>
 
           {/* Reset Button */}
           <button
-            className='group flex items-center text-nowrap bg-slate-600 text-[16px] font-semibold py-2 px-3 rounded-md cursor-pointer hover:bg-slate-800 text-light trans-200'
-            title='Alt + R'
+            className="trans-200 group flex cursor-pointer items-center text-nowrap rounded-md bg-slate-600 px-3 py-2 text-[16px] font-semibold text-light hover:bg-slate-800"
+            title="Alt + R"
             onClick={handleResetFilter}
           >
             Reset
-            <BiReset size={22} className='ml-1 wiggle' />
+            <BiReset
+              size={22}
+              className="wiggle ml-1"
+            />
           </button>
         </div>
 

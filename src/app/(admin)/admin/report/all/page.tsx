@@ -191,24 +191,34 @@ function AllReportsPage({ searchParams }: { searchParams?: { [key: string]: stri
   }, [reports, selectedReports, handleDeleteReports, handleFilter, handleSubmit, handleResetFilter])
 
   return (
-    <div className='w-full'>
+    <div className="w-full">
       {/* MARK: Top & Pagination */}
-      <AdminHeader title='All Reports' addLink='/admin/report/add' />
-      <Pagination searchParams={searchParams} amount={amount} itemsPerPage={itemPerPage} />
+      <AdminHeader
+        title="All Reports"
+        addLink="/admin/report/add"
+      />
+      <Pagination
+        searchParams={searchParams}
+        amount={amount}
+        itemsPerPage={itemPerPage}
+      />
 
       {/* MARK: Filter */}
-      <AdminMeta handleFilter={handleSubmit(handleFilter)} handleResetFilter={handleResetFilter}>
+      <AdminMeta
+        handleFilter={handleSubmit(handleFilter)}
+        handleResetFilter={handleResetFilter}
+      >
         {/* MARK: Select Filter */}
-        <div className='flex items-center flex-wrap gap-3 col-span-12 md:col-span-4'>
+        <div className="col-span-12 flex flex-wrap items-center gap-3 md:col-span-4">
           {/* Sort */}
           <Input
-            id='sort'
-            label='Sort'
+            id="sort"
+            label="Sort"
             disabled={false}
             register={register}
             errors={errors}
             icon={FaSort}
-            type='select'
+            type="select"
             onFocus={() => clearErrors('sort')}
             options={[
               {
@@ -233,13 +243,13 @@ function AllReportsPage({ searchParams }: { searchParams?: { [key: string]: stri
 
           {/* Type */}
           <Input
-            id='type'
-            label='Type'
+            id="type"
+            label="Type"
             disabled={false}
             register={register}
             errors={errors}
             icon={FaSort}
-            type='select'
+            type="select"
             onFocus={() => clearErrors('type')}
             options={[
               {
@@ -260,15 +270,15 @@ function AllReportsPage({ searchParams }: { searchParams?: { [key: string]: stri
                 label: 'Course',
               },
             ]}
-            className='min-w-[120px]'
+            className="min-w-[120px]"
           />
         </div>
 
         {/* MARK: Action Buttons */}
-        <div className='flex flex-wrap justify-end items-center gap-2 col-span-12 md:col-span-4'>
+        <div className="col-span-12 flex flex-wrap items-center justify-end gap-2 md:col-span-4">
           {/* Select All Button */}
           <button
-            className='border border-sky-400 text-sky-400 rounded-lg px-3 py-2 hover:bg-sky-400 hover:text-light trans-200'
+            className="trans-200 rounded-lg border border-sky-400 px-3 py-2 text-sky-400 hover:bg-sky-400 hover:text-light"
             onClick={() =>
               setSelectedReports(selectedReports.length > 0 ? [] : reports.map(report => report._id))
             }
@@ -279,7 +289,7 @@ function AllReportsPage({ searchParams }: { searchParams?: { [key: string]: stri
           {/* Delete Many Button */}
           {!!selectedReports.length && (
             <button
-              className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-light trans-200'
+              className="trans-200 rounded-lg border border-red-500 px-3 py-2 text-red-500 hover:bg-red-500 hover:text-light"
               onClick={() => setIsOpenConfirmModal(true)}
             >
               Delete
@@ -292,20 +302,20 @@ function AllReportsPage({ searchParams }: { searchParams?: { [key: string]: stri
       <ConfirmDialog
         open={isOpenConfirmModal}
         setOpen={setIsOpenConfirmModal}
-        title='Delete Reports'
-        content='Are you sure that you want to delete these reports?'
+        title="Delete Reports"
+        content="Are you sure that you want to delete these reports?"
         onAccept={() => handleDeleteReports(selectedReports)}
         isLoading={loadingReports.length > 0}
       />
 
       {/* MARK: Amount */}
-      <div className='p-3 text-sm text-right text-light font-semibold'>
+      <div className="p-3 text-right text-sm font-semibold text-light">
         {Math.min(itemPerPage * +(searchParams?.page || 1), amount)}/{amount} report
         {amount > 1 ? 's' : ''}
       </div>
 
       {/* MARK: MAIN LIST */}
-      <div className='grid grid-cols-1 md:grid-cols-3 gap-21 lg:grid-cols-5'>
+      <div className="grid grid-cols-1 gap-21 md:grid-cols-3 lg:grid-cols-5">
         {reports.map(report => (
           <ReportItem
             data={report}

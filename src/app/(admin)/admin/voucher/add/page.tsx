@@ -199,33 +199,36 @@ function AddVoucherPage() {
   }, [handleSubmit, onSubmit])
 
   return (
-    <div className='max-w-1200 mx-auto'>
+    <div className="mx-auto max-w-1200">
       {/* MARK: Admin Header */}
-      <AdminHeader title='Add Voucher' backLink='/admin/voucher/all' />
-      <div className='mt-5 bg-slate-200 p-3 rounded-lg'>
-        <div className='b-5 grid grid-cols-1 lg:grid-cols-2 gap-5'>
+      <AdminHeader
+        title="Add Voucher"
+        backLink="/admin/voucher/all"
+      />
+      <div className="mt-5 rounded-lg bg-slate-200 p-3">
+        <div className="b-5 grid grid-cols-1 gap-5 lg:grid-cols-2">
           {/* Code */}
           <Input
-            id='code'
-            label='Code'
+            id="code"
+            label="Code"
             disabled={isLoading}
             register={register}
             errors={errors}
             required
-            type='text'
+            type="text"
             icon={RiCharacterRecognitionLine}
             onFocus={() => clearErrors('code')}
           />
 
           {/* Owner */}
           <Input
-            id='owner'
-            label='Owner'
+            id="owner"
+            label="Owner"
             disabled={isLoading}
             register={register}
             errors={errors}
             required
-            type='select'
+            type="select"
             onFocus={() => clearErrors('owner')}
             options={roleUsers.map(user => ({
               value: user._id,
@@ -235,34 +238,34 @@ function AddVoucherPage() {
               selected: user.role === 'admin',
             }))}
             icon={FaUserEdit}
-            className='mb-5'
+            className="mb-5"
           />
         </div>
 
         {/* Description */}
         <Input
-          id='description'
-          label='Description'
+          id="description"
+          label="Description"
           disabled={isLoading}
           register={register}
           errors={errors}
-          type='textarea'
+          type="textarea"
           icon={FaQuoteRight}
-          className='mb-5'
+          className="mb-5"
           onFocus={() => clearErrors('description')}
         />
 
         {/* MARK: Begin - End */}
-        <div className='mb-5 grid grid-cols-1 lg:grid-cols-2 gap-5'>
+        <div className="mb-5 grid grid-cols-1 gap-5 lg:grid-cols-2">
           {/* Begin */}
           <Input
-            id='begin'
-            label='Begin'
+            id="begin"
+            label="Begin"
             disabled={isLoading}
             register={register}
             errors={errors}
             required
-            type='date'
+            type="date"
             min={new Date().toISOString().split('T')[0]}
             icon={FaPlay}
             onFocus={() => clearErrors('begin')}
@@ -270,57 +273,57 @@ function AddVoucherPage() {
 
           {/* Expire */}
           <Input
-            id='expire'
-            label='Expire'
+            id="expire"
+            label="Expire"
             disabled={isLoading}
             register={register}
             errors={errors}
-            type='date'
+            type="date"
             icon={FaPause}
             onFocus={() => clearErrors('expire')}
           />
         </div>
 
         {/* MARK: Min - Max */}
-        <div className='mb-5 grid grid-cols-1 lg:grid-cols-2 gap-5'>
+        <div className="mb-5 grid grid-cols-1 gap-5 lg:grid-cols-2">
           {/* Min Total */}
           <Input
-            id='minTotal'
-            label='Min Total'
+            id="minTotal"
+            label="Min Total"
             disabled={isLoading}
             register={register}
             errors={errors}
             required
-            type='number'
+            type="number"
             icon={FaMinus}
             onFocus={() => clearErrors('minTotal')}
           />
 
           {/* Max Reduce */}
           <Input
-            id='maxReduce'
-            label='Max Reduce'
+            id="maxReduce"
+            label="Max Reduce"
             disabled={isLoading}
             register={register}
             errors={errors}
             required
-            type='number'
+            type="number"
             icon={FaWindowMaximize}
             onFocus={() => clearErrors('maxReduce')}
           />
         </div>
 
         {/* MARK: Type - Value */}
-        <div className='mb-5 grid grid-cols-1 lg:grid-cols-2 gap-5'>
+        <div className="mb-5 grid grid-cols-1 gap-5 lg:grid-cols-2">
           {/* Type */}
           <Input
-            id='type'
-            label='Type'
+            id="type"
+            label="Type"
             disabled={isLoading}
             register={register}
             errors={errors}
             icon={RiCheckboxMultipleBlankLine}
-            type='select'
+            type="select"
             onFocus={() => clearErrors('type')}
             options={[
               {
@@ -341,13 +344,13 @@ function AddVoucherPage() {
 
           {/* Value */}
           <Input
-            id='value'
-            label='Value'
+            id="value"
+            label="Value"
             disabled={isLoading}
             register={register}
             errors={errors}
             required
-            type='text'
+            type="text"
             icon={MdNumbers}
             onFocus={() => clearErrors('value')}
           />
@@ -355,33 +358,36 @@ function AddVoucherPage() {
 
         {/* Times Left */}
         <Input
-          id='timesLeft'
-          label='Times Left'
+          id="timesLeft"
+          label="Times Left"
           disabled={isLoading}
           register={register}
           errors={errors}
           required
-          type='number'
+          type="number"
           icon={FaArrowCircleLeft}
-          className='mb-5'
+          className="mb-5"
           onFocus={() => clearErrors('timesLeft')}
         />
 
         {/* Active */}
-        <div className='flex'>
-          <div className='bg-white rounded-lg px-3 flex items-center'>
-            <FaPlay size={16} className='text-secondary' />
+        <div className="flex">
+          <div className="flex items-center rounded-lg bg-white px-3">
+            <FaPlay
+              size={16}
+              className="text-secondary"
+            />
           </div>
           <input
-            className='peer'
-            type='checkbox'
-            id='active'
+            className="peer"
+            type="checkbox"
+            id="active"
             hidden
             {...register('active', { required: false })}
           />
           <label
-            className='select-none cursor-pointer border border-green-500 px-4 py-2 rounded-lg trans-200 peer-checked:bg-green-500 peer-checked:text-light bg-white text-green-500'
-            htmlFor='active'
+            className="trans-200 cursor-pointer select-none rounded-lg border border-green-500 bg-white px-4 py-2 text-green-500 peer-checked:bg-green-500 peer-checked:text-light"
+            htmlFor="active"
           >
             Active
           </label>
@@ -389,9 +395,9 @@ function AddVoucherPage() {
 
         {/* MARK: Add Butoton */}
         <LoadingButton
-          className='mt-4 px-4 py-2 bg-secondary hover:bg-primary text-light rounded-lg font-semibold trans-200'
+          className="trans-200 mt-4 rounded-lg bg-secondary px-4 py-2 font-semibold text-light hover:bg-primary"
           onClick={handleSubmit(onSubmit)}
-          text='Add'
+          text="Add"
           isLoading={isLoading}
         />
       </div>

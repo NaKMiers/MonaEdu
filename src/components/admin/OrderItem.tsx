@@ -124,15 +124,15 @@ function OrderItem({
   return (
     <>
       <div
-        className={`relative w-full text-dark flex justify items-start gap-2 p-4 rounded-lg shadow-lg cursor-pointer trans-200 ${
+        className={`justify trans-200 relative flex w-full cursor-pointer items-start gap-2 rounded-lg p-4 text-dark shadow-lg ${
           selectedOrders.includes(data._id)
-            ? 'bg-violet-50 -translate-y-1'
+            ? '-translate-y-1 bg-violet-50'
             : data.status === 'done'
-            ? 'bg-green-100'
-            : data.status === 'pending'
-            ? 'bg-red-100'
-            : 'bg-slate-200'
-        }  ${className}`}
+              ? 'bg-green-100'
+              : data.status === 'pending'
+                ? 'bg-red-100'
+                : 'bg-slate-200'
+        } ${className}`}
         onClick={() =>
           setSelectedOrders(prev =>
             prev.includes(data._id) ? prev.filter(id => id !== data._id) : [...prev, data._id]
@@ -140,26 +140,26 @@ function OrderItem({
         }
       >
         {data.isPackage && (
-          <div className='absolute top-0 left-1/2 -translate-y-1/2 -translate-x-1/2 rounded-3xl px-3 py-1 text-xs font-semibold text-light bg-neutral-950 shadow-lg border-2 border-light'>
+          <div className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 rounded-3xl border-2 border-light bg-neutral-950 px-3 py-1 text-xs font-semibold text-light shadow-lg">
             {data.items[0].title}
           </div>
         )}
 
-        <div className='w-[calc(100%_-_44px)]'>
+        <div className="w-[calc(100%_-_44px)]">
           {/* MARK: Thumbnails */}
           {!data.isPackage && (
-            <div className='w-full h-full flex items-center flex-wrap gap-2 mb-2 max-h-[152px] overflow-y-auto'>
-              <div className='flex gap-2 flex-wrap'>
+            <div className="mb-2 flex h-full max-h-[152px] w-full flex-wrap items-center gap-2 overflow-y-auto">
+              <div className="flex flex-wrap gap-2">
                 {data.items.map((course: any) => (
                   <Link
                     href={`/${course.slug}`}
                     prefetch={false}
-                    className='relative rounded-lg shadow-md overflow-hidden flex-shrink-0'
+                    className="relative flex-shrink-0 overflow-hidden rounded-lg shadow-md"
                     onClick={e => e.stopPropagation()}
                     key={course._id}
                   >
                     <Image
-                      className='aspect-video h-auto w-auto'
+                      className="aspect-video h-auto w-auto"
                       src={course.images[0] || '/images/not-found.jpg'}
                       height={100}
                       width={100}
@@ -172,19 +172,22 @@ function OrderItem({
           )}
 
           {/* MARK: Information */}
-          <div className='flex gap-2 flex-wrap items-center'>
+          <div className="flex flex-wrap items-center gap-2">
             {/* Status */}
             <p
               className={`inline font-semibold text-${
                 data.status === 'done' ? 'green' : data.status === 'pending' ? 'red' : 'slate'
               }-400`}
-              title='status'
+              title="status"
             >
               {data.status}
             </p>
 
             {/* Code */}
-            <p className='inline font-semibold text-sky-500' title='code'>
+            <p
+              className="inline font-semibold text-sky-500"
+              title="code"
+            >
               {data.code}
             </p>
 
@@ -193,7 +196,7 @@ function OrderItem({
               className={`inline font-semibold text-[${
                 data.paymentMethod === 'momo' ? '#a1396c' : '#399162'
               }]`}
-              title='payment-method'
+              title="payment-method"
             >
               {data.paymentMethod}
             </p>
@@ -201,7 +204,7 @@ function OrderItem({
 
           {/* Email */}
           <div
-            className='font-body tracking-wider underline text-ellipsis line-clamp-1 flex gap-1 items-center'
+            className="line-clamp-1 flex items-center gap-1 text-ellipsis font-body tracking-wider underline"
             title={'Email: ' + data.email}
           >
             <span
@@ -212,36 +215,42 @@ function OrderItem({
             >
               {data.email}
             </span>
-            <div className='inline-flex items-center gap-1.5 border border-secondary rounded-md px-1.5 py-1'>
+            <div className="inline-flex items-center gap-1.5 rounded-md border border-secondary px-1.5 py-1">
               <span
-                className='text-secondary group'
+                className="group text-secondary"
                 onClick={e => {
                   e.stopPropagation()
                   setValue('search', data.email)
                   handleFilter()
                 }}
               >
-                <FaSearch size={14} className='wiggle' />
+                <FaSearch
+                  size={14}
+                  className="wiggle"
+                />
               </span>
             </div>
           </div>
 
           {/* Received User */}
           {data.receivedUser && (
-            <div className='font-body tracking-wider mt-2 flex gap-1 items-center border-t border-slate-600 pt-1.5'>
-              <span className='underline underline-offset-1 text-ellipsis line-clamp-1 text-orange-500'>
+            <div className="mt-2 flex items-center gap-1 border-t border-slate-600 pt-1.5 font-body tracking-wider">
+              <span className="line-clamp-1 text-ellipsis text-orange-500 underline underline-offset-1">
                 {data.receivedUser}
               </span>{' '}
-              <div className='inline-flex items-center gap-1.5 border border-secondary rounded-md px-1.5 py-1'>
+              <div className="inline-flex items-center gap-1.5 rounded-md border border-secondary px-1.5 py-1">
                 <span
-                  className='text-secondary group'
+                  className="group text-secondary"
                   onClick={e => {
                     e.stopPropagation()
                     setValue('search', data.receivedUser)
                     handleFilter()
                   }}
                 >
-                  <FaSearch size={14} className='wiggle' />
+                  <FaSearch
+                    size={14}
+                    className="wiggle"
+                  />
                 </span>
               </div>
             </div>
@@ -249,8 +258,8 @@ function OrderItem({
 
           {/* Total */}
           <p
-            className='flex items-center flex-wrap gap-x-2 mr-2 text-green-500 text-xl font-semibold'
-            title='total'
+            className="mr-2 flex flex-wrap items-center gap-x-2 text-xl font-semibold text-green-500"
+            title="total"
           >
             {formatPrice(data.total)}{' '}
           </p>
@@ -258,59 +267,74 @@ function OrderItem({
           {/* Voucher */}
           {data.voucher && data.discount && (
             <p
-              className='font-semibold text-slate-400 text-sm'
+              className="text-sm font-semibold text-slate-400"
               title={`voucher: ${(data.voucher as IVoucher).desc}`}
             >
               {(data.voucher as IVoucher).code}{' '}
-              <span className='text-secondary font-normal'>({formatPrice(data.discount)})</span>
+              <span className="font-normal text-secondary">({formatPrice(data.discount)})</span>
             </p>
           )}
 
           {/* Created */}
-          <div className='flex flex-wrap gap-x-2'>
-            <p className='text-sm' title='Created (d/m/y)'>
-              <span className='font-semibold'>Created: </span>
+          <div className="flex flex-wrap gap-x-2">
+            <p
+              className="text-sm"
+              title="Created (d/m/y)"
+            >
+              <span className="font-semibold">Created: </span>
               <span className={isToday(new Date(data.createdAt)) ? 'font-semibold text-slate-600' : ''}>
                 {formatTime(data.createdAt)}
               </span>
             </p>
 
             {/* Updated */}
-            <p className='text-sm' title='Updated (d/m/y)'>
-              <span className='font-semibold'>Updated: </span>
+            <p
+              className="text-sm"
+              title="Updated (d/m/y)"
+            >
+              <span className="font-semibold">Updated: </span>
               <span>{formatTime(data.updatedAt)}</span>
             </p>
           </div>
         </div>
 
         {/* MARK: Action Buttons */}
-        <div className='flex flex-col flex-shrink-0 border bg-white border-dark text-dark rounded-lg px-2 py-3 gap-4'>
+        <div className="flex flex-shrink-0 flex-col gap-4 rounded-lg border border-dark bg-white px-2 py-3 text-dark">
           {/* Detail Button */}
           <Link
             href={`/admin/order/${data.code}`}
-            className='block group'
+            className="group block"
             onClick={e => e.stopPropagation()}
-            title='Detail'
+            title="Detail"
           >
-            <FaEye size={18} className='text-primary wiggle' />
+            <FaEye
+              size={18}
+              className="wiggle text-primary"
+            />
           </Link>
 
           {/* Deliver Button */}
           {data.status !== 'done' && (
             <button
-              className='block group'
+              className="group block"
               disabled={loadingOrders.includes(data._id) || isLoading}
               onClick={e => {
                 e.stopPropagation()
                 setConfirmType('deliver')
                 setIsOpenConfirmModal(true)
               }}
-              title='Deliver'
+              title="Deliver"
             >
               {isLoading ? (
-                <RiDonutChartFill size={18} className='animate-spin text-slate-300' />
+                <RiDonutChartFill
+                  size={18}
+                  className="animate-spin text-slate-300"
+                />
               ) : (
-                <GrDeliver size={18} className='text-yellow-400 wiggle' />
+                <GrDeliver
+                  size={18}
+                  className="wiggle text-yellow-400"
+                />
               )}
             </button>
           )}
@@ -318,87 +342,105 @@ function OrderItem({
           {/* Re-Deliver Button */}
           {data.status === 'done' && (
             <button
-              className='block group'
+              className="group block"
               disabled={loadingOrders.includes(data._id) || isLoading}
               onClick={e => {
                 e.stopPropagation()
                 setConfirmType('re-deliver')
                 setIsOpenConfirmModal(true)
               }}
-              title='Re-Deliver'
+              title="Re-Deliver"
             >
               {isLoading ? (
-                <RiDonutChartFill size={18} className='animate-spin text-slate-300' />
+                <RiDonutChartFill
+                  size={18}
+                  className="animate-spin text-slate-300"
+                />
               ) : (
-                <FaHistory size={18} className='text-blue-500 wiggle' />
+                <FaHistory
+                  size={18}
+                  className="wiggle text-blue-500"
+                />
               )}
             </button>
           )}
 
           {/* Add Messsage To Deliver Button */}
           <button
-            className='block group'
+            className="group block"
             disabled={loadingOrders.includes(data._id) || isLoading}
             onClick={e => {
               e.stopPropagation()
               setIsOpenMessageModal(true)
             }}
-            title='Re-Deliver'
+            title="Re-Deliver"
           >
-            <SiGooglemessages size={19} className='text-teal-500 wiggle' />
+            <SiGooglemessages
+              size={19}
+              className="wiggle text-teal-500"
+            />
           </button>
 
           {/* Cancel Button */}
           {data.status === 'pending' && (
             <button
-              className='block group'
+              className="group block"
               disabled={loadingOrders.includes(data._id) || isLoading}
               onClick={e => {
                 e.stopPropagation()
                 handleCancelOrders([data._id])
               }}
-              title='Cancel'
+              title="Cancel"
             >
-              <ImCancelCircle size={18} className='text-slate-300 wiggle' />
+              <ImCancelCircle
+                size={18}
+                className="wiggle text-slate-300"
+              />
             </button>
           )}
 
           {/* Delete Button */}
           <button
-            className='block group'
+            className="group block"
             disabled={loadingOrders.includes(data._id) || isLoading}
             onClick={e => {
               e.stopPropagation()
               setConfirmType('delete')
               setIsOpenConfirmModal(true)
             }}
-            title='Delete'
+            title="Delete"
           >
             {loadingOrders.includes(data._id) ? (
-              <RiDonutChartFill size={18} className='animate-spin text-slate-300' />
+              <RiDonutChartFill
+                size={18}
+                className="animate-spin text-slate-300"
+              />
             ) : (
-              <FaRegTrashAlt size={18} className='wiggle text-rose-500' />
+              <FaRegTrashAlt
+                size={18}
+                className="wiggle text-rose-500"
+              />
             )}
           </button>
         </div>
 
         {isOpenMessageModal && (
           <div
-            className='absolute z-20 p-21 top-0 left-0 w-full h-full flex items-center justify-center gap-2 rounded-md bg-teal-400 bg-opacity-80'
+            className="absolute left-0 top-0 z-20 flex h-full w-full items-center justify-center gap-2 rounded-md bg-teal-400 bg-opacity-80 p-21"
             onClick={e => {
               e.stopPropagation()
               setIsOpenMessageModal(false)
             }}
           >
             <Input
-              id='message'
-              label='Message'
+              id="message"
+              label="Message"
               register={register}
               errors={errors}
               required
-              type='text'
+              type="text"
               icon={SiGooglemessages}
-              className='w-full shadow-lg'
+              className="w-full shadow-lg"
               onClick={e => e.stopPropagation()}
               onFocus={() => clearErrors('message')}
             />
@@ -416,8 +458,8 @@ function OrderItem({
           confirmType === 'deliver'
             ? handleDeliverOrder()
             : confirmType === 're-deliver'
-            ? handleReDeliverOrder()
-            : handleDeleteOrders([data._id])
+              ? handleReDeliverOrder()
+              : handleDeleteOrders([data._id])
         }
         isLoading={loadingOrders.includes(data._id) || isLoading}
         color={confirmType === 'deliver' ? 'yellow' : confirmType === 're-deliver' ? 'sky' : 'rose'}

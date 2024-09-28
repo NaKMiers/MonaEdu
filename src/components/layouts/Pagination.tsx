@@ -90,13 +90,13 @@ function Pagination({
   return (
     pageAmount > 1 && (
       <div
-        className={`flex font-semibold gap-2 justify-center w-full text-xs sm:text-base flex-wrap mx-auto ${className}`}
+        className={`mx-auto flex w-full flex-wrap justify-center gap-2 text-xs font-semibold sm:text-base ${className}`}
       >
         {/* MARK: Prev */}
         {currentPage != 1 && (
           <Link
             href={getPageLink(currentPage <= 1 ? 1 : currentPage - 1)}
-            className='rounded-lg border-2 border-transparent py-[6px] px-2 bg-white hover:bg-secondary hover:border-light text-dark hover:text-light trans-200 border-slate-200'
+            className="trans-200 rounded-lg border-2 border-slate-200 border-transparent bg-white px-2 py-[6px] text-dark hover:border-light hover:bg-secondary hover:text-light"
             title={`👈 Trang ${currentPage <= 1 ? 1 : currentPage - 1}`}
             scroll={false}
           >
@@ -105,16 +105,16 @@ function Pagination({
         )}
 
         {/* MARK: 1 ... n */}
-        <div className='flex gap-2'>
+        <div className="flex gap-2">
           {pageList.map(page => (
             <Link
               href={getPageLink(page || 0)}
               onClick={e => page || e.preventDefault()}
               scroll={false}
-              className={`rounded-lg border-2 py-[6px] px-2.5 sm:px-4 hover:bg-secondary hover:text-light hover:border-light ${
+              className={`rounded-lg border-2 px-2.5 py-[6px] hover:border-light hover:bg-secondary hover:text-light sm:px-4 ${
                 dark ? 'text-dark' : 'text-light'
               } ${!page ? 'pointer-events-none' : ''} trans-200 ${
-                currentPage === page ? 'bg-primary border-light' : 'border-transparent'
+                currentPage === page ? 'border-light bg-primary' : 'border-transparent'
               }`}
               key={page}
             >
@@ -127,7 +127,7 @@ function Pagination({
         {currentPage != pageAmount && (
           <Link
             href={getPageLink(currentPage >= pageAmount ? pageAmount : currentPage + 1)}
-            className='rounded-lg border-2 border-transparent py-[6px] px-2 bg-white hover:bg-secondary hover:border-light text-dark hover:text-light trans-200 border-slate-200'
+            className="trans-200 rounded-lg border-2 border-slate-200 border-transparent bg-white px-2 py-[6px] text-dark hover:border-light hover:bg-secondary hover:text-light"
             title={`👉 Trang ${currentPage >= pageAmount ? pageAmount : currentPage + 1}`}
             scroll={false}
           >

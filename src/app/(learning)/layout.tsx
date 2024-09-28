@@ -29,7 +29,7 @@ export default async function RootLayout({
       <PageLoading />
 
       {/* Main */}
-      <main className='flex gap-y-4'>
+      <main className="flex gap-y-4">
         <AllLessons />
 
         {children}

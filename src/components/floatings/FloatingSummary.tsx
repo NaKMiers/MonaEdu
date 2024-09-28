@@ -134,13 +134,13 @@ function FloatingSummary({ course: data, chapters, totalTime, className = '' }: 
   }, [course._id, curUser?._id, course.likes])
 
   return (
-    <div className={`px-4 max-h-[calc(100vh-100px)] overflow-y-auto ${className}`}>
+    <div className={`max-h-[calc(100vh-100px)] overflow-y-auto px-4 ${className}`}>
       {/* Thumbnails */}
-      <div className='relative -mx-4 aspect-video rounded-lg overflow-hidden shadow-lg block group'>
-        <div className='flex w-full overflow-x-scroll snap-x snap-mandatory hover:scale-105 trans-500'>
+      <div className="group relative -mx-4 block aspect-video overflow-hidden rounded-lg shadow-lg">
+        <div className="trans-500 flex w-full snap-x snap-mandatory overflow-x-scroll hover:scale-105">
           {course?.images.slice(0, course.images.length === 1 ? 1 : -1).map(src => (
             <Image
-              className='flex-shrink-0 snap-start w-full h-full object-cover'
+              className="h-full w-full flex-shrink-0 snap-start object-cover"
               src={src}
               width={320}
               height={320}
@@ -153,49 +153,58 @@ function FloatingSummary({ course: data, chapters, totalTime, className = '' }: 
 
       <Divider size={4} />
 
-      <div className='overflow-y-auto h-full'>
+      <div className="h-full overflow-y-auto">
         {/* Price */}
         <Price
           price={course.price}
           oldPrice={course.oldPrice}
           flashSale={course.flashSale as IFlashSale}
-          className='border-2'
+          className="border-2"
         />
 
         <Divider size={4} />
 
         {/* Action Buttons */}
-        <div className='flex items-center gap-1 w-full'>
+        <div className="flex w-full items-center gap-1">
           <BuyNowButton course={course} />
 
           {(!curUser || !curUser?.courses?.map((course: any) => course.course).includes(course._id)) && (
             <button
-              className={`group font-semibold h-[42px] px-3 flex items-center justify-center rounded-lg shadow-lg bg-dark-100 border-2 border-dark hover:bg-white trans-300 hover:-translate-y-1 ${
+              className={`trans-300 group flex h-[42px] items-center justify-center rounded-lg border-2 border-dark bg-dark-100 px-3 font-semibold shadow-lg hover:-translate-y-1 hover:bg-white ${
                 isLoading ? 'pointer-events-none bg-slate-200' : ''
               }`}
               onClick={addCourseToCart}
               disabled={isLoading}
             >
               {isLoading ? (
-                <RiDonutChartFill size={18} className='animate-spin text-dark' />
+                <RiDonutChartFill
+                  size={18}
+                  className="animate-spin text-dark"
+                />
               ) : (
-                <FaCartPlus className='text-[18px] sm:text-[20px] wiggle text-light group-hover:text-dark' />
+                <FaCartPlus className="wiggle text-[18px] text-light group-hover:text-dark sm:text-[20px]" />
               )}
             </button>
           )}
 
           {curUser?._id && curUser.courses.map((course: any) => course.course).includes(course._id) && (
-            <div className='text-light relative flex justify-end items-center w-[30px] h-[42px]'>
-              <button className='group' onClick={() => setShowActions(prev => !prev)}>
-                <HiDotsVertical size={24} className='text-dark' />
+            <div className="relative flex h-[42px] w-[30px] items-center justify-end text-light">
+              <button
+                className="group"
+                onClick={() => setShowActions(prev => !prev)}
+              >
+                <HiDotsVertical
+                  size={24}
+                  className="text-dark"
+                />
               </button>
               <div
                 className={`${
-                  showActions ? 'max-w-[120px] max-h-[40px] px-1.5 py-1' : 'max-w-0 max-h-0 p-0'
-                }  overflow-hidden absolute z-20 top-[80%] flex gap-2 rounded-md trans-300`}
+                  showActions ? 'max-h-[40px] max-w-[120px] px-1.5 py-1' : 'max-h-0 max-w-0 p-0'
+                } trans-300 absolute top-[80%] z-20 flex gap-2 overflow-hidden rounded-md`}
               >
                 <button
-                  className={`font-bold text-nowrap px-1.5 py-1 text-[10px] bg-white hover:bg-dark-0 hover:text-light border border-dark text-dark rounded-md shadow-md trans-200`}
+                  className={`trans-200 text-nowrap rounded-md border border-dark bg-white px-1.5 py-1 text-[10px] font-bold text-dark shadow-md hover:bg-dark-0 hover:text-light`}
                   onClick={buyNow}
                 >
                   Mua tặng
@@ -203,7 +212,7 @@ function FloatingSummary({ course: data, chapters, totalTime, className = '' }: 
                 {['admin', 'editor'].includes(curUser.role) && (
                   <Link
                     href={`/admin/course/all?slug=${course.slug}`}
-                    className={`font-bold text-nowrap px-1.5 py-1 text-[10px] bg-white hover:bg-dark-0 hover:text-light border border-dark text-dark rounded-md shadow-md trans-200`}
+                    className={`trans-200 text-nowrap rounded-md border border-dark bg-white px-1.5 py-1 text-[10px] font-bold text-dark shadow-md hover:bg-dark-0 hover:text-light`}
                   >
                     Edit
                   </Link>
@@ -216,70 +225,88 @@ function FloatingSummary({ course: data, chapters, totalTime, className = '' }: 
         <Divider size={4} />
 
         {/* Like & Share */}
-        <div className='flex h-[28px]'>
-          <div className='flex justify-center items-center w-full border-r-2 border-slate-300'>
-            <button className='flex items-center justify-center group -mb-1'>
-              <span className='mr-1.5 font-semibold'>{course.likes.length}</span>{' '}
+        <div className="flex h-[28px]">
+          <div className="flex w-full items-center justify-center border-r-2 border-slate-300">
+            <button className="group -mb-1 flex items-center justify-center">
+              <span className="mr-1.5 font-semibold">{course.likes.length}</span>{' '}
               <FaRegThumbsUp
                 size={16}
                 className={`${
                   !course.likes.includes(curUser?._id)
                     ? 'text-dark group-hover:text-rose-500'
                     : 'text-rose-500 group-hover:text-dark'
-                } -mt-1 trans-200`}
+                } trans-200 -mt-1`}
                 onClick={handleLike}
               />
             </button>
           </div>
 
-          <div className='flex justify-center items-center w-full'>
-            <FacebookShareButton url={`https://monaedu.com/${course.slug}`} hashtag='#monaedu'>
+          <div className="flex w-full items-center justify-center">
+            <FacebookShareButton
+              url={`https://monaedu.com/${course.slug}`}
+              hashtag="#monaedu"
+            >
               <FaShareAlt size={16} />
             </FacebookShareButton>
           </div>
         </div>
 
-        <Divider size={5} border />
+        <Divider
+          size={5}
+          border
+        />
 
         {/* Tags */}
-        <p className='font-body'>
+        <p className="font-body">
           Thẻ:{' '}
           {(course.tags as ITag[]).map((tag, index) => (
             <Fragment key={tag._id}>
               <Link
                 href={`/tags/${tag.slug}`}
                 key={tag._id}
-                className='text-sky-500 hover:underline underline-offset-1'
+                className="text-sky-500 underline-offset-1 hover:underline"
               >
                 {tag.title}
               </Link>
-              <span className='text-sky-500'>{index !== course.tags.length - 1 ? ', ' : ''}</span>
+              <span className="text-sky-500">{index !== course.tags.length - 1 ? ', ' : ''}</span>
             </Fragment>
           ))}
         </p>
 
-        <Divider size={5} border />
+        <Divider
+          size={5}
+          border
+        />
 
-        <div className='font-body tracking-wider'>
-          <p className='font-semibold'>Khóa học gồm có: </p>
+        <div className="font-body tracking-wider">
+          <p className="font-semibold">Khóa học gồm có: </p>
 
-          <p className='flex items-center flex-wrap'>
-            <MdVideoLibrary size={16} className='mr-3' />
+          <p className="flex flex-wrap items-center">
+            <MdVideoLibrary
+              size={16}
+              className="mr-3"
+            />
             <span>
               {chapters.length} chương,{' '}
               {chapters.reduce((total, chapter) => total + (chapter.lessons?.length || 0), 0)} bài giảng
             </span>
           </p>
-          <p className='flex items-center flex-wrap'>
-            <IoTimer size={16} className='mr-3' />
-            <span className='mr-1'>Thời lượng: </span>
+          <p className="flex flex-wrap items-center">
+            <IoTimer
+              size={16}
+              className="mr-3"
+            />
+            <span className="mr-1">Thời lượng: </span>
             <span>
               {totalTime.hours > 0 && `${totalTime.hours} giờ`}{' '}
               {totalTime.minutes > 0 && `${totalTime.minutes} phút`}
             </span>
           </p>
-          <p className='flex items-center flex-wrap'>
-            <IoIosPhonePortrait size={16} className='mr-3' />
+          <p className="flex flex-wrap items-center">
+            <IoIosPhonePortrait
+              size={16}
+              className="mr-3"
+            />
             <span>Tương thích trên mọi thiết bị</span>
           </p>
         </div>

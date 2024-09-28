@@ -123,40 +123,46 @@ function AllLessons() {
   return (
     <>
       {/* Pusher */}
-      <div className={`${openSidebar ? 'sm:max-w-[300px]' : 'sm:max-w-0'} sm:w-full trans-300`} />
+      <div className={`${openSidebar ? 'sm:max-w-[300px]' : 'sm:max-w-0'} trans-300 sm:w-full`} />
 
       {/* Sidebar */}
       <div
-        className={`fixed overflow-hidden z-40 top-0 bottom-0 left-0 w-full sm:max-w-[300px] px-3 trans-300 border-r-2 border-dark bg-neutral-800 ${
+        className={`trans-300 fixed bottom-0 left-0 top-0 z-40 w-full overflow-hidden border-r-2 border-dark bg-neutral-800 px-3 sm:max-w-[300px] ${
           openSidebar ? 'translate-x-0' : '-translate-x-full'
-        } pt-[18px] border-r-2 border-primary sm:rounded-r-lg shadow-md shadow-primary`}
+        } border-r-2 border-primary pt-[18px] shadow-md shadow-primary sm:rounded-r-lg`}
       >
-        <div className='flex flex-col h-full relative z-10'>
-          <div className='flex items-center gap-4'>
-            <Link href='/my-courses' className='shrink-0 trans-200'>
+        <div className="relative z-10 flex h-full flex-col">
+          <div className="flex items-center gap-4">
+            <Link
+              href="/my-courses"
+              className="trans-200 shrink-0"
+            >
               <Image
-                className='aspect-square rounded-md'
-                src='/images/logo.png'
+                className="aspect-square rounded-md"
+                src="/images/logo.png"
                 width={32}
                 height={32}
-                alt='Mona-Edu'
+                alt="Mona-Edu"
               />
             </Link>
 
             {joinedCourse ? (
-              <div className='relative overflow-hidden rounded-md w-full h-6 shadow-sm shadow-primary'>
+              <div className="relative h-6 w-full overflow-hidden rounded-md shadow-sm shadow-primary">
                 <div
-                  className='h-full bg-primary flex items-center trans-500'
+                  className="trans-500 flex h-full items-center bg-primary"
                   style={{
                     width: `${userProgress}%`,
                   }}
                 />
-                <div className='absolute flex items-center justify-between top-1/2 px-4 left-0 right-0 -translate-y-1/2 text-orange-500 text-sm font-body tracking-wider font-semibold drop-shadow-sm'>
+                <div className="absolute left-0 right-0 top-1/2 flex -translate-y-1/2 items-center justify-between px-4 font-body text-sm font-semibold tracking-wider text-orange-500 drop-shadow-sm">
                   <span>{userProgress}%</span>
                 </div>
               </div>
             ) : (
-              <Link href='/' className='text-2xl font-bold text-orange-500 drop-shadow-md -ml-1.5'>
+              <Link
+                href="/"
+                className="-ml-1.5 text-2xl font-bold text-orange-500 drop-shadow-md"
+              >
                 MonaEdu
               </Link>
             )}
@@ -164,20 +170,23 @@ function AllLessons() {
 
           <Divider size={3} />
 
-          <div className='relative z-10 flex items-center justify-between gap-21 rounded-lg text-2xl font-semibold h-[40px] text-light'>
+          <div className="relative z-10 flex h-[40px] items-center justify-between gap-21 rounded-lg text-2xl font-semibold text-light">
             <span>Các bài giảng</span>
 
             <button
-              className={`group rounded-lg py-1.5 trans-300`}
+              className={`trans-300 group rounded-lg py-1.5`}
               onClick={() => dispatch(setOpenSidebar(!openSidebar))}
             >
-              <BsLayoutSidebarInset size={20} className='wiggle' />
+              <BsLayoutSidebarInset
+                size={20}
+                className="wiggle"
+              />
             </button>
           </div>
 
           <Divider size={2} />
 
-          <ul className='flex flex-col gap-2 overflow-y-auto no-scrollbar'>
+          <ul className="no-scrollbar flex flex-col gap-2 overflow-y-auto">
             {chapters.map(chapter => (
               <LearningChapter
                 courseId={courseId}
@@ -193,28 +202,34 @@ function AllLessons() {
 
           {/* Navigator */}
           {(prevLesson || nextLesson) && (
-            <div className='flex flex-1 items-end pb-2'>
-              <div className='py-2 w-full bg-slate-700 flex items-center justify-between px-3 gap-21 rounded-lg border-b-2 border-slate-300'>
+            <div className="flex flex-1 items-end pb-2">
+              <div className="flex w-full items-center justify-between gap-21 rounded-lg border-b-2 border-slate-300 bg-slate-700 px-3 py-2">
                 {prevLesson && (
                   <a
                     href={`/learning/${courseSlug}/${prevLesson}`}
-                    className={`group flex items-center gap-2 rounded-lg px-2 py-1 bg-slate-200 border-2 border-dark hover:bg-white trans-200  ${
+                    className={`trans-200 group flex items-center gap-2 rounded-lg border-2 border-dark bg-slate-200 px-2 py-1 hover:bg-white ${
                       !nextLesson ? 'flex-1 justify-center' : ''
                     }`}
                   >
-                    <FaChevronCircleLeft size={20} className='wiggle text-dark' />
-                    <span className='font-semibold text-dark'>Trước</span>
+                    <FaChevronCircleLeft
+                      size={20}
+                      className="wiggle text-dark"
+                    />
+                    <span className="font-semibold text-dark">Trước</span>
                   </a>
                 )}
                 {nextLesson && (
                   <a
                     href={`/learning/${courseSlug}/${nextLesson}`}
-                    className={`group flex items-center gap-2 rounded-lg px-2 py-1 bg-slate-200 border-2 border-dark hover:bg-white trans-200 ${
+                    className={`trans-200 group flex items-center gap-2 rounded-lg border-2 border-dark bg-slate-200 px-2 py-1 hover:bg-white ${
                       !prevLesson ? 'flex-1 justify-center' : ''
                     }`}
                   >
-                    <span className='font-semibold text-dark'>Sau</span>
-                    <FaChevronCircleRight size={20} className='wiggle text-dark' />
+                    <span className="font-semibold text-dark">Sau</span>
+                    <FaChevronCircleRight
+                      size={20}
+                      className="wiggle text-dark"
+                    />
                   </a>
                 )}
               </div>

@@ -33,7 +33,7 @@ import TextStyle from '@tiptap/extension-text-style'
 import Underline from '@tiptap/extension-underline'
 import Youtube from '@tiptap/extension-youtube'
 import { EditorContent, useEditor } from '@tiptap/react'
-import { useCallback, useState } from 'react'
+import { memo, useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
 import {
   FaAlignCenter,
@@ -482,18 +482,18 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
 
   return (
     <div className={`${className}`}>
-      <div className='flex flex-col gap-2 mb-5 select-none'>
+      <div className="mb-5 flex select-none flex-col gap-2">
         {/* Marks & Headings */}
-        <div className='flex justify-between gap-4'>
+        <div className="flex justify-between gap-4">
           {/* Marks */}
-          <div className='flex items-center flex-wrap gap-x-2 gap-y-1'>
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
             {/* Bold */}
             <button
               onClick={() => editor.commands.toggleBold()}
               className={`${
                 editor.isActive('bold') ? 'bg-dark-100 text-white' : ''
-              } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
-              title='Bold'
+              } flex h-[32px] w-[32px] items-center justify-center rounded-md border border-dark shadow-md`}
+              title="Bold"
             >
               <FaBold />
             </button>
@@ -503,8 +503,8 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
               onClick={() => editor.commands.toggleItalic()}
               className={`${
                 editor.isActive('italic') ? 'bg-dark-100 text-white' : ''
-              } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
-              title='Italic'
+              } flex h-[32px] w-[32px] items-center justify-center rounded-md border border-dark shadow-md`}
+              title="Italic"
             >
               <FaItalic />
             </button>
@@ -514,8 +514,8 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
               onClick={() => editor.commands.toggleUnderline()}
               className={`${
                 editor.isActive('underline') ? 'bg-dark-100 text-white' : ''
-              } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
-              title='Underline'
+              } flex h-[32px] w-[32px] items-center justify-center rounded-md border border-dark shadow-md`}
+              title="Underline"
             >
               <FaUnderline />
             </button>
@@ -525,8 +525,8 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
               onClick={() => editor.commands.toggleStrike()}
               className={`${
                 editor.isActive('strike') ? 'bg-dark-100 text-white' : ''
-              } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
-              title='Strike'
+              } flex h-[32px] w-[32px] items-center justify-center rounded-md border border-dark shadow-md`}
+              title="Strike"
             >
               <FaStrikethrough />
             </button>
@@ -536,8 +536,8 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
               onClick={() => editor.commands.toggleCode()}
               className={`${
                 editor.isActive('code') ? 'bg-dark-100 text-white' : ''
-              } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
-              title='Code'
+              } flex h-[32px] w-[32px] items-center justify-center rounded-md border border-dark shadow-md`}
+              title="Code"
             >
               <FaCode />
             </button>
@@ -547,8 +547,8 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
               onClick={setLink}
               className={`${
                 editor.isActive('link') ? 'bg-dark-100 text-white' : ''
-              } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
-              title='Link'
+              } flex h-[32px] w-[32px] items-center justify-center rounded-md border border-dark shadow-md`}
+              title="Link"
             >
               <FaLink />
             </button>
@@ -558,8 +558,8 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
               onClick={() => editor.commands.toggleSubscript()}
               className={`${
                 editor.isActive('subscript') ? 'bg-dark-100 text-white' : ''
-              } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
-              title='Subscript'
+              } flex h-[32px] w-[32px] items-center justify-center rounded-md border border-dark shadow-md`}
+              title="Subscript"
             >
               <FaSubscript />
             </button>
@@ -569,8 +569,8 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
               onClick={() => editor.commands.toggleSuperscript()}
               className={`${
                 editor.isActive('superscript') ? 'bg-dark-100 text-white' : ''
-              } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
-              title='Superscript'
+              } flex h-[32px] w-[32px] items-center justify-center rounded-md border border-dark shadow-md`}
+              title="Superscript"
             >
               <FaSuperscript />
             </button>
@@ -580,8 +580,8 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
               onClick={() => editor.commands.toggleHighlight()}
               className={`${
                 editor.isActive('highlight') ? 'bg-dark-100 text-white' : ''
-              } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
-              title='Highlight'
+              } flex h-[32px] w-[32px] items-center justify-center rounded-md border border-dark shadow-md`}
+              title="Highlight"
             >
               <FaHighlighter />
             </button>
@@ -591,32 +591,32 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
               onClick={() => editor.commands.setHardBreak()}
               className={`${
                 editor.isActive('highlight') ? 'bg-dark-100 text-white' : ''
-              } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
-              title='Hard Break'
+              } flex h-[32px] w-[32px] items-center justify-center rounded-md border border-dark shadow-md`}
+              title="Hard Break"
             >
-              <span className='font-semibold'>Br</span>
+              <span className="font-semibold">Br</span>
             </button>
 
             {/* Color */}
             <input
-              type='color'
-              className='rounded-md shadow-lg h-[32px] p-1.5 border border-dark bg-transparent cursor-pointer'
+              type="color"
+              className="h-[32px] cursor-pointer rounded-md border border-dark bg-transparent p-1.5 shadow-lg"
               onInput={(e: any) => editor.commands.setColor(e.target.value)}
               value={editor.getAttributes('textStyle').color}
-              title='Color'
+              title="Color"
             />
           </div>
 
           {/* Headings */}
-          <div className='flex items-center justify-end flex-wrap gap-x-2 gap-y-1'>
+          <div className="flex flex-wrap items-center justify-end gap-x-2 gap-y-1">
             {Array.from({ length: 6 }, (_, index) => (
               <button
                 onClick={() => editor.commands.toggleHeading({ level: (index + 1) as any })}
                 className={`${
                   editor.isActive('heading', { level: index + 1 })
-                    ? 'bg-dark-100 text-white font-semibold'
+                    ? 'bg-dark-100 font-semibold text-white'
                     : ''
-                } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
+                } flex h-[32px] w-[32px] items-center justify-center rounded-md border border-dark shadow-md`}
                 title={`Heading ${index + 1}`}
                 key={index}
               >
@@ -627,16 +627,16 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
         </div>
 
         {/* Nodes & Alignments */}
-        <div className='flex justify-between gap-4'>
+        <div className="flex justify-between gap-4">
           {/* Nodes */}
-          <div className='flex items-center flex-wrap gap-x-2 gap-y-1'>
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
             {/* Block Quote */}
             <button
               onClick={() => editor.commands.toggleBlockquote()}
               className={`${
                 editor.isActive('blockquote') ? 'bg-dark-100 text-white' : ''
-              } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
-              title='Block Quote'
+              } flex h-[32px] w-[32px] items-center justify-center rounded-md border border-dark shadow-md`}
+              title="Block Quote"
             >
               <FaQuoteRight />
             </button>
@@ -646,8 +646,8 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
               onClick={() => editor.commands.toggleBulletList()}
               className={`${
                 editor.isActive('bulletList') ? 'bg-dark-100 text-white' : ''
-              } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
-              title='Bullet List'
+              } flex h-[32px] w-[32px] items-center justify-center rounded-md border border-dark shadow-md`}
+              title="Bullet List"
             >
               <FaListUl />
             </button>
@@ -657,8 +657,8 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
               onClick={() => editor.commands.toggleOrderedList()}
               className={`${
                 editor.isActive('orderedList') ? 'bg-dark-100 text-white' : ''
-              } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
-              title='Order List'
+              } flex h-[32px] w-[32px] items-center justify-center rounded-md border border-dark shadow-md`}
+              title="Order List"
             >
               <FaListOl />
             </button>
@@ -666,31 +666,34 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
             {/* Horizontal Rule */}
             <button
               onClick={() => editor.commands.setHorizontalRule()}
-              className={`border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
-              title='Horizontal Rule'
+              className={`flex h-[32px] w-[32px] items-center justify-center rounded-md border border-dark shadow-md`}
+              title="Horizontal Rule"
             >
               ---
             </button>
 
             {/* Image */}
             <div
-              className={`border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center`}
-              title='Youtube'
+              className={`flex h-[32px] items-center justify-center rounded-md border border-dark shadow-md`}
+              title="Youtube"
             >
-              <button className='px-2' onClick={addImage}>
+              <button
+                className="px-2"
+                onClick={addImage}
+              >
                 <FaImage />
               </button>
               <input
-                id='width'
-                type='text'
-                className='w-[52px] h-full bg-transparent text-xs font-semibold border-l-2 border-dark rounded-sm px-1.5 outline-none'
+                id="width"
+                type="text"
+                className="h-full w-[52px] rounded-sm border-l-2 border-dark bg-transparent px-1.5 text-xs font-semibold outline-none"
                 value={imageWidth}
                 onChange={(e: any) => setImageWidth(e.target.value)}
               />
               <input
-                id='width'
-                type='text'
-                className='w-[52px] h-full bg-transparent text-xs font-semibold border-l-2 border-dark rounded-sm px-1.5 outline-none'
+                id="width"
+                type="text"
+                className="h-full w-[52px] rounded-sm border-l-2 border-dark bg-transparent px-1.5 text-xs font-semibold outline-none"
                 value={imageHeight}
                 onChange={(e: any) => setImageHeight(e.target.value)}
               />
@@ -698,23 +701,26 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
 
             {/* Youtube */}
             <div
-              className={`border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center`}
-              title='Youtube'
+              className={`flex h-[32px] items-center justify-center rounded-md border border-dark shadow-md`}
+              title="Youtube"
             >
-              <button className='px-2' onClick={addYoutubeVideo}>
+              <button
+                className="px-2"
+                onClick={addYoutubeVideo}
+              >
                 <FaYoutube />
               </button>
               <input
-                id='width'
-                type='text'
-                className='w-[52px] h-full bg-transparent text-xs font-semibold border-l-2 border-dark rounded-sm px-1.5 outline-none'
+                id="width"
+                type="text"
+                className="h-full w-[52px] rounded-sm border-l-2 border-dark bg-transparent px-1.5 text-xs font-semibold outline-none"
                 value={youtubeWidth}
                 onChange={(e: any) => setYoutubeWidth(e.target.value)}
               />
               <input
-                id='width'
-                type='text'
-                className='w-[52px] h-full bg-transparent text-xs font-semibold border-l-2 border-dark rounded-sm px-1.5 outline-none'
+                id="width"
+                type="text"
+                className="h-full w-[52px] rounded-sm border-l-2 border-dark bg-transparent px-1.5 text-xs font-semibold outline-none"
                 value={youtubeHeight}
                 onChange={(e: any) => setYoutubeHeight(e.target.value)}
               />
@@ -722,24 +728,27 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
 
             {/* Iframe */}
             <div
-              className={`border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center`}
-              title='Iframe'
+              className={`flex h-[32px] items-center justify-center rounded-md border border-dark shadow-md`}
+              title="Iframe"
             >
-              <button className='px-2' onClick={addIframe}>
+              <button
+                className="px-2"
+                onClick={addIframe}
+              >
                 <SiFramer />
               </button>
 
               <input
-                id='width'
-                type='text'
-                className='w-[52px] h-full bg-transparent text-xs font-semibold border-l-2 border-dark rounded-sm px-1.5 outline-none'
+                id="width"
+                type="text"
+                className="h-full w-[52px] rounded-sm border-l-2 border-dark bg-transparent px-1.5 text-xs font-semibold outline-none"
                 value={iframeWidth}
                 onChange={(e: any) => setIframeWidth(e.target.value)}
               />
               <input
-                id='width'
-                type='text'
-                className='w-[52px] h-full bg-transparent text-xs font-semibold border-l-2 border-dark rounded-sm px-1.5 outline-none'
+                id="width"
+                type="text"
+                className="h-full w-[52px] rounded-sm border-l-2 border-dark bg-transparent px-1.5 text-xs font-semibold outline-none"
                 value={iframeHeight}
                 onChange={(e: any) => setIframeHeight(e.target.value)}
               />
@@ -747,14 +756,14 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
           </div>
 
           {/* Alignment */}
-          <div className='flex justify-end flex-wrap gap-x-2 gap-y-1'>
+          <div className="flex flex-wrap justify-end gap-x-2 gap-y-1">
             {/* Left */}
             <button
               onClick={() => editor.commands.setTextAlign('left')}
               className={`${
                 editor.isActive('left') ? 'bg-dark-100 text-white' : ''
-              } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
-              title='Left'
+              } flex h-[32px] w-[32px] items-center justify-center rounded-md border border-dark shadow-md`}
+              title="Left"
             >
               <FaAlignLeft />
             </button>
@@ -764,8 +773,8 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
               onClick={() => editor.commands.setTextAlign('center')}
               className={`${
                 editor.isActive('center') ? 'bg-dark-100 text-white' : ''
-              } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
-              title='Center'
+              } flex h-[32px] w-[32px] items-center justify-center rounded-md border border-dark shadow-md`}
+              title="Center"
             >
               <FaAlignCenter />
             </button>
@@ -775,8 +784,8 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
               onClick={() => editor.commands.setTextAlign('right')}
               className={`${
                 editor.isActive('right') ? 'bg-dark-100 text-white' : ''
-              } border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center`}
-              title='Right'
+              } flex h-[32px] w-[32px] items-center justify-center rounded-md border border-dark shadow-md`}
+              title="Right"
             >
               <FaAlignRight />
             </button>
@@ -784,8 +793,8 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
             {/* Justify */}
             <button
               onClick={() => editor.commands.setTextAlign('justify')}
-              className='border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center'
-              title='Justify'
+              className="flex h-[32px] w-[32px] items-center justify-center rounded-md border border-dark shadow-md"
+              title="Justify"
             >
               <FaAlignJustify />
             </button>
@@ -793,8 +802,8 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
             {/* Undo */}
             <button
               onClick={() => editor.commands.undo()}
-              className='border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center'
-              title='Undo'
+              className="flex h-[32px] w-[32px] items-center justify-center rounded-md border border-dark shadow-md"
+              title="Undo"
             >
               <FaUndo />
             </button>
@@ -802,8 +811,8 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
             {/* Redo */}
             <button
               onClick={() => editor.commands.redo()}
-              className='border border-dark rounded-md shadow-md h-[32px] w-[32px] flex items-center justify-center'
-              title='Redo'
+              className="flex h-[32px] w-[32px] items-center justify-center rounded-md border border-dark shadow-md"
+              title="Redo"
             >
               <FaRedo />
             </button>
@@ -811,9 +820,9 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
         </div>
 
         {/* Table */}
-        <div className='rounded-lg shadow-lg border border-dark'>
+        <div className="rounded-lg border border-dark shadow-lg">
           <button
-            className={`flex w-full items-center justify-center px-3 py-3 group border-b rounded-b-lg delay-300 trans-200 ${
+            className={`trans-200 group flex w-full items-center justify-center rounded-b-lg border-b px-3 py-3 delay-300 ${
               openTableControls ? 'border-dark' : 'border-transparent'
             }`}
             onClick={() => setOpenTableControls(prev => !prev)}
@@ -824,113 +833,113 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
           {/* Insert Table */}
           <div
             className={`${
-              openTableControls ? 'max-h-[200px] py-2 overflow-y-auto' : 'max-h-0 py-0 overflow-hidden'
-            } trans-300 flex items-center flex-wrap gap-x-2 gap-y-1 px-2`}
+              openTableControls ? 'max-h-[200px] overflow-y-auto py-2' : 'max-h-0 overflow-hidden py-0'
+            } trans-300 flex flex-wrap items-center gap-x-2 gap-y-1 px-2`}
           >
             <button
-              className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+              className="flex h-[32px] items-center justify-center rounded-md border border-dark px-1.5 text-xs font-semibold shadow-md"
               onClick={() => editor.commands.insertTable({ rows: 3, cols: 3, withHeaderRow: true })}
             >
               Insert table
             </button>
             <button
-              className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+              className="flex h-[32px] items-center justify-center rounded-md border border-dark px-1.5 text-xs font-semibold shadow-md"
               onClick={() => editor.commands.addColumnBefore()}
             >
               Add column before
             </button>
             <button
-              className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+              className="flex h-[32px] items-center justify-center rounded-md border border-dark px-1.5 text-xs font-semibold shadow-md"
               onClick={() => editor.commands.addColumnAfter()}
             >
               Add column after
             </button>
             <button
-              className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+              className="flex h-[32px] items-center justify-center rounded-md border border-dark px-1.5 text-xs font-semibold shadow-md"
               onClick={() => editor.commands.deleteColumn()}
             >
               Delete column
             </button>
             <button
-              className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+              className="flex h-[32px] items-center justify-center rounded-md border border-dark px-1.5 text-xs font-semibold shadow-md"
               onClick={() => editor.commands.addRowBefore()}
             >
               Add row before
             </button>
             <button
-              className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+              className="flex h-[32px] items-center justify-center rounded-md border border-dark px-1.5 text-xs font-semibold shadow-md"
               onClick={() => editor.commands.addRowAfter()}
             >
               Add row after
             </button>
             <button
-              className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+              className="flex h-[32px] items-center justify-center rounded-md border border-dark px-1.5 text-xs font-semibold shadow-md"
               onClick={() => editor.commands.deleteRow()}
             >
               Delete row
             </button>
             <button
-              className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+              className="flex h-[32px] items-center justify-center rounded-md border border-dark px-1.5 text-xs font-semibold shadow-md"
               onClick={() => editor.commands.deleteTable()}
             >
               Delete table
             </button>
             <button
-              className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+              className="flex h-[32px] items-center justify-center rounded-md border border-dark px-1.5 text-xs font-semibold shadow-md"
               onClick={() => editor.commands.mergeCells()}
             >
               Merge cells
             </button>
             <button
-              className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+              className="flex h-[32px] items-center justify-center rounded-md border border-dark px-1.5 text-xs font-semibold shadow-md"
               onClick={() => editor.commands.splitCell()}
             >
               Split cell
             </button>
             <button
-              className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+              className="flex h-[32px] items-center justify-center rounded-md border border-dark px-1.5 text-xs font-semibold shadow-md"
               onClick={() => editor.commands.toggleHeaderColumn()}
             >
               Toggle header column
             </button>
             <button
-              className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+              className="flex h-[32px] items-center justify-center rounded-md border border-dark px-1.5 text-xs font-semibold shadow-md"
               onClick={() => editor.commands.toggleHeaderRow()}
             >
               Toggle header row
             </button>
             <button
-              className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+              className="flex h-[32px] items-center justify-center rounded-md border border-dark px-1.5 text-xs font-semibold shadow-md"
               onClick={() => editor.commands.toggleHeaderCell()}
             >
               Toggle header cell
             </button>
             <button
-              className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+              className="flex h-[32px] items-center justify-center rounded-md border border-dark px-1.5 text-xs font-semibold shadow-md"
               onClick={() => editor.commands.mergeOrSplit()}
             >
               Merge or split
             </button>
             <button
-              className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+              className="flex h-[32px] items-center justify-center rounded-md border border-dark px-1.5 text-xs font-semibold shadow-md"
               onClick={() => editor.commands.setCellAttribute('colspan', 2)}
             >
               Set cell attribute
             </button>
             <button
-              className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+              className="flex h-[32px] items-center justify-center rounded-md border border-dark px-1.5 text-xs font-semibold shadow-md"
               onClick={() => editor.commands.fixTables()}
             >
               Fix tables
             </button>
             <button
-              className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+              className="flex h-[32px] items-center justify-center rounded-md border border-dark px-1.5 text-xs font-semibold shadow-md"
               onClick={() => editor.commands.goToNextCell()}
             >
               Go to next cell
             </button>
             <button
-              className='border border-dark rounded-md shadow-md h-[32px] flex items-center justify-center px-1.5 font-semibold text-xs'
+              className="flex h-[32px] items-center justify-center rounded-md border border-dark px-1.5 text-xs font-semibold shadow-md"
               onClick={() => editor.commands.goToPreviousCell()}
             >
               Go to previous cell
@@ -942,23 +951,37 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
       <EditorContent editor={editor} />
 
       <div
-        className={`flex items-center justify-end text-xs gap-2 mt-2 ${
+        className={`mt-2 flex items-center justify-end gap-2 text-xs ${
           editor.storage.characterCount.characters() >= limit ? 'text-yellow-500' : ''
         }`}
       >
-        <svg height='20' width='20' viewBox='0 0 20 20'>
-          <circle r='10' cx='10' cy='10' fill='#e9ecef' />
+        <svg
+          height="20"
+          width="20"
+          viewBox="0 0 20 20"
+        >
           <circle
-            r='5'
-            cx='10'
-            cy='10'
-            fill='transparent'
-            stroke='currentColor'
-            strokeWidth='10'
-            strokeDasharray={`calc(${percentage} * 31.4 / 100) 31.4`}
-            transform='rotate(-90) translate(-20)'
+            r="10"
+            cx="10"
+            cy="10"
+            fill="#e9ecef"
           />
-          <circle r='6' cx='10' cy='10' fill='white' />
+          <circle
+            r="5"
+            cx="10"
+            cy="10"
+            fill="transparent"
+            stroke="currentColor"
+            strokeWidth="10"
+            strokeDasharray={`calc(${percentage} * 31.4 / 100) 31.4`}
+            transform="rotate(-90) translate(-20)"
+          />
+          <circle
+            r="6"
+            cx="10"
+            cy="10"
+            fill="white"
+          />
         </svg>
         {editor.storage.characterCount.characters()} / {limit} characters
         <br />
@@ -968,4 +991,4 @@ const TextEditor = ({ content = '', onChange, className = '' }: TextEditorProps)
   )
 }
 
-export default TextEditor
+export default memo(TextEditor)

@@ -25,15 +25,18 @@ function BreadcrumbBanner({ title, description, preLink = [], className = '' }: 
 
   return (
     <div
-      className={`relative flex flex-col justify-center items-center p-3 overflow-y-auto bg-neutral-950 bg-opacity-50 mx-auto overflow-hidden ${className}`}
+      className={`relative mx-auto flex flex-col items-center justify-center overflow-hidden overflow-y-auto bg-neutral-950 bg-opacity-50 p-3 ${className}`}
     >
-      <div className='absolute inset-0 w-full h-full bg-slate-900 z-20 [mask-image:radial-gradient(transparent,white)] pointer-events-none' />
+      <div className="pointer-events-none absolute inset-0 z-20 h-full w-full bg-slate-900 [mask-image:radial-gradient(transparent,white)]" />
       <BeamsBackground />
 
-      <div className='flex items-center flex-wrap justify-center gap-x-3 gap-y-1 relative z-20 text-slate-400 text-nowrap'>
+      <div className="relative z-20 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-nowrap text-slate-400">
         {preLink.map((link, index) => (
           <Fragment key={index}>
-            <Link href={link.href} className='hover:text-primary trans-200 hover:drop-shadow-md'>
+            <Link
+              href={link.href}
+              className="trans-200 hover:text-primary hover:drop-shadow-md"
+            >
               {link.label}
             </Link>
             {index < preLink.length - 1 && <FaAngleRight size={14} />}
@@ -44,7 +47,7 @@ function BreadcrumbBanner({ title, description, preLink = [], className = '' }: 
             {index === 0 && <FaAngleRight size={14} />}
             <Link
               href={`/categories/${breadcrumbs.slice(0, index + 1).join('/')}`}
-              className='hover:text-primary trans-200 hover:drop-shadow-md'
+              className="trans-200 hover:text-primary hover:drop-shadow-md"
             >
               {breadcrumb}
             </Link>
@@ -58,11 +61,11 @@ function BreadcrumbBanner({ title, description, preLink = [], className = '' }: 
       <h2
         className={`text-light ${
           description ? 'text-2xl' : 'text-4xl'
-        } md:text-6xl mt-2 font-bold text-center relative z-20`}
+        } relative z-20 mt-2 text-center font-bold md:text-6xl`}
       >
         {title}
       </h2>
-      <p className='text-light text-sm md:text-base max-w-xl mt-6 text-center relative z-20'>
+      <p className="relative z-20 mt-6 max-w-xl text-center text-sm text-light md:text-base">
         {description}
       </p>
     </div>

@@ -1,7 +1,15 @@
 'use client'
 
 import { cn } from '@/utils/cn'
-import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
+import React, {
+  createContext,
+  ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 
 const MouseEnterContext = createContext<
   [boolean, React.Dispatch<React.SetStateAction<boolean>>] | undefined
@@ -12,7 +20,7 @@ export const CardContainer = ({
   className,
   containerClassName,
 }: {
-  children?: React.ReactNode
+  children?: ReactNode
   className?: string
   containerClassName?: string
 }) => {
@@ -40,7 +48,7 @@ export const CardContainer = ({
   return (
     <MouseEnterContext.Provider value={[isMouseEntered, setIsMouseEntered]}>
       <div
-        className={cn('flex justify-center h-full', containerClassName)}
+        className={cn('flex h-full justify-center', containerClassName)}
         style={{
           perspective: '1000px',
         }}
@@ -51,7 +59,7 @@ export const CardContainer = ({
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
           className={cn(
-            'flex items-center justify-center relative transition-all duration-200 ease-linear',
+            'relative flex items-center justify-center transition-all duration-200 ease-linear',
             className
           )}
           style={{
@@ -113,7 +121,11 @@ export const CardItem = ({
   }, [isMouseEntered, handleAnimations])
 
   return (
-    <Tag ref={ref} className={cn('w-fit transition duration-200 ease-linear', className)} {...rest}>
+    <Tag
+      ref={ref}
+      className={cn('w-fit transition duration-200 ease-linear', className)}
+      {...rest}
+    >
       {children}
     </Tag>
   )

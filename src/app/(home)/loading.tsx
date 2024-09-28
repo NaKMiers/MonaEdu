@@ -13,7 +13,7 @@ import Image from 'next/image'
 
 async function Loading() {
   return (
-    <div className='min-h-screen'>
+    <div className="min-h-screen">
       {/* Banner */}
       <BannerX />
 
@@ -50,9 +50,9 @@ async function Loading() {
 
       <Divider size={30} />
 
-      <div className='max-w-1200 mx-auto w-full px-21 flex flex-col items-center'>
+      <div className="mx-auto flex w-full max-w-1200 flex-col items-center px-21">
         <HeadingX />
-        <p className='bg-slate-300 animate-pulse rounded-lg w-full h-4 max-w-[450px] mt-8' />
+        <p className="mt-8 h-4 w-full max-w-[450px] animate-pulse rounded-lg bg-slate-300" />
       </div>
 
       <Divider size={10} />
@@ -64,11 +64,11 @@ async function Loading() {
 
       {/* Let Buy Courses Of Author Banner */}
       <Image
-        className='w-full h-full object-contain'
-        src='/images/let-buy-courses-of-authors.png'
+        className="h-full w-full object-contain"
+        src="/images/let-buy-courses-of-authors.png"
         width={1920}
         height={960}
-        alt='let-buy-courses-of-authors'
+        alt="let-buy-courses-of-authors"
         draggable={false}
       />
 

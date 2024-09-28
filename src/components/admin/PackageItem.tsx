@@ -1,15 +1,14 @@
 import { IPackage } from '@/models/PackageModel'
 import { deletePackagesApi } from '@/requests'
 import { formatPrice } from '@/utils/number'
-import { Dispatch, SetStateAction, useCallback, useState } from 'react'
+import { Dispatch, memo, SetStateAction, useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
 import { FaTrash } from 'react-icons/fa'
 import { MdEdit } from 'react-icons/md'
 import { RiDonutChartFill } from 'react-icons/ri'
 import ConfirmDialog from '../dialogs/ConfirmDialog'
-import PackageModal from './PackageModal'
 import Divider from '../Divider'
-import { formatTime } from '@/utils/time'
+import PackageModal from './PackageModal'
 
 interface PackageItemProps {
   pkg: IPackage
@@ -49,69 +48,93 @@ function PackageItem({ pkg, packages, setPackages, className = '' }: PackageItem
   return (
     <>
       <div
-        className={`relative flex gap-1.5 border-2 border-dark rounded-lg shadow-md p-2 text-sm font-body tracking-wider ${className}`}
+        className={`relative flex gap-1.5 rounded-lg border-2 border-dark p-2 font-body text-sm tracking-wider shadow-md ${className}`}
       >
-        <div className='flex-1'>
-          <p className='font-semibold text-base flex items-center flex-wrap gap-1.5'>
+        <div className="flex-1">
+          <p className="flex flex-wrap items-center gap-1.5 text-base font-semibold">
             {pkg.title}{' '}
             <span
-              className={`inline-block w-3 h-3 rounded-full ${
+              className={`inline-block h-3 w-3 rounded-full ${
                 pkg.active ? 'bg-green-400' : 'bg-slate-400'
               }`}
               title={pkg.active ? 'active' : 'de-active'}
             />
           </p>
-          <p className='text-xs text-ellipsis line-clamp-2 max-w-full'>{pkg.description}</p>
-          <div className='flex items-center flex-wrap gap-2'>
-            <p className='font-semibold text-xl text-green-500'>{formatPrice(pkg.price)}</p>
-            <p className='line-through text-slate-500 text-sm'>{formatPrice(pkg.oldPrice)}</p>
+          <p className="line-clamp-2 max-w-full text-ellipsis text-xs">{pkg.description}</p>
+          <div className="flex flex-wrap items-center gap-2">
+            <p className="text-xl font-semibold text-green-500">{formatPrice(pkg.price)}</p>
+            <p className="text-sm text-slate-500 line-through">{formatPrice(pkg.oldPrice)}</p>
           </div>
-          <p className='text-xs' title='Credit'>
-            Joined: <span className='font-semibold text-sky-500'>{pkg.joined}</span>
+          <p
+            className="text-xs"
+            title="Credit"
+          >
+            Joined: <span className="font-semibold text-sky-500">{pkg.joined}</span>
           </p>
           {pkg.credit && (
-            <p className='text-xs' title='Credit'>
-              Credit: <span className='font-semibold text-violet-500'>{pkg.credit}</span>
+            <p
+              className="text-xs"
+              title="Credit"
+            >
+              Credit: <span className="font-semibold text-violet-500">{pkg.credit}</span>
             </p>
           )}
           {pkg.days && (
-            <p className='text-xs' title='Credit'>
-              Days: <span className='font-semibold text-orange-500'>{pkg.days}</span>
+            <p
+              className="text-xs"
+              title="Credit"
+            >
+              Days: <span className="font-semibold text-orange-500">{pkg.days}</span>
             </p>
           )}
           {pkg.maxPrice && (
-            <p className='text-xs' title='Credit'>
-              Max Price: <span className='font-semibold text-rose-500'>{formatPrice(pkg.maxPrice)}</span>
+            <p
+              className="text-xs"
+              title="Credit"
+            >
+              Max Price: <span className="font-semibold text-rose-500">{formatPrice(pkg.maxPrice)}</span>
             </p>
           )}
 
-          <Divider size={1} border />
+          <Divider
+            size={1}
+            border
+          />
 
-          <ul className='max-h-[100px] overflow-y-auto'>
+          <ul className="max-h-[100px] overflow-y-auto">
             {pkg.features.map((feature, index) => (
               <li key={index}>{feature}</li>
             ))}
           </ul>
         </div>
 
-        <div className='flex flex-col gap-1.5'>
+        <div className="flex flex-col gap-1.5">
           <button
             onClick={e => {
               e.stopPropagation()
               setOpenEditPackageModal(true)
             }}
-            className='rounded-md p-1.5 group bg-sky-500 hover:bg-primary trans-200'
+            className="trans-200 group rounded-md bg-sky-500 p-1.5 hover:bg-primary"
           >
-            <MdEdit size={15} className='wiggle text-light group-hover:text-dark trans-200' />
+            <MdEdit
+              size={15}
+              className="wiggle trans-200 text-light group-hover:text-dark"
+            />
           </button>
           <button
-            className='rounded-md p-1.5 group bg-dark-100 hover:bg-primary trans-200'
+            className="trans-200 group rounded-md bg-dark-100 p-1.5 hover:bg-primary"
             onClick={() => setIsOpenConfirmModal(true)}
           >
             {loading ? (
-              <RiDonutChartFill size={18} className='animate-spin text-slate-300' />
+              <RiDonutChartFill
+                size={18}
+                className="animate-spin text-slate-300"
+              />
             ) : (
-              <FaTrash size={14} className='wiggle text-light group-hover:text-dark trans-200' />
+              <FaTrash
+                size={14}
+                className="wiggle trans-200 text-light group-hover:text-dark"
+              />
             )}
           </button>
         </div>
@@ -132,8 +155,8 @@ function PackageItem({ pkg, packages, setPackages, className = '' }: PackageItem
       <ConfirmDialog
         open={isOpenConfirmModal}
         setOpen={setIsOpenConfirmModal}
-        title='Delete Package'
-        content='Are you sure that you want to delete this package?'
+        title="Delete Package"
+        content="Are you sure that you want to delete this package?"
         onAccept={() => handleDeletePackages([pkg._id])}
         isLoading={loading}
       />
@@ -141,4 +164,4 @@ function PackageItem({ pkg, packages, setPackages, className = '' }: PackageItem
   )
 }
 
-export default PackageItem
+export default memo(PackageItem)

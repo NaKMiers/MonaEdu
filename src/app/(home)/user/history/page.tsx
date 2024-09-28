@@ -163,65 +163,71 @@ function HistoryPage({ searchParams }: { searchParams?: { [key: string]: string[
   }, [handleFilter])
 
   return (
-    <div className='w-full py-21'>
+    <div className="w-full py-21">
       {/* Background */}
-      <div className='fixed z-[-1] top-0 bottom-0 left-0 right-0 grid grid-cols-12'>
-        <div className='col-span-3 bg-dark-100' />
-        <div className='col-span-9 bg-slate-300' />
+      <div className="fixed bottom-0 left-0 right-0 top-0 z-[-1] grid grid-cols-12">
+        <div className="col-span-3 bg-dark-100" />
+        <div className="col-span-9 bg-slate-300" />
       </div>
 
-      <div className='min-h-screen flex'>
-        <div className='relative grid grid-cols-12 w-full'>
+      <div className="flex min-h-screen">
+        <div className="relative grid w-full grid-cols-12">
           {/* MARK: Filter & Search */}
           <div
             className={`${
               openSidebar ? '' : '-translate-x-full'
-            } md:translate-x-0 trans-300 absolute z-10 top-0 left-0 w-full h-full md:static md:col-span-3 px-21/2 md:pl-21 md:pr-21/2`}
+            } trans-300 absolute left-0 top-0 z-10 h-full w-full px-21/2 md:static md:col-span-3 md:translate-x-0 md:pl-21 md:pr-21/2`}
           >
-            <div className='bg-white rounded-lg shadow-lg w-full h-full p-3 flex flex-col gap-6'>
+            <div className="flex h-full w-full flex-col gap-6 rounded-lg bg-white p-3 shadow-lg">
               {/* Search */}
-              <div className='flex items-center gap-4'>
-                <div className='relative group/btn w-full h-[42px] rounded-3xl bg-neutral-800 shadow-lg overflow-hidden'>
+              <div className="flex items-center gap-4">
+                <div className="group/btn relative h-[42px] w-full overflow-hidden rounded-3xl bg-neutral-800 shadow-lg">
                   <input
-                    id='search'
-                    className='h-full w-full text-sm bg-transparent text-slate-300 outline-none pl-4 pr-[42px] py-2'
+                    id="search"
+                    className="h-full w-full bg-transparent py-2 pl-4 pr-[42px] text-sm text-slate-300 outline-none"
                     disabled={false}
-                    type='text'
+                    type="text"
                     value={search}
                     onChange={e => setSearch(e.target.value)}
-                    placeholder='Bạn muốn học gì...'
+                    placeholder="Bạn muốn học gì..."
                   />
                   <BottomGradient />
                   <button
-                    className='absolute top-1/2 right-2 -translate-y-1/2 group text-slate-400 p-1.5'
+                    className="group absolute right-2 top-1/2 -translate-y-1/2 p-1.5 text-slate-400"
                     onClick={() => setSearch('')}
                   >
-                    <FaDeleteLeft size={18} className='wiggle' />
+                    <FaDeleteLeft
+                      size={18}
+                      className="wiggle"
+                    />
                   </button>
                 </div>
 
                 <button
-                  className={`md:hidden group rounded-lg py-1.5 trans-300`}
+                  className={`trans-300 group rounded-lg py-1.5 md:hidden`}
                   onClick={() => setOpenSidebar(!openSidebar)}
                 >
-                  <BsLayoutSidebarInset size={20} className='wiggle' />
+                  <BsLayoutSidebarInset
+                    size={20}
+                    className="wiggle"
+                  />
                 </button>
               </div>
 
-              <div className='flex flex-col'>
-                <label htmlFor='total'>
-                  <span className='font-bold'>Tổng: </span>
+              <div className="flex flex-col">
+                <label htmlFor="total">
+                  <span className="font-bold">Tổng: </span>
                   <span>{formatPrice(total[0])}</span> - <span>{formatPrice(total[1])}</span>
                 </label>
-                <div className='px-3'>
+                <div className="px-3">
                   <Slider
                     value={total}
                     min={minTotal}
                     max={maxTotal}
                     step={1}
-                    className='w-full -mb-1.5'
+                    className="-mb-1.5 w-full"
                     onChange={(_: any, newValue: number | number[]) => setTotal(newValue as number[])}
-                    valueLabelDisplay='auto'
+                    valueLabelDisplay="auto"
                     style={{ color: '#333' }}
                   />
                 </div>
@@ -229,14 +235,14 @@ function HistoryPage({ searchParams }: { searchParams?: { [key: string]: string[
 
               {/* From To */}
               <Input
-                id='from'
-                label='Từ ngày'
+                id="from"
+                label="Từ ngày"
                 disabled={false}
                 register={register}
                 errors={errors}
-                type='date'
+                type="date"
                 icon={FaCalendar}
-                className='w-full'
+                className="w-full"
                 onFocus={() => clearErrors('from')}
                 onChange={(e: any) => {
                   setFrom(e.target.value)
@@ -244,27 +250,27 @@ function HistoryPage({ searchParams }: { searchParams?: { [key: string]: string[
               />
 
               <Input
-                id='to'
-                label='Đến ngày'
+                id="to"
+                label="Đến ngày"
                 disabled={false}
                 register={register}
                 errors={errors}
-                type='date'
+                type="date"
                 icon={FaCalendar}
-                className='w-full'
+                className="w-full"
                 onFocus={() => clearErrors('to')}
                 onChange={(e: any) => setTo(e.target.value)}
               />
 
               {/* Sort */}
               <Input
-                id='sort'
-                label='Sắp xếp'
+                id="sort"
+                label="Sắp xếp"
                 disabled={false}
                 register={register}
                 errors={errors}
                 icon={FaSort}
-                type='select'
+                type="select"
                 onFocus={() => clearErrors('')}
                 options={[
                   {
@@ -283,106 +289,127 @@ function HistoryPage({ searchParams }: { searchParams?: { [key: string]: string[
           </div>
 
           {/* MARK: History List */}
-          <div className='col-span-12 md:col-span-9 px-21/2 md:pr-21 md:pl-21/2'>
-            <div className='flex flex-col bg-white rounded-lg shadow-lg w-full h-full'>
-              <div className='flex items-center justify-between md:justify-end flex-wrap gap-4'>
+          <div className="col-span-12 px-21/2 md:col-span-9 md:pl-21/2 md:pr-21">
+            <div className="flex h-full w-full flex-col rounded-lg bg-white shadow-lg">
+              <div className="flex flex-wrap items-center justify-between gap-4 md:justify-end">
                 <button
-                  className={`md:hidden flex-shrink-0 overflow-hidden group rounded-lg trans-300 p-3`}
+                  className={`trans-300 group flex-shrink-0 overflow-hidden rounded-lg p-3 md:hidden`}
                   onClick={() => setOpenSidebar(!openSidebar)}
                 >
-                  <BsLayoutSidebarInsetReverse size={20} className='wiggle' />
+                  <BsLayoutSidebarInsetReverse
+                    size={20}
+                    className="wiggle"
+                  />
                 </button>
-                <div className='p-3 text-sm text-right text-dark font-semibold'>
+                <div className="p-3 text-right text-sm font-semibold text-dark">
                   {Math.min(itemPerPage * +(searchParams?.page || 1), amount)}/{amount} đơn hàng
                 </div>
               </div>
 
               {orders.map(order => (
-                <div className='p-4 border-b border-dark' key={order._id}>
-                  <div className='flex justify-between flex-wrap gap-x-3 text-sm'>
-                    <p className='flex items-center gap-1.5 leading-7 text-yellow-500'>
-                      <FaSlackHash size={16} className='-mr-1' />
-                      <span className='font-semibold'>Mã đơn hàng: </span>
-                      <span className='text-slate-700'>{order.code}</span>
+                <div
+                  className="border-b border-dark p-4"
+                  key={order._id}
+                >
+                  <div className="flex flex-wrap justify-between gap-x-3 text-sm">
+                    <p className="flex items-center gap-1.5 leading-7 text-yellow-500">
+                      <FaSlackHash
+                        size={16}
+                        className="-mr-1"
+                      />
+                      <span className="font-semibold">Mã đơn hàng: </span>
+                      <span className="text-slate-700">{order.code}</span>
                     </p>
-                    <p className='flex items-center gap-1.5 leading-7'>
-                      <TbStatusChange size={16} className='-mr-1' />
-                      <span className='font-semibold'>Trạng thái: </span>
+                    <p className="flex items-center gap-1.5 leading-7">
+                      <TbStatusChange
+                        size={16}
+                        className="-mr-1"
+                      />
+                      <span className="font-semibold">Trạng thái: </span>
                       <span
                         className={`${
                           order.status === 'pending'
                             ? 'text-yellow-500'
                             : order.status === 'done'
-                            ? 'text-green-500'
-                            : 'text-slate-300'
+                              ? 'text-green-500'
+                              : 'text-slate-300'
                         }`}
                       >
                         {order.status === 'pending'
                           ? 'Đang xử lí'
                           : order.status === 'done'
-                          ? 'Hoàn tất'
-                          : 'Đã hủy'}
+                            ? 'Hoàn tất'
+                            : 'Đã hủy'}
                       </span>
                     </p>
                   </div>
-                  <div className='flex justify-between flex-wrap gap-x-3 text-sm'>
-                    <p className='flex items-center gap-1.5 leading-7 text-sky-500'>
-                      <FaDollarSign size={16} className='-mr-1' />
-                      <span className='font-semibold'>Tổng: </span>
-                      <span className='text-slate-700'>{formatPrice(order.total)}</span>
+                  <div className="flex flex-wrap justify-between gap-x-3 text-sm">
+                    <p className="flex items-center gap-1.5 leading-7 text-sky-500">
+                      <FaDollarSign
+                        size={16}
+                        className="-mr-1"
+                      />
+                      <span className="font-semibold">Tổng: </span>
+                      <span className="text-slate-700">{formatPrice(order.total)}</span>
                     </p>
-                    <p className='flex items-center gap-1.5 leading-7 text-slate-500'>
+                    <p className="flex items-center gap-1.5 leading-7 text-slate-500">
                       <MdDateRange size={16} />
-                      <span className='font-semibold'>Ngày mua hàng: </span>
+                      <span className="font-semibold">Ngày mua hàng: </span>
                       <span>{moment(order.createdAt).format('DD/MM/YYYY HH:mm')}</span>
                     </p>
                   </div>
                   {order.voucher && order.discount && (
-                    <div className='flex justify-between flex-wrap gap-x-3 text-sm mt-2'>
-                      <p className='flex items-center gap-1.5 leading-7 text-green-500'>
+                    <div className="mt-2 flex flex-wrap justify-between gap-x-3 text-sm">
+                      <p className="flex items-center gap-1.5 leading-7 text-green-500">
                         <TbRosetteDiscountCheckFilled size={16} />
-                        <span className='font-semibold'>Giảm giá: </span>
-                        <span className='text-slate-700'>{formatPrice(order.discount)}</span>
+                        <span className="font-semibold">Giảm giá: </span>
+                        <span className="text-slate-700">{formatPrice(order.discount)}</span>
                       </p>
-                      <p className='flex items-center gap-1.5 leading-7 text-purple-500'>
+                      <p className="flex items-center gap-1.5 leading-7 text-purple-500">
                         <BiSolidDiscount size={16} />
-                        <span className='font-semibold'>Voucher: </span>
+                        <span className="font-semibold">Voucher: </span>
                         <span>{(order.voucher as IVoucher)?.code}</span>
                       </p>
                     </div>
                   )}
                   {curUser && curUser.email !== order.email && (
-                    <div className='flex justify-between flex-wrap gap-x-3 text-sm mt-2'>
-                      <p className='flex items-center gap-1.5 leading-7 text-rose-400'>
+                    <div className="mt-2 flex flex-wrap justify-between gap-x-3 text-sm">
+                      <p className="flex items-center gap-1.5 leading-7 text-rose-400">
                         <FaGift size={16} />
-                        <span className='font-semibold'>Tặng: </span>
-                        <span className='text-slate-700'>{order.email}</span>
+                        <span className="font-semibold">Tặng: </span>
+                        <span className="text-slate-700">{order.email}</span>
                       </p>
                     </div>
                   )}
                   {order.items.map((item: any, index: number) => (
-                    <div className='flex gap-3 items-start mt-3' key={index}>
+                    <div
+                      className="mt-3 flex items-start gap-3"
+                      key={index}
+                    >
                       {!order.isPackage && (
                         <Link
                           href={`/${item.slug}`}
-                          className='aspect-video w-full max-w-[100px] rounded-lg shadow-lg overflow-hidden'
+                          className="aspect-video w-full max-w-[100px] overflow-hidden rounded-lg shadow-lg"
                         >
                           <Image
-                            className='w-full h-full object-cover'
+                            className="h-full w-full object-cover"
                             src={item.images[0]}
                             width={100}
                             height={80}
                             alt={item.title}
-                            loading='lazy'
+                            loading="lazy"
                           />
                         </Link>
                       )}
-                      <div className='flex-1 gap-0.5'>
-                        <p className='font-body tracking-wider font-semibold text-lg -mt-1 leading-6'>
+                      <div className="flex-1 gap-0.5">
+                        <p className="-mt-1 font-body text-lg font-semibold leading-6 tracking-wider">
                           {order.isPackage ? (
                             <>
                               <span>Gói học viên</span>:{' '}
-                              <Link href='/subscription' className='underline'>
+                              <Link
+                                href="/subscription"
+                                className="underline"
+                              >
                                 {item.title}
                               </Link>
                             </>
@@ -398,7 +425,12 @@ function HistoryPage({ searchParams }: { searchParams?: { [key: string]: string[
 
               <Divider size={10} />
 
-              <Pagination dark searchParams={searchParams} amount={amount} itemsPerPage={itemPerPage} />
+              <Pagination
+                dark
+                searchParams={searchParams}
+                amount={amount}
+                itemsPerPage={itemPerPage}
+              />
 
               <Divider size={10} />
             </div>

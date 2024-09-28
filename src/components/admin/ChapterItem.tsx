@@ -36,8 +36,8 @@ function ChapterItem({
   return (
     <>
       <div
-        className={`relative flex px-4 py-2 rounded-lg shadow-lg text-dark cursor-pointer trans-200 ${
-          selectedChapters.includes(data._id) ? 'bg-violet-50 -translate-y-1' : 'bg-white'
+        className={`trans-200 relative flex cursor-pointer rounded-lg px-4 py-2 text-dark shadow-lg ${
+          selectedChapters.includes(data._id) ? '-translate-y-1 bg-violet-50' : 'bg-white'
         } ${className}`}
         key={data._id}
         onClick={() =>
@@ -46,48 +46,54 @@ function ChapterItem({
           )
         }
       >
-        <div className='flex items-center gap-3 flex-1'>
+        <div className="flex flex-1 items-center gap-3">
           {/* Chapter Title */}
-          <p className='font-semibold'>{data.title}</p>
+          <p className="font-semibold">{data.title}</p>
 
           {/* Order */}
           <p
-            className='absolute top-0 left-2 -translate-y-1/2 rounded-full px-3 py-1 min-w-6 text-center bg-primary font-semibold text-xs'
+            className="absolute left-2 top-0 min-w-6 -translate-y-1/2 rounded-full bg-primary px-3 py-1 text-center text-xs font-semibold"
             title={`Order: ${data.order}`}
           >
             {data.order}:{' '}
-            <span className='text-sky-500 font-semibold'>
+            <span className="font-semibold text-sky-500">
               {data.lessonQuantity} lesson{data.lessonQuantity != 1 ? 's' : ''}
             </span>
           </p>
         </div>
 
         {/* MARK: Action Buttons */}
-        <div className='flex self-end border border-dark rounded-lg px-3 py-2 gap-4'>
+        <div className="flex gap-4 self-end rounded-lg border border-dark px-3 py-2">
           {/* View Lessons */}
           <Link
             href={`/admin/lesson/${data._id}/all`}
-            className='block group'
+            className="group block"
             onClick={e => e.stopPropagation()}
-            title='View Lessons'
+            title="View Lessons"
           >
-            <FaEye size={18} className='wiggle' />
+            <FaEye
+              size={18}
+              className="wiggle"
+            />
           </Link>
 
           {/* Add Lesson */}
           <Link
             href={`/admin/lesson/${data._id}/add`}
-            className='block group'
+            className="group block"
             onClick={e => e.stopPropagation()}
-            title='Add Lesson'
+            title="Add Lesson"
           >
-            <FaPlusCircle size={18} className='wiggle' />
+            <FaPlusCircle
+              size={18}
+              className="wiggle"
+            />
           </Link>
 
           {/* Edit Button */}
           <button
-            className='block group'
-            title='Edit'
+            className="group block"
+            title="Edit"
             onClick={e => {
               e.stopPropagation()
 
@@ -99,23 +105,32 @@ function ChapterItem({
               })
             }}
           >
-            <MdEdit size={18} className='wiggle' />
+            <MdEdit
+              size={18}
+              className="wiggle"
+            />
           </button>
 
           {/* Delete Button */}
           <button
-            className='block group'
+            className="group block"
             onClick={e => {
               e.stopPropagation()
               setIsOpenConfirmModal(true)
             }}
             disabled={loadingChapters.includes(data._id)}
-            title='Delete'
+            title="Delete"
           >
             {loadingChapters.includes(data._id) ? (
-              <RiDonutChartFill size={18} className='animate-spin text-slate-300' />
+              <RiDonutChartFill
+                size={18}
+                className="animate-spin text-slate-300"
+              />
             ) : (
-              <FaTrash size={18} className='wiggle' />
+              <FaTrash
+                size={18}
+                className="wiggle"
+              />
             )}
           </button>
         </div>
@@ -125,8 +140,8 @@ function ChapterItem({
       <ConfirmDialog
         open={isOpenConfirmModal}
         setOpen={setIsOpenConfirmModal}
-        title='Delete Chapter'
-        content='Are you sure that you want to delete this category?'
+        title="Delete Chapter"
+        content="Are you sure that you want to delete this category?"
         onAccept={() => handleDeleteChapters([data._id])}
         isLoading={loadingChapters.includes(data._id)}
       />

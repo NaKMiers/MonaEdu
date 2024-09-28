@@ -15,15 +15,15 @@ export const HoverEffect = ({
   return Children.toArray(children).map((child, index) => (
     <div
       key={index}
-      className='relative group  block p-2 h-full w-full'
+      className={`group relative block h-full w-full p-2 ${className}`}
       onMouseEnter={() => setHoveredIndex(index)}
       onMouseLeave={() => setHoveredIndex(null)}
     >
       <AnimatePresence>
         {hoveredIndex === index && (
           <motion.span
-            className='absolute inset-0 h-full w-full bg-neutral-200 dark:bg-slate-800/[0.8] block  rounded-3xl'
-            layoutId='hoverBackground'
+            className="absolute inset-0 block h-full w-full rounded-3xl bg-neutral-200 dark:bg-slate-800/[0.8]"
+            layoutId="hoverBackground"
             initial={{ opacity: 0 }}
             animate={{
               opacity: 1,

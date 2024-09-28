@@ -103,74 +103,81 @@ function Avatar({ user, className = '' }: AvatarProps) {
   }, [imageUrl])
 
   return (
-    <div className={`group relative w-full rounded-full aspect-square ${className}`}>
+    <div className={`group relative aspect-square w-full rounded-full ${className}`}>
       {isShowCrown && (
         <Image
-          className='absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 aspect-square rounded-full overflow-hidden'
-          src='/icons/ring-circle.png'
+          className="absolute left-1/2 top-1/2 aspect-square -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full"
+          src="/icons/ring-circle.png"
           width={200}
           height={200}
-          alt='ring'
+          alt="ring"
         />
       )}
       {(imageUrl || user?.avatar) && (
         <Image
-          className={`w-full h-full object-cover rounded-full overflow-hidden aspect-square ${
+          className={`aspect-square h-full w-full overflow-hidden rounded-full object-cover ${
             isShowCrown ? 'p-2.5' : ''
           }`}
           src={imageUrl || user?.avatar || process.env.NEXT_PUBLIC_DEFAULT_AVATAR!}
           width={200}
           height={200}
-          alt='avatar'
+          alt="avatar"
         />
       )}
       {isShowCrown && (
         <Image
-          className='absolute z-20 -top-[30px] right-[24px] rotate-[18deg]'
-          src='/icons/crown-icon-2.png'
+          className="absolute -top-[30px] right-[24px] z-20 rotate-[18deg]"
+          src="/icons/crown-icon-2.png"
           width={60}
           height={60}
-          alt='crown'
+          alt="crown"
         />
       )}
 
       <input
-        id='images'
+        id="images"
         hidden
-        placeholder=' '
+        placeholder=" "
         disabled={isChangingAvatar}
-        type='file'
-        accept='image/*'
+        type="file"
+        accept="image/*"
         onChange={handleAddFile}
         ref={avatarInputRef}
       />
       {!isChangingAvatar && curUser?._id === user?._id && (
         <div
-          className='absolute top-0 left-0 flex rounded-full aspect-square overflow-hidden opacity-0 group-hover:opacity-100 items-center justify-center bg-dark-0 w-full h-full bg-opacity-20 trans-200 cursor-pointer drop-shadow-lg'
+          className="trans-200 absolute left-0 top-0 flex aspect-square h-full w-full cursor-pointer items-center justify-center overflow-hidden rounded-full bg-dark-0 bg-opacity-20 opacity-0 drop-shadow-lg group-hover:opacity-100"
           onClick={() => !file && avatarInputRef.current?.click()}
         >
           {file ? (
-            <div className='flex items-center justify-center gap-21'>
-              <FaSave size={40} className='text-green-400 wiggle-1' onClick={handleSaveAvatar} />
+            <div className="flex items-center justify-center gap-21">
+              <FaSave
+                size={40}
+                className="wiggle-1 text-green-400"
+                onClick={handleSaveAvatar}
+              />
               <ImCancelCircle
                 size={40}
-                className='text-slate-200 wiggle-1'
+                className="wiggle-1 text-slate-200"
                 onClick={handleCancelAvatar}
               />
             </div>
           ) : (
-            <FaCamera size={52} className='text-light wiggle-0' />
+            <FaCamera
+              size={52}
+              className="wiggle-0 text-light"
+            />
           )}
         </div>
       )}
       {isChangingAvatar && (
-        <div className='absolute top-0 left-0 rounded-full aspect-square overflow-hidden w-full h-full bg-white bg-opacity-20'>
+        <div className="absolute left-0 top-0 aspect-square h-full w-full overflow-hidden rounded-full bg-white bg-opacity-20">
           <Image
-            className='animate-spin'
-            src='/icons/loading.png'
+            className="animate-spin"
+            src="/icons/loading.png"
             width={200}
             height={200}
-            alt='loading'
+            alt="loading"
           />
         </div>
       )}

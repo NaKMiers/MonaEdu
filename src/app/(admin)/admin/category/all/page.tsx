@@ -64,23 +64,23 @@ function AllCategoriesPage({ searchParams }: { searchParams?: { [key: string]: s
   }, [])
 
   return (
-    <div className='w-full'>
+    <div className="w-full">
       {/* MARK: Top & Pagination */}
-      <div className={`flex flex-wrap text-sm justify-center items-end mb-3 gap-3`}>
+      <div className={`mb-3 flex flex-wrap items-end justify-center gap-3 text-sm`}>
         <Link
-          className='flex items-center gap-1 text-dark bg-slate-200 py-2 px-3 rounded-lg trans-200 hover:bg-white hover:text-primary'
-          href='/admin'
+          className="trans-200 flex items-center gap-1 rounded-lg bg-slate-200 px-3 py-2 text-dark hover:bg-white hover:text-primary"
+          href="/admin"
         >
           <FaArrowLeft />
           Admin
         </Link>
 
-        <div className='py-2 px-3 text-light border border-slate-300 rounded-lg text-lg text-center'>
+        <div className="rounded-lg border border-slate-300 px-3 py-2 text-center text-lg text-light">
           All Categories
         </div>
 
         <button
-          className='flex items-center gap-1 bg-slate-200 text-dark py-2 px-3 rounded-lg trans-200 hover:bg-yellow-300 hover:text-secondary'
+          className="trans-200 flex items-center gap-1 rounded-lg bg-slate-200 px-3 py-2 text-dark hover:bg-yellow-300 hover:text-secondary"
           onClick={() => setOpenAddCategoryModal(true)}
         >
           <FaPlus />
@@ -88,23 +88,31 @@ function AllCategoriesPage({ searchParams }: { searchParams?: { [key: string]: s
         </button>
       </div>
 
-      <Pagination searchParams={searchParams} amount={amount} itemsPerPage={itemPerPage} />
+      <Pagination
+        searchParams={searchParams}
+        amount={amount}
+        itemsPerPage={itemPerPage}
+      />
 
       {/* MARK: Amount */}
-      <div className='p-3 text-sm text-right text-light font-semibold'>
+      <div className="p-3 text-right text-sm font-semibold text-light">
         {categories.length} {categories.length > 1 ? 'categories' : 'category'}
       </div>
 
       {/* MARK: MAIN LIST */}
-      <div className='flex flex-col gap-2'>
+      <div className="flex flex-col gap-2">
         {categories.map(category => (
-          <CategoryItem data={category} setCategories={setCategories} key={category._id} />
+          <CategoryItem
+            data={category}
+            setCategories={setCategories}
+            key={category._id}
+          />
         ))}
       </div>
 
       {/* Add Category Modal */}
       <CategoryModal
-        title='Add Category'
+        title="Add Category"
         open={openAddCategoryModal}
         setOpen={setOpenAddCategoryModal}
         setCategories={setCategories}

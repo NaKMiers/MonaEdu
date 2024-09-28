@@ -2,7 +2,7 @@ import { getRankUsersApi } from '@/requests'
 import { formatPrice } from '@/utils/number'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import { FaCircleNotch, FaSearch } from 'react-icons/fa'
 
@@ -94,32 +94,35 @@ function UserSpendingRankTab({ className = '' }: UserSpendingRankTabProps) {
   return (
     <div className={`${className} flex flex-col overflow-hidden`}>
       {!loading && (
-        <div className='w-full'>
+        <div className="w-full">
           <div className={`flex`}>
             {/* MARK: Icon */}
             <span
-              className={`inline-flex items-center px-3 rounded-tl-lg rounded-bl-lg border-[2px] text-sm text-gray-900 border-slate-200 bg-slate-100 cursor-pointer`}
+              className={`inline-flex cursor-pointer items-center rounded-bl-lg rounded-tl-lg border-[2px] border-slate-200 bg-slate-100 px-3 text-sm text-gray-900`}
             >
-              <FaSearch size={19} className='text-secondary' />
+              <FaSearch
+                size={19}
+                className="text-secondary"
+              />
             </span>
 
             {/* MARK: Text Field */}
             <div
-              className={`relative w-full border-[2px] border-l-0 bg-white rounded-tr-lg rounded-br-lg border-slate-200`}
+              className={`relative w-full rounded-br-lg rounded-tr-lg border-[2px] border-l-0 border-slate-200 bg-white`}
             >
               <input
-                id='search'
-                className='block h-[46px] px-2.5 pb-2.5 pt-4 w-full text-sm text-dark bg-transparent focus:outline-none focus:ring-0 peer'
+                id="search"
+                className="peer block h-[46px] w-full bg-transparent px-2.5 pb-2.5 pt-4 text-sm text-dark focus:outline-none focus:ring-0"
                 disabled={loading}
-                type='text'
+                type="text"
                 value={search}
                 onChange={handleSearch}
               />
 
               {/* MARK: Label */}
               <label
-                htmlFor='search'
-                className={`absolute text-nowrap rounded-md text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1 cursor-pointer`}
+                htmlFor="search"
+                className={`absolute start-1 top-2 z-10 origin-[0] -translate-y-4 scale-75 transform cursor-pointer text-nowrap rounded-md bg-white px-2 text-sm text-gray-500 duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:px-2 rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4`}
               >
                 Search
               </label>
@@ -128,37 +131,43 @@ function UserSpendingRankTab({ className = '' }: UserSpendingRankTabProps) {
         </div>
       )}
 
-      <div className='flex justify-center items-center my-1'>
-        <span className='text-xs bg-dark-100 text-light px-1.5 py-0.5 rounded-lg font-semibold'>
+      <div className="my-1 flex items-center justify-center">
+        <span className="rounded-lg bg-dark-100 px-1.5 py-0.5 text-xs font-semibold text-light">
           {searchResults.length} user{searchResults.length > 1 ? 's' : ''}
         </span>
       </div>
 
-      <div className='flex-1 overflow-y-scroll'>
+      <div className="flex-1 overflow-y-scroll">
         {(search.trim() ? showSearchResults : showUsers).map((user, index) => (
-          <div className='flex gap-3 mb-4' key={index}>
-            <Link href='/' className='flex-shrink-0 relative aspect-square text-light'>
+          <div
+            className="mb-4 flex gap-3"
+            key={index}
+          >
+            <Link
+              href="/"
+              className="relative aspect-square flex-shrink-0 text-light"
+            >
               <Image
-                className='rounded-lg'
+                className="rounded-lg"
                 src={user.avatar || process.env.NEXT_PUBLIC_DEFAULT_AVATAR}
                 width={45}
                 height={45}
-                alt='avatar'
+                alt="avatar"
               />
               {index < 10 && (
                 <span
-                  className={`absolute top-0 -right-1.5 font-semibold italic bg-dark-100 h-5 min-w-5 flex items-center justify-center px-1.5 rounded-full text-sm text-${colors[index]}`}
+                  className={`absolute -right-1.5 top-0 flex h-5 min-w-5 items-center justify-center rounded-full bg-dark-100 px-1.5 text-sm font-semibold italic text-${colors[index]}`}
                 >
                   {index + 1 <= 10 ? index + 1 : ''}
                 </span>
               )}
             </Link>
-            <div className='font-body tracking-wider'>
-              <p className='font-semibold'>
+            <div className="font-body tracking-wider">
+              <p className="font-semibold">
                 {user.firstname && user.lastname ? `${user.firstname} ${user.lastname}` : user.username}{' '}
-                <span className='text-sm text-slate-400 '>({user.email})</span>
+                <span className="text-sm text-slate-400">({user.email})</span>
               </p>
-              <p className='text-yellow-500'>{formatPrice(user.spent)}</p>
+              <p className="text-yellow-500">{formatPrice(user.spent)}</p>
             </div>
           </div>
         ))}
@@ -167,15 +176,18 @@ function UserSpendingRankTab({ className = '' }: UserSpendingRankTabProps) {
         {(search.trim()
           ? showSearchResults.length < searchResults.length
           : showUsers.length < users.length || loading) && (
-          <div className='flex items-center justify-center'>
+          <div className="flex items-center justify-center">
             <button
-              className={`flex items-center justify-center font-semibold rounded-md px-3 h-8 text-sm text-light border-2 hover:bg-white hover:text-dark common-transition ${
-                loading ? 'pointer-events-none bg-white border-slate-400' : 'bg-dark-100 border-dark'
+              className={`common-transition flex h-8 items-center justify-center rounded-md border-2 px-3 text-sm font-semibold text-light hover:bg-white hover:text-dark ${
+                loading ? 'pointer-events-none border-slate-400 bg-white' : 'border-dark bg-dark-100'
               }`}
               onClick={handleLoadMore}
             >
               {loading ? (
-                <FaCircleNotch size={18} className='animate-spin text-slate-400' />
+                <FaCircleNotch
+                  size={18}
+                  className="animate-spin text-slate-400"
+                />
               ) : (
                 <span>({search.trim() ? showSearchResults.length : showUsers.length}) Load more...</span>
               )}
@@ -187,4 +199,4 @@ function UserSpendingRankTab({ className = '' }: UserSpendingRankTabProps) {
   )
 }
 
-export default UserSpendingRankTab
+export default memo(UserSpendingRankTab)

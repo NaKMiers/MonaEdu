@@ -131,16 +131,16 @@ function AddChapter({
   )
 
   return (
-    <div className={`bg-white px-3 py-2 rounded-lg flex items-start gap-2 ${className}`}>
+    <div className={`flex items-start gap-2 rounded-lg bg-white px-3 py-2 ${className}`}>
       {/* Title */}
       <Input
-        id='title'
-        className='w-full'
-        label='Title'
+        id="title"
+        className="w-full"
+        label="Title"
         disabled={false}
         register={register}
         errors={errors}
-        type='text'
+        type="text"
         required
         icon={MdOutlineFormatColorText}
         onFocus={() => clearErrors('title')}
@@ -148,13 +148,13 @@ function AddChapter({
 
       {/* Content */}
       <Input
-        id='content'
-        className='w-full'
-        label='Content'
+        id="content"
+        className="w-full"
+        label="Content"
         disabled={false}
         register={register}
         errors={errors}
-        type='textarea'
+        type="textarea"
         rows={1}
         icon={MdOutlineFormatColorText}
         onFocus={() => clearErrors('content')}
@@ -162,13 +162,13 @@ function AddChapter({
 
       {/* Order */}
       <Input
-        id='order'
-        className='w-full'
-        label='Order'
+        id="order"
+        className="w-full"
+        label="Order"
         disabled={false}
         register={register}
         errors={errors}
-        type='number'
+        type="number"
         min={0}
         required
         icon={AiOutlineNumber}
@@ -176,11 +176,11 @@ function AddChapter({
       />
 
       {/* Reset Button */}
-      <div className='flex gap-2'>
+      <div className="flex gap-2">
         {editingValues?._id && (
           <button
-            className='h-[40px] group flex items-center text-nowrap bg-slate-400 text-[16px] font-semibold px-3 rounded-md cursor-pointer hover:bg-slate-800 text-light trans-200'
-            title='Alt + R'
+            className="trans-200 group flex h-[40px] cursor-pointer items-center text-nowrap rounded-md bg-slate-400 px-3 text-[16px] font-semibold text-light hover:bg-slate-800"
+            title="Alt + R"
             onClick={() =>
               setEditingValues({
                 _id: '',
@@ -194,14 +194,17 @@ function AddChapter({
           </button>
         )}
         <button
-          className='h-[40px] group flex items-center text-nowrap bg-yellow-400 text-[16px] font-semibold px-3 rounded-md cursor-pointer hover:bg-slate-800 text-light trans-200'
-          title='Alt + R'
+          className="trans-200 group flex h-[40px] cursor-pointer items-center text-nowrap rounded-md bg-yellow-400 px-3 text-[16px] font-semibold text-light hover:bg-slate-800"
+          title="Alt + R"
           onClick={
             !editingValues?._id ? handleSubmit(handleAddChapter) : handleSubmit(handleUpdateChapter)
           }
         >
           {loading ? (
-            <RiDonutChartFill size={24} className='animate-spin text-slate-400' />
+            <RiDonutChartFill
+              size={24}
+              className="animate-spin text-slate-400"
+            />
           ) : editingValues?._id ? (
             'Save'
           ) : (

@@ -14,23 +14,31 @@ export default async function RootLayout({
       {/* Loading */}
       <PageLoading />
 
-      <div className={`fixed top-21 left-21 flex items-center gap-3 trans-300`}>
-        <Link href='/' prefetch={false} className='shrink-0 trans-200 spin rounded-md'>
+      <div className={`trans-300 fixed left-21 top-21 flex items-center gap-3`}>
+        <Link
+          href="/"
+          prefetch={false}
+          className="trans-200 spin shrink-0 rounded-md"
+        >
           <Image
-            className='aspect-square rounded-md'
-            src='/images/logo.png'
+            className="aspect-square rounded-md"
+            src="/images/logo.png"
             width={32}
             height={32}
-            alt='Mona-Edu'
+            alt="Mona-Edu"
           />
         </Link>
-        <Link href='/' prefetch={false} className='text-2xl font-bold'>
+        <Link
+          href="/"
+          prefetch={false}
+          className="text-2xl font-bold"
+        >
           MonaEdu
         </Link>
       </div>
 
       {/* Main */}
-      <main className='min-h-screen bg-slate-100'>{children}</main>
+      <main className="min-h-screen bg-slate-100">{children}</main>
 
       {/* Footer */}
       <Footer />

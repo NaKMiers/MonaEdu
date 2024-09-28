@@ -273,32 +273,42 @@ function AllBlogsPage({ searchParams }: { searchParams?: { [key: string]: string
   }, [handleFilter, handleResetFilter, blogs, handleSubmit])
 
   return (
-    <div className='w-full'>
+    <div className="w-full">
       {/* Top & Pagination */}
-      <AdminHeader title='All Blogs' addLink='/admin/blog/add' />
-      <Pagination searchParams={searchParams} amount={amount} itemsPerPage={itemPerPage} />
+      <AdminHeader
+        title="All Blogs"
+        addLink="/admin/blog/add"
+      />
+      <Pagination
+        searchParams={searchParams}
+        amount={amount}
+        itemsPerPage={itemPerPage}
+      />
 
       {/* Filter */}
-      <AdminMeta handleFilter={handleSubmit(handleFilter)} handleResetFilter={handleResetFilter}>
+      <AdminMeta
+        handleFilter={handleSubmit(handleFilter)}
+        handleResetFilter={handleResetFilter}
+      >
         {/* Search */}
-        <div className='flex flex-col col-span-12 md:col-span-4'>
+        <div className="col-span-12 flex flex-col md:col-span-4">
           <Input
-            id='search'
-            className='md:max-w-[450px]'
-            label='Search'
+            id="search"
+            className="md:max-w-[450px]"
+            label="Search"
             disabled={false}
             register={register}
             errors={errors}
-            type='text'
+            type="text"
             icon={FaSearch}
             onFocus={() => clearErrors('search')}
           />
         </div>
 
         {/* Price */}
-        <div className='flex flex-col col-span-12 md:col-span-4'>
-          <label htmlFor='price'>
-            <span className='font-bold'>Price: </span>
+        <div className="col-span-12 flex flex-col md:col-span-4">
+          <label htmlFor="price">
+            <span className="font-bold">Price: </span>
             <span>{formatPrice(price[0])}</span> - <span>{formatPrice(price[1])}</span>
           </label>
           <Slider
@@ -306,17 +316,17 @@ function AllBlogsPage({ searchParams }: { searchParams?: { [key: string]: string
             min={minPrice}
             max={maxPrice}
             step={1}
-            className='w-full -mb-1.5'
+            className="-mb-1.5 w-full"
             onChange={(_: any, newValue: number | number[]) => setPrice(newValue as number[])}
-            valueLabelDisplay='auto'
+            valueLabelDisplay="auto"
             style={{ color: '#333' }}
           />
         </div>
 
         {/* Joined */}
-        <div className='flex flex-col col-span-12 md:col-span-4'>
-          <label htmlFor='joined'>
-            <span className='font-bold'>Joined: </span>
+        <div className="col-span-12 flex flex-col md:col-span-4">
+          <label htmlFor="joined">
+            <span className="font-bold">Joined: </span>
             <span>{joined[0]}</span> - <span>{joined[1]}</span>
           </label>
           <Slider
@@ -324,24 +334,24 @@ function AllBlogsPage({ searchParams }: { searchParams?: { [key: string]: string
             min={minJoined}
             max={maxJoined}
             step={1}
-            className='w-full -mb-1.5'
+            className="-mb-1.5 w-full"
             onChange={(_: any, newValue: number | number[]) => setJoined(newValue as number[])}
-            valueLabelDisplay='auto'
+            valueLabelDisplay="auto"
             style={{ color: '#333' }}
           />
         </div>
 
         {/* Select Filter */}
-        <div className='flex justify-end items-center flex-wrap gap-3 col-span-12 md:col-span-8'>
+        <div className="col-span-12 flex flex-wrap items-center justify-end gap-3 md:col-span-8">
           {/* Sort */}
           <Input
-            id='sort'
-            label='Sort'
+            id="sort"
+            label="Sort"
             disabled={false}
             register={register}
             errors={errors}
             icon={FaSort}
-            type='select'
+            type="select"
             onFocus={() => clearErrors('sort')}
             options={[
               {
@@ -366,13 +376,13 @@ function AllBlogsPage({ searchParams }: { searchParams?: { [key: string]: string
 
           {/* Active */}
           <Input
-            id='active'
-            label='Active'
+            id="active"
+            label="Active"
             disabled={false}
             register={register}
             errors={errors}
             icon={FaSort}
-            type='select'
+            type="select"
             onFocus={() => clearErrors('active')}
             options={[
               {
@@ -389,18 +399,18 @@ function AllBlogsPage({ searchParams }: { searchParams?: { [key: string]: string
                 label: 'Off',
               },
             ]}
-            className='min-w-[104px]'
+            className="min-w-[104px]"
           />
 
           {/* Flash Sale */}
           <Input
-            id='flashSale'
-            label='Flash Sale'
+            id="flashSale"
+            label="Flash Sale"
             disabled={false}
             register={register}
             errors={errors}
             icon={FaSort}
-            type='select'
+            type="select"
             onFocus={() => clearErrors('flashSale')}
             options={[
               {
@@ -417,15 +427,15 @@ function AllBlogsPage({ searchParams }: { searchParams?: { [key: string]: string
                 label: 'Off',
               },
             ]}
-            className='min-w-[124px]'
+            className="min-w-[124px]"
           />
         </div>
 
         {/* Action Buttons */}
-        <div className='flex flex-wrap justify-end items-center col-span-12 gap-2'>
+        <div className="col-span-12 flex flex-wrap items-center justify-end gap-2">
           {/* Select All Button */}
           <button
-            className='border border-sky-400 text-sky-400 rounded-lg px-3 py-2 hover:bg-sky-400 hover:text-light trans-200'
+            className="trans-200 rounded-lg border border-sky-400 px-3 py-2 text-sky-400 hover:bg-sky-400 hover:text-light"
             onClick={() => setSelectedBlogs(selectedBlogs.length > 0 ? [] : blogs.map(blog => blog._id))}
           >
             {selectedBlogs.length > 0 ? 'Unselect All' : 'Select All'}
@@ -435,7 +445,7 @@ function AllBlogsPage({ searchParams }: { searchParams?: { [key: string]: string
           {!!selectedBlogs.length &&
             selectedBlogs.some(id => blogs.find(blog => blog._id === id)?.status !== 'published') && (
               <button
-                className='border border-violet-500 text-violet-500 rounded-lg px-3 py-2 hover:bg-violet-500 hover:text-light trans-200'
+                className="trans-200 rounded-lg border border-violet-500 px-3 py-2 text-violet-500 hover:bg-violet-500 hover:text-light"
                 onClick={() => handleChangeBlogsStatus(selectedBlogs, 'published')}
               >
                 Publish All
@@ -446,7 +456,7 @@ function AllBlogsPage({ searchParams }: { searchParams?: { [key: string]: string
           {!!selectedBlogs.length &&
             selectedBlogs.some(id => blogs.find(blog => blog._id === id)?.status !== 'draft') && (
               <button
-                className='border border-slate-500 text-slate-500 rounded-lg px-3 py-2 hover:bg-slate-500 hover:text-light trans-200'
+                className="trans-200 rounded-lg border border-slate-500 px-3 py-2 text-slate-500 hover:bg-slate-500 hover:text-light"
                 onClick={() => handleChangeBlogsStatus(selectedBlogs, 'draft')}
               >
                 Draft All
@@ -457,7 +467,7 @@ function AllBlogsPage({ searchParams }: { searchParams?: { [key: string]: string
           {!!selectedBlogs.length &&
             selectedBlogs.some(id => blogs.find(blog => blog._id === id)?.status !== 'archived') && (
               <button
-                className='border border-blue-500 text-blue-500 rounded-lg px-3 py-2 hover:bg-blue-500 hover:text-light trans-200'
+                className="trans-200 rounded-lg border border-blue-500 px-3 py-2 text-blue-500 hover:bg-blue-500 hover:text-light"
                 onClick={() => handleChangeBlogsStatus(selectedBlogs, 'archived')}
               >
                 Archive All
@@ -467,7 +477,7 @@ function AllBlogsPage({ searchParams }: { searchParams?: { [key: string]: string
           {/* Delete Many Button */}
           {!!selectedBlogs.length && (
             <button
-              className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-light trans-200'
+              className="trans-200 rounded-lg border border-red-500 px-3 py-2 text-red-500 hover:bg-red-500 hover:text-light"
               onClick={() => setIsOpenConfirmModal(true)}
             >
               Delete
@@ -480,20 +490,20 @@ function AllBlogsPage({ searchParams }: { searchParams?: { [key: string]: string
       <ConfirmDialog
         open={isOpenConfirmModal}
         setOpen={setIsOpenConfirmModal}
-        title='Delete Blogs'
-        content='Are you sure that you want to delete these blogs?'
+        title="Delete Blogs"
+        content="Are you sure that you want to delete these blogs?"
         onAccept={() => handleDeleteBlogs(selectedBlogs)}
         isLoading={loadingBlogs.length > 0}
       />
 
       {/* Amount */}
-      <div className='p-3 text-sm text-right text-light font-semibold'>
+      <div className="p-3 text-right text-sm font-semibold text-light">
         {Math.min(itemPerPage * +(searchParams?.page || 1), amount)}/{amount} blog
         {amount > 1 ? 's' : ''}
       </div>
 
       {/* MAIN LIST */}
-      <div className='grid grid-cols-1 md:grid-cols-2 gap-21 lg:grid-cols-3'>
+      <div className="grid grid-cols-1 gap-21 md:grid-cols-2 lg:grid-cols-3">
         {blogs.map(blog => (
           <BlogItem
             data={blog}

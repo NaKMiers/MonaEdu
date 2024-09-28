@@ -3,7 +3,7 @@
 import { getAllOrdersApi } from '@/requests'
 import { formatPrice } from '@/utils/number'
 import moment from 'moment'
-import { useCallback, useEffect, useState } from 'react'
+import { memo, useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { FaCircleNotch } from 'react-icons/fa'
 import { Bar, BarChart, CartesianGrid, Tooltip, XAxis, YAxis } from 'recharts'
@@ -178,15 +178,24 @@ function Chart({ by, chart, chunk, className = '' }: ChartProps) {
 
   return !loading ? (
     <div className={`relative ${className}`}>
-      <span className='absolute z-10 top-0 right-0 rounded-lg bg-white border-2 border-dark px-2 py-1 font-semibold text-sm text-dark'>
+      <span className="absolute right-0 top-0 z-10 rounded-lg border-2 border-dark bg-white px-2 py-1 text-sm font-semibold text-dark">
         {currentTime.format(by === 'day' ? 'MMMM YYYY' : by === 'month' ? 'YYYY' : 'YYYY')}
       </span>
-      <div className='overflow-x-auto'>
-        <BarChart data={data} width={896} height={500}>
+      <div className="overflow-x-auto">
+        <BarChart
+          data={data}
+          width={896}
+          height={500}
+        >
           {/* <Legend /> */}
-          <CartesianGrid strokeDasharray='3 3' />
+          <CartesianGrid strokeDasharray="3 3" />
 
-          <XAxis dataKey={'name'} tickLine={false} axisLine={false} fontSize={12} />
+          <XAxis
+            dataKey={'name'}
+            tickLine={false}
+            axisLine={false}
+            fontSize={12}
+          />
           <YAxis
             dataKey={'value'}
             tickFormatter={value =>
@@ -198,7 +207,11 @@ function Chart({ by, chart, chunk, className = '' }: ChartProps) {
             axisLine={false}
             fontSize={12}
           />
-          <Bar dataKey={'value'} fill='#111' radius={[4, 4, 4, 4]} />
+          <Bar
+            dataKey={'value'}
+            fill="#111"
+            radius={[4, 4, 4, 4]}
+          />
           <Tooltip
             cursor={{
               stroke: '#333',
@@ -207,7 +220,7 @@ function Chart({ by, chart, chunk, className = '' }: ChartProps) {
               radius: 4,
               className: 'transition-all duration-75',
             }}
-            animationEasing='ease-in-out'
+            animationEasing="ease-in-out"
             animationDuration={200}
             labelFormatter={(value: string) => `${by.charAt(0).toUpperCase() + by.slice(1)} ${value}`}
             formatter={value => {
@@ -224,16 +237,19 @@ function Chart({ by, chart, chunk, className = '' }: ChartProps) {
               borderRadius: 8,
               border: 'none',
               boxShadow: '0px 14px 10px 5px rgba(0, 0, 0, 0.2)',
-            }} // Đổi màu nền của hình chữ nhật
+            }}
           />
         </BarChart>
       </div>
     </div>
   ) : (
-    <div className='flex items-center justify-center h-[500px]'>
-      <FaCircleNotch size={50} className='animate-spin text-slate-300' />
+    <div className="flex h-[500px] items-center justify-center">
+      <FaCircleNotch
+        size={50}
+        className="animate-spin text-slate-300"
+      />
     </div>
   )
 }
 
-export default Chart
+export default memo(Chart)

@@ -4,16 +4,16 @@ function CommentX() {
   return (
     <div>
       {/* MARK: Input */}
-      <div className='flex items-center justify-between gap-3'>
-        <div className='rounded-full h-10 w-10 flex-shrink-0 aspect-square bg-slate-700 animate-pulse' />
+      <div className="flex items-center justify-between gap-3">
+        <div className="aspect-square h-10 w-10 flex-shrink-0 animate-pulse rounded-full bg-slate-700" />
 
-        <div className='w-full h-10 rounded-lg bg-slate-500 animate-pulse' />
+        <div className="h-10 w-full animate-pulse rounded-lg bg-slate-500" />
 
-        <div className='h-10 w-[100px] rounded-lg bg-slate-700 animate-pulse' />
+        <div className="h-10 w-[100px] animate-pulse rounded-lg bg-slate-700" />
       </div>
 
       {/* MARK: Comment List */}
-      <div className='flex flex-col mt-5 gap-3'>
+      <div className="mt-5 flex flex-col gap-3">
         {Array.from({ length: 4 }).map((_, index) => (
           <CommentItemX key={index} />
         ))}

@@ -131,14 +131,14 @@ function Slider({ time, hideControls, children, thumbs = [], mobile, className =
 
   return (
     <div
-      className={`relative w-full h-full overflow-hidden rounded-lg group ${className}`}
+      className={`group relative h-full w-full overflow-hidden rounded-lg ${className}`}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
       {/* MARK: Slide Track */}
       <div
-        className={`flex w-full h-full cursor-pointer no-scrollbar ease-linear trans-300`}
+        className={`no-scrollbar trans-300 flex h-full w-full cursor-pointer ease-linear`}
         style={{ marginLeft: '-100%' }}
         ref={slideTrackRef}
       >
@@ -147,7 +147,10 @@ function Slider({ time, hideControls, children, thumbs = [], mobile, className =
           ...Children.toArray(children),
           Children.toArray(children)[0],
         ].map((child, index) => (
-          <div key={index} className='w-full h-full shrink-0'>
+          <div
+            key={index}
+            className="h-full w-full shrink-0"
+          >
             {child}
           </div>
         ))}
@@ -157,16 +160,22 @@ function Slider({ time, hideControls, children, thumbs = [], mobile, className =
       {!hideControls && childrenAmount >= 2 && (
         <>
           <button
-            className='group md:-translate-x-full group-hover:translate-x-0 absolute flex items-center justify-center hover:bg-slate-100 hover:bg-opacity-10 trans-200 h-full w-12 left-0 top-0'
+            className="trans-200 group absolute left-0 top-0 flex h-full w-12 items-center justify-center hover:bg-slate-100 hover:bg-opacity-10 group-hover:translate-x-0 md:-translate-x-full"
             onClick={prevSlide}
           >
-            <FaChevronLeft size={16} className='wiggle text-light' />
+            <FaChevronLeft
+              size={16}
+              className="wiggle text-light"
+            />
           </button>
           <button
-            className='group md:translate-x-full group-hover:translate-x-0 absolute flex items-center justify-center hover:bg-slate-100 hover:bg-opacity-10 trans-200 h-full w-12 right-0 top-0'
+            className="trans-200 group absolute right-0 top-0 flex h-full w-12 items-center justify-center hover:bg-slate-100 hover:bg-opacity-10 group-hover:translate-x-0 md:translate-x-full"
             onClick={nextSlide}
           >
-            <FaChevronRight size={16} className='wiggle text-light' />
+            <FaChevronRight
+              size={16}
+              className="wiggle text-light"
+            />
           </button>
         </>
       )}
@@ -176,25 +185,25 @@ function Slider({ time, hideControls, children, thumbs = [], mobile, className =
         <div
           className={`absolute z-10 w-full px-21 ${
             mobile ? 'gap-6' : 'gap-5'
-          } flex justify-center items-center left-1/2 -translate-x-1/2 bottom-[6%] md:translate-y-full md:bottom-0 group-hover:translate-y-0 group-hover:bottom-[6%] trans-200`}
+          } trans-200 bottom-[6%] left-1/2 flex -translate-x-1/2 items-center justify-center group-hover:bottom-[6%] group-hover:translate-y-0 md:bottom-0 md:translate-y-full`}
         >
           {thumbs.map((src, index) => {
             return (
               <button
                 className={`${
                   mobile ? 'aspect-[9/16]' : 'aspect-video'
-                } rounded-lg shadow-md border-2 border-light trans-200 hover:opacity-100 hover:scale-105 hover:-translate-y-1 overflow-hidden ${
+                } trans-200 overflow-hidden rounded-lg border-2 border-light shadow-md hover:-translate-y-1 hover:scale-105 hover:opacity-100 ${
                   slide === index + 1 ? 'opacity-100' : 'opacity-60'
                 }`}
                 onClick={() => setSlide(index + 1)}
                 key={src}
               >
                 <Image
-                  className='w-full h-full object-cover'
+                  className="h-full w-full object-cover"
                   src={src}
                   width={mobile ? 40 : 70}
                   height={mobile ? 70 : 40}
-                  alt='slide-thumb'
+                  alt="slide-thumb"
                 />
               </button>
             )
@@ -202,12 +211,12 @@ function Slider({ time, hideControls, children, thumbs = [], mobile, className =
         </div>
       )}
       {childrenAmount >= 2 && thumbs.length <= 0 && (
-        <div className='absolute z-10 flex items-center gap-5 left-1/2 -translate-x-1/2 bottom-[10%] md:translate-y-full  md:bottom-0 group-hover:translate-y-0 group-hover:bottom-[10%] trans-200'>
+        <div className="trans-200 absolute bottom-[10%] left-1/2 z-10 flex -translate-x-1/2 items-center gap-5 group-hover:bottom-[10%] group-hover:translate-y-0 md:bottom-0 md:translate-y-full">
           {Array.from({ length: childrenAmount }).map((_, index) => {
             return (
               <button
                 key={index}
-                className={`w-[14px] h-[14px] rounded-full bg-white hover:bg-opacity-100 trans-200 shadow-md ${
+                className={`trans-200 h-[14px] w-[14px] rounded-full bg-white shadow-md hover:bg-opacity-100 ${
                   slide === index + 1 ? 'bg-opacity-100' : 'bg-opacity-50'
                 }`}
                 onClick={() => setSlide(index + 1)}

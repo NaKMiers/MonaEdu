@@ -166,22 +166,25 @@ function EditFlashSalePage() {
   }
 
   return (
-    <div className='max-w-1200 mx-auto'>
+    <div className="mx-auto max-w-1200">
       {/* Admin Header */}
-      <AdminHeader title='Edit Flash Sale' backLink='/admin/flash-sale/all' />
+      <AdminHeader
+        title="Edit Flash Sale"
+        backLink="/admin/flash-sale/all"
+      />
 
       <Divider size={5} />
 
-      <div className='bg-slate-200 rounded-lg p-21'>
+      <div className="rounded-lg bg-slate-200 p-21">
         {/* Type */}
         <Input
-          id='type'
-          label='Type'
+          id="type"
+          label="Type"
           disabled={isLoading}
           register={register}
           errors={errors}
           required
-          type='select'
+          type="select"
           onFocus={() => clearErrors('type')}
           options={[
             {
@@ -201,47 +204,47 @@ function EditFlashSalePage() {
             },
           ]}
           icon={RiCharacterRecognitionLine}
-          className='mb-5'
+          className="mb-5"
         />
 
         {/* Value */}
         <Input
-          id='value'
-          label='Value'
+          id="value"
+          label="Value"
           disabled={isLoading}
           register={register}
           errors={errors}
           required
-          type='text'
+          type="text"
           icon={MdNumbers}
-          className='mb-5'
+          className="mb-5"
           onFocus={() => clearErrors('value')}
         />
 
         {/* Begin */}
         <Input
-          id='begin'
-          label='Begin'
+          id="begin"
+          label="Begin"
           disabled={isLoading}
           register={register}
           errors={errors}
           required
-          type='date'
+          type="date"
           icon={FaPlay}
-          className='mb-5'
+          className="mb-5"
           onFocus={() => clearErrors('begin')}
         />
 
         {/* Time Type */}
-        <div className='grid grid-col-1 lg:grid-cols-2 gap-5 mb-5'>
+        <div className="grid-col-1 mb-5 grid gap-5 lg:grid-cols-2">
           <Input
-            id='timeType'
-            label='Time Type'
+            id="timeType"
+            label="Time Type"
             disabled={isLoading}
             register={register}
             errors={errors}
             required
-            type='select'
+            type="select"
             onChange={(e: any) => {
               setValue('timeType', e.target.value)
               setTimeType(e.target.value as 'loop' | 'once')
@@ -264,26 +267,26 @@ function EditFlashSalePage() {
 
           {timeType === 'loop' && (
             <Input
-              id='duration'
-              label='Duration'
+              id="duration"
+              label="Duration"
               disabled={isLoading}
               register={register}
               errors={errors}
               required
-              type='number'
+              type="number"
               icon={IoReload}
               onFocus={() => clearErrors('duration')}
             />
           )}
           {timeType === 'once' && (
             <Input
-              id='expire'
-              label='Expire'
+              id="expire"
+              label="Expire"
               disabled={isLoading}
               register={register}
               errors={errors}
               required
-              type='date'
+              type="date"
               icon={FaPause}
               onFocus={() => clearErrors('expire')}
             />
@@ -291,32 +294,31 @@ function EditFlashSalePage() {
         </div>
 
         {/* MARK: Ready to apply courses */}
-        <p className='text-dark font-semibold text-xl mb-1'>Select Courses</p>
-        <div className='max-h-[300px] overflow-y-auto flex flex-wrap rounded-lg bg-white p-3 gap-2 mb-5'>
+        <p className="mb-1 text-xl font-semibold text-dark">Select Courses</p>
+        <div className="mb-5 flex max-h-[300px] flex-wrap gap-2 overflow-y-auto rounded-lg bg-white p-3">
           <div
-            className={`border-2 rounded-lg flex items-center px-3 gap-2 cursor-pointer trans-200 ${
+            className={`trans-200 flex cursor-pointer items-center gap-2 rounded-lg border-2 px-3 ${
               courses.length === selectedCourses.length
-                ? 'bg-dark-100 text-light border-dark'
-                : 'text-dark border-slate-300'
-            }
-            }`}
-            title='All'
+                ? 'border-dark bg-dark-100 text-light'
+                : 'border-slate-300 text-dark'
+            } }`}
+            title="All"
             onClick={() =>
               courses.length === selectedCourses.length
                 ? setSelectedCourses([])
                 : setSelectedCourses(courses.map(course => course._id))
             }
           >
-            <span className='block text-ellipsis line-clamp-1 text-nowrap'>All</span>
+            <span className="line-clamp-1 block text-ellipsis text-nowrap">All</span>
           </div>
           {courses.map(course => (
             <div
-              className={`max-w-[250px] border-2 border-slate-300 rounded-lg flex items-center py-1 px-2 gap-2 cursor-pointer trans-200 ${
+              className={`trans-200 flex max-w-[250px] cursor-pointer items-center gap-2 rounded-lg border-2 border-slate-300 px-2 py-1 ${
                 selectedCourses.includes(course._id)
-                  ? 'bg-secondary border-light text-light'
+                  ? 'border-light bg-secondary text-light'
                   : course.flashSale
-                  ? 'bg-slate-200'
-                  : 'text-dark'
+                    ? 'bg-slate-200'
+                    : 'text-dark'
               }`}
               title={course.title}
               onClick={() =>
@@ -327,13 +329,13 @@ function EditFlashSalePage() {
               key={course._id}
             >
               <Image
-                className='aspect-video rounded-md border-2 border-light'
+                className="aspect-video rounded-md border-2 border-light"
                 src={course.images[0]}
                 height={60}
                 width={60}
-                alt='thumbnail'
+                alt="thumbnail"
               />
-              <span className='block text-sm text-ellipsis line-clamp-1 text-nowrap'>
+              <span className="line-clamp-1 block text-ellipsis text-nowrap text-sm">
                 {course.title}
               </span>
             </div>
@@ -342,9 +344,9 @@ function EditFlashSalePage() {
 
         {/* MARK: Save Button */}
         <LoadingButton
-          className='px-4 py-2 bg-secondary hover:bg-primary text-light rounded-lg font-semibold trans-200'
+          className="trans-200 rounded-lg bg-secondary px-4 py-2 font-semibold text-light hover:bg-primary"
           onClick={handleSubmit(onSubmit)}
-          text='Save'
+          text="Save"
           isLoading={isLoading}
         />
       </div>

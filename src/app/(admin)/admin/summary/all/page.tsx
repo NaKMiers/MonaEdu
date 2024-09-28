@@ -100,22 +100,29 @@ function AllSummariesPage({ searchParams }: { searchParams?: { [key: string]: st
   }, [summaries])
 
   return (
-    <div className='w-full'>
+    <div className="w-full">
       {/* MARK: Top & Pagination */}
-      <AdminHeader title='All Summaries' />
-      <Pagination searchParams={searchParams} amount={amount} itemsPerPage={itemPerPage} />
+      <AdminHeader title="All Summaries" />
+      <Pagination
+        searchParams={searchParams}
+        amount={amount}
+        itemsPerPage={itemPerPage}
+      />
 
       {/* MARK: Filter */}
-      <AdminMeta handleFilter={() => {}} handleResetFilter={() => {}}>
+      <AdminMeta
+        handleFilter={() => {}}
+        handleResetFilter={() => {}}
+      >
         {/* MARK: Select Filter */}
-        <div className='flex justify-end items-center flex-wrap gap-3 col-span-12 md:col-span-8'></div>
+        <div className="col-span-12 flex flex-wrap items-center justify-end gap-3 md:col-span-8"></div>
 
         {/* MARK: Action Buttons */}
-        <div className='flex flex-wrap justify-end items-center gap-2 col-span-12'>
+        <div className="col-span-12 flex flex-wrap items-center justify-end gap-2">
           {/* Select All Button */}
           <button
-            className='border border-sky-400 text-sky-400 rounded-lg px-3 py-2 hover:bg-sky-400 hover:text-light trans-200'
-            title='Alt + A'
+            className="trans-200 rounded-lg border border-sky-400 px-3 py-2 text-sky-400 hover:bg-sky-400 hover:text-light"
+            title="Alt + A"
             onClick={() =>
               setSelectedSummaries(
                 selectedSummaries.length > 0 ? [] : summaries.map(summary => summary._id)
@@ -128,8 +135,8 @@ function AllSummariesPage({ searchParams }: { searchParams?: { [key: string]: st
           {/* Send Summaries Button */}
           {!!selectedSummaries.length && (
             <button
-              className='border border-green-500 text-green-500 rounded-lg px-3 py-2 hover:bg-green-500 hover:text-light trans-200'
-              title='Alt + Delete'
+              className="trans-200 rounded-lg border border-green-500 px-3 py-2 text-green-500 hover:bg-green-500 hover:text-light"
+              title="Alt + Delete"
               onClick={() => handleSendSummaries(selectedSummaries)}
             >
               Sent
@@ -139,13 +146,13 @@ function AllSummariesPage({ searchParams }: { searchParams?: { [key: string]: st
       </AdminMeta>
 
       {/* MARK: Amount */}
-      <div className='p-3 text-sm text-right text-light font-semibold'>
+      <div className="p-3 text-right text-sm font-semibold text-light">
         {Math.min(itemPerPage * +(searchParams?.page || 1), amount)}/{amount} collaborator
         {amount > 1 ? 's' : ''}
       </div>
 
       {/* MARK: MAIN LIST */}
-      <div className='grid grid-cols-1 md:grid-cols-2 gap-21 lg:grid-cols-3'>
+      <div className="grid grid-cols-1 gap-21 md:grid-cols-2 lg:grid-cols-3">
         {summaries.map(user => (
           <SummaryItem
             data={user}

@@ -88,15 +88,18 @@ async function BlogPage({ params: { slug } }: { params: { slug: string } }) {
   }
 
   return (
-    <div className='max-w-1200 mx-auto px-3 min-h-screen pb-[72px] -mb-[72px]'>
+    <div className="mx-auto -mb-[72px] min-h-screen max-w-1200 px-3 pb-[72px]">
       {/* MARK: Add JSON-LD */}
-      <script type='application/ld+json' dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
-      <div className='grid grid-cols-12 pt-16 md:pt-8'>
+      <div className="grid grid-cols-12 pt-16 md:pt-8">
         {/* Content */}
-        <div className='col-span-9 pr-9'>
-          <div className='flex justify-end items-center'>
-            <p className='font-semibold text-neutral-600 text-sm'>
+        <div className="col-span-9 pr-9">
+          <div className="flex items-center justify-end">
+            <p className="text-sm font-semibold text-neutral-600">
               {capitalize(moment(blog?.createdAt).format('dddd, D/M/YYYY, h:mm A (GMT Z)'))}
             </p>
           </div>
@@ -106,29 +109,32 @@ async function BlogPage({ params: { slug } }: { params: { slug: string } }) {
         </div>
 
         {/* Suggested */}
-        <div className='col-span-3'>
-          <div className='sticky top-0'>
-            <p className='mb-3 tracking-wider underline underline-offset-2'>Đề xuất</p>
+        <div className="col-span-3">
+          <div className="sticky top-0">
+            <p className="mb-3 tracking-wider underline underline-offset-2">Đề xuất</p>
 
-            <ul className='flex flex-col gap-4'>
+            <ul className="flex flex-col gap-4">
               {suggestedBlogs.map((blog, index) => (
                 <li
                   className={`border-neutral-600 ${
-                    index + 1 < suggestedBlogs.length ? 'pb-4 border-b' : ''
+                    index + 1 < suggestedBlogs.length ? 'border-b pb-4' : ''
                   }`}
                   key={blog._id}
                 >
-                  <Link href={`/blog/${blog.slug}`} className='flex items-start gap-2 group'>
-                    <div className='aspect-video flex-shrink-0 overflow-hidden rounded-md shadow-lg'>
+                  <Link
+                    href={`/blog/${blog.slug}`}
+                    className="group flex items-start gap-2"
+                  >
+                    <div className="aspect-video flex-shrink-0 overflow-hidden rounded-md shadow-lg">
                       <Image
-                        className='w-full h-full object-cover'
+                        className="h-full w-full object-cover"
                         src={blog.thumbnails[0]}
                         width={120}
                         height={80}
-                        alt=''
+                        alt=""
                       />
                     </div>
-                    <p className='font-semibold text-sm fond-body tracking-wider group-hover:text-sky-500 trans-200 -mt-1 text-ellipsis line-clamp-4'>
+                    <p className="fond-body trans-200 -mt-1 line-clamp-4 text-ellipsis text-sm font-semibold tracking-wider group-hover:text-sky-500">
                       {blog.title}
                     </p>
                   </Link>
@@ -139,7 +145,10 @@ async function BlogPage({ params: { slug } }: { params: { slug: string } }) {
         </div>
       </div>
 
-      <Divider size={45} border />
+      <Divider
+        size={45}
+        border
+      />
     </div>
   )
 }

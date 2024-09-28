@@ -138,107 +138,107 @@ function PrivateInfo({ className = '' }: PrivateInfoProps) {
 
   return (
     <div
-      className={`relative rounded-lg border border-dark shadow-lg pt-8 overflow-x-scroll ${className}`}
+      className={`relative overflow-x-scroll rounded-lg border border-dark pt-8 shadow-lg ${className}`}
     >
-      <div className='absolute font-semibold text-2xl w-[calc(100%_-_20px)] left-1/2 -translate-x-1/2 h-0.5 bg-slate-700'>
-        <span className='absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 text-sm bg-white px-2 py-1 rounded-lg text-center'>
+      <div className="absolute left-1/2 h-0.5 w-[calc(100%_-_20px)] -translate-x-1/2 bg-slate-700 text-2xl font-semibold">
+        <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white px-2 py-1 text-center text-sm">
           Riêng tư
         </span>
       </div>
 
       <Divider size={6} />
 
-      <div className='relative grid grid-cols-3 p-5 gap-21'>
-        <div className='col-span-3 md:col-span-1'>
+      <div className="relative grid grid-cols-3 gap-21 p-5">
+        <div className="col-span-3 md:col-span-1">
           {!editMode ? (
             <>
-              <p className='text-slate-600'>Tên người dùng</p>
-              <p>{getValues('username') || <span className='text-slate-500 text-sm'>Trống</span>}</p>
+              <p className="text-slate-600">Tên người dùng</p>
+              <p>{getValues('username') || <span className="text-sm text-slate-500">Trống</span>}</p>
             </>
           ) : (
             <Input
-              id='username'
-              label='Tên người dùng'
+              id="username"
+              label="Tên người dùng"
               disabled={false}
               register={register}
               errors={errors}
               required
-              type='username'
-              labelBg='bg-white'
-              className='min-w-[40%] mt-3'
+              type="username"
+              labelBg="bg-white"
+              className="mt-3 min-w-[40%]"
               onFocus={() => clearErrors('username')}
             />
           )}
         </div>
-        <div className='col-span-3 md:col-span-1'>
+        <div className="col-span-3 md:col-span-1">
           {!editMode ? (
             <>
-              <p className='text-slate-600'>Email</p>
-              <p>{getValues('email') || <span className='text-slate-500 text-sm'>Trống</span>}</p>
+              <p className="text-slate-600">Email</p>
+              <p>{getValues('email') || <span className="text-sm text-slate-500">Trống</span>}</p>
             </>
           ) : (
             <Input
-              id='email'
-              label='Email'
+              id="email"
+              label="Email"
               disabled={false}
               register={register}
               errors={errors}
               required
-              type='email'
-              labelBg='bg-white'
-              className='min-w-[40%] mt-3'
+              type="email"
+              labelBg="bg-white"
+              className="mt-3 min-w-[40%]"
               onFocus={() => clearErrors('email')}
             />
           )}
         </div>
-        <div className='col-span-3 md:col-span-1'>
+        <div className="col-span-3 md:col-span-1">
           {!editMode ? (
             <>
-              <p className='text-slate-600'>Số điện thoại</p>
-              <p>{getValues('phone') || <span className='text-slate-500 text-sm'>Trống</span>}</p>
+              <p className="text-slate-600">Số điện thoại</p>
+              <p>{getValues('phone') || <span className="text-sm text-slate-500">Trống</span>}</p>
             </>
           ) : (
             <Input
-              id='phone'
-              label='Số điện thoại'
+              id="phone"
+              label="Số điện thoại"
               disabled={false}
               register={register}
               errors={errors}
-              type='number'
-              labelBg='bg-white'
-              className='min-w-[40%] mt-3'
+              type="number"
+              labelBg="bg-white"
+              className="mt-3 min-w-[40%]"
               onFocus={() => clearErrors('phone')}
             />
           )}
         </div>
         {curUser?.authType === 'local' && (
-          <div className='col-span-3 md:col-span-1'>
+          <div className="col-span-3 md:col-span-1">
             {!editMode ? (
               <>
-                <p className='text-slate-600'>Mật khẩu</p>
+                <p className="text-slate-600">Mật khẩu</p>
                 <p>*********</p>
               </>
             ) : (
               <Input
-                id='newPassword'
-                label='Đổi mật khẩu'
+                id="newPassword"
+                label="Đổi mật khẩu"
                 disabled={false}
                 register={register}
                 errors={errors}
                 icon={FaEyeSlash}
-                type='password'
-                labelBg='bg-white'
-                className='min-w-[40%] mt-3'
+                type="password"
+                labelBg="bg-white"
+                className="mt-3 min-w-[40%]"
                 onFocus={() => clearErrors('newPassword')}
               />
             )}
           </div>
         )}
 
-        <div className='flex items-center justify-center gap-2 col-span-full'>
+        <div className="col-span-full flex items-center justify-center gap-2">
           {!editMode ? (
             <button
-              className='flex gap-1 items-center justify-center rounded-lg border border-dark shadow-lg bg-slate-200 px-2 py-1 hover:bg-white trans-2000'
+              className="trans-2000 flex items-center justify-center gap-1 rounded-lg border border-dark bg-slate-200 px-2 py-1 shadow-lg hover:bg-white"
               onClick={() =>
                 curUser?.authType === 'local'
                   ? !authenticated
@@ -248,32 +248,38 @@ function PrivateInfo({ className = '' }: PrivateInfoProps) {
               }
             >
               <MdEdit size={18} />
-              <span className='font-semibold'>Chỉnh sửa</span>
+              <span className="font-semibold">Chỉnh sửa</span>
             </button>
           ) : (
             <>
               <button
-                className={`flex gap-1 items-center justify-center rounded-lg border border-dark shadow-lg bg-slate-200 px-2 py-1 hover:bg-white trans-200 ${
+                className={`trans-200 flex items-center justify-center gap-1 rounded-lg border border-dark bg-slate-200 px-2 py-1 shadow-lg hover:bg-white ${
                   loading ? 'pointer-events-none' : 'cursor-pointer'
                 }`}
                 onClick={() => setEditMode(false)}
               >
                 <MdCancel size={18} />
-                <span className='font-semibold'>Hủy</span>
+                <span className="font-semibold">Hủy</span>
               </button>
 
               <button
-                className={`flex gap-1 items-center justify-center rounded-lg border group border-dark shadow-lg bg-slate-200 px-2 py-1 hover:bg-white trans-200 ${
+                className={`trans-200 group flex items-center justify-center gap-1 rounded-lg border border-dark bg-slate-200 px-2 py-1 shadow-lg hover:bg-white ${
                   loading ? 'pointer-events-none' : 'cursor-pointer'
                 }`}
                 onClick={handleSubmit(onSubmit)}
               >
                 {loading ? (
-                  <RiDonutChartFill size={23} className='animate-spin text-slate-400' />
+                  <RiDonutChartFill
+                    size={23}
+                    className="animate-spin text-slate-400"
+                  />
                 ) : (
                   <>
-                    <FaSave size={16} className='wiggle' />
-                    <span className='font-semibold'>Lưu</span>
+                    <FaSave
+                      size={16}
+                      className="wiggle"
+                    />
+                    <span className="font-semibold">Lưu</span>
                   </>
                 )}
               </button>

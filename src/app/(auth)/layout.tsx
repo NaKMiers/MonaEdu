@@ -12,7 +12,7 @@ export default async function RootLayout({
       <PageLoading />
 
       {/* Main */}
-      <main className=''>{children}</main>
+      <main className="">{children}</main>
     </>
   )
 }

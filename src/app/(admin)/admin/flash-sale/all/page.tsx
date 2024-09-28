@@ -1,11 +1,11 @@
 'use client'
 
-import ConfirmDialog from '@/components/dialogs/ConfirmDialog'
-import Input from '@/components/Input'
-import Pagination from '@/components/layouts/Pagination'
 import AdminHeader from '@/components/admin/AdminHeader'
 import AdminMeta from '@/components/admin/AdminMeta'
 import FlashSaleItem from '@/components/admin/FlashSaleItem'
+import ConfirmDialog from '@/components/dialogs/ConfirmDialog'
+import Input from '@/components/Input'
+import Pagination from '@/components/layouts/Pagination'
 import { useAppDispatch } from '@/libs/hooks'
 import { setPageLoading } from '@/libs/reducers/modalReducer'
 import { ICourse } from '@/models/CourseModel'
@@ -218,78 +218,88 @@ function AllFlashSalesPage({ searchParams }: { searchParams?: { [key: string]: s
   }, [handleFilter, handleResetFilter, handleSubmit, flashSales])
 
   return (
-    <div className='w-full'>
+    <div className="w-full">
       {/* MARK: Top & Pagination */}
-      <AdminHeader title='All Flash Sales' addLink='/admin/flash-sale/add' />
-      <Pagination searchParams={searchParams} amount={amount} itemsPerPage={itemPerPage} />
+      <AdminHeader
+        title="All Flash Sales"
+        addLink="/admin/flash-sale/add"
+      />
+      <Pagination
+        searchParams={searchParams}
+        amount={amount}
+        itemsPerPage={itemPerPage}
+      />
 
       {/* MARK: Filter */}
-      <AdminMeta handleFilter={handleSubmit(handleFilter)} handleResetFilter={handleResetFilter}>
+      <AdminMeta
+        handleFilter={handleSubmit(handleFilter)}
+        handleResetFilter={handleResetFilter}
+      >
         {/* Begin */}
-        <div className='flex flex-wrap sm:flex-nowrap gap-2 col-span-12 lg:col-span-6'>
+        <div className="col-span-12 flex flex-wrap gap-2 sm:flex-nowrap lg:col-span-6">
           <Input
-            id='beginFrom'
-            label='Begin From'
+            id="beginFrom"
+            label="Begin From"
             disabled={false}
             register={register}
             errors={errors}
-            type='date'
+            type="date"
             icon={FaCalendar}
-            className='w-full'
+            className="w-full"
             onFocus={() => clearErrors('beginFrom')}
           />
 
           <Input
-            id='beginTo'
-            label='Begin To'
+            id="beginTo"
+            label="Begin To"
             disabled={false}
             register={register}
             errors={errors}
-            type='date'
+            type="date"
             icon={FaCalendar}
-            className='w-full'
+            className="w-full"
             onFocus={() => clearErrors('beginTo')}
           />
         </div>
 
         {/* Expire */}
-        <div className='flex flex-wrap sm:flex-nowrap gap-2 col-span-12 lg:col-span-6'>
+        <div className="col-span-12 flex flex-wrap gap-2 sm:flex-nowrap lg:col-span-6">
           <Input
-            id='expireFrom'
-            label='Expire From'
+            id="expireFrom"
+            label="Expire From"
             disabled={false}
             register={register}
             errors={errors}
-            type='date'
+            type="date"
             icon={FaCalendar}
-            className='w-full'
+            className="w-full"
             onFocus={() => clearErrors('expireFrom')}
           />
 
           <Input
-            id='expireTo'
-            label='Expire To'
+            id="expireTo"
+            label="Expire To"
             disabled={false}
             register={register}
             errors={errors}
-            type='date'
+            type="date"
             icon={FaCalendar}
-            className='w-full'
+            className="w-full"
             onFocus={() => clearErrors('expireTo')}
           />
         </div>
 
         {/* MARK: Select Filter */}
-        <div className='flex justify-end items-center flex-wrap gap-3 col-span-12 md:col-span-8'>
+        <div className="col-span-12 flex flex-wrap items-center justify-end gap-3 md:col-span-8">
           {/* Sort */}
           <Input
-            id='sort'
-            label='Sort'
+            id="sort"
+            label="Sort"
             disabled={false}
             register={register}
             errors={errors}
             icon={FaSort}
-            type='select'
+            type="select"
             onFocus={() => clearErrors('sort')}
             options={[
               {
@@ -314,13 +324,13 @@ function AllFlashSalesPage({ searchParams }: { searchParams?: { [key: string]: s
 
           {/* Time Type */}
           <Input
-            id='timeType'
-            label='Time Type'
+            id="timeType"
+            label="Time Type"
             disabled={false}
             register={register}
             errors={errors}
             icon={FaSort}
-            type='select'
+            type="select"
             onFocus={() => clearErrors('timeType')}
             options={[
               {
@@ -337,18 +347,18 @@ function AllFlashSalesPage({ searchParams }: { searchParams?: { [key: string]: s
                 label: 'Once',
               },
             ]}
-            className='min-w-[128px]'
+            className="min-w-[128px]"
           />
 
           {/* type */}
           <Input
-            id='type'
-            label='Type'
+            id="type"
+            label="Type"
             disabled={false}
             register={register}
             errors={errors}
             icon={FaSort}
-            type='select'
+            type="select"
             onFocus={() => clearErrors('type')}
             options={[
               {
@@ -373,10 +383,10 @@ function AllFlashSalesPage({ searchParams }: { searchParams?: { [key: string]: s
         </div>
 
         {/* MARK: Action Buttons */}
-        <div className='flex flex-wrap justify-end items-center gap-2 col-span-12'>
+        <div className="col-span-12 flex flex-wrap items-center justify-end gap-2">
           {/* Select All Button */}
           <button
-            className='border border-sky-400 text-sky-400 rounded-lg px-3 py-2 hover:bg-sky-400 hover:text-light trans-200'
+            className="trans-200 rounded-lg border border-sky-400 px-3 py-2 text-sky-400 hover:bg-sky-400 hover:text-light"
             onClick={() =>
               setSelectedFlashSales(
                 selectedFlashSales.length > 0 ? [] : flashSales.map(flashSale => flashSale._id)
@@ -389,7 +399,7 @@ function AllFlashSalesPage({ searchParams }: { searchParams?: { [key: string]: s
           {/* Delete Many Button */}
           {!!selectedFlashSales.length && (
             <button
-              className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-light trans-200'
+              className="trans-200 rounded-lg border border-red-500 px-3 py-2 text-red-500 hover:bg-red-500 hover:text-light"
               onClick={() => setIsOpenConfirmModal(true)}
             >
               Delete
@@ -402,20 +412,20 @@ function AllFlashSalesPage({ searchParams }: { searchParams?: { [key: string]: s
       <ConfirmDialog
         open={isOpenConfirmModal}
         setOpen={setIsOpenConfirmModal}
-        title='Delete Flash Sales'
-        content='Are you sure that you want to delete these flash sales?'
+        title="Delete Flash Sales"
+        content="Are you sure that you want to delete these flash sales?"
         onAccept={() => handleDeleteFlashSales(selectedFlashSales)}
         isLoading={loadingFlashSales.length > 0}
       />
 
       {/* MARK: Amount */}
-      <div className='p-3 text-sm text-right text-light font-semibold'>
+      <div className="p-3 text-right text-sm font-semibold text-light">
         {Math.min(itemPerPage * +(searchParams?.page || 1), amount)}/{amount} flash sale
         {amount > 1 ? 's' : ''}
       </div>
 
       {/* MARK: MAIN LIST */}
-      <div className='grid items-start grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-21 '>
+      <div className="grid grid-cols-1 items-start gap-21 md:grid-cols-2 lg:grid-cols-3">
         {flashSales.map(flashSale => (
           <FlashSaleItem
             data={flashSale}

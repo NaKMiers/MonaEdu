@@ -2,12 +2,12 @@
 
 import { ICourse } from '@/models/CourseModel'
 import { IOrder } from '@/models/OrderModel'
-import { getAllCoursesApi, getAllOrdersApi } from '@/requests'
+import { getAllOrdersApi } from '@/requests'
 import { formatPrice } from '@/utils/number'
 import moment from 'moment'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useCallback, useEffect, useState } from 'react'
+import { memo, useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { FaCircleNotch } from 'react-icons/fa'
 
@@ -66,7 +66,7 @@ function RecentlySaleTab({ className = '' }: RecentlySaleTab) {
 
   return (
     <div className={`${className}`}>
-      <div className='flex flex-col gap-2 mb-2'>
+      <div className="mb-2 flex flex-col gap-2">
         {items.map((item, index) => {
           const minutesAgo = moment().diff(moment(item.saleTime), 'minutes')
 
@@ -83,34 +83,34 @@ function RecentlySaleTab({ className = '' }: RecentlySaleTab) {
 
           return (
             <div
-              className='flex flex-col bg-slate-100 border border-dark rounded-lg shadow-lg p-2 text-dark'
+              className="flex flex-col rounded-lg border border-dark bg-slate-100 p-2 text-dark shadow-lg"
               key={index}
             >
-              <div className='flex items-start gap-2.5'>
+              <div className="flex items-start gap-2.5">
                 {item?.images?.[0] && (
                   <Link
                     href={`/${item.slug}`}
-                    className='aspect-video rounded-md shadow-lg overflow-hidden flex-shrink-0 w-full max-w-[60px]'
+                    className="aspect-video w-full max-w-[60px] flex-shrink-0 overflow-hidden rounded-md shadow-lg"
                   >
                     <Image
-                      className='w-full h-full object-cover'
+                      className="h-full w-full object-cover"
                       src={item.images[0]}
                       width={60}
                       height={40}
                       alt={item.title}
-                      loading='lazy'
+                      loading="lazy"
                     />
                   </Link>
                 )}
-                <div className='flex flex-col'>
-                  <p className='font-body tracking-wider font-semibold -mt-1'>{item.title}</p>
+                <div className="flex flex-col">
+                  <p className="-mt-1 font-body font-semibold tracking-wider">{item.title}</p>
                   <p>
-                    <span className='text-xs'>Revenue</span>:{' '}
-                    <span className='font-semibold'>{formatPrice(item.revenue)}</span>
+                    <span className="text-xs">Revenue</span>:{' '}
+                    <span className="font-semibold">{formatPrice(item.revenue)}</span>
                   </p>
                 </div>
               </div>
-              <p className={`text-ellipsis line-clamp-1 text-sm text-${color}`}>
+              <p className={`line-clamp-1 text-ellipsis text-sm text-${color}`}>
                 {moment(item.begin).format('DD/MM/YYYY HH:mm:ss')}
               </p>
             </div>
@@ -118,15 +118,18 @@ function RecentlySaleTab({ className = '' }: RecentlySaleTab) {
         })}
       </div>
 
-      <div className='flex items-center justify-center'>
+      <div className="flex items-center justify-center">
         <button
-          className={`flex items-center justify-center font-semibold rounded-md px-3 h-8 text-sm text-light border-2 hover:bg-white hover:text-dark common-transition ${
-            loading ? 'pointer-events-none bg-white border-slate-400' : 'bg-dark-100 border-dark'
+          className={`common-transition flex h-8 items-center justify-center rounded-md border-2 px-3 text-sm font-semibold text-light hover:bg-white hover:text-dark ${
+            loading ? 'pointer-events-none border-slate-400 bg-white' : 'border-dark bg-dark-100'
           }`}
           onClick={handleLoadMore}
         >
           {loading ? (
-            <FaCircleNotch size={18} className='animate-spin text-slate-400' />
+            <FaCircleNotch
+              size={18}
+              className="animate-spin text-slate-400"
+            />
           ) : (
             <span>({items.length}) Load more...</span>
           )}
@@ -136,4 +139,4 @@ function RecentlySaleTab({ className = '' }: RecentlySaleTab) {
   )
 }
 
-export default RecentlySaleTab
+export default memo(RecentlySaleTab)

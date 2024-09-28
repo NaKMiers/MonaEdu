@@ -88,14 +88,17 @@ function Comment({ comments, lessonId, className = '' }: CommentProps) {
     <div>
       {/* MARK: Input */}
       <div className={`flex items-center justify-between gap-3 ${className}`}>
-        <Link className='relative' href={`/user/${curUser?.username || curUser?.email}`}>
+        <Link
+          className="relative"
+          href={`/user/${curUser?.username || curUser?.email}`}
+        >
           {isShowCrown && (
             <Image
-              className='absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 aspect-square rounded-full overflow-hidden'
-              src='/icons/ring-circle.png'
+              className="absolute left-1/2 top-1/2 aspect-square -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full"
+              src="/icons/ring-circle.png"
               width={46}
               height={46}
-              alt='ring'
+              alt="ring"
             />
           )}
           <Image
@@ -103,15 +106,15 @@ function Comment({ comments, lessonId, className = '' }: CommentProps) {
             src={curUser?.avatar || process.env.NEXT_PUBLIC_DEFAULT_AVATAR!}
             width={46}
             height={46}
-            alt='avatar'
+            alt="avatar"
           />
           {isShowCrown && (
             <Image
-              className='absolute z-20 -top-[11px] right-[3px] rotate-[18deg]'
-              src='/icons/crown-icon-2.png'
+              className="absolute -top-[11px] right-[3px] z-20 rotate-[18deg]"
+              src="/icons/crown-icon-2.png"
               width={24}
               height={24}
-              alt='crown'
+              alt="crown"
             />
           )}
         </Link>
@@ -121,11 +124,11 @@ function Comment({ comments, lessonId, className = '' }: CommentProps) {
           }`}
         >
           <input
-            id='comment'
-            className='h-[40px] block px-2.5 pb-2.5 pt-4 w-full text-sm text-dark bg-transparent focus:outline-none focus:ring-0 peer number-input'
-            placeholder=' '
+            id="comment"
+            className="number-input peer block h-[40px] w-full bg-transparent px-2.5 pb-2.5 pt-4 text-sm text-dark focus:outline-none focus:ring-0"
+            placeholder=" "
             disabled={isLoading}
-            type='text'
+            type="text"
             {...register('comment', { required: true })}
             onBlur={() => clearErrors('comment')}
             onKeyDown={e => e.stopPropagation()}
@@ -133,8 +136,8 @@ function Comment({ comments, lessonId, className = '' }: CommentProps) {
 
           {/* label */}
           <label
-            htmlFor='comment'
-            className={`absolute text-nowrap rounded-md text-sm text-gray-500 trans-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1 cursor-pointer ${
+            htmlFor="comment"
+            className={`trans-300 absolute start-1 top-2 z-10 origin-[0] -translate-y-4 scale-75 transform cursor-pointer text-nowrap rounded-md bg-white px-2 text-sm text-gray-500 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:px-2 rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4 ${
               errors.comment ? 'text-rose-400' : 'text-dark'
             }`}
           >
@@ -142,22 +145,26 @@ function Comment({ comments, lessonId, className = '' }: CommentProps) {
           </label>
         </div>
         <LoadingButton
-          className='h-[40px] flex items-center px-3 sm:px-6 border border-dark hover:bg-dark-100 font-semibold text-dark hover:text-light rounded-lg trans-200'
+          className="trans-200 flex h-[40px] items-center rounded-lg border border-dark px-3 font-semibold text-dark hover:bg-dark-100 hover:text-light sm:px-6"
           onClick={handleSubmit(sendComment)}
-          text='Gửi'
+          text="Gửi"
           isLoading={isLoading}
         />
       </div>
       {errors.comment?.message && (
-        <span className='text-sm text-rose-400 ml-[60px]'>{errors.comment?.message?.toString()}</span>
+        <span className="ml-[60px] text-sm text-rose-400">{errors.comment?.message?.toString()}</span>
       )}
 
       {/* MARK: Comment List */}
-      <div className='flex flex-col mt-5 gap-3'>
+      <div className="mt-5 flex flex-col gap-3">
         {cmts
           .filter(comment => !comment.hide || comment.userId === curUser?._id)
           .map(comment => (
-            <CommentItem comment={comment} setCmts={setCmts} key={comment._id} />
+            <CommentItem
+              comment={comment}
+              setCmts={setCmts}
+              key={comment._id}
+            />
           ))}
       </div>
     </div>

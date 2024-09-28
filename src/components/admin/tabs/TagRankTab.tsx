@@ -1,6 +1,6 @@
 import { ITag } from '@/models/TagModel'
 import { getAllCoursesApi } from '@/requests'
-import { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { FaCircleNotch } from 'react-icons/fa'
 
@@ -51,23 +51,26 @@ function TagRankTab({ className = '' }: TagRankTabProps) {
       {!loading ? (
         tags.map((tag, index) => (
           <div
-            className={`flex items-center justify-between gap-3 px-3 py-1 mb-4 bg-white shadow-lg rounded-xl `}
+            className={`mb-4 flex items-center justify-between gap-3 rounded-xl bg-white px-3 py-1 shadow-lg`}
             style={{ width: `calc(100% - ${index * 6 < 40 ? index * 6 : 40}%)` }}
             key={index}
           >
-            <span className='font-body tracking-wider text-dark'>{tag.title}</span>
-            <span className='flex justify-center items-center font-semibold text-xs h-5 px-2 rounded-full bg-dark-100 text-light'>
+            <span className="font-body tracking-wider text-dark">{tag.title}</span>
+            <span className="flex h-5 items-center justify-center rounded-full bg-dark-100 px-2 text-xs font-semibold text-light">
               {tag.joined}
             </span>
           </div>
         ))
       ) : (
-        <div className='flex items-center justify-center'>
-          <FaCircleNotch size={18} className='animate-spin text-slate-400' />
+        <div className="flex items-center justify-center">
+          <FaCircleNotch
+            size={18}
+            className="animate-spin text-slate-400"
+          />
         </div>
       )}
     </div>
   )
 }
 
-export default TagRankTab
+export default memo(TagRankTab)

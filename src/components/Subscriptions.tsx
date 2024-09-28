@@ -8,11 +8,14 @@ interface SubscriptionsProps {
 
 function Subscriptions({ packageGroups, className }: SubscriptionsProps) {
   return (
-    <div className={`max-w-1200 w-full mx-auto text-light ${className}`}>
-      <div className='flex flex-col gap-10'>
+    <div className={`mx-auto w-full max-w-1200 text-light ${className}`}>
+      <div className="flex flex-col gap-10">
         {packageGroups.map(pG => (
-          <div className='w-full xs:w-auto inline-block mx-auto' key={pG._id}>
-            <h2 className='text-center px-21 py-2 text-xl font-semibold bg-white text-dark rounded-t-md'>
+          <div
+            className="mx-auto inline-block w-full xs:w-auto"
+            key={pG._id}
+          >
+            <h2 className="rounded-t-md bg-white px-21 py-2 text-center text-xl font-semibold text-dark">
               {pG.title}
             </h2>
 

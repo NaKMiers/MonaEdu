@@ -86,29 +86,29 @@ function CourseItem({
   return (
     <>
       <div
-        className={`relative flex justify-between items-start gap-2 p-4 rounded-lg shadow-lg cursor-pointer trans-200 ${
-          selectedCourses.includes(data._id) ? 'bg-violet-50 -translate-y-1' : 'bg-white'
-        }  ${className}`}
+        className={`trans-200 relative flex cursor-pointer items-start justify-between gap-2 rounded-lg p-4 shadow-lg ${
+          selectedCourses.includes(data._id) ? '-translate-y-1 bg-violet-50' : 'bg-white'
+        } ${className}`}
         onClick={() =>
           setSelectedCourses(prev =>
             prev.includes(data._id) ? prev.filter(id => id !== data._id) : [...prev, data._id]
           )
         }
       >
-        <div className='flex-grow'>
+        <div className="flex-grow">
           {/* MARK: Thumbnails */}
           <Link
             href={`/${data.slug}`}
             prefetch={false}
-            className='relative flex items-center max-w-[160px] rounded-lg shadow-md overflow-hidden mb-2'
+            className="relative mb-2 flex max-w-[160px] items-center overflow-hidden rounded-lg shadow-md"
             onClick={e => e.stopPropagation()}
             title={data._id}
           >
-            <div className='flex items-center w-full overflow-x-scroll snap-x snap-mandatory no-scrollbar'>
+            <div className="no-scrollbar flex w-full snap-x snap-mandatory items-center overflow-x-scroll">
               {data.images.slice(0, data.images.length === 1 ? 1 : -1).map((src, index) => (
                 <Image
                   key={index}
-                  className='aspect-video flex-shrink-0 snap-start'
+                  className="aspect-video flex-shrink-0 snap-start"
                   src={src}
                   height={200}
                   width={200}
@@ -121,22 +121,25 @@ function CourseItem({
           {/* Flash sale */}
           {data.flashSale && (
             <PiLightningFill
-              className='absolute -top-1.5 left-1 text-yellow-400 animate-bounce'
+              className="absolute -top-1.5 left-1 animate-bounce text-yellow-400"
               size={25}
             />
           )}
 
           {/* Title */}
-          <p className='text-dark font-semibold tracking-wider mt-1' title={data.title}>
+          <p
+            className="mt-1 font-semibold tracking-wider text-dark"
+            title={data.title}
+          >
             {data.title}
           </p>
 
           {/* Category */}
-          <p className='text-slate-500 text-sm font-semibold tracking-wider mb-1'>
+          <p className="mb-1 text-sm font-semibold tracking-wider text-slate-500">
             Category:{' '}
             <Link
               href={`/categories/${(data.category as ICategory)?.slug}`}
-              className='text-sky-500 underline italic font-normal'
+              className="font-normal italic text-sky-500 underline"
             >
               {(data.category as ICategory)?.slug}
             </Link>
@@ -145,7 +148,7 @@ function CourseItem({
           {/* Text Hook */}
           {data.textHook && (
             <p
-              className='text-sm text-dark border px-2 py-0.5 rounded-md font-body tracking-wider text-ellipsis line-clamp-2'
+              className="line-clamp-2 text-ellipsis rounded-md border px-2 py-0.5 font-body text-sm tracking-wider text-dark"
               title={data.textHook}
             >
               Hook: {data.textHook}
@@ -153,33 +156,39 @@ function CourseItem({
           )}
 
           {/* Author */}
-          <p className='text-slate-500 text-sm font-semibold tracking-wider'>
-            Author: <span className='font-normal'>{data.author}</span>
+          <p className="text-sm font-semibold tracking-wider text-slate-500">
+            Author: <span className="font-normal">{data.author}</span>
           </p>
 
           {/* Price - Old Price */}
-          <div className='flex items-center flex-wrap gap-2'>
-            <p className='font-semibold text-xl text-primary'>{formatPrice(data.price)}</p>
+          <div className="flex flex-wrap items-center gap-2">
+            <p className="text-xl font-semibold text-primary">{formatPrice(data.price)}</p>
             {data.oldPrice && (
-              <p className='line-through text-slate-500 text-sm'>{formatPrice(data.oldPrice)}</p>
+              <p className="text-sm text-slate-500 line-through">{formatPrice(data.oldPrice)}</p>
             )}
           </div>
 
           {/* Tags */}
-          <p className='text-slate-500 text-sm'>
-            <span className='font-semibold'>Tags: </span>
+          <p className="text-sm text-slate-500">
+            <span className="font-semibold">Tags: </span>
             {data.tags.map((tag: any, index) => (
-              <span key={tag.slug} className='text-slate-400'>
+              <span
+                key={tag.slug}
+                className="text-slate-400"
+              >
                 {tag.title}
                 {index < data.tags.length - 1 ? ', ' : ''}
               </span>
             ))}
           </p>
 
-          <p className='text-slate-500 text-sm'>
-            <span className='font-semibold'>Languages: </span>
+          <p className="text-sm text-slate-500">
+            <span className="font-semibold">Languages: </span>
             {data?.languages?.map((language, index) => (
-              <span className='text-slate-600' key={index}>
+              <span
+                className="text-slate-600"
+                key={index}
+              >
                 {language}
                 {index < data.languages.length - 1 ? ', ' : ''}
               </span>
@@ -187,40 +196,40 @@ function CourseItem({
           </p>
 
           {/* Joined & Likes */}
-          <div className='flex items-center flex-wrap gap-3 text-slate-500 text-sm'>
+          <div className="flex flex-wrap items-center gap-3 text-sm text-slate-500">
             <div onDoubleClick={() => setEditingJoined(true)}>
               {!editingJoined ? (
                 <>
-                  <span className='font-semibold'>Joined: </span>
-                  <span className='text-green-500'>{joined}</span>
+                  <span className="font-semibold">Joined: </span>
+                  <span className="text-green-500">{joined}</span>
                 </>
               ) : (
                 <input
-                  type='number'
+                  type="number"
                   value={joined}
                   min={0}
                   onChange={e => setJoined(+e.target.value)}
                   onClick={e => e.stopPropagation()}
                   onBlur={() => handleUpdateProperties('joined')}
-                  className='border rounded-lg shadow-lg max-w-[80px] px-2 py-1 outline-none mt-1'
+                  className="mt-1 max-w-[80px] rounded-lg border px-2 py-1 shadow-lg outline-none"
                 />
               )}
             </div>
             <div onDoubleClick={() => setEditingLikes(true)}>
               {!editingLikes ? (
                 <>
-                  <span className='font-semibold'>Likes: </span>
-                  <span className='text-rose-500'>{likes}</span>
+                  <span className="font-semibold">Likes: </span>
+                  <span className="text-rose-500">{likes}</span>
                 </>
               ) : (
                 <input
-                  type='number'
+                  type="number"
                   value={likes}
                   min={0}
                   onChange={e => setLikes(+e.target.value)}
                   onClick={e => e.stopPropagation()}
                   onBlur={() => handleUpdateProperties('likes')}
-                  className='border rounded-lg shadow-lg max-w-[80px] px-2 py-1 outline-none mt-1'
+                  className="mt-1 max-w-[80px] rounded-lg border px-2 py-1 shadow-lg outline-none"
                 />
               )}
             </div>
@@ -228,10 +237,10 @@ function CourseItem({
         </div>
 
         {/* MARK: Action Buttons */}
-        <div className='flex flex-col border border-dark text-dark rounded-lg px-2 py-3 gap-4'>
+        <div className="flex flex-col gap-4 rounded-lg border border-dark px-2 py-3 text-dark">
           {/* Active Button */}
           <button
-            className='block group'
+            className="group block"
             onClick={e => {
               e.stopPropagation()
               // is being active
@@ -253,7 +262,7 @@ function CourseItem({
 
           {/* Boot Button */}
           <button
-            className='block group'
+            className="group block"
             onClick={e => {
               e.stopPropagation()
               // is being booted
@@ -276,53 +285,68 @@ function CourseItem({
           {/* Remove Flashsale Button */}
           {data.flashSale && (
             <button
-              className='block group'
+              className="group block"
               onClick={e => {
                 e.stopPropagation()
                 setIsOpenConfirmModal(true)
                 setConfirmType('Remove Flash Sale')
               }}
               disabled={loadingCourses.includes(data._id)}
-              title='Remove Flash Sale'
+              title="Remove Flash Sale"
             >
-              <PiLightningSlashFill size={18} className='wiggle text-yellow-400' />
+              <PiLightningSlashFill
+                size={18}
+                className="wiggle text-yellow-400"
+              />
             </button>
           )}
 
           {/* Edit Button Link */}
           <Link
             href={`/admin/course/${data._id}/edit`}
-            className='block group'
+            className="group block"
             onClick={e => e.stopPropagation()}
-            title='Edit'
+            title="Edit"
           >
-            <MdEdit size={18} className='wiggle' />
+            <MdEdit
+              size={18}
+              className="wiggle"
+            />
           </Link>
 
           {/* All Chapters Button Link */}
           <Link
             href={`/admin/chapter/${data._id}/all`}
-            className='block group'
+            className="group block"
             onClick={e => e.stopPropagation()}
-            title='View Chapters'
+            title="View Chapters"
           >
-            <FaEye size={18} className='wiggle' />
+            <FaEye
+              size={18}
+              className="wiggle"
+            />
           </Link>
 
           {/* Delete Button */}
           <button
-            className='block group'
+            className="group block"
             onClick={e => {
               e.stopPropagation()
               setIsOpenConfirmModal(true)
             }}
             disabled={loadingCourses.includes(data._id)}
-            title='Delete'
+            title="Delete"
           >
             {loadingCourses.includes(data._id) ? (
-              <RiDonutChartFill size={18} className='animate-spin text-slate-300' />
+              <RiDonutChartFill
+                size={18}
+                className="animate-spin text-slate-300"
+              />
             ) : (
-              <FaTrash size={18} className='wiggle' />
+              <FaTrash
+                size={18}
+                className="wiggle"
+              />
             )}
           </button>
         </div>
@@ -338,10 +362,10 @@ function CourseItem({
           confirmType === 'deactivate'
             ? handleActivateCourses([data._id], false)
             : confirmType === 'unbooted'
-            ? handleBootCourses([data._id], false)
-            : confirmType === 'Remove Flash Sale'
-            ? handleRemoveApplyingFlashSales([data._id])
-            : handleDeleteCourses([data._id])
+              ? handleBootCourses([data._id], false)
+              : confirmType === 'Remove Flash Sale'
+                ? handleRemoveApplyingFlashSales([data._id])
+                : handleDeleteCourses([data._id])
         }
         isLoading={loadingCourses.includes(data._id)}
       />

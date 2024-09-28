@@ -61,59 +61,59 @@ function NotificationSettings({ className = '' }: NotificationSettingsProps) {
 
   return (
     <div
-      className={`relative rounded-lg border border-dark shadow-lg py-8 overflow-x-scroll ${className}`}
+      className={`relative overflow-x-scroll rounded-lg border border-dark py-8 shadow-lg ${className}`}
     >
-      <div className='absolute font-semibold text-2xl w-[calc(100%_-_20px)] left-1/2 -translate-x-1/2 h-0.5 bg-slate-700'>
-        <span className='absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 text-sm bg-white px-2 py-1 rounded-lg text-center'>
+      <div className="absolute left-1/2 h-0.5 w-[calc(100%_-_20px)] -translate-x-1/2 bg-slate-700 text-2xl font-semibold">
+        <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white px-2 py-1 text-center text-sm">
           Cài đặt thông báo
         </span>
       </div>
 
       <Divider size={5} />
 
-      <div className='p-5'>
-        <p className='font-semibold'>Gửi thông báo cho tôi khi:</p>
+      <div className="p-5">
+        <p className="font-semibold">Gửi thông báo cho tôi khi:</p>
 
         <Divider size={4} />
 
-        <ul className='max-w-[500px] w-full pl-21 md:pl-20 flex flex-col gap-4'>
-          <li className='flex items-center justify-between gap-4'>
+        <ul className="flex w-full max-w-[500px] flex-col gap-4 pl-21 md:pl-20">
+          <li className="flex items-center justify-between gap-4">
             <span>Có khóa học mới</span>
 
-            <label className='inline-flex items-center cursor-pointer'>
+            <label className="inline-flex cursor-pointer items-center">
               <input
-                type='checkbox'
+                type="checkbox"
                 checked={userNotificationSettings.newLesson}
                 onChange={() => handleChangeNotificationSetting('newLesson')}
-                className='sr-only peer'
+                className="peer sr-only"
               />
-              <div className="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-light after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-secondary"></div>
+              <div className="peer relative h-6 w-11 rounded-full bg-gray-200 after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-secondary peer-checked:after:translate-x-full peer-checked:after:border-light rtl:peer-checked:after:-translate-x-full dark:border-gray-600 dark:bg-gray-700"></div>
             </label>
           </li>
-          <li className='flex items-center justify-between gap-4'>
+          <li className="flex items-center justify-between gap-4">
             <span>Bình luận của tôi được trả lời</span>
 
-            <label className='inline-flex items-center cursor-pointer'>
+            <label className="inline-flex cursor-pointer items-center">
               <input
-                type='checkbox'
+                type="checkbox"
                 checked={userNotificationSettings.repliedComment}
                 onChange={() => handleChangeNotificationSetting('repliedComment')}
-                className='sr-only peer'
+                className="peer sr-only"
               />
-              <div className="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-light after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-secondary"></div>
+              <div className="peer relative h-6 w-11 rounded-full bg-gray-200 after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-secondary peer-checked:after:translate-x-full peer-checked:after:border-light rtl:peer-checked:after:-translate-x-full dark:border-gray-600 dark:bg-gray-700"></div>
             </label>
           </li>
-          <li className='flex items-center justify-between gap-4'>
+          <li className="flex items-center justify-between gap-4">
             <span>Bình luận của tôi được thích</span>
 
-            <label className='inline-flex items-center cursor-pointer'>
+            <label className="inline-flex cursor-pointer items-center">
               <input
-                type='checkbox'
+                type="checkbox"
                 checked={userNotificationSettings.emotionComment}
                 onChange={() => handleChangeNotificationSetting('emotionComment')}
-                className='sr-only peer'
+                className="peer sr-only"
               />
-              <div className="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-light after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-secondary"></div>
+              <div className="peer relative h-6 w-11 rounded-full bg-gray-200 after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-secondary peer-checked:after:translate-x-full peer-checked:after:border-light rtl:peer-checked:after:-translate-x-full dark:border-gray-600 dark:bg-gray-700"></div>
             </label>
           </li>
         </ul>

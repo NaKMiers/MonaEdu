@@ -178,70 +178,70 @@ function PackageModal({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className={`fixed z-10 top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex items-center justify-center ${className}`}
+          className={`fixed bottom-0 left-0 right-0 top-0 z-10 flex items-center justify-center bg-black bg-opacity-50 ${className}`}
           onClick={() => setOpen(false)}
         >
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             exit={{ scale: 0 }}
-            className='max-h-[calc(100vh-2*80px)] overflow-y-auto w-full max-w-[600px] rounded-medium shadow-medium bg-white p-21'
+            className="max-h-[calc(100vh-2*80px)] w-full max-w-[600px] overflow-y-auto rounded-medium bg-white p-21 shadow-medium"
             onClick={e => e.stopPropagation()}
           >
-            <h1 className='text-dark text-center font-semibold text-xl'>{title}</h1>
+            <h1 className="text-center text-xl font-semibold text-dark">{title}</h1>
 
             <Divider size={2} />
 
             <Input
-              id='title'
-              label='Title'
+              id="title"
+              label="Title"
               disabled={isLoading}
               register={register}
               errors={errors}
               required
-              type='text'
-              labelBg='bg-white'
-              className='min-w-[40%] mt-3'
+              type="text"
+              labelBg="bg-white"
+              className="mt-3 min-w-[40%]"
               onFocus={() => clearErrors('title')}
             />
 
             <Input
-              id='description'
-              label='Description'
+              id="description"
+              label="Description"
               disabled={isLoading}
               register={register}
               errors={errors}
-              type='textarea'
+              type="textarea"
               rows={2}
-              labelBg='bg-white'
-              className='min-w-[40%] mt-3'
+              labelBg="bg-white"
+              className="mt-3 min-w-[40%]"
               onFocus={() => clearErrors('description')}
             />
 
             <Divider size={3} />
 
-            <div className='grid grid-cols-1 lg:grid-cols-2 gap-3'>
+            <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
               {/* Price */}
               <Input
-                id='price'
-                label='Price'
+                id="price"
+                label="Price"
                 disabled={isLoading}
                 register={register}
                 errors={errors}
                 required
-                type='number'
+                type="number"
                 icon={FaMoneyBillAlt}
                 onFocus={() => clearErrors('price')}
               />
 
               {/* Old Price */}
               <Input
-                id='oldPrice'
-                label='Old Price'
+                id="oldPrice"
+                label="Old Price"
                 disabled={isLoading}
                 register={register}
                 errors={errors}
-                type='number'
+                type="number"
                 icon={FaMoneyBillAlt}
                 onFocus={() => clearErrors('oldPrice')}
               />
@@ -250,41 +250,41 @@ function PackageModal({
             <Divider size={3} />
 
             {/* MARK: Credit - Expire - Max Price */}
-            <div className='grid grid-cols-1 lg:grid-cols-3 gap-3'>
+            <div className="grid grid-cols-1 gap-3 lg:grid-cols-3">
               {/* Credit */}
               <Input
-                id='credit'
-                label='Credit'
+                id="credit"
+                label="Credit"
                 disabled={isLoading}
                 register={register}
                 errors={errors}
                 min={0}
                 max={10}
-                type='number'
+                type="number"
                 icon={MdNumbers}
                 onFocus={() => clearErrors(['credit', 'days', 'maxPrice'])}
               />
 
               {/* Days */}
               <Input
-                id='days'
-                label='Days'
+                id="days"
+                label="Days"
                 disabled={isLoading}
                 register={register}
                 errors={errors}
-                type='number'
+                type="number"
                 icon={FaCalendarDays}
                 onFocus={() => clearErrors(['credit', 'days', 'maxPrice'])}
               />
 
               {/* Max Price */}
               <Input
-                id='maxPrice'
-                label='Max Price'
+                id="maxPrice"
+                label="Max Price"
                 disabled={isLoading}
                 register={register}
                 errors={errors}
-                type='number'
+                type="number"
                 icon={FaMoneyBillAlt}
                 onFocus={() => clearErrors(['credit', 'days', 'maxPrice'])}
               />
@@ -293,30 +293,38 @@ function PackageModal({
             <Divider size={3} />
 
             {/* Active */}
-            <div className='flex'>
-              <div className='bg-white rounded-lg px-3 flex items-center'>
-                <FaPlay size={16} className='text-secondary' />
+            <div className="flex">
+              <div className="flex items-center rounded-lg bg-white px-3">
+                <FaPlay
+                  size={16}
+                  className="text-secondary"
+                />
               </div>
               <label
-                className={`select-none cursor-pointer border border-green-500 px-4 py-2 rounded-lg trans-200  ${
+                className={`trans-200 cursor-pointer select-none rounded-lg border border-green-500 px-4 py-2 ${
                   isActiveChecked ? 'bg-green-500 text-light' : 'bg-white text-green-500'
                 }`}
-                htmlFor='active'
+                htmlFor="active"
                 onClick={() => setIsActiveChecked(!isActiveChecked)}
               >
                 Active
               </label>
-              <input type='checkbox' id='active' hidden {...register('active', { required: false })} />
+              <input
+                type="checkbox"
+                id="active"
+                hidden
+                {...register('active', { required: false })}
+              />
             </div>
 
             <Divider size={3} />
 
-            <p className='font-semibold text-dark mb-1'>Features</p>
-            <div className='flex justify-between rounded-lg shadow-lg border-1 border-dark overflow-hidden'>
+            <p className="mb-1 font-semibold text-dark">Features</p>
+            <div className="border-1 flex justify-between overflow-hidden rounded-lg border-dark shadow-lg">
               <input
-                name='features'
-                className='w-full px-4 py-2 text-sm text-dark outline-none'
-                placeholder='Feature...'
+                name="features"
+                className="w-full px-4 py-2 text-sm text-dark outline-none"
+                placeholder="Feature..."
                 value={featureValue}
                 onChange={e => setFeatureValue(e.target.value)}
                 onKeyUp={e => {
@@ -327,7 +335,7 @@ function PackageModal({
                 }}
               />
               <button
-                className='bg-primary text-dark px-2 trans-200 hover:text-light hover:bg-secondary'
+                className="trans-200 bg-primary px-2 text-dark hover:bg-secondary hover:text-light"
                 onClick={() => {
                   if (featureValue.trim()) {
                     setFeatures(prev => [...prev, featureValue])
@@ -339,15 +347,21 @@ function PackageModal({
               </button>
             </div>
             {features.length > 0 && (
-              <ul className='flex flex-col text-dark text-sm font-body tracking-wider rounded-lg border border-dark py-1 px-2 mt-2 max-h-[100px] overflow-y-auto'>
+              <ul className="mt-2 flex max-h-[100px] flex-col overflow-y-auto rounded-lg border border-dark px-2 py-1 font-body text-sm tracking-wider text-dark">
                 {features.map((feature, index) => (
-                  <li className='flex justify-between items-center' key={index}>
+                  <li
+                    className="flex items-center justify-between"
+                    key={index}
+                  >
                     <p>{feature}</p>
                     <button
-                      className='group'
+                      className="group"
                       onClick={() => setFeatures(prev => prev.filter(f => f !== feature))}
                     >
-                      <FaDeleteLeft size={16} className='wiggle' />
+                      <FaDeleteLeft
+                        size={16}
+                        className="wiggle"
+                      />
                     </button>
                   </li>
                 ))}
@@ -356,22 +370,25 @@ function PackageModal({
 
             <Divider size={8} />
 
-            <div className='flex justify-center gap-3'>
+            <div className="flex justify-center gap-3">
               <button
-                className={`font-semibold border-2 border-dark bg-slate-300 shadow-lg text-dark px-3 py-1.5 rounded-lg drop-shadow-md hover:text-light hover:border-slate-300 trans-200`}
+                className={`trans-200 rounded-lg border-2 border-dark bg-slate-300 px-3 py-1.5 font-semibold text-dark shadow-lg drop-shadow-md hover:border-slate-300 hover:text-light`}
                 onClick={() => setOpen(false)}
               >
                 Cancel
               </button>
 
               <button
-                className={`font-semibold border-2 border-dark shadow-lg text-dark px-3 py-1.5 rounded-lg drop-shadow-md hover:bg-dark-100 hover:text-light trans-200 ${
-                  isLoading ? 'bg-slate-200 pointer-events-none' : ''
+                className={`trans-200 rounded-lg border-2 border-dark px-3 py-1.5 font-semibold text-dark shadow-lg drop-shadow-md hover:bg-dark-100 hover:text-light ${
+                  isLoading ? 'pointer-events-none bg-slate-200' : ''
                 }`}
                 onClick={handleSubmit(pkg ? onEditSubmit : onAddSubmit)}
               >
                 {isLoading ? (
-                  <FaCircleNotch size={18} className='text-slate-400 trans-200 animate-spin' />
+                  <FaCircleNotch
+                    size={18}
+                    className="trans-200 animate-spin text-slate-400"
+                  />
                 ) : (
                   'Submit'
                 )}

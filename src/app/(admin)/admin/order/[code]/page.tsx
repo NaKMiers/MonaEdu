@@ -126,48 +126,51 @@ function AdminOrderDetailPage({ params: { code } }: { params: { code: string } }
         ({
           ...prev,
           items: prev.items.filter((item: any) => item._id !== removeItem._id),
-        } as IOrder)
+        }) as IOrder
     )
   }, [])
 
   return (
-    <div className='bg-white py-21 px-4 rounded-medium shadow-medium-light text-dark'>
-      <div className='font-semibold text-3xl font-body tracking-wide mb-5 flex items-center justify-between'>
-        <h1 className='flex items-center gap-2'>
+    <div className="rounded-medium bg-white px-4 py-21 text-dark shadow-medium-light">
+      <div className="mb-5 flex items-center justify-between font-body text-3xl font-semibold tracking-wide">
+        <h1 className="flex items-center gap-2">
           Order Detail:
           {!editMode ? (
             <>
-              <span className='text-primary font-sans'>{order?.code}</span>
+              <span className="font-sans text-primary">{order?.code}</span>
             </>
           ) : (
             <Input
-              id='code'
-              label='Code'
+              id="code"
+              label="Code"
               disabled={isSaving}
               register={register}
               errors={errors}
               required
-              type='text'
+              type="text"
               maxLength={5}
               icon={MdDateRange}
               onFocus={() => clearErrors('code')}
             />
           )}
         </h1>
-        <div className='flex items-center justify-center gap-2'>
+        <div className="flex items-center justify-center gap-2">
           {editMode ? (
             <>
               <button
-                className='group flex items-center justify-center h-9 rounded-md px-2 border-2 border-slate-400 text-slate-400 hover:bg-slate-400 hover:text-light trans-200'
+                className="trans-200 group flex h-9 items-center justify-center rounded-md border-2 border-slate-400 px-2 text-slate-400 hover:bg-slate-400 hover:text-light"
                 onClick={() => {
                   setOrder(originalOrder)
                   setEditMode(false)
                 }}
               >
-                <MdCancel size={20} className='wiggle' />
+                <MdCancel
+                  size={20}
+                  className="wiggle"
+                />
               </button>
               <button
-                className={`group flex items-center justify-center h-9 rounded-md px-2 border-2 hover:bg-rose-500 hover:text-light trans-200 ${
+                className={`trans-200 group flex h-9 items-center justify-center rounded-md border-2 px-2 hover:bg-rose-500 hover:text-light ${
                   isSaving
                     ? 'pointer-events-none border-slate-400 text-slate-400'
                     : 'border-rose-500 text-rose-500'
@@ -175,57 +178,66 @@ function AdminOrderDetailPage({ params: { code } }: { params: { code: string } }
                 onClick={handleSubmit(onSubmit)}
               >
                 {isSaving ? (
-                  <RiDonutChartFill size={20} className='animate-spin' />
+                  <RiDonutChartFill
+                    size={20}
+                    className="animate-spin"
+                  />
                 ) : (
-                  <FaSave size={20} className='wiggle' />
+                  <FaSave
+                    size={20}
+                    className="wiggle"
+                  />
                 )}
               </button>
             </>
           ) : (
             <button
-              className='group flex items-center justify-center h-9 rounded-md px-2 border-2 border-secondary text-secondary hover:bg-secondary hover:text-light trans-200'
+              className="trans-200 group flex h-9 items-center justify-center rounded-md border-2 border-secondary px-2 text-secondary hover:bg-secondary hover:text-light"
               onClick={() => setEditMode(true)}
             >
-              <MdEdit size={20} className='wiggle' />
+              <MdEdit
+                size={20}
+                className="wiggle"
+              />
             </button>
           )}
         </div>
       </div>
 
       {/* MARK: Info */}
-      <div className='grid grid-cols-1 md:grid-cols-2 gap-2 mt-5 items-start'>
-        <div className='col-span-1 rounded-xl shadow-lg py-2 px-4 hover:tracking-wide trans-200'>
+      <div className="mt-5 grid grid-cols-1 items-start gap-2 md:grid-cols-2">
+        <div className="trans-200 col-span-1 rounded-xl px-4 py-2 shadow-lg hover:tracking-wide">
           {!editMode ? (
             <>
-              <span className='font-semibold'>Date: </span>
-              {order && <span className=''>{formatTime(order.createdAt)}</span>}
+              <span className="font-semibold">Date: </span>
+              {order && <span className="">{formatTime(order.createdAt)}</span>}
             </>
           ) : (
             <Input
-              id='createdAt'
-              label='Date'
+              id="createdAt"
+              label="Date"
               disabled={isSaving}
               register={register}
               errors={errors}
               required
-              type='datetime-local'
+              type="datetime-local"
               icon={MdDateRange}
-              className='my-1'
+              className="my-1"
               onFocus={() => clearErrors('createdAt')}
             />
           )}
         </div>
-        <div className='col-span-1 rounded-xl shadow-lg py-2 px-4 hover:tracking-wide trans-200'>
+        <div className="trans-200 col-span-1 rounded-xl px-4 py-2 shadow-lg hover:tracking-wide">
           {!editMode ? (
             <>
-              <span className='font-semibold'>Status: </span>
+              <span className="font-semibold">Status: </span>
               <span
                 className={`font-semibold ${
                   order?.status === 'pending'
                     ? 'text-yellow-400'
                     : order?.status === 'done'
-                    ? 'text-green-500'
-                    : 'text-slate-400'
+                      ? 'text-green-500'
+                      : 'text-slate-400'
                 }`}
               >
                 {order?.status}
@@ -233,13 +245,13 @@ function AdminOrderDetailPage({ params: { code } }: { params: { code: string } }
             </>
           ) : (
             <Input
-              id='status'
-              label='Status'
+              id="status"
+              label="Status"
               disabled={isSaving}
               register={register}
               errors={errors}
               icon={RiCheckboxMultipleBlankLine}
-              type='select'
+              type="select"
               onFocus={() => clearErrors('status')}
               options={[
                 {
@@ -258,86 +270,98 @@ function AdminOrderDetailPage({ params: { code } }: { params: { code: string } }
             />
           )}
         </div>
-        <div className='col-span-1 rounded-xl shadow-lg py-2 px-4 hover:tracking-wide trans-200'>
+        <div className="trans-200 col-span-1 rounded-xl px-4 py-2 shadow-lg hover:tracking-wide">
           {!editMode ? (
             <>
-              <span className='font-semibold'>Email: </span>
-              <span className='text-sky-500'>{order?.email}</span>
+              <span className="font-semibold">Email: </span>
+              <span className="text-sky-500">{order?.email}</span>
             </>
           ) : (
             <Input
-              id='email'
-              label='Email'
+              id="email"
+              label="Email"
               disabled={isSaving}
               register={register}
               errors={errors}
               required
-              type='email'
+              type="email"
               icon={MdDateRange}
-              className='my-1'
+              className="my-1"
               onFocus={() => clearErrors('email')}
             />
           )}
         </div>
-        <div className='col-span-1 rounded-xl shadow-lg py-2 px-4 hover:tracking-wide trans-200'>
+        <div className="trans-200 col-span-1 rounded-xl px-4 py-2 shadow-lg hover:tracking-wide">
           {!editMode ? (
             <>
-              <span className='font-semibold'>Total: </span>
-              <span className='text-secondary font-semibold'>{formatPrice(order?.total)}</span>
+              <span className="font-semibold">Total: </span>
+              <span className="font-semibold text-secondary">{formatPrice(order?.total)}</span>
             </>
           ) : (
             <Input
-              id='total'
-              label='Total'
+              id="total"
+              label="Total"
               disabled={isSaving}
               register={register}
               errors={errors}
               required
-              type='number'
+              type="number"
               icon={MdDateRange}
-              className='my-1'
+              className="my-1"
               onFocus={() => clearErrors('total')}
             />
           )}
         </div>
         {order?.voucher && (
-          <div className='rounded-xl shadow-lg py-2 px-4 hover:tracking-wide trans-200'>
-            <span className='font-semibold'>Voucher: </span>
-            <span className='text-slate-400 font-semibold' title={(order?.voucher as IVoucher).desc}>
+          <div className="trans-200 rounded-xl px-4 py-2 shadow-lg hover:tracking-wide">
+            <span className="font-semibold">Voucher: </span>
+            <span
+              className="font-semibold text-slate-400"
+              title={(order?.voucher as IVoucher).desc}
+            >
               {(order?.voucher as IVoucher).code}
             </span>
           </div>
         )}
         {!!order?.discount && (
-          <div className='rounded-xl shadow-lg py-2 px-4 hover:tracking-wide trans-200'>
-            <span className='font-semibold'>Giảm giá: </span>
-            <span className='text-secondary font-semibold'>{formatPrice(order?.discount)}</span>
+          <div className="trans-200 rounded-xl px-4 py-2 shadow-lg hover:tracking-wide">
+            <span className="font-semibold">Giảm giá: </span>
+            <span className="font-semibold text-secondary">{formatPrice(order?.discount)}</span>
           </div>
         )}
       </div>
 
       {/* Course */}
-      <h3 className='text-2xl font-semibold mb-4 mt-6'>
+      <h3 className="mb-4 mt-6 text-2xl font-semibold">
         Course{totalQuantity > 1 ? 's' : ''} ({totalQuantity})
       </h3>
 
       {/* MARK: Items */}
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-21'>
+      <div className="grid grid-cols-1 gap-21 md:grid-cols-2 lg:grid-cols-3">
         {order?.items.map((item: any, index: number) => (
-          <div className='relative rounded-lg overflow-hidden shadow-lg' key={index}>
+          <div
+            className="relative overflow-hidden rounded-lg shadow-lg"
+            key={index}
+          >
             {editMode && (
-              <div className='flex gap-2 absolute z-10 top-2 right-2'>
+              <div className="absolute right-2 top-2 z-10 flex gap-2">
                 {/* Remove Button */}
                 <button
-                  className='group rounded-md h-7 w-7 flex items-center justify-center border-2 border-rose-500 text-rose-500 hover:bg-rose-500 hover:text-light trans-200'
+                  className="trans-200 group flex h-7 w-7 items-center justify-center rounded-md border-2 border-rose-500 text-rose-500 hover:bg-rose-500 hover:text-light"
                   onClick={() => handleRemoveItem(item)}
                 >
-                  <FaTrash size={12} className='wiggle' />
+                  <FaTrash
+                    size={12}
+                    className="wiggle"
+                  />
                 </button>
               </div>
             )}
             {order.isPackage ? (
-              <PackageItem className='!min-w-0 !w-full' pkg={item} />
+              <PackageItem
+                className="!w-full !min-w-0"
+                pkg={item}
+              />
             ) : (
               <CourseCard course={item} />
             )}

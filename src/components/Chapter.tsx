@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation'
 import { memo, useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import { FaAngleDown } from 'react-icons/fa'
-import { TiLockClosed, TiLockOpen } from 'react-icons/ti'
+import { TiLockClosed } from 'react-icons/ti'
 import Divider from './Divider'
 
 interface ChapterProps {
@@ -69,39 +69,42 @@ function Chapter({
 
   return (
     <ul
-      className={`flex flex-col border-b-2 bg-neutral-800 rounded-lg shadow-lg border-slate-300 ${className}`}
+      className={`flex flex-col rounded-lg border-b-2 border-slate-300 bg-neutral-800 shadow-lg ${className}`}
     >
       <div
         className={`${
           chapter.lessons?.some(lesson => lesson.slug === lessonSlug) ? 'text-orange-500' : 'text-light'
-        } font-semibold flex justify-between items-start gap-3 py-2 px-3 cursor-pointer`}
+        } flex cursor-pointer items-start justify-between gap-3 px-3 py-2 font-semibold`}
         onClick={() => setOpen(!open)}
       >
-        <p className='text-sm sm:text-base'>{chapter.title}</p>
-        <div className='flex flex-wrap sm:flex-nowrap justify-end items-center gap-x-2 text-nowrap'>
-          <span className='text-xs'>{chapter.lessons?.length} bài giảng</span>
+        <p className="text-sm sm:text-base">{chapter.title}</p>
+        <div className="flex flex-wrap items-center justify-end gap-x-2 text-nowrap sm:flex-nowrap">
+          <span className="text-xs">{chapter.lessons?.length} bài giảng</span>
           {' - '}
-          <span className='text-xs'>
+          <span className="text-xs">
             {duration(chapter.lessons?.reduce((total, lesson) => total + lesson.duration, 0) || 0)}
           </span>{' '}
-          <FaAngleDown size={18} className={`${open ? 'rotate-180' : ''} trans-200`} />
+          <FaAngleDown
+            size={18}
+            className={`${open ? 'rotate-180' : ''} trans-200`}
+          />
         </div>
       </div>
 
       <ul
-        className={`flex flex-col px-2 gap-[4px] ${open ? '' : 'max-h-0'} trans-300 overflow-hidden`}
+        className={`flex flex-col gap-[4px] px-2 ${open ? '' : 'max-h-0'} trans-300 overflow-hidden`}
         ref={chapterRef}
       >
         {chapter.lessons?.map(lesson =>
           lesson.status === 'public' || isRedirect ? (
             <Tooltip
               title={isRedirect ? 'Học ngay' : `Học thử ngay`}
-              placement='top'
+              placement="top"
               arrow
               key={lesson._id}
             >
               <div
-                className={`bg-white rounded-md py-2 px-3 gap-4 hover:bg-primary trans-200 flex items-center cursor-pointer ${
+                className={`trans-200 flex cursor-pointer items-center gap-4 rounded-md bg-white px-3 py-2 hover:bg-primary ${
                   lesson.slug === lessonSlug ? 'font-semibold text-orange-500' : ''
                 }`}
                 onClick={e => {
@@ -114,23 +117,28 @@ function Chapter({
                 }}
               >
                 {/* {!isRedirect && <TiLockOpen size={16} className='flex-shrink-0' />} */}
-                <span className='text-ellipsis line-clamp-1'>{lesson.title}</span>
-                <span className='text-xs font-semibold text-nowrap text-slate-500 ml-auto'>
+                <span className="line-clamp-1 text-ellipsis">{lesson.title}</span>
+                <span className="ml-auto text-nowrap text-xs font-semibold text-slate-500">
                   {duration(lesson.duration)}
                 </span>
               </div>
             </Tooltip>
           ) : (
             <div
-              className={`bg-white rounded-md py-2 px-3 gap-4 flex items-start ${
+              className={`flex items-start gap-4 rounded-md bg-white px-3 py-2 ${
                 lesson.slug === lessonSlug ? 'font-semibold text-orange-500' : ''
               }`}
               title={lesson.title}
               key={lesson._id}
             >
-              {!isRedirect && <TiLockClosed size={16} className='flex-shrink-0' />}
-              <span className='text-ellipsis line-clamp-1'>{lesson.title}</span>
-              <span className='text-xs font-semibold text-nowrap text-slate-500 ml-auto'>
+              {!isRedirect && (
+                <TiLockClosed
+                  size={16}
+                  className="flex-shrink-0"
+                />
+              )}
+              <span className="line-clamp-1 text-ellipsis">{lesson.title}</span>
+              <span className="ml-auto text-nowrap text-xs font-semibold text-slate-500">
                 {duration(lesson.duration)}
               </span>
             </div>

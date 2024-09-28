@@ -59,37 +59,49 @@ function SearchResultItem({ course, className = '' }: SearchResultItemProps) {
     <Link
       href={`/${course.slug}`}
       key={course._id}
-      className={`flex gap-4 py-2 items-start rounded-lg p-2 hover:bg-slate-200 hover:text-dark text-light trans-200 ${className}`}
+      className={`trans-200 flex items-start gap-4 rounded-lg p-2 py-2 text-light hover:bg-slate-200 hover:text-dark ${className}`}
     >
-      <div className='relative aspect-video flex-shrink-0'>
-        <Image className='rounded-md' src={course.images[0]} width={70} height={70} alt={course.title} />
+      <div className="relative aspect-video flex-shrink-0">
+        <Image
+          className="rounded-md"
+          src={course.images[0]}
+          width={70}
+          height={70}
+          alt={course.title}
+        />
 
         {course.flashSale && (
           <PiLightningFill
-            className='absolute -top-1.5 left-1 text-yellow-400 animate-bounce'
+            className="absolute -top-1.5 left-1 animate-bounce text-yellow-400"
             size={16}
           />
         )}
       </div>
 
-      <p className='w-full text-ellipsis line-clamp-2 font-body text-sm tracking-wide leading-5 -mt-0.5 trans-200'>
+      <p className="trans-200 -mt-0.5 line-clamp-2 w-full text-ellipsis font-body text-sm leading-5 tracking-wide">
         {course.title}
       </p>
 
-      <div className='flex-1 flex justify-end' onClick={e => e.preventDefault()}>
+      <div
+        className="flex flex-1 justify-end"
+        onClick={e => e.preventDefault()}
+      >
         <button
-          className={`group font-semibold h-8 px-2.5 py-1 flex items-center justify-center rounded-md shadow-lg bg-light border-2 border-dark hover:bg-white trans-300 hover:-translate-y-1 ${
+          className={`bg-light trans-300 group flex h-8 items-center justify-center rounded-md border-2 border-dark px-2.5 py-1 font-semibold shadow-lg hover:-translate-y-1 hover:bg-white ${
             isLoading ? 'pointer-events-none bg-slate-200' : ''
           }`}
           onClick={addCourseToCart}
           disabled={isLoading}
         >
           {isLoading ? (
-            <RiDonutChartFill size={18} className='animate-spin text-slate-300' />
+            <RiDonutChartFill
+              size={18}
+              className="animate-spin text-slate-300"
+            />
           ) : (
             <FaCartPlus
               size={18}
-              className='text-[18px] sm:text-[20px] wiggle text-light group-hover:text-dark'
+              className="wiggle text-[18px] text-light group-hover:text-dark sm:text-[20px]"
             />
           )}
         </button>

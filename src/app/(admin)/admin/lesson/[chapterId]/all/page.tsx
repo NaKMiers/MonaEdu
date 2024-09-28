@@ -268,39 +268,49 @@ function AllLessonsPage({
   }, [lessons, selectedLessons, handleDeleteLessons, handleFilter, handleSubmit, handleResetFilter])
 
   return (
-    <div className='w-full'>
+    <div className="w-full">
       {/* MARK: Top & Pagination */}
-      <AdminHeader title='All Lessons' addLink={`/admin/lesson/${chapterId}/add`} />
-      <Pagination searchParams={searchParams} amount={amount} itemsPerPage={itemPerPage} />
+      <AdminHeader
+        title="All Lessons"
+        addLink={`/admin/lesson/${chapterId}/add`}
+      />
+      <Pagination
+        searchParams={searchParams}
+        amount={amount}
+        itemsPerPage={itemPerPage}
+      />
 
       {/* MARK: Filter */}
-      <AdminMeta handleFilter={handleSubmit(handleFilter)} handleResetFilter={handleResetFilter}>
+      <AdminMeta
+        handleFilter={handleSubmit(handleFilter)}
+        handleResetFilter={handleResetFilter}
+      >
         {/* Search */}
-        <div className='flex flex-col col-span-12 md:col-span-4'>
+        <div className="col-span-12 flex flex-col md:col-span-4">
           <Input
-            className='md:max-w-[450px]'
-            id='search'
-            label='Search'
+            className="md:max-w-[450px]"
+            id="search"
+            label="Search"
             disabled={false}
             register={register}
             errors={errors}
-            type='text'
+            type="text"
             icon={FaSearch}
             onFocus={() => clearErrors('info')}
           />
         </div>
 
         {/* MARK: Select Filter */}
-        <div className='flex justify-end items-center flex-wrap gap-3 col-span-12 md:col-span-8'>
+        <div className="col-span-12 flex flex-wrap items-center justify-end gap-3 md:col-span-8">
           {/* Sort */}
           <Input
-            id='sort'
-            label='Sort'
+            id="sort"
+            label="Sort"
             disabled={false}
             register={register}
             errors={errors}
             icon={FaSort}
-            type='select'
+            type="select"
             onFocus={() => clearErrors('info')}
             options={[
               {
@@ -325,13 +335,13 @@ function AllLessonsPage({
 
           {/* Active */}
           <Input
-            id='active'
-            label='Active'
+            id="active"
+            label="Active"
             disabled={false}
             register={register}
             errors={errors}
             icon={FaSort}
-            type='select'
+            type="select"
             onFocus={() => clearErrors('info')}
             options={[
               {
@@ -352,11 +362,11 @@ function AllLessonsPage({
         </div>
 
         {/* MARK: Action Buttons */}
-        <div className='flex flex-wrap justify-end items-center gap-2 col-span-12'>
+        <div className="col-span-12 flex flex-wrap items-center justify-end gap-2">
           {/* Select All Button */}
           <button
-            className='border border-sky-400 text-sky-400 rounded-lg px-3 py-2 hover:bg-sky-400 hover:text-light trans-200'
-            title='Alt + A'
+            className="trans-200 rounded-lg border border-sky-400 px-3 py-2 text-sky-400 hover:bg-sky-400 hover:text-light"
+            title="Alt + A"
             onClick={() =>
               setSelectedLessons(selectedLessons.length > 0 ? [] : lessons.map(lesson => lesson._id))
             }
@@ -367,7 +377,7 @@ function AllLessonsPage({
           {/* Activate Many Button */}
           {selectedLessons.some(id => !lessons.find(lesson => lesson._id === id)?.active) && (
             <button
-              className='border border-green-400 text-green-400 rounded-lg px-3 py-2 hover:bg-green-400 hover:text-light trans-200'
+              className="trans-200 rounded-lg border border-green-400 px-3 py-2 text-green-400 hover:bg-green-400 hover:text-light"
               onClick={() => handleActivateLessons(selectedLessons, true)}
             >
               Activate
@@ -377,7 +387,7 @@ function AllLessonsPage({
           {/* Deactivate Many Button */}
           {selectedLessons.some(id => lessons.find(lesson => lesson._id === id)?.active) && (
             <button
-              className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-light trans-200'
+              className="trans-200 rounded-lg border border-red-500 px-3 py-2 text-red-500 hover:bg-red-500 hover:text-light"
               onClick={() => handleActivateLessons(selectedLessons, false)}
             >
               Deactivate
@@ -389,7 +399,7 @@ function AllLessonsPage({
             id => lessons.find(lesson => lesson._id === id)?.status !== 'public'
           ) && (
             <button
-              className='border border-yellow-500 text-yellow-500 rounded-lg px-3 py-2 hover:bg-yellow-500 hover:text-light trans-200'
+              className="trans-200 rounded-lg border border-yellow-500 px-3 py-2 text-yellow-500 hover:bg-yellow-500 hover:text-light"
               onClick={() => handleChangeLessonStatus(selectedLessons, 'public')}
             >
               Public
@@ -401,7 +411,7 @@ function AllLessonsPage({
             id => lessons.find(lesson => lesson._id === id)?.status !== 'private'
           ) && (
             <button
-              className='border border-dark text-dark-0 rounded-lg px-3 py-2 hover:bg-dark-0 hover:text-light trans-200'
+              className="text-dark-0 trans-200 rounded-lg border border-dark px-3 py-2 hover:bg-dark-0 hover:text-light"
               onClick={() => handleChangeLessonStatus(selectedLessons, 'private')}
             >
               Private
@@ -411,8 +421,8 @@ function AllLessonsPage({
           {/* Delete Many Button */}
           {!!selectedLessons.length && (
             <button
-              className='border border-red-500 text-red-500 rounded-lg px-3 py-2 hover:bg-red-500 hover:text-light trans-200'
-              title='Alt + Delete'
+              className="trans-200 rounded-lg border border-red-500 px-3 py-2 text-red-500 hover:bg-red-500 hover:text-light"
+              title="Alt + Delete"
               onClick={() => setIsOpenConfirmModal(true)}
             >
               Delete
@@ -425,8 +435,8 @@ function AllLessonsPage({
       <ConfirmDialog
         open={isOpenConfirmModal}
         setOpen={setIsOpenConfirmModal}
-        title='Delete Lessons'
-        content='Are you sure that you want to delete these lessons?'
+        title="Delete Lessons"
+        content="Are you sure that you want to delete these lessons?"
         onAccept={() => handleDeleteLessons(selectedLessons)}
         isLoading={loadingLessons.length > 0}
       />
@@ -434,20 +444,23 @@ function AllLessonsPage({
       <Divider size={8} />
 
       {/* Chapter */}
-      <p className='font-semibold text-center text-3xl'>
+      <p className="text-center text-3xl font-semibold">
         Chapter:{' '}
-        <span className='cursor-copy hover:opacity-75' onClick={() => handleCopy(chapter?.title)}>
+        <span
+          className="cursor-copy hover:opacity-75"
+          onClick={() => handleCopy(chapter?.title)}
+        >
           {chapter?.title}
         </span>
       </p>
 
       {/* MARK: Amount */}
-      <div className='p-3 text-sm text-right text-light font-semibold'>
+      <div className="p-3 text-right text-sm font-semibold text-light">
         {Math.min(itemPerPage * +(searchParams?.page || 1), amount)}/{amount} lesson{amount > 1 && 's'}
       </div>
 
       {/* MARK: MAIN LIST */}
-      <div className='flex flex-col gap-21'>
+      <div className="flex flex-col gap-21">
         {lessons.map(lesson => (
           <LessonItem
             data={lesson}

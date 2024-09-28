@@ -72,29 +72,29 @@ function BlogItem({
   return (
     <>
       <div
-        className={`relative flex justify-between items-start gap-2 p-4 rounded-lg shadow-lg cursor-pointer trans-200 ${
-          selectedBlogs.includes(data._id) ? 'bg-violet-50 -translate-y-1' : 'bg-white'
-        }  ${className}`}
+        className={`trans-200 relative flex cursor-pointer items-start justify-between gap-2 rounded-lg p-4 shadow-lg ${
+          selectedBlogs.includes(data._id) ? '-translate-y-1 bg-violet-50' : 'bg-white'
+        } ${className}`}
         onClick={() =>
           setSelectedBlogs(prev =>
             prev.includes(data._id) ? prev.filter(id => id !== data._id) : [...prev, data._id]
           )
         }
       >
-        <div className='flex-grow'>
+        <div className="flex-grow">
           {/* MARK: Thumbnails */}
           <Link
             href={`/blog/${data.slug}`}
             prefetch={false}
-            className='relative flex items-center max-w-[160px] rounded-lg shadow-md overflow-hidden mb-2'
+            className="relative mb-2 flex max-w-[160px] items-center overflow-hidden rounded-lg shadow-md"
             onClick={e => e.stopPropagation()}
             title={data._id}
           >
-            <div className='flex items-center w-full overflow-x-scroll snap-x snap-mandatory no-scrollbar'>
+            <div className="no-scrollbar flex w-full snap-x snap-mandatory items-center overflow-x-scroll">
               {data.thumbnails.map((src, index) => (
                 <Image
                   key={index}
-                  className='aspect-video flex-shrink-0 snap-start'
+                  className="aspect-video flex-shrink-0 snap-start"
                   src={src}
                   height={200}
                   width={200}
@@ -105,14 +105,17 @@ function BlogItem({
           </Link>
 
           {/* Title */}
-          <p className='text-dark font-semibold tracking-wider mt-1' title={data.title}>
+          <p
+            className="mt-1 font-semibold tracking-wider text-dark"
+            title={data.title}
+          >
             {data.title}
           </p>
 
           {/* Summary */}
           {data.summary && (
             <p
-              className='text-sm text-dark border px-2 py-0.5 rounded-md font-body tracking-wider text-ellipsis line-clamp-2'
+              className="line-clamp-2 text-ellipsis rounded-md border px-2 py-0.5 font-body text-sm tracking-wider text-dark"
               title={data.summary}
             >
               Summary: {data.summary}
@@ -120,15 +123,18 @@ function BlogItem({
           )}
 
           {/* Author */}
-          <p className='text-slate-500 text-sm font-semibold tracking-wider'>
-            Author: <span className='font-normal'>{getUserName(data.author as IUser)}</span>
+          <p className="text-sm font-semibold tracking-wider text-slate-500">
+            Author: <span className="font-normal">{getUserName(data.author as IUser)}</span>
           </p>
 
           {/* Tags */}
-          <p className='text-slate-500 text-sm'>
-            <span className='font-semibold'>Tags: </span>
+          <p className="text-sm text-slate-500">
+            <span className="font-semibold">Tags: </span>
             {data.tags.map((tag: any, index) => (
-              <span key={tag.slug} className='text-slate-400'>
+              <span
+                key={tag.slug}
+                className="text-slate-400"
+              >
                 {tag}
                 {index < data.tags.length - 1 ? ', ' : ''}
               </span>
@@ -136,22 +142,22 @@ function BlogItem({
           </p>
 
           {/* Likes */}
-          <div className='flex items-center flex-wrap gap-3 text-slate-500 text-sm'>
+          <div className="flex flex-wrap items-center gap-3 text-sm text-slate-500">
             <div onDoubleClick={() => setEditingLikes(true)}>
               {!editingLikes ? (
                 <>
-                  <span className='font-semibold'>Likes: </span>
-                  <span className='text-rose-500'>{likes}</span>
+                  <span className="font-semibold">Likes: </span>
+                  <span className="text-rose-500">{likes}</span>
                 </>
               ) : (
                 <input
-                  type='number'
+                  type="number"
                   value={likes}
                   min={0}
                   onChange={e => setLikes(+e.target.value)}
                   onClick={e => e.stopPropagation()}
                   onBlur={() => handleUpdateProperties('likes')}
-                  className='border rounded-lg shadow-lg max-w-[80px] px-2 py-1 outline-none mt-1'
+                  className="mt-1 max-w-[80px] rounded-lg border px-2 py-1 shadow-lg outline-none"
                 />
               )}
             </div>
@@ -159,10 +165,10 @@ function BlogItem({
         </div>
 
         {/* MARK: Action Buttons */}
-        <div className='flex flex-col border border-dark text-dark rounded-lg px-2 py-3 gap-4'>
+        <div className="flex flex-col gap-4 rounded-lg border border-dark px-2 py-3 text-dark">
           {/* Boot Button */}
           <button
-            className='block group'
+            className="group block"
             onClick={e => {
               e.stopPropagation()
               // is being booted
@@ -183,22 +189,31 @@ function BlogItem({
           </button>
 
           {/* Change Status Button */}
-          <div className='relative'>
+          <div className="relative">
             <button
-              className='block group'
+              className="group block"
               onClick={e => {
                 e.stopPropagation()
                 setIsOpenStatusOptions(prev => !prev)
               }}
               disabled={loadingBlogs.includes(data._id)}
-              title='Change Status'
+              title="Change Status"
             >
               {data.status === 'published' ? (
-                <FaCloudUploadAlt size={18} className='wiggle text-violet-500' />
+                <FaCloudUploadAlt
+                  size={18}
+                  className="wiggle text-violet-500"
+                />
               ) : data.status === 'draft' ? (
-                <RiDraftLine size={18} className='wiggle text-slate-500 -ml-0.5' />
+                <RiDraftLine
+                  size={18}
+                  className="wiggle -ml-0.5 text-slate-500"
+                />
               ) : (
-                <FaArchive size={17} className='wiggle text-blue-500' />
+                <FaArchive
+                  size={17}
+                  className="wiggle text-blue-500"
+                />
               )}
             </button>
 
@@ -208,43 +223,52 @@ function BlogItem({
                   initial={{ opacity: 0, scale: 0.5, translateY: '-50%', originX: '100%' }}
                   animate={{ opacity: 1, scale: 1, translateY: '-50%', originX: '100%' }}
                   exit={{ opacity: 0, scale: 0.5, translateY: '-50%', originX: '100%' }}
-                  className='flex items-center justify-between gap-4 absolute top-1/2 right-8 rounded-md shadow-lg px-3 py-2 bg-black'
+                  className="absolute right-8 top-1/2 flex items-center justify-between gap-4 rounded-md bg-black px-3 py-2 shadow-lg"
                   onClick={e => e.stopPropagation()}
                 >
                   {data.status !== 'published' && (
                     <button
-                      className='group'
-                      title='Publish'
+                      className="group"
+                      title="Publish"
                       onClick={() => {
                         setIsOpenStatusOptions(false)
                         handleChangeBlogsStatus([data._id], 'published')
                       }}
                     >
-                      <FaCloudUploadAlt size={18} className='wiggle text-violet-500' />
+                      <FaCloudUploadAlt
+                        size={18}
+                        className="wiggle text-violet-500"
+                      />
                     </button>
                   )}
                   {data.status !== 'draft' && (
                     <button
-                      className='group'
-                      title='Draft'
+                      className="group"
+                      title="Draft"
                       onClick={() => {
                         setIsOpenStatusOptions(false)
                         handleChangeBlogsStatus([data._id], 'draft')
                       }}
                     >
-                      <RiDraftLine size={18} className='wiggle text-slate-300 -ml-0.5' />
+                      <RiDraftLine
+                        size={18}
+                        className="wiggle -ml-0.5 text-slate-300"
+                      />
                     </button>
                   )}
                   {data.status !== 'archived' && (
                     <button
-                      className='group'
-                      title='Archive'
+                      className="group"
+                      title="Archive"
                       onClick={() => {
                         setIsOpenStatusOptions(false)
                         handleChangeBlogsStatus([data._id], 'archived')
                       }}
                     >
-                      <FaArchive size={17} className='wiggle text-blue-500' />
+                      <FaArchive
+                        size={17}
+                        className="wiggle text-blue-500"
+                      />
                     </button>
                   )}
                 </motion.div>
@@ -255,27 +279,36 @@ function BlogItem({
           {/* Edit Button Link */}
           <Link
             href={`/admin/blog/${data._id}/edit`}
-            className='block group'
+            className="group block"
             onClick={e => e.stopPropagation()}
-            title='Edit'
+            title="Edit"
           >
-            <MdEdit size={18} className='wiggle' />
+            <MdEdit
+              size={18}
+              className="wiggle"
+            />
           </Link>
 
           {/* Delete Button */}
           <button
-            className='block group'
+            className="group block"
             onClick={e => {
               e.stopPropagation()
               setIsOpenConfirmModal(true)
             }}
             disabled={loadingBlogs.includes(data._id)}
-            title='Delete'
+            title="Delete"
           >
             {loadingBlogs.includes(data._id) ? (
-              <RiDonutChartFill size={18} className='animate-spin text-slate-300' />
+              <RiDonutChartFill
+                size={18}
+                className="animate-spin text-slate-300"
+              />
             ) : (
-              <FaTrash size={18} className='wiggle' />
+              <FaTrash
+                size={18}
+                className="wiggle"
+              />
             )}
           </button>
         </div>

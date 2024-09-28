@@ -108,35 +108,56 @@ function Price({ price, oldPrice, flashSale, big, className = '' }: PriceProps) 
   }, [flashSale, price])
 
   return (
-    <div className={`rounded-md overflow-hidden ${className}`}>
+    <div className={`overflow-hidden rounded-md ${className}`}>
       {/* MARK: Flash Sale */}
       {isValidFS && (
-        <div className='flex items-center justify-between gap-2 px-2 py-1.5 bg-dark-0 text-light font-body text-[18px] font-bold tracking-wider'>
-          <span className={`hidden md:block leading-[20px] ${big ? 'sm:text-[22px]' : ''} text-[14px]`}>
+        <div className="flex items-center justify-between gap-2 bg-dark-0 px-2 py-1.5 font-body text-[18px] font-bold tracking-wider text-light">
+          <span className={`hidden leading-[20px] md:block ${big ? 'sm:text-[22px]' : ''} text-[14px]`}>
             Flash sale
           </span>
-          <FaBoltLightning size={16} className='md:hidden' />
+          <FaBoltLightning
+            size={16}
+            className="md:hidden"
+          />
 
           {/* Counter */}
-          <div className='flex items-center shrink-0 gap-1 h-[20px]'>
+          <div className="flex h-[20px] shrink-0 items-center gap-1">
             {/* Hours */}
-            <div className='flex items-center bg-dark-100 rounded-sm pl-[2px] pr-[1px]'>
-              <CounterItem value={Math.floor(timeLeft[0] / 10)} max={9} />
-              <CounterItem value={timeLeft[0] % 10} max={9} />
+            <div className="flex items-center rounded-sm bg-dark-100 pl-[2px] pr-[1px]">
+              <CounterItem
+                value={Math.floor(timeLeft[0] / 10)}
+                max={9}
+              />
+              <CounterItem
+                value={timeLeft[0] % 10}
+                max={9}
+              />
             </div>
             <span>:</span>
 
             {/* Minutes */}
-            <div className='flex items-center bg-dark-100 rounded-sm pl-[2px] pr-[1px]'>
-              <CounterItem value={Math.floor(timeLeft[1] / 10)} max={5} />
-              <CounterItem value={timeLeft[1] % 10} max={9} />
+            <div className="flex items-center rounded-sm bg-dark-100 pl-[2px] pr-[1px]">
+              <CounterItem
+                value={Math.floor(timeLeft[1] / 10)}
+                max={5}
+              />
+              <CounterItem
+                value={timeLeft[1] % 10}
+                max={9}
+              />
             </div>
             <span>:</span>
 
             {/* Seconds */}
-            <div className='flex items-center bg-dark-100 rounded-sm pl-[2px] pr-[1px]'>
-              <CounterItem value={Math.floor(timeLeft[2] / 10)} max={5} />
-              <CounterItem value={timeLeft[2] % 10} max={9} />
+            <div className="flex items-center rounded-sm bg-dark-100 pl-[2px] pr-[1px]">
+              <CounterItem
+                value={Math.floor(timeLeft[2] / 10)}
+                max={5}
+              />
+              <CounterItem
+                value={timeLeft[2] % 10}
+                max={9}
+              />
             </div>
           </div>
         </div>
@@ -144,14 +165,14 @@ function Price({ price, oldPrice, flashSale, big, className = '' }: PriceProps) 
 
       {/* MARK: Price */}
       <div
-        className={`flex items-center justify-evenly gap-2 px-1.5 py-1 h-[36px] ${
+        className={`flex h-[36px] items-center justify-evenly gap-2 px-1.5 py-1 ${
           big ? 'sm:justify-start sm:gap-4 sm:px-21' : ''
         } flex-wrap bg-slate-100 font-body`}
       >
         <div
           className={`text-dark ${
             big ? 'text-[30px] tracking-wide' : 'text-[21px] tracking-wider'
-          }  leading-7`}
+          } leading-7`}
         >
           {formatPrice(newPrice)}
         </div>
@@ -168,7 +189,7 @@ function Price({ price, oldPrice, flashSale, big, className = '' }: PriceProps) 
           <div
             className={`bg-yellow-400 ${
               big ? 'text-[16px]' : 'text-[11px]'
-            } flex items-center h-6 font-semibold rounded-md px-1 py-0.5 text-light font-sans`}
+            } flex h-6 items-center rounded-md px-1 py-0.5 font-sans font-semibold text-light`}
           >
             -{countPercent(newPrice, oldPrice)}
           </div>
