@@ -77,16 +77,18 @@ function CartItem({ cartItem, isCheckout, className = '', isOrderDetailCourse }:
           onClick={e => e.stopPropagation()}
         >
           <div className='flex w-full overflow-x-scroll snap-x snap-mandatory no-scrollbar'>
-            {(cartItem.courseId as ICourse)?.images?.map(src => (
-              <Image
-                className='flex-shrink w-full snap-start'
-                src={src}
-                width={150}
-                height={150}
-                alt={(cartItem.courseId as ICourse)?.title}
-                key={src}
-              />
-            ))}
+            {(cartItem.courseId as ICourse)?.images
+              ?.slice(0, (cartItem.courseId as ICourse)?.images.length === 1 ? 1 : -1)
+              .map(src => (
+                <Image
+                  className='flex-shrink w-full snap-start'
+                  src={src}
+                  width={150}
+                  height={150}
+                  alt={(cartItem.courseId as ICourse)?.title}
+                  key={src}
+                />
+              ))}
           </div>
         </Link>
       </div>

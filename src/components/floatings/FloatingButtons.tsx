@@ -1,34 +1,50 @@
 'use client'
 
 import { AnimatePresence, motion } from 'framer-motion'
+import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { memo, useState } from 'react'
 import { AiFillMessage } from 'react-icons/ai'
 import { FaBoltLightning } from 'react-icons/fa6'
+import { RiAdvertisementFill, RiVipCrown2Fill } from 'react-icons/ri'
 import Divider from '../Divider'
-import { RiVipCrown2Fill } from 'react-icons/ri'
 
 interface FloatingButtonsProps {
   className?: string
 }
 
 function FloatingButtons({ className = '' }: FloatingButtonsProps) {
+  // hooks
+  const { data: session } = useSession()
+  const curUser: any = session?.user
+
   // states
-  const [open, setOpen] = useState<boolean>(false)
+  const [openContact, setOpenContact] = useState<boolean>(false)
+  const [openAds, setOpenAds] = useState<boolean>(false)
 
   return (
     <>
       <div
         className={`fixed z-30 right-3 bottom-[140px] flex flex-col gap-2 items-center rounded-xl trans-300 overflow-hidden select-none ${className}`}
       >
-        <Link
-          href='/subscription'
+        {!curUser.package && (
+          <Link
+            href='/subscription'
+            className='group flex items-center justify-center h-[44px] w-[44px] border-2 bg-dark-100 border-light rounded-xl'
+            title='Gói học viên'
+          >
+            <RiVipCrown2Fill size={20} className={`text-light wiggle trans-200`} />
+          </Link>
+        )}
+
+        {/* <button
           className='group flex items-center justify-center h-[44px] w-[44px] border-2 bg-dark-100 border-light rounded-xl'
-          title='Gói học viên'
+          title='Liên hệ'
+          onClick={() => setOpenAds(true)}
         >
-          <RiVipCrown2Fill size={20} className={`text-light wiggle trans-200`} />
-        </Link>
+          <RiAdvertisementFill size={24} className={`text-light wiggle trans-200`} />
+        </button> */}
 
         <Link
           href='/flash-sale'
@@ -41,20 +57,45 @@ function FloatingButtons({ className = '' }: FloatingButtonsProps) {
         <button
           className='group flex items-center justify-center h-[44px] w-[44px] border-2 bg-dark-100 border-light rounded-xl'
           title='Liên hệ'
-          onClick={() => setOpen(true)}
+          onClick={() => setOpenContact(true)}
         >
           <AiFillMessage size={20} className={`text-light wiggle trans-200`} />
         </button>
       </div>
 
+      {/* Ads Modal */}
+      {/* <AnimatePresence>
+        {openAds && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3, exit: { duration: 5 } }}
+            className='fixed z-50 top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex items-center justify-center px-2'
+            onClick={() => setOpenAds(false)}
+          >
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0 }}
+              className='w-full max-w-[500px] rounded-medium shadow-medium bg-white p-21'
+              onClick={e => e.stopPropagation()}
+            >
+              Hello
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence> */}
+
+      {/* Contact Modal */}
       <AnimatePresence>
-        {open && (
+        {openContact && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className='fixed z-50 top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex items-center justify-center px-2'
-            onClick={() => setOpen(false)}
+            onClick={() => setOpenContact(false)}
           >
             <motion.div
               initial={{ scale: 0 }}
