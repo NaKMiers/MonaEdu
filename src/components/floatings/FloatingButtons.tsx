@@ -72,7 +72,7 @@ function FloatingButtons({ className = '' }: FloatingButtonsProps) {
       <div
         className={`fixed z-30 right-3 bottom-[140px] flex flex-col gap-2 items-center rounded-xl trans-300 overflow-hidden select-none ${className}`}
       >
-        {!curUser.package && (
+        {!curUser?.package && (
           <Link
             href='/subscription'
             className='group flex items-center justify-center h-[44px] w-[44px] border-2 bg-dark-100 border-light rounded-xl'
