@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
 
     // get query params
     const params: { [key: string]: string[] } = searchParamsToObject(req.nextUrl.searchParams)
-    const roles = params.role[0] ? params.role[0].split('|') : ['admin', 'editor', 'collaborator']
+    const roles = params?.role?.[0] ? params.role[0].split('|') : ['admin', 'editor', 'collaborator']
 
     // get special role users from database
     let roleUsers = await UserModel.find({
