@@ -37,7 +37,7 @@ async function Home({ searchParams }: { searchParams?: { [key: string]: string[]
 
   try {
     const query = handleQuery(searchParams)
-    const data = await getHomePageApi(query, { next: { revalidate: 60 } })
+    const data = await getHomePageApi(query, { next: { revalidate: 0 } })
 
     bannerCourses = data.bannerCourses
     bestSellers = data.bestSellers

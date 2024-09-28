@@ -128,6 +128,7 @@ function Comment({ comments, lessonId, className = '' }: CommentProps) {
             type='text'
             {...register('comment', { required: true })}
             onBlur={() => clearErrors('comment')}
+            onKeyDown={e => e.stopPropagation()}
           />
 
           {/* label */}
@@ -137,7 +138,7 @@ function Comment({ comments, lessonId, className = '' }: CommentProps) {
               errors.comment ? 'text-rose-400' : 'text-dark'
             }`}
           >
-            Comment
+            Bình luận
           </label>
         </div>
         <LoadingButton

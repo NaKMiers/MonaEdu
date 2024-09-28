@@ -72,6 +72,14 @@ function FloatingButtons({ className = '' }: FloatingButtonsProps) {
       <div
         className={`fixed z-30 right-3 bottom-[140px] flex flex-col gap-2 items-center rounded-xl trans-300 overflow-hidden select-none ${className}`}
       >
+        <button
+          className='group flex items-center justify-center h-[44px] w-[44px] border-2 bg-dark-100 border-light rounded-xl'
+          title='Ads'
+          onClick={() => setOpenAds(true)}
+        >
+          <RiAdvertisementFill size={24} className={`text-light wiggle trans-200`} />
+        </button>
+
         {!curUser?.package && (
           <Link
             href='/subscription'
@@ -81,14 +89,6 @@ function FloatingButtons({ className = '' }: FloatingButtonsProps) {
             <RiVipCrown2Fill size={20} className={`text-light wiggle trans-200`} />
           </Link>
         )}
-
-        <button
-          className='group flex items-center justify-center h-[44px] w-[44px] border-2 bg-dark-100 border-light rounded-xl'
-          title='Ads'
-          onClick={() => setOpenAds(true)}
-        >
-          <RiAdvertisementFill size={24} className={`text-light wiggle trans-200`} />
-        </button>
 
         <Link
           href='/flash-sale'

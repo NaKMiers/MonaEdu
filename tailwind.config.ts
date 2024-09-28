@@ -1,7 +1,6 @@
+import svgToDataUri from 'mini-svg-data-uri'
 import type { Config } from 'tailwindcss'
 import flattenColorPalette from 'tailwindcss/lib/util/flattenColorPalette'
-import svgToDataUri from 'mini-svg-data-uri'
-import colors from 'tailwindcss/colors'
 
 export const theme = {
   extend: {

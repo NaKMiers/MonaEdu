@@ -118,7 +118,8 @@ export async function GET(req: NextRequest) {
           select: 'title slug',
         })
         .sort({ joined: -1 })
-        .skip(Math.floor(Math.random() * (40 - 8 + 1)) + 8)
+        // Math.floor(Math.random() * (40 - 8 + 1)) + 8
+        .skip(0)
         .limit(8)
         .lean(),
 
