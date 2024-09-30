@@ -20,8 +20,6 @@ export async function PATCH(req: NextRequest, { params: { id } }: { params: { id
     // get course id from request to revoke from user courses
     const { courseId } = await req.json()
 
-    console.log('courseId:', courseId)
-
     // get course
     const course: ICourse | null = await CourseModel.findById(courseId).select('title').lean()
 
@@ -33,7 +31,7 @@ export async function PATCH(req: NextRequest, { params: { id } }: { params: { id
     }
 
     // revoke course from user courses
-    const updatedUser: IUser | null = await UserModel.findByIdAndUpdate(
+    await UserModel.findByIdAndUpdate(
       id,
       {
         $pull: {
@@ -43,19 +41,8 @@ export async function PATCH(req: NextRequest, { params: { id } }: { params: { id
       { new: true }
     )
 
-    // check if user exists
-    if (!updatedUser) {
-      return NextResponse.json({ message: 'User not found' }, { status: 404 })
-    }
-
     // return response
-    return NextResponse.json(
-      {
-        updatedUser,
-        message: `Course "${course.title}" has been revokes from ${getUserName(updatedUser)}'s courses`,
-      },
-      { status: 200 }
-    )
+    return NextResponse.json({ message: `Course "${course.title}" has been revoked` }, { status: 200 })
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })
   }

@@ -71,12 +71,10 @@ function UserItem({
   const [isLoadingSetCollaborator, setIsLoadingSetCollaborator] = useState<boolean>(false)
   const [isDemoting, setIsDemoting] = useState<boolean>(false)
   const [isBlockingComment, setIsBlockingComment] = useState<boolean>(false)
-  const [isRevokingCourse, setIsRevokingCourse] = useState<boolean>(false)
+  const [revokingCourse, setRevokingCourse] = useState<string>('')
 
   // values
   const isCurUser = data._id === curUser?._id
-
-  console.log('data:', data)
 
   // form
   const {
@@ -223,26 +221,21 @@ function UserItem({
   // MARK: handle revoke user course
   const handleRevokeCourse = useCallback(
     async (courseId: string) => {
-      console.log('Revoke Course:', courseId)
-
       // start loading
-      setIsRevokingCourse(true)
+      setRevokingCourse(courseId)
 
       try {
         // send request to revoke course
-        const { updatedUser, message } = await revokeCourseApi(data._id, courseId)
+        const { message } = await revokeCourseApi(data._id, courseId)
 
         // show success message
         toast.success(message)
-
-        // update user data
-        setUserData(updatedUser)
       } catch (err: any) {
         console.log(err)
         toast.error(err.message)
       } finally {
         // stop loading
-        setIsRevokingCourse(false)
+        setRevokingCourse('')
       }
     },
     [data._id]
@@ -669,11 +662,11 @@ function UserItem({
                         <span className="font-semibold text-orange-500">{item.progress}%</span>
                       </Link>
                       <button
-                        className={`trans-200 flex min-h-5 min-w-8 items-center justify-center rounded-md border border-rose-400 px-1.5 text-[10px] text-rose-400 !no-underline shadow-lg hover:bg-red-400 hover:text-light ${isRevokingCourse ? 'pointer-events-none flex justify-center' : ''} ${className}`}
-                        disabled={isRevokingCourse}
+                        className={`trans-200 flex min-h-5 min-w-8 items-center justify-center rounded-md border border-rose-400 px-1.5 text-[10px] text-rose-400 !no-underline shadow-lg hover:bg-red-400 hover:text-light ${revokingCourse ? 'pointer-events-none flex justify-center' : ''} ${className}`}
+                        disabled={revokingCourse === item.course._id}
                         onClick={() => handleRevokeCourse(item.course._id)}
                       >
-                        {isRevokingCourse ? (
+                        {revokingCourse === item.course._id ? (
                           <RiDonutChartFill
                             size={14}
                             className="animate-spin"

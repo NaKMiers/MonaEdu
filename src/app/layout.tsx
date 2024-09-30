@@ -72,6 +72,57 @@ export default async function RootLayout({
             `}
         </Script>
 
+        <Script
+          id="google-analytics"
+          strategy="afterInteractive"
+        >
+          {`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              
+              gtag('config', 'G-4PFK735075');
+            `}
+        </Script>
+
+        {/* Event snippet for Purchase conversion page */}
+        <Script
+          id="google-analytics-conversion"
+          strategy="afterInteractive"
+        >
+          {`
+          gtag('event', 'conversion', {
+            'send_to': 'AW-830354541/Xgq6CIG299cZEO3o-IsD',
+            'value': 1.0,
+            'currency': 'VND',
+            'transaction_id': ''
+          });
+        `}
+        </Script>
+
+        <Script
+          id="google-ads-conversion"
+          strategy="afterInteractive"
+        >
+          {`
+          function gtag_report_conversion(url) {
+            var callback = function () {
+              if (typeof(url) != 'undefined') {
+                window.location = url;
+              }
+            };
+            gtag('event', 'conversion', {
+              'send_to': 'AW-830354541/Xgq6CIG299cZEO3o-IsD',
+              'value': 1.0,
+              'currency': 'VND',
+              'transaction_id': '',
+              'event_callback': callback
+            });
+            return false;
+          }
+        `}
+        </Script>
+
         <StoreProvider session={session}>
           {/* Toast */}
           <Toaster
