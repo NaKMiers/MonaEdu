@@ -258,6 +258,21 @@ export const changeNotificationSettingApi = async (type: string, value: boolean)
   return await res.json()
 }
 
+// [PATCH]: /admin/user/:id/revoke-course
+export const revokeCourseApi = async (id: string, courseId: string) => {
+  const res = await fetch(`/api/admin/user/${id}/revoke-course`, {
+    method: 'PATCH',
+    body: JSON.stringify({ courseId }),
+  })
+
+  // check status
+  if (!res.ok) {
+    throw new Error((await res.json()).message)
+  }
+
+  return await res.json()
+}
+
 // [DELETE]: /admin/user/delete
 export const deleteUsersApi = async (ids: string[]) => {
   const res = await fetch('/api/admin/user/delete', {

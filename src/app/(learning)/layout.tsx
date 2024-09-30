@@ -1,8 +1,8 @@
 import AllLessons from '@/components/AllLessons'
+import PageLoading from '@/components/PageLoading'
 import UseDetectDevTools from '@/libs/hooks/useDetectDevTools'
 import type { Metadata } from 'next'
 import '../globals.scss'
-import PageLoading from '@/components/PageLoading'
 
 export const metadata: Metadata = {
   title: 'Tiến trình - Mona Edu',

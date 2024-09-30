@@ -1,6 +1,12 @@
 import { ICartItem } from '@/models/CartItemModel'
 import { IUser } from '@/models/UserModel'
-import { blockCommentApi, demoteCollaboratorApi, getCartApi, setCollaboratorApi } from '@/requests'
+import {
+  blockCommentApi,
+  demoteCollaboratorApi,
+  getCartApi,
+  revokeCourseApi,
+  setCollaboratorApi,
+} from '@/requests'
 import { formatPrice } from '@/utils/number'
 import { getUserName } from '@/utils/string'
 import { formatDate, formatTime } from '@/utils/time'
@@ -65,10 +71,12 @@ function UserItem({
   const [isLoadingSetCollaborator, setIsLoadingSetCollaborator] = useState<boolean>(false)
   const [isDemoting, setIsDemoting] = useState<boolean>(false)
   const [isBlockingComment, setIsBlockingComment] = useState<boolean>(false)
-  const [isGettingCart, setIsGettingCart] = useState<boolean>(false)
+  const [isRevokingCourse, setIsRevokingCourse] = useState<boolean>(false)
 
   // values
   const isCurUser = data._id === curUser?._id
+
+  console.log('data:', data)
 
   // form
   const {
@@ -197,9 +205,6 @@ function UserItem({
 
   // MARK: handle get user cart
   const handleGetUserCart = useCallback(async () => {
-    // start loading
-    setIsGettingCart(true)
-
     try {
       // send request to get user's cart
       const { cart } = await getCartApi(`?userId=${data._id}`) // cache: no-store
@@ -212,11 +217,36 @@ function UserItem({
     } catch (err: any) {
       console.log(err)
       toast.error(err.message)
-    } finally {
-      // stop loading
-      setIsGettingCart(false)
     }
   }, [data])
+
+  // MARK: handle revoke user course
+  const handleRevokeCourse = useCallback(
+    async (courseId: string) => {
+      console.log('Revoke Course:', courseId)
+
+      // start loading
+      setIsRevokingCourse(true)
+
+      try {
+        // send request to revoke course
+        const { updatedUser, message } = await revokeCourseApi(data._id, courseId)
+
+        // show success message
+        toast.success(message)
+
+        // update user data
+        setUserData(updatedUser)
+      } catch (err: any) {
+        console.log(err)
+        toast.error(err.message)
+      } finally {
+        // stop loading
+        setIsRevokingCourse(false)
+      }
+    },
+    [data._id]
+  )
 
   return (
     <>
@@ -413,9 +443,9 @@ function UserItem({
         )}
 
         {/* MARK: Action Buttons*/}
-        {!isCurUser && (
-          <div className="flex flex-col gap-4 rounded-lg border border-dark px-2 py-3 text-dark">
-            {/* Promote User Button */}
+        <div className="flex flex-col gap-4 rounded-lg border border-dark px-2 py-3 text-dark">
+          {/* Promote User Button */}
+          {!isCurUser && (
             <button
               className="group block"
               onClick={e => {
@@ -435,14 +465,14 @@ function UserItem({
               ) : (
                 <GrUpgrade
                   size={18}
-                  className={`wiggle ${
-                    userData.role === 'collaborator' ? 'rotate-180 text-red-500' : ''
-                  }`}
+                  className={`wiggle ${userData.role === 'collaborator' ? 'rotate-180 text-red-500' : ''}`}
                 />
               )}
             </button>
+          )}
 
-            {/* Block Comment Button */}
+          {/* Block Comment Button */}
+          {!isCurUser && (
             <button
               className="group block"
               onClick={e => {
@@ -466,8 +496,10 @@ function UserItem({
                 />
               )}
             </button>
+          )}
 
-            {/* Delete Button */}
+          {/* Delete Button */}
+          {!isCurUser && (
             <button
               className="group block"
               onClick={e => {
@@ -489,65 +521,65 @@ function UserItem({
                 />
               )}
             </button>
+          )}
 
-            {/* Change Status Button */}
-            <div className="relative">
-              <button
-                className="group block"
-                onClick={e => {
-                  e.stopPropagation()
-                  setIsOpenOptions(prev => !prev)
-                }}
-                disabled={false}
-                title="Change Status"
-              >
-                <FaEye
-                  size={18}
-                  className="wiggle text-violet-500"
-                />
-              </button>
+          {/* Change Status Button */}
+          <div className="relative">
+            <button
+              className="group block"
+              onClick={e => {
+                e.stopPropagation()
+                setIsOpenOptions(prev => !prev)
+              }}
+              disabled={false}
+              title="Change Status"
+            >
+              <FaEye
+                size={18}
+                className="wiggle text-violet-500"
+              />
+            </button>
 
-              <AnimatePresence>
-                {isOpenOptions && (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.5, translateY: '-50%', originX: '100%' }}
-                    animate={{ opacity: 1, scale: 1, translateY: '-50%', originX: '100%' }}
-                    exit={{ opacity: 0, scale: 0.5, translateY: '-50%', originX: '100%' }}
-                    className="absolute right-8 top-1/2 flex items-center justify-between gap-4 rounded-md bg-black px-3 py-2 shadow-lg"
-                    onClick={e => e.stopPropagation()}
+            <AnimatePresence>
+              {isOpenOptions && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.5, translateY: '-50%', originX: '100%' }}
+                  animate={{ opacity: 1, scale: 1, translateY: '-50%', originX: '100%' }}
+                  exit={{ opacity: 0, scale: 0.5, translateY: '-50%', originX: '100%' }}
+                  className="absolute right-8 top-1/2 flex items-center justify-between gap-4 rounded-md bg-black px-3 py-2 shadow-lg"
+                  onClick={e => e.stopPropagation()}
+                >
+                  <button
+                    className="group"
+                    title="Publish"
+                    onClick={() => {
+                      setIsOpenOptions(false)
+                      handleGetUserCart()
+                    }}
                   >
-                    <button
-                      className="group"
-                      title="Publish"
-                      onClick={() => {
-                        setIsOpenOptions(false)
-                        handleGetUserCart()
-                      }}
-                    >
-                      <FaCartArrowDown
-                        size={18}
-                        className="wiggle text-yellow-500"
-                      />
-                    </button>
-                    <button
-                      className="group"
-                      title="Draft"
-                      onClick={() => {
-                        setIsOpenOptions(false)
-                        setIsOpenUserProgresses(true)
-                      }}
-                    >
-                      <SiCoursera
-                        size={18}
-                        className="wiggle text-orange-500"
-                      />
-                    </button>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+                    <FaCartArrowDown
+                      size={18}
+                      className="wiggle text-yellow-500"
+                    />
+                  </button>
+                  <button
+                    className="group"
+                    title="Draft"
+                    onClick={() => {
+                      setIsOpenOptions(false)
+                      setIsOpenUserProgresses(true)
+                    }}
+                  >
+                    <SiCoursera
+                      size={18}
+                      className="wiggle text-orange-500"
+                    />
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
-        )}
+        </div>
       </div>
 
       {/* List Cart Modal */}
@@ -622,17 +654,35 @@ function UserItem({
               {data.courses.length > 0 ? (
                 <div className="flex flex-col gap-1 font-body text-sm tracking-wider">
                   {data.courses.map((item: any, index) => (
-                    <Link
-                      href={`/${item.course.slug}`}
-                      className="trans-200 flex items-start gap-2 hover:text-sky-500 hover:underline"
-                      key={item._id}
+                    <div
+                      className="flex items-center gap-2"
+                      key={item.course}
                     >
-                      <span className="border-dark-100 min-w-6 rounded-full border px-0.5 text-center text-[10px]">
-                        {index + 1}
-                      </span>
-                      <span>{item.course.title}</span> -{' '}
-                      <span className="font-semibold text-orange-500">{item.progress}%</span>
-                    </Link>
+                      <Link
+                        href={`/${item.course.slug}`}
+                        className="trans-200 flex w-full items-center gap-2 hover:text-sky-500"
+                      >
+                        <span className="border-dark-100 min-w-6 rounded-full border px-0.5 text-center text-[10px]">
+                          {index + 1}
+                        </span>
+                        <span>{item.course.title}</span> -{' '}
+                        <span className="font-semibold text-orange-500">{item.progress}%</span>
+                      </Link>
+                      <button
+                        className={`trans-200 flex min-h-5 min-w-8 items-center justify-center rounded-md border border-rose-400 px-1.5 text-[10px] text-rose-400 !no-underline shadow-lg hover:bg-red-400 hover:text-light ${isRevokingCourse ? 'pointer-events-none flex justify-center' : ''} ${className}`}
+                        disabled={isRevokingCourse}
+                        onClick={() => handleRevokeCourse(item.course._id)}
+                      >
+                        {isRevokingCourse ? (
+                          <RiDonutChartFill
+                            size={14}
+                            className="animate-spin"
+                          />
+                        ) : (
+                          'Revoke'
+                        )}
+                      </button>
+                    </div>
                   ))}
                 </div>
               ) : (
