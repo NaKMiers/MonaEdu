@@ -48,7 +48,7 @@ function FloatingButtons({ className = '' }: FloatingButtonsProps) {
     if (JSON.parse(localStorage.getItem('openAds') || '{"timeLeft": 2}').timeLeft > 0) {
       setTimeout(() => {
         setOpenAds(true)
-      }, 8000)
+      }, 10000)
     }
   }, [])
 

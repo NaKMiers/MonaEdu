@@ -57,18 +57,27 @@ export default async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname
 
   // require admin
-  if (
-    pathname.startsWith('/admin') ||
-    pathname.startsWith('/api/admin') ||
-    pathname.startsWith('/email')
-  ) {
+  const adminPaths = ['/admin', '/api/admin', '/email']
+  const isRequireAdmin = adminPaths.some(path => pathname.startsWith(path))
+  if (isRequireAdmin) {
     // require
-    if (
-      pathname.startsWith('/admin/blog') ||
-      pathname.startsWith('/admin/summary') ||
-      pathname.startsWith('/admin/voucher') ||
-      pathname.startsWith('/admin/flash-sale')
-    ) {
+
+    const collaboratorPaths = [
+      '/admin/summary/all',
+      '/api/admin/summary/all',
+      '/admin/blog',
+      '/api/admin/blog',
+      '/admin/voucher',
+      '/api/admin/voucher',
+      '/api/admin/user/role-users',
+      '/admin/flash-sale',
+      '/api/admin/flash-sale',
+      '/api/admin/course/all',
+      '/api/admin/course/force-all',
+    ]
+    const isRequireCollaborators = collaboratorPaths.some(path => pathname.startsWith(path))
+
+    if (isRequireCollaborators) {
       return requiredCollaborator(req, token)
     }
 
@@ -76,23 +85,23 @@ export default async function middleware(req: NextRequest) {
   }
 
   // require auth
-  if (
-    pathname.startsWith('/setting') ||
-    pathname.startsWith('/checkout') ||
-    pathname.startsWith('/cart') ||
-    pathname.startsWith('/learning') ||
-    pathname.startsWith('/user/history')
-  ) {
+  const authPaths = ['/setting', '/checkout', '/cart', '/learning', '/user/history']
+  const isRequireAuth = authPaths.some(path => pathname.startsWith(path))
+  if (isRequireAuth) {
     return requireAuth(req, token)
   }
 
   // require unAuth
-  if (pathname.startsWith('/auth')) {
+  const unAuthPaths = ['/auth']
+  const isRequireUnAuth = unAuthPaths.some(path => pathname.startsWith(path))
+  if (isRequireUnAuth) {
     return requireUnAuth(req, token)
   }
 
   // need pathname
-  if (pathname.startsWith('/categories')) {
+  const needPathNames = ['/categories']
+  const isNeedPathName = needPathNames.some(path => pathname.startsWith(path))
+  if (isNeedPathName) {
     // Add a new header x-current-path which passes the path to downstream components
     const headers = new Headers(req.headers)
     headers.set('x-current-path', pathname)

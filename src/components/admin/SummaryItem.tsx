@@ -90,30 +90,32 @@ function SummaryItem({
       </div>
 
       {/* MARK: Action Buttons */}
-      <div className="flex flex-shrink-0 flex-col gap-4 rounded-lg border border-dark p-2 text-dark">
-        {/* Send Summary Button */}
-        <button
-          className="group block"
-          onClick={e => {
-            e.stopPropagation()
-            handleSendSummaries([data._id])
-          }}
-          disabled={loadingSummaries.includes(data._id)}
-          title="Send"
-        >
-          {loadingSummaries.includes(data._id) ? (
-            <RiDonutChartFill
-              size={18}
-              className="animate-spin text-slate-300"
-            />
-          ) : (
-            <IoIosSend
-              size={18}
-              className="wiggle"
-            />
-          )}
-        </button>
-      </div>
+      {['admin', 'editor'].includes(data.role) && (
+        <div className="flex flex-shrink-0 flex-col gap-4 rounded-lg border border-dark p-2 text-dark">
+          {/* Send Summary Button */}
+          <button
+            className="group block"
+            onClick={e => {
+              e.stopPropagation()
+              handleSendSummaries([data._id])
+            }}
+            disabled={loadingSummaries.includes(data._id)}
+            title="Send"
+          >
+            {loadingSummaries.includes(data._id) ? (
+              <RiDonutChartFill
+                size={18}
+                className="animate-spin text-slate-300"
+              />
+            ) : (
+              <IoIosSend
+                size={18}
+                className="wiggle"
+              />
+            )}
+          </button>
+        </div>
+      )}
     </div>
   )
 }
