@@ -1,8 +1,10 @@
 import BreadcrumbBanner from '@/components/BreadcrumbBanner'
 import CategoryCard from '@/components/CategoryCard'
 import Divider from '@/components/Divider'
-import { categories } from '@/constants/categories'
+import { ICategory } from '@/models/CategoryModel'
+import { getAllParentCategoriesApi } from '@/requests'
 import { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 
 export const metadata: Metadata = {
   title: 'Danh mục khóa học - Mona Edu',
@@ -10,6 +12,18 @@ export const metadata: Metadata = {
 }
 
 async function CategoriesPage() {
+  // data
+  let categories: ICategory[] = []
+
+  try {
+    const data = await getAllParentCategoriesApi(process.env.NEXT_PUBLIC_APP_URL, {
+      next: { revalidate: 60 },
+    })
+    categories = data.categories
+  } catch (err: any) {
+    return notFound()
+  }
+
   // jsonLd
   const jsonLd = {
     '@context': 'https://schema.org',
