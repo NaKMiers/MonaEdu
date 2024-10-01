@@ -219,32 +219,7 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
                   <span className="font-body text-xl font-semibold tracking-wide">Cài đặt</span>
                 </Link>
               </div>
-              {curUser?.role !== 'user' && (
-                <div
-                  className="group"
-                  onClick={() => setOpen(false)}
-                >
-                  <Link
-                    href={
-                      ['admin', 'editor'].includes(curUser?.role)
-                        ? '/admin/order/all'
-                        : '/admin/summary/all'
-                    }
-                    className="trans-200 flex items-center gap-2 rounded-lg px-3 py-2 hover:bg-white hover:text-dark"
-                  >
-                    <Image
-                      src="/icons/order-icon.png"
-                      className="wiggle"
-                      width={30}
-                      height={30}
-                      alt="order"
-                    />
-                    <span className="font-body text-xl font-semibold tracking-wide">
-                      {['admin', 'editor'].includes(curUser?.role) ? 'Orders' : 'Collaborator'}
-                    </span>
-                  </Link>
-                </div>
-              )}
+
               <div
                 className="group"
                 onClick={() => setOpen(false)}
@@ -263,6 +238,94 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
                   <span className="font-body text-xl font-semibold tracking-wide">Đăng xuất</span>
                 </button>
               </div>
+
+              {['admin', 'editor'].includes(curUser?.role) && (
+                <div
+                  className="no-scrollbar items-center5 flex gap-0.5 overflow-x-auto"
+                  onClick={() => setOpen(false)}
+                >
+                  <Link
+                    href="/admin"
+                    className="trans-200 group flex flex-shrink-0 items-center gap-2 rounded-lg px-3 py-2 hover:bg-white hover:text-dark"
+                  >
+                    <Image
+                      src="/icons/dashboard-icon.png"
+                      className="wiggle"
+                      width={30}
+                      height={30}
+                      alt="order"
+                    />
+                  </Link>
+                  <Link
+                    href="/admin/orders/all"
+                    className="trans-200 group flex flex-shrink-0 items-center gap-2 rounded-lg px-3 py-2 hover:bg-white hover:text-dark"
+                  >
+                    <Image
+                      src="/icons/order-icon.png"
+                      className="wiggle"
+                      width={30}
+                      height={30}
+                      alt="order"
+                    />
+                  </Link>
+                  <Link
+                    href="/admin/course/all"
+                    className="trans-200 group flex flex-shrink-0 items-center gap-2 rounded-lg px-3 py-2 hover:bg-white hover:text-dark"
+                  >
+                    <Image
+                      src="/icons/course-icon.png"
+                      className="wiggle"
+                      width={30}
+                      height={30}
+                      alt="order"
+                    />
+                  </Link>
+                  <Link
+                    href="/admin/user/all"
+                    className="trans-200 group flex flex-shrink-0 items-center gap-2 rounded-lg px-3 py-2 hover:bg-white hover:text-dark"
+                  >
+                    <Image
+                      src="/icons/user-icon.png"
+                      className="wiggle"
+                      width={30}
+                      height={30}
+                      alt="order"
+                    />
+                  </Link>
+                  <Link
+                    href="/admin/voucher/all"
+                    className="trans-200 group flex flex-shrink-0 items-center gap-2 rounded-lg px-3 py-2 hover:bg-white hover:text-dark"
+                  >
+                    <Image
+                      src="/icons/voucher-icon.png"
+                      className="wiggle"
+                      width={30}
+                      height={30}
+                      alt="order"
+                    />
+                  </Link>
+                </div>
+              )}
+
+              {['collaborator'].includes(curUser?.role) && (
+                <div
+                  className="flex items-center gap-2 overflow-x-auto"
+                  onClick={() => setOpen(false)}
+                >
+                  <Link
+                    href="/admin/summary/all"
+                    className="trans-200 group flex flex-shrink-0 items-center gap-2 rounded-lg px-3 py-2 hover:bg-white hover:text-dark"
+                  >
+                    <Image
+                      src="/icons/collaborator-icon.png"
+                      className="wiggle"
+                      width={30}
+                      height={30}
+                      alt="order"
+                    />
+                  </Link>
+                </div>
+              )}
             </>
           )
         ) : (
