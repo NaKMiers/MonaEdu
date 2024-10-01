@@ -257,7 +257,7 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
                     />
                   </Link>
                   <Link
-                    href="/admin/orders/all"
+                    href="/admin/order/all"
                     className="trans-200 group flex flex-shrink-0 items-center gap-2 rounded-lg px-3 py-2 hover:bg-white hover:text-dark"
                   >
                     <Image
