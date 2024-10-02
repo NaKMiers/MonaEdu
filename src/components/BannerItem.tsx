@@ -165,7 +165,7 @@ function BannerItem({ course, className }: BannerItemProps) {
       </div>
       <div className="content absolute left-1/2 top-[20%] w-full max-w-[1200px] -translate-x-1/2 px-21 text-light drop-shadow-2xl md:top-[15%]">
         <div className="w-full max-w-[700px]">
-          <div className="author font-bold uppercase tracking-[10px] drop-shadow-lg">
+          {/* <div className="author font-bold uppercase tracking-[10px] drop-shadow-lg">
             {course.author}
           </div>
           <div
@@ -177,7 +177,7 @@ function BannerItem({ course, className }: BannerItemProps) {
 
           <div className="desc line-clamp-4 text-ellipsis pr-[20%] font-body tracking-wider drop-shadow-md">
             {course.textHook}
-          </div>
+          </div> */}
           <div className="buttons mt-5 flex flex-wrap gap-1.5">
             <Link
               href={`/${course.slug}`}
