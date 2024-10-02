@@ -21,6 +21,7 @@ import { FacebookShareButton } from 'react-share'
 import Divider from './Divider'
 import BuyNowButton from './admin/BuyNowButton'
 import { CardBody, CardContainer, CardItem } from './effects/3dCard'
+import { MdEdit } from 'react-icons/md'
 
 const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip
@@ -236,14 +237,6 @@ function BestSellerCard({ course: data, index, className = '' }: BestSellerCardP
                     >
                       Mua tặng
                     </button>
-                    {['admin', 'editor'].includes(curUser.role) && (
-                      <Link
-                        href={`/admin/course/all?slug=${course.slug}`}
-                        className={`trans-200 text-nowrap rounded-md border border-dark bg-white px-1.5 py-1 text-[10px] font-bold text-dark shadow-md hover:bg-dark-0 hover:text-light`}
-                      >
-                        Edit
-                      </Link>
-                    )}
                   </div>
                 </div>
               )}
@@ -251,7 +244,16 @@ function BestSellerCard({ course: data, index, className = '' }: BestSellerCardP
         </div>
       }
     >
-      <div className={`w-full ${className}`}>
+      <div className={`relative w-full ${className}`}>
+        {['admin', 'editor'].includes(curUser?.role) && (
+          <Link
+            href={`/admin/course/all?slug=${course.slug}`}
+            className={`trans-200 absolute -right-2 -top-2 z-10 text-nowrap rounded-md border border-dark bg-white px-1.5 py-0.5 text-[10px] font-bold text-dark shadow-md hover:bg-dark-0 hover:text-light`}
+          >
+            <MdEdit size={16} />
+          </Link>
+        )}
+
         <CardContainer className="inter-var w-full">
           <CardBody className="group/card relative flex w-full flex-col rounded-xl dark:hover:shadow-2xl">
             <CardItem

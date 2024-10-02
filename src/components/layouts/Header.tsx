@@ -260,7 +260,7 @@ function Header({ className = '' }: HeaderProps) {
               </Link>
               <Link
                 href="/auth/register"
-                className="trans-200 cursor-pointer text-nowrap rounded-3xl border border-dark bg-sky-500 px-4 py-1.5 font-body font-semibold tracking-wider text-light hover:bg-primary hover:text-dark"
+                className="trans-200 cursor-pointer text-nowrap rounded-3xl border border-dark bg-white px-4 py-1.5 font-body font-semibold tracking-wider text-dark hover:bg-primary hover:text-dark"
               >
                 Đăng ký
               </Link>

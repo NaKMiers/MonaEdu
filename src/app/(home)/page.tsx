@@ -5,6 +5,7 @@ import Heading from '@/components/Heading'
 import Pagination from '@/components/layouts/Pagination'
 import BestSeller from '@/components/ranks/BestSeller'
 import FeatureCourses from '@/components/ranks/FeatureCourses'
+import RecentlyVisit from '@/components/ranks/RecentlyVisit'
 import TopCategories from '@/components/ranks/TopCategories'
 import TopNewCourses from '@/components/ranks/TopNewCourses'
 import Subscriptions from '@/components/Subscriptions'
@@ -175,11 +176,6 @@ async function Home({ searchParams }: { searchParams?: { [key: string]: string[]
 
       <Divider size={40} />
 
-      {/* Recently Visit */}
-      {/* <RecentlyVisit /> */}
-
-      {/* <Divider size={30} /> */}
-
       <div className="mx-auto w-full max-w-1200 px-21">
         <Heading
           className="text-dark"
@@ -195,9 +191,11 @@ async function Home({ searchParams }: { searchParams?: { [key: string]: string[]
       {/* Subscription */}
       <Subscriptions packageGroups={packageGroups} />
 
-      <Divider size={30} />
+      <Divider size={60} />
 
-      <Divider size={40} />
+      {/* Recently Visit */}
+      <RecentlyVisit />
+      <Divider size={30} />
 
       {/* Let Buy Courses Of Author Banner */}
       <Image

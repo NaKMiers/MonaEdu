@@ -18,6 +18,7 @@ import { memo, useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
 import { FaCartPlus, FaRegThumbsUp, FaShareAlt } from 'react-icons/fa'
 import { HiDotsVertical } from 'react-icons/hi'
+import { MdEdit } from 'react-icons/md'
 import { PiStudentBold } from 'react-icons/pi'
 import { RiDonutChartFill } from 'react-icons/ri'
 import { FacebookShareButton } from 'react-share'
@@ -241,14 +242,6 @@ function CourseCard({ course: data, hideBadge, className = '' }: CourseCardProps
                     >
                       Mua tặng
                     </button>
-                    {['admin', 'editor'].includes(curUser.role) && (
-                      <Link
-                        href={`/admin/course/all?slug=${course.slug}`}
-                        className={`trans-200 text-nowrap rounded-md border border-dark bg-white px-1.5 py-1 text-[10px] font-bold text-dark shadow-md hover:bg-dark-0 hover:text-light`}
-                      >
-                        Edit
-                      </Link>
-                    )}
                   </div>
                 </div>
               )}
@@ -256,7 +249,15 @@ function CourseCard({ course: data, hideBadge, className = '' }: CourseCardProps
         </div>
       }
     >
-      <div className="h-full">
+      <div className="relative h-full">
+        {['admin', 'editor'].includes(curUser?.role) && (
+          <Link
+            href={`/admin/course/all?slug=${course.slug}`}
+            className={`trans-200 absolute -right-2 -top-2 z-10 text-nowrap rounded-md border border-dark bg-white px-1.5 py-0.5 text-[10px] font-bold text-dark shadow-md hover:bg-dark-0 hover:text-light`}
+          >
+            <MdEdit size={16} />
+          </Link>
+        )}
         <CardContainer className={`inter-var ${className}`}>
           <CardBody className="group/card relative flex h-full flex-col rounded-xl border border-black/[0.1] bg-neutral-800 p-2.5 md:p-4 dark:border-light/[0.2] dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1]">
             {course.oldPrice && !hideBadge && (
