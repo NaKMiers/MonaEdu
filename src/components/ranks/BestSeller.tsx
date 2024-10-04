@@ -14,14 +14,14 @@ function BestSeller({ courses, className = '' }: BestSellerProps) {
   return (
     <div className={`mx-auto max-w-1200 px-21 ${className}`}>
       <div className="flex items-center justify-center">
-        <Image
+        {/* <Image
           className="object-cover"
           src="/icons/award.svg"
           width={200}
           height={200}
           alt="Best-Seller"
           loading="lazy"
-        />
+        /> */}
       </div>
 
       <Divider size={12} />

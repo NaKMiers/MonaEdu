@@ -308,7 +308,7 @@ function CourseCard({ course: data, hideBadge, className = '' }: CourseCardProps
                 className="group relative block aspect-video overflow-hidden rounded-lg shadow-lg"
               >
                 <div className="trans-500 flex w-full snap-x snap-mandatory overflow-x-scroll hover:scale-105">
-                  {course.images.slice(0, course.images.length === 1 ? 1 : -1).map(src => (
+                  {/* {course.images.slice(0, course.images.length === 1 ? 1 : -1).map(src => (
                     <Image
                       className="h-full w-full flex-shrink-0 snap-start object-cover"
                       src={src}
@@ -318,7 +318,7 @@ function CourseCard({ course: data, hideBadge, className = '' }: CourseCardProps
                       loading="lazy"
                       key={src}
                     />
-                  ))}
+                  ))} */}
                 </div>
               </Link>
             </CardItem>
