@@ -90,7 +90,7 @@ function AllCategoriesPage({ searchParams }: { searchParams?: { [key: string]: s
       <h2 className="text-slate-300 underline underline-offset-2">Category Rules</h2>
       <ul className="list-decimal px-21 text-sm italic text-slate-300">
         <li>Cannot delete parent category</li>
-        <li>Cannot edit parent category</li>
+        <li>Cannot edit parent category title</li>
         <li>Cannot delete branch category that has any courses</li>
       </ul>
 
