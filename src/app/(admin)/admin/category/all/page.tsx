@@ -24,7 +24,6 @@ function AllCategoriesPage({ searchParams }: { searchParams?: { [key: string]: s
 
   // states
   const [categories, setCategories] = useState<ICategory[]>([])
-  const [amount, setAmount] = useState<number>(0)
   const [openAddCategoryModal, setOpenAddCategoryModal] = useState<boolean>(false)
 
   // values
@@ -42,11 +41,10 @@ function AllCategoriesPage({ searchParams }: { searchParams?: { [key: string]: s
 
       try {
         // sent request to server
-        const { categories, amount } = await getAllCategoriesApi(query)
+        const { categories } = await getAllCategoriesApi(query)
 
         // set to states
         setCategories(categories)
-        setAmount(amount)
       } catch (err: any) {
         console.log(err)
         toast.error(err.message)
@@ -65,7 +63,7 @@ function AllCategoriesPage({ searchParams }: { searchParams?: { [key: string]: s
 
   return (
     <div className="w-full">
-      {/* MARK: Top & Pagination */}
+      {/* MARK: Top*/}
       <div className={`mb-3 flex flex-wrap items-end justify-center gap-3 text-sm`}>
         <Link
           className="trans-200 flex items-center gap-1 rounded-lg bg-slate-200 px-3 py-2 text-dark hover:bg-white hover:text-primary"
@@ -88,15 +86,17 @@ function AllCategoriesPage({ searchParams }: { searchParams?: { [key: string]: s
         </button>
       </div>
 
-      <Pagination
-        searchParams={searchParams}
-        amount={amount}
-        itemsPerPage={itemPerPage}
-      />
+      {/* MARK: Rules */}
+      <h2 className="text-slate-300 underline underline-offset-2">Category Rules</h2>
+      <ul className="list-decimal px-21 text-sm italic text-slate-300">
+        <li>Cannot delete parent category</li>
+        <li>Cannot edit parent category</li>
+        <li>Cannot delete branch category that has any courses</li>
+      </ul>
 
       {/* MARK: Amount */}
       <div className="p-3 text-right text-sm font-semibold text-light">
-        {categories.length} {categories.length > 1 ? 'categories' : 'category'}
+        {categories.length} main {categories.length > 1 ? 'categories' : 'category'}
       </div>
 
       {/* MARK: MAIN LIST */}

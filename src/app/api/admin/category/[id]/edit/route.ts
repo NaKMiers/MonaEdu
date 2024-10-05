@@ -30,6 +30,12 @@ export async function PUT(req: NextRequest, { params: { id } }: { params: { id: 
       return NextResponse.json({ message: 'Category not found' }, { status: 404 })
     }
 
+    // cannot edit parent category
+    const isParent = await CategoryModel.exists({ parentId: id })
+    if (isParent) {
+      return NextResponse.json({ message: 'Cannot edit parent category' }, { status: 400 })
+    }
+
     // check if parent category exists
     const parent: ICategory | null = await CategoryModel.findById(category.parentId).lean()
     if (parent) {
