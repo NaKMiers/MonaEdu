@@ -4,10 +4,11 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { memo, useEffect, useState } from 'react'
+import { memo, useCallback, useEffect, useState } from 'react'
 import { AiFillMessage } from 'react-icons/ai'
 import { FaBoltLightning } from 'react-icons/fa6'
-import { RiVipCrown2Fill } from 'react-icons/ri'
+import { IoCloseSharp } from 'react-icons/io5'
+import { RiAdvertisementFill, RiVipCrown2Fill } from 'react-icons/ri'
 import Divider from '../Divider'
 
 interface FloatingButtonsProps {
@@ -23,7 +24,7 @@ function FloatingButtons({ className = '' }: FloatingButtonsProps) {
 
   // states
   const [openContact, setOpenContact] = useState<boolean>(false)
-  // const [openAds, setOpenAds] = useState<boolean>(false)
+  const [openAds, setOpenAds] = useState<boolean>(false)
 
   // set width
   useEffect(() => {
@@ -42,36 +43,36 @@ function FloatingButtons({ className = '' }: FloatingButtonsProps) {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  // // auto show ads
-  // useEffect(() => {
-  //   if (JSON.parse(localStorage.getItem('openAds') || '{"timeLeft": 2}').timeLeft > 0) {
-  //     setTimeout(() => {
-  //       setOpenAds(true)
-  //     }, 10000)
-  //   }
-  // }, [])
+  // auto show ads
+  useEffect(() => {
+    if (JSON.parse(localStorage.getItem('openAds') || '{"timeLeft": 2}').timeLeft > 0) {
+      setTimeout(() => {
+        setOpenAds(true)
+      }, 10000)
+    }
+  }, [])
 
-  // // handle close ads
-  // const handleCloseAds = useCallback(() => {
-  //   const string = localStorage.getItem('openAds')
-  //   if (string) {
-  //     const data = JSON.parse(string)
-  //     if (data.timeLeft > 0) {
-  //       data.timeLeft = data.timeLeft - 1
-  //       localStorage.setItem('openAds', JSON.stringify(data))
-  //     }
-  //   } else {
-  //     localStorage.setItem('openAds', JSON.stringify({ timeLeft: 2 }))
-  //   }
-  //   setOpenAds(false)
-  // }, [])
+  // handle close ads
+  const handleCloseAds = useCallback(() => {
+    const string = localStorage.getItem('openAds')
+    if (string) {
+      const data = JSON.parse(string)
+      if (data.timeLeft > 0) {
+        data.timeLeft = data.timeLeft - 1
+        localStorage.setItem('openAds', JSON.stringify(data))
+      }
+    } else {
+      localStorage.setItem('openAds', JSON.stringify({ timeLeft: 2 }))
+    }
+    setOpenAds(false)
+  }, [])
 
   return (
     <>
       <div
         className={`trans-300 fixed bottom-[140px] right-3 z-30 flex select-none flex-col items-center gap-2 overflow-hidden rounded-xl ${className}`}
       >
-        {/* <button
+        <button
           className="group flex h-[44px] w-[44px] items-center justify-center rounded-xl border-2 border-light bg-dark-100"
           title="Ads"
           onClick={() => setOpenAds(true)}
@@ -80,7 +81,7 @@ function FloatingButtons({ className = '' }: FloatingButtonsProps) {
             size={24}
             className={`wiggle trans-200 text-light`}
           />
-        </button> */}
+        </button>
 
         {!curUser?.package && (
           <Link
@@ -119,7 +120,7 @@ function FloatingButtons({ className = '' }: FloatingButtonsProps) {
       </div>
 
       {/* Ads Modal */}
-      {/* <AnimatePresence>
+      <AnimatePresence>
         {openAds && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -155,7 +156,7 @@ function FloatingButtons({ className = '' }: FloatingButtonsProps) {
             </motion.div>
           </motion.div>
         )}
-      </AnimatePresence> */}
+      </AnimatePresence>
 
       {/* Contact Modal */}
       <AnimatePresence>
