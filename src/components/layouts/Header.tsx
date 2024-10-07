@@ -43,9 +43,40 @@ function Header({ className = '' }: HeaderProps) {
 
   // notification states
   const [isOpenNotificationMenu, setIsOpenNotificationMenu] = useState<boolean>(false)
+  const [openAds, setOpenAds] = useState<boolean>(true)
 
   // values
   const isShowCrown = checkCrown(curUser?.package)
+
+  // MARK: ADS
+  useEffect(() => {
+    const showTime = 10000
+    const interval = 30000
+
+    setTimeout(() => {
+      setOpenAds(false)
+
+      setInterval(() => {
+        setOpenAds(true)
+
+        setTimeout(() => {
+          setOpenAds(false)
+        }, showTime)
+      }, interval)
+    }, showTime)
+
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        setOpenAds(prev => !prev)
+      }
+    }
+
+    window.addEventListener('keypress', handleKeyPress)
+
+    return () => {
+      window.removeEventListener('keypress', handleKeyPress)
+    }
+  }, [])
 
   // get user's cart
   useEffect(() => {
@@ -117,6 +148,23 @@ function Header({ className = '' }: HeaderProps) {
           : 'md:rounded-t-0 border-b-2 shadow-medium-light md:rounded-b-[40px]'
       } trans-300 bottom-0 w-full bg-dark-100 text-light md:bottom-auto md:top-0 ${className}`}
     >
+      {/* Ads */}
+      <Link
+        href="https://monaedu.com"
+        target="_blank"
+        rel="noreferrer"
+        className={`${openAds ? 'max-h-[200px] py-0.5 sm:max-h-12 md:max-h-6' : 'max-h-0 py-0'} trans-300 group block w-full overflow-hidden bg-gradient-to-t from-[#2f2e3e] to-primary px-3 text-center font-body text-sm tracking-wider text-light`}
+        title='Giảm đến 100.000đ hoặc 50% khi nhập mã "BIGSALE50" học tại monaedu.com'
+      >
+        <p className="">
+          Nhập voucher{' '}
+          <span className="wiggle-0 inline-block font-semibold text-yellow-300">
+            &quot;BIGSALE50&quot;
+          </span>{' '}
+          giảm ngay <span className="font-semibold">50%</span>
+        </p>
+      </Link>
+
       {/* Main Header */}
       <div className="trans-300 relative m-auto flex h-[72px] w-full max-w-1200 items-center justify-between gap-1 px-3 sm:px-21">
         {/* MARK: Left */}
