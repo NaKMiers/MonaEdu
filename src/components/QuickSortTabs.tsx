@@ -16,7 +16,7 @@ function QuickSortTabs({ searchParams, amount, className = '' }: QuickSortTabsPr
   const pathname = usePathname()
   const router = useRouter()
 
-  const [sort, setSort] = useState('related')
+  const [sort, setSort] = useState(searchParams?.sort || 'related')
 
   // handle quick sort
   const handleSort = useCallback(

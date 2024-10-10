@@ -9,6 +9,7 @@ import { IoChevronDown, IoChevronUp } from 'react-icons/io5'
 import { RiDonutChartFill } from 'react-icons/ri'
 import { TiDelete } from 'react-icons/ti'
 import SearchResultItem from './SearchResultItem'
+import { suggestedCourses } from '@/constants/courses'
 
 function SearchBar() {
   // hook
@@ -18,8 +19,8 @@ function SearchBar() {
   // search state
   const [searchValue, setSearchValue] = useState<string>('')
   const [searchLoading, setSearchLoading] = useState<boolean>(false)
-  const [initResults, setInitResults] = useState<any[] | null>([])
-  const [searchResults, setSearchResults] = useState<any[] | null>(null)
+  const [initResults, setInitResults] = useState<any[] | null>(suggestedCourses)
+  const [searchResults, setSearchResults] = useState<any[] | null>(suggestedCourses)
   const searchTimeout = useRef<any>(null)
   const [openResults, setOpenResults] = useState<boolean>(false)
 
@@ -63,24 +64,26 @@ function SearchBar() {
     }
   }, [initResults, searchValue, handleSearch])
 
-  // get some courses as initial results
-  useEffect(() => {
-    const getSuggestedCourses = async () => {
-      try {
-        // send request to get suggested courses
-        const { courses } = await getCoursesApi('?limit=3&sort=joined|-1', { next: { revalidate: 300 } })
+  // // get some courses as initial results
+  // useEffect(() => {
+  //   const getSuggestedCourses = async () => {
+  //     try {
+  //       // send request to get suggested courses
+  //       const { courses } = await getCoursesApi('?limit=3&sort=joined|-1', { next: { revalidate: 300 } })
 
-        // set search results
-        setSearchResults(courses)
-        setInitResults(courses)
-      } catch (err: any) {
-        console.log(err)
-        toast.error(err.message)
-      }
-    }
+  //       console.log('courses: ', courses)
 
-    getSuggestedCourses()
-  }, [])
+  //       // set search results
+  //       setSearchResults(courses)
+  //       setInitResults(courses)
+  //     } catch (err: any) {
+  //       console.log(err)
+  //       toast.error(err.message)
+  //     }
+  //   }
+
+  //   getSuggestedCourses()
+  // }, [])
 
   // handle open transition
   useEffect(() => {

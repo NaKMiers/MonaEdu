@@ -28,20 +28,16 @@ function CategoryCard({ category, className = '' }: CategoryCardProps) {
       <div className="border-t-3 absolute bottom-0 left-0 right-0 z-20 w-full rounded-xl border-t-2 border-light bg-neutral-950 bg-opacity-50 p-1.5 text-light">
         <h2
           title={category.title}
-          className="line-clamp-1 text-ellipsis font-body text-2xl font-bold tracking-wider drop-shadow-lg lg:text-3xl xl:text-4xl"
+          className="line-clamp-1 text-ellipsis font-body text-base font-bold tracking-wider drop-shadow-lg sm:text-xl"
         >
           {category.title}
         </h2>
 
         <p
           title={category.description}
-          className="line-clamp-1 text-ellipsis font-body text-sm tracking-wide md:line-clamp-2"
+          className="mt-1 line-clamp-2 text-ellipsis font-body text-sm tracking-wide md:line-clamp-2"
         >
           {category.description}
-        </p>
-
-        <p className="font-body text-sm font-semibold tracking-wider">
-          {category.courseQuantity} Khóa học
         </p>
       </div>
     </Link>

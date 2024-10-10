@@ -1,5 +1,4 @@
 import { connectDatabase } from '@/config/database'
-import LessonModel from '@/models/LessonModel'
 import UserModel, { IUser } from '@/models/UserModel'
 import { notifyExpiredPackage } from '@/utils/sendMail'
 import jwt, { JwtPayload } from 'jsonwebtoken'
