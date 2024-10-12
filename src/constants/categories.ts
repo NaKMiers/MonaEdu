@@ -1051,14 +1051,17 @@ export const topCategories = [
     parentId: null,
     title: 'Marketing',
     description:
-      'Marketing - Chinh phục thị trường, gia tăng doanh số!\r\nKhám phá chiến lược từ Google Adwords đến Facebook Ads. Nâng cao kỹ năng, dẫn đầu trong thế giới Marketing!',
+      'Marketing - Chinh phục thị trường, gia tăng doanh số!\r\n' +
+      'Khám phá chiến lược từ Google Adwords đến Facebook Ads. Nâng cao kỹ năng, dẫn đầu trong thế giới Marketing!',
     slug: 'marketing',
     courseQuantity: 0,
     booted: false,
     createdAt: '2024-07-21T08:06:55.045Z',
-    updatedAt: '2024-07-21T08:31:23.434Z',
+    updatedAt: '2024-10-10T05:49:47.921Z',
+    __v: 0,
     image:
-      'https://d141vgbk8gzs0o.cloudfront.net/images/a40ae334f61dcc903a0ed0e17c7d0a45953ce959863069d85d33b80867f6325d',
+      'https://d141vgbk8gzs0o.cloudfront.net/images/2204d404cc8ba5fc0755608e6429960f2f19d0e0080f3ccdd06287c11b943a00',
+    titleNoDiacritics: 'Marketing',
   },
   {
     _id: '669cc38cee2392499a47c2e8',
@@ -1070,9 +1073,11 @@ export const topCategories = [
     courseQuantity: 0,
     booted: false,
     createdAt: '2024-07-21T08:15:08.957Z',
-    updatedAt: '2024-08-04T04:48:57.002Z',
+    updatedAt: '2024-10-10T05:49:19.531Z',
+    __v: 0,
     image:
-      'https://d141vgbk8gzs0o.cloudfront.net/images/02f1e051c7a0efa69cbdef9cad38daf2662bf3013d2bdad7f5f58b794aa1f5f7',
+      'https://d141vgbk8gzs0o.cloudfront.net/images/496f31949af7a3e7441edae2ee1e9e899307508ce26b4c436339f9c4f4657aae',
+    titleNoDiacritics: 'Kinh doanh',
   },
   {
     _id: '669cc62d0ecbf394de86a8c6',
@@ -1084,9 +1089,27 @@ export const topCategories = [
     courseQuantity: 0,
     booted: false,
     createdAt: '2024-07-21T08:26:21.192Z',
-    updatedAt: '2024-08-04T05:41:26.302Z',
+    updatedAt: '2024-10-10T05:50:12.865Z',
+    __v: 0,
     image:
-      'https://d141vgbk8gzs0o.cloudfront.net/images/fb5d810cc657ae79305ce1b2462ef339bb58080fe83c914b615ec80c904604e6',
+      'https://d141vgbk8gzs0o.cloudfront.net/images/13d3275f51ea0a125cdc75dfb9c6a626889d037d4e2aff9ddced89d0a39b8c82',
+    titleNoDiacritics: 'Thiet Ke',
+  },
+  {
+    _id: '669cc6cc0ecbf394de86a8e5',
+    parentId: null,
+    title: 'Quay & Dựng Video',
+    description:
+      'Biến ý tưởng thành video chất lượng cao! Khóa học của chúng tôi sẽ dạy bạn từ cách sử dụng máy quay, điều chỉnh ánh sáng, âm thanh, đến kỹ thuật dựng phim tiên tiến. Trở thành chuyên gia trong lĩnh vực quay và dựng video',
+    slug: 'quay-and-dung-video',
+    courseQuantity: 0,
+    booted: false,
+    createdAt: '2024-07-21T08:29:00.516Z',
+    updatedAt: '2024-09-14T03:44:32.288Z',
+    __v: 0,
+    image:
+      'https://d141vgbk8gzs0o.cloudfront.net/images/2878caf0c3e61aa718d9e87bdf22a1f8a3d1a40daee1568ad935f2bf674608e6',
+    titleNoDiacritics: 'Quay & Dung Video',
   },
   {
     _id: '669cc75252429f40ca756282',
@@ -1098,9 +1121,11 @@ export const topCategories = [
     courseQuantity: 0,
     booted: false,
     createdAt: '2024-07-21T08:31:14.678Z',
-    updatedAt: '2024-07-21T09:22:11.111Z',
+    updatedAt: '2024-10-10T05:49:39.507Z',
+    __v: 0,
     image:
-      'https://d141vgbk8gzs0o.cloudfront.net/images/2709e6770c1561f5690944748c915508c3bdbf85422b7ea375ce64a5eb9cb90d',
+      'https://d141vgbk8gzs0o.cloudfront.net/images/d623a777aeef571b7c12aa83493b2641d3afe3bcf2a9b33a354253fc05a67c12',
+    titleNoDiacritics: 'Lap Trinh & Cong Nghe',
   },
   {
     _id: '669cc8c252429f40ca7562c1',
@@ -1112,9 +1137,11 @@ export const topCategories = [
     courseQuantity: 0,
     booted: false,
     createdAt: '2024-07-21T08:37:22.622Z',
-    updatedAt: '2024-08-04T05:38:41.508Z',
+    updatedAt: '2024-10-10T05:49:28.137Z',
+    __v: 0,
     image:
-      'https://d141vgbk8gzs0o.cloudfront.net/images/178a6f9812386ce57c7776169299800dfcd7c86f833cd93ffbd0859ead2ed1ae',
+      'https://d141vgbk8gzs0o.cloudfront.net/images/44e8e22d4983b1664cf0cc79d5f09ed22a8e0c0f143d749441dd374246ade2b2',
+    titleNoDiacritics: 'Ky Nang Mem',
   },
   {
     _id: '669cc91152429f40ca7562c9',
@@ -1126,9 +1153,11 @@ export const topCategories = [
     courseQuantity: 0,
     booted: false,
     createdAt: '2024-07-21T08:38:41.520Z',
-    updatedAt: '2024-08-04T09:21:26.672Z',
+    updatedAt: '2024-10-10T05:50:03.487Z',
+    __v: 0,
     image:
-      'https://d141vgbk8gzs0o.cloudfront.net/images/b3974a5df92e377725c298c0a5bac15aaa54963b1656657c5cde48e67335c9c0',
+      'https://d141vgbk8gzs0o.cloudfront.net/images/4e34a8b17fdddc1d0d89997543e5c1e9fb78dbd6aa23162a839db5c8866c7c6c',
+    titleNoDiacritics: 'Ngoai Ngu',
   },
   {
     _id: '66af10bb4477cd09e28530a3',
@@ -1137,25 +1166,13 @@ export const topCategories = [
     description:
       'Khám phá các chiến lược và kỹ thuật đầu tư với các khóa học chuyên sâu. Học cách phân tích thị trường, đánh giá cơ hội đầu tư và quản lý danh mục đầu tư để tối ưu hóa lợi nhuận và giảm thiểu rủi ro, giúp bạn đạt được mục tiêu tài chính cá nhân và doanh nghiệp.',
     image:
-      'https://d141vgbk8gzs0o.cloudfront.net/images/f51e90d06660647855b46a101e310da4ed76179f613ced29b9dbfc278a9bf026',
+      'https://d141vgbk8gzs0o.cloudfront.net/images/06d862e9d2194c035100313543925da0158330ccd8df19a6d08e19e767b23b22',
     slug: 'dau-tu',
     courseQuantity: 0,
     booted: false,
     createdAt: '2024-08-04T05:25:15.392Z',
-    updatedAt: '2024-08-04T05:25:15.392Z',
-  },
-  {
-    _id: '66af12bcb451c53a79724475',
-    parentId: null,
-    title: 'Tin Học Văn Phòng',
-    description:
-      'Nâng cao kỹ năng tin học văn phòng với các khóa học thực tiễn. Học cách sử dụng các công cụ phần mềm như Word, Excel, PowerPoint và các ứng dụng văn phòng khác để cải thiện hiệu quả làm việc, tổ chức dữ liệu và trình bày thông tin một cách chuyên nghiệp.',
-    image:
-      'https://d141vgbk8gzs0o.cloudfront.net/images/d65c46220580c2c6ddf776eb5ec5c899ee3998747b2b79b5f152bb3d057ba5d2',
-    slug: 'tin-hoc-van-phong',
-    courseQuantity: 1,
-    booted: false,
-    createdAt: '2024-08-04T05:33:48.444Z',
-    updatedAt: '2024-08-06T17:05:58.773Z',
+    updatedAt: '2024-10-10T05:49:04.675Z',
+    __v: 0,
+    titleNoDiacritics: 'Đau Tu',
   },
 ]
