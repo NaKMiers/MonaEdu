@@ -19,7 +19,7 @@ async function FlashSalePage({ searchParams }: { searchParams?: { [key: string]:
   let courses: ICourse[] = []
   let query: string = ''
   let amount: number = 0
-  let itemPerPage = 16
+  let itemPerPage = 8
 
   try {
     // get query
@@ -30,6 +30,8 @@ async function FlashSalePage({ searchParams }: { searchParams?: { [key: string]:
 
     // destructure
     courses = data.courses
+    console.log('Courses:', courses.length)
+
     amount = data.amount
   } catch (err: any) {
     console.log(err)
