@@ -1092,7 +1092,7 @@ export const topCategories = [
     updatedAt: '2024-10-10T05:50:12.865Z',
     __v: 0,
     image:
-      'https://d141vgbk8gzs0o.cloudfront.net/images/13d3275f51ea0a125cdc75dfb9c6a626889d037d4e2aff9ddced89d0a39b8c82',
+      'https://d141vgbk8gzs0o.cloudfront.net/images/194bc457c0656f5196f32aa0090d526240f35aa85f456fd893ced75288a22d63',
     titleNoDiacritics: 'Thiet Ke',
   },
   {
@@ -1108,7 +1108,7 @@ export const topCategories = [
     updatedAt: '2024-09-14T03:44:32.288Z',
     __v: 0,
     image:
-      'https://d141vgbk8gzs0o.cloudfront.net/images/2878caf0c3e61aa718d9e87bdf22a1f8a3d1a40daee1568ad935f2bf674608e6',
+      'https://d141vgbk8gzs0o.cloudfront.net/images/c69bce5fb068f7520a96436a985c4c10f3cd1e2476562a1ef7485c9741fddcec',
     titleNoDiacritics: 'Quay & Dung Video',
   },
   {
