@@ -38,12 +38,14 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
 
   // states
   const [showControls, setShowControls] = useState<boolean>(true)
-  const [volume, setVolume] = useState<number>(100)
+  const [volume, setVolume] = useState<number>(+(localStorage.getItem('volume') || '100'))
   const [prevVolume, setPrevVolume] = useState<number>(100)
   const [isPlaying, setIsPlaying] = useState<boolean>(false)
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false)
   const [isOpenQualitySetting, setIsOpenQualitySetting] = useState<boolean>(false)
   const [quality, setQuality] = useState<string>('hd1080')
+  const [isOpenSpeedSetting, setIsOpenSpeedSetting] = useState<boolean>(false)
+  const [speed, setSpeed] = useState<number>(+(localStorage.getItem('speed') || '1'))
 
   const [currentTime, setCurrentTime] = useState<number>(
     lesson.progress?.progress ? (lesson.progress.progress / 100) * lesson.duration : 0
@@ -78,6 +80,12 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
       setIsPlaying(false)
     }, 0)
 
+    // set init volume
+    wd.player.setVolume(volume)
+
+    // set init speed
+    wd.player.setPlaybackRate(speed)
+
     // set init current time from prev progress
     wd.player.seekTo(currentTime, true)
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
@@ -86,7 +94,7 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
     setQuality(e.data)
   }, [])
 
-  // change video quality
+  // MARK: Change video quality
   const handleChangeVideoQuality = useCallback((newQuality: string) => {
     if (playerRef.current) {
       const currentQuality = playerRef.current.getPlaybackQuality()
@@ -98,11 +106,24 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
     }
   }, [])
 
+  // MARK: Change speed
+  const handleChangeSpeed = useCallback((speed: number) => {
+    const wd: any = window
+    if (wd.player) {
+      wd.player.setPlaybackRate(speed)
+      setSpeed(speed)
+
+      // set local storage
+      localStorage.setItem('speed', JSON.stringify(speed))
+    }
+  }, [])
+
   // load youtube iframe api
   useEffect(() => {
     const wd: any = window
 
     const onYouTubeIframeAPIReady = () => {
+      console.log('onYouTubeIframeAPIReady')
       if (iframeRef.current) {
         playerRef.current = new wd.YT.Player(iframeRef.current, {
           videoId: videoId,
@@ -126,17 +147,16 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
     }
 
     if (!wd.YT) {
+      console.log('YT not found')
       const tag = document.createElement('script')
       tag.src = 'https://www.youtube.com/iframe_api'
       const firstScriptTag = document.getElementsByTagName('script')[0]
       firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag)
       wd.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady
     } else {
+      console.log('YT found')
       onYouTubeIframeAPIReady()
     }
-
-    // set volume from local storage
-    setVolume(+(localStorage.getItem('volume') || '100'))
 
     // Cleanup function to destroy the player instance
     return () => {
@@ -145,7 +165,7 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
         playerRef.current.destroy()
       }
     }
-  }, [dispatch, onPlayerReady, onPlaybackQualityChange]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [dispatch, onPlayerReady, onPlaybackQualityChange, videoId])
 
   // update current time and buffered
   useEffect(() => {
@@ -811,6 +831,14 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
                 />
               </button>
 
+              {/* Speed */}
+              <button
+                className="group flex h-[50px] w-12 items-center justify-center font-semibold text-light"
+                onClick={() => setIsOpenSpeedSetting(true)}
+              >
+                {speed}x
+              </button>
+
               {/* Zoom */}
               <button
                 className="group flex h-[50px] w-12 items-center justify-center"
@@ -826,13 +854,14 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
         </div>
       </div>
 
+      {/* Quality Menu */}
       <AnimatePresence>
         {isOpenQualitySetting && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className={`absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center bg-black bg-opacity-0 ${className}`}
+            className={`absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center overflow-hidden bg-black bg-opacity-0 ${className}`}
             onClick={() => setIsOpenQualitySetting(false)}
           >
             <motion.div
@@ -869,6 +898,31 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
               >
                 144p
               </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Speed Menu */}
+      <AnimatePresence>
+        {isOpenSpeedSetting && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className={`absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center bg-black bg-opacity-0 ${className}`}
+            onClick={() => setIsOpenSpeedSetting(false)}
+          >
+            <motion.div className="absolute bottom-12 right-[6.5em] flex translate-x-1/2 flex-col overflow-hidden rounded-lg border-b-2 border-light bg-dark-100 text-sm text-light shadow-lg">
+              {[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2].map(spd => (
+                <button
+                  className={`w-full px-3 py-1.5 ${spd === speed ? 'bg-primary text-dark' : ''}`}
+                  onClick={() => handleChangeSpeed(spd)}
+                  key={spd}
+                >
+                  {spd}x
+                </button>
+              ))}
             </motion.div>
           </motion.div>
         )}
