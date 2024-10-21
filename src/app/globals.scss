@@ -47,6 +47,14 @@ button:focus {
   outline: none;
 }
 
+.trans-100 {
+  @apply transition-all duration-100 ease-in-out;
+}
+
+.trans-150 {
+  @apply transition-all duration-150 ease-in-out;
+}
+
 .trans-200 {
   @apply transition-all duration-200 ease-in-out;
 }

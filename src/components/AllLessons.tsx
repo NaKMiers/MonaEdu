@@ -1,7 +1,12 @@
 'use client'
 
 import { useAppDispatch, useAppSelector } from '@/libs/hooks'
-import { setChapters, setUserProgress } from '@/libs/reducers/learningReducer'
+import {
+  setChapters,
+  setNextLesson,
+  setPrevLesson,
+  setUserProgress,
+} from '@/libs/reducers/learningReducer'
 import { setOpenSidebar } from '@/libs/reducers/modalReducer'
 import { ILesson } from '@/models/LessonModel'
 import { getLearningChaptersApi } from '@/requests/chapterRequest'
@@ -26,15 +31,15 @@ function AllLessons() {
   const { data: session } = useSession()
   const curUser: any = session?.user
 
-  // reducers
+  // store
   const chapters = useAppSelector(state => state.learning.chapters)
   const openSidebar = useAppSelector(state => state.modal.openSidebar)
   const userProgress = useAppSelector(state => state.learning.userProgress)
+  const nextLesson = useAppSelector(state => state.learning.nextLesson)
+  const prevLesson = useAppSelector(state => state.learning.prevLesson)
 
   // states
   const [courseId, setCourseId] = useState<string>('')
-  const [nextLesson, setNextLesson] = useState<string>('')
-  const [prevLesson, setPrevLesson] = useState<string>('')
   const [joinedCourse, setJoinedCourse] = useState<any>(null)
   const [isRedirect, setIsRedirect] = useState<boolean>(false)
 
@@ -111,12 +116,16 @@ function AllLessons() {
 
     // user is enrolled in this course
     if (isRedirect) {
-      setPrevLesson(curLessonIndex > 0 ? lessons[curLessonIndex - 1].slug : '')
-      setNextLesson(curLessonIndex < lessons.length - 1 ? lessons[curLessonIndex + 1].slug : '')
+      dispatch(setPrevLesson(curLessonIndex > 0 ? lessons[curLessonIndex - 1].slug : ''))
+      dispatch(
+        setNextLesson(curLessonIndex < lessons.length - 1 ? lessons[curLessonIndex + 1].slug : '')
+      )
     } else {
       // user is not enrolled this course || enrolled but subscription expired
-      setPrevLesson(curLessonIndex > 0 ? lessons[curLessonIndex - 1].slug : '')
-      setNextLesson(curLessonIndex < lessons.length - 1 ? lessons[curLessonIndex + 1].slug : '')
+      dispatch(setPrevLesson(curLessonIndex > 0 ? lessons[curLessonIndex - 1].slug : ''))
+      dispatch(
+        setNextLesson(curLessonIndex < lessons.length - 1 ? lessons[curLessonIndex + 1].slug : '')
+      )
     }
   }, [chapters, lessonSlug, isRedirect])
 

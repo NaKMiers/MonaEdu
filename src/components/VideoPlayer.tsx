@@ -10,9 +10,10 @@ import { Slider } from '@mui/material'
 import moment from 'moment-timezone'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
-import { FaCirclePause, FaCirclePlay } from 'react-icons/fa6'
+import { FaAnglesLeft, FaAnglesRight, FaCirclePause, FaCirclePlay } from 'react-icons/fa6'
 import { GrRotateLeft, GrRotateRight } from 'react-icons/gr'
 import { HiSpeakerWave, HiSpeakerXMark } from 'react-icons/hi2'
 import { RiFullscreenFill } from 'react-icons/ri'
@@ -32,6 +33,8 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
 
   // reducers
   const chapters = useAppSelector(state => state.learning.chapters)
+  const nextLesson = useAppSelector(state => state.learning.nextLesson)
+  const prevLesson = useAppSelector(state => state.learning.prevLesson)
 
   // states
   const [showControls, setShowControls] = useState<boolean>(true)
@@ -42,6 +45,7 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
   const [currentTime, setCurrentTime] = useState<number>(
     lesson.progress?.progress ? (lesson.progress.progress / 100) * lesson.duration : 0
   ) // sec
+  const [isEnded, setIsEnded] = useState<boolean>(false)
   const [duration, setDuration] = useState<number>(0)
   const [isDragging, setIsDragging] = useState<boolean>(false)
   const [buffered, setBuffered] = useState<number>(0)
@@ -56,6 +60,7 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
   const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const progressTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const isFirstPlayed = useRef<boolean>(false)
+  const topCoverRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     // set duration
@@ -68,19 +73,33 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
         // set init current time from prev progress
         player.currentTime = currentTime
       }
+
+      // check if ended
+      player.onended = () => {
+        setIsEnded(true)
+        setIsPlaying(false)
+        if (progressTimeoutRef.current) {
+          clearTimeout(progressTimeoutRef.current)
+        }
+      }
     }
 
     // set volume from local storage
     setVolume(+(localStorage.getItem('volume') || '100'))
+  }, [])
 
-    // Cleanup function to destroy the player instance
+  // reset player on unmount
+  useEffect(() => {
     return () => {
-      if (progressTimeoutRef.current) {
-        clearTimeout(progressTimeoutRef.current)
-      }
+      console.log('IframePlayer unmount')
+
       dispatch(resetLearningLesson())
+      clearTimeout(progressTimeoutRef.current as NodeJS.Timeout)
+      setIsPlaying(false)
+      setIsEnded(false)
+      isFirstPlayed.current = false
     }
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [dispatch])
 
   // update current time and buffered
   useEffect(() => {
@@ -367,34 +386,25 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
     }, 2500)
   }, [isDragging])
 
-  // useEffect to handle mouse move for showing/hiding controls
-  useEffect(() => {
-    const playerContainer = playerContainerRef.current
-
-    if (playerContainer) {
-      playerContainer.addEventListener('mousemove', showControlsHandler)
-
-      return () => {
-        playerContainer.removeEventListener('mousemove', showControlsHandler)
-      }
-    }
-  }, [showControlsHandler])
-
   // useEffect to show/hide controls
   useEffect(() => {
     if (currentTime === 0 || isDragging) return
 
     if (showControls) {
-      if (!controlsRef.current || !playRef.current || !videoBarRef.current) return
+      if (!controlsRef.current || !playRef.current || !videoBarRef.current || !topCoverRef.current)
+        return
 
       playRef.current.style.opacity = '1'
+      topCoverRef.current.style.opacity = '1'
       videoBarRef.current.style.transform = 'translateY(0)'
       controlsRef.current.classList.add('bg-neutral-950')
       controlsRef.current.classList.add('g-opacity-50')
     } else {
-      if (!controlsRef.current || !playRef.current || !videoBarRef.current) return
+      if (!controlsRef.current || !playRef.current || !videoBarRef.current || !topCoverRef.current)
+        return
 
       playRef.current.style.opacity = '0'
+      topCoverRef.current.style.opacity = '0'
       videoBarRef.current.style.transform = 'translateY(100%)'
       controlsRef.current.classList.remove('bg-neutral-950')
       controlsRef.current.classList.remove('g-opacity-50')
@@ -512,6 +522,7 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
     <div
       className={`relative h-full w-full ${className}`}
       onDoubleClick={handleFullscreen}
+      onMouseMove={showControlsHandler}
       ref={playerContainerRef}
     >
       {/* Video */}
@@ -531,6 +542,27 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
         onClick={() => isFirstPlayed.current && setShowControls(!showControls)}
         ref={controlsRef}
       >
+        <div
+          className="absolute left-0 top-0 flex h-[60px] w-full items-center gap-2 px-2.5"
+          ref={topCoverRef}
+        >
+          <div className="aspect-square shrink-0 overflow-hidden rounded-md">
+            <Image
+              className="aspect-square rounded-md shadow-lg"
+              src="/images/logo.png"
+              width={44}
+              height={44}
+              alt="Mona-Edu"
+            />
+          </div>
+
+          <div className="rounded-lg border-b-2 border-light bg-[#333] px-3 py-1 shadow-lg">
+            <h1 className="line-clamp-1 text-ellipsis bg-gradient-to-r from-orange-500 to-yellow-400 bg-clip-text text-lg font-semibold text-transparent drop-shadow-md">
+              {lesson.title}
+            </h1>
+          </div>
+        </div>
+
         <div className="flex flex-1 justify-between">
           <div // back to 5s
             className="h-full w-1/4 max-w-[300px]"
@@ -703,10 +735,19 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
                 </span>
               </div>
             </div>
+
             <div className="flex items-center">
+              <Link
+                href={nextLesson || prevLesson}
+                className={`trans-200 absolute bottom-[11px] right-[70px] flex h-7 w-[70px] items-center justify-center rounded-md border-b-2 border-light bg-[#333] text-center text-sm font-semibold text-light shadow-lg drop-shadow-md hover:text-primary ${isEnded ? '!opacity-100' : ''}`}
+              >
+                {nextLesson ? 'Bài kế' : 'Bài trước'}
+              </Link>
+
               <button
                 className="group flex h-[50px] w-12 items-center justify-center"
                 onClick={handleFullscreen}
+                title="Toàn màn hình"
               >
                 <RiFullscreenFill
                   size={24}
@@ -716,6 +757,33 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* End Cover */}
+      <div
+        className={`absolute left-0 top-0 z-10 h-[calc(100%-55px)] w-full items-center justify-between bg-[#333] ${isEnded ? 'flex' : 'hidden'}`}
+      >
+        {prevLesson ? (
+          <Link
+            href={prevLesson}
+            className="trans-500 group flex h-full w-[40%] items-center justify-center text-pretty rounded-r-full bg-white pr-10 hover:-ml-10"
+          >
+            <FaAnglesLeft className="wiggle h-full max-h-[150px] w-full max-w-[150px] group-hover:text-primary" />
+          </Link>
+        ) : (
+          <div />
+        )}
+
+        {nextLesson ? (
+          <Link
+            href={nextLesson}
+            className="trans-500 group flex h-full w-[40%] items-center justify-center text-pretty rounded-l-full bg-white pl-10 hover:-mr-10"
+          >
+            <FaAnglesRight className="wiggle h-full max-h-[150px] w-full max-w-[150px] group-hover:text-primary" />
+          </Link>
+        ) : (
+          <div />
+        )}
       </div>
     </div>
   )

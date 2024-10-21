@@ -8,29 +8,42 @@ export const learning = createSlice({
     chapters: [] as IChapter[],
     learningLesson: null as ILesson | null,
     userProgress: 0,
+    nextLesson: '' as string,
+    prevLesson: '' as string,
   },
   reducers: {
-    setChapters: (state, action: PayloadAction<IChapter[]>) => ({
-      ...state,
-      chapters: action.payload,
-    }),
+    setChapters: (state, action: PayloadAction<IChapter[]>) => {
+      state.chapters = action.payload
+    },
 
-    setLearningLesson: (state, action: PayloadAction<ILesson>) => ({
-      ...state,
-      learningLesson: action.payload,
-    }),
+    setLearningLesson: (state, action: PayloadAction<ILesson>) => {
+      state.learningLesson = action.payload
+    },
 
-    resetLearningLesson: state => ({
-      ...state,
-      learningLesson: null,
-    }),
+    setNextLesson: (state, action: PayloadAction<string>) => {
+      state.nextLesson = action.payload
+    },
 
-    setUserProgress: (state, action: PayloadAction<number>) => ({
-      ...state,
-      userProgress: action.payload,
-    }),
+    setPrevLesson: (state, action: PayloadAction<string>) => {
+      state.prevLesson = action.payload
+    },
+
+    resetLearningLesson: state => {
+      state.learningLesson = null
+    },
+
+    setUserProgress: (state, action: PayloadAction<number>) => {
+      state.userProgress = action.payload
+    },
   },
 })
 
-export const { setChapters, setLearningLesson, resetLearningLesson, setUserProgress } = learning.actions
+export const {
+  setChapters,
+  setLearningLesson,
+  setNextLesson,
+  setPrevLesson,
+  resetLearningLesson,
+  setUserProgress,
+} = learning.actions
 export default learning.reducer

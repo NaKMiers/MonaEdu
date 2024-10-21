@@ -2,6 +2,7 @@ import AllLessons from '@/components/AllLessons'
 import PageLoading from '@/components/PageLoading'
 import UseDetectDevTools from '@/libs/hooks/useDetectDevTools'
 import type { Metadata } from 'next'
+import Script from 'next/script'
 import '../globals.scss'
 
 export const metadata: Metadata = {
@@ -22,6 +23,11 @@ export default async function RootLayout({
 }>) {
   return (
     <>
+      <Script
+        src="https://www.youtube.com/iframe_api"
+        defer
+      />
+
       {/* Detect Dev Tools */}
       <UseDetectDevTools />
 

@@ -2,7 +2,7 @@
 
 import Comment from '@/components/Comment'
 import Divider from '@/components/Divider'
-import IframePlayer from '@/components/IframePlayer'
+import IframePlayer from '@/components/iframe/IframePlayer'
 import VideoPlayer from '@/components/VideoPlayer'
 import ReportDialog from '@/components/dialogs/ReportDigalog'
 import { reportContents } from '@/constants'
@@ -426,7 +426,7 @@ function LessonPage({
         </>
       ) : (
         <p className="mt-4 text-center font-body text-2xl font-semibold italic tracking-wider text-slate-400">
-          Không tìm thấy bài giảng. Vui lòng kiểm tra lại đường dẫn.
+          Đang tải dữ liệu..., vui lòng chờ trong giây lát <span className="not-italic">😉</span>
         </p>
       )}
     </div>

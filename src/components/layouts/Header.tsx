@@ -112,8 +112,8 @@ function Header({ className = '' }: HeaderProps) {
 
   // MARK: ADS
   useEffect(() => {
-    const showTime = 10000
-    const interval = 60000
+    const showTime = 6000
+    const interval = 36000
 
     setTimeout(() => {
       setOpenAds(false)
