@@ -112,8 +112,8 @@ function Header({ className = '' }: HeaderProps) {
 
   // MARK: ADS
   useEffect(() => {
-    const showTime = 6000
-    const interval = 36000
+    const showTime = 15000
+    const interval = 30000
 
     setTimeout(() => {
       setOpenAds(false)
@@ -153,14 +153,12 @@ function Header({ className = '' }: HeaderProps) {
         href="https://monaedu.com"
         target="_blank"
         rel="noreferrer"
-        className={`${openAds ? 'max-h-[200px] py-0.5 sm:max-h-12 md:max-h-6' : 'max-h-0 py-0'} trans-300 group block w-full overflow-hidden bg-gradient-to-t from-[#2f2e3e] to-primary px-3 text-center font-body text-sm tracking-wider text-light`}
+        className={`${true ? 'max-h-[200px] py-0.5 sm:max-h-12 md:-mt-0.5 md:max-h-6' : 'max-h-0 py-0'} trans-300 group absolute bottom-0 left-0 z-[100] block w-full overflow-hidden px-3 font-body text-sm tracking-wider text-light md:bottom-auto md:top-0`}
         title='Giảm đến 100.000đ hoặc 50% khi nhập mã "BIGSALE50" học tại monaedu.com'
       >
-        <p className="">
+        <p className="mx-auto line-clamp-1 w-full max-w-1200 text-ellipsis px-21 text-center text-xs md:text-left">
           Nhập voucher{' '}
-          <span className="wiggle-0 inline-block font-semibold text-yellow-300">
-            &quot;BIGSALE50&quot;
-          </span>{' '}
+          <span className="wiggle-0 inline-block font-semibold text-primary">&quot;BIGSALE50&quot;</span>{' '}
           giảm ngay <span className="font-semibold">50%</span> hoặc{' '}
           <span className="font-semibold">100K</span>
         </p>

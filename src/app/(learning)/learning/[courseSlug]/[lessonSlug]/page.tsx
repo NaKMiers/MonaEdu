@@ -7,7 +7,7 @@ import VideoPlayer from '@/components/VideoPlayer'
 import ReportDialog from '@/components/dialogs/ReportDigalog'
 import { reportContents } from '@/constants'
 import { useAppDispatch, useAppSelector } from '@/libs/hooks'
-import { setLearningLesson } from '@/libs/reducers/learningReducer'
+import { setIsFullScreen, setLearningLesson } from '@/libs/reducers/learningReducer'
 import { setOpenSidebar, setPageLoading } from '@/libs/reducers/modalReducer'
 import { IComment } from '@/models/CommentModel'
 import { ICourse } from '@/models/CourseModel'
@@ -24,6 +24,7 @@ import toast from 'react-hot-toast'
 import { BsLayoutSidebarInsetReverse } from 'react-icons/bs'
 import { FaAngleRight, FaChevronLeft, FaFile, FaHeart, FaRegHeart } from 'react-icons/fa'
 import { HiDotsHorizontal } from 'react-icons/hi'
+import { RiFullscreenExitLine, RiFullscreenFill } from 'react-icons/ri'
 
 function LessonPage({
   params: { courseSlug, lessonSlug },
@@ -37,6 +38,9 @@ function LessonPage({
   const { data: session } = useSession()
   const curUser: any = session?.user
   const lesson = useAppSelector(state => state.learning.learningLesson)
+
+  // MARK: stores
+  const isFullScreen = useAppSelector(state => state.learning.isFullScreen)
 
   // MARK: states
   const [comments, setComments] = useState<IComment[]>([])
@@ -318,6 +322,26 @@ function LessonPage({
                 />
               )}{' '}
               <span>{lesson.likes.length}</span>
+            </div>
+
+            <div className="flex items-center justify-center gap-2">
+              <button
+                className="group flex h-7 items-center justify-center rounded-md border-b-2 border-light bg-[#333] p-1 shadow-lg"
+                onClick={() => dispatch(setIsFullScreen(!isFullScreen))}
+                title="Toàn màn hình"
+              >
+                {!isFullScreen ? (
+                  <RiFullscreenFill
+                    size={20}
+                    className="text-light"
+                  />
+                ) : (
+                  <RiFullscreenExitLine
+                    size={20}
+                    className="text-light"
+                  />
+                )}
+              </button>
             </div>
           </div>
 

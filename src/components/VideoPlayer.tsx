@@ -1,7 +1,12 @@
 'use client'
 
 import { useAppDispatch, useAppSelector } from '@/libs/hooks'
-import { resetLearningLesson, setLearningLesson, setUserProgress } from '@/libs/reducers/learningReducer'
+import {
+  resetLearningLesson,
+  setIsFullScreen,
+  setLearningLesson,
+  setUserProgress,
+} from '@/libs/reducers/learningReducer'
 import { ICourse } from '@/models/CourseModel'
 import { ILesson } from '@/models/LessonModel'
 import { IProgress } from '@/models/ProgressModel'
@@ -16,7 +21,7 @@ import toast from 'react-hot-toast'
 import { FaAnglesLeft, FaAnglesRight, FaCirclePause, FaCirclePlay } from 'react-icons/fa6'
 import { GrRotateLeft, GrRotateRight } from 'react-icons/gr'
 import { HiSpeakerWave, HiSpeakerXMark } from 'react-icons/hi2'
-import { RiFullscreenFill } from 'react-icons/ri'
+import { RiFullscreenExitLine, RiFullscreenFill } from 'react-icons/ri'
 
 interface VideoPlayerProps {
   lesson: ILesson
@@ -35,13 +40,13 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
   const chapters = useAppSelector(state => state.learning.chapters)
   const nextLesson = useAppSelector(state => state.learning.nextLesson)
   const prevLesson = useAppSelector(state => state.learning.prevLesson)
+  const isFullScreen = useAppSelector(state => state.learning.isFullScreen)
 
   // states
   const [showControls, setShowControls] = useState<boolean>(true)
   const [volume, setVolume] = useState<number>(100)
   const [prevVolume, setPrevVolume] = useState<number>(100)
   const [isPlaying, setIsPlaying] = useState<boolean>(false)
-  const [isFullscreen, setIsFullscreen] = useState<boolean>(false)
   const [currentTime, setCurrentTime] = useState<number>(
     lesson.progress?.progress ? (lesson.progress.progress / 100) * lesson.duration : 0
   ) // sec
@@ -65,30 +70,32 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
   useEffect(() => {
     // set duration
     const player = videoRef.current
-    if (player) {
-      player.onloadedmetadata = () => {
-        const duration = player.duration
-        setDuration(duration)
+    if (!player) return
 
-        // set init current time from prev progress
-        player.currentTime = currentTime
-      }
+    player.onloadedmetadata = () => {
+      const duration = player.duration
+      setDuration(duration)
 
-      // check if ended
-      player.onended = () => {
-        setIsEnded(true)
-        setIsPlaying(false)
-        if (progressTimeoutRef.current) {
-          clearTimeout(progressTimeoutRef.current)
-        }
+      // set init current time from prev progress
+      player.currentTime = currentTime
+    }
+
+    // check if ended
+    player.onended = () => {
+      setIsEnded(true)
+      setIsPlaying(false)
+      if (progressTimeoutRef.current) {
+        clearTimeout(progressTimeoutRef.current)
       }
     }
 
     // set volume from local storage
-    setVolume(+(localStorage.getItem('volume') || '100'))
-  }, [])
+    const volume: number = +(localStorage.getItem('volume') || '100')
+    setVolume(volume)
+    player.volume = volume / 100
+  }, [currentTime])
 
-  // reset player on unmount
+  // MARK: reset player on unmount
   useEffect(() => {
     return () => {
       console.log('IframePlayer unmount')
@@ -98,6 +105,7 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
       setIsPlaying(false)
       setIsEnded(false)
       isFirstPlayed.current = false
+      dispatch(setIsFullScreen(false))
     }
   }, [dispatch])
 
@@ -336,10 +344,12 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
   }, [prevVolume, volume])
 
   // MARK: Fullscreen
-  const handleFullscreen = useCallback(() => {
+  useEffect(() => {
     const element = playerContainerRef.current
 
-    if (!isFullscreen) {
+    console.log('isFullScreen:', isFullScreen)
+
+    if (isFullScreen) {
       if (element) {
         if (element.requestFullscreen) {
           element.requestFullscreen()
@@ -354,7 +364,6 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
           element.msRequestFullscreen()
         }
       }
-      setIsFullscreen(true)
     } else {
       const dcm: any = document
       if (dcm.exitFullscreen) {
@@ -369,9 +378,8 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
         // IE/Edge
         dcm.msExitFullscreen()
       }
-      setIsFullscreen(false)
     }
-  }, [isFullscreen])
+  }, [dispatch, isFullScreen])
 
   // MARK: Show/Hide Controls
   const showControlsHandler = useCallback(() => {
@@ -438,7 +446,7 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
       // F
       if (e.key === 'f') {
         e.preventDefault()
-        handleFullscreen()
+        dispatch(setIsFullScreen(!isFullScreen))
       }
 
       // Arrow Left
@@ -491,11 +499,12 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
       document.removeEventListener('keydown', handleKeyDown)
     }
   }, [
+    dispatch,
     handlePlay,
     handleMute,
-    handleFullscreen,
     handleSeek,
     handleChangeVolume,
+    isFullScreen,
     currentTime,
     volume,
     duration,
@@ -521,7 +530,7 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
   return (
     <div
       className={`relative h-full w-full ${className}`}
-      onDoubleClick={handleFullscreen}
+      onDoubleClick={() => dispatch(setIsFullScreen(!isFullScreen))}
       onMouseMove={showControlsHandler}
       ref={playerContainerRef}
     >
@@ -561,6 +570,24 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
               {lesson.title}
             </h1>
           </div>
+
+          <button
+            className="group flex h-7 items-center justify-center rounded-md border-b-2 border-light bg-[#333] p-1 shadow-lg"
+            onClick={() => dispatch(setIsFullScreen(!isFullScreen))}
+            title={isFullScreen ? 'Thu nhỏ màn hình' : 'Toàn màn hình'}
+          >
+            {!isFullScreen ? (
+              <RiFullscreenFill
+                size={20}
+                className="text-light"
+              />
+            ) : (
+              <RiFullscreenExitLine
+                size={20}
+                className="text-light"
+              />
+            )}
+          </button>
         </div>
 
         <div className="flex flex-1 justify-between">
@@ -739,21 +766,10 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
             <div className="flex items-center">
               <Link
                 href={nextLesson || prevLesson}
-                className={`trans-200 absolute bottom-[11px] right-[70px] flex h-7 w-[70px] items-center justify-center rounded-md border-b-2 border-light bg-[#333] text-center text-sm font-semibold text-light shadow-lg drop-shadow-md hover:text-primary ${isEnded ? '!opacity-100' : ''}`}
+                className={`trans-200 absolute bottom-[11px] right-21/2 flex h-7 w-[70px] items-center justify-center rounded-md border-b-2 border-light bg-[#333] text-center text-sm font-semibold text-light shadow-lg drop-shadow-md hover:text-primary ${isEnded ? '!opacity-100' : ''}`}
               >
                 {nextLesson ? 'Bài kế' : 'Bài trước'}
               </Link>
-
-              <button
-                className="group flex h-[50px] w-12 items-center justify-center"
-                onClick={handleFullscreen}
-                title="Toàn màn hình"
-              >
-                <RiFullscreenFill
-                  size={24}
-                  className="text-light"
-                />
-              </button>
             </div>
           </div>
         </div>

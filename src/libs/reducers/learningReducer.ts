@@ -7,9 +7,10 @@ export const learning = createSlice({
   initialState: {
     chapters: [] as IChapter[],
     learningLesson: null as ILesson | null,
-    userProgress: 0,
+    userProgress: 0 as number,
     nextLesson: '' as string,
     prevLesson: '' as string,
+    isFullScreen: false as boolean,
   },
   reducers: {
     setChapters: (state, action: PayloadAction<IChapter[]>) => {
@@ -35,6 +36,10 @@ export const learning = createSlice({
     setUserProgress: (state, action: PayloadAction<number>) => {
       state.userProgress = action.payload
     },
+
+    setIsFullScreen: (state, action: PayloadAction<boolean>) => {
+      state.isFullScreen = action.payload
+    },
   },
 })
 
@@ -45,5 +50,6 @@ export const {
   setPrevLesson,
   resetLearningLesson,
   setUserProgress,
+  setIsFullScreen,
 } = learning.actions
 export default learning.reducer

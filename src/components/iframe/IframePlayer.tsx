@@ -1,7 +1,12 @@
 'use client'
 
 import { useAppDispatch, useAppSelector } from '@/libs/hooks'
-import { resetLearningLesson, setLearningLesson, setUserProgress } from '@/libs/reducers/learningReducer'
+import {
+  resetLearningLesson,
+  setIsFullScreen,
+  setLearningLesson,
+  setUserProgress,
+} from '@/libs/reducers/learningReducer'
 import { ICourse } from '@/models/CourseModel'
 import { ILesson } from '@/models/LessonModel'
 import { IProgress } from '@/models/ProgressModel'
@@ -12,7 +17,7 @@ import Link from 'next/link'
 import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import { FaAnglesLeft, FaAnglesRight } from 'react-icons/fa6'
-import { RiFullscreenFill } from 'react-icons/ri'
+import { RiFullscreenExitLine, RiFullscreenFill } from 'react-icons/ri'
 
 interface IframePlayerProps {
   lesson: ILesson
@@ -30,12 +35,12 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
   const chapters = useAppSelector(state => state.learning.chapters)
   const nextLesson = useAppSelector(state => state.learning.nextLesson)
   const prevLesson = useAppSelector(state => state.learning.prevLesson)
+  const isFullScreen = useAppSelector(state => state.learning.isFullScreen)
 
   // states
   const [isPlaying, setIsPlaying] = useState<boolean>(true)
   const [isEnded, setIsEnded] = useState<boolean>(false)
   const [duration, setDuration] = useState<number>(lesson.duration)
-  const [isFullscreen, setIsFullscreen] = useState<boolean>(false)
 
   // refs
   const playerRef = useRef<any>(null)
@@ -165,6 +170,14 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
       // set init current time from prev progress
       const initTime = lesson.progress?.progress ? (lesson.progress.progress / 100) * lesson.duration : 0
       player.seekTo(initTime, true)
+
+      // set init volume
+      const volume: number = +(localStorage.getItem('volume') || '100')
+      player.setVolume(volume)
+
+      // set init speed
+      const speed: number = +(localStorage.getItem('speed') || '1')
+      player.setPlaybackRate(speed)
     },
     [lesson]
   )
@@ -231,22 +244,33 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
   useEffect(() => {
     return () => {
       console.log('IframePlayer unmount')
-
       const wd: any = window
-      delete wd.player
+
+      if (wd.player) {
+        const volume = wd.player.getVolume()
+        localStorage.setItem('volume', JSON.stringify(volume))
+
+        const speed = wd.player.getPlaybackRate()
+        localStorage.setItem('speed', JSON.stringify(speed))
+
+        delete wd.player
+      }
       playerRef.current = null
       dispatch(resetLearningLesson())
       clearTimeout(progressTimeoutRef.current as NodeJS.Timeout)
       setIsPlaying(true)
       setIsEnded(false)
+      setIsFullScreen(false)
     }
   }, [dispatch])
 
-  // MARK: Fullscreen
-  const handleFullscreen = useCallback(() => {
+  // MARK: fullscreen
+  useEffect(() => {
     const element = playerContainerRef.current
 
-    if (!isFullscreen) {
+    console.log('isFullScreen:', isFullScreen)
+
+    if (isFullScreen) {
       if (element) {
         if (element.requestFullscreen) {
           element.requestFullscreen()
@@ -261,7 +285,6 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
           element.msRequestFullscreen()
         }
       }
-      setIsFullscreen(true)
     } else {
       const dcm: any = document
       if (dcm.exitFullscreen) {
@@ -276,13 +299,14 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
         // IE/Edge
         dcm.msExitFullscreen()
       }
-      setIsFullscreen(false)
     }
-  }, [isFullscreen])
+  }, [dispatch, isFullScreen])
 
   // MARK: show covers
   // mouse over
-  const handleMouseOver = useCallback(() => {
+  const handleMouseMove = useCallback(() => {
+    console.log('mouse over')
+
     const top = topCoverRef.current
     const logo = logoCoverRef.current
     const fsBtn = fullScreenBtnRef.current
@@ -309,11 +333,11 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
 
     if (isPlaying) {
       top.style.opacity = '0'
-      top.style.transition = `all 0.1s ${firstShow.current ? '3s' : '0.1s'}`
+      top.style.transition = `all 0.1s ${firstShow.current ? '3.5s' : '0.1s'}`
       logo.style.opacity = '0'
-      logo.style.transition = `all 0.1s ${firstShow.current ? '3s' : '0.1s'}`
+      logo.style.transition = `all 0.1s ${firstShow.current ? '3.5s' : '0.1s'}`
       fsBtn.style.opacity = '0'
-      fsBtn.style.transition = `all 0.1s ${firstShow.current ? '3s' : '0.1s'}`
+      fsBtn.style.transition = `all 0.1s ${firstShow.current ? '3.5s' : '0.1s'}`
       firstShow.current = false
     }
   }, [isPlaying])
@@ -333,7 +357,7 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
       // F
       if (e.key === 'f') {
         e.preventDefault()
-        handleFullscreen()
+        dispatch(setIsFullScreen(!isFullScreen))
       }
     }
 
@@ -342,7 +366,7 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
     return () => {
       document.removeEventListener('keydown', handleKeyDown)
     }
-  }, [handleFullscreen])
+  }, [dispatch, isFullScreen])
 
   // MARK: Before Unload
   useEffect(() => {
@@ -364,10 +388,9 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
   return (
     <div
       className={`relative h-full w-full ${className}`}
-      onDoubleClick={handleFullscreen}
-      onMouseOver={handleMouseOver}
+      onDoubleClick={() => dispatch(setIsFullScreen(!isFullScreen))}
+      onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      onClick={handleFullscreen}
       ref={playerContainerRef}
     >
       {/* Top Cover */}
@@ -390,6 +413,24 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
             {lesson.title}
           </h1>
         </div>
+
+        <button
+          className="group flex h-7 items-center justify-center rounded-md border-b-2 border-light bg-[#333] p-1 shadow-lg"
+          onClick={() => dispatch(setIsFullScreen(!isFullScreen))}
+          title={isFullScreen ? 'Thu nhỏ màn hình' : 'Toàn màn hình'}
+        >
+          {!isFullScreen ? (
+            <RiFullscreenFill
+              size={20}
+              className="text-light"
+            />
+          ) : (
+            <RiFullscreenExitLine
+              size={20}
+              className="text-light"
+            />
+          )}
+        </button>
       </div>
 
       {/* Video */}
@@ -428,23 +469,11 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
       {/* Logo Cover */}
       <Link
         href={nextLesson || prevLesson}
-        className={`trans-200 absolute bottom-1.5 right-[10.5px] flex h-7 w-[70px] items-center justify-center rounded-md border-b-2 border-light bg-[#333] text-center text-sm font-semibold text-light shadow-lg drop-shadow-md hover:text-primary ${isEnded ? '!opacity-100' : ''}`}
+        className={`trans-200 absolute bottom-1.5 right-21/2 flex h-7 w-[70px] items-center justify-center rounded-md border-b-2 border-light bg-[#333] text-center text-sm font-semibold text-light shadow-lg drop-shadow-md hover:text-primary ${isEnded ? '!opacity-100' : ''}`}
         ref={logoCoverRef}
       >
-        {nextLesson ? 'Bài kế' : 'Bài trước'}
+        {nextLesson ? 'Bài sau' : 'Bài trước'}
       </Link>
-
-      <button
-        className="group absolute bottom-1.5 right-[156px] flex h-7 w-12 items-center justify-center"
-        onClick={handleFullscreen}
-        title="Toàn màn hình"
-        ref={fullScreenBtnRef}
-      >
-        <RiFullscreenFill
-          size={22}
-          className="text-light"
-        />
-      </button>
     </div>
   )
 }

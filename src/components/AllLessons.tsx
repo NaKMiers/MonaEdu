@@ -127,7 +127,7 @@ function AllLessons() {
         setNextLesson(curLessonIndex < lessons.length - 1 ? lessons[curLessonIndex + 1].slug : '')
       )
     }
-  }, [chapters, lessonSlug, isRedirect])
+  }, [dispatch, chapters, lessonSlug, isRedirect])
 
   return (
     <>

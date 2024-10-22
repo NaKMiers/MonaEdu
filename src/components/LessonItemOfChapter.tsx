@@ -1,4 +1,5 @@
-import { useAppSelector } from '@/libs/hooks'
+import { useAppDispatch, useAppSelector } from '@/libs/hooks'
+import { setOpenSidebar } from '@/libs/reducers/modalReducer'
 import { ILesson } from '@/models/LessonModel'
 import { duration } from '@/utils/time'
 import Link from 'next/link'
@@ -21,6 +22,9 @@ function LessonItemOfChapter({
   className = '',
 }: LessonItemOfChapterProps) {
   // hooks
+  const dispatch = useAppDispatch()
+
+  // stores
   const learningLesson = useAppSelector(state => state.learning.learningLesson)
 
   // // states
@@ -39,6 +43,7 @@ function LessonItemOfChapter({
         lesson.slug === lessonSlug ? 'font-semibold text-orange-500' : ''
       } ${className}`}
       key={lesson._id}
+      onClick={() => window.innerWidth < 640 && dispatch(setOpenSidebar(false))}
     >
       <div
         className={`trans-500 absolute bottom-0 left-0 top-0 rounded-sm bg-yellow-200`}
