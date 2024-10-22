@@ -153,10 +153,10 @@ function Header({ className = '' }: HeaderProps) {
         href="https://monaedu.com"
         target="_blank"
         rel="noreferrer"
-        className={`${true ? 'max-h-[200px] py-0.5 sm:max-h-12 md:-mt-0.5 md:max-h-6' : 'max-h-0 py-0'} trans-300 group absolute bottom-0 left-0 z-[100] block w-full overflow-hidden px-3 font-body text-sm tracking-wider text-light md:bottom-auto md:top-0`}
+        className={`${true ? 'max-h-[200px] py-0.5 sm:max-h-12 md:-mt-0.5 md:max-h-6' : 'max-h-0 py-0'} trans-300 group absolute bottom-0 left-0 z-[100] block w-full overflow-hidden font-body text-sm tracking-wider text-light md:bottom-auto md:top-0`}
         title='Giảm đến 100.000đ hoặc 50% khi nhập mã "BIGSALE50" học tại monaedu.com'
       >
-        <p className="mx-auto line-clamp-1 w-full max-w-1200 text-ellipsis px-21 text-center text-xs md:text-left">
+        <p className="mx-auto line-clamp-1 w-full max-w-1200 text-ellipsis px-3 text-center text-xs sm:px-21 md:text-left">
           Nhập voucher{' '}
           <span className="wiggle-0 inline-block font-semibold text-primary">&quot;BIGSALE50&quot;</span>{' '}
           giảm ngay <span className="font-semibold">50%</span> hoặc{' '}

@@ -1,4 +1,5 @@
 import Divider from '@/components/Divider'
+import FallbackImage from '@/components/FallbackImage'
 import { getAllOrdersApi, getForceAllCategoriesApi } from '@/requests'
 import { formatPrice } from '@/utils/number'
 import { rankCourseRevenue } from '@/utils/stat'
@@ -97,7 +98,7 @@ function CourseRankTab({ className = '' }: CourseRankTabProps) {
                     href={`/${item.slug}`}
                     className="aspect-video w-full max-w-[60px] flex-shrink-0 overflow-hidden rounded-sm"
                   >
-                    <Image
+                    <FallbackImage
                       className="h-full w-full object-cover"
                       src={item.images[0]}
                       width={60}

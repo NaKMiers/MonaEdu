@@ -1,5 +1,6 @@
 'use client'
 
+import FallbackImage from '@/components/FallbackImage'
 import { ICourse } from '@/models/CourseModel'
 import { IOrder } from '@/models/OrderModel'
 import { getAllOrdersApi } from '@/requests'
@@ -92,7 +93,7 @@ function RecentlySaleTab({ className = '' }: RecentlySaleTab) {
                     href={`/${item.slug}`}
                     className="aspect-video w-full max-w-[60px] flex-shrink-0 overflow-hidden rounded-md shadow-lg"
                   >
-                    <Image
+                    <FallbackImage
                       className="h-full w-full object-cover"
                       src={item.images[0]}
                       width={60}

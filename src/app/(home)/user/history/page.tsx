@@ -1,6 +1,7 @@
 'use client'
 
 import Divider from '@/components/Divider'
+import FallbackImage from '@/components/FallbackImage'
 import BottomGradient from '@/components/gradients/BottomGradient'
 import Input from '@/components/Input'
 import Pagination from '@/components/layouts/Pagination'
@@ -89,6 +90,8 @@ function HistoryPage({ searchParams }: { searchParams?: { [key: string]: string[
         const { orders, amount, chops } = await getOrderHistoryApi(query)
         setOrders(orders)
         setAmount(amount)
+
+        console.log('orders', orders)
 
         // sync search params with states
         setValue('search', searchParams?.search || getValues('search'))
@@ -391,7 +394,7 @@ function HistoryPage({ searchParams }: { searchParams?: { [key: string]: string[
                           href={`/${item.slug}`}
                           className="aspect-video w-full max-w-[100px] overflow-hidden rounded-lg shadow-lg"
                         >
-                          <Image
+                          <FallbackImage
                             className="h-full w-full object-cover"
                             src={item.images[0]}
                             width={100}

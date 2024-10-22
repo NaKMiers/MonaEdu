@@ -1,3 +1,4 @@
+import FallbackImage from '@/components/FallbackImage'
 import { ICategory } from '@/models/CategoryModel'
 import { ICourse } from '@/models/CourseModel'
 import { getAllCoursesApi } from '@/requests'
@@ -26,7 +27,7 @@ function CategoryRankTab({ className = '' }: CategoryRankTabProps) {
 
         console.log(
           'courses',
-          courses.filter((course: any) => !course.category?._id)
+          courses.filter((course: any) => !course?.category?.slug)
         )
 
         // Category Joined Rank
@@ -34,11 +35,11 @@ function CategoryRankTab({ className = '' }: CategoryRankTabProps) {
         courses.forEach((course: ICourse) => {
           const category: ICategory = course.category as ICategory
           const joined = course.joined
-          if (!categoryJoinedMap[category.slug]) {
-            categoryJoinedMap[category.slug] = { ...category, joined: 0 }
+          if (!categoryJoinedMap[category?.slug || 'others']) {
+            categoryJoinedMap[category?.slug || 'others'] = { ...category, joined: 0 }
           }
-          categoryJoinedMap[category.slug].joined =
-            (categoryJoinedMap[category.slug].joined || 0) + joined
+          categoryJoinedMap[category?.slug || 'others'].joined =
+            (categoryJoinedMap[category?.slug || 'others'].joined || 0) + joined
         })
         const rankCategories = Object.entries(categoryJoinedMap)
           .map(([_, category]) => category)
@@ -68,16 +69,17 @@ function CategoryRankTab({ className = '' }: CategoryRankTabProps) {
             key={category._id}
           >
             <div className="flex flex-shrink-0 items-center gap-2">
-              <div className="flex-shrink-0 rounded-md bg-white p-[2px]">
-                <Image
+              <div className="h-8 w-8 flex-shrink-0 overflow-hidden rounded-md bg-white">
+                <FallbackImage
+                  className="h-full w-full object-cover"
                   src={category.image}
-                  width={20}
-                  height={20}
+                  width={32}
+                  height={32}
                   alt="Mona-Edu"
                 />
               </div>
               <span className="rounded-full bg-dark-100 px-2 font-body text-sm font-semibold tracking-wider text-light">
-                {category.title}
+                {category.title || 'Others'}
               </span>
             </div>
             <span className="flex h-5 items-center justify-center rounded-full bg-dark-100 px-2 text-xs font-semibold text-light">

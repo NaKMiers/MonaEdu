@@ -1,3 +1,4 @@
+import FallbackImage from '@/components/FallbackImage'
 import { getRankUsersApi } from '@/requests'
 import { formatPrice } from '@/utils/number'
 import Image from 'next/image'
@@ -147,7 +148,7 @@ function UserSpendingRankTab({ className = '' }: UserSpendingRankTabProps) {
               href="/"
               className="relative aspect-square flex-shrink-0 text-light"
             >
-              <Image
+              <FallbackImage
                 className="rounded-lg"
                 src={user.avatar || process.env.NEXT_PUBLIC_DEFAULT_AVATAR}
                 width={45}
