@@ -49,7 +49,6 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
   const progressTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const topCoverRef = useRef<HTMLDivElement>(null)
   const logoCoverRef = useRef<HTMLAnchorElement>(null)
-  const fullScreenBtnRef = useRef<HTMLButtonElement>(null)
   const coversTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   let firstShow = useRef<boolean>(true)
 
@@ -309,35 +308,43 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
 
     const top = topCoverRef.current
     const logo = logoCoverRef.current
-    const fsBtn = fullScreenBtnRef.current
-    if (!top || !logo || !fsBtn) return
+    if (!top || !logo) return
 
     top.style.opacity = '1'
     top.style.transition = 'all 0.05s'
     logo.style.opacity = '1'
     logo.style.transition = 'all 0.05s'
-    fsBtn.style.opacity = '1'
-    fsBtn.style.transition = 'all 0.05s'
 
     if (coversTimeoutRef.current) {
       clearTimeout(coversTimeoutRef.current)
     }
-  }, [])
+    if (isPlaying) {
+      coversTimeoutRef.current = setTimeout(() => {
+        console.log('mouse leave')
+
+        top.style.opacity = '0'
+        top.style.transition = `all 0.1s ${firstShow.current ? '3.5s' : '0.1s'}`
+        logo.style.opacity = '0'
+        logo.style.transition = `all 0.1s ${firstShow.current ? '3.5s' : '0.1s'}`
+        firstShow.current = false
+      }, 3000)
+    }
+  }, [isPlaying])
 
   // mouse leave
   const handleMouseLeave = useCallback(() => {
     const top = topCoverRef.current
     const logo = logoCoverRef.current
-    const fsBtn = fullScreenBtnRef.current
-    if (!top || !logo || !fsBtn) return
+    if (!top || !logo) return
 
+    console.log('mouse leave isPlaying: ', isPlaying)
     if (isPlaying) {
+      console.log('mouse leave')
+
       top.style.opacity = '0'
       top.style.transition = `all 0.1s ${firstShow.current ? '3.5s' : '0.1s'}`
       logo.style.opacity = '0'
       logo.style.transition = `all 0.1s ${firstShow.current ? '3.5s' : '0.1s'}`
-      fsBtn.style.opacity = '0'
-      fsBtn.style.transition = `all 0.1s ${firstShow.current ? '3.5s' : '0.1s'}`
       firstShow.current = false
     }
   }, [isPlaying])
