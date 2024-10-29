@@ -61,7 +61,6 @@ export default async function middleware(req: NextRequest) {
   const isRequireAdmin = adminPaths.some(path => pathname.startsWith(path))
   if (isRequireAdmin) {
     // require
-
     const collaboratorPaths = [
       '/admin/summary/all',
       '/api/admin/summary/all',

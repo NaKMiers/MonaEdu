@@ -184,22 +184,26 @@ async function ProfilePage({ params: { id } }: { params: { id: string } }) {
                 <p className="flex gap-2 text-sm text-slate-500">
                   Giới tính:{' '}
                   <span className="text-dark">
-                    {user?.gender === 'male' ? 'Nam' : user?.gender === 'female' ? 'Nữ' : 'Khác'}
+                    {user.gender === 'male' ? 'Nam' : user.gender === 'female' ? 'Nữ' : 'Khác'}
                   </span>
                 </p>
               )}
 
               {/* Job */}
-              <p className="flex gap-2 text-sm text-slate-500">
-                Công việc: <span className="text-dark">{user?.job}</span>
-              </p>
+              {user?.job && (
+                <p className="flex gap-2 text-sm text-slate-500">
+                  Công việc: <span className="text-dark">{user.job}</span>
+                </p>
+              )}
 
               {/* Bio */}
-              <div className="text-sm text-slate-500">
-                <span>Bio: </span>
+              {user?.bio && (
+                <div className="text-sm text-slate-500">
+                  <span>Bio: </span>
 
-                <p className="text-dark">{user?.bio}</p>
-              </div>
+                  <p className="text-dark">{user.bio}</p>
+                </div>
+              )}
             </div>
           </div>
         </div>

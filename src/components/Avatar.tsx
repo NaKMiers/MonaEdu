@@ -26,7 +26,7 @@ function Avatar({ user, className = '' }: AvatarProps) {
   const [isChangingAvatar, setIsChangingAvatar] = useState<boolean>(false)
 
   // values
-  let isShowCrown = checkCrown(curUser?.package)
+  let isShowCrown = user._id.toString() === curUser._id.toString() && checkCrown(curUser?.package)
 
   // refs
   const avatarInputRef = useRef<HTMLInputElement>(null)
