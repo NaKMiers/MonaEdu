@@ -282,12 +282,9 @@ function Footer() {
           <p className="text-[14px] transition-all duration-300 hover:tracking-wide">
             © <span className="font-semibold text-primary">Mona Edu</span>. All rights reserved
           </p>
-          <Link
-            href="https://anhkhoa.info"
-            className="text-[14px] transition-all duration-300 hover:tracking-wide"
-          >
+          <div className="text-[14px] transition-all duration-300 hover:tracking-wide">
             <span className="font-semibold text-primary">Developed by</span> Nguyen Anh Khoa
-          </Link>
+          </div>
         </div>
 
         <Divider size={4} />
