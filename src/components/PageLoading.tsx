@@ -28,7 +28,7 @@ function PageLoading() {
     >
       <ThemeProvider theme={theme}>
         <div className="w-full">
-          <LinearProgress className="h-[3px] bg-yellow-50" />
+          <LinearProgress className="h-[3px] bg-sky-200" />
         </div>
       </ThemeProvider>
     </div>

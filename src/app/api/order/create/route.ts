@@ -9,6 +9,8 @@ import handleDeliverOrder from '@/utils/handleDeliverOrder'
 import { notifyNewOrderToAdmin } from '@/utils/sendMail'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
+import { blackDomains, blackEmails } from '@/constants/blackList'
+import { checkPackageType } from '@/utils/string'
 
 // Models: User, Order, Course, Category, Tag, Notification, Package
 import '@/models/CategoryModel'
@@ -18,7 +20,6 @@ import '@/models/OrderModel'
 import '@/models/PackageModel'
 import '@/models/TagModel'
 import '@/models/UserModel'
-import { checkPackageType } from '@/utils/string'
 
 // [POST]: /order/create
 export async function POST(req: NextRequest) {
@@ -37,8 +38,13 @@ export async function POST(req: NextRequest) {
     const email = token?.email
 
     // check if user exists or not
-    if (!userId) {
+    if (!userId || !email) {
       return NextResponse.json({ message: 'Người dùng không hợp lệ' }, { status: 404 })
+    }
+
+    // check if email is blacklist or black domains
+    if (blackEmails.includes(email) || blackDomains.some(domain => email.endsWith(domain))) {
+      return NextResponse.json({ message: 'Không thể thực hiện giao dịch này' }, { status: 400 })
     }
 
     const newOrderSet: any = {

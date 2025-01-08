@@ -4,6 +4,7 @@ import CartItem from '@/components/CartItem'
 import Divider from '@/components/Divider'
 import Input from '@/components/Input'
 import SuggestedList from '@/components/SuggestedList'
+import { blackDomains, blackEmails } from '@/constants/blackList'
 import { useAppDispatch, useAppSelector } from '@/libs/hooks'
 import { setSelectedItems } from '@/libs/reducers/cartReducer'
 import { setPageLoading } from '@/libs/reducers/modalReducer'
@@ -175,13 +176,24 @@ function CartPage() {
   // validate before checkout
   const handleValidateBeforeCheckout = useCallback(() => {
     let isValid = true
+
+    // select at least 1 item to checkout
     if (!selectedItems.length || !total) {
       toast.error('Hãy chọn sản phẩm để tiến hành thanh toán')
       isValid = false
     }
 
+    // check black list and black domains
+    if (
+      blackEmails.includes(curUser?.email) ||
+      blackDomains.some((domain: string) => curUser?.email.endsWith(domain))
+    ) {
+      toast.error('Không thể thực hiện giao dịch này')
+      return
+    }
+
     return isValid
-  }, [selectedItems.length, total])
+  }, [selectedItems.length, total, curUser?.email])
 
   // MARK: Checkout
   // handle checkout
@@ -201,7 +213,7 @@ function CartPage() {
         }))
 
         // send request to server to create order
-        const { code, message } = await createOrderApi({
+        const { code } = await createOrderApi({
           total,
           voucher: voucher?._id,
           receivedUser: foundUser?.email,
