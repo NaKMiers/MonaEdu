@@ -368,6 +368,7 @@ function EditUserPage({ params: { id } }: { params: { id: string } }) {
             required={!!user?.commission}
             type="select"
             options={[
+              { value: 'none', label: 'None' },
               { value: 'percentage', label: 'Percentage' },
               { value: 'fixed', label: 'Fixed' },
             ]}

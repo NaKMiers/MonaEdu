@@ -2,6 +2,9 @@ import { connectDatabase } from '@/config/database'
 import UserModel, { IUser } from '@/models/UserModel'
 import { NextRequest, NextResponse } from 'next/server'
 
+// Models: User
+import '@/models/UserModel'
+
 // [PUT]: /admin/user/:id/edit
 export async function PUT(req: NextRequest, { params: { id } }: { params: { id: string } }) {
   console.log('- Edit User -')

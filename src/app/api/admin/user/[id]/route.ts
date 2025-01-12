@@ -2,8 +2,9 @@ import { connectDatabase } from '@/config/database'
 import UserModel, { IUser } from '@/models/UserModel'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Models: User
+// Models: User, Course
 import '@/models/UserModel'
+import '@/models/CourseModel'
 
 // [GET]: /admin/user/:id
 export async function GET(req: NextRequest, { params: { id } }: { params: { id: string } }) {
