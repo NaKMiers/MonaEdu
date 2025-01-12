@@ -58,7 +58,6 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
     if (!wd.player) return
 
     const curTime = wd.player.getCurrentTime()
-    console.log('curTime:', curTime)
 
     const joinedCourse = curUser?.courses.find(
       (c: any) => c.course === (lesson?.courseId as ICourse)._id.toString()
@@ -77,8 +76,6 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
         Math.floor((curTime / duration) * 100 * 100) / 100 <= lesson.progress.progress
 
       if (!invalidProgress) {
-        console.log('update progress - curTime:', curTime, duration, lesson.progress.progress)
-
         const { progress } = await updateProgressApi(
           (lesson.progress as IProgress)._id,
           (lesson.courseId as ICourse)._id,
@@ -96,18 +93,12 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
             []
           )
 
-          console.log('allLessons:', allLessons)
-
           const completedLessons = allLessons.filter(
             lesson => lesson?.progress && lesson.progress.status === 'completed'
           )
 
-          console.log('completedLessons:', completedLessons)
-
           let percent = Math.round(((completedLessons.length + 1) / allLessons.length) * 100)
           if (percent > 100) percent = 100
-
-          console.log('percent:', percent)
 
           dispatch(setUserProgress(percent))
         }
@@ -159,8 +150,6 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
       const wd: any = window
       wd.player = e.target
       const player = e.target
-
-      console.log(wd.player)
 
       // set duration
       const duration = player.getDuration()
@@ -242,7 +231,6 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
   // MARK: reset player on unmount
   useEffect(() => {
     return () => {
-      console.log('IframePlayer unmount')
       const wd: any = window
 
       if (wd.player) {
@@ -266,8 +254,6 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
   // MARK: fullscreen
   useEffect(() => {
     const element = playerContainerRef.current
-
-    console.log('isFullScreen:', isFullScreen)
 
     if (isFullScreen) {
       if (element) {
@@ -304,8 +290,6 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
   // MARK: show covers
   // mouse over
   const handleMouseMove = useCallback(() => {
-    console.log('mouse over')
-
     const top = topCoverRef.current
     const logo = logoCoverRef.current
     if (!top || !logo) return
@@ -320,8 +304,6 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
     }
     if (isPlaying) {
       coversTimeoutRef.current = setTimeout(() => {
-        console.log('mouse leave')
-
         top.style.opacity = '0'
         top.style.transition = `all 0.1s ${firstShow.current ? '3.5s' : '0.1s'}`
         logo.style.opacity = '0'
@@ -337,10 +319,7 @@ function IframePlayer({ lesson, className = '' }: IframePlayerProps) {
     const logo = logoCoverRef.current
     if (!top || !logo) return
 
-    console.log('mouse leave isPlaying: ', isPlaying)
     if (isPlaying) {
-      console.log('mouse leave')
-
       top.style.opacity = '0'
       top.style.transition = `all 0.1s ${firstShow.current ? '3.5s' : '0.1s'}`
       logo.style.opacity = '0'

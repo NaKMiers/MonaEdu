@@ -12,8 +12,6 @@ interface TopCategoriesProps {
 function TopCategories({ className }: TopCategoriesProps) {
   const categories: any[] = topCategories
 
-  console.log(topCategories)
-
   return (
     <div className={`mx-auto max-w-1200 px-21 ${className}`}>
       <Heading title="Danh mục phổ biến" />

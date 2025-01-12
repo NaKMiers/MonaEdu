@@ -12,6 +12,8 @@ import { MdEdit } from 'react-icons/md'
 import { PiLightningFill, PiLightningSlashFill } from 'react-icons/pi'
 import { RiDonutChartFill } from 'react-icons/ri'
 import ConfirmDialog from '../dialogs/ConfirmDialog'
+import useUtils from '@/libs/hooks/useUtils'
+import { formatTime } from '@/utils/time'
 
 interface CourseItemProps {
   data: ICourse
@@ -42,6 +44,9 @@ function CourseItem({
   handleRemoveApplyingFlashSales,
   handleDeleteCourses,
 }: CourseItemProps) {
+  // hooks
+  const { handleCopy } = useUtils()
+
   // states
   const [isOpenConfirmModal, setIsOpenConfirmModal] = useState<boolean>(false)
   const [confirmType, setConfirmType] = useState<
@@ -130,6 +135,10 @@ function CourseItem({
           <p
             className="mt-1 font-semibold tracking-wider text-dark"
             title={data.title}
+            onClick={e => {
+              e.stopPropagation()
+              handleCopy(data.title)
+            }}
           >
             {data.title}
           </p>
@@ -150,21 +159,48 @@ function CourseItem({
             <p
               className="line-clamp-2 text-ellipsis rounded-md border px-2 py-0.5 font-body text-sm tracking-wider text-dark"
               title={data.textHook}
+              onClick={e => {
+                e.stopPropagation()
+                handleCopy(data.textHook)
+              }}
             >
               Hook: {data.textHook}
             </p>
           )}
 
           {/* Author */}
-          <p className="text-sm font-semibold tracking-wider text-slate-500">
+          <p
+            className="text-sm font-semibold tracking-wider text-slate-500"
+            title={data.author}
+            onClick={e => {
+              e.stopPropagation()
+              handleCopy(data.author)
+            }}
+          >
             Author: <span className="font-normal">{data.author}</span>
           </p>
 
           {/* Price - Old Price */}
           <div className="flex flex-wrap items-center gap-2">
-            <p className="text-xl font-semibold text-primary">{formatPrice(data.price)}</p>
+            <p
+              className="text-xl font-semibold text-primary"
+              onClick={e => {
+                e.stopPropagation()
+                handleCopy(data.price.toString())
+              }}
+            >
+              {formatPrice(data.price)}
+            </p>
             {data.oldPrice && (
-              <p className="text-sm text-slate-500 line-through">{formatPrice(data.oldPrice)}</p>
+              <p
+                className="text-sm text-slate-500 line-through"
+                onClick={e => {
+                  e.stopPropagation()
+                  handleCopy(data.oldPrice.toString())
+                }}
+              >
+                {formatPrice(data.oldPrice)}
+              </p>
             )}
           </div>
 
@@ -173,8 +209,12 @@ function CourseItem({
             <span className="font-semibold">Tags: </span>
             {data.tags.map((tag: any, index) => (
               <span
-                key={tag.slug}
                 className="text-slate-400"
+                onClick={e => {
+                  e.stopPropagation()
+                  handleCopy(tag.title)
+                }}
+                key={tag.slug}
               >
                 {tag.title}
                 {index < data.tags.length - 1 ? ', ' : ''}
@@ -182,11 +222,16 @@ function CourseItem({
             ))}
           </p>
 
+          {/* Languages */}
           <p className="text-sm text-slate-500">
             <span className="font-semibold">Languages: </span>
             {data?.languages?.map((language, index) => (
               <span
                 className="text-slate-600"
+                onClick={e => {
+                  e.stopPropagation()
+                  handleCopy(language)
+                }}
                 key={index}
               >
                 {language}
@@ -201,7 +246,15 @@ function CourseItem({
               {!editingJoined ? (
                 <>
                   <span className="font-semibold">Joined: </span>
-                  <span className="text-green-500">{joined}</span>
+                  <span
+                    className="text-green-500"
+                    onClick={e => {
+                      e.stopPropagation()
+                      handleCopy(joined.toString())
+                    }}
+                  >
+                    {joined}
+                  </span>
                 </>
               ) : (
                 <input
@@ -219,7 +272,15 @@ function CourseItem({
               {!editingLikes ? (
                 <>
                   <span className="font-semibold">Likes: </span>
-                  <span className="text-rose-500">{likes}</span>
+                  <span
+                    className="text-rose-500"
+                    onClick={e => {
+                      e.stopPropagation()
+                      handleCopy(likes.toString())
+                    }}
+                  >
+                    {likes}
+                  </span>
                 </>
               ) : (
                 <input
@@ -234,6 +295,21 @@ function CourseItem({
               )}
             </div>
           </div>
+
+          {/* Created & Updated */}
+          <p
+            className="text-sm text-slate-500"
+            title="Updated At (d/m/y)"
+          >
+            <span className="font-semibold">Updated: </span>
+            <span
+              className={`${
+                +new Date() - +new Date(data.updatedAt) <= 60 * 60 * 1000 ? 'text-yellow-500' : ''
+              }`}
+            >
+              {formatTime(data.updatedAt)}
+            </span>
+          </p>
         </div>
 
         {/* MARK: Action Buttons */}

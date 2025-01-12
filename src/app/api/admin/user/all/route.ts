@@ -85,6 +85,12 @@ export async function GET(req: NextRequest) {
           continue
         }
 
+        // exists fields
+        if (key === 'package') {
+          filter[key] = { $exists: true, $ne: null }
+          continue
+        }
+
         // Normal Cases ---------------------
         filter[key] = params[key].length === 1 ? params[key][0] : { $in: params[key] }
       }

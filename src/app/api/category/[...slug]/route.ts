@@ -18,8 +18,6 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
     // connect database
     await connectDatabase()
 
-    console.log('slug', slug)
-
     // get category by slug
     const category: ICategory | null = await CategoryModel.findOne({
       slug: slug.join('/'),
@@ -36,8 +34,6 @@ export async function GET(req: NextRequest, { params: { slug } }: { params: { sl
     })
       .select('_id title slug')
       .lean()
-
-    console.log('categoryIds', categoryIds)
 
     // get query params
     const params: { [key: string]: string[] } = searchParamsToObject(req.nextUrl.searchParams)

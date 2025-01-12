@@ -35,6 +35,25 @@ export const getUsersApi = async (
   return await res.json()
 }
 
+// [GET]: /admin/user/:id
+export const getUserApi = async (
+  userId: string,
+  query: string = '',
+  option: RequestInit = {
+    cache: 'no-store',
+  }
+) => {
+  // no-store to bypass cache
+  const res = await fetch(`/api/admin/user/${userId}${query}`, option)
+
+  // check status
+  if (!res.ok) {
+    throw new Error((await res.json()).message)
+  }
+
+  return await res.json()
+}
+
 // [GET]: /user/find/:email
 export const findUserApi = async (
   email: string = '',
@@ -142,6 +161,21 @@ export const updatePersonalInfoApi = async (data: any) => {
 // [PUT]: /user/update-private-info
 export const updatePrivateInfoApi = async (data: any) => {
   const res = await fetch('/api/user/update-private-info', {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  })
+
+  // check status
+  if (!res.ok) {
+    throw new Error((await res.json()).message)
+  }
+
+  return await res.json()
+}
+
+// [PUT]: /admin/user/:id/edit
+export const editUserApi = async (userId: string, data: any) => {
+  const res = await fetch(`/api/admin/user/${userId}/edit`, {
     method: 'PUT',
     body: JSON.stringify(data),
   })

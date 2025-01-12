@@ -49,9 +49,6 @@ export async function GET(req: NextRequest) {
     // // decode token
     // const decode = jwt.verify(newToken, process.env.NEXTAUTH_SECRET!) as JwtPayload
 
-    // console.log(newToken)
-    // console.log(decode)
-
     // return response
     return NextResponse.json({ message: 'Increased', courses, lessons }, { status: 200 })
   } catch (err: any) {

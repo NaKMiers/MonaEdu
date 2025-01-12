@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
     // options
     let skip = 0
     let itemPerPage = 9
-    const filter: { [key: string]: any } = {}
+    const filter: { [key: string]: any } = { active: true }
     let sort: { [key: string]: any } = { updatedAt: -1 } // default sort
 
     // build filter

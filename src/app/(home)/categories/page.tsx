@@ -20,8 +20,6 @@ async function CategoriesPage() {
       next: { revalidate: 60 },
     })
     categories = data.categories
-
-    console.log('categories', categories)
   } catch (err: any) {
     return notFound()
   }

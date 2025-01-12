@@ -23,8 +23,6 @@ export async function PATCH(req: NextRequest, { params: { id } }: { params: { id
     // get course
     const course: ICourse | null = await CourseModel.findById(courseId).select('title').lean()
 
-    console.log('course:', course)
-
     // check if course exists
     if (!course) {
       return NextResponse.json({ message: 'Course not found' }, { status: 404 })

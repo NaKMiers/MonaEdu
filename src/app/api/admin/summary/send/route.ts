@@ -10,7 +10,7 @@ import '@/models/VoucherModel'
 
 // [POST]: /admin/summary/send
 export async function POST(req: NextRequest) {
-  console.log('- Send Summaries')
+  console.log('- Send Summaries -')
 
   try {
     // connect to database

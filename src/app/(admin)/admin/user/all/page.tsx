@@ -85,6 +85,7 @@ function AllUsersPage({ searchParams }: { searchParams?: { [key: string]: string
         setValue('sort', searchParams?.sort || getValues('sort'))
         setValue('role', searchParams?.role || getValues('role'))
         setValue('authType', searchParams?.authType || getValues('authType'))
+        setValue('package', searchParams?.package || getValues('package'))
 
         // set expended
         setMinExpended(chops.minExpended)
@@ -258,7 +259,7 @@ function AllUsersPage({ searchParams }: { searchParams?: { [key: string]: string
             max={maxExpended}
             step={1}
             className="-mb-1.5 w-full"
-            onChange={(_, newValue: number | number[]) => setExpended(newValue as number[])}
+            onChange={(_: any, newValue: number | number[]) => setExpended(newValue as number[])}
             valueLabelDisplay="auto"
             style={{ color: '#333' }}
           />
@@ -357,6 +358,31 @@ function AllUsersPage({ searchParams }: { searchParams?: { [key: string]: string
               {
                 value: 'github',
                 label: 'GitHub',
+              },
+            ]}
+          />
+          <Input
+            id="package"
+            label="Membership"
+            disabled={false}
+            register={register}
+            errors={errors}
+            icon={FaSort}
+            type="select"
+            onFocus={() => clearErrors('package')}
+            options={[
+              {
+                value: '',
+                label: 'All',
+                selected: true,
+              },
+              {
+                value: 'true',
+                label: 'Member',
+              },
+              {
+                value: 'false',
+                label: 'Non-member',
               },
             ]}
           />

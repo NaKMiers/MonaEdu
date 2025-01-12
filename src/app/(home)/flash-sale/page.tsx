@@ -30,7 +30,6 @@ async function FlashSalePage({ searchParams }: { searchParams?: { [key: string]:
 
     // destructure
     courses = data.courses
-    console.log('Courses:', courses.length)
 
     amount = data.amount
   } catch (err: any) {

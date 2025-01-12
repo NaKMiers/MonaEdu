@@ -98,8 +98,6 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
   // MARK: reset player on unmount
   useEffect(() => {
     return () => {
-      console.log('IframePlayer unmount')
-
       dispatch(resetLearningLesson())
       clearTimeout(progressTimeoutRef.current as NodeJS.Timeout)
       setIsPlaying(false)
@@ -143,8 +141,6 @@ function VideoPlayer({ lesson, className = '' }: VideoPlayerProps) {
       const invalidProgress =
         Math.floor((curTime / duration) * 100 * 100) / 100 <= lesson.progress.progress
       if (!invalidProgress) {
-        console.log('update progress - curTime:', curTime, duration, lesson.progress.progress)
-
         const { progress } = await updateProgressApi(
           (lesson.progress as IProgress)._id,
           (lesson.courseId as ICourse)._id,

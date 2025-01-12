@@ -5,7 +5,8 @@ import flattenColorPalette from 'tailwindcss/lib/util/flattenColorPalette'
 export const theme = {
   extend: {
     colors: {
-      primary: '#F7E360',
+      // primary: '#F7E360', // old
+      primary: '#00dde5', // new
       secondary: '#230B5B',
       dark: '#111',
       light: '#fff',

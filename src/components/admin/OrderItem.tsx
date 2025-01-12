@@ -15,6 +15,7 @@ import { RiDonutChartFill } from 'react-icons/ri'
 import { SiGooglemessages } from 'react-icons/si'
 import ConfirmDialog from '../dialogs/ConfirmDialog'
 import Input from '../Input'
+import useUtils from '@/libs/hooks/useUtils'
 
 interface OrderItemProps {
   data: IOrder
@@ -47,6 +48,9 @@ function OrderItem({
   setValue,
   handleFilter,
 }: OrderItemProps) {
+  // hooks
+  const { handleCopy } = useUtils()
+
   // states
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [confirmType, setConfirmType] = useState<'deliver' | 're-deliver' | 'delete'>('delete')
@@ -65,12 +69,6 @@ function OrderItem({
       message: '',
     },
   })
-
-  // handle copy
-  const handleCopy = useCallback((text: string) => {
-    navigator.clipboard.writeText(text)
-    toast.success('Đã sao chép: ' + text)
-  }, [])
 
   // handle deliver order
   const handleDeliverOrder = useCallback(async () => {
@@ -293,7 +291,13 @@ function OrderItem({
               title="Updated (d/m/y)"
             >
               <span className="font-semibold">Updated: </span>
-              <span>{formatTime(data.updatedAt)}</span>
+              <span
+                className={`${
+                  +new Date() - +new Date(data.updatedAt) <= 60 * 60 * 1000 ? 'text-yellow-500' : ''
+                }`}
+              >
+                {formatTime(data.updatedAt)}
+              </span>
             </p>
           </div>
         </div>

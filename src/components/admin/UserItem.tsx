@@ -1,3 +1,4 @@
+import useUtils from '@/libs/hooks/useUtils'
 import { ICartItem } from '@/models/CartItemModel'
 import { IUser } from '@/models/UserModel'
 import {
@@ -8,7 +9,7 @@ import {
   setCollaboratorApi,
 } from '@/requests'
 import { formatPrice } from '@/utils/number'
-import { getUserName } from '@/utils/string'
+import { checkShowPackage, getUserName } from '@/utils/string'
 import { formatDate, formatTime } from '@/utils/time'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useSession } from 'next-auth/react'
@@ -20,6 +21,7 @@ import toast from 'react-hot-toast'
 import { FaCartArrowDown, FaCommentSlash, FaEye, FaTrash } from 'react-icons/fa'
 import { GrUpgrade } from 'react-icons/gr'
 import { HiLightningBolt } from 'react-icons/hi'
+import { MdEdit } from 'react-icons/md'
 import { RiCheckboxMultipleBlankLine, RiDonutChartFill } from 'react-icons/ri'
 import { SiCoursera } from 'react-icons/si'
 import Divider from '../Divider'
@@ -49,11 +51,12 @@ function UserItem({
   handleDeleteUsers,
 }: UserItemProps) {
   // hooks
+  const { handleCopy } = useUtils()
   const { data: session } = useSession()
   const curUser: any = session?.user
 
   // states
-  const [userData, setUserData] = useState<IUser>(data)
+  const [user, setUserData] = useState<IUser>(data)
   const [userCart, setUserCart] = useState<ICartItem[]>([])
 
   // open states
@@ -61,7 +64,7 @@ function UserItem({
   const [isOpenConfirmModal, setIsOpenConfirmModal] = useState<boolean>(false)
   const [isOpenBlockCommentConfirmationDialog, setIsOpenBlockCommentConfirmationDialog] =
     useState<boolean>(false)
-  const [isOpenDemoteCollboratorConfirmationDialog, setIsOpenDemoteCollboratorConfirmationDialog] =
+  const [isOpenDemoteCollboratorConfirmationDialog, setIsOpenDemoteCollaboratorConfirmationDialog] =
     useState<boolean>(false)
   const [isOpenCartList, setIsOpenCartList] = useState<boolean>(false)
   const [isOpenUserProgresses, setIsOpenUserProgresses] = useState<boolean>(false)
@@ -75,6 +78,8 @@ function UserItem({
 
   // values
   const isCurUser = data._id === curUser?._id
+
+  console.log('user.package', user.package)
 
   // form
   const {
@@ -128,14 +133,14 @@ function UserItem({
 
     try {
       // send request to server
-      const { user, message } = await setCollaboratorApi(
-        userData._id,
+      const { updatedUser, message } = await setCollaboratorApi(
+        user._id,
         formData.type,
         formData['value-' + data._id]
       )
 
       // update user data
-      setUserData(user)
+      setUserData(updatedUser)
 
       // show success message
       toast.success(message)
@@ -184,7 +189,7 @@ function UserItem({
       // send request to server
       const { updatedUser, message } = await blockCommentApi(
         data._id,
-        !userData.blockStatuses.blockedComment
+        !user.blockStatuses.blockedComment
       )
 
       // update user data
@@ -199,7 +204,7 @@ function UserItem({
       // stop loading
       setIsBlockingComment(false)
     }
-  }, [data._id, userData.blockStatuses.blockedComment])
+  }, [data._id, user.blockStatuses.blockedComment])
 
   // MARK: handle get user cart
   const handleGetUserCart = useCallback(async () => {
@@ -245,14 +250,12 @@ function UserItem({
     <>
       <div
         className={`trans-200 relative flex select-none items-start justify-between gap-2 rounded-lg p-4 text-dark shadow-lg ${
-          selectedUsers.includes(userData._id) ? '-translate-y-1 bg-violet-50' : 'bg-white'
+          selectedUsers.includes(user._id) ? '-translate-y-1 bg-violet-50' : 'bg-white'
         } ${!isCurUser ? 'cursor-pointer' : ''} ${className}`}
         onClick={() =>
           !isCurUser &&
           setSelectedUsers(prev =>
-            prev.includes(userData._id)
-              ? prev.filter(id => id !== userData._id)
-              : [...prev, userData._id]
+            prev.includes(user._id) ? prev.filter(id => id !== user._id) : [...prev, user._id]
           )
         }
       >
@@ -260,94 +263,184 @@ function UserItem({
         <div className="w-full">
           {/* Avatar */}
           <Link
-            href={`/user/${userData.username || userData.email}`}
+            href={`/user/${user.username || user.email}`}
             className="float-start mr-3 block overflow-hidden rounded-md"
             onClick={e => e.stopPropagation()}
           >
             <Image
               className="aspect-square"
-              src={userData.avatar}
+              src={user.avatar}
               height={65}
               width={65}
               alt="avatar"
-              title={userData._id}
+              title={user._id}
             />
           </Link>
 
           {/* Role */}
           <div className="absolute -left-2 -top-2 z-30 select-none rounded-lg bg-secondary px-2 py-[2px] font-body text-xs text-yellow-300 shadow-md">
-            {userData.role}
+            {user.role}
           </div>
+
+          {checkShowPackage(user.package) && (
+            <div className="absolute -right-2 -top-2 z-30 select-none rounded-lg bg-neutral-950 px-2 py-[2px] font-body text-xs text-yellow-300 shadow-md">
+              {checkShowPackage(user.package)}
+            </div>
+          )}
 
           {/* Email */}
           <p
-            className="line-clamp-1 block text-ellipsis font-body text-[18px] font-semibold tracking-wide text-secondary"
-            title={userData.email}
+            className="line-clamp-1 block cursor-pointer text-ellipsis font-body text-[18px] font-semibold tracking-wide text-secondary"
+            title={user.email}
+            onClick={e => {
+              e.stopPropagation()
+              handleCopy(user.email)
+            }}
           >
-            {userData.email}
+            {user.email.length > 20 ? user.email.slice(0, 20) + '...' : user.email}
           </p>
 
           {/* Expended */}
           <div className="flex items-center gap-2 text-sm">
             <p>
               <span className="font-semibold">Expended: </span>
-              <span className="text-green-500">{formatPrice(userData.expended)}</span>
+              <span
+                className="cursor-pointer text-green-500"
+                onClick={e => {
+                  e.stopPropagation()
+                  handleCopy(user.expended.toString())
+                }}
+              >
+                {formatPrice(user.expended)}
+              </span>
             </p>
           </div>
 
           {/* Username */}
-          {userData.username && (
+          {user.username && (
             <p className="text-sm">
               <span className="font-semibold">Username: </span>
-              <span>{userData.username}</span>
+              <span
+                className="cursor-pointer"
+                onClick={e => {
+                  e.stopPropagation()
+                  handleCopy(user.username)
+                }}
+              >
+                {user.username}
+              </span>
             </p>
           )}
 
           {/* Nickname */}
-          {userData.nickname && (
+          {user.nickname && (
             <p className="text-sm">
               <span className="font-semibold">Nickname: </span>
-              <span>{userData.nickname}</span>
+              <span
+                className="cursor-pointer"
+                onClick={e => {
+                  e.stopPropagation()
+                  handleCopy(user.nickname)
+                }}
+              >
+                {user.nickname}
+              </span>
             </p>
           )}
 
           {/* First Name + Last Name: Full Name */}
-          {(userData.firstName || userData.lastName) && (
+          {(user.firstName || user.lastName) && (
             <p className="text-sm">
               <span className="font-semibold">Fullname: </span>
-              <span>{userData.firstName + ' ' + userData.lastName}</span>
+              <span
+                className="cursor-pointer"
+                onClick={e => {
+                  e.stopPropagation()
+                  handleCopy(user.firstName + ' ' + user.lastName)
+                }}
+              >
+                {user.firstName + ' ' + user.lastName}
+              </span>
             </p>
           )}
 
           {/* Birthday */}
-          {userData.birthday && (
+          {user.birthday && (
             <p className="text-sm">
               <span className="font-semibold">Birthday: </span>
-              <span>{formatDate(userData.birthday)}</span>
+              <span
+                className="cursor-pointer"
+                onClick={e => {
+                  e.stopPropagation()
+                  handleCopy(formatDate(user.birthday))
+                }}
+              >
+                {formatDate(user.birthday)}
+              </span>
             </p>
           )}
 
           {/* Phone */}
-          {userData.phone && (
+          {user.phone && (
             <p className="text-sm">
               <span className="font-semibold">Phone: </span>
-              <span>{userData.phone}</span>
+              <span
+                className="cursor-pointer"
+                onClick={e => {
+                  e.stopPropagation()
+                  handleCopy(user.phone)
+                }}
+              >
+                {user.phone}
+              </span>
+            </p>
+          )}
+
+          {/* Gender */}
+          {user.gender && (
+            <p className="text-sm">
+              <span className="font-semibold">Gender: </span>
+              <span
+                className="cursor-pointer"
+                onClick={e => {
+                  e.stopPropagation()
+                  handleCopy(user.gender)
+                }}
+              >
+                {user.gender}
+              </span>
             </p>
           )}
 
           {/* Address */}
-          {userData.address && (
+          {user.address && (
             <p className="text-sm">
               <span className="font-semibold">Address: </span>
-              <span>{userData.address}</span>
+              <span
+                className="cursor-pointer"
+                onClick={e => {
+                  e.stopPropagation()
+                  handleCopy(user.address)
+                }}
+              >
+                {user.address}
+              </span>
             </p>
           )}
 
           {/* Job */}
-          {userData.job && (
+          {user.job && (
             <p className="text-sm">
               <span className="font-semibold">Job: </span>
-              <span>{userData.job}</span>
+              <span
+                className="cursor-pointer"
+                onClick={e => {
+                  e.stopPropagation()
+                  handleCopy(user.job)
+                }}
+              >
+                {user.job}
+              </span>
             </p>
           )}
 
@@ -355,11 +448,15 @@ function UserItem({
           <p className="text-sm">
             <span className="font-semibold">Created At: </span>
             <span
-              className={`${
+              className={`cursor-pointer ${
                 +new Date() - +new Date(data.createdAt) <= 60 * 60 * 1000 ? 'text-yellow-500' : ''
               }`}
+              onClick={e => {
+                e.stopPropagation()
+                handleCopy(formatTime(user.createdAt))
+              }}
             >
-              {formatTime(userData.createdAt)}
+              {formatTime(user.createdAt)}
             </span>
           </p>
 
@@ -367,11 +464,15 @@ function UserItem({
           <p className="text-sm">
             <span className="font-semibold">Updated At: </span>
             <span
-              className={`${
+              className={`cursor-pointer ${
                 +new Date() - +new Date(data.updatedAt) <= 60 * 60 * 1000 ? 'text-yellow-500' : ''
               }`}
+              onClick={e => {
+                e.stopPropagation()
+                handleCopy(formatTime(user.createdAt))
+              }}
             >
-              {formatTime(userData.updatedAt)}
+              {formatTime(user.updatedAt)}
             </span>
           </p>
         </div>
@@ -443,14 +544,14 @@ function UserItem({
               className="group block"
               onClick={e => {
                 e.stopPropagation()
-                userData.role === 'collaborator'
-                  ? setIsOpenDemoteCollboratorConfirmationDialog(true)
+                user.role === 'collaborator'
+                  ? setIsOpenDemoteCollaboratorConfirmationDialog(true)
                   : setIsOpenSetCollaborator(true)
               }}
-              disabled={loadingUsers.includes(userData._id) || isDemoting}
-              title={userData.role === 'collaborator' ? 'Demote' : 'Promote'}
+              disabled={loadingUsers.includes(user._id) || isDemoting}
+              title={user.role === 'collaborator' ? 'Demote' : 'Promote'}
             >
-              {loadingUsers.includes(userData._id) ? (
+              {loadingUsers.includes(user._id) ? (
                 <RiDonutChartFill
                   size={18}
                   className="animate-spin text-slate-300"
@@ -458,7 +559,7 @@ function UserItem({
               ) : (
                 <GrUpgrade
                   size={18}
-                  className={`wiggle ${userData.role === 'collaborator' ? 'rotate-180 text-red-500' : ''}`}
+                  className={`wiggle ${user.role === 'collaborator' ? 'rotate-180 text-red-500' : ''}`}
                 />
               )}
             </button>
@@ -472,7 +573,7 @@ function UserItem({
                 e.stopPropagation()
                 setIsOpenBlockCommentConfirmationDialog(true)
               }}
-              disabled={loadingUsers.includes(userData._id) || isBlockingComment || isDemoting}
+              disabled={loadingUsers.includes(user._id) || isBlockingComment || isDemoting}
               title="Block Comment"
             >
               {isBlockingComment ? (
@@ -484,33 +585,8 @@ function UserItem({
                 <FaCommentSlash
                   size={18}
                   className={`wiggle ${
-                    userData.blockStatuses.blockedComment ? 'text-rose-500' : 'text-green-500'
+                    user.blockStatuses.blockedComment ? 'text-rose-500' : 'text-green-500'
                   }`}
-                />
-              )}
-            </button>
-          )}
-
-          {/* Delete Button */}
-          {!isCurUser && (
-            <button
-              className="group block"
-              onClick={e => {
-                e.stopPropagation()
-                setIsOpenConfirmModal(true)
-              }}
-              disabled={loadingUsers.includes(userData._id) || isBlockingComment || isDemoting}
-              title="Delete"
-            >
-              {loadingUsers.includes(userData._id) ? (
-                <RiDonutChartFill
-                  size={18}
-                  className="animate-spin text-slate-300"
-                />
-              ) : (
-                <FaTrash
-                  size={18}
-                  className="wiggle"
                 />
               )}
             </button>
@@ -572,6 +648,44 @@ function UserItem({
               )}
             </AnimatePresence>
           </div>
+
+          {/* Edit Button */}
+          <Link
+            className="group block"
+            href={`/admin/user/${user._id}/edit`}
+            onClick={e => e.stopPropagation()}
+            title="Edit"
+          >
+            <MdEdit
+              size={18}
+              className="wiggle"
+            />
+          </Link>
+
+          {/* Delete Button */}
+          {!isCurUser && (
+            <button
+              className="group block"
+              onClick={e => {
+                e.stopPropagation()
+                setIsOpenConfirmModal(true)
+              }}
+              disabled={loadingUsers.includes(user._id) || isBlockingComment || isDemoting}
+              title="Delete"
+            >
+              {loadingUsers.includes(user._id) ? (
+                <RiDonutChartFill
+                  size={18}
+                  className="animate-spin text-slate-300"
+                />
+              ) : (
+                <FaTrash
+                  size={18}
+                  className="wiggle"
+                />
+              )}
+            </button>
+          )}
         </div>
       </div>
 
@@ -709,7 +823,7 @@ function UserItem({
       {/* Confirm Demote Collaborator Dialog */}
       <ConfirmDialog
         open={isOpenDemoteCollboratorConfirmationDialog}
-        setOpen={setIsOpenDemoteCollboratorConfirmationDialog}
+        setOpen={setIsOpenDemoteCollaboratorConfirmationDialog}
         title="Demote Collaborator"
         content="Are you sure that you want to  this collaborator?"
         onAccept={handleDemoteCollaborator}

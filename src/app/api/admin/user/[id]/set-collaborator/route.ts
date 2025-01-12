@@ -18,7 +18,7 @@ export async function PATCH(req: NextRequest, { params: { id } }: { params: { id
     const { type, value } = await req.json()
 
     // set collaborator
-    const user = await UserModel.findByIdAndUpdate(
+    const updatedUser = await UserModel.findByIdAndUpdate(
       id,
       {
         $set: {
@@ -30,17 +30,17 @@ export async function PATCH(req: NextRequest, { params: { id } }: { params: { id
     )
 
     // check user
-    if (!user) {
+    if (!updatedUser) {
       return NextResponse.json({ message: 'User not found' }, { status: 404 })
     }
 
     // return response
     return NextResponse.json(
       {
-        user,
+        updatedUser,
         message: `User ${
-          user.username || user.email
-        } has been set as a collaborator with a commission of ${formatPrice(user.commission.value)}`,
+          updatedUser.username || updatedUser.email
+        } has been set as a collaborator with a commission of ${formatPrice(updatedUser.commission.value)}`,
       },
       { status: 200 }
     )

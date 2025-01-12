@@ -9,6 +9,7 @@ import { FaCheck, FaLock, FaLockOpen, FaTrash } from 'react-icons/fa'
 import { MdEdit } from 'react-icons/md'
 import { RiDonutChartFill } from 'react-icons/ri'
 import ConfirmDialog from '../dialogs/ConfirmDialog'
+import useUtils from '@/libs/hooks/useUtils'
 
 interface LessonItemProps {
   data: ILesson
@@ -35,15 +36,12 @@ function LessonItem({
   handleChangeLessonStatus,
   handleDeleteLessons,
 }: LessonItemProps) {
+  // hooks
+  const { handleCopy } = useUtils()
+
   // states
   const [isOpenConfirmModal, setIsOpenConfirmModal] = useState<boolean>(false)
   const [isOpenStatusConfirmModal, setIsOpenStatusConfirmModal] = useState<boolean>(false)
-
-  // handle copy
-  const handleCopy = useCallback((text: string = '') => {
-    navigator.clipboard.writeText(text)
-    toast.success('Copied: ' + text)
-  }, [])
 
   return (
     <>

@@ -91,8 +91,6 @@ function HistoryPage({ searchParams }: { searchParams?: { [key: string]: string[
         setOrders(orders)
         setAmount(amount)
 
-        console.log('orders', orders)
-
         // sync search params with states
         setValue('search', searchParams?.search || getValues('search'))
         setValue('sort', searchParams?.sort || getValues('sort'))

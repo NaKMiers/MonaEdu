@@ -18,6 +18,7 @@ import {
   getAllChapterLessonsApi,
 } from '@/requests'
 import { handleQuery } from '@/utils/handleQuery'
+import useUtils from '@/libs/hooks/useUtils'
 import { usePathname, useRouter } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
@@ -35,6 +36,7 @@ function AllLessonsPage({
   const dispatch = useAppDispatch()
   const pathname = usePathname()
   const router = useRouter()
+  const { handleCopy } = useUtils()
 
   // states
   const [chapter, setChapter] = useState<IChapter | null>(null)
@@ -232,12 +234,6 @@ function AllLessonsPage({
     reset()
     router.push(pathname, { scroll: false })
   }, [reset, router, pathname])
-
-  // handle copy
-  const handleCopy = useCallback((text: string = '') => {
-    navigator.clipboard.writeText(text)
-    toast.success('Copied: ' + text)
-  }, [])
 
   // keyboard event
   useEffect(() => {

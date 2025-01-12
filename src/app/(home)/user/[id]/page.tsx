@@ -169,7 +169,7 @@ async function ProfilePage({ params: { id } }: { params: { id: string } }) {
               <h4 className="mb-2 text-center font-body font-semibold tracking-wider text-slate-700 drop-shadow-md">
                 Thông tin cá nhân
               </h4>
-              <p className="flex gap-2 text-sm text-slate-500">
+              {/* <p className="flex gap-2 text-sm text-slate-500">
                 Email:{' '}
                 <Link
                   href={`mailto:${user?.email}`}
@@ -177,7 +177,7 @@ async function ProfilePage({ params: { id } }: { params: { id: string } }) {
                 >
                   {user?.email}
                 </Link>
-              </p>
+              </p> */}
 
               {/* Gender */}
               {user?.gender && (

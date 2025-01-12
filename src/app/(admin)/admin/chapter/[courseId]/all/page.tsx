@@ -13,6 +13,7 @@ import { IChapter } from '@/models/ChapterModel'
 import { ICourse } from '@/models/CourseModel'
 import { deleteChaptersApi, getAllCourseChaptersApi } from '@/requests/chapterRequest'
 import { handleQuery } from '@/utils/handleQuery'
+import useUtils from '@/libs/hooks/useUtils'
 import { usePathname, useRouter } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
@@ -37,6 +38,7 @@ function AllCourseChaptersPage({
   const dispatch = useAppDispatch()
   const pathname = usePathname()
   const router = useRouter()
+  const { handleCopy } = useUtils()
 
   // states
   const [course, setCourse] = useState<ICourse | null>(null)
@@ -202,12 +204,6 @@ function AllCourseChaptersPage({
     // Remove the event listener on cleanup
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [chapters, selectedChapters, handleDeleteChapters, handleFilter, handleSubmit, handleResetFilter])
-
-  // handle copy
-  const handleCopy = useCallback((text: string = '') => {
-    navigator.clipboard.writeText(text)
-    toast.success('Copied: ' + text)
-  }, [])
 
   return (
     <div className="w-full">

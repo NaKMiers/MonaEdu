@@ -3,7 +3,7 @@
 // [GET]: /
 export const getHomePageApi = async (
   query: string = '',
-  option: RequestInit = { next: { revalidate: 60 } }
+  option: RequestInit = { next: { revalidate: 0 } }
 ) => {
   // revalidate every minute
   const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api${query}`, option)

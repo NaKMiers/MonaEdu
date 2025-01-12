@@ -1,4 +1,5 @@
 import { IUser } from '@/models/UserModel'
+import { getTimeRemaining } from './time'
 
 export const capitalize = (str: string) => {
   return str.charAt(0).toUpperCase() + str.slice(1)
@@ -50,12 +51,32 @@ export const checkCrown = (pkg: any) => {
 
   const type = checkPackageType(pkg.credit, pkg.expire)
 
+  // only show with monthly and lifetime packages
   if (type === 'credit') {
     return false
   } else if (type === 'lifetime') {
     return true
   } else if (type === 'monthly') {
     return new Date(pkg.expire) > new Date()
+  } else {
+    return false
+  }
+}
+
+export const checkShowPackage = (pkg: any) => {
+  if (!pkg) return false
+
+  const type = checkPackageType(pkg.credit, pkg.expire)
+
+  if (type === 'credit') {
+    return `${pkg.title} (${pkg.credit} credits)`
+  } else if (type === 'lifetime') {
+    return pkg.title
+  } else if (type === 'monthly') {
+    // still not expired
+    if (new Date(pkg.expire) > new Date())
+      return `${pkg.title} - ${getTimeRemaining(pkg.expire).toString()}`
+    else return false
   } else {
     return false
   }

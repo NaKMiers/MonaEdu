@@ -1,4 +1,5 @@
 import OrderModel from '@/models/OrderModel'
+import { IPackage } from '@/models/PackageModel'
 import crypto from 'crypto'
 import slugify from 'slugify'
 import unidecode from 'unidecode'

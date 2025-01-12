@@ -71,7 +71,6 @@ function Header({ className = '' }: HeaderProps) {
   useEffect(() => {
     const getUserNotifications = async () => {
       try {
-        console.log('Getting user notifications...')
         // send request to get user's notifications
         const { notifications } = await getUserNotificationsApi() // cache: no-store
 
@@ -110,36 +109,6 @@ function Header({ className = '' }: HeaderProps) {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [pathname])
 
-  // MARK: ADS
-  useEffect(() => {
-    const showTime = 15000
-    const interval = 30000
-
-    setTimeout(() => {
-      setOpenAds(false)
-
-      setInterval(() => {
-        setOpenAds(true)
-
-        setTimeout(() => {
-          setOpenAds(false)
-        }, showTime)
-      }, interval)
-    }, showTime)
-
-    const handleKeyPress = (e: KeyboardEvent) => {
-      if (e.key === 'Enter') {
-        setOpenAds(prev => !prev)
-      }
-    }
-
-    window.addEventListener('keypress', handleKeyPress)
-
-    return () => {
-      window.removeEventListener('keypress', handleKeyPress)
-    }
-  }, [])
-
   return (
     <header
       className={`fixed z-[60] ${
@@ -148,22 +117,6 @@ function Header({ className = '' }: HeaderProps) {
           : 'md:rounded-t-0 border-b-2 shadow-medium-light md:rounded-b-[40px]'
       } trans-300 bottom-0 w-full bg-dark-100 text-light md:bottom-auto md:top-0 ${className}`}
     >
-      {/* Ads */}
-      <Link
-        href="https://monaedu.com"
-        target="_blank"
-        rel="noreferrer"
-        className={`${true ? 'max-h-[200px] py-0.5 sm:max-h-12 md:-mt-0.5 md:max-h-6' : 'max-h-0 py-0'} trans-300 group absolute bottom-0 left-0 z-[100] block w-full overflow-hidden font-body text-sm tracking-wider text-light md:bottom-auto md:top-0`}
-        title='Giảm đến 100.000đ hoặc 50% khi nhập mã "BIGSALE50" học tại monaedu.com'
-      >
-        <p className="mx-auto line-clamp-1 w-full max-w-1200 text-ellipsis px-3 text-center text-xs sm:px-21 md:text-left">
-          Nhập voucher{' '}
-          <span className="wiggle-0 inline-block font-semibold text-primary">&quot;BIGSALE50&quot;</span>{' '}
-          giảm ngay <span className="font-semibold">50%</span> hoặc{' '}
-          <span className="font-semibold">100K</span>
-        </p>
-      </Link>
-
       {/* Main Header */}
       <div className="trans-300 relative m-auto flex h-[72px] w-full max-w-1200 items-center justify-between gap-1 px-3 sm:px-21">
         {/* MARK: Left */}

@@ -55,7 +55,7 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
     () => ({
       search: '',
       sort: 'updatedAt|-1',
-      active: '',
+      active: 'true',
       flashSale: '',
     }),
     []
@@ -416,11 +416,11 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
               {
                 value: '',
                 label: 'All',
-                selected: true,
               },
               {
                 value: 'true',
                 label: 'On',
+                selected: true,
               },
               {
                 value: 'false',

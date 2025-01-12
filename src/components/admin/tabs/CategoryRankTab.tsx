@@ -25,11 +25,6 @@ function CategoryRankTab({ className = '' }: CategoryRankTabProps) {
         const query = '?limit=no-limit&sort=createdAt|-1'
         const { courses } = await getAllCoursesApi(query)
 
-        console.log(
-          'courses',
-          courses.filter((course: any) => !course?.category?.slug)
-        )
-
         // Category Joined Rank
         const categoryJoinedMap: { [key: string]: ICategory & { joined: number } } = {}
         courses.forEach((course: ICourse) => {

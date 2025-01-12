@@ -71,8 +71,6 @@ function SearchBar() {
   //       // send request to get suggested courses
   //       const { courses } = await getCoursesApi('?limit=3&sort=joined|-1', { next: { revalidate: 300 } })
 
-  //       console.log('courses: ', courses)
-
   //       // set search results
   //       setSearchResults(courses)
   //       setInitResults(courses)
