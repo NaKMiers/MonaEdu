@@ -221,7 +221,7 @@ function ActivationCodeItem({
       <ConfirmDialog
         open={isOpenConfirmModal}
         setOpen={setIsOpenConfirmModal}
-        title="Delete ActivationCode"
+        title="Delete Activation Code"
         content="Are you sure that you want to delete these courses?"
         onAccept={() => handleDeleteActivationCodes([data._id])}
         isLoading={loadingActivationCodes.includes(data._id)}

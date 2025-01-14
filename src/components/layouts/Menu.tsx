@@ -209,11 +209,12 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
                 onClick={() => {
                   if (!curUser) {
                     setOpen(false)
-                    toast.error('Vui lòng đăng nhập để kích hoạt khóa học')
+                    // toast.error('Vui lòng đăng nhập để kích hoạt khóa học')
+                    toast.error('Tính năng không khả dụng')
                     return
                   }
                   setOpen(false)
-                  dispatch(setOpenActivateCourse(true))
+                  // dispatch(setOpenActivateCourse(true))
                 }}
               >
                 <div className="trans-200 flex items-center gap-2 rounded-lg px-3 py-2 hover:bg-white hover:text-dark">
