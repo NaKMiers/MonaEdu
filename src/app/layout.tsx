@@ -7,6 +7,7 @@ import { ReactNode } from 'react'
 import { Toaster } from 'react-hot-toast'
 import authOptions from './api/auth/[...nextauth]/authOptions'
 import './globals.scss'
+import ActivateCourseModal from '@/components/ActivateCourseModal'
 
 export const metadata: Metadata = {
   title: 'Mona Edu',
@@ -148,6 +149,9 @@ export default async function RootLayout({
             zIndex={1600}
             showAtBottom={false}
           />
+
+          {/* Activate Course Modal */}
+          <ActivateCourseModal />
 
           {children}
         </StoreProvider>

@@ -1,15 +1,19 @@
 'use client'
 
 import Input from '@/components/Input'
+import ActivationCodeItem from '@/components/admin/ActivationCodeItem'
 import AdminHeader from '@/components/admin/AdminHeader'
 import AdminMeta from '@/components/admin/AdminMeta'
-import VoucherItem from '@/components/admin/VoucherItem'
 import ConfirmDialog from '@/components/dialogs/ConfirmDialog'
 import Pagination from '@/components/layouts/Pagination'
 import { useAppDispatch } from '@/libs/hooks'
 import { setPageLoading } from '@/libs/reducers/modalReducer'
-import { IVoucher } from '@/models/VoucherModel'
-import { activateVouchersApi, deleteVouchersApi, getAllVouchersApi } from '@/requests'
+import { IActivationCode } from '@/models/ActivationCodeModel'
+import {
+  activateActivationCodesApi,
+  deleteActivationCodesApi,
+  getAllActivationCodesApi,
+} from '@/requests'
 import { handleQuery } from '@/utils/handleQuery'
 import { formatPrice } from '@/utils/number'
 import { Slider } from '@mui/material'
@@ -19,39 +23,32 @@ import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { FaCalendar, FaSearch, FaSort } from 'react-icons/fa'
 
-export type VoucherWithOwner = IVoucher & { owner: { firstName: string; lastName: string } }
-
-function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: string[] } }) {
+function AllActivationCodesPage({ searchParams }: { searchParams?: { [key: string]: string[] } }) {
   // store
   const dispatch = useAppDispatch()
   const pathname = usePathname()
   const router = useRouter()
 
   // states
-  const [vouchers, setVouchers] = useState<VoucherWithOwner[]>([])
+  const [activationCodes, setActivationCodes] = useState<IActivationCode[]>([])
   const [amount, setAmount] = useState<number>(0)
-  const [selectedVouchers, setSelectedVouchers] = useState<string[]>([])
+  const [selectedActivationCodes, setSelectedActivationCodes] = useState<string[]>([])
 
   // loading and confirming
-  const [loadingVouchers, setLoadingVouchers] = useState<string[]>([])
+  const [loadingActivationCodes, setLoadingActivationCodes] = useState<string[]>([])
   const [isOpenConfirmModal, setIsOpenConfirmModal] = useState<boolean>(false)
 
   // values
   const itemPerPage = 9
-  const [minMinTotal, setMinMinTotal] = useState<number>(0)
-  const [maxMinTotal, setMaxMinTotal] = useState<number>(0)
-  const [minTotal, setMinTotal] = useState<number[]>([0, 0])
-
-  const [minMaxReduce, setMinMaxReduce] = useState<number>(0)
-  const [maxMaxReduce, setMaxMaxReduce] = useState<number>(0)
-  const [maxReduce, setMaxReduce] = useState<number[]>([0, 0])
+  const [minTimesLeft, setMinTimesLeft] = useState<number>(0)
+  const [maxTimesLeft, setMaxTimesLeft] = useState<number>(0)
+  const [timesLeft, setTimesLeft] = useState<number[]>([0, 0])
 
   // form
   const defaultValues = useMemo<FieldValues>(
     () => ({
       search: '',
       sort: 'updatedAt|-1',
-      type: '',
       active: '',
       timesLeft: '',
       beginFrom: '',
@@ -74,26 +71,26 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
   })
 
   // MARK: Get Data
-  // get all vouchers
+  // get all activationCodes
   useEffect(() => {
-    // get all vouchers
-    const getAllVouchers = async () => {
+    // get all activationCodes
+    const getAllActivationCodes = async () => {
       const query = handleQuery(searchParams)
 
       // start page loading
       dispatch(setPageLoading(true))
 
       try {
-        const { vouchers, amount, chops } = await getAllVouchersApi(query) // cache: no-store
+        const { activationCodes, amount, chops } = await getAllActivationCodesApi(query) // cache: no-store
 
-        // set vouchers to state
-        setVouchers(vouchers)
+        // set activationCodes to state
+        setActivationCodes(activationCodes)
         setAmount(amount)
+        console.log('chops', chops)
 
         // sync search params with states
         setValue('search', searchParams?.search || getValues('search'))
         setValue('sort', searchParams?.sort || getValues('sort'))
-        setValue('type', searchParams?.type || getValues('type'))
         setValue('active', searchParams?.active || getValues('active'))
         setValue('timesLeft', searchParams?.timesLeft || getValues('timesLeft'))
         setValue('beginFrom', searchParams?.beginFrom || getValues('beginFrom'))
@@ -101,27 +98,16 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
         setValue('expireFrom', searchParams?.expireFrom || getValues('expireFrom'))
         setValue('expireTo', searchParams?.expireTo || getValues('expireTo'))
 
-        // get min - max
-        setMinMinTotal(chops.minMinTotal)
-        setMaxMinTotal(chops.maxMinTotal)
-        if (searchParams?.minTotal) {
-          const [from, to] = Array.isArray(searchParams.minTotal)
-            ? searchParams.minTotal[0].split('-')
-            : (searchParams.minTotal as string).split('-')
-          setMinTotal([+from, +to])
+        // set min - max - times left
+        setMinTimesLeft(chops?.minTimesLeft || 0)
+        setMaxTimesLeft(chops?.maxTimesLeft || 0)
+        if (searchParams?.timesLeft) {
+          const [from, to] = Array.isArray(searchParams.timesLeft)
+            ? searchParams.timesLeft[0].split('-')
+            : (searchParams.timesLeft as string).split('-')
+          setTimesLeft([+from, +to])
         } else {
-          setMinTotal([chops?.minTotal || 0, chops?.maxTotal || 0])
-        }
-
-        setMinMaxReduce(chops.minMaxReduce)
-        setMaxMaxReduce(chops.maxMaxReduce)
-        if (searchParams?.maxReduce) {
-          const [from, to] = Array.isArray(searchParams.maxReduce)
-            ? searchParams.maxReduce[0].split('-')
-            : (searchParams.maxReduce as string).split('-')
-          setMaxReduce([+from, +to])
-        } else {
-          setMaxReduce([chops?.maxReduce || 0, chops?.maxTotal || 0])
+          setTimesLeft([chops?.minTimesLeft || 0, chops?.maxTimesLeft || 0])
         }
       } catch (err: any) {
         console.log(err)
@@ -130,22 +116,24 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
         dispatch(setPageLoading(false))
       }
     }
-    getAllVouchers()
+    getAllActivationCodes()
   }, [dispatch, searchParams, setValue, getValues])
 
   // MARK: Handlers
-  // activate voucher
-  const handleActivateVouchers = useCallback(async (ids: string[], value: boolean) => {
+  // activate activationCode
+  const handleActivateActivationCodes = useCallback(async (ids: string[], value: boolean) => {
     try {
       // send request to server
-      const { updatedVouchers, message } = await activateVouchersApi(ids, value)
+      const { updatedActivationCodes, message } = await activateActivationCodesApi(ids, value)
 
-      // update vouchers from state
-      setVouchers(prev =>
-        prev.map(voucher =>
-          updatedVouchers.map((voucher: VoucherWithOwner) => voucher._id).includes(voucher._id)
-            ? { ...voucher, active: value }
-            : voucher
+      // update activationCodes from state
+      setActivationCodes(prev =>
+        prev.map(activationCode =>
+          updatedActivationCodes
+            .map((activationCode: IActivationCode) => activationCode._id)
+            .includes(activationCode._id)
+            ? { ...activationCode, active: value }
+            : activationCode
         )
       )
 
@@ -157,16 +145,18 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
     }
   }, [])
 
-  // delete voucher
-  const handleDeleteVouchers = useCallback(async (ids: string[]) => {
-    setLoadingVouchers(ids)
+  // delete activationCode
+  const handleDeleteActivationCodes = useCallback(async (ids: string[]) => {
+    setLoadingActivationCodes(ids)
 
     try {
       // send request to server
-      const { deletedVouchers, message } = await deleteVouchersApi(ids)
+      const { deletedActivationCodes, message } = await deleteActivationCodesApi(ids)
 
-      // remove deleted vouchers from state
-      setVouchers(prev => prev.filter(vc => !deletedVouchers.map((vc: any) => vc._id).includes(vc._id)))
+      // remove deleted activationCodes from state
+      setActivationCodes(prev =>
+        prev.filter(code => !deletedActivationCodes.map((code: any) => code._id).includes(code._id))
+      )
 
       // show success message
       toast.success(message)
@@ -174,8 +164,8 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
       console.log(err)
       toast.error(err.message)
     } finally {
-      setLoadingVouchers([])
-      setSelectedVouchers([])
+      setLoadingActivationCodes([])
+      setSelectedActivationCodes([])
     }
   }, [])
 
@@ -209,21 +199,11 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
 
       return {
         ...rest,
-        minTotal: minTotal[0] === minMinTotal && minTotal[1] === maxMinTotal ? '' : minTotal.join('-'),
-        maxReduce:
-          maxReduce[0] === minMaxReduce && maxReduce[1] === maxMaxReduce ? '' : maxReduce.join('-'),
+        timesLeft:
+          timesLeft[0] === minTimesLeft && timesLeft[1] === maxTimesLeft ? '' : timesLeft.join('-'),
       }
     },
-    [
-      searchParams,
-      defaultValues,
-      minTotal,
-      minMinTotal,
-      maxMinTotal,
-      maxReduce,
-      minMaxReduce,
-      maxMaxReduce,
-    ]
+    [searchParams, defaultValues, timesLeft, maxTimesLeft, minTimesLeft]
   )
 
   // handle submit filter
@@ -252,14 +232,16 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
   // keyboard event
   useEffect(() => {
     // page title
-    document.title = 'All Vouchers - Mona Edu'
+    document.title = 'All ActivationCodes - Mona Edu'
 
     const handleKeyDown = (e: KeyboardEvent) => {
       // Alt + A (Select All)
       if (e.altKey && e.key === 'a') {
         e.preventDefault()
-        setSelectedVouchers(prev =>
-          prev.length === vouchers.length ? [] : vouchers.map(voucher => voucher._id)
+        setSelectedActivationCodes(prev =>
+          prev.length === activationCodes.length
+            ? []
+            : activationCodes.map(activationCode => activationCode._id)
         )
       }
 
@@ -275,14 +257,14 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
 
     // Remove the event listener on cleanup
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [handleFilter, handleResetFilter, handleSubmit, vouchers])
+  }, [handleFilter, handleResetFilter, handleSubmit, activationCodes])
 
   return (
     <div className="w-full">
       {/* MARK: Top & Pagination */}
       <AdminHeader
-        title="All Vouchers"
-        addLink="/admin/voucher/add"
+        title="All Activation Codes"
+        addLink="/admin/activation-code/add"
       />
       <Pagination
         searchParams={searchParams}
@@ -296,7 +278,7 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
         handleResetFilter={handleResetFilter}
       >
         {/* Search */}
-        <div className="col-span-12 flex flex-col">
+        <div className="col-span-12 flex flex-col md:col-span-6">
           <Input
             className="md:max-w-[450px]"
             id="search"
@@ -310,37 +292,19 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
           />
         </div>
 
-        {/* Min Total */}
+        {/* Times Left */}
         <div className="col-span-12 flex flex-col md:col-span-6">
-          <label htmlFor="minTotal">
-            <span className="font-bold">Min Total: </span>
-            <span>{formatPrice(minTotal[0])}</span> - <span>{formatPrice(minTotal[1])}</span>
+          <label htmlFor="timesLeft">
+            <span className="font-bold">Times Left: </span>
+            <span>{minTimesLeft}</span> - <span>{maxTimesLeft}</span>
           </label>
           <Slider
-            value={minTotal}
-            min={minMinTotal}
-            max={maxMaxReduce}
+            value={timesLeft}
+            min={minTimesLeft}
+            max={maxTimesLeft}
             step={1}
             className="-mb-1.5 w-full"
-            onChange={(_: any, newValue: number | number[]) => setMinTotal(newValue as number[])}
-            valueLabelDisplay="auto"
-            style={{ color: '#333' }}
-          />
-        </div>
-
-        {/* Max Reduce */}
-        <div className="col-span-12 flex flex-col md:col-span-6">
-          <label htmlFor="maxReduce">
-            <span className="font-bold">Max Reduce: </span>
-            <span>{formatPrice(maxReduce[0])}</span> - <span>{formatPrice(maxReduce[1])}</span>
-          </label>
-          <Slider
-            value={maxReduce}
-            min={minMaxReduce}
-            max={maxMaxReduce}
-            step={1}
-            className="-mb-1.5 w-full"
-            onChange={(_: any, newValue: number | number[]) => setMaxReduce(newValue as number[])}
+            onChange={(_: any, newValue: number | number[]) => setTimesLeft(newValue as number[])}
             valueLabelDisplay="auto"
             style={{ color: '#333' }}
           />
@@ -433,64 +397,6 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
             ]}
           />
 
-          {/* Times Left */}
-          <Input
-            id="timesLeft"
-            label="Times Left"
-            disabled={false}
-            register={register}
-            errors={errors}
-            icon={FaSort}
-            type="select"
-            onFocus={() => clearErrors('timesLeft')}
-            options={[
-              {
-                value: '',
-                label: 'All',
-                selected: true,
-              },
-              {
-                value: 'true',
-                label: 'Still',
-              },
-              {
-                value: 'false',
-                label: 'Run Out',
-              },
-            ]}
-          />
-
-          {/* Type */}
-          <Input
-            id="type"
-            label="Type"
-            disabled={false}
-            register={register}
-            errors={errors}
-            icon={FaSort}
-            type="select"
-            onFocus={() => clearErrors('type')}
-            options={[
-              {
-                value: '',
-                label: 'All',
-                selected: true,
-              },
-              {
-                value: 'percentage',
-                label: 'Percentage',
-              },
-              {
-                value: 'fixed-reduce',
-                label: 'Fixed Reduce',
-              },
-              {
-                value: 'fixed',
-                label: 'Fixed',
-              },
-            ]}
-          />
-
           {/* Active */}
           <Input
             id="active"
@@ -526,36 +432,42 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
           <button
             className="trans-200 rounded-lg border border-sky-400 px-3 py-2 text-sky-400 hover:bg-sky-400 hover:text-light"
             onClick={() =>
-              setSelectedVouchers(
-                selectedVouchers.length > 0 ? [] : vouchers.map(voucher => voucher._id)
+              setSelectedActivationCodes(
+                selectedActivationCodes.length > 0
+                  ? []
+                  : activationCodes.map(activationCode => activationCode._id)
               )
             }
           >
-            {selectedVouchers.length > 0 ? 'Unselect All' : 'Select All'}
+            {selectedActivationCodes.length > 0 ? 'Unselect All' : 'Select All'}
           </button>
 
           {/* Activate Many Button */}
-          {selectedVouchers.some(id => !vouchers.find(voucher => voucher._id === id)?.active) && (
+          {selectedActivationCodes.some(
+            id => !activationCodes.find(activationCode => activationCode._id === id)?.active
+          ) && (
             <button
               className="trans-200 rounded-lg border border-green-400 px-3 py-2 text-green-400 hover:bg-green-400 hover:text-light"
-              onClick={() => handleActivateVouchers(selectedVouchers, true)}
+              onClick={() => handleActivateActivationCodes(selectedActivationCodes, true)}
             >
               Activate
             </button>
           )}
 
           {/* Deactivate Many Button */}
-          {selectedVouchers.some(id => vouchers.find(voucher => voucher._id === id)?.active) && (
+          {selectedActivationCodes.some(
+            id => activationCodes.find(activationCode => activationCode._id === id)?.active
+          ) && (
             <button
               className="trans-200 rounded-lg border border-red-500 px-3 py-2 text-red-500 hover:bg-red-500 hover:text-light"
-              onClick={() => handleActivateVouchers(selectedVouchers, false)}
+              onClick={() => handleActivateActivationCodes(selectedActivationCodes, false)}
             >
               Deactivate
             </button>
           )}
 
           {/* Delete Many Button */}
-          {!!selectedVouchers.length && (
+          {!!selectedActivationCodes.length && (
             <button
               className="trans-200 rounded-lg border border-red-500 px-3 py-2 text-red-500 hover:bg-red-500 hover:text-light"
               onClick={() => setIsOpenConfirmModal(true)}
@@ -570,29 +482,29 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
       <ConfirmDialog
         open={isOpenConfirmModal}
         setOpen={setIsOpenConfirmModal}
-        title="Delete Vouchers"
-        content="Are you sure that you want to delete these vouchers?"
-        onAccept={() => handleDeleteVouchers(selectedVouchers)}
-        isLoading={loadingVouchers.length > 0}
+        title="Delete ActivationCodes"
+        content="Are you sure that you want to delete these activationCodes?"
+        onAccept={() => handleDeleteActivationCodes(selectedActivationCodes)}
+        isLoading={loadingActivationCodes.length > 0}
       />
 
       {/* MARK: Amount */}
       <div className="p-3 text-right text-sm font-semibold text-light">
-        {Math.min(itemPerPage * +(searchParams?.page || 1), amount)}/{amount} voucher
+        {Math.min(itemPerPage * +(searchParams?.page || 1), amount)}/{amount} activation code
         {amount > 1 ? 's' : ''}
       </div>
 
       {/* MARK: MAIN LIST */}
       <div className="grid grid-cols-1 gap-21 md:grid-cols-2 lg:grid-cols-3">
-        {vouchers.map(voucher => (
-          <VoucherItem
-            data={voucher}
-            loadingVouchers={loadingVouchers}
-            selectedVouchers={selectedVouchers}
-            setSelectedVouchers={setSelectedVouchers}
-            handleActivateVouchers={handleActivateVouchers}
-            handleDeleteVouchers={handleDeleteVouchers}
-            key={voucher._id}
+        {activationCodes.map(activationCode => (
+          <ActivationCodeItem
+            data={activationCode}
+            loadingActivationCodes={loadingActivationCodes}
+            selectedActivationCodes={selectedActivationCodes}
+            setSelectedActivationCodes={setSelectedActivationCodes}
+            handleActivateActivationCodes={handleActivateActivationCodes}
+            handleDeleteActivationCodes={handleDeleteActivationCodes}
+            key={activationCode._id}
           />
         ))}
       </div>
@@ -600,4 +512,4 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
   )
 }
 
-export default AllVouchersPage
+export default AllActivationCodesPage

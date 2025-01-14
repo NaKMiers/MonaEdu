@@ -35,7 +35,7 @@ function LoginPage() {
     },
   })
 
-  // MARK: Login Submition
+  // MARK: Login Submission
   const onSubmit: SubmitHandler<FieldValues> = useCallback(
     async data => {
       // start loading

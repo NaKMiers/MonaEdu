@@ -71,7 +71,7 @@ function ResetPasswordPage() {
     [setError]
   )
 
-  // MARK: Reset Password Submition
+  // MARK: Reset Password Submission
   const onSubmit: SubmitHandler<FieldValues> = useCallback(
     async data => {
       // validate form

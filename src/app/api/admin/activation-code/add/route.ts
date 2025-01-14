@@ -16,12 +16,19 @@ export async function POST(req: NextRequest) {
     await connectDatabase()
 
     // get data to create activation code
-    const { code, courseId, begin, expire, timesLeft, active } = await req.json()
+    const { code, courses, begin, expire, timesLeft, active } = await req.json()
+
+    console.log('code:', code)
+    console.log('courses:', courses)
+    console.log('begin:', begin)
+    console.log('expire:', expire)
+    console.log('timesLeft:', timesLeft)
+    console.log('active:', active)
 
     const [isActivationCodeExist, isCourseExist] = await Promise.all([
       // get activation code by code from database
       ActivationCodeModel.exists({ code }),
-      CourseModel.exists({ _id: courseId, active: true }),
+      CourseModel.exists({ _id: { $in: courses }, active: true }),
     ])
 
     // return error if activation code has already existed
@@ -31,13 +38,13 @@ export async function POST(req: NextRequest) {
 
     // return error if course does not exist
     if (!isCourseExist) {
-      return NextResponse.json({ message: 'Course does not exist' }, { status: 400 })
+      return NextResponse.json({ message: 'Some courses do not exist' }, { status: 400 })
     }
 
     // create new activationCode
     const newActivationCode = await ActivationCodeModel.create({
       code,
-      courseId,
+      courses,
       begin,
       expire,
       timesLeft,

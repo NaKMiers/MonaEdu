@@ -34,7 +34,7 @@ function AddVoucherPage() {
     reset,
   } = useForm<FieldValues>({
     defaultValues: {
-      code: generateRandomString(5).toUpperCase(),
+      code: generateRandomString(5),
       description: '',
       // default begin is today
       begin: new Date().toISOString().split('T')[0],
@@ -170,7 +170,7 @@ function AddVoucherPage() {
         toast.success(message)
         // reset form
         reset()
-        setValue('code', generateRandomString(5).toUpperCase())
+        setValue('code', generateRandomString(5))
         const adminUser = roleUsers.find((user: IUser) => user.role === 'admin')
         if (adminUser) {
           setValue('onwer', adminUser._id)

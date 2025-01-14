@@ -56,7 +56,7 @@ function ForgotPasswordPage() {
     },
   })
 
-  // MARK: Forgot Password Submition
+  // MARK: Forgot Password Submission
   const onSubmit: SubmitHandler<FieldValues> = useCallback(
     async data => {
       setIsLoading(true)

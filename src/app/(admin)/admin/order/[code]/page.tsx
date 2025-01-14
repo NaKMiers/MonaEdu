@@ -86,7 +86,7 @@ function AdminOrderDetailPage({ params: { code } }: { params: { code: string } }
     }
   }, [dispatch, reset, code])
 
-  // MARK: Save Order Submition
+  // MARK: Save Order Submission
   const onSubmit: SubmitHandler<FieldValues> = useCallback(
     async data => {
       if (order) {

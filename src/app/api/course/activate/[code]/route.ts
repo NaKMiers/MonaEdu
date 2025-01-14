@@ -2,7 +2,7 @@ import { connectDatabase } from '@/config/database'
 import ActivationCodeModel from '@/models/ActivationCodeModel'
 import CourseModel, { ICourse } from '@/models/CourseModel'
 import NotificationModel from '@/models/NotificationModel'
-import UserModel from '@/models/UserModel'
+import UserModel, { IUser } from '@/models/UserModel'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -12,7 +12,7 @@ import '@/models/CourseModel'
 import '@/models/NotificationModel'
 import '@/models/UserModel'
 
-// [POST]: /activation-code/:code/apply
+// [POST]: /course/activate/:code
 export async function POST(req: NextRequest, { params: { code } }: { params: { code: string } }) {
   console.log('- Active Course -')
 
@@ -20,9 +20,14 @@ export async function POST(req: NextRequest, { params: { code } }: { params: { c
     // connect to database
     await connectDatabase()
 
+    code = code.toUpperCase().replace(/(.{4})(.{4})(.{4})/, '$1-$2-$3')
+
+    console.log('Activation code:', code)
+
     /*
       Active course by using activation code when:
       - User has logged in
+      - User exists
       - Activation code exists and is active
       - Activation code has not been used by the user before
       - Activation code has not expired
@@ -34,7 +39,6 @@ export async function POST(req: NextRequest, { params: { code } }: { params: { c
     // get user id to check if user has used this activation code
     const token = await getToken({ req })
     const userId = token?._id
-    const userCourses: string[] = token?.courses as string[]
 
     // check if user has logged in
     if (!userId) {
@@ -52,8 +56,13 @@ export async function POST(req: NextRequest, { params: { code } }: { params: { c
       return NextResponse.json({ message: 'Mã kích hoạt không tồn tại' }, { status: 404 })
     }
 
+    // activation code has not begun yet
+    if (!activationCode.begin || new Date() < new Date(activationCode.begin)) {
+      return NextResponse.json({ message: 'Mã kích hoạt không tồn tại' }, { status: 404 })
+    }
+
     // activation code has been used by the user
-    if (activationCode.usedUsers.includes(userId)) {
+    if (activationCode.usedUsers.map((id: any) => id.toString()).includes(userId)) {
       return NextResponse.json(
         {
           message: 'Bạn đã dùng mã kích hoạt này rồi, vui lòng thử một mã khác!',
@@ -72,24 +81,46 @@ export async function POST(req: NextRequest, { params: { code } }: { params: { c
       return NextResponse.json({ message: 'Mã kích hoạt của bạn đã hết lượt dùng' }, { status: 401 })
     }
 
-    // check if user has already enrolled in this course
-    if (userCourses.includes(activationCode.courseId)) {
-      return NextResponse.json({ message: 'Bạn đã tham gia khóa học này rồi' }, { status: 401 })
+    // get user to check if user has used this activation code
+    const user: IUser | null = await UserModel.findById(userId).select('courses').lean()
+
+    // check if user exists
+    if (!user) {
+      return NextResponse.json({ message: 'Người dùng không tồn tại' }, { status: 404 })
+    }
+
+    // check if user has already enrolled all courses in activation code
+    const userCourses = user.courses.map((course: any) => course.course.toString())
+    console.log('userCourses:', userCourses)
+    console.log(
+      'activationCode.courses:',
+      activationCode.courses.map((id: any) => id.toString())
+    )
+    if (
+      userCourses.length > 0 &&
+      userCourses.every(courseId =>
+        activationCode.courses.map((id: any) => id.toString()).includes(courseId)
+      )
+    ) {
+      return NextResponse.json({ message: 'Bạn đã tham gia khóa học' }, { status: 401 })
     }
 
     // get course to check if course is active
-    const course: ICourse | null = await CourseModel.findOne({
-      _id: activationCode.courseId,
+    const courses: ICourse[] = await CourseModel.find({
+      _id: { $in: activationCode.courses },
       active: true,
-    }).lean()
+    })
+      .select('_id')
+      .lean()
 
-    // if course does not exist or course is not active
-    if (!course || course.active === false) {
-      return NextResponse.json(
-        { message: 'Khóa học không tồn tại hoặc không hoạt động' },
-        { status: 404 }
-      )
-    }
+    // union user courses and activation code courses except (courses that user has already enrolled in user courses)
+    const newCourses = [
+      ...userCourses,
+      ...courses
+        .map((course: any) => course._id.toString())
+        .filter((courseId: any) => !userCourses.includes(courseId))
+        .map((courseId: any) => ({ course: courseId, progress: 0 })),
+    ]
 
     // activate course
     await Promise.all([
@@ -103,24 +134,19 @@ export async function POST(req: NextRequest, { params: { code } }: { params: { c
       ),
 
       // update user
-      UserModel.findByIdAndUpdate(userId, {
-        $push: {
-          courses: {
-            course: course._id,
-            progress: 0,
-          },
-        },
+      UserModel.findByIdAndUpdate(user._id, {
+        $set: { courses: newCourses },
+      }),
+
+      // notify user after activated course
+      NotificationModel.create({
+        userId,
+        title: 'Kích hoạt khóa học thành công, học ngay thôi!',
+        image: '/images/logo.png',
+        link: '/my-courses',
+        type: 'activate-course',
       }),
     ])
-
-    // notify user after activated course
-    await NotificationModel.create({
-      userId,
-      title: 'Kích hoạt khóa học thành công, học ngay thôi!',
-      image: '/images/logo.png',
-      link: '/my-courses',
-      type: 'activate-course',
-    })
 
     // return response
     return NextResponse.json(

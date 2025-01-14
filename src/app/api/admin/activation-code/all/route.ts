@@ -1,7 +1,7 @@
 import { connectDatabase } from '@/config/database'
 import ActivationCodeModel from '@/models/ActivationCodeModel'
-import '@/models/UserModel'
 import { searchParamsToObject } from '@/utils/handleQuery'
+import momentTZ from 'moment-timezone'
 import { NextRequest, NextResponse } from 'next/server'
 
 // Models: Activation Code, Course, User
@@ -39,7 +39,7 @@ export async function GET(req: NextRequest) {
         }
 
         if (key === 'search') {
-          const searchFields = ['code', 'usedUsers']
+          const searchFields = ['code']
 
           filter.$or = searchFields.map(field => ({
             [field]: { $regex: params[key][0], $options: 'i' },
@@ -80,16 +80,16 @@ export async function GET(req: NextRequest) {
 
           if (dates[0] && dates[1]) {
             filter[key] = {
-              $gte: new Date(dates[0]),
-              $lt: new Date(dates[1]),
+              $gte: momentTZ.tz(dates[0], 'Asia/Ho_Chi_Minh').toDate(),
+              $lt: momentTZ.tz(dates[1], 'Asia/Ho_Chi_Minh').toDate(),
             }
           } else if (dates[0]) {
             filter[key] = {
-              $gte: new Date(dates[0]),
+              $gte: momentTZ.tz(dates[0], 'Asia/Ho_Chi_Minh').toDate(),
             }
           } else if (dates[1]) {
             filter[key] = {
-              $lt: new Date(dates[1]),
+              $lt: momentTZ.tz(dates[1], 'Asia/Ho_Chi_Minh').toDate(),
             }
           }
 
@@ -101,14 +101,23 @@ export async function GET(req: NextRequest) {
       }
     }
 
+    console.log('Filter:', filter)
+
     // get amount, get all activationCodes, chops
     const [amount, activationCodes, chops] = await Promise.all([
       // get amount of lesson
       ActivationCodeModel.countDocuments(filter),
 
-      // get all activationCodes from database
+      // get all activation codes from database
       ActivationCodeModel.find(filter)
-        .populate('owner', 'firstName lastName')
+        .populate({
+          path: 'usedUsers',
+          select: 'email',
+        })
+        .populate({
+          path: 'courses',
+          select: 'title images',
+        })
         .sort(sort)
         .skip(skip)
         .limit(itemPerPage)

@@ -69,12 +69,6 @@ const VoucherSchema = new Schema(
   { timestamps: true }
 )
 
-// code uppercase
-VoucherSchema.pre('save', function (next) {
-  this.code = this.code.toUpperCase()
-  next()
-})
-
 const VoucherModel = mongoose.models.voucher || mongoose.model('voucher', VoucherSchema)
 export default VoucherModel
 

@@ -1,6 +1,5 @@
 'use client'
 
-import { adminLinks } from '@/constants'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -8,6 +7,183 @@ import { memo, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { FaPlus } from 'react-icons/fa'
 import { FaBarsStaggered } from 'react-icons/fa6'
+import { FaBlog, FaTicketAlt } from 'react-icons/fa'
+import { FaBoltLightning, FaListCheck, FaTags, FaUser } from 'react-icons/fa6'
+import { MdCategory, MdReportOff, MdSpaceDashboard } from 'react-icons/md'
+import { RiBillFill, RiVipCrown2Fill } from 'react-icons/ri'
+import { SiCoursera } from 'react-icons/si'
+import { VscActivateBreakpoints } from 'react-icons/vsc'
+
+// MARK: Admin Links
+export const adminLinks = [
+  {
+    title: 'Dashboard',
+    Icon: MdSpaceDashboard,
+    links: [
+      {
+        title: 'Dashboard',
+        href: '/admin',
+      },
+    ],
+    accessRoles: ['admin', 'editor'],
+  },
+  {
+    title: 'Order',
+    Icon: RiBillFill,
+    links: [
+      {
+        title: 'All Orders',
+        href: '/admin/order/all',
+      },
+    ],
+    accessRoles: ['admin', 'editor'],
+  },
+  {
+    title: 'Course',
+    Icon: SiCoursera,
+    links: [
+      {
+        title: 'All Courses',
+        href: '/admin/course/all',
+      },
+      {
+        title: 'Add Course',
+        href: '/admin/course/add',
+      },
+    ],
+    accessRoles: ['admin', 'editor'],
+  },
+  {
+    title: 'User',
+    Icon: FaUser,
+    links: [
+      {
+        title: 'All Users',
+        href: '/admin/user/all',
+      },
+    ],
+    accessRoles: ['admin', 'editor'],
+  },
+  {
+    title: 'Summary',
+    Icon: FaListCheck,
+    links: [
+      {
+        title: 'All Summaries',
+        href: '/admin/summary/all',
+      },
+    ],
+    accessRoles: ['admin', 'editor', 'collaborator'],
+  },
+  {
+    title: 'Tag',
+    Icon: FaTags,
+    links: [
+      {
+        title: 'All Tags',
+        href: '/admin/tag/all',
+      },
+      {
+        title: 'Add Tag',
+        href: '/admin/tag/add',
+      },
+    ],
+    accessRoles: ['admin', 'editor'],
+  },
+  {
+    title: 'Category',
+    Icon: MdCategory,
+    links: [
+      {
+        title: 'All Categories',
+        href: '/admin/category/all',
+      },
+    ],
+    accessRoles: ['admin', 'editor'],
+  },
+  {
+    title: 'Voucher',
+    Icon: FaTicketAlt,
+    links: [
+      {
+        title: 'All Vouchers',
+        href: '/admin/voucher/all',
+      },
+      {
+        title: 'Add Voucher',
+        href: '/admin/voucher/add',
+      },
+    ],
+    accessRoles: ['admin', 'editor', 'collaborator'],
+  },
+  {
+    title: 'Activation Code',
+    Icon: VscActivateBreakpoints,
+    links: [
+      {
+        title: 'All Activation Codes',
+        href: '/admin/activation-code/all',
+      },
+      {
+        title: 'Add Activation Code',
+        href: '/admin/activation-code/add',
+      },
+    ],
+    accessRoles: ['admin', 'editor'],
+  },
+  {
+    title: 'Flash Sale',
+    Icon: FaBoltLightning,
+    links: [
+      {
+        title: 'All Flash Sales',
+        href: '/admin/flash-sale/all',
+      },
+      {
+        title: 'Add Flash Sale',
+        href: '/admin/flash-sale/add',
+      },
+    ],
+    accessRoles: ['admin', 'editor', 'collaborator'],
+  },
+  {
+    title: 'Packages',
+    Icon: RiVipCrown2Fill,
+    links: [
+      {
+        title: 'Packages',
+        href: '/admin/package/all',
+      },
+    ],
+    accessRoles: ['admin', 'editor'],
+  },
+  {
+    title: 'Blog',
+    Icon: FaBlog,
+    links: [
+      {
+        title: 'All Blogs',
+        href: '/admin/blog/all',
+      },
+      {
+        title: 'Add Blog',
+        href: '/admin/blog/add',
+      },
+    ],
+    accessRoles: ['admin', 'editor', 'collaborator'],
+  },
+  {
+    title: 'Report',
+    Icon: MdReportOff,
+    links: [
+      {
+        title: 'All Reports',
+        href: '/admin/report/all',
+      },
+    ],
+    accessRoles: ['admin', 'editor', 'collaborator'],
+  },
+]
 
 function AdminMenu() {
   // hooks

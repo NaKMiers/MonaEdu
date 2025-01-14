@@ -1,11 +1,13 @@
 'use client'
 
-import { useAppSelector } from '@/libs/hooks'
+import { useAppDispatch, useAppSelector } from '@/libs/hooks'
+import { setOpenActivateCourse } from '@/libs/reducers/modalReducer'
 import { checkCrown, checkPackageType, getUserName } from '@/utils/string'
 import { signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { memo, useEffect, useRef } from 'react'
+import toast from 'react-hot-toast'
 
 interface MenuProps {
   open: boolean
@@ -15,7 +17,8 @@ interface MenuProps {
 
 function Menu({ open, setOpen, className = '' }: MenuProps) {
   // hooks
-  const { data: session, update } = useSession()
+  const dispatch = useAppDispatch()
+  const { data: session } = useSession()
   const curUser: any = session?.user
 
   // reducer
@@ -74,7 +77,7 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
 
       {/* MARK: Main */}
       <div
-        className={`max-h-360 hidden max-h-[358px] p-2 opacity-0 sm:max-h-[358px] sm:w-[300px] sm:max-w-full sm:border-2 ${
+        className={`max-h-360 hidden max-h-[405px] p-2 opacity-0 sm:max-h-[405px] sm:w-[300px] sm:max-w-full sm:border-2 ${
           curUser && !curUser?._id ? 'hidden' : ''
         } trans-300 absolute bottom-[72px] right-0 z-30 w-full overflow-hidden rounded-t-xl border-light bg-dark-100 text-light shadow-md shadow-primary sm:right-21 sm:rounded-xl md:bottom-auto md:top-[60px]`}
         ref={menuRef}
@@ -201,6 +204,31 @@ function Menu({ open, setOpen, className = '' }: MenuProps) {
                   )}
                 </Link>
               </div>
+              <button
+                className="group"
+                onClick={() => {
+                  if (!curUser) {
+                    setOpen(false)
+                    toast.error('Vui lòng đăng nhập để kích hoạt khóa học')
+                    return
+                  }
+                  setOpen(false)
+                  dispatch(setOpenActivateCourse(true))
+                }}
+              >
+                <div className="trans-200 flex items-center gap-2 rounded-lg px-3 py-2 hover:bg-white hover:text-dark">
+                  <Image
+                    src="/icons/activate-courses-icon.png"
+                    className="wiggle"
+                    width={30}
+                    height={30}
+                    alt="activate-courses"
+                  />
+                  <span className="font-body text-xl font-semibold tracking-wide">
+                    Kích hoạt khóa học
+                  </span>
+                </div>
+              </button>
               <div
                 className="group"
                 onClick={() => setOpen(false)}

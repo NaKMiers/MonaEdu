@@ -46,5 +46,8 @@ export * from './packageRequest'
 // Blog
 export * from './blogRequest'
 
+// Activation Code
+export * from './activationCodeRequest'
+
 // Admin
 export * from './adminRequest'

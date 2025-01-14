@@ -9,33 +9,29 @@ export const loading = createSlice({
     authenticated: false,
     openSidebar: true,
     openSearchBar: false,
+    openActivateCourse: false,
   },
   reducers: {
-    setPageLoading: (state, action: PayloadAction<boolean>) => ({
-      ...state,
-      isPageLoading: action.payload,
-    }),
-    setLoading: (state, action: PayloadAction<boolean>) => ({
-      ...state,
-      isLoading: action.payload,
-    }),
-    setOpenAuthentication: (state, action: PayloadAction<boolean>) => ({
-      ...state,
-      openAuthentication: action.payload,
-    }),
-    setAuthenticated: (state, action: PayloadAction<boolean>) => ({
-      ...state,
-      authenticated: action.payload,
-    }),
-    setOpenSidebar: (state, action: PayloadAction<boolean>) => ({
-      ...state,
-      openSidebar: action.payload,
-    }),
+    setPageLoading: (state, action: PayloadAction<boolean>) => {
+      state.isPageLoading = action.payload
+    },
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload
+    },
+    setOpenAuthentication: (state, action: PayloadAction<boolean>) => {
+      state.openAuthentication = action.payload
+    },
+    setAuthenticated: (state, action: PayloadAction<boolean>) => {
+      state.authenticated = action.payload
+    },
+    setOpenSidebar: (state, action: PayloadAction<boolean>) => {
+      state.openSidebar = action.payload
+    },
     setOpenSearchBar: (state, action: PayloadAction<boolean>) => {
-      return {
-        ...state,
-        openSearchBar: action.payload,
-      }
+      state.openSearchBar = action.payload
+    },
+    setOpenActivateCourse: (state, action: PayloadAction<boolean>) => {
+      state.openActivateCourse = action.payload
     },
   },
 })
@@ -47,5 +43,6 @@ export const {
   setAuthenticated,
   setOpenSidebar,
   setOpenSearchBar,
+  setOpenActivateCourse,
 } = loading.actions
 export default loading.reducer

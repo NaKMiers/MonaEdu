@@ -284,7 +284,7 @@ function AllOrdersPage({ searchParams }: { searchParams?: { [key: string]: strin
             max={maxTotal}
             step={1}
             className="-mb-1.5 w-full"
-            onChange={(_, newValue: number | number[]) => setTotal(newValue as number[])}
+            onChange={(_: any, newValue: number | number[]) => setTotal(newValue as number[])}
             valueLabelDisplay="auto"
             style={{ color: '#333' }}
           />

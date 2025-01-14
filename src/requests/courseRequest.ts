@@ -188,6 +188,18 @@ export const joinCourseOnSubscriptionApi = async (
   return await res.json()
 }
 
+// [POST]: /course/activate/:code
+export const ActivateCoursesByActivationCodeApi = async (code: string) => {
+  const res = await fetch(`/api/course/activate/${code}`, { method: 'POST' })
+
+  // check status
+  if (!res.ok) {
+    throw new Error((await res.json()).message)
+  }
+
+  return await res.json()
+}
+
 // [PATCH]: /admin/course/activate
 export const activateCoursesApi = async (ids: string[], value: boolean) => {
   const res = await fetch('/api/admin/course/activate', {

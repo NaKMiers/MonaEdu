@@ -84,7 +84,7 @@ function RegisterPage() {
     [setError]
   )
 
-  // MARK: Register Submition
+  // MARK: Register Submission
   const onSubmit: SubmitHandler<FieldValues> = useCallback(
     async data => {
       // validate form
