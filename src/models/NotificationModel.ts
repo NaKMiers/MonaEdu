@@ -29,6 +29,7 @@ const NotificationSchema = new Schema(
         'new-lesson',
         'new-event',
         'given-course',
+        'activate-course',
       ],
       default: 'unset',
     },

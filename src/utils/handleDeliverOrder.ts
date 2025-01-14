@@ -55,7 +55,8 @@ export default async function handleDeliverOrder(id: string, message: string = '
   if (!buyer) {
     throw new Error('User not found')
   }
-  // Buy Courses
+
+  // MARK: Buy Courses
   if (!isPackage) {
     // buy for themselves
     if (!receivedUser) {
@@ -107,7 +108,7 @@ export default async function handleDeliverOrder(id: string, message: string = '
       }
     }
 
-    // VOUCHER
+    // MARK: VOUCHER
     const voucher: IVoucher = order.voucher as IVoucher
     if (voucher) {
       const commission: any = (voucher.owner as IUser).commission
@@ -134,7 +135,7 @@ export default async function handleDeliverOrder(id: string, message: string = '
       })
     }
 
-    // USER
+    // MARK: USER
     // buy as a gift
     if (receivedUser) {
       // get receiver courses
@@ -245,13 +246,14 @@ export default async function handleDeliverOrder(id: string, message: string = '
       })
     }
 
-    // COURSE
+    // MARK: COURSE
     await CourseModel.updateMany(
       { _id: { $in: order.items.map((item: ICourse) => item._id) } },
       { $inc: { joined: 1 } }
     )
   }
-  // Buy Package
+
+  // MARK: Buy Package
   else {
     // get current package of user if exist to prevent downgrade
     const userPackage = buyer?.package
@@ -313,7 +315,7 @@ export default async function handleDeliverOrder(id: string, message: string = '
     ])
   }
 
-  // ORDER
+  // MARK: ORDER
   const updatedOrder: IOrder | null = await OrderModel.findByIdAndUpdate(
     order._id.toString(),
     { $set: { status: 'done' } },
