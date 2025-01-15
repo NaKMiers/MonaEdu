@@ -6,6 +6,7 @@ import CourseModel from '@/models/CourseModel'
 // Models: Activation Code, Course
 import '@/models/ActivationCodeModel'
 import '@/models/CourseModel'
+import moment from 'moment-timezone'
 
 // [POST]: /admin/activation-code/add
 export async function POST(req: NextRequest) {
@@ -45,7 +46,7 @@ export async function POST(req: NextRequest) {
     const newActivationCode = await ActivationCodeModel.create({
       code,
       courses,
-      begin,
+      begin: moment(begin).toDate(),
       expire,
       timesLeft,
       active,

@@ -153,6 +153,8 @@ function AllActivationCodesPage({ searchParams }: { searchParams?: { [key: strin
       // send request to server
       const { deletedActivationCodes, message } = await deleteActivationCodesApi(ids)
 
+      console.log('deletedActivationCodes:', deletedActivationCodes)
+
       // remove deleted activationCodes from state
       setActivationCodes(prev =>
         prev.filter(code => !deletedActivationCodes.map((code: any) => code._id).includes(code._id))
@@ -482,8 +484,8 @@ function AllActivationCodesPage({ searchParams }: { searchParams?: { [key: strin
       <ConfirmDialog
         open={isOpenConfirmModal}
         setOpen={setIsOpenConfirmModal}
-        title="Delete ActivationCodes"
-        content="Are you sure that you want to delete these activationCodes?"
+        title="Delete Activation Codes"
+        content="Are you sure that you want to delete these activation codes?"
         onAccept={() => handleDeleteActivationCodes(selectedActivationCodes)}
         isLoading={loadingActivationCodes.length > 0}
       />

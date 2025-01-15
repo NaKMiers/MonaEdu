@@ -16,13 +16,11 @@ export async function DELETE(req: NextRequest) {
     // get activation code ids to delete
     const { ids } = await req.json()
 
-    const [deletedActivationCodes] = await Promise.all([
-      // get deleted activation codes
-      ActivationCodeModel.find({ _id: { $in: ids } }).lean(),
+    // get deleted activation codes
+    const deletedActivationCodes = await ActivationCodeModel.find({ _id: { $in: ids } }).lean()
 
-      // delete activationCodes from database
-      ActivationCodeModel.deleteMany({ _id: { $in: ids } }),
-    ])
+    // delete activationCodes from database
+    await ActivationCodeModel.deleteMany({ _id: { $in: ids } })
 
     // return response
     return NextResponse.json(
