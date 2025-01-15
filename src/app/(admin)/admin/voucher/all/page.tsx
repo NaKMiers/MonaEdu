@@ -13,6 +13,7 @@ import { activateVouchersApi, deleteVouchersApi, getAllVouchersApi } from '@/req
 import { handleQuery } from '@/utils/handleQuery'
 import { formatPrice } from '@/utils/number'
 import { Slider } from '@mui/material'
+import moment from 'moment-timezone'
 import { usePathname, useRouter } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
@@ -21,7 +22,7 @@ import { FaCalendar, FaSearch, FaSort } from 'react-icons/fa'
 
 export type VoucherWithOwner = IVoucher & { owner: { firstName: string; lastName: string } }
 
-function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: string[] } }) {
+function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: string | string[] } }) {
   // store
   const dispatch = useAppDispatch()
   const pathname = usePathname()
@@ -96,10 +97,30 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
         setValue('type', searchParams?.type || getValues('type'))
         setValue('active', searchParams?.active || getValues('active'))
         setValue('timesLeft', searchParams?.timesLeft || getValues('timesLeft'))
-        setValue('beginFrom', searchParams?.beginFrom || getValues('beginFrom'))
-        setValue('beginTo', searchParams?.beginTo || getValues('beginTo'))
-        setValue('expireFrom', searchParams?.expireFrom || getValues('expireFrom'))
-        setValue('expireTo', searchParams?.expireTo || getValues('expireTo'))
+        setValue(
+          'beginFrom',
+          searchParams?.begin && (searchParams?.begin as string).split('|')[0]
+            ? moment((searchParams.begin as string).split('|')[0]).format('YYYY-MM-DDTHH:mm')
+            : getValues('beginFrom')
+        )
+        setValue(
+          'beginTo',
+          searchParams?.begin && (searchParams?.begin as string).split('|')[1]
+            ? moment((searchParams.begin as string).split('|')[1]).format('YYYY-MM-DDTHH:mm')
+            : getValues('beginTo')
+        )
+        setValue(
+          'expireFrom',
+          searchParams?.expire && (searchParams?.expire as string).split('|')[0]
+            ? moment((searchParams.expire as string).split('|')[0]).format('YYYY-MM-DDTHH:mm')
+            : getValues('expireFrom')
+        )
+        setValue(
+          'expireTo',
+          searchParams?.expire && (searchParams?.expire as string).split('|')[1]
+            ? moment((searchParams.expire as string).split('|')[1]).format('YYYY-MM-DDTHH:mm')
+            : getValues('expireTo')
+        )
 
         // get min - max
         setMinMinTotal(chops.minMinTotal)
@@ -354,7 +375,7 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
             disabled={false}
             register={register}
             errors={errors}
-            type="date"
+            type="datetime-local"
             icon={FaCalendar}
             className="w-full"
             onFocus={() => clearErrors('beginFrom')}
@@ -366,7 +387,7 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
             disabled={false}
             register={register}
             errors={errors}
-            type="date"
+            type="datetime-local"
             icon={FaCalendar}
             className="w-full"
             onFocus={() => clearErrors('beginTo')}
