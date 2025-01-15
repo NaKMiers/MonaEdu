@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
     const newActivationCode = await ActivationCodeModel.create({
       code,
       courses,
-      begin: moment(begin).toDate(),
+      begin: moment.utc(begin).toDate(),
       expire,
       timesLeft,
       active,
