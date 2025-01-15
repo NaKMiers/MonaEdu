@@ -11,6 +11,7 @@ import '@/models/ActivationCodeModel'
 import '@/models/CourseModel'
 import '@/models/NotificationModel'
 import '@/models/UserModel'
+import mongoose from 'mongoose'
 
 // [POST]: /course/activate/:code
 export async function POST(req: NextRequest, { params: { code } }: { params: { code: string } }) {
@@ -132,7 +133,7 @@ export async function POST(req: NextRequest, { params: { code } }: { params: { c
       ...courses
         .map((course: any) => course._id.toString())
         .filter((courseId: any) => !userCourses.includes(courseId))
-        .map((courseId: any) => ({ course: courseId, progress: 0 })),
+        .map((courseId: any) => ({ course: new mongoose.Types.ObjectId(courseId), progress: 0 })),
     ]
 
     console.log('newCourses:', newCourses)

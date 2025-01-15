@@ -39,6 +39,8 @@ export const getActivationCodeApi = async (
 
 // [POST]: /admin/activation-code/add
 export const addActivationCodeApi = async (data: any) => {
+  console.log('data:', data)
+
   const res = await fetch('/api/admin/activation-code/add', {
     method: 'POST',
     body: JSON.stringify(data),

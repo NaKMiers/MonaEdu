@@ -135,12 +135,11 @@ function AddActivationCodePage() {
 
       try {
         // send request to server to add activation code
-        console.log('begin:', moment(data.begin).utc().format('YYYY-MM-DDTHH:mm:ss[Z]'))
         const { message } = await addActivationCodeApi({
+          ...data,
           courses: selectedCourses.map(course => course._id),
           begin: moment(data.begin).utc().format('YYYY-MM-DDTHH:mm:ss[Z]'),
           expire: data.expire ? moment(data.expire).utc().format('YYYY-MM-DDTHH:mm:ss[Z]') : '',
-          ...data,
         })
 
         // show success message

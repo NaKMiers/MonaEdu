@@ -2,12 +2,12 @@ import { connectDatabase } from '@/config/database'
 import OrderModel from '@/models/OrderModel'
 import UserModel from '@/models/UserModel'
 import { NextRequest, NextResponse } from 'next/server'
+import { ICourse } from '@/models/CourseModel'
+import mongoose from 'mongoose'
 
 // Models: Order, User
 import '@/models/OrderModel'
 import '@/models/UserModel'
-import { ICourse } from '@/models/CourseModel'
-import mongoose from 'mongoose'
 
 // [DELETE]: /admin/order/delete
 export async function DELETE(req: NextRequest) {
