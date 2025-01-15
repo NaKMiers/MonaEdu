@@ -40,6 +40,8 @@ export async function POST(req: NextRequest, { params: { code } }: { params: { c
     const token = await getToken({ req })
     const userId = token?._id
 
+    console.log('User ID:', userId)
+
     // check if user has logged in
     if (!userId) {
       return NextResponse.json({ message: 'Bạn cần đăng nhập để sử dụng mã kích hoạt' }, { status: 401 })
@@ -51,15 +53,24 @@ export async function POST(req: NextRequest, { params: { code } }: { params: { c
       active: true,
     }).lean()
 
+    console.log('activationCode:', activationCode)
+
     // if activation code does not exist
     if (!activationCode) {
       return NextResponse.json({ message: 'Mã kích hoạt không tồn tại' }, { status: 404 })
     }
 
+    console.log('activationCode:', activationCode)
+
     // activation code has not begun yet
     if (!activationCode.begin || new Date() < new Date(activationCode.begin)) {
       return NextResponse.json({ message: 'Mã kích hoạt không tồn tại' }, { status: 404 })
     }
+
+    console.log(
+      'activationCode.usedUsers',
+      activationCode.usedUsers.map((id: any) => id.toString())
+    )
 
     // activation code has been used by the user
     if (activationCode.usedUsers.map((id: any) => id.toString()).includes(userId)) {
@@ -83,6 +94,8 @@ export async function POST(req: NextRequest, { params: { code } }: { params: { c
 
     // get user to check if user has used this activation code
     const user: IUser | null = await UserModel.findById(userId).select('courses').lean()
+
+    console.log('user:', user)
 
     // check if user exists
     if (!user) {
@@ -121,6 +134,8 @@ export async function POST(req: NextRequest, { params: { code } }: { params: { c
         .filter((courseId: any) => !userCourses.includes(courseId))
         .map((courseId: any) => ({ course: courseId, progress: 0 })),
     ]
+
+    console.log('newCourses:', newCourses)
 
     // activate course
     await Promise.all([
