@@ -105,16 +105,16 @@ export async function GET(req: NextRequest) {
 
           if (dates[0] && dates[1]) {
             filter.createdAt = {
-              $gte: momentTZ.tz(dates[0], 'Asia/Ho_Chi_Minh').toDate(),
-              $lt: momentTZ.tz(dates[1], 'Asia/Ho_Chi_Minh').toDate(),
+              $gte: dates[0],
+              $lt: dates[1],
             }
           } else if (dates[0]) {
             filter.createdAt = {
-              $gte: momentTZ.tz(dates[0], 'Asia/Ho_Chi_Minh').toDate(),
+              $gte: dates[0],
             }
           } else if (dates[1]) {
             filter.createdAt = {
-              $lt: momentTZ.tz(dates[1], 'Asia/Ho_Chi_Minh').toDate(),
+              $lt: dates[1],
             }
           }
 

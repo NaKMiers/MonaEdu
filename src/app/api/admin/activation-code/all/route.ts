@@ -1,7 +1,6 @@
 import { connectDatabase } from '@/config/database'
 import ActivationCodeModel from '@/models/ActivationCodeModel'
 import { searchParamsToObject } from '@/utils/handleQuery'
-import momentTZ from 'moment-timezone'
 import { NextRequest, NextResponse } from 'next/server'
 
 // Models: Activation Code, Course, User
@@ -80,16 +79,16 @@ export async function GET(req: NextRequest) {
 
           if (dates[0] && dates[1]) {
             filter[key] = {
-              $gte: momentTZ.tz(dates[0], 'Asia/Ho_Chi_Minh').toDate(),
-              $lt: momentTZ.tz(dates[1], 'Asia/Ho_Chi_Minh').toDate(),
+              $gte: dates[0],
+              $lt: dates[1],
             }
           } else if (dates[0]) {
             filter[key] = {
-              $gte: momentTZ.tz(dates[0], 'Asia/Ho_Chi_Minh').toDate(),
+              $gte: dates[0],
             }
           } else if (dates[1]) {
             filter[key] = {
-              $lt: momentTZ.tz(dates[1], 'Asia/Ho_Chi_Minh').toDate(),
+              $lt: dates[1],
             }
           }
 

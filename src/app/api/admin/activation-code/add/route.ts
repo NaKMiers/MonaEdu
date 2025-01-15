@@ -19,13 +19,6 @@ export async function POST(req: NextRequest) {
     // get data to create activation code
     const { code, courses, begin, expire, timesLeft, active } = await req.json()
 
-    console.log('code:', code)
-    console.log('courses:', courses)
-    console.log('begin:', begin)
-    console.log('expire:', expire)
-    console.log('timesLeft:', timesLeft)
-    console.log('active:', active)
-
     const [isActivationCodeExist, isCourseExist] = await Promise.all([
       // get activation code by code from database
       ActivationCodeModel.exists({ code }),

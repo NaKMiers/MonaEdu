@@ -1,7 +1,12 @@
 import moment from 'moment'
+import momentTZ from 'moment-timezone'
 
 export const formatTime = (time: string): string => {
   return moment(time).format('DD/MM/YYYY HH:mm:ss')
+}
+
+export const toUTC = (time: string): string => {
+  return momentTZ(time).utc().format('YYYY-MM-DDTHH:mm:ss[Z]')
 }
 
 export const formatDate = (time: string): string => {

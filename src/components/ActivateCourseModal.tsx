@@ -85,31 +85,37 @@ function ActivateCourseModal() {
   )
 
   // MARK: Activate courses by activation code
-  const onSubmit: SubmitHandler<FieldValues> = useCallback(async data => {
-    // validate form
-    if (!handleValidate(data)) return
+  const onSubmit: SubmitHandler<FieldValues> = useCallback(
+    async data => {
+      // validate form
+      if (!handleValidate(data)) return
 
-    // start loading
-    setLoading(true)
+      // start loading
+      setLoading(true)
 
-    try {
-      const { message } = await ActivateCoursesByActivationCodeApi(data.activateCourseCode.trim())
+      try {
+        const { message } = await ActivateCoursesByActivationCodeApi(data.activateCourseCode.trim())
 
-      // show success message
-      toast.success(message)
+        // show success message
+        toast.success(message)
 
-      // reset
-      setCode(Array(12).fill(''))
-      setValue('activateCourseCode', '')
-    } catch (err: any) {
-      // show error message
-      console.log(err)
-      toast.error(err.message)
-    } finally {
-      // stop loading
-      setLoading(false)
-    }
-  }, [])
+        // reset
+        setCode(Array(12).fill(''))
+        setValue('activateCourseCode', '')
+
+        // close modal
+        dispatch(setOpenActivateCourse(false))
+      } catch (err: any) {
+        // show error message
+        console.log(err)
+        toast.error(err.message)
+      } finally {
+        // stop loading
+        setLoading(false)
+      }
+    },
+    [handleValidate, setValue]
+  )
 
   return (
     <AnimatePresence>

@@ -8,6 +8,7 @@ import { setLoading } from '@/libs/reducers/modalReducer'
 import { ICourse } from '@/models/CourseModel'
 import { addActivationCodeApi, searchCoursesApi } from '@/requests'
 import { generateRandomString } from '@/utils/generate'
+import { toUTC } from '@/utils/time'
 import moment from 'moment-timezone'
 import Image from 'next/image'
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -138,8 +139,8 @@ function AddActivationCodePage() {
         const { message } = await addActivationCodeApi({
           ...data,
           courses: selectedCourses.map(course => course._id),
-          begin: moment(data.begin).utc().format('YYYY-MM-DDTHH:mm:ss[Z]'),
-          expire: data.expire ? moment(data.expire).utc().format('YYYY-MM-DDTHH:mm:ss[Z]') : '',
+          begin: toUTC(data.begin),
+          expire: data.expire ? toUTC(data.expire) : '',
         })
 
         // show success message
