@@ -8,6 +8,8 @@ import { setLoading, setPageLoading } from '@/libs/reducers/modalReducer'
 import { IUser } from '@/models/UserModel'
 import { IVoucher } from '@/models/VoucherModel'
 import { getRoleUsersApi, getVoucherApi, updateVoucherApi } from '@/requests'
+import { toUTC } from '@/utils/time'
+import moment from 'moment-timezone'
 import { useParams, useRouter } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
@@ -68,9 +70,9 @@ function EditVoucherPage() {
         // set value to form
         setValue('code', voucher.code)
         setValue('desc', voucher.desc)
-        setValue('begin', new Date(voucher.begin).toISOString().split('T')[0])
+        setValue('begin', moment(voucher.begin).format('YYYY-MM-DDTHH:mm'))
         if (voucher.expire) {
-          setValue('expire', new Date(voucher.expire).toISOString().split('T')[0])
+          setValue('expire', moment(voucher.expire).format('YYYY-MM-DDTHH:mm'))
         }
         setValue('minTotal', voucher.minTotal)
         setValue('maxReduce', voucher.maxReduce)
@@ -178,7 +180,11 @@ function EditVoucherPage() {
 
       try {
         // send request to server to add voucher
-        const { message } = await updateVoucherApi(code, data)
+        const { message } = await updateVoucherApi(code, {
+          ...data,
+          begin: toUTC(data.begin),
+          expire: data.expire ? toUTC(data.expire) : '',
+        })
 
         // show success message
         toast.success(message)

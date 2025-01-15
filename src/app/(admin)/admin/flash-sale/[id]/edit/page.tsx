@@ -8,6 +8,8 @@ import { useAppDispatch, useAppSelector } from '@/libs/hooks'
 import { setLoading } from '@/libs/reducers/modalReducer'
 import { ICourse } from '@/models/CourseModel'
 import { getFlashSaleApi, getForceAllCoursesApi, updateFlashSaleApi } from '@/requests'
+import { toUTC } from '@/utils/time'
+import moment from 'moment-timezone'
 import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
@@ -42,7 +44,7 @@ function EditFlashSalePage() {
     defaultValues: {
       type: 'percentage',
       value: '',
-      begin: new Date().toISOString().split('T')[0],
+      begin: moment().format('YYYY-MM-DDTHH:mm'),
       expire: '',
       timeType: 'loop',
       duration: 120,
@@ -60,11 +62,8 @@ function EditFlashSalePage() {
         // // set value to form
         setValue('type', flashSale.type)
         setValue('value', flashSale.value)
-        setValue('begin', new Date(flashSale.begin).toISOString().split('T')[0])
-        setValue(
-          'expire',
-          flashSale.expire ? new Date(flashSale.expire).toISOString().split('T')[0] : ''
-        )
+        setValue('begin', moment(flashSale.begin).format('YYYY-MM-DDTHH:mm'))
+        setValue('expire', flashSale.expire ? moment(flashSale.expire).format('YYYY-MM-DDTHH:mm') : '')
         setValue('duration', flashSale.duration || 120)
         setValue('timeType', flashSale.timeType)
         setTimeType(flashSale.timeType)
@@ -150,7 +149,15 @@ function EditFlashSalePage() {
 
     try {
       // send request to server
-      const { message } = await updateFlashSaleApi(id, data, selectedCourses)
+      const { message } = await updateFlashSaleApi(
+        id,
+        {
+          ...data,
+          begin: toUTC(data.begin),
+          expire: data.expire ? toUTC(data.expire) : '',
+        },
+        selectedCourses
+      )
 
       // show success message
       toast.success(message)

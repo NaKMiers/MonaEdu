@@ -12,6 +12,7 @@ import { MdCancel, MdEdit } from 'react-icons/md'
 import { RiDonutChartFill } from 'react-icons/ri'
 import Divider from '../Divider'
 import Input from '../Input'
+import moment from 'moment-timezone'
 
 interface PersonalInfoProps {
   className?: string
@@ -54,7 +55,7 @@ function PersonalInfo({ className = '' }: PersonalInfoProps) {
       reset({
         firstName: curUser.firstName,
         lastName: curUser.lastName,
-        birthday: curUser.birthday ? new Date(curUser.birthday).toISOString().split('T')[0] : '',
+        birthday: curUser.birthday ? moment(curUser.birthday).format('YYYY-MM-DDTHH:mm') : '',
         job: curUser.job,
         bio: curUser.bio,
         gender: curUser.gender,
@@ -147,8 +148,7 @@ function PersonalInfo({ className = '' }: PersonalInfoProps) {
             <>
               <p className="text-slate-600">Ngày sinh</p>
               <p>
-                {(getValues('birthday') &&
-                  new Date(getValues('birthday')).toISOString().split('T')[0]) || (
+                {(getValues('birthday') && moment(getValues('birthday')).format('DD/MM/YYYY')) || (
                   <span className="text-sm text-slate-500">Trống</span>
                 )}
               </p>
@@ -160,9 +160,10 @@ function PersonalInfo({ className = '' }: PersonalInfoProps) {
               disabled={loading}
               register={register}
               errors={errors}
-              min={new Date('01/01/1910').toISOString().split('T')[0]}
-              max={new Date().toISOString().split('T')[0]}
+              min={moment('01/01/1910').format('YYYY-MM-DD')}
+              max={moment().format('YYYY-MM-DD')}
               labelBg="bg-white"
+              type="date"
               className="mt-3 min-w-[40%]"
               onFocus={() => clearErrors('birthday')}
             />

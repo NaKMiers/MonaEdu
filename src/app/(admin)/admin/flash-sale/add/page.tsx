@@ -7,6 +7,8 @@ import { useAppDispatch, useAppSelector } from '@/libs/hooks'
 import { setLoading } from '@/libs/reducers/modalReducer'
 import { ICourse } from '@/models/CourseModel'
 import { addFlashSaleApi, getAllCoursesApi, getForceAllCoursesApi } from '@/requests'
+import { toUTC } from '@/utils/time'
+import moment from 'moment-timezone'
 import Image from 'next/image'
 import { useCallback, useEffect, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
@@ -40,7 +42,7 @@ function AddFlashSalePage() {
     defaultValues: {
       type: 'percentage',
       value: '',
-      begin: new Date().toISOString().split('T')[0],
+      begin: moment().format('YYYY-MM-DDTHH:mm'),
       expire: '',
       timeType: 'loop',
       duration: 120,
@@ -117,6 +119,8 @@ function AddFlashSalePage() {
       // send request to server
       const { message } = await addFlashSaleApi({
         ...data,
+        begin: toUTC(data.begin),
+        expire: data.expire ? toUTC(data.expire) : '',
         appliedCourses: selectedCourses,
       })
 
@@ -206,7 +210,7 @@ function AddFlashSalePage() {
           errors={errors}
           required
           type="datetime-local"
-          min={new Date().toISOString().split('T')[0]}
+          min={moment().format('YYYY-MM-DDTHH:mm')}
           icon={FaPlay}
           className="mb-5"
           onFocus={() => clearErrors('begin')}

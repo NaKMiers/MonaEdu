@@ -12,10 +12,10 @@ import { IVoucher } from '@/models/VoucherModel'
 import { getOrderHistoryApi } from '@/requests'
 import { handleQuery } from '@/utils/handleQuery'
 import { formatPrice } from '@/utils/number'
+import { toUTC } from '@/utils/time'
 import { Slider } from '@mui/material'
 import moment from 'moment-timezone'
 import { useSession } from 'next-auth/react'
-import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
@@ -26,7 +26,6 @@ import { BsLayoutSidebarInset, BsLayoutSidebarInsetReverse } from 'react-icons/b
 import { FaCalendar, FaDollarSign, FaGift, FaSlackHash, FaSort } from 'react-icons/fa'
 import { FaDeleteLeft } from 'react-icons/fa6'
 import { MdDateRange } from 'react-icons/md'
-import { SiStatuspage } from 'react-icons/si'
 import { TbRosetteDiscountCheckFilled, TbStatusChange } from 'react-icons/tb'
 
 function HistoryPage({ searchParams }: { searchParams?: { [key: string]: string[] | string } }) {
@@ -94,6 +93,19 @@ function HistoryPage({ searchParams }: { searchParams?: { [key: string]: string[
         // sync search params with states
         setValue('search', searchParams?.search || getValues('search'))
         setValue('sort', searchParams?.sort || getValues('sort'))
+        setValue(
+          'from',
+          searchParams?.['from-to'] && (searchParams?.['from-to'] as string).split('|')[0]
+            ? moment((searchParams['from-to'] as string).split('|')[0]).format('YYYY-MM-DDTHH:mm')
+            : getValues('from')
+        )
+
+        setValue(
+          'to',
+          searchParams?.['from-to'] && (searchParams?.['from-to'] as string).split('|')[1]
+            ? moment((searchParams['from-to'] as string).split('|')[1]).format('YYYY-MM-DDTHH:mm')
+            : getValues('to')
+        )
 
         // sync search params to states
         // set min - max - total
@@ -129,16 +141,25 @@ function HistoryPage({ searchParams }: { searchParams?: { [key: string]: string[
       sort,
     }
 
-    const fromTo = (from || '') + '|' + (to || '')
+    const fromTo = (from ? toUTC(from) : '') + '|' + (to ? toUTC(to) : '')
     if (fromTo !== '|') {
       params['from-to'] = fromTo
+    } else {
+      if (searchParams) {
+        delete searchParams['from-to']
+      }
+      delete params['from-to']
     }
+
+    console.log('params', params)
 
     // handle query
     const query = handleQuery({
       ...searchParams,
       ...params,
     })
+
+    console.log('query', pathname + query)
 
     // push to router
     router.push(pathname + query, { scroll: false })
@@ -160,7 +181,7 @@ function HistoryPage({ searchParams }: { searchParams?: { [key: string]: string[
 
     timeout.current = setTimeout(() => {
       handleFilter()
-    }, 500)
+    }, 750)
   }, [handleFilter])
 
   return (

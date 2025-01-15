@@ -14,6 +14,7 @@ import {
   updateActivationCodeApi,
 } from '@/requests'
 import { generateRandomString } from '@/utils/generate'
+import { toUTC } from '@/utils/time'
 import moment, { isMoment } from 'moment-timezone'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
@@ -120,7 +121,7 @@ function EditActivationCodePage({ params: { code } }: { params: { code: string }
           // stop searching
           setSearching(false)
         }
-      }, 500)
+      }, 750)
     }
 
     searchCourses()
@@ -181,8 +182,10 @@ function EditActivationCodePage({ params: { code } }: { params: { code: string }
       try {
         // send request to server to add activation code
         const { message } = await updateActivationCodeApi(code, {
-          courses: selectedCourses.map(course => course._id),
           ...data,
+          courses: selectedCourses.map(course => course._id),
+          begin: toUTC(data.begin),
+          expire: data.expire ? toUTC(data.expire) : '',
         })
 
         // show success message

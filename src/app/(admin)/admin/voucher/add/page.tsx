@@ -39,7 +39,7 @@ function AddVoucherPage() {
       code: generateRandomString(5),
       description: '',
       // default begin is today
-      begin: new Date().toISOString().split('T')[0],
+      begin: moment().format('YYYY-MM-DDTHH:mm'),
       expire: '',
       minTotal: 0,
       maxReduce: '',

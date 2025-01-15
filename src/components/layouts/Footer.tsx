@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { memo } from 'react'
 import {
   FaCheck,
+  FaFreeCodeCamp,
   FaHistory,
   FaInfoCircle,
   FaShoppingCart,
@@ -16,9 +17,14 @@ import { RiVipCrown2Fill } from 'react-icons/ri'
 import { SiCoursera } from 'react-icons/si'
 import Divider from '../Divider'
 import Quote from '../Quote'
+import { MdOutlineRedeem } from 'react-icons/md'
+import toast from 'react-hot-toast'
+import { setOpenActivateCourse } from '@/libs/reducers/modalReducer'
+import { useAppDispatch } from '@/libs/hooks'
 
 function Footer() {
   // hooks
+  const dispatch = useAppDispatch()
   const { data: session } = useSession()
   const curUser: any = session?.user
 
@@ -205,6 +211,22 @@ function Footer() {
                 />
                 Về chúng tôi
               </Link>
+              <button
+                className="trans-200 group flex items-center justify-center gap-1.5 font-body tracking-wide underline underline-offset-2 hover:tracking-wider md:justify-start"
+                onClick={() => {
+                  if (!curUser) {
+                    toast.error('Vui lòng đăng nhập để kích hoạt khóa học')
+                    return
+                  }
+                  dispatch(setOpenActivateCourse(true))
+                }}
+              >
+                <MdOutlineRedeem
+                  size={15}
+                  className="wiggle-0 flex-shrink-0"
+                />
+                Kích hoạt khóa học
+              </button>
               <Link
                 href="/subscription"
                 className="trans-200 group flex items-center justify-center gap-1.5 font-body tracking-wide underline underline-offset-2 hover:tracking-wider md:justify-start"
