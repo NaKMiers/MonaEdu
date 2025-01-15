@@ -12,6 +12,7 @@ import { IVoucher } from '@/models/VoucherModel'
 import { activateVouchersApi, deleteVouchersApi, getAllVouchersApi } from '@/requests'
 import { handleQuery } from '@/utils/handleQuery'
 import { formatPrice } from '@/utils/number'
+import { toUTC } from '@/utils/time'
 import { Slider } from '@mui/material'
 import moment from 'moment-timezone'
 import { usePathname, useRouter } from 'next/navigation'
@@ -87,6 +88,8 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
       try {
         const { vouchers, amount, chops } = await getAllVouchersApi(query) // cache: no-store
 
+        console.log('chops', chops)
+
         // set vouchers to state
         setVouchers(vouchers)
         setAmount(amount)
@@ -131,7 +134,7 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
             : (searchParams.minTotal as string).split('-')
           setMinTotal([+from, +to])
         } else {
-          setMinTotal([chops?.minTotal || 0, chops?.maxTotal || 0])
+          setMinTotal([chops?.minMinTotal || 0, chops?.maxMinTotal || 0])
         }
 
         setMinMaxReduce(chops.minMaxReduce)
@@ -142,7 +145,7 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
             : (searchParams.maxReduce as string).split('-')
           setMaxReduce([+from, +to])
         } else {
-          setMaxReduce([chops?.maxReduce || 0, chops?.maxTotal || 0])
+          setMaxReduce([chops?.minMaxReduce || 0, chops?.maxMaxReduce || 0])
         }
       } catch (err: any) {
         console.log(err)
@@ -221,11 +224,11 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
 
       const { beginFrom, beginTo, expireFrom, expireTo, ...rest } = data
       if (beginFrom || beginTo) {
-        rest.begin = (beginFrom || '') + '|' + (beginTo || '')
+        rest.begin = (beginFrom ? toUTC(beginFrom) : '') + '|' + (beginTo ? toUTC(beginTo) : '')
       }
 
       if (expireFrom || expireTo) {
-        rest.expire = (expireFrom || '') + '|' + (expireTo || '')
+        rest.expire = (expireFrom ? toUTC(expireFrom) : '') + '|' + (expireTo ? toUTC(expireTo) : '')
       }
 
       return {
@@ -402,7 +405,7 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
             disabled={false}
             register={register}
             errors={errors}
-            type="date"
+            type="datetime-local"
             icon={FaCalendar}
             className="w-full"
             onFocus={() => clearErrors('expireFrom')}
@@ -414,7 +417,7 @@ function AllVouchersPage({ searchParams }: { searchParams?: { [key: string]: str
             disabled={false}
             register={register}
             errors={errors}
-            type="date"
+            type="datetime-local"
             icon={FaCalendar}
             className="w-full"
             onFocus={() => clearErrors('expireTo')}

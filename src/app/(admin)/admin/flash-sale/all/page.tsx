@@ -12,13 +12,15 @@ import { ICourse } from '@/models/CourseModel'
 import { IFlashSale } from '@/models/FlashSaleModel'
 import { deleteFlashSalesApi, getAllFlashSalesApi } from '@/requests'
 import { handleQuery } from '@/utils/handleQuery'
+import { toUTC } from '@/utils/time'
+import moment from 'moment-timezone'
 import { usePathname, useRouter } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { FaCalendar, FaSort } from 'react-icons/fa'
 
-function AllFlashSalesPage({ searchParams }: { searchParams?: { [key: string]: string[] } }) {
+function AllFlashSalesPage({ searchParams }: { searchParams?: { [key: string]: string | string[] } }) {
   // store
   const dispatch = useAppDispatch()
   const pathname = usePathname()
@@ -79,6 +81,30 @@ function AllFlashSalesPage({ searchParams }: { searchParams?: { [key: string]: s
         setValue('sort', searchParams?.sort || getValues('sort'))
         setValue('type', searchParams?.type || getValues('type'))
         setValue('timeType', searchParams?.timeType || getValues('timeType'))
+        setValue(
+          'beginFrom',
+          searchParams?.begin && (searchParams?.begin as string).split('|')[0]
+            ? moment((searchParams.begin as string).split('|')[0]).format('YYYY-MM-DDTHH:mm')
+            : getValues('beginFrom')
+        )
+        setValue(
+          'beginTo',
+          searchParams?.begin && (searchParams?.begin as string).split('|')[1]
+            ? moment((searchParams.begin as string).split('|')[1]).format('YYYY-MM-DDTHH:mm')
+            : getValues('beginTo')
+        )
+        setValue(
+          'expireFrom',
+          searchParams?.expire && (searchParams?.expire as string).split('|')[0]
+            ? moment((searchParams.expire as string).split('|')[0]).format('YYYY-MM-DDTHH:mm')
+            : getValues('expireFrom')
+        )
+        setValue(
+          'expireTo',
+          searchParams?.expire && (searchParams?.expire as string).split('|')[1]
+            ? moment((searchParams.expire as string).split('|')[1]).format('YYYY-MM-DDTHH:mm')
+            : getValues('expireTo')
+        )
       } catch (err: any) {
         console.log(err)
         toast.error(err.message)
@@ -150,14 +176,12 @@ function AllFlashSalesPage({ searchParams }: { searchParams?: { [key: string]: s
       }
 
       const { beginFrom, beginTo, expireFrom, expireTo, ...rest } = data
-
-      const begin = (beginFrom || '') + '|' + (beginTo || '')
-      if (begin !== '|') {
-        rest.begin = begin
+      if (beginFrom || beginTo) {
+        rest.begin = (beginFrom ? toUTC(beginFrom) : '') + '|' + (beginTo ? toUTC(beginTo) : '')
       }
-      const expire = (expireFrom || '') + '|' + (expireTo || '')
-      if (expire !== '|') {
-        rest.expire = expire
+
+      if (expireFrom || expireTo) {
+        rest.expire = (expireFrom ? toUTC(expireFrom) : '') + '|' + (expireTo ? toUTC(expireTo) : '')
       }
 
       return {
@@ -243,7 +267,7 @@ function AllFlashSalesPage({ searchParams }: { searchParams?: { [key: string]: s
             disabled={false}
             register={register}
             errors={errors}
-            type="date"
+            type="datetime-local"
             icon={FaCalendar}
             className="w-full"
             onFocus={() => clearErrors('beginFrom')}
@@ -255,7 +279,7 @@ function AllFlashSalesPage({ searchParams }: { searchParams?: { [key: string]: s
             disabled={false}
             register={register}
             errors={errors}
-            type="date"
+            type="datetime-local"
             icon={FaCalendar}
             className="w-full"
             onFocus={() => clearErrors('beginTo')}
@@ -270,7 +294,7 @@ function AllFlashSalesPage({ searchParams }: { searchParams?: { [key: string]: s
             disabled={false}
             register={register}
             errors={errors}
-            type="date"
+            type="datetime-local"
             icon={FaCalendar}
             className="w-full"
             onFocus={() => clearErrors('expireFrom')}
@@ -282,7 +306,7 @@ function AllFlashSalesPage({ searchParams }: { searchParams?: { [key: string]: s
             disabled={false}
             register={register}
             errors={errors}
-            type="date"
+            type="datetime-local"
             icon={FaCalendar}
             className="w-full"
             onFocus={() => clearErrors('expireTo')}

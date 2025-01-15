@@ -46,7 +46,7 @@ function FlashSaleItem({
         }
       >
         {/* MARK: Body */}
-        {/* Value - Time Type */}
+        {/* Value - Time Type - Type */}
         <div className="font-semibold">
           <span
             title="Value"
@@ -54,37 +54,48 @@ function FlashSaleItem({
           >
             {data.type === 'percentage' ? data.value : formatPrice(+data.value)}
           </span>
-
-          <span title="Time Type">{data.timeType}</span>
+          <span title="Time Type">{data.timeType}</span> <span title="Type">{data.type}</span>
         </div>
 
-        {/* Type - Duration */}
-        <div className="font-semibold">
-          <span
-            className="mr-2"
-            title="Type"
-          >
-            {data.type}
-          </span>
-          {data.timeType === 'loop' && (
+        {/*  Duration */}
+        {data.timeType === 'loop' && (
+          <div>
             <span
-              className="font-semobold text-secondary"
+              className="font-semibold"
               title="duration"
             >
-              {data.duration}
+              Duration:
+            </span>{' '}
+            <span
+              className="font-semibold text-secondary"
+              title="duration"
+            >
+              {data.duration}m
             </span>
-          )}
-        </div>
+          </div>
+        )}
 
         {/* Begin - Expire */}
         <div>
+          <span
+            title="Begin (d/m/y)"
+            className="font-semibold"
+          >
+            Begin:{' '}
+          </span>
           <span title="Begin (d/m/y)">{formatTime(data.begin)}</span>
-          {data.timeType === 'once' && data.expire && (
-            <span title="Expire (d/m/y)">
-              {' - '} {formatTime(data.expire)}
-            </span>
-          )}
         </div>
+        {data.timeType === 'once' && (
+          <div>
+            <span
+              title="Expire (d/m/y)"
+              className="font-semibold"
+            >
+              Expire:{' '}
+            </span>
+            <span title="Expire (d/m/y)">{formatTime(data.expire)}</span>
+          </div>
+        )}
 
         {/* Course Quantity */}
         <p className="font-semibold">

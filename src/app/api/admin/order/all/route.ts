@@ -99,7 +99,7 @@ export async function GET(req: NextRequest) {
           if (dates[0] && dates[1]) {
             filter.createdAt = {
               $gte: toUTC(dates[0]),
-              $lt: toUTC(dates[1]),
+              $lte: toUTC(dates[1]),
             }
           } else if (dates[0]) {
             filter.createdAt = {
@@ -107,7 +107,7 @@ export async function GET(req: NextRequest) {
             }
           } else if (dates[1]) {
             filter.createdAt = {
-              $lt: toUTC(dates[1]),
+              $lte: toUTC(dates[1]),
             }
           }
 

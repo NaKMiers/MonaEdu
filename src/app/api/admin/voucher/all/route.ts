@@ -7,6 +7,7 @@ import { NextRequest, NextResponse } from 'next/server'
 // Models: Voucher, User
 import '@/models/UserModel'
 import '@/models/VoucherModel'
+import { toUTC } from '@/utils/time'
 
 export const dynamic = 'force-dynamic'
 
@@ -81,19 +82,20 @@ export async function GET(req: NextRequest) {
 
         if (['begin', 'expire'].includes(key)) {
           const dates = params[key][0].split('|')
+          console.log('dates', dates)
 
           if (dates[0] && dates[1]) {
             filter[key] = {
-              $gte: new Date(dates[0]),
-              $lt: new Date(dates[1]),
+              $gte: toUTC(dates[0]),
+              $lte: toUTC(dates[1]),
             }
           } else if (dates[0]) {
             filter[key] = {
-              $gte: new Date(dates[0]),
+              $gte: toUTC(dates[0]),
             }
           } else if (dates[1]) {
             filter[key] = {
-              $lt: new Date(dates[1]),
+              $lte: toUTC(dates[1]),
             }
           }
 
@@ -104,6 +106,8 @@ export async function GET(req: NextRequest) {
         filter[key] = params[key].length === 1 ? params[key][0] : { $in: params[key] }
       }
     }
+
+    console.log('Filter:', filter)
 
     // get amount, get all vouchers, chops
     const [amount, vouchers, chops] = await Promise.all([

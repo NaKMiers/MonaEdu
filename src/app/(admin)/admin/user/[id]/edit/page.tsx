@@ -395,7 +395,7 @@ function EditUserPage({ params: { id } }: { params: { id: string } }) {
             disabled={isLoading}
             register={register}
             errors={errors}
-            type="date"
+            type="datetime-local"
             icon={FaCalendarAlt}
             onFocus={() => clearErrors('birthday')}
           />

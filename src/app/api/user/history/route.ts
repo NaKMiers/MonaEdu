@@ -8,6 +8,7 @@ import { NextRequest, NextResponse } from 'next/server'
 // Models: Order, Voucher
 import '@/models/OrderModel'
 import '@/models/VoucherModel'
+import { toUTC } from '@/utils/time'
 
 export const dynamic = 'force-dynamic'
 
@@ -105,16 +106,16 @@ export async function GET(req: NextRequest) {
 
           if (dates[0] && dates[1]) {
             filter.createdAt = {
-              $gte: dates[0],
-              $lt: dates[1],
+              $gte: toUTC(dates[0]),
+              $lt: toUTC(dates[1]),
             }
           } else if (dates[0]) {
             filter.createdAt = {
-              $gte: dates[0],
+              $gte: toUTC(dates[0]),
             }
           } else if (dates[1]) {
             filter.createdAt = {
-              $lt: dates[1],
+              $lt: toUTC(dates[1]),
             }
           }
 

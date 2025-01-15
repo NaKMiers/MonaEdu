@@ -162,7 +162,6 @@ function PersonalInfo({ className = '' }: PersonalInfoProps) {
               errors={errors}
               min={new Date('01/01/1910').toISOString().split('T')[0]}
               max={new Date().toISOString().split('T')[0]}
-              type="date"
               labelBg="bg-white"
               className="mt-3 min-w-[40%]"
               onFocus={() => clearErrors('birthday')}
@@ -174,11 +173,15 @@ function PersonalInfo({ className = '' }: PersonalInfoProps) {
             <>
               <p className="text-slate-600">Giới tính</p>
               <p>
-                {getValues('gender') === 'male'
-                  ? 'Nam'
-                  : getValues('gender') === 'female'
-                    ? 'Nữ'
-                    : 'Khác' || <span className="text-sm text-slate-500">Trống</span>}
+                {getValues('gender') === 'male' ? (
+                  'Nam'
+                ) : getValues('gender') === 'female' ? (
+                  'Nữ'
+                ) : getValues('gender') === 'Other' ? (
+                  'Khác'
+                ) : (
+                  <span className="text-sm text-slate-500">Trống</span>
+                )}
               </p>
             </>
           ) : (

@@ -205,7 +205,7 @@ function AddFlashSalePage() {
           register={register}
           errors={errors}
           required
-          type="date"
+          type="datetime-local"
           min={new Date().toISOString().split('T')[0]}
           icon={FaPlay}
           className="mb-5"
@@ -265,7 +265,7 @@ function AddFlashSalePage() {
               register={register}
               errors={errors}
               required
-              type="date"
+              type="datetime-local"
               icon={FaPause}
               onFocus={() => clearErrors('expire')}
             />

@@ -229,7 +229,7 @@ function EditFlashSalePage() {
           register={register}
           errors={errors}
           required
-          type="date"
+          type="datetime-local"
           icon={FaPlay}
           className="mb-5"
           onFocus={() => clearErrors('begin')}
@@ -286,7 +286,7 @@ function EditFlashSalePage() {
               register={register}
               errors={errors}
               required
-              type="date"
+              type="datetime-local"
               icon={FaPause}
               onFocus={() => clearErrors('expire')}
             />

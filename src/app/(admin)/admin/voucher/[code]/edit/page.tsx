@@ -280,7 +280,7 @@ function EditVoucherPage() {
             register={register}
             errors={errors}
             required
-            type="date"
+            type="datetime-local"
             icon={FaPlay}
             onFocus={() => clearErrors('begin')}
           />
@@ -292,7 +292,7 @@ function EditVoucherPage() {
             disabled={isLoading}
             register={register}
             errors={errors}
-            type="date"
+            type="datetime-local"
             icon={FaPause}
             onFocus={() => clearErrors('expire')}
           />

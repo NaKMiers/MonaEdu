@@ -7,6 +7,7 @@ import { NextRequest, NextResponse } from 'next/server'
 // Models: Course, Flash Sale
 import '@/models/CourseModel'
 import '@/models/FlashSaleModel'
+import { toUTC } from '@/utils/time'
 
 export const dynamic = 'force-dynamic'
 
@@ -49,16 +50,16 @@ export async function GET(req: NextRequest) {
 
           if (dates[0] && dates[1]) {
             filter[key] = {
-              $gte: new Date(dates[0]),
-              $lt: new Date(dates[1]),
+              $gte: toUTC(dates[0]),
+              $lte: toUTC(dates[1]),
             }
           } else if (dates[0]) {
             filter[key] = {
-              $gte: new Date(dates[0]),
+              $gte: toUTC(dates[0]),
             }
           } else if (dates[1]) {
             filter[key] = {
-              $lt: new Date(dates[1]),
+              $lte: toUTC(dates[1]),
             }
           }
 
