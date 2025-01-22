@@ -2,7 +2,7 @@
 
 import { useAppDispatch, useAppSelector } from '@/libs/hooks'
 import { setOpenActivateCourse } from '@/libs/reducers/modalReducer'
-import { ActivateCoursesByActivationCodeApi } from '@/requests'
+import { activateCoursesByActivationCodeApi } from '@/requests'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Fragment, memo, useCallback, useEffect, useRef, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
@@ -94,7 +94,7 @@ function ActivateCourseModal() {
       setLoading(true)
 
       try {
-        const { message } = await ActivateCoursesByActivationCodeApi(data.activateCourseCode.trim())
+        const { message } = await activateCoursesByActivationCodeApi(data.activateCourseCode.trim())
 
         // show success message
         toast.success(message)
@@ -114,7 +114,7 @@ function ActivateCourseModal() {
         setLoading(false)
       }
     },
-    [handleValidate, setValue]
+    [dispatch, handleValidate, setValue]
   )
 
   return (

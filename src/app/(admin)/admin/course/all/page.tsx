@@ -81,6 +81,8 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
       // start page loading
       dispatch(setPageLoading(true))
 
+      console.log('22222222')
+
       try {
         // send request to server to get all courses
         const { courses, amount, chops } = await getAllCoursesApi(query)
@@ -414,7 +416,7 @@ function AllCoursesPage({ searchParams }: { searchParams?: { [key: string]: stri
             onFocus={() => clearErrors('active')}
             options={[
               {
-                value: '',
+                value: 'all',
                 label: 'All',
               },
               {

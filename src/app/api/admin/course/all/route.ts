@@ -63,6 +63,13 @@ export async function GET(req: NextRequest) {
           continue
         }
 
+        if (key === 'active') {
+          if (params[key][0] === 'all') delete filter[key]
+          else if (params[key][0] === 'true') filter[key] = true
+          else if (params[key][0] === 'false') filter[key] = false
+          continue
+        }
+
         if (key === 'price' || key === 'joined') {
           const from = +params[key][0].split('-')[0]
           const to = +params[key][0].split('-')[1]

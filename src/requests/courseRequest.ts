@@ -189,7 +189,7 @@ export const joinCourseOnSubscriptionApi = async (
 }
 
 // [POST]: /course/activate/:code
-export const ActivateCoursesByActivationCodeApi = async (code: string) => {
+export const activateCoursesByActivationCodeApi = async (code: string) => {
   const res = await fetch(`/api/course/activate/${code}`, { method: 'POST' })
 
   // check status
