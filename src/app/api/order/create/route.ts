@@ -1,4 +1,5 @@
 import { connectDatabase } from '@/config/database'
+import { blackDomains, blackEmails } from '@/constants/blackList'
 import CourseModel from '@/models/CourseModel'
 import NotificationModel from '@/models/NotificationModel'
 import OrderModel from '@/models/OrderModel'
@@ -7,10 +8,9 @@ import UserModel, { IUser } from '@/models/UserModel'
 import { generateOrderCode } from '@/utils'
 import handleDeliverOrder from '@/utils/handleDeliverOrder'
 import { notifyNewOrderToAdmin } from '@/utils/sendMail'
+import { checkPackageType } from '@/utils/string'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
-import { blackDomains, blackEmails } from '@/constants/blackList'
-import { checkPackageType } from '@/utils/string'
 
 // Models: User, Order, Course, Category, Tag, Notification, Package
 import '@/models/CategoryModel'
@@ -43,7 +43,10 @@ export async function POST(req: NextRequest) {
     }
 
     // check if email is blacklist or black domains
-    if (blackEmails.includes(email) || blackDomains.some(domain => email.endsWith(domain))) {
+    if (
+      blackEmails.some(value => email.includes(value)) ||
+      blackDomains.some(domain => email.endsWith(domain))
+    ) {
       return NextResponse.json({ message: 'Không thể thực hiện giao dịch này' }, { status: 400 })
     }
 

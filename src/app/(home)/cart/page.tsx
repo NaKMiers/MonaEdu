@@ -185,7 +185,7 @@ function CartPage() {
 
     // check black list and black domains
     if (
-      blackEmails.includes(curUser?.email) ||
+      blackEmails.some(value => (curUser?.email).includes(value)) ||
       blackDomains.some((domain: string) => curUser?.email.endsWith(domain))
     ) {
       toast.error('Không thể thực hiện giao dịch này')
