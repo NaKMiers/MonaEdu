@@ -2,6 +2,7 @@
 import Divider from '@/components/Divider'
 import Input from '@/components/Input'
 import BottomGradient from '@/components/gradients/BottomGradient'
+import { blackDomains, blackEmails } from '@/constants/blackList'
 import { commonEmailMistakes } from '@/constants/mistakes'
 import { useAppDispatch } from '@/libs/hooks'
 import { setPageLoading } from '@/libs/reducers/modalReducer'
@@ -67,6 +68,15 @@ function RegisterPage() {
           setError('email', { message: 'Email không hợp lệ' })
           isValid = false
         }
+      }
+
+      // check black list and black domains
+      if (
+        blackEmails.some(value => data.email.toLowerCase().includes(value)) ||
+        blackDomains.some((domain: string) => data.email.toLowerCase().endsWith(domain))
+      ) {
+        setError('email', { message: 'Không thể tạo tài khoản' })
+        isValid = false
       }
 
       // password must be at least 6 characters and contain at least 1 lowercase, 1 uppercase, 1 number

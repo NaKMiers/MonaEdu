@@ -3,6 +3,7 @@ import UserModel from '@/models/UserModel'
 import { NextRequest, NextResponse } from 'next/server'
 
 // Models: User
+import { blackDomains, blackEmails } from '@/constants/blackList'
 import '@/models/UserModel'
 
 // [POST]: /auth/register
@@ -16,6 +17,14 @@ export async function POST(req: NextRequest) {
     let { firstName, lastName, username, email, password } = await req.json()
     username = username.toLowerCase()
     email = email.toLowerCase()
+
+    // check blacklist email
+    if (
+      blackEmails.some(value => email.toLowerCase().includes(value)) ||
+      blackDomains.some((domain: string) => email.toLowerCase().endsWith(domain))
+    ) {
+      return NextResponse.json({ message: 'Tên người dùng hoặc email không tồn tại' }, { status: 401 })
+    }
 
     // check if user is already exist in database
     const existingUser: any = await UserModel.findOne({
